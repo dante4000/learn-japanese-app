@@ -1,0 +1,14 @@
+{
+  "name": "ib-resume-bench",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "python3 -m http.server 4173",
+    "audit": "node bug-testing/run-audit.mjs",
+    "audit:1": "ITERATIONS=1 node bug-testing/run-audit.mjs",
+    "audit:5": "ITERATIONS=5 node bug-testing/run-audit.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.53.0"
+  }
+}

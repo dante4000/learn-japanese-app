@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zero to Hero — 한국어 화자를 위한 日本語</title>
+<link rel="stylesheet" href="css/design-system.css">
+</head>
+<body>
+
+<!-- SVG defs -->
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="테마 전환">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <span class="logo-badge">Zero to Hero — 기억 설계 에디션</span>
+    <div class="logo-title">한국어 화자를 위한 日本語</div>
+    <div class="logo-sub">한국어에서 日本語로 — 기억 설계자의 안내서</div>
+  </a>
+  <div class="sidebar-progress">
+    <div class="sidebar-progress-label">진행률</div>
+    <div class="sidebar-progress-bar">
+      <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+    </div>
+    <div class="sidebar-progress-count">0/22 완료</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="ch-00.html" class="toc-link"><span class="toc-num">00</span><span class="toc-check" data-ch="00"></span>기억 과학</a>
+    <a href="ch-01.html" class="toc-link"><span class="toc-num">01</span><span class="toc-check" data-ch="01"></span>한국어의 이점</a>
+    <a href="ch-02.html" class="toc-link"><span class="toc-num">02</span><span class="toc-check" data-ch="02"></span>히라가나</a>
+    <a href="ch-03.html" class="toc-link"><span class="toc-num">03</span><span class="toc-check" data-ch="03"></span>가타카나</a>
+    <a href="ch-04.html" class="toc-link"><span class="toc-num">04</span><span class="toc-check" data-ch="04"></span>발음</a>
+    <a href="ch-05.html" class="toc-link"><span class="toc-num">05</span><span class="toc-check" data-ch="05"></span>서바이벌 일본어</a>
+    <a href="ch-06.html" class="toc-link"><span class="toc-num">06</span><span class="toc-check" data-ch="06"></span>조수사</a>
+    <a href="ch-07.html" class="toc-link"><span class="toc-num">07</span><span class="toc-check" data-ch="07"></span>조사</a>
+    <a href="ch-08.html" class="toc-link"><span class="toc-num">08</span><span class="toc-check" data-ch="08"></span>동사 활용</a>
+    <a href="ch-09.html" class="toc-link"><span class="toc-num">09</span><span class="toc-check" data-ch="09"></span>일상 회화</a>
+    <a href="ch-10.html" class="toc-link"><span class="toc-num">10</span><span class="toc-check" data-ch="10"></span>문형</a>
+    <a href="ch-11.html" class="toc-link"><span class="toc-num">11</span><span class="toc-check" data-ch="11"></span>한자</a>
+    <a href="ch-12.html" class="toc-link"><span class="toc-num">12</span><span class="toc-check" data-ch="12"></span>한자어</a>
+    <a href="ch-13.html" class="toc-link"><span class="toc-num">13</span><span class="toc-check" data-ch="13"></span>고유어</a>
+    <a href="ch-14.html" class="toc-link"><span class="toc-num">14</span><span class="toc-check" data-ch="14"></span>경어</a>
+    <a href="ch-15.html" class="toc-link"><span class="toc-num">15</span><span class="toc-check" data-ch="15"></span>독해</a>
+    <a href="ch-16.html" class="toc-link"><span class="toc-num">16</span><span class="toc-check" data-ch="16"></span>작문</a>
+    <a href="ch-17.html" class="toc-link"><span class="toc-num">17</span><span class="toc-check" data-ch="17"></span>청해</a>
+    <a href="ch-18.html" class="toc-link"><span class="toc-num">18</span><span class="toc-check" data-ch="18"></span>문화 화용론</a>
+    <a href="ch-19.html" class="toc-link"><span class="toc-num">19</span><span class="toc-check" data-ch="19"></span>JLPT와 그 너머</a>
+    <a href="ch-20.html" class="toc-link"><span class="toc-num">20</span><span class="toc-check" data-ch="20"></span>기억의 궁전</a>
+    <a href="ch-21.html" class="toc-link"><span class="toc-num">21</span><span class="toc-check" data-ch="21"></span>90일 스프린트</a>
+    <a href="appendices.html" class="toc-link" style="margin-top:.5rem;border-top:1px solid var(--border);padding-top:.8rem"><span class="toc-num">+</span>부록</a>
+  </nav>
+</aside>
+
+<div class="main">
+
+<!-- HERO -->
+<section class="hero">
+  <!-- Torii Gate SVG silhouette -->
+  <svg class="hero-icon" viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg" width="360" fill="var(--heading)" stroke="none">
+    <!-- Top beam (kasagi) -->
+    <rect x="20" y="40" width="360" height="18" rx="3"/>
+    <!-- Second beam (nuki) with slight curve -->
+    <path d="M45,58 L45,80 Q200,95 355,80 L355,58 Q200,73 45,58Z"/>
+    <!-- Left pillar -->
+    <rect x="65" y="80" width="22" height="240" rx="2"/>
+    <!-- Right pillar -->
+    <rect x="313" y="80" width="22" height="240" rx="2"/>
+    <!-- Cross beam (shimaki) -->
+    <rect x="65" y="140" width="270" height="10" rx="2"/>
+    <!-- Pillar feet -->
+    <rect x="55" y="310" width="42" height="8" rx="2"/>
+    <rect x="303" y="310" width="42" height="8" rx="2"/>
+  </svg>
+
+  <a href="../../index.html" class="hero-back">&larr; 언어 선택</a>
+  <div class="hero-badge">Zero to Hero — 기억 설계 에디션</div>
+  <h1><em>한국어</em>에서 <em>日本語</em>로<br>다리를 놓는 학습 가이드</h1>
+  <p class="hero-sub">일반 교과서가 아닙니다 — 여러분이 이미 알고 있는 모든 것을 체계적으로 활용하고, 기억 과학으로 강화하는 학습서입니다. 제로에서 실용적 유창함까지 22개 챕터, 한국어 화자를 위해 설계되었습니다.</p>
+  <div class="hero-meta">
+    <span>22개 챕터</span>
+    <span>100개 이상의 인터랙티브 연습문제</span>
+    <span>JLPT N3 → N2 학습 경로</span>
+  </div>
+</section>
+
+<div class="content-wrap">
+
+  <!-- PROGRESS BAR -->
+  <div class="progress-section">
+    <div class="progress-bar-large">
+      <div class="seg" data-label="Ch00 기억 과학"></div>
+      <div class="seg" data-label="Ch01 한국어의 이점"></div>
+      <div class="seg" data-label="Ch02 히라가나"></div>
+      <div class="seg" data-label="Ch03 가타카나"></div>
+      <div class="seg" data-label="Ch04 발음"></div>
+      <div class="seg" data-label="Ch05 서바이벌 일본어"></div>
+      <div class="seg" data-label="Ch06 조수사"></div>
+      <div class="seg" data-label="Ch07 조사"></div>
+      <div class="seg" data-label="Ch08 동사 활용"></div>
+      <div class="seg" data-label="Ch09 일상 회화"></div>
+      <div class="seg" data-label="Ch10 문형"></div>
+      <div class="seg" data-label="Ch11 한자"></div>
+      <div class="seg" data-label="Ch12 한자어 어휘"></div>
+      <div class="seg" data-label="Ch13 고유 일본어 어휘"></div>
+      <div class="seg" data-label="Ch14 경어"></div>
+      <div class="seg" data-label="Ch15 독해"></div>
+      <div class="seg" data-label="Ch16 작문"></div>
+      <div class="seg" data-label="Ch17 청해"></div>
+      <div class="seg" data-label="Ch18 문화 화용론"></div>
+      <div class="seg" data-label="Ch19 JLPT와 그 너머"></div>
+      <div class="seg" data-label="Ch20 기억의 궁전"></div>
+      <div class="seg" data-label="Ch21 90일 스프린트"></div>
+    </div>
+    <div class="progress-count">0/22 완료</div>
+  </div>
+
+  <button class="quiz-btn" id="daily-review-btn" style="margin:1rem auto;display:block">일일 복습 — 오늘의 항목</button>
+  <div id="streak-counter" style="text-align:center;font-family:var(--mono);color:var(--a4);margin:.5rem 0">0일 연속 학습</div>
+
+  <!-- THE THESIS -->
+  <div class="pq">
+    "한국어 화자의 압도적 이점은 엄청납니다 — 하지만 거의 모든 일본어 교재가 이를 무시합니다."
+    <div class="pqa">일반 교재는 SOV 어순, 조사, 주제어와 주어의 차이를 설명하는 데 몇 주를 낭비합니다. 여러분은 이 모든 것을 이미 알고 있습니다.</div>
+  </div>
+
+  <div class="card-grid" style="margin:2rem 0">
+    <div class="card">
+      <h4>출발점: ~40%</h4>
+      <p>영어 화자가 JLPT N2를 취득하려면 약 2,200시간이 필요합니다. 여러분은 <strong>약 800~1,000시간</strong>이면 됩니다. 한국어 덕분에 문법, 구조, 경어, 그리고 수천 개의 한자어 동족어를 이미 가지고 계십니다.</p>
+    </div>
+    <div class="card">
+      <h4>실전 우선</h4>
+      <p>제5장까지 배우면, 음식 주문, 쇼핑, 일본 도시 이동이 가능합니다. 문법 이론은 실전에서 성공을 맛본 뒤에 다룹니다.</p>
+    </div>
+  </div>
+
+  <!-- CHAPTER CHECKLIST -->
+  <h3 style="margin: 2rem 0 1rem; font-family: var(--serif); font-size: 1.4rem; color: var(--heading);">챕터 목록</h3>
+  <div class="chapter-checklist">
+
+    <a href="ch-00.html" class="checklist-item">
+      <span class="checklist-num">00</span>
+      <span class="checklist-check" data-ch="00"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">기억 과학 — 기억의 과학</div>
+        <div class="checklist-desc">12가지 기억 기둥, 망각 곡선, 첫 기억의 궁전 구축</div>
+      </div>
+    </a>
+
+    <a href="ch-01.html" class="checklist-item">
+      <span class="checklist-num">01</span>
+      <span class="checklist-check" data-ch="01"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">한국어의 이점 — 무엇이 전이되고 무엇이 전이되지 않는가</div>
+        <div class="checklist-desc">이미 알고 있는 것을 정리합니다. 문법 전이, 어휘 차이, 학습 시간 이점을 파악합니다.</div>
+      </div>
+    </a>
+
+    <a href="ch-02.html" class="checklist-item">
+      <span class="checklist-num">02</span>
+      <span class="checklist-check" data-ch="02"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">히라가나 — 첫 번째 문자 체계 (ひらがな)</div>
+        <div class="checklist-desc">기본 히라가나 46자 + 탁음 + 요음. 시각적 기억법, 필순, 연습 단어를 다룹니다.</div>
+      </div>
+    </a>
+
+    <a href="ch-03.html" class="checklist-item">
+      <span class="checklist-num">03</span>
+      <span class="checklist-check" data-ch="03"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">가타카나 — 외래어 문자 체계 (カタカナ)</div>
+        <div class="checklist-desc">가타카나 46자를 히라가나와 짝지어 학습합니다. 한국어와 일본어를 잇는 외래어 다리를 놓습니다.</div>
+      </div>
+    </a>
+
+    <a href="ch-04.html" class="checklist-item">
+      <span class="checklist-num">04</span>
+      <span class="checklist-check" data-ch="04"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">발음 — 한국어 습관이 도움이 되는 곳과 방해가 되는 곳</div>
+        <div class="checklist-desc">한국어 화자를 위한 6가지 함정. 피치 악센트, 유기음, 원순 모음과 교정법을 다룹니다.</div>
+      </div>
+    </a>
+
+    <a href="ch-05.html" class="checklist-item">
+      <span class="checklist-num">05</span>
+      <span class="checklist-check" data-ch="05"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">서바이벌 일본어 — 식당, 쇼핑, 길 찾기</div>
+        <div class="checklist-desc">실제 일상 상황을 위한 100개 이상의 표현. 일본에서의 첫날을 준비합니다.</div>
+      </div>
+    </a>
+
+    <a href="ch-06.html" class="checklist-item">
+      <span class="checklist-num">06</span>
+      <span class="checklist-check" data-ch="06"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">조수사 — 세는 법의 형태 (助数詞/조수사)</div>
+        <div class="checklist-desc">16개 이상 조수사의 완전한 1-10 차트. 음변화 마스터 차트, 한국어 대응, 실전 표현.</div>
+      </div>
+    </a>
+
+    <a href="ch-07.html" class="checklist-item">
+      <span class="checklist-num">07</span>
+      <span class="checklist-check" data-ch="07"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">조사 — 1:1 대응 지도 (助詞/조사)</div>
+        <div class="checklist-desc">는=は, 가=が, 를=を. 가장 만족스러운 챕터 — 거의 모든 것이 직접 대응됩니다.</div>
+      </div>
+    </a>
+
+    <a href="ch-08.html" class="checklist-item">
+      <span class="checklist-num">08</span>
+      <span class="checklist-check" data-ch="08"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">동사 활용 — 같은 시스템, 다른 옷 (動詞/동사)</div>
+        <div class="checklist-desc">같은 교착어 시스템, 다른 어미. て형, 동사 그룹, 형용사 활용을 다룹니다.</div>
+      </div>
+    </a>
+
+    <a href="ch-09.html" class="checklist-item">
+      <span class="checklist-num">09</span>
+      <span class="checklist-check" data-ch="09"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">일상 회화 — 하루를 보내는 데 필요한 표현들</div>
+        <div class="checklist-desc">자기소개, 스몰토크, 약속 잡기, 의견 표현, 필러 표현을 다룹니다.</div>
+      </div>
+    </a>
+
+    <a href="ch-10.html" class="checklist-item">
+      <span class="checklist-num">10</span>
+      <span class="checklist-check" data-ch="10"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">문형 — 일본어로 사고하기 (文型/문형)</div>
+        <div class="checklist-desc">존재 표현, 희망 표현, 수수 표현, 관계절, 간접 화법을 다룹니다.</div>
+      </div>
+    </a>
+
+    <a href="ch-11.html" class="checklist-item">
+      <span class="checklist-num">11</span>
+      <span class="checklist-check" data-ch="11"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">한자 — 장기 전략 (漢字/한자)</div>
+        <div class="checklist-desc">한자 지식을 활용합니다. 음 대응 규칙, 부수, 동족어 가속기를 다룹니다.</div>
+      </div>
+    </a>
+
+    <a href="ch-12.html" class="checklist-item">
+      <span class="checklist-num">12</span>
+      <span class="checklist-check" data-ch="12"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">한자어 어휘 터보차저 (漢語/한자어)</div>
+        <div class="checklist-desc">40~60% 중복. 분야별 동족어 목록, 음운 규칙, 거짓 친구(유사 단어)를 다룹니다.</div>
+      </div>
+    </a>
+
+    <a href="ch-13.html" class="checklist-item">
+      <span class="checklist-num">13</span>
+      <span class="checklist-check" data-ch="13"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">고유 일본어 어휘 — 한국어가 도움이 되지 않는 단어들 (和語)</div>
+        <div class="checklist-desc">200개 이상의 핵심 일상 단어와 키워드 기억법. 의성어/의태어를 다룹니다.</div>
+      </div>
+    </a>
+
+    <a href="ch-14.html" class="checklist-item">
+      <span class="checklist-num">14</span>
+      <span class="checklist-check" data-ch="14"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">경어와 공손 표현 — 존댓말에서 敬語로</div>
+        <div class="checklist-desc">한국어 화자를 위한 경어. 구조 비교, 특수 동사, 시나리오 연습을 다룹니다.</div>
+      </div>
+    </a>
+
+    <a href="ch-15.html" class="checklist-item">
+      <span class="checklist-num">15</span>
+      <span class="checklist-check" data-ch="15"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">실전 독해 — 신문, 만화, 웹</div>
+        <div class="checklist-desc">혼합 문자 독해 전략. 색상 코드 분석, 매체별 접근법을 다룹니다.</div>
+      </div>
+    </a>
+
+    <a href="ch-16.html" class="checklist-item">
+      <span class="checklist-num">16</span>
+      <span class="checklist-check" data-ch="16"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">작문 — 문자 메시지부터 비즈니스 이메일까지</div>
+        <div class="checklist-desc">다양한 격식체 작문. LINE, 트위터, 공식 이메일과 한국어 대응 표현을 다룹니다.</div>
+      </div>
+    </a>
+
+    <a href="ch-17.html" class="checklist-item">
+      <span class="checklist-num">17</span>
+      <span class="checklist-check" data-ch="17"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">청해 — 일본어 귀 트레이닝</div>
+        <div class="checklist-desc">속도, 축약형, 피치 악센트, 조사 생략. 섀도잉 학습법을 다룹니다.</div>
+      </div>
+    </a>
+
+    <a href="ch-18.html" class="checklist-item">
+      <span class="checklist-num">18</span>
+      <span class="checklist-check" data-ch="18"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">문화 화용론 — 교과서가 알려주지 않는 것들</div>
+        <div class="checklist-desc">空気を読む와 눈치, 本音と建前, 비즈니스 문화, 지역 차이를 다룹니다.</div>
+      </div>
+    </a>
+
+    <a href="ch-19.html" class="checklist-item">
+      <span class="checklist-num">19</span>
+      <span class="checklist-check" data-ch="19"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">JLPT와 그 너머 — 진정한 유창함을 향한 길</div>
+        <div class="checklist-desc">시험 대비, 몰입 전략, 한자 장기 전략, 말하기 유지법을 다룹니다.</div>
+      </div>
+    </a>
+
+    <a href="ch-20.html" class="checklist-item">
+      <span class="checklist-num">20</span>
+      <span class="checklist-check" data-ch="20"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">기억의 궁전 — 모든 궁전 통합</div>
+        <div class="checklist-desc">그랜드 투어 경로, 유지 관리</div>
+      </div>
+    </a>
+
+    <a href="ch-21.html" class="checklist-item">
+      <span class="checklist-num">21</span>
+      <span class="checklist-check" data-ch="21"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">90일 스프린트 — 체계적인 90일 계획</div>
+        <div class="checklist-desc">모든 기법을 통합한 체계적인 90일 학습 계획</div>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- Appendices link -->
+  <div class="card" style="margin-top:2rem;text-align:center">
+    <h4>부록</h4>
+    <p style="margin-bottom:0"><a href="appendices.html">용어집</a> &middot; <a href="appendices.html#cognates">동족어 참조표 (500개 이상)</a> &middot; <a href="appendices.html#sounds">음 대응 치트시트</a> &middot; <a href="appendices.html#false-friends">거짓 친구 (50개 이상)</a></p>
+  </div>
+
+</div>
+</div>
+
+<footer>
+  <p>Zero to Hero: 한국어 화자를 위한 日本語 &middot; v4.0</p>
+  <p style="margin-top:.4rem;opacity:.5">실전 우선 챕터 순서. 인터랙티브 퀴즈, 기억법, 완료 추적 기능을 제공합니다.</p>
+</footer>
+
+<script src="js/shared.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/spaced-repetition.js"></script>
+<script src="js/memory-palace.js"></script>
+<script>
+(function() {
+  var btn = document.getElementById('daily-review-btn');
+  var streakEl = document.getElementById('streak-counter');
+  if (btn) {
+    btn.addEventListener('click', function() {
+      if (typeof window.SpacedRepetition !== 'undefined' && window.SpacedRepetition.getDueItems) {
+        var due = window.SpacedRepetition.getDueItems();
+        if (due.length === 0) {
+          btn.textContent = '일일 복습 — 모두 완료!';
+        } else {
+          window.SpacedRepetition.startReview(due);
+        }
+      }
+    });
+  }
+  if (streakEl) {
+    var streak = parseInt(localStorage.getItem('zth-streak') || '0', 10);
+    streakEl.textContent = streak + '일 연속 학습';
+  }
+})();
+</script>
+</body>
+</html>

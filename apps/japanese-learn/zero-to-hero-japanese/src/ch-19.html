@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ch19: JLPT and Beyond — Zero to Hero 日本語</title>
+<link rel="stylesheet" href="css/design-system.css">
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <span class="logo-badge">Zero to Hero — Memory Architecture Edition</span>
+    <div class="logo-title">日本語 for Korean Speakers</div>
+    <div class="logo-sub">From 한국어 to 日本語 — The Memory Architect's Guide</div>
+  </a>
+  <div class="sidebar-progress">
+    <div class="sidebar-progress-label">Progress</div>
+    <div class="sidebar-progress-bar">
+      <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+    </div>
+    <div class="sidebar-progress-count">0/22 complete</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="ch-00.html" class="toc-link"><span class="toc-num">00</span><span class="toc-check" data-ch="00"></span>Memory Science</a>
+    <a href="ch-01.html" class="toc-link"><span class="toc-num">01</span><span class="toc-check" data-ch="01"></span>Your Korean Advantage</a>
+    <a href="ch-02.html" class="toc-link"><span class="toc-num">02</span><span class="toc-check" data-ch="02"></span>Hiragana</a>
+    <a href="ch-03.html" class="toc-link"><span class="toc-num">03</span><span class="toc-check" data-ch="03"></span>Katakana</a>
+    <a href="ch-04.html" class="toc-link"><span class="toc-num">04</span><span class="toc-check" data-ch="04"></span>Pronunciation</a>
+    <a href="ch-05.html" class="toc-link"><span class="toc-num">05</span><span class="toc-check" data-ch="05"></span>Survival Japanese</a>
+    <a href="ch-06.html" class="toc-link"><span class="toc-num">06</span><span class="toc-check" data-ch="06"></span>Counters</a>
+    <a href="ch-07.html" class="toc-link"><span class="toc-num">07</span><span class="toc-check" data-ch="07"></span>Particles</a>
+    <a href="ch-08.html" class="toc-link"><span class="toc-num">08</span><span class="toc-check" data-ch="08"></span>Verb Conjugation</a>
+    <a href="ch-09.html" class="toc-link"><span class="toc-num">09</span><span class="toc-check" data-ch="09"></span>Daily Conversations</a>
+    <a href="ch-10.html" class="toc-link"><span class="toc-num">10</span><span class="toc-check" data-ch="10"></span>Sentence Patterns</a>
+    <a href="ch-11.html" class="toc-link"><span class="toc-num">11</span><span class="toc-check" data-ch="11"></span>Kanji</a>
+    <a href="ch-12.html" class="toc-link"><span class="toc-num">12</span><span class="toc-check" data-ch="12"></span>Sino-Vocabulary</a>
+    <a href="ch-13.html" class="toc-link"><span class="toc-num">13</span><span class="toc-check" data-ch="13"></span>Native Vocabulary</a>
+    <a href="ch-14.html" class="toc-link"><span class="toc-num">14</span><span class="toc-check" data-ch="14"></span>Honorifics</a>
+    <a href="ch-15.html" class="toc-link"><span class="toc-num">15</span><span class="toc-check" data-ch="15"></span>Reading</a>
+    <a href="ch-16.html" class="toc-link"><span class="toc-num">16</span><span class="toc-check" data-ch="16"></span>Writing</a>
+    <a href="ch-17.html" class="toc-link"><span class="toc-num">17</span><span class="toc-check" data-ch="17"></span>Listening</a>
+    <a href="ch-18.html" class="toc-link"><span class="toc-num">18</span><span class="toc-check" data-ch="18"></span>Cultural Pragmatics</a>
+    <a href="ch-19.html" class="toc-link active"><span class="toc-num">19</span><span class="toc-check" data-ch="19"></span>JLPT and Beyond</a>
+    <a href="ch-20.html" class="toc-link"><span class="toc-num">20</span><span class="toc-check" data-ch="20"></span>Memory Palace</a>
+    <a href="ch-21.html" class="toc-link"><span class="toc-num">21</span><span class="toc-check" data-ch="21"></span>The 90-Day Sprint</a>
+    <a href="appendices.html" class="toc-link" style="margin-top:.5rem;border-top:1px solid var(--border);padding-top:.8rem"><span class="toc-num">+</span>Appendices</a>
+  </nav>
+</aside>
+
+<div class="main">
+<div class="content-wrap">
+
+<section id="ch19" data-ch="19" style="padding-top:3rem">
+<h2><span class="ch-label">Chapter 19</span>JLPT and Beyond &mdash; The Path to True Fluency</h2>
+
+<div class="callout memory">
+  <div class="callout-title">Memory Technique Spotlight: Metacognitive Strategy + Self-Regulated Learning</div>
+  <p>This chapter is about learning how to learn. Metacognition — thinking about your own thinking — is the master skill that makes all other memory techniques more effective. By understanding your strengths, weaknesses, and optimal study patterns, you become a self-regulated learner who can tackle any language challenge.</p>
+</div>
+
+<p>This chapter is not the end of your journey -- it is the <strong>starting point</strong>. Over the preceding 17 chapters you have studied grammar structures, kanji strategies, honorifics, reading, writing, listening, and cultural pragmatics. Now let us integrate that knowledge toward the concrete goal of the <span class="jp">日本語能力試験</span> (JLPT), and open the road to true fluency beyond the exam.</p>
+
+<div class="pq">
+  "As a Korean speaker, you are in the most advantageous position when learning Japanese. What takes English speakers 2,200 hours, you can accomplish in less than half that time. You already know half of it."
+</div>
+
+<!-- ─── RECALL CHECK ─── -->
+<div id="quiz-recall-top"></div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SECTION 1: JLPT STRUCTURE -->
+<!-- ══════════════════════════════════════════════════════ -->
+<nav class="chapter-toc">
+  <details open>
+    <summary class="chapter-toc-title">In This Chapter</summary>
+  <ol>
+    <li><a href="#1-jlpt-structure----the-full-map-of-the-日本語能力試験">JLPT Structure -- The Full Map of the 日本語能力試験</a></li>
+    <li><a href="#2-n3-passing-plan-6-9-months">N3 Passing Plan (6-9 Months)</a></li>
+    <li><a href="#3-n2-passing-plan-12-18-months">N2 Passing Plan (12-18 Months)</a></li>
+    <li><a href="#4-korean-speaker-strategies-by-jlpt-section">Korean Speaker Strategies by JLPT Section</a></li>
+    <li><a href="#5-beyond-the-jlpt----toward-true-fluency">Beyond the JLPT -- Toward True Fluency</a></li>
+    <li><a href="#interactive-exercises">Interactive Exercises</a></li>
+  </ol>
+  </details>
+</nav>
+
+<h3 id="1-jlpt-structure----the-full-map-of-the-日本語能力試験">JLPT Structure -- The Full Map of the <span class="jp">日本語能力試験</span></h3>
+
+<p>The JLPT is organized into five levels, from N5 (beginner) to N1 (most advanced). Each level is divided into three test sections: <span class="jp">言語知識</span> (Vocabulary/Grammar), <span class="jp">読解</span> (Reading), and <span class="jp">聴解</span> (Listening).</p>
+
+<table>
+  <thead>
+    <tr><th>Level</th><th>Kanji</th><th>Vocabulary</th><th>Grammar</th><th>Exam Duration</th><th>Pass Rate (Overall)</th><th>Korean Speaker Advantage</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>N5</strong></td>
+      <td>~100</td>
+      <td>~800</td>
+      <td>~50 items</td>
+      <td>105 min</td>
+      <td>~45%</td>
+      <td><span class="transfer-tag full">Very Advantageous</span></td>
+    </tr>
+    <tr>
+      <td><strong>N4</strong></td>
+      <td>~300</td>
+      <td>~1,500</td>
+      <td>~120 items</td>
+      <td>125 min</td>
+      <td>~35%</td>
+      <td><span class="transfer-tag full">Very Advantageous</span></td>
+    </tr>
+    <tr>
+      <td><strong>N3</strong></td>
+      <td>~650</td>
+      <td>~3,500</td>
+      <td>~200 items</td>
+      <td>140 min</td>
+      <td>~35%</td>
+      <td><span class="transfer-tag partial">Advantageous</span></td>
+    </tr>
+    <tr>
+      <td><strong>N2</strong></td>
+      <td>~1,000</td>
+      <td>~6,000</td>
+      <td>~300 items</td>
+      <td>155 min</td>
+      <td>~35%</td>
+      <td><span class="transfer-tag partial">Advantageous</span></td>
+    </tr>
+    <tr>
+      <td><strong>N1</strong></td>
+      <td>~2,000</td>
+      <td>~10,000</td>
+      <td>~400+ items</td>
+      <td>170 min</td>
+      <td>~30%</td>
+      <td><span class="transfer-tag partial">Partially Advantageous</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">Exam Structure Details</div>
+  <p><strong>N5-N4:</strong> <span class="jp">言語知識</span> (<span class="jp">文字・語彙</span>) + <span class="jp">言語知識</span> (<span class="jp">文法</span>) / <span class="jp">読解</span> + <span class="jp">聴解</span> = 3 sections</p>
+  <p><strong>N3-N1:</strong> <span class="jp">言語知識</span> (<span class="jp">文字・語彙・文法</span>) / <span class="jp">読解</span> + <span class="jp">聴解</span> = 2 sections (the actual content is the same, but the scoring structure differs)</p>
+  <p style="margin-bottom:0">You must exceed the <strong>sectional cutoff</strong> (19 points / 60 points) in every section, and also meet the <strong>overall score threshold</strong>. Failing even one section means failing the entire exam.</p>
+</div>
+
+<!-- Korean speaker advantage map per level -->
+<h4>Korean Speaker Advantage Map by Level</h4>
+
+<div class="diagram">
+  <svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg">
+    <!-- Background bars -->
+    <text x="50" y="30" font-size="13" font-weight="600" fill="var(--heading)">Korean Speaker Advantage (vs. English Speakers)</text>
+
+    <!-- N5 -->
+    <text x="50" y="65" font-size="12" fill="var(--heading)" font-weight="600">N5</text>
+    <rect x="100" y="50" width="520" height="22" rx="4" fill="var(--a3)" opacity=".7"/>
+    <text x="630" y="66" font-size="11" fill="var(--a3)">~85%</text>
+
+    <!-- N4 -->
+    <text x="50" y="105" font-size="12" fill="var(--heading)" font-weight="600">N4</text>
+    <rect x="100" y="90" width="468" height="22" rx="4" fill="var(--a3)" opacity=".65"/>
+    <text x="578" y="106" font-size="11" fill="var(--a3)">~75%</text>
+
+    <!-- N3 -->
+    <text x="50" y="145" font-size="12" fill="var(--heading)" font-weight="600">N3</text>
+    <rect x="100" y="130" width="390" height="22" rx="4" fill="var(--accent)" opacity=".6"/>
+    <text x="500" y="146" font-size="11" fill="var(--accent)">~65%</text>
+
+    <!-- N2 -->
+    <text x="50" y="185" font-size="12" fill="var(--heading)" font-weight="600">N2</text>
+    <rect x="100" y="170" width="312" height="22" rx="4" fill="var(--accent)" opacity=".5"/>
+    <text x="422" y="186" font-size="11" fill="var(--accent)">~55%</text>
+
+    <!-- N1 -->
+    <text x="50" y="225" font-size="12" fill="var(--heading)" font-weight="600">N1</text>
+    <rect x="100" y="210" width="234" height="22" rx="4" fill="var(--a2)" opacity=".5"/>
+    <text x="344" y="226" font-size="11" fill="var(--a2)">~45%</text>
+
+    <!-- Legend -->
+    <text x="50" y="270" font-size="10" fill="var(--text-muted)">= Estimated study-time savings from Sino-vocabulary / grammar structure transfer</text>
+    <text x="50" y="290" font-size="10" fill="var(--text-muted)">N5-N4: Mostly covered by Sino-vocabulary + SOV structure</text>
+    <text x="50" y="305" font-size="10" fill="var(--text-muted)">N1: Native Japanese expressions / literary usage cannot transfer -- separate study required</text>
+  </svg>
+  <div class="diagram-caption">Korean speaker transfer advantage by JLPT level. The advantage is greatest at beginner levels and narrows at advanced levels as Japanese-specific domains become larger.</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SECTION 2: N3 PLAN -->
+<!-- ══════════════════════════════════════════════════════ -->
+<h3 id="2-n3-passing-plan-6-9-months">N3 Passing Plan (6-9 Months)</h3>
+
+<p>N3 is the level that tests <strong>everyday conversation + simple reading comprehension</strong>. Thanks to Sino-vocabulary and grammar structure transfer, Korean speakers can reach this level much faster than English speakers.</p>
+
+<h4>Core Grammar Items</h4>
+<table>
+  <thead><tr><th>Grammar Pattern</th><th>Meaning</th><th>Korean Equivalent</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr><td class="jp">～ようにする</td><td>to make an effort to ~</td><td class="kr">~하도록 하다</td><td class="jp">毎日運動するようにしている</td></tr>
+    <tr><td class="jp">～ことにする</td><td>to decide to ~</td><td class="kr">~하기로 하다</td><td class="jp">来月から日本語を勉強することにした</td></tr>
+    <tr><td class="jp">～ために</td><td>in order to ~</td><td class="kr">~하기 위해</td><td class="jp">試験に受かるために毎日勉強する</td></tr>
+    <tr><td class="jp">～はずだ</td><td>should be ~ (expectation)</td><td class="kr">~할 텐데 / ~일 것이다</td><td class="jp">彼は来るはずだ</td></tr>
+    <tr><td class="jp">～ようになる</td><td>to come to be able to ~</td><td class="kr">~하게 되다</td><td class="jp">日本語が話せるようになった</td></tr>
+    <tr><td class="jp">～ことがある</td><td>to have experienced ~</td><td class="kr">~한 적이 있다</td><td class="jp">日本に行ったことがある</td></tr>
+    <tr><td class="jp">～てしまう</td><td>to end up ~ing (completion/regret)</td><td class="kr">~해 버리다</td><td class="jp">全部食べてしまった</td></tr>
+    <tr><td class="jp">～ばいい</td><td>it would be good if ~ / just need to ~</td><td class="kr">~하면 된다</td><td class="jp">先生に聞けばいい</td></tr>
+    <tr><td class="jp">～かどうか</td><td>whether or not ~</td><td class="kr">~인지 아닌지</td><td class="jp">正しいかどうか分からない</td></tr>
+    <tr><td class="jp">～ところだ</td><td>to be about to ~ / to have just ~</td><td class="kr">~하는 참이다 / 막 ~했다</td><td class="jp">今出かけるところだ</td></tr>
+  </tbody>
+</table>
+
+<div class="callout ok">
+  <div class="callout-title">Korean Speaker N3 Grammar Advantage</div>
+  <p>Roughly <strong>70%</strong> of the grammar items above have direct Korean equivalents. <span class="jp">～ことにする</span> = <span class="kr">~하기로 하다</span>, <span class="jp">～ために</span> = <span class="kr">~하기 위해</span>, and so on. The forms are different, but <strong>you already know the concepts</strong>.</p>
+</div>
+
+<h4>Vocabulary / Kanji Targets</h4>
+<div class="card-grid">
+  <div class="card">
+    <h4>Kanji Target: ~650 Characters</h4>
+    <p>~300 from N4 + an additional ~350. By leveraging Sino-vocabulary transfer, <strong>the number of truly new kanji you need to memorize is around 200</strong>.</p>
+    <p>Key kanji examples:</p>
+    <ul>
+      <li><span class="jp">届</span> (<span class="jp">届ける</span>) = to deliver / <span class="kr">届 = 届출 (report/notification)</span></li>
+      <li><span class="jp">現</span> (<span class="jp">現在</span>) = present / <span class="kr">현(現)</span></li>
+      <li><span class="jp">届</span> (<span class="jp">届ける</span>), <span class="jp">預</span> (<span class="jp">預ける</span>), <span class="jp">比</span> (<span class="jp">比べる</span>)</li>
+      <li><span class="jp">関</span> (<span class="jp">関係</span>) = relationship / <span class="kr">관(關)</span></li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Vocabulary Target: ~3,500 Words</h4>
+    <p>You can already guess roughly <strong>~1,500 words</strong> through Sino-vocabulary cognates. In practice, you only need to learn about ~2,000 new words.</p>
+    <p>Focus areas:</p>
+    <ul>
+      <li><span class="jp">日常生活</span> (Daily Life): housework, cooking, health</li>
+      <li><span class="jp">社会</span> (Society): news, workplace, transportation</li>
+      <li><span class="jp">感情・性格</span> (Emotions / Personality): adjective expansion</li>
+      <li><span class="jp">自然</span> (Nature): weather, geography, seasons</li>
+    </ul>
+  </div>
+</div>
+
+<h4>Weekly Study Schedule (N3 Preparation)</h4>
+<table>
+  <thead><tr><th>Day</th><th>Study Content</th><th>Duration</th></tr></thead>
+  <tbody>
+    <tr><td>Mon</td><td><span class="jp">漢字</span> 10 new characters + review 20 / <span class="jp">文法</span> 2 new grammar items</td><td>60 min</td></tr>
+    <tr><td>Tue</td><td><span class="jp">語彙</span> 30 new words + review / <span class="jp">読解</span> 1 short passage</td><td>60 min</td></tr>
+    <tr><td>Wed</td><td><span class="jp">聴解</span> practice problems + shadowing / <span class="jp">漢字</span> review</td><td>60 min</td></tr>
+    <tr><td>Thu</td><td><span class="jp">文法</span> review + practice problems / <span class="jp">語彙</span> 30 new words</td><td>60 min</td></tr>
+    <tr><td>Fri</td><td><span class="jp">読解</span> 1 medium-length passage / <span class="jp">聴解</span> practice</td><td>60 min</td></tr>
+    <tr><td>Sat</td><td>1 full mock exam (timed) / review weak areas</td><td>90-120 min</td></tr>
+    <tr><td>Sun</td><td>Japanese content immersion (dramas, YouTube, manga) / light review</td><td>60 min+</td></tr>
+  </tbody>
+</table>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SECTION 3: N2 PLAN -->
+<!-- ══════════════════════════════════════════════════════ -->
+<h3 id="3-n2-passing-plan-12-18-months">N2 Passing Plan (12-18 Months)</h3>
+
+<p>N2 is the <strong>practical gateway to employment and study abroad</strong>. Most Japanese companies and universities require N2 or above. For Korean speakers, this is the level with the <strong>best return on investment</strong>.</p>
+
+<h4>Core Grammar Items</h4>
+<table>
+  <thead><tr><th>Grammar Pattern</th><th>Meaning</th><th>Korean Equivalent</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr><td class="jp">～にもかかわらず</td><td>despite ~ / regardless of ~</td><td class="kr">~에도 불구하고</td><td class="jp">雨にもかかわらず試合は行われた</td></tr>
+    <tr><td class="jp">～に対して</td><td>toward ~ / regarding ~</td><td class="kr">~에 대해서</td><td class="jp">この問題に対して意見を述べる</td></tr>
+    <tr><td class="jp">～一方（で）</td><td>on the other hand / while ~</td><td class="kr">~하는 한편 / ~하는 반면</td><td class="jp">人口が増える一方、食料が不足している</td></tr>
+    <tr><td class="jp">～に基づいて</td><td>based on ~</td><td class="kr">~에 기반하여 / ~에 근거하여</td><td class="jp">データに基づいて判断する</td></tr>
+    <tr><td class="jp">～にとって</td><td>for ~ (from the perspective of)</td><td class="kr">~에게 있어서</td><td class="jp">学生にとって大切なことだ</td></tr>
+    <tr><td class="jp">～わけにはいかない</td><td>cannot possibly ~ (moral/social reason)</td><td class="kr">~할 수 없다 / ~하면 안 된다</td><td class="jp">約束した以上、断るわけにはいかない</td></tr>
+    <tr><td class="jp">～ざるを得ない</td><td>cannot help but ~ / have no choice but to ~</td><td class="kr">~하지 않을 수 없다</td><td class="jp">状況を考えると賛成せざるを得ない</td></tr>
+    <tr><td class="jp">～につれて</td><td>as ~ (proportional change)</td><td class="kr">~함에 따라</td><td class="jp">年を取るにつれて体力が落ちる</td></tr>
+    <tr><td class="jp">～さえ～ば</td><td>if only ~ / as long as ~</td><td class="kr">~만 하면</td><td class="jp">練習さえすれば上手になる</td></tr>
+    <tr><td class="jp">～っぽい</td><td>-ish / tends to be ~</td><td class="kr">~스럽다 / ~답다</td><td class="jp">子供っぽい / 忘れっぽい</td></tr>
+  </tbody>
+</table>
+
+<h4>Vocabulary / Kanji Targets</h4>
+<div class="card-grid">
+  <div class="card">
+    <h4>Kanji Target: ~1,000 Characters</h4>
+    <p>~650 from N3 + an additional ~350. At this stage, here are the key Sino-vocabulary transfer examples:</p>
+    <ul>
+      <li><span class="jp">提</span> (<span class="jp">提出</span> = submission, <span class="jp">提案</span> = proposal)</li>
+      <li><span class="jp">制</span> (<span class="jp">制度</span> = system, <span class="jp">規制</span> = regulation)</li>
+      <li><span class="jp">政</span> (<span class="jp">政治</span> = politics, <span class="jp">政策</span> = policy)</li>
+      <li><span class="jp">論</span> (<span class="jp">理論</span> = theory, <span class="jp">論文</span> = thesis/paper)</li>
+      <li><span class="jp">構</span> (<span class="jp">構造</span> = structure, <span class="jp">構成</span> = composition)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Vocabulary Target: ~6,000 Words</h4>
+    <p>~2,500 Sino-vocabulary cognates + ~1,500 native Japanese words + ~500 idiomatic expressions. By category:</p>
+    <ul>
+      <li><span class="jp">ビジネス</span>: business/work-related vocabulary</li>
+      <li><span class="jp">ニュース</span>: current affairs terminology</li>
+      <li><span class="jp">学術</span>: basic academic terminology</li>
+      <li><span class="jp">慣用句</span>: idiomatic expressions / set phrases</li>
+    </ul>
+  </div>
+</div>
+
+<h4>Weekly Study Schedule (N2 Preparation)</h4>
+<table>
+  <thead><tr><th>Day</th><th>Study Content</th><th>Duration</th></tr></thead>
+  <tbody>
+    <tr><td>Mon</td><td><span class="jp">漢字</span> 8 new characters + review 30 / <span class="jp">文法</span> 2 new items + write example sentences</td><td>75 min</td></tr>
+    <tr><td>Tue</td><td><span class="jp">読解</span> 2 intermediate passages (timed) / <span class="jp">語彙</span> 25 new words</td><td>75 min</td></tr>
+    <tr><td>Wed</td><td><span class="jp">聴解</span> N2-format practice + shadowing / <span class="jp">漢字</span> review</td><td>75 min</td></tr>
+    <tr><td>Thu</td><td><span class="jp">文法</span> review + 15 practice questions / <span class="jp">語彙</span> 25 new words</td><td>75 min</td></tr>
+    <tr><td>Fri</td><td><span class="jp">読解</span> 1 long passage + information retrieval questions / <span class="jp">聴解</span> point comprehension</td><td>75 min</td></tr>
+    <tr><td>Sat</td><td>1 full mock exam (155 min timed) + error analysis</td><td>180 min</td></tr>
+    <tr><td>Sun</td><td>Japanese immersion (drama/movies without subtitles, NHK News, novels) / writing practice</td><td>90 min+</td></tr>
+  </tbody>
+</table>
+
+<div class="callout warn">
+  <div class="callout-title">N2 Time Management Strategy</div>
+  <p>The <span class="jp">読解</span> section is where you are most likely to run out of time. Maximize your Korean speaker kanji reading advantage:</p>
+  <ul style="margin-bottom:0">
+    <li>Grasp meaning through Sino-vocabulary chunks first (<span class="jp">経済的影響</span> = economic impact -- instantly comprehensible)</li>
+    <li>Read the questions first, then focus only on the relevant parts of the passage</li>
+    <li><span class="jp">情報検索</span> (information retrieval) questions: aim to solve within 5 minutes</li>
+  </ul>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SECTION 4: KOREAN ADVANTAGE PER JLPT SECTION -->
+<!-- ══════════════════════════════════════════════════════ -->
+<h3 id="4-korean-speaker-strategies-by-jlpt-section">Korean Speaker Strategies by JLPT Section</h3>
+
+<div class="card-grid">
+  <div class="card">
+    <h4><span class="jp">文字・語彙</span> -- Characters / Vocabulary <span class="transfer-tag full">Greatest Advantage</span></h4>
+    <p>This is the section where Sino-vocabulary cognates exert their power <strong>most directly</strong>.</p>
+    <ul>
+      <li><span class="jp">経済</span> = economy, <span class="jp">政治</span> = politics, <span class="jp">教育</span> = education</li>
+      <li><span class="jp">環境</span> = environment, <span class="jp">技術</span> = technology, <span class="jp">伝統</span> = tradition</li>
+      <li>On'yomi rules let you guess even unfamiliar words (see Ch11-11)</li>
+    </ul>
+    <p><strong>Strategy:</strong> Breeze through Sino-vocabulary cognates at a confirmation level, and concentrate your time on <strong>native Japanese words</strong> and <strong>false friends</strong> (<a href="appendices.html#false-friends">see Appendix</a>).</p>
+  </div>
+  <div class="card">
+    <h4><span class="jp">文法</span> -- Grammar <span class="transfer-tag partial">Major Advantage</span></h4>
+    <p>SOV word order, the particle system, and suffix-based conjugation are all shared. Why Korean speakers have an edge in grammar questions:</p>
+    <ul>
+      <li><span class="jp">～にもかかわらず</span> = despite ~ -- you already know the concept</li>
+      <li><span class="jp">～ざるを得ない</span> = cannot help but ~ -- identical double-negative structure</li>
+      <li>Particle selection questions: choosing <span class="jp">に/で/を/が</span> can be solved using Korean particle intuition</li>
+    </ul>
+    <p><strong>Strategy:</strong> Focus on grammar forms that have no Korean equivalent (<span class="jp">～っぽい</span>, <span class="jp">～がち</span>, etc.). For those with equivalents, you only need to memorize the form.</p>
+  </div>
+  <div class="card">
+    <h4><span class="jp">読解</span> -- Reading <span class="transfer-tag partial">Major Advantage</span></h4>
+    <p>Your kanji / Sino-vocabulary reading ability creates a decisive speed advantage.</p>
+    <ul>
+      <li>Grasping meaning through kanji chunks: <span class="jp">国際社会における環境問題</span> = environmental issues in international society</li>
+      <li>Conjunction pattern transfer: <span class="jp">しかし</span> (however), <span class="jp">したがって</span> (therefore), <span class="jp">一方</span> (on the other hand)</li>
+      <li>The logical structure of passages is similar to Korean academic texts</li>
+    </ul>
+    <p><strong>Strategy:</strong> Build your speed-reading ability. Do not read every character -- train yourself to quickly grasp the argument through kanji keywords + conjunctions.</p>
+  </div>
+  <div class="card">
+    <h4><span class="jp">聴解</span> -- Listening <span class="transfer-tag partial">Structural Advantage</span></h4>
+    <p>Thanks to the shared SOV structure, you can <strong>predict where the conclusion will fall</strong> in a sentence.</p>
+    <ul>
+      <li>Since the verb comes at the end, you must listen to the very end to determine affirmative/negative -- same as Korean</li>
+      <li>Identifying sentence structure through particle sounds: <span class="jp">は</span>, <span class="jp">が</span>, <span class="jp">を</span>, <span class="jp">に</span></li>
+      <li>Honorific listening: your sense of Korean honorific structures helps</li>
+    </ul>
+    <p><strong>Strategy:</strong> <span class="jp">聴解</span> is the section where you have the least advantage. <strong>Shadowing practice</strong> is essential to get used to Japanese-specific phonology, contracted forms (<span class="jp">～ちゃう</span> = <span class="jp">～てしまう</span>), and natural speed.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SECTION 5: BEYOND JLPT -->
+<!-- ══════════════════════════════════════════════════════ -->
+<h3 id="5-beyond-the-jlpt----toward-true-fluency">Beyond the JLPT -- Toward True Fluency</h3>
+
+<p>The JLPT only measures <strong>passive skills</strong> (reading and listening). True fluency requires <strong>active productive ability</strong>, including speaking and writing. Your journey continues even after passing N2 or N1.</p>
+
+<div class="card-grid">
+  <div class="card">
+    <h4><span class="jp">没入環境</span> -- Creating an Immersion Environment</h4>
+    <ul>
+      <li>Switch your smartphone/computer language to <span class="jp">日本語</span></li>
+      <li>Listen to Japanese podcasts/YouTube during your commute</li>
+      <li>Follow Japanese accounts on social media (<span class="jp">NHK</span>, experts in your field of interest)</li>
+      <li>Write a Japanese diary -- start with just 5 sentences a day</li>
+      <li>Join Japanese conversation partners/groups (online: <span class="jp">HelloTalk</span>, <span class="jp">italki</span>)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4><span class="jp">漢字</span> -- The Long Game with Kanji</h4>
+    <ul>
+      <li>Use <strong>Anki</strong> for spaced repetition study -- 15 minutes daily</li>
+      <li>When you encounter a new kanji, connect it to its Korean Sino-vocabulary equivalent to aid memory</li>
+      <li>Goal: fully master all 2,136 <span class="jp">常用漢字</span> (Joyo Kanji)</li>
+      <li>Natural kanji exposure through reading -- novels, news, manga</li>
+      <li>Challenge the <span class="jp">漢字検定</span> (Kanji Kentei) for systematic study</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4><span class="jp">会話力</span> -- Maintaining and Improving Speaking</h4>
+    <ul>
+      <li>Practice Japanese conversation 2-3 times per week (30 min+)</li>
+      <li>Shadowing: repeat dialogue from dramas/news</li>
+      <li>Pitch accent training -- acquire natural intonation</li>
+      <li>Scenario-based role play: interviews, presentations, phone calls</li>
+      <li>Monologue practice: speak for 3 minutes in Japanese on a topic of interest</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4><span class="jp">キャリア・学術</span> -- Career / Academic Japanese</h4>
+    <ul>
+      <li>Challenge the <strong>BJT</strong> (Business Japanese Proficiency Test)</li>
+      <li>Employment in Japan: prepare your <span class="jp">履歴書</span> (resume) and <span class="jp">面接</span> (interview)</li>
+      <li>Graduate school: <span class="jp">EJU</span> (Examination for Japanese University Admission), <span class="jp">論文</span> writing</li>
+      <li>Develop interpretation/translation skills -- the Korean-Japanese language pair is in high demand</li>
+      <li>Learn specialized terminology for your field (IT, medical, legal, etc.)</li>
+    </ul>
+  </div>
+</div>
+
+<div class="callout info">
+  <div class="callout-title">Stages of Fluency</div>
+  <div style="display:grid;grid-template-columns:auto 1fr;gap:.5rem 1rem;font-size:.9rem">
+    <strong>N3 Pass</strong><span>Everyday conversation possible, can read simple texts</span>
+    <strong>N2 Pass</strong><span>Can understand news, communicate at work, qualify for employment/study in Japan</span>
+    <strong>N1 Pass</strong><span>Can understand complex texts, function in academic/professional settings</span>
+    <strong>Beyond N1</strong><span>Grasp nuance, understand humor/metaphor, read cultural context -- <strong>true fluency</strong></span>
+  </div>
+</div>
+
+<!-- ─── ROADMAP DIAGRAM ─── -->
+<div class="diagram">
+  <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg">
+    <text x="350" y="20" text-anchor="middle" font-size="13" font-weight="600" fill="var(--heading)">Korean Speaker Japanese Learning Roadmap</text>
+
+    <!-- Timeline -->
+    <line x1="50" y1="100" x2="650" y2="100" stroke="var(--border)" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+    <!-- Milestones -->
+    <circle cx="100" cy="100" r="8" fill="var(--a3)"/>
+    <text x="100" y="80" text-anchor="middle" font-size="10" fill="var(--a3)" font-weight="600">N5</text>
+    <text x="100" y="130" text-anchor="middle" font-size="9" fill="var(--text-muted)">1-2 months</text>
+
+    <circle cx="200" cy="100" r="8" fill="var(--a3)"/>
+    <text x="200" y="80" text-anchor="middle" font-size="10" fill="var(--a3)" font-weight="600">N4</text>
+    <text x="200" y="130" text-anchor="middle" font-size="9" fill="var(--text-muted)">3-4 months</text>
+
+    <circle cx="320" cy="100" r="10" fill="var(--accent)"/>
+    <text x="320" y="75" text-anchor="middle" font-size="11" fill="var(--accent)" font-weight="600">N3</text>
+    <text x="320" y="130" text-anchor="middle" font-size="9" fill="var(--text-muted)">6-9 months</text>
+
+    <circle cx="460" cy="100" r="12" fill="var(--accent)"/>
+    <text x="460" y="72" text-anchor="middle" font-size="12" fill="var(--accent)" font-weight="700">N2</text>
+    <text x="460" y="130" text-anchor="middle" font-size="9" fill="var(--text-muted)">12-18 months</text>
+    <text x="460" y="145" text-anchor="middle" font-size="8" fill="var(--a2)">Employment / Study threshold</text>
+
+    <circle cx="570" cy="100" r="10" fill="var(--a2)"/>
+    <text x="570" y="75" text-anchor="middle" font-size="11" fill="var(--a2)" font-weight="600">N1</text>
+    <text x="570" y="130" text-anchor="middle" font-size="9" fill="var(--text-muted)">24-30 months</text>
+
+    <text x="650" y="80" text-anchor="end" font-size="10" fill="var(--heading)" font-weight="600">Fluency</text>
+    <text x="650" y="130" text-anchor="end" font-size="9" fill="var(--text-muted)">Ongoing</text>
+
+    <!-- Annotation -->
+    <text x="350" y="175" text-anchor="middle" font-size="10" fill="var(--text-muted)">* Based on 7-10 hours of study per week. Approximately 50% faster than English speakers.</text>
+  </svg>
+  <div class="diagram-caption">Estimated Japanese learning timeline for Korean speakers. Individual results vary and depend heavily on whether an immersion environment is available.</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- INTERACTIVE EXERCISES -->
+<!-- ══════════════════════════════════════════════════════ -->
+<h3 id="interactive-exercises">Interactive Exercises</h3>
+
+<!-- Quiz 1: JLPT Level Identification -->
+<div id="quiz-jlpt-level"></div>
+
+<!-- Quiz 2: Study Plan Fill-in-the-Blank -->
+<div id="quiz-study-plan"></div>
+
+<!-- Quiz 3: Comprehensive Recall Check from all chapters -->
+<div id="quiz-recall-comprehensive"></div>
+
+<!-- Mark as Complete -->
+<button class="chapter-complete" data-ch="19">Mark as Complete &#10003;</button>
+
+<div style="display:flex;justify-content:space-between;margin:2rem 0">
+  <a href="ch-18.html" class="quiz-btn secondary">&larr; Chapter 19: Cultural Pragmatics</a>
+  <a href="ch-20.html" class="quiz-btn">Next: Chapter 21 -- Memory Palace &rarr;</a>
+</div>
+
+</section>
+
+</div>
+
+
+</div>
+
+<footer>
+  <p>Zero to Hero: 日本語 for Korean Speakers &middot; Chapter 19</p>
+</footer>
+
+<script src="js/shared.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/quiz-engine.js"></script>
+<script>
+// ─── Recall Check from Ch15-17 (top) ───
+QuizEngine.RecallCheck(
+  document.getElementById('quiz-recall-top'),
+  {
+    fromChapters: 'Ch15-17',
+    items: [
+      { question: 'Ch15: What is "kanji chunk reading" in Japanese reading?', answer: 'It means grasping kanji compounds as meaning units rather than individual characters. Example: 国際社会 = international society -- instantly inferable through Korean Sino-vocabulary knowledge.' },
+      { question: 'Ch16: What is the difference between です/ます style and だ/である style in Japanese writing?', answer: 'です/ます = polite style (letters, everyday writing). だ/である = plain/academic style (papers, reports). The rule is to never mix them within a single piece of writing.' },
+      { question: 'Ch17: What is shadowing (シャドーイング)?', answer: 'A training method where you repeat Japanese speech almost simultaneously as you hear it. Effective for improving listening ability, pronunciation, and acquiring natural rhythm.' },
+      { question: 'Ch18: What is the difference between 建前 (tatemae) and 本音 (honne) in Japan?', answer: '建前 = public stance / surface opinion. 本音 = true feelings / real thoughts. Similar to the public/private distinction in Korean, but more sharply delineated in Japan.' }
+    ]
+  }
+);
+
+// ─── Quiz 1: JLPT Level Identification ───
+QuizEngine.MultipleChoice(
+  document.getElementById('quiz-jlpt-level'),
+  {
+    title: 'JLPT Level Identification',
+    questions: [
+      {
+        prompt: 'Which JLPT level does the following grammar item belong to? <br><span class="jp">～にもかかわらず</span> (despite ~)',
+        options: ['N5', 'N4', 'N3', 'N2'],
+        correctIndex: 3,
+        explanation: '～にもかかわらず is N2 grammar. It is frequently used in formal writing and corresponds exactly to the Korean <span class="kr">~에도 불구하고</span>.'
+      },
+      {
+        prompt: 'What is the minimum JLPT level generally required for employment at a Japanese company or admission to a Japanese university?',
+        options: ['N5', 'N4', 'N3', 'N2'],
+        correctIndex: 3,
+        explanation: 'N2 is the minimum level required by most Japanese companies and universities. Some fields (interpreting, law, etc.) require N1.'
+      },
+      {
+        prompt: 'In which JLPT section do Korean speakers have the greatest advantage?',
+        options: [
+          '聴解 (Listening)',
+          '文字・語彙 (Characters / Vocabulary)',
+          '読解 (Reading)',
+          '文法 (Grammar)'
+        ],
+        correctIndex: 1,
+        explanation: 'The advantage of Sino-vocabulary cognates is most directly realized in the 文字・語彙 section. Thousands of kanji-based words are shared with Korean, greatly reducing the vocabulary learning burden.'
+      },
+      {
+        prompt: 'Approximately how many kanji are required for N3?',
+        options: ['~100', '~300', '~650', '~2,000'],
+        correctIndex: 2,
+        explanation: 'N3 requires approximately 650 kanji. N5: ~100, N4: ~300, N2: ~1,000, N1: ~2,000.'
+      },
+      {
+        prompt: 'Which of the following correctly describes the JLPT passing requirements?',
+        options: [
+          'You pass if your total score is above the threshold',
+          'You must meet both the sectional cutoff for every section AND the overall score threshold',
+          'You pass if your highest section score is above the cutoff',
+          'You pass if you meet the cutoff in at least 2 out of 3 sections'
+        ],
+        correctIndex: 1,
+        explanation: 'The JLPT requires you to meet both the sectional cutoff (19/60 points) for every section and the overall score threshold. Failing even one section means failing the entire exam.'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 2: Study Plan Fill-in-the-Blank ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-study-plan'),
+  {
+    title: 'Complete the Study Plan',
+    questions: [
+      {
+        prompt: 'The number of kanji required to pass N3 is approximately ___ characters.',
+        answer: '650',
+        acceptAlso: ['650 characters', '~650'],
+        explanation: 'N3 requires knowledge of approximately 650 kanji.'
+      },
+      {
+        prompt: 'The number of vocabulary words required for N2 is approximately ___ words.',
+        answer: '6000',
+        acceptAlso: ['6,000', '6000 words', '~6000', '~6,000'],
+        explanation: 'N2 requires approximately 6,000 vocabulary words. Korean speakers can already guess about 2,500 of these through Sino-vocabulary cognates.'
+      },
+      {
+        prompt: 'The sectional cutoff for each JLPT section is ___ points / 60 points.',
+        answer: '19',
+        acceptAlso: ['19 points'],
+        explanation: 'You must score at least 19 out of 60 points in each section.'
+      },
+      {
+        prompt: 'The total exam duration for N2 is ___ minutes.',
+        answer: '155',
+        acceptAlso: ['155 minutes', '155 min'],
+        explanation: 'The N2 exam is 155 minutes (2 hours 35 minutes) in total.'
+      },
+      {
+        prompt: 'The estimated time for a Korean speaker to reach N2 is approximately ___ months. (Enter the starting number of the range)',
+        answer: '12',
+        acceptAlso: ['12 months', '12-18', '12-18 months'],
+        explanation: 'Korean speakers can reach N2 in approximately 12-18 months (based on 7-10 hours of study per week).'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 3: Comprehensive Recall from ALL Chapters ───
+QuizEngine.RecallCheck(
+  document.getElementById('quiz-recall-comprehensive'),
+  {
+    fromChapters: 'Ch01-17 Comprehensive Review',
+    items: [
+      { question: 'Ch01: Approximately what percentage of transfer advantage do Korean speakers have when learning Japanese?', answer: 'About 40%. Grammar structure, particle systems, honorific concepts, and Sino-vocabulary all transfer.' },
+      { question: 'Ch02-03: What is the difference in usage between ひらがな and カタカナ?', answer: 'ひらがな = native Japanese words, conjugation endings, particles. カタカナ = loanwords, onomatopoeia, emphasis.' },
+      { question: 'Ch04: How many vowels does Japanese have? How does that compare to Korean?', answer: '5 vowels (あいうえお). Much simpler compared to Korean\'s 21 vowels.' },
+      { question: 'Ch05: What are the three uses of "すみません"?', answer: '1) Apology (I\'m sorry), 2) Gratitude (Thank you), 3) Getting attention (Excuse me).' },
+      { question: 'Ch07: The difference between は and が in Japanese parallels which Korean particle distinction?', answer: 'は = 은/는 (topic marker), が = 이/가 (subject marker). The functions correspond nearly 100%.' },
+      { question: 'Ch08: Name the three groups of Japanese verbs.', answer: 'Group 1 (五段/u-verbs): 書く, 読む, etc. Group 2 (一段/ru-verbs): 食べる, 見る, etc. Group 3 (irregular): する, 来る.' },
+      { question: 'Ch09: How do you say "My name is ~" (humble) in Japanese?', answer: '～と申します (humble/modest) / ～と言います (general).' },
+      { question: 'Ch10: What does ～たい mean, and what is its key characteristic?', answer: 'It means "want to ~". It conjugates like an い-adjective. The subject is usually limited to first person (for others, use ～たがっている).' },
+      { question: 'Ch11: What is the difference between 音読み and 訓読み?', answer: '音読み = Sino-Japanese reading derived from Chinese (corresponds to Korean Sino-readings). 訓読み = native Japanese reading.' },
+      { question: 'Ch12: How is the Korean reading "hak" (學/학) pronounced in Japanese?', answer: 'がく. Korean h → Japanese g (が), Korean final ㄱ → く. Student = 学生 (がくせい).' },
+      { question: 'Ch13: What are 和語 (wago), and why are they difficult for Korean speakers?', answer: 'Native Japanese words. Unlike Sino-vocabulary, they have no Korean equivalent and must be learned from scratch. Examples: 水 (みず) = water, 食べる (たべる) = to eat.' },
+      { question: 'Ch14: Explain the difference between 尊敬語, 謙譲語, and 丁寧語.', answer: '尊敬語 = honorific language (elevates the other person\'s actions). 謙譲語 = humble language (lowers your own actions). 丁寧語 = polite language (です/ます, etc.).' },
+      { question: 'Ch15-17 Synthesis: Which JLPT section gives Korean speakers the greatest advantage, and which the least?', answer: 'Greatest advantage: 文字・語彙 (Characters/Vocabulary) due to Sino-vocabulary cognates. Least advantage: 聴解 (Listening) due to phonological differences, contracted forms, and speed.' }
+    ]
+  }
+);
+</script>
+<script src="js/spaced-repetition.js"></script>
+<script src="js/memory-palace.js"></script>
+</body>
+</html>

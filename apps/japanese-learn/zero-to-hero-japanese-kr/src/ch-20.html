@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ch20: 기억의 궁전 — Zero to Hero 日本語</title>
+<link rel="stylesheet" href="css/design-system.css">
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <span class="logo-badge">Zero to Hero — 기억 설계 에디션</span>
+    <div class="logo-title">한국어 화자를 위한 日本語</div>
+    <div class="logo-sub">한국어에서 日本語로 — 기억 설계자의 안내서</div>
+  </a>
+  <div class="sidebar-progress">
+    <div class="sidebar-progress-label">진행률</div>
+    <div class="sidebar-progress-bar">
+      <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+    </div>
+    <div class="sidebar-progress-count">0/22 완료</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="ch-00.html" class="toc-link"><span class="toc-num">00</span><span class="toc-check" data-ch="00"></span>기억 과학</a>
+    <a href="ch-01.html" class="toc-link"><span class="toc-num">01</span><span class="toc-check" data-ch="01"></span>한국어의 이점</a>
+    <a href="ch-02.html" class="toc-link"><span class="toc-num">02</span><span class="toc-check" data-ch="02"></span>히라가나</a>
+    <a href="ch-03.html" class="toc-link"><span class="toc-num">03</span><span class="toc-check" data-ch="03"></span>가타카나</a>
+    <a href="ch-04.html" class="toc-link"><span class="toc-num">04</span><span class="toc-check" data-ch="04"></span>발음</a>
+    <a href="ch-05.html" class="toc-link"><span class="toc-num">05</span><span class="toc-check" data-ch="05"></span>서바이벌 일본어</a>
+    <a href="ch-06.html" class="toc-link"><span class="toc-num">06</span><span class="toc-check" data-ch="06"></span>조수사</a>
+    <a href="ch-07.html" class="toc-link"><span class="toc-num">07</span><span class="toc-check" data-ch="07"></span>조사</a>
+    <a href="ch-08.html" class="toc-link"><span class="toc-num">08</span><span class="toc-check" data-ch="08"></span>동사 활용</a>
+    <a href="ch-09.html" class="toc-link"><span class="toc-num">09</span><span class="toc-check" data-ch="09"></span>일상 회화</a>
+    <a href="ch-10.html" class="toc-link"><span class="toc-num">10</span><span class="toc-check" data-ch="10"></span>문형</a>
+    <a href="ch-11.html" class="toc-link"><span class="toc-num">11</span><span class="toc-check" data-ch="11"></span>한자</a>
+    <a href="ch-12.html" class="toc-link"><span class="toc-num">12</span><span class="toc-check" data-ch="12"></span>한자어</a>
+    <a href="ch-13.html" class="toc-link"><span class="toc-num">13</span><span class="toc-check" data-ch="13"></span>고유어</a>
+    <a href="ch-14.html" class="toc-link"><span class="toc-num">14</span><span class="toc-check" data-ch="14"></span>경어</a>
+    <a href="ch-15.html" class="toc-link"><span class="toc-num">15</span><span class="toc-check" data-ch="15"></span>독해</a>
+    <a href="ch-16.html" class="toc-link"><span class="toc-num">16</span><span class="toc-check" data-ch="16"></span>작문</a>
+    <a href="ch-17.html" class="toc-link"><span class="toc-num">17</span><span class="toc-check" data-ch="17"></span>청해</a>
+    <a href="ch-18.html" class="toc-link"><span class="toc-num">18</span><span class="toc-check" data-ch="18"></span>문화 화용론</a>
+    <a href="ch-19.html" class="toc-link"><span class="toc-num">19</span><span class="toc-check" data-ch="19"></span>JLPT와 그 너머</a>
+    <a href="ch-20.html" class="toc-link active"><span class="toc-num">20</span><span class="toc-check" data-ch="20"></span>기억의 궁전</a>
+    <a href="ch-21.html" class="toc-link"><span class="toc-num">21</span><span class="toc-check" data-ch="21"></span>90일 스프린트</a>
+    <a href="appendices.html" class="toc-link" style="margin-top:.5rem;border-top:1px solid var(--border);padding-top:.8rem"><span class="toc-num">+</span>부록</a>
+  </nav>
+</aside>
+
+<div class="main">
+<div class="content-wrap">
+
+<section id="ch20" data-ch="20" style="padding-top:3rem">
+<h2><span class="ch-label">제20장</span>기억의 궁전 — 영구적 구조 설계하기</h2>
+
+<div class="callout memory">
+  <div class="callout-title">기억 기법 스포트라이트: 궁전 통합</div>
+  <p>지금까지 18개의 장에 걸쳐 각기 다른 언어 영역을 위한 개별 기억의 궁전을 구축해 왔습니다. 이번 장에서는 이를 하나의 상호 연결된 구조로 통합합니다. 장소법(method of loci)에 관한 연구에 따르면, <strong>연결된 궁전 체계</strong>는 개별 장소보다 장기 기억 유지율을 40~60% 향상시킵니다. 이는 공간적 연결이 추가적인 인출 경로를 생성하기 때문입니다.</p>
+</div>
+
+<!-- 제19장 복습 확인 (상단) -->
+<div id="quiz-recall-top"></div>
+
+<p>이 책의 과정을 통해 여러분은 일본어의 각기 다른 측면을 담는 6개의 독립된 기억의 궁전을 구축했습니다. 이제 재고를 점검하고, 궁전들을 연결하며, 새로운 궁전을 만드는 방법을 배우고, 지식을 영구적으로 유지할 관리 습관을 확립할 때입니다.</p>
+
+<div class="pq">
+  "기억의 궁전은 요령이 아닙니다. 그것은 건축입니다. 그리고 건축은 한번 세워지면 잊지 않습니다."
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- 섹션 1: 궁전 재고 점검 -->
+<!-- ══════════════════════════════════════════════════════ -->
+<nav class="chapter-toc">
+  <details open>
+    <summary class="chapter-toc-title">이 장의 내용</summary>
+  <ol>
+    <li><a href="#1-궁전-재고-점검">궁전 재고 점검</a></li>
+    <li><a href="#2-궁전-연결-그랜드-투어">궁전 연결 — 그랜드 투어</a></li>
+    <li><a href="#3-새로운-궁전-만들기">새로운 궁전 만들기</a></li>
+    <li><a href="#4-관리-일정">관리 일정</a></li>
+    <li><a href="#대화형-연습">대화형 연습</a></li>
+  </ol>
+  </details>
+</nav>
+
+<h3 id="1-궁전-재고-점검">궁전 재고 점검</h3>
+
+<p>궁전들을 연결하기 전에, 각 궁전에 정확히 무엇이 있는지 파악해야 합니다. 아래는 이 과정 전체에 걸쳐 구축한 모든 궁전의 완전한 재고 목록으로, 항목 수와 각 궁전이 설정된 장이 표시되어 있습니다.</p>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>부엌 <span class="transfer-tag full">제02장</span></h4>
+    <p style="font-size:2rem;font-family:var(--serif);color:var(--accent);margin:.5rem 0">46</p>
+    <p style="font-size:.88rem;color:var(--text-muted);margin-bottom:.5rem">히라가나 문자</p>
+    <p>46개의 기본 히라가나가 부엌의 각 장소에 배치되어 있습니다: 냉장고, 가스레인지, 싱크대, 조리대, 찬장, 식탁, 의자, 서랍, 양념대, 전자레인지 등. 각 문자는 생생한 키워드 기억 이미지로 고정되어 있습니다.</p>
+    <p style="font-size:.82rem;color:var(--a3)">상태: 현재 SM-2에서 완전히 성숙되어 있어야 합니다</p>
+  </div>
+  <div class="card">
+    <h4>거실 <span class="transfer-tag full">제03장</span></h4>
+    <p style="font-size:2rem;font-family:var(--serif);color:var(--accent);margin:.5rem 0">46</p>
+    <p style="font-size:.88rem;color:var(--text-muted);margin-bottom:.5rem">가타카나 문자</p>
+    <p>46개의 기본 가타카나가 거실의 각 장소에 배치되어 있습니다: 소파, TV, 커피 테이블, 책장, 창문, 조명, 카펫, 커튼, 리모컨, 액자. 부엌 궁전과 병렬 구조로 쉽게 교차 참조할 수 있습니다.</p>
+    <p style="font-size:.82rem;color:var(--a3)">상태: 현재 SM-2에서 완전히 성숙되어 있어야 합니다</p>
+  </div>
+  <div class="card">
+    <h4>거리 경로 <span class="transfer-tag partial">제05장</span></h4>
+    <p style="font-size:2rem;font-family:var(--serif);color:var(--accent);margin:.5rem 0">60+</p>
+    <p style="font-size:.88rem;color:var(--text-muted);margin-bottom:.5rem">서바이벌 표현</p>
+    <p>필수 서바이벌 일본어가 익숙한 산책 경로를 따라 배치되어 있습니다: 우편함에서 인사말, 모퉁이 가게에서 식당 표현, 버스 정류장에서 교통 표현, 소화전에서 긴급 표현, 상점 앞에서 쇼핑 표현.</p>
+    <p style="font-size:.82rem;color:var(--a3)">상태: 핵심 표현은 성숙, 최근 추가분은 아직 복습 중</p>
+  </div>
+  <div class="card">
+    <h4>화장실 <span class="transfer-tag full">제06장</span></h4>
+    <p style="font-size:2rem;font-family:var(--serif);color:var(--accent);margin:.5rem 0">11</p>
+    <p style="font-size:.88rem;color:var(--text-muted);margin-bottom:.5rem">핵심 조사</p>
+    <p>11개의 필수 조사가 화장실의 각 장소에 배치되어 있습니다: <span class="jp">は</span>는 거울, <span class="jp">が</span>는 수도꼭지, <span class="jp">を</span>는 욕조, <span class="jp">に</span>는 수건걸이, <span class="jp">で</span>는 비누, <span class="jp">の</span>는 칫솔, <span class="jp">へ</span>는 문손잡이, <span class="jp">と</span>는 타일, <span class="jp">も</span>는 매트, <span class="jp">から</span>는 샤워기, <span class="jp">まで</span>는 선반.</p>
+    <p style="font-size:.82rem;color:var(--a3)">상태: 현재 SM-2에서 완전히 성숙되어 있어야 합니다</p>
+  </div>
+  <div class="card">
+    <h4>침실 <span class="transfer-tag partial">제11장</span></h4>
+    <p style="font-size:2rem;font-family:var(--serif);color:var(--accent);margin:.5rem 0">30</p>
+    <p style="font-size:.88rem;color:var(--text-muted);margin-bottom:.5rem">한자 부수</p>
+    <p>30개의 가장 생산성 높은 한자 부수가 침실의 각 장소에 배치되어 있습니다: 침대, 베개, 협탁, 서랍장, 옷장, 창문, 책상, 의자, 조명, 책장 등. 이 부수들은 수백 개의 복잡한 한자를 분해하는 열쇠입니다.</p>
+    <p style="font-size:.82rem;color:var(--a3)">상태: 대부분의 부수 성숙, 한자 연상 구축 계속</p>
+  </div>
+  <div class="card">
+    <h4>공원 <span class="transfer-tag partial">제13장</span></h4>
+    <p style="font-size:2rem;font-family:var(--serif);color:var(--accent);margin:.5rem 0">200+</p>
+    <p style="font-size:.88rem;color:var(--text-muted);margin-bottom:.5rem">고유어 어휘 (<span class="jp">和語</span>)</p>
+    <p>고유 일본어 어휘가 공원 산책로를 따라 배치되어 있습니다: 연못에서 자연 단어, 조각상에서 신체 부위, 놀이터에서 일상 동작, 피크닉 장소에서 음식 항목, 해시계에서 시간 단어, 하늘 아래서 날씨 단어.</p>
+    <p style="font-size:.82rem;color:var(--a3)">상태: 진행 중 -- SM-2를 통해 정기적으로 새 단어 추가</p>
+  </div>
+</div>
+
+<div class="callout info">
+  <div class="callout-title">전체 재고</div>
+  <p>6개의 궁전에 걸쳐 <strong>393개 이상의 개별 항목</strong>이 특정 공간적 위치에 배치되어 있습니다. 각각은 해당 지점으로 정신적으로 걸어가면 인출할 수 있습니다. 이것이 여러분의 영구적 일본어 구조의 기반입니다.</p>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- 섹션 2: 궁전 연결 — 그랜드 투어 -->
+<!-- ══════════════════════════════════════════════════════ -->
+<h3 id="2-궁전-연결-그랜드-투어">궁전 연결 — 그랜드 투어</h3>
+
+<p>개별 궁전은 강력합니다. 그러나 <strong>연결된 궁전은 변혁적입니다</strong>. 6개의 궁전을 하나의 연속적인 산책 경로로 연결하면 그랜드 투어가 만들어집니다 -- 일본어 지식의 모든 측면을 아우르는 단일 정신적 여정입니다. 궁전 사이를 걷는 행위는 언어 영역 간의 연결을 강화하여, 조사가 자연스럽게 어휘로, 어휘가 한자로, 한자가 표현으로 흐르게 됩니다.</p>
+
+<div class="diagram">
+  <svg viewBox="0 0 750 320" xmlns="http://www.w3.org/2000/svg">
+    <text x="375" y="22" text-anchor="middle" font-size="14" font-weight="600" fill="var(--heading)">The Grand Tour Route</text>
+
+    <!-- Kitchen -->
+    <rect x="30" y="60" width="110" height="70" rx="8" fill="none" stroke="var(--accent)" stroke-width="2"/>
+    <text x="85" y="85" text-anchor="middle" font-size="11" font-weight="600" fill="var(--accent)">Kitchen</text>
+    <text x="85" y="100" text-anchor="middle" font-size="9" fill="var(--text-muted)">46 Hiragana</text>
+    <text x="85" y="115" text-anchor="middle" font-size="8" fill="var(--a3)">Ch02</text>
+
+    <!-- Arrow 1 -->
+    <line x1="140" y1="95" x2="175" y2="95" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+    <!-- Living Room -->
+    <rect x="180" y="60" width="110" height="70" rx="8" fill="none" stroke="var(--accent)" stroke-width="2"/>
+    <text x="235" y="85" text-anchor="middle" font-size="11" font-weight="600" fill="var(--accent)">Living Room</text>
+    <text x="235" y="100" text-anchor="middle" font-size="9" fill="var(--text-muted)">46 Katakana</text>
+    <text x="235" y="115" text-anchor="middle" font-size="8" fill="var(--a3)">Ch03</text>
+
+    <!-- Arrow 2 (exit house) -->
+    <line x1="290" y1="95" x2="325" y2="95" stroke="var(--a2)" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrowhead)"/>
+    <text x="307" y="85" text-anchor="middle" font-size="7" fill="var(--a2)">exit</text>
+    <text x="307" y="75" text-anchor="middle" font-size="7" fill="var(--a2)">house</text>
+
+    <!-- Street Route -->
+    <rect x="330" y="60" width="110" height="70" rx="8" fill="none" stroke="var(--a2)" stroke-width="2"/>
+    <text x="385" y="85" text-anchor="middle" font-size="11" font-weight="600" fill="var(--a2)">Street Route</text>
+    <text x="385" y="100" text-anchor="middle" font-size="9" fill="var(--text-muted)">60+ Phrases</text>
+    <text x="385" y="115" text-anchor="middle" font-size="8" fill="var(--a3)">Ch05</text>
+
+    <!-- Arrow 3 (arrive at park) -->
+    <line x1="440" y1="95" x2="475" y2="95" stroke="var(--a2)" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrowhead)"/>
+    <text x="457" y="85" text-anchor="middle" font-size="7" fill="var(--a2)">arrive</text>
+
+    <!-- Park -->
+    <rect x="480" y="60" width="110" height="70" rx="8" fill="none" stroke="var(--a2)" stroke-width="2"/>
+    <text x="535" y="85" text-anchor="middle" font-size="11" font-weight="600" fill="var(--a2)">Park</text>
+    <text x="535" y="100" text-anchor="middle" font-size="9" fill="var(--text-muted)">200+ Vocabulary</text>
+    <text x="535" y="115" text-anchor="middle" font-size="8" fill="var(--a3)">Ch12</text>
+
+    <!-- Arrow 4 (return home -- curves down) -->
+    <path d="M535,130 L535,180 L385,180" fill="none" stroke="var(--a2)" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrowhead)"/>
+    <text x="460" y="175" text-anchor="middle" font-size="7" fill="var(--a2)">return home</text>
+
+    <!-- Bathroom -->
+    <rect x="250" y="200" width="110" height="70" rx="8" fill="none" stroke="var(--accent)" stroke-width="2"/>
+    <text x="305" y="225" text-anchor="middle" font-size="11" font-weight="600" fill="var(--accent)">Bathroom</text>
+    <text x="305" y="240" text-anchor="middle" font-size="9" fill="var(--text-muted)">11 Particles</text>
+    <text x="305" y="255" text-anchor="middle" font-size="8" fill="var(--a3)">Ch06</text>
+
+    <!-- Arrow from return to bathroom -->
+    <line x1="385" y1="185" x2="360" y2="210" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+    <!-- Arrow 5 -->
+    <line x1="250" y1="235" x2="215" y2="235" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+    <!-- Bedroom -->
+    <rect x="80" y="200" width="130" height="70" rx="8" fill="none" stroke="var(--accent)" stroke-width="2"/>
+    <text x="145" y="225" text-anchor="middle" font-size="11" font-weight="600" fill="var(--accent)">Bedroom</text>
+    <text x="145" y="240" text-anchor="middle" font-size="9" fill="var(--text-muted)">30 Kanji Radicals</text>
+    <text x="145" y="255" text-anchor="middle" font-size="8" fill="var(--a3)">Ch10</text>
+
+    <!-- Legend -->
+    <rect x="530" y="200" width="180" height="80" rx="6" fill="none" stroke="var(--border)" stroke-width="1"/>
+    <text x="540" y="218" font-size="9" font-weight="600" fill="var(--heading)">Grand Tour Summary</text>
+    <text x="540" y="234" font-size="8" fill="var(--text-muted)">6 palaces, 393+ items</text>
+    <text x="540" y="248" font-size="8" fill="var(--text-muted)">1 continuous walking route</text>
+    <text x="540" y="262" font-size="8" fill="var(--text-muted)">Est. time: 30-45 minutes</text>
+  </svg>
+  <div class="diagram-caption">그랜드 투어는 6개의 궁전을 하나의 연속 경로로 연결합니다. 실내 궁전(부엌, 거실, 화장실, 침실)은 복도를 통해 연결되고, 실외 궁전(거리, 공원)은 밖으로 나가면 도달할 수 있습니다.</div>
+</div>
+
+<div class="callout ok">
+  <div class="callout-title">연결이 효과적인 이유</div>
+  <p>연결된 궁전 체계의 힘은 <strong>맥락적 복원(contextual reinstatement)</strong>에 있습니다. 부엌(히라가나)에서 거실(가타카나)로 걸어갈 때, 뇌는 자연스럽게 두 문자 체계 사이의 연결을 활성화합니다. 거리 경로(표현)에서 공원(어휘)으로 걸어가면 암기한 표현과 그 표현을 구성하는 개별 단어 사이의 관계가 강화됩니다. 각 전환은 연결된 모든 기억을 강화하는 인출 단서가 됩니다.</p>
+</div>
+
+<h4>그랜드 투어 걷는 방법</h4>
+<ol>
+  <li><strong>부엌에서 시작합니다.</strong> 각 장소로 걸어가십시오. 모든 히라가나에 대해 문자, 읽는 법, 그 문자로 시작하는 단어 하나를 조용히 떠올립니다.</li>
+  <li><strong>거실로 이동합니다.</strong> 가타카나에 대해 같은 작업을 수행합니다. 망설이는 문자가 있으면 기록하십시오 -- 이들은 SM-2 활성 복습 대상으로 돌아갑니다.</li>
+  <li><strong>집에서 나와 거리로 갑니다.</strong> 거리 경로를 걸으며 각 서바이벌 표현과 사용 맥락을 떠올립니다.</li>
+  <li><strong>공원에 도착합니다.</strong> 공원 산책로를 걸으며 고유어 어휘 항목을 떠올립니다. 자연 단어, 신체 부위, 일상 동작, 음식으로 그룹화합니다.</li>
+  <li><strong>집으로 돌아와 화장실로 갑니다.</strong> 각 조사 장소로 걸어갑니다. 각 조사에 대해 기능, 한국어 대응어, 예문 하나를 떠올립니다.</li>
+  <li><strong>침실에서 마칩니다.</strong> 각 부수 장소로 걸어갑니다. 각 부수에 대해 의미를 떠올리고 그 부수를 포함하는 한자 두 개를 말합니다.</li>
+</ol>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- 섹션 3: 새로운 궁전 만들기 -->
+<!-- ══════════════════════════════════════════════════════ -->
+<h3 id="3-새로운-궁전-만들기">새로운 궁전 만들기</h3>
+
+<p>이 과정의 6개 궁전은 기반이지만, 일본어 어휘는 이 책을 마친 후에도 계속 증가할 것입니다. 배우고자 하는 어휘 영역에 맞춰 새로운 궁전을 구축하는 방법을 알아야 합니다.</p>
+
+<h4>새 궁전에 적합한 장소 제안</h4>
+<div class="card-grid">
+  <div class="card">
+    <h4>직장 / 사무실</h4>
+    <p>비즈니스 일본어 어휘: <span class="jp">会議</span> (회의), <span class="jp">報告書</span> (보고서), <span class="jp">締め切り</span> (마감일). 책상, 회의실, 휴게실, 엘리베이터, 접수처에 항목을 배치합니다.</p>
+  </div>
+  <div class="card">
+    <h4>학교 / 대학교</h4>
+    <p>학술 어휘: <span class="jp">授業</span> (수업), <span class="jp">試験</span> (시험), <span class="jp">図書館</span> (도서관). 교실, 도서관 입구, 식당, 강당, 실험실에 항목을 배치합니다.</p>
+  </div>
+  <div class="card">
+    <h4>체육관 / 스포츠 센터</h4>
+    <p>신체 및 건강 어휘: <span class="jp">筋肉</span> (근육), <span class="jp">運動</span> (운동), <span class="jp">汗</span> (땀). 러닝머신, 웨이트 랙, 탈의실, 정수기, 스트레칭 매트에 항목을 배치합니다.</p>
+  </div>
+  <div class="card">
+    <h4>레스토랑 / 카페</h4>
+    <p>음식 및 식사 어휘: <span class="jp">注文</span> (주문), <span class="jp">お会計</span> (계산), <span class="jp">席</span> (좌석). 입구, 메뉴판, 카운터, 테이블, 주방 창구에 항목을 배치합니다.</p>
+  </div>
+  <div class="card">
+    <h4>기차역</h4>
+    <p>교통 및 여행 어휘: <span class="jp">切符</span> (표), <span class="jp">改札</span> (개찰구), <span class="jp">乗り換え</span> (환승). 자동 발매기, 플랫폼, 대합실, 안내판, 출구 개찰구에 항목을 배치합니다.</p>
+  </div>
+</div>
+
+<h4>단계별 안내: 새 궁전 만들기</h4>
+<div class="card" style="background:var(--surface)">
+  <div style="display:grid;grid-template-columns:auto 1fr;gap:1rem;align-items:start">
+    <div style="font-size:1.8rem;font-family:var(--serif);color:var(--accent);font-weight:700;line-height:1">1</div>
+    <div>
+      <h4 style="margin-top:0">잘 아는 장소를 선택합니다</h4>
+      <p style="margin-bottom:0">세밀하게 시각화할 수 있는 실제 장소를 선택하십시오 -- 사무실, 친구 집, 좋아하는 식당. 익숙할수록 효과가 좋습니다. 눈을 감고 머릿속으로 걸어 다닐 수 있어야 합니다.</p>
+    </div>
+
+    <div style="font-size:1.8rem;font-family:var(--serif);color:var(--accent);font-weight:700;line-height:1">2</div>
+    <div>
+      <h4 style="margin-top:0">직접 걸어봅니다 (가능하다면)</h4>
+      <p style="margin-bottom:0">해당 장소를 방문하여 천천히 걸어 다니십시오. 특정 물건, 질감, 냄새, 소리에 주의를 기울입니다. 감각적 부호화가 풍부할수록 장소가 더 강해집니다. 방문이 불가능하면 구글 스트리트뷰나 상세한 정신적 재구성을 활용하십시오.</p>
+    </div>
+
+    <div style="font-size:1.8rem;font-family:var(--serif);color:var(--accent);font-weight:700;line-height:1">3</div>
+    <div>
+      <h4 style="margin-top:0">10~20개의 장소를 식별합니다</h4>
+      <p style="margin-bottom:0">해당 위치를 통과하는 자연스러운 산책 경로를 따라 10~20개의 뚜렷하고 기억에 남는 지점을 선택합니다. 각 장소는 시각적으로 구별되고 상상의 물건을 "담을" 수 있을 만큼 충분히 커야 합니다. 걷는 순서대로 번호를 매기고 적어 두십시오.</p>
+    </div>
+
+    <div style="font-size:1.8rem;font-family:var(--serif);color:var(--accent);font-weight:700;line-height:1">4</div>
+    <div>
+      <h4 style="margin-top:0">항목을 장소에 배정합니다</h4>
+      <p style="margin-bottom:0">각 어휘 항목에 대해 생생한 키워드 기억 이미지를 만들어 해당 장소에 배치합니다. 이미지는 기이하고, 과장되며, 다감각적이어야 합니다. 한국어 앵커 --> 음성적 다리 --> 생생한 이미지 --> 일본어 단어. 이미지가 장소와 상호작용하도록 배치합니다 (위에 앉기, 매달리기, 충돌하기).</p>
+    </div>
+
+    <div style="font-size:1.8rem;font-family:var(--serif);color:var(--accent);font-weight:700;line-height:1">5</div>
+    <div>
+      <h4 style="margin-top:0">즉시 복습하고 SM-2를 예약합니다</h4>
+      <p style="margin-bottom:0">항목을 배치한 직후 정신적으로 궁전을 세 번 걸으십시오. 그런 다음 모든 새 항목을 SM-2 시스템에 등록하여 간격 복습을 예약합니다. 궁전은 공간적 발판을 제공하고, SM-2는 최적의 복습 시기를 제공합니다.</p>
+    </div>
+  </div>
+</div>
+
+<div class="callout warn">
+  <div class="callout-title">정교화 질문법</div>
+  <p><strong>왜 기이하고 과장된 이미지가 현실적인 이미지보다 기억의 궁전 배치에 더 효과적일까요?</strong></p>
+  <p>계속 읽기 전에 생각해 보십시오. 답은 폰 레스토프 효과(고립 효과)와 관련이 있습니다 -- 독특한 항목은 평범한 기억의 배경에서 두드러집니다. 뇌는 비정상적인 것에 더 많은 주의를 기울이므로, 책상 위의 거대한 불타는 초밥 롤 이미지는 접시 위에 조용히 놓인 보통 초밥 롤보다 훨씬 기억에 남습니다. 기이함이 더 깊은 부호화를 강제합니다.</p>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- 섹션 4: 관리 일정 -->
+<!-- ══════════════════════════════════════════════════════ -->
+<h3 id="4-관리-일정">관리 일정</h3>
+
+<p>기억의 궁전은 실제 건물처럼 관리가 필요합니다. 주기적으로 다시 방문하지 않으면 이미지가 흐려지고 공간적 연결이 약해집니다. 아래 일정은 최소한의 시간 투자로 궁전을 날카롭게 유지합니다.</p>
+
+<table>
+  <thead>
+    <tr><th>빈도</th><th>활동</th><th>소요 시간</th><th>세부 사항</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>매일</strong></td>
+      <td>SM-2 간격 반복 복습</td>
+      <td>10~15분</td>
+      <td>SM-2 알고리즘이 오늘 예정한 항목을 복습합니다. 이것은 타협할 수 없는 매일의 습관입니다. 모든 궁전의 항목이 자연스럽게 순환합니다.</td>
+    </tr>
+    <tr>
+      <td><strong>매주</strong></td>
+      <td>궁전 하나 걷기</td>
+      <td>약 10분</td>
+      <td>매주 6개 궁전 중 하나를 선택합니다 (6주에 걸쳐 모두 순환). 모든 장소를 걸으며 모든 항목을 떠올립니다. 약한 부분을 기록하고 추가 SM-2 복습 대상으로 표시합니다.</td>
+    </tr>
+    <tr>
+      <td><strong>매월</strong></td>
+      <td>모든 궁전 걷기</td>
+      <td>30~60분</td>
+      <td>한 달에 한 번, 한 세션에서 6개 궁전 모두를 걸어봅니다. 이것은 종합 감사입니다. 궁전 간 교차 연결을 강화하고 이탈한 항목을 포착합니다.</td>
+    </tr>
+    <tr>
+      <td><strong>분기별</strong></td>
+      <td>그랜드 투어</td>
+      <td>약 45분</td>
+      <td>전체 연결된 그랜드 투어 경로를 걸어봅니다: 부엌 --> 거실 --> 거리 --> 공원 --> 화장실 --> 침실. 천천히 하십시오. 이것이 가장 깊은 수준의 통합입니다.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout ok">
+  <div class="callout-title">관리는 재학습이 아닙니다</div>
+  <p>궁전 관리 산책은 이미 항목을 알고 있기 때문에 <strong>빠릅니다</strong>. 매주 10분 산책은 공부가 아닙니다 -- 확인입니다. 구조가 온전한지 검증하는 것이지, 재구축하는 것이 아닙니다. 자기 집을 걷는 것처럼 생각하십시오: 부엌이 어디에 있는지 다시 배울 필요는 없습니다. 모든 것이 제자리에 있는지 확인하기만 하면 됩니다.</p>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- 대화형 연습 -->
+<!-- ══════════════════════════════════════════════════════ -->
+<h3 id="대화형-연습">대화형 연습</h3>
+
+<!-- 퀴즈 1: 6개 궁전 전체 기억 확인 -->
+<div id="quiz-palace-recall"></div>
+
+<!-- 퀴즈 2: 궁전 관리에 관한 객관식 -->
+<div id="quiz-maintenance"></div>
+
+<!-- 퀴즈 3: 궁전 위치에 관한 빈칸 채우기 -->
+<div id="quiz-palace-locations"></div>
+
+<!-- 완료 표시 -->
+<button class="chapter-complete" data-ch="20">완료로 표시 &#10003;</button>
+
+<div style="display:flex;justify-content:space-between;margin:2rem 0">
+  <a href="ch-19.html" class="quiz-btn secondary">&larr; 제20장: JLPT와 그 너머</a>
+  <a href="ch-21.html" class="quiz-btn">다음: 제21장 -- 90일 스프린트 &rarr;</a>
+</div>
+
+</section>
+
+</div>
+
+
+</div>
+
+<footer>
+  <p>Zero to Hero: 日本語 한국어 화자를 위한 &middot; 제20장</p>
+</footer>
+
+<script src="js/shared.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/quiz-engine.js"></script>
+<script>
+// ─── 제19장 복습 확인 (상단) ───
+QuizEngine.RecallCheck(
+  document.getElementById('quiz-recall-top'),
+  {
+    fromChapters: '제19장',
+    items: [
+      { question: '제19장: 일본 기업 취업에 일반적으로 요구되는 최소 JLPT 레벨은 무엇입니까?', answer: 'N2입니다. 대부분의 기업과 대학은 N2 이상을 요구합니다. 일부 전문 분야는 N1을 요구합니다.' },
+      { question: '제19장: 한국어 화자가 가장 큰 이점을 가지는 JLPT 영역은 어디입니까?', answer: '文字・語彙 (문자/어휘) 영역입니다. 수천 개의 한자어 동원어가 한국어에서 직접 전이되기 때문입니다.' },
+      { question: '제19장: N3에 필요한 한자 수는 대략 몇 개입니까?', answer: '약 650개의 한자가 필요합니다.' }
+    ]
+  }
+);
+
+// ─── 퀴즈 1: 6개 궁전 전체 기억 확인 ───
+QuizEngine.RecallCheck(
+  document.getElementById('quiz-palace-recall'),
+  {
+    fromChapters: '전체 궁전 (제02장~제13장)',
+    items: [
+      { question: '부엌 궁전 (제02장): 히라가나 あ를 부엌 어디에 배치했습니까? 키워드 기억 이미지는 무엇입니까?', answer: '특정 장소와 개인적인 기억 이미지를 떠올려 보십시오. 핵심은 정신적으로 그 지점까지 걸어가서 이미지를 선명하게 볼 수 있는 것입니다.' },
+      { question: '거실 궁전 (제03장): 이 궁전에 배치된 가타카나 문자는 몇 개입니까?', answer: '46개의 기본 가타카나 문자가 거실 전체의 구별되는 장소에 배치되어 있습니다.' },
+      { question: '거리 경로 궁전 (제05장): 거리 경로를 따라 세 가지 서바이벌 표현과 그 위치를 말해 보십시오.', answer: '답은 개인마다 다릅니다. 예시: すみません은 우편함, いくらですか는 상점 앞, 助けて는 소화전.' },
+      { question: '화장실 궁전 (제06장): 거울에 배치된 조사는 무엇이며, 그 기능은 무엇입니까?', answer: 'は (wa) -- 주제 표지. 한국어 대응어: 은/는.' },
+      { question: '침실 궁전 (제11장): 침실 궁전에서 한자 부수 두 개와 그 부수가 포함된 한자를 말해 보십시오.', answer: '답은 개인마다 다릅니다. 예시: 木 (나무)는 林 (수풀), 森 (숲), 本 (책)에 나타납니다. 水/氵 (물)는 海 (바다), 池 (연못), 泳 (수영)에 나타납니다.' },
+      { question: '공원 궁전 (제13장): 연못 근처에 배치한 어휘 항목의 범주는 무엇입니까?', answer: '자연 관련 고유 일본어 어휘 (和語)입니다. 예시: 水 (みず/물), 川 (かわ/강), 魚 (さかな/물고기).' }
+    ]
+  }
+);
+
+// ─── 퀴즈 2: 궁전 관리 지식 객관식 ───
+QuizEngine.MultipleChoice(
+  document.getElementById('quiz-maintenance'),
+  {
+    title: '궁전 관리 지식',
+    questions: [
+      {
+        prompt: '전체 그랜드 투어(모든 연결된 궁전)를 얼마나 자주 걸어야 합니까?',
+        options: ['매일', '매주', '매월', '분기별'],
+        correctIndex: 3,
+        explanation: '그랜드 투어는 분기별 활동입니다 (약 45분). 일일 복습은 SM-2가 담당하고, 주간 산책은 한 번에 하나의 궁전을, 월간 산책은 모든 궁전을 개별적으로 다룹니다.'
+      },
+      {
+        prompt: 'SM-2 간격 반복 복습에 권장되는 일일 시간 투자는 얼마입니까?',
+        options: ['2~5분', '10~15분', '30~45분', '60분'],
+        correctIndex: 1,
+        explanation: '매일 10~15분의 SM-2 복습이 타협할 수 없는 일일 습관입니다. 모든 궁전의 모든 항목을 최적의 복습 일정에 유지합니다.'
+      },
+      {
+        prompt: '연결된 궁전 체계가 개별 궁전보다 효과적인 이유는 무엇입니까?',
+        options: [
+          '총 기억 공간을 적게 사용하기 때문',
+          '걸어보는 시간이 더 빠르기 때문',
+          '궁전 간 공간적 연결이 추가적인 인출 경로를 생성하기 때문',
+          '궁전당 필요한 장소가 더 적기 때문'
+        ],
+        correctIndex: 2,
+        explanation: '연결된 궁전은 맥락적 복원을 통해 추가적인 인출 경로를 생성합니다. 궁전 사이를 걷는 것은 언어 영역 간의 연결을 강화합니다.'
+      },
+      {
+        prompt: '새 궁전을 만들 때 식별해야 할 권장 장소 수는 몇 개입니까?',
+        options: ['3~5개', '10~20개', '50~100개', '200개 이상'],
+        correctIndex: 1,
+        explanation: '10~20개의 장소가 새 궁전에 이상적입니다. 의미 있는 어휘 세트를 담기에 충분하면서도 장소가 불분명해지거나 기억하기 어려울 정도로 많지 않습니다.'
+      }
+    ]
+  }
+);
+
+// ─── 퀴즈 3: 궁전 위치 및 내용 빈칸 채우기 ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-palace-locations'),
+  {
+    title: '궁전 위치 및 내용',
+    questions: [
+      {
+        prompt: '부엌 궁전 (제02장)에는 ___개의 히라가나 문자가 있습니다.',
+        answer: '46',
+        acceptAlso: ['46개', '사십육', '46 히라가나', '46개의 히라가나'],
+        explanation: '46개의 기본 히라가나 문자가 부엌 궁전 전체의 구별되는 장소에 배치되어 있습니다.'
+      },
+      {
+        prompt: '화장실 궁전 (제06장)에는 ___개의 핵심 조사가 있습니다.',
+        answer: '11',
+        acceptAlso: ['11개', '열한', '11개의 조사', '11 조사'],
+        explanation: '11개의 필수 일본어 조사가 화장실의 각 장소에 배치되어 있습니다.'
+      },
+      {
+        prompt: '주간 궁전 관리 활동은 ___ 궁전을 걷는 것이며 약 10분이 소요됩니다.',
+        answer: '하나의',
+        acceptAlso: ['1', '1개의', '하나', '한 개의'],
+        explanation: '매주 하나의 궁전을 걸으며 (6주에 걸쳐 모두 순환), 월간 산책은 모든 궁전을 다룹니다.'
+      },
+      {
+        prompt: '그랜드 투어 경로는 ___에서 시작하여 ___에서 끝납니다.',
+        answer: '부엌, 침실',
+        acceptAlso: ['부엌, 침실', '부엌과 침실', '부엌에서 침실'],
+        explanation: '그랜드 투어는 부엌(히라가나) --> 거실(가타카나) --> 거리(표현) --> 공원(어휘) --> 화장실(조사) --> 침실(부수) 경로를 따릅니다.'
+      }
+    ]
+  }
+);
+</script>
+<script src="js/spaced-repetition.js"></script>
+<script src="js/memory-palace.js"></script>
+</body>
+</html>

@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ch10: Sentence Patterns — Zero to Hero 日本語</title>
+<link rel="stylesheet" href="css/design-system.css">
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <span class="logo-badge">Zero to Hero — Memory Architecture Edition</span>
+    <div class="logo-title">日本語 for Korean Speakers</div>
+    <div class="logo-sub">From 한국어 to 日本語 — The Memory Architect's Guide</div>
+  </a>
+  <div class="sidebar-progress">
+    <div class="sidebar-progress-label">Progress</div>
+    <div class="sidebar-progress-bar">
+      <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+    </div>
+    <div class="sidebar-progress-count">0/22 complete</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="ch-00.html" class="toc-link"><span class="toc-num">00</span><span class="toc-check" data-ch="00"></span>Memory Science</a>
+    <a href="ch-01.html" class="toc-link"><span class="toc-num">01</span><span class="toc-check" data-ch="01"></span>Your Korean Advantage</a>
+    <a href="ch-02.html" class="toc-link"><span class="toc-num">02</span><span class="toc-check" data-ch="02"></span>Hiragana</a>
+    <a href="ch-03.html" class="toc-link"><span class="toc-num">03</span><span class="toc-check" data-ch="03"></span>Katakana</a>
+    <a href="ch-04.html" class="toc-link"><span class="toc-num">04</span><span class="toc-check" data-ch="04"></span>Pronunciation</a>
+    <a href="ch-05.html" class="toc-link"><span class="toc-num">05</span><span class="toc-check" data-ch="05"></span>Survival Japanese</a>
+    <a href="ch-06.html" class="toc-link"><span class="toc-num">06</span><span class="toc-check" data-ch="06"></span>Counters</a>
+    <a href="ch-07.html" class="toc-link"><span class="toc-num">07</span><span class="toc-check" data-ch="07"></span>Particles</a>
+    <a href="ch-08.html" class="toc-link"><span class="toc-num">08</span><span class="toc-check" data-ch="08"></span>Verb Conjugation</a>
+    <a href="ch-09.html" class="toc-link"><span class="toc-num">09</span><span class="toc-check" data-ch="09"></span>Daily Conversations</a>
+    <a href="ch-10.html" class="toc-link active"><span class="toc-num">10</span><span class="toc-check" data-ch="10"></span>Sentence Patterns</a>
+    <a href="ch-11.html" class="toc-link"><span class="toc-num">11</span><span class="toc-check" data-ch="11"></span>Kanji</a>
+    <a href="ch-12.html" class="toc-link"><span class="toc-num">12</span><span class="toc-check" data-ch="12"></span>Sino-Vocabulary</a>
+    <a href="ch-13.html" class="toc-link"><span class="toc-num">13</span><span class="toc-check" data-ch="13"></span>Native Vocabulary</a>
+    <a href="ch-14.html" class="toc-link"><span class="toc-num">14</span><span class="toc-check" data-ch="14"></span>Honorifics</a>
+    <a href="ch-15.html" class="toc-link"><span class="toc-num">15</span><span class="toc-check" data-ch="15"></span>Reading</a>
+    <a href="ch-16.html" class="toc-link"><span class="toc-num">16</span><span class="toc-check" data-ch="16"></span>Writing</a>
+    <a href="ch-17.html" class="toc-link"><span class="toc-num">17</span><span class="toc-check" data-ch="17"></span>Listening</a>
+    <a href="ch-18.html" class="toc-link"><span class="toc-num">18</span><span class="toc-check" data-ch="18"></span>Cultural Pragmatics</a>
+    <a href="ch-19.html" class="toc-link"><span class="toc-num">19</span><span class="toc-check" data-ch="19"></span>JLPT and Beyond</a>
+    <a href="ch-20.html" class="toc-link"><span class="toc-num">20</span><span class="toc-check" data-ch="20"></span>Memory Palace</a>
+    <a href="ch-21.html" class="toc-link"><span class="toc-num">21</span><span class="toc-check" data-ch="21"></span>The 90-Day Sprint</a>
+    <a href="appendices.html" class="toc-link" style="margin-top:.5rem;border-top:1px solid var(--border);padding-top:.8rem"><span class="toc-num">+</span>Appendices</a>
+  </nav>
+</aside>
+
+<div class="main">
+<div class="content-wrap">
+
+<section id="ch10" data-ch="10" style="padding-top:3rem">
+<h2><span class="ch-label">Chapter 10</span>Sentence Patterns -- Thinking in Japanese</h2>
+
+<div class="callout memory">
+  <div class="callout-title">Memory Technique Spotlight: Chunking + Schema Construction</div>
+  <p>Sentence patterns are "chunks" — pre-built units that your brain can deploy instantly without assembling from scratch. Master the chunk, and you can swap vocabulary in and out effortlessly. This is how native speakers achieve fluency — not by constructing each sentence from grammar rules.</p>
+</div>
+
+<p>You have been <strong>using</strong> these patterns since Chapter 05, building survival phrases and daily conversations. Now it is time to <strong>formalize</strong> them -- to understand the structural machinery so you can generate new sentences on your own, not just recall memorized ones.</p>
+
+<div class="pq">
+  "Patterns are the grammar you already feel. This chapter turns intuition into engineering."
+</div>
+
+<div class="callout warn">
+  <div class="callout-title">Last Chapter Before Romaji Drops</div>
+  <p>Starting in Chapter 11, <strong>romaji disappears</strong>. From here on, you read Japanese in Japanese. This chapter still provides romaji as training wheels, but treat every example as a chance to practice reading hiragana and katakana directly. If you catch yourself reading the romaji first, force your eyes to the kana.</p>
+</div>
+
+<!-- ─── RECALL CHECK (top of chapter, from Ch07-08) ─── -->
+<nav class="chapter-toc">
+  <details open>
+    <summary class="chapter-toc-title">In This Chapter</summary>
+  <ol>
+    <li><a href="#recall-check----chapters-06-08">Recall Check -- Chapters 06-08</a></li>
+    <li><a href="#pattern-1-existence----いる-ある">Existence -- いる / ある</a></li>
+    <li><a href="#pattern-2-desire-----たい">Desire -- -たい</a></li>
+    <li><a href="#pattern-3-giving-and-receiving----あげる-もらう-くれる">Giving and Receiving -- あげる / もらう / くれる</a></li>
+    <li><a href="#pattern-4-relative-clauses----free-transfer">Relative Clauses -- Free Transfer</a></li>
+    <li><a href="#pattern-5-reported-speech----と">Reported Speech -- と</a></li>
+    <li><a href="#pattern-transfer-summary">Pattern Transfer Summary</a></li>
+    <li><a href="#interactive-exercises">Interactive Exercises</a></li>
+    <li><a href="#recall-check----chapters-06-08-review">Recall Check -- Chapters 06-08 Review</a></li>
+  </ol>
+  </details>
+</nav>
+
+<h3 id="recall-check----chapters-06-08">Recall Check -- Chapters 06-08</h3>
+<p>Before diving in, verify that particles, conjugation, and conversation patterns from previous chapters are still sharp.</p>
+
+<div id="recall-check-top"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PATTERN 1: EXISTENCE -- いる / ある
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="pattern-1-existence----いる-ある">Existence -- <span class="jp">いる</span> / <span class="jp">ある</span></h3>
+
+<p>Korean has one existence verb: <span class="kr">있다</span>. It handles everything -- people, objects, ideas. Japanese splits this into two verbs based on whether the subject is <strong>animate</strong> or <strong>inanimate</strong>.</p>
+
+<div class="card" style="text-align:center">
+  <div style="display:flex;justify-content:center;gap:3rem;flex-wrap:wrap;margin:1rem 0">
+    <div>
+      <div style="font-size:2.5rem;font-family:var(--serif);color:var(--accent)"><span class="jp">いる</span></div>
+      <div style="font-size:.82rem;color:var(--text-muted)">iru</div>
+      <div style="font-size:.92rem;color:var(--accent)">Animate (living, moving)</div>
+    </div>
+    <div style="display:flex;align-items:center;font-size:1.5rem;color:var(--text-muted)">vs.</div>
+    <div>
+      <div style="font-size:2.5rem;font-family:var(--serif);color:var(--a2)"><span class="jp">ある</span></div>
+      <div style="font-size:.82rem;color:var(--text-muted)">aru</div>
+      <div style="font-size:.92rem;color:var(--a2)">Inanimate (objects, concepts)</div>
+    </div>
+  </div>
+  <p style="font-size:.88rem;color:var(--text-muted);margin-bottom:0">Korean <span class="kr">있다</span> covers both. Japanese forces you to choose.</p>
+</div>
+
+<div class="callout ok">
+  <div class="callout-title">Mnemonic</div>
+  <p><strong><span class="jp">いる</span> = eel</strong> -- an eel is ALIVE, it wriggles. Use <span class="jp">いる</span> for living things.<br>
+  <strong><span class="jp">ある</span> = R for Rocks</strong> -- rocks just sit there, dead. Use <span class="jp">ある</span> for inanimate things.</p>
+</div>
+
+<h4>Core Examples</h4>
+<table>
+  <thead>
+    <tr><th>Japanese</th><th>Romaji</th><th>Korean</th><th>Meaning</th><th>Verb</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="jp">猫がいる</td><td>neko ga iru</td><td class="kr">고양이가 있다</td><td>There is a cat</td><td><span class="transfer-tag full">いる (alive)</span></td></tr>
+    <tr><td class="jp">本がある</td><td>hon ga aru</td><td class="kr">책이 있다</td><td>There is a book</td><td><span class="transfer-tag partial">ある (object)</span></td></tr>
+    <tr><td class="jp">子どもがいる</td><td>kodomo ga iru</td><td class="kr">아이가 있다</td><td>There is a child / I have a child</td><td><span class="transfer-tag full">いる (alive)</span></td></tr>
+    <tr><td class="jp">時間がある</td><td>jikan ga aru</td><td class="kr">시간이 있다</td><td>There is time / I have time</td><td><span class="transfer-tag partial">ある (concept)</span></td></tr>
+    <tr><td class="jp">犬が三匹いる</td><td>inu ga sanbiki iru</td><td class="kr">개가 세 마리 있다</td><td>There are three dogs</td><td><span class="transfer-tag full">いる (alive)</span></td></tr>
+    <tr><td class="jp">椅子がある</td><td>isu ga aru</td><td class="kr">의자가 있다</td><td>There is a chair</td><td><span class="transfer-tag partial">ある (object)</span></td></tr>
+  </tbody>
+</table>
+
+<h4>Tricky Cases -- The Edge of "Alive"</h4>
+<p>The animate/inanimate line is not always obvious. Here are the cases that trip up every learner:</p>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>Robots <span class="transfer-tag partial">ある</span></h4>
+    <p><span class="jp">ロボットがある</span> (robotto ga aru)</p>
+    <p style="font-size:.85rem;color:var(--text-muted)">Robots are machines, not alive. Even humanoid ones get <span class="jp">ある</span>.</p>
+  </div>
+  <div class="card">
+    <h4>Plants <span class="transfer-tag partial">ある</span></h4>
+    <p><span class="jp">花がある</span> (hana ga aru)</p>
+    <p style="font-size:.85rem;color:var(--text-muted)">Plants are alive biologically, but they do not move on their own. Japanese treats them as inanimate.</p>
+  </div>
+  <div class="card">
+    <h4>Ghosts <span class="transfer-tag full">いる</span></h4>
+    <p><span class="jp">幽霊がいる！</span> (yuurei ga iru!)</p>
+    <p style="font-size:.85rem;color:var(--text-muted)">Ghosts move, they have will. Even though they are dead, they behave as animate. Yes, really.</p>
+  </div>
+  <div class="card">
+    <h4>Fish in a Tank <span class="transfer-tag full">いる</span></h4>
+    <p><span class="jp">魚がいる</span> (sakana ga iru)</p>
+    <p style="font-size:.85rem;color:var(--text-muted)">Living fish = <span class="jp">いる</span>. But fish on a plate (sashimi)? That is food: <span class="jp">刺身がある</span>.</p>
+  </div>
+  <div class="card">
+    <h4>Taxis (waiting) <span class="transfer-tag partial">ある</span></h4>
+    <p><span class="jp">タクシーがある</span> (takushii ga aru)</p>
+    <p style="font-size:.85rem;color:var(--text-muted)">A taxi is a vehicle (object). But the driver inside? <span class="jp">運転手がいる</span> (untenshu ga iru).</p>
+  </div>
+  <div class="card">
+    <h4>Dolls / Stuffed Animals <span class="transfer-tag partial">ある</span></h4>
+    <p><span class="jp">人形がある</span> (ningyou ga aru)</p>
+    <p style="font-size:.85rem;color:var(--text-muted)">Not alive. But a child playing pretend might say <span class="jp">いる</span> -- context can shift it.</p>
+  </div>
+</div>
+
+<div class="callout warn">
+  <div class="callout-title">Elaborative Interrogation</div>
+  <p><strong>WHY does Korean use a single verb 있다 for existence while Japanese splits it into two?</strong></p>
+  <p>Korean grammatically categorizes existence by formality level (있다/있습니다/있어요), not by animacy. Japanese grammatically categorizes existence by the nature of the subject itself. Both languages encode important distinctions -- they just choose <em>different</em> axes. Think of it as Korean caring about "how politely you say it" and Japanese caring about "what kind of thing you are talking about."</p>
+</div>
+
+<!-- Mnemonic SVG: いる vs ある -->
+<div class="diagram">
+  <svg viewBox="0 0 700 250" xmlns="http://www.w3.org/2000/svg">
+    <!-- いる side -->
+    <rect x="30" y="30" width="300" height="190" rx="12" fill="none" stroke="var(--accent)" stroke-width="2" opacity=".6"/>
+    <text x="180" y="60" text-anchor="middle" font-size="16" font-weight="600" fill="var(--accent)">いる (iru) -- ALIVE</text>
+    <text x="180" y="90" text-anchor="middle" font-size="11" fill="var(--text-muted)">People, animals, insects</text>
+    <text x="180" y="110" text-anchor="middle" font-size="11" fill="var(--text-muted)">Fish (swimming), birds (flying)</text>
+    <text x="180" y="130" text-anchor="middle" font-size="11" fill="var(--text-muted)">Ghosts, spirits, monsters</text>
+    <text x="180" y="155" text-anchor="middle" font-size="22" fill="var(--accent)">Eel wriggles = alive</text>
+    <text x="180" y="180" text-anchor="middle" font-size="9" fill="var(--a3)">Mnemonic: いる = eel (alive!)</text>
+
+    <!-- ある side -->
+    <rect x="370" y="30" width="300" height="190" rx="12" fill="none" stroke="var(--a2)" stroke-width="2" opacity=".6"/>
+    <text x="520" y="60" text-anchor="middle" font-size="16" font-weight="600" fill="var(--a2)">ある (aru) -- NOT ALIVE</text>
+    <text x="520" y="90" text-anchor="middle" font-size="11" fill="var(--text-muted)">Objects, furniture, buildings</text>
+    <text x="520" y="110" text-anchor="middle" font-size="11" fill="var(--text-muted)">Plants, flowers, trees</text>
+    <text x="520" y="130" text-anchor="middle" font-size="11" fill="var(--text-muted)">Concepts: time, money, ideas</text>
+    <text x="520" y="155" text-anchor="middle" font-size="22" fill="var(--a2)">R = Rocks (dead)</text>
+    <text x="520" y="180" text-anchor="middle" font-size="9" fill="var(--a3)">Mnemonic: ある = R for Rocks</text>
+
+    <!-- Korean comparison -->
+    <text x="350" y="240" text-anchor="middle" font-size="11" font-weight="600" fill="var(--a4)">Korean 있다 = covers BOTH sides. Japanese forces you to pick.</text>
+  </svg>
+  <div class="diagram-caption">The animate/inanimate split -- Korean 있다 maps to both いる and ある.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PATTERN 2: DESIRE -- -たい
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="pattern-2-desire-----たい">Desire -- <span class="jp">-たい</span></h3>
+
+<p>Korean expresses desire with <span class="kr">-고 싶다</span>, attached after the verb stem. Japanese uses <span class="jp">-たい</span>, also attached to the verb stem. The structure maps almost perfectly.</p>
+
+<div class="card">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+    <div>
+      <h4 style="color:var(--a2)">Korean</h4>
+      <p style="font-size:1.3rem;margin-bottom:.3rem"><span class="kr">먹고 싶다</span></p>
+      <p style="font-size:.82rem;color:var(--text-muted)">meokgo sipda</p>
+      <p style="font-size:.85rem">eat + want = want to eat</p>
+    </div>
+    <div>
+      <h4 style="color:var(--accent)">Japanese</h4>
+      <p style="font-size:1.3rem;margin-bottom:.3rem"><span class="jp">食べたい</span></p>
+      <p style="font-size:.82rem;color:var(--text-muted)">tabetai</p>
+      <p style="font-size:.85rem">eat (stem) + want = want to eat</p>
+    </div>
+  </div>
+  <p style="margin-top:1rem;font-size:.88rem;color:var(--a3)"><strong>Same logic.</strong> Take the verb stem, attach the desire suffix. Korean: stem + 고 싶다. Japanese: stem + たい.</p>
+</div>
+
+<div class="callout ok">
+  <div class="callout-title">Mnemonic</div>
+  <p><strong><span class="jp">たい</span> = tie</strong> -- you are TIED to your desire. You cannot let go. You are bound to wanting it.</p>
+</div>
+
+<h4>Conjugation: Verb Stem + <span class="jp">たい</span></h4>
+<p>Take the <strong>masu-stem</strong> (the form before ます) and add <span class="jp">たい</span>. The result conjugates like an <strong>い-adjective</strong>, not a verb.</p>
+
+<table>
+  <thead>
+    <tr><th>Dictionary Form</th><th>Masu-Stem</th><th>-たい Form</th><th>Romaji</th><th>Korean</th><th>Meaning</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="jp">食べる</td><td class="jp">食べ</td><td class="jp">食べたい</td><td>tabetai</td><td class="kr">먹고 싶다</td><td>want to eat</td></tr>
+    <tr><td class="jp">飲む</td><td class="jp">飲み</td><td class="jp">飲みたい</td><td>nomitai</td><td class="kr">마시고 싶다</td><td>want to drink</td></tr>
+    <tr><td class="jp">行く</td><td class="jp">行き</td><td class="jp">行きたい</td><td>ikitai</td><td class="kr">가고 싶다</td><td>want to go</td></tr>
+    <tr><td class="jp">見る</td><td class="jp">見</td><td class="jp">見たい</td><td>mitai</td><td class="kr">보고 싶다</td><td>want to see</td></tr>
+    <tr><td class="jp">買う</td><td class="jp">買い</td><td class="jp">買いたい</td><td>kaitai</td><td class="kr">사고 싶다</td><td>want to buy</td></tr>
+    <tr><td class="jp">する</td><td class="jp">し</td><td class="jp">したい</td><td>shitai</td><td class="kr">하고 싶다</td><td>want to do</td></tr>
+    <tr><td class="jp">来る (くる)</td><td class="jp">来 (き)</td><td class="jp">来たい (きたい)</td><td>kitai</td><td class="kr">오고 싶다</td><td>want to come</td></tr>
+  </tbody>
+</table>
+
+<h4><span class="jp">-たい</span> Conjugates Like an い-Adjective</h4>
+<p>This is the key difference from Korean. In Korean, <span class="kr">-고 싶다</span> is a verb construction. In Japanese, <span class="jp">-たい</span> behaves like an adjective -- it has its own negative, past, and polite forms:</p>
+
+<table>
+  <thead>
+    <tr><th>Form</th><th>Japanese</th><th>Romaji</th><th>Korean</th><th>Meaning</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Present</td><td class="jp">食べたい</td><td>tabetai</td><td class="kr">먹고 싶다</td><td>want to eat</td></tr>
+    <tr><td>Negative</td><td class="jp">食べたくない</td><td>tabetakunai</td><td class="kr">먹고 싶지 않다</td><td>don't want to eat</td></tr>
+    <tr><td>Past</td><td class="jp">食べたかった</td><td>tabetakatta</td><td class="kr">먹고 싶었다</td><td>wanted to eat</td></tr>
+    <tr><td>Polite</td><td class="jp">食べたいです</td><td>tabetai desu</td><td class="kr">먹고 싶어요</td><td>want to eat (polite)</td></tr>
+    <tr><td>Past Negative</td><td class="jp">食べたくなかった</td><td>tabetakunakatta</td><td class="kr">먹고 싶지 않았다</td><td>didn't want to eat</td></tr>
+  </tbody>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">Particle Note: を or が with -たい</div>
+  <p>With <span class="jp">-たい</span>, the object can take either <span class="jp">を</span> or <span class="jp">が</span>:<br>
+  <span class="jp">水<strong>を</strong>飲みたい</span> / <span class="jp">水<strong>が</strong>飲みたい</span> -- both mean "I want to drink water."<br>
+  Using <span class="jp">が</span> emphasizes the desire itself (more emotional). Using <span class="jp">を</span> is neutral. Both are correct.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PATTERN 3: GIVING / RECEIVING -- あげる / もらう / くれる
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="pattern-3-giving-and-receiving----あげる-もらう-くれる">Giving and Receiving -- <span class="jp">あげる / もらう / くれる</span></h3>
+
+<div class="callout warn">
+  <div class="callout-title">WARNING: Zero Korean Advantage Here</div>
+  <p>This is the <strong>ONE grammar point where Korean gives you zero advantage</strong>. Korean has <span class="kr">주다</span> (give) and <span class="kr">받다</span> (receive) -- two verbs, direction is clear from context. Japanese has <strong>three</strong> verbs, and the choice depends on the direction of the action <em>relative to the speaker</em>. This is genuinely hard. Take your time.</p>
+</div>
+
+<h4>The Three Verbs</h4>
+
+<div class="card-grid">
+  <div class="card">
+    <h4 style="color:var(--accent)"><span class="jp">あげる</span> <span style="font-size:.8rem;color:var(--text-muted)">(ageru)</span></h4>
+    <p style="font-size:1.1rem"><strong>Give AWAY from speaker</strong></p>
+    <p>I give to you. He gives to her. Anyone gives to anyone <em>other than the speaker</em>.</p>
+    <p class="kr" style="font-size:.85rem;color:var(--a2)">~주다 (when I am the giver)</p>
+  </div>
+  <div class="card">
+    <h4 style="color:var(--a3)"><span class="jp">くれる</span> <span style="font-size:.8rem;color:var(--text-muted)">(kureru)</span></h4>
+    <p style="font-size:1.1rem"><strong>Give TOWARD the speaker</strong></p>
+    <p>Someone gives to me. Someone gives to my family/group. The gift flows <em>toward</em> the speaker.</p>
+    <p class="kr" style="font-size:.85rem;color:var(--a2)">~주다 (when someone gives to ME)</p>
+  </div>
+  <div class="card">
+    <h4 style="color:var(--a4)"><span class="jp">もらう</span> <span style="font-size:.8rem;color:var(--text-muted)">(morau)</span></h4>
+    <p style="font-size:1.1rem"><strong>Receive</strong></p>
+    <p>I receive from someone. The subject is the receiver.</p>
+    <p class="kr" style="font-size:.85rem;color:var(--a2)">~받다</p>
+  </div>
+</div>
+
+<div class="callout ok">
+  <div class="callout-title">Mnemonic: The River</div>
+  <p>Imagine a river. The speaker stands on one bank.<br>
+  <strong><span class="jp">あげる</span> = AWAY</strong> -- you throw the gift across the river, away from you.<br>
+  <strong><span class="jp">くれる</span> = COMES to you</strong> -- the gift floats down the current toward you.<br>
+  <strong><span class="jp">もらう</span> = BUCKET</strong> -- you dip a bucket into the river and scoop the gift up to yourself.</p>
+</div>
+
+<!-- Giving/Receiving SVG Diagram -->
+<div class="diagram">
+  <svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg">
+    <!-- River -->
+    <rect x="310" y="40" width="80" height="240" rx="6" fill="var(--quiz-neutral)" opacity=".08"/>
+    <text x="350" y="30" text-anchor="middle" font-size="10" fill="var(--text-muted)">RIVER</text>
+
+    <!-- Speaker (left) -->
+    <circle cx="150" cy="160" r="40" fill="none" stroke="var(--accent)" stroke-width="2"/>
+    <text x="150" y="155" text-anchor="middle" font-size="13" font-weight="600" fill="var(--accent)">ME</text>
+    <text x="150" y="172" text-anchor="middle" font-size="9" fill="var(--text-muted)">(speaker)</text>
+
+    <!-- Other person (right) -->
+    <circle cx="550" cy="160" r="40" fill="none" stroke="var(--a2)" stroke-width="2"/>
+    <text x="550" y="155" text-anchor="middle" font-size="13" font-weight="600" fill="var(--a2)">THEM</text>
+    <text x="550" y="172" text-anchor="middle" font-size="9" fill="var(--text-muted)">(other)</text>
+
+    <!-- あげる arrow (away from speaker) -->
+    <line x1="195" y1="100" x2="505" y2="100" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <text x="350" y="90" text-anchor="middle" font-size="14" font-weight="600" fill="var(--accent)">あげる (ageru)</text>
+    <text x="350" y="75" text-anchor="middle" font-size="10" fill="var(--text-muted)">I give TO them -- AWAY</text>
+
+    <!-- くれる arrow (toward speaker) -->
+    <line x1="505" y1="160" x2="195" y2="160" stroke="var(--a3)" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <text x="350" y="190" text-anchor="middle" font-size="14" font-weight="600" fill="var(--a3)">くれる (kureru)</text>
+    <text x="350" y="205" text-anchor="middle" font-size="10" fill="var(--text-muted)">They give TO me -- TOWARD</text>
+
+    <!-- もらう arrow (receive) -->
+    <line x1="505" y1="230" x2="195" y2="230" stroke="var(--a4)" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#arrowhead)"/>
+    <text x="350" y="260" text-anchor="middle" font-size="14" font-weight="600" fill="var(--a4)">もらう (morau)</text>
+    <text x="350" y="275" text-anchor="middle" font-size="10" fill="var(--text-muted)">I RECEIVE from them -- BUCKET</text>
+
+    <!-- Korean comparison -->
+    <text x="350" y="310" text-anchor="middle" font-size="10" font-weight="600" fill="var(--a5)">Korean: 주다 handles both あげる and くれる. 받다 = もらう.</text>
+  </svg>
+  <div class="diagram-caption">The river model -- direction is always relative to the speaker, not the subject.</div>
+</div>
+
+<h4>Examples in Context</h4>
+<table>
+  <thead>
+    <tr><th>Japanese</th><th>Romaji</th><th>Korean</th><th>Direction</th><th>Verb</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="jp">私は彼にプレゼントをあげた</td><td>watashi wa kare ni purezento wo ageta</td><td class="kr">나는 그에게 선물을 줬다</td><td>I &rarr; him (away)</td><td><span class="jp">あげる</span></td></tr>
+    <tr><td class="jp">母が私にお金をくれた</td><td>haha ga watashi ni okane wo kureta</td><td class="kr">엄마가 나에게 돈을 줬다</td><td>Mom &rarr; me (toward)</td><td><span class="jp">くれる</span></td></tr>
+    <tr><td class="jp">私は友達にチョコをもらった</td><td>watashi wa tomodachi ni choko wo moratta</td><td class="kr">나는 친구에게 초콜릿을 받았다</td><td>friend &rarr; me (receive)</td><td><span class="jp">もらう</span></td></tr>
+    <tr><td class="jp">田中さんが弟にペンをあげた</td><td>Tanaka-san ga otouto ni pen wo ageta</td><td class="kr">다나카 씨가 동생에게 펜을 줬다</td><td>Tanaka &rarr; brother (away)</td><td><span class="jp">あげる</span></td></tr>
+    <tr><td class="jp">先生が私に本をくれた</td><td>sensei ga watashi ni hon wo kureta</td><td class="kr">선생님이 나에게 책을 줬다</td><td>Teacher &rarr; me (toward)</td><td><span class="jp">くれる</span></td></tr>
+  </tbody>
+</table>
+
+<div class="callout warn">
+  <div class="callout-title">Elaborative Interrogation</div>
+  <p><strong>WHY does Japanese need three verbs when Korean manages with just two (주다/받다)?</strong></p>
+  <p>Japanese encodes the speaker's <em>perspective</em> directly into the verb. <span class="jp">くれる</span> inherently carries gratitude -- it says "someone did me the favor of giving." Korean expresses this through tone, context, or explicit phrases like <span class="kr">~해 주다</span>. Japanese builds the social relationship into the grammar itself. This is one reason Japanese is described as a "speaker-centric" language.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PATTERN 4: RELATIVE CLAUSES
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="pattern-4-relative-clauses----free-transfer">Relative Clauses -- Free Transfer</h3>
+
+<div class="pq">
+  "Free." -- This pattern transfers 100% from Korean. Same structure, just different words.
+</div>
+
+<p>In both Korean and Japanese, relative clauses go <strong>before</strong> the noun they modify. There is no "who," "which," or "that" -- the clause simply sits in front of the noun. English speakers struggle here. You will not.</p>
+
+<div class="card">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+    <div>
+      <h4 style="color:var(--a2)">Korean</h4>
+      <p style="font-size:1.3rem;margin-bottom:.3rem"><span class="kr">[어제 내가 읽은] 책</span></p>
+      <p style="font-size:.82rem;color:var(--text-muted)">[eoje naega ilgeun] chaek</p>
+      <p style="font-size:.85rem">[yesterday I read] book</p>
+    </div>
+    <div>
+      <h4 style="color:var(--accent)">Japanese</h4>
+      <p style="font-size:1.3rem;margin-bottom:.3rem"><span class="jp">[昨日私が読んだ] 本</span></p>
+      <p style="font-size:.82rem;color:var(--text-muted)">[kinou watashi ga yonda] hon</p>
+      <p style="font-size:.85rem">[yesterday I read] book</p>
+    </div>
+  </div>
+  <p style="margin-top:1rem;font-size:.88rem;color:var(--a3)"><strong>Identical structure.</strong> [Modifying clause] + Noun. No relative pronoun needed. <span class="transfer-tag full">100% transfer</span></p>
+</div>
+
+<h4>More Examples</h4>
+<table>
+  <thead>
+    <tr><th>English</th><th>Korean</th><th>Japanese</th><th>Romaji</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>the person who came yesterday</td><td class="kr">[어제 온] 사람</td><td class="jp">[昨日来た] 人</td><td>[kinou kita] hito</td></tr>
+    <tr><td>the movie I watched</td><td class="kr">[내가 본] 영화</td><td class="jp">[私が見た] 映画</td><td>[watashi ga mita] eiga</td></tr>
+    <tr><td>the cake that Mom made</td><td class="kr">[엄마가 만든] 케이크</td><td class="jp">[お母さんが作った] ケーキ</td><td>[okaasan ga tsukutta] keeki</td></tr>
+    <tr><td>the coffee that is on the table</td><td class="kr">[테이블 위에 있는] 커피</td><td class="jp">[テーブルの上にある] コーヒー</td><td>[teeburu no ue ni aru] koohii</td></tr>
+    <tr><td>the place where we met</td><td class="kr">[우리가 만난] 곳</td><td class="jp">[私たちが会った] 場所</td><td>[watashitachi ga atta] basho</td></tr>
+    <tr><td>the student who studies Japanese</td><td class="kr">[일본어를 공부하는] 학생</td><td class="jp">[日本語を勉強している] 学生</td><td>[nihongo wo benkyou shiteiru] gakusei</td></tr>
+  </tbody>
+</table>
+
+<div class="callout ok">
+  <div class="callout-title">The Rule</div>
+  <p>Whatever form the verb takes at the end of a sentence, that same form goes directly in front of the noun. Past tense? Use past form. Negative? Use negative form. Present progressive? Use ている form. The clause just "stacks" in front of the noun, exactly as in Korean.</p>
+</div>
+
+<div class="callout info">
+  <div class="callout-title">Stacking Relative Clauses</div>
+  <p>Both languages can stack multiple modifiers. Watch:<br>
+  <span class="kr">[어제 엄마가 만든 맛있는] 케이크</span><br>
+  <span class="jp">[昨日お母さんが作ったおいしい] ケーキ</span><br>
+  = "the delicious cake that Mom made yesterday"<br>
+  Same ordering logic. The complexity grows identically.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PATTERN 5: REPORTED SPEECH
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="pattern-5-reported-speech----と">Reported Speech -- <span class="jp">と</span></h3>
+
+<p>Korean uses <span class="kr">-라고</span> (and variants like <span class="kr">-다고, -냐고</span>) to mark quoted or reported speech. Japanese uses <span class="jp">と</span>. The structure is the same:</p>
+
+<div class="card">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+    <div>
+      <h4 style="color:var(--a2)">Korean</h4>
+      <p style="font-size:1.3rem;margin-bottom:.3rem"><span class="kr">"간다"<strong>고</strong> 말했다</span></p>
+      <p style="font-size:.82rem;color:var(--text-muted)">"ganda" go malhaessda</p>
+      <p style="font-size:.85rem">[quote] + quotation particle + said</p>
+    </div>
+    <div>
+      <h4 style="color:var(--accent)">Japanese</h4>
+      <p style="font-size:1.3rem;margin-bottom:.3rem"><span class="jp">"行く"<strong>と</strong>言った</span></p>
+      <p style="font-size:.82rem;color:var(--text-muted)">"iku" to itta</p>
+      <p style="font-size:.85rem">[quote] + quotation particle + said</p>
+    </div>
+  </div>
+  <p style="margin-top:1rem;font-size:.88rem;color:var(--a3)"><strong>Same structure.</strong> [Quote] + particle + verb of saying. Korean 라고 = Japanese と. <span class="transfer-tag full">100% transfer</span></p>
+</div>
+
+<h4>Examples</h4>
+<table>
+  <thead>
+    <tr><th>English</th><th>Korean</th><th>Japanese</th><th>Romaji</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>He said "I'll go."</td><td class="kr">"간다"라고 말했다</td><td class="jp">「行く」と言った</td><td>"iku" to itta</td></tr>
+    <tr><td>She said it's delicious.</td><td class="kr">"맛있다"라고 했다</td><td class="jp">「おいしい」と言った</td><td>"oishii" to itta</td></tr>
+    <tr><td>I think it will rain.</td><td class="kr">비가 올 거라고 생각한다</td><td class="jp">雨が降ると思う</td><td>ame ga furu to omou</td></tr>
+    <tr><td>I heard he is a teacher.</td><td class="kr">선생님이라고 들었다</td><td class="jp">先生だと聞いた</td><td>sensei da to kiita</td></tr>
+    <tr><td>The teacher said "Study!"</td><td class="kr">"공부해"라고 선생님이 말했다</td><td class="jp">「勉強しろ」と先生が言った</td><td>"benkyou shiro" to sensei ga itta</td></tr>
+  </tbody>
+</table>
+
+<h4>Common Verbs with <span class="jp">と</span></h4>
+<table>
+  <thead>
+    <tr><th>Japanese</th><th>Romaji</th><th>Korean</th><th>Meaning</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="jp">~と言う</td><td>~to iu</td><td class="kr">~라고 말하다</td><td>to say that ~</td></tr>
+    <tr><td class="jp">~と思う</td><td>~to omou</td><td class="kr">~라고 생각하다</td><td>to think that ~</td></tr>
+    <tr><td class="jp">~と聞く</td><td>~to kiku</td><td class="kr">~라고 듣다</td><td>to hear that ~</td></tr>
+    <tr><td class="jp">~と書いてある</td><td>~to kaite aru</td><td class="kr">~라고 써 있다</td><td>it says ~ (written)</td></tr>
+    <tr><td class="jp">~と呼ぶ</td><td>~to yobu</td><td class="kr">~라고 부르다</td><td>to call (name) ~</td></tr>
+  </tbody>
+</table>
+
+<div class="callout warn">
+  <div class="callout-title">Elaborative Interrogation</div>
+  <p><strong>WHY do both Korean and Japanese use a quotation particle while English does not?</strong></p>
+  <p>English relies on word order and complementizers ("that," "whether") to mark reported speech. Korean and Japanese, as SOV agglutinative languages, use a particle to explicitly mark where the quote ends and the reporting verb begins. This is structurally necessary because in SOV languages, the verb comes last -- without a marker, you would not know where the quoted content ends. The particle acts as a "closing quotation bracket."</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PATTERN SUMMARY
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="pattern-transfer-summary">Pattern Transfer Summary</h3>
+
+<table>
+  <thead>
+    <tr><th>Pattern</th><th>Korean &rarr; Japanese</th><th>Transfer Level</th><th>Difficulty</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Existence (いる/ある)</td><td>있다 &rarr; いる/ある</td><td><span class="transfer-tag partial">Concept yes, split differs</span></td><td>Medium</td></tr>
+    <tr><td>Desire (-たい)</td><td>-고 싶다 &rarr; -たい</td><td><span class="transfer-tag full">~90%</span></td><td>Easy</td></tr>
+    <tr><td>Giving/Receiving</td><td>주다/받다 &rarr; あげる/くれる/もらう</td><td><span class="transfer-tag none">~20%</span></td><td>Hard</td></tr>
+    <tr><td>Relative Clauses</td><td>[clause] noun &rarr; [clause] noun</td><td><span class="transfer-tag full">100%</span></td><td>Free</td></tr>
+    <tr><td>Reported Speech</td><td>-라고 &rarr; と</td><td><span class="transfer-tag full">100%</span></td><td>Free</td></tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     INTERACTIVE EXERCISES
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="interactive-exercises">Interactive Exercises</h3>
+
+<!-- Quiz 1: Multiple Choice -- いる vs ある -->
+<div id="quiz-iru-aru"></div>
+
+<!-- Quiz 2: Fill in the Blank -- -たい construction -->
+<div id="quiz-tai"></div>
+
+<!-- Quiz 3: Drag Match -- giving/receiving verb selection -->
+<div id="quiz-giving"></div>
+
+<!-- Quiz 4: Sentence Builder -- relative clauses -->
+<div id="quiz-relative"></div>
+
+<!-- Quiz 5: Recall Check from Ch07-08 -->
+<h3 id="recall-check----chapters-06-08-review">Recall Check -- Chapters 06-08 Review</h3>
+<p>Mixed review of particles, conjugation, and conversation patterns. Keep all five patterns fresh.</p>
+
+<div id="quiz-recall"></div>
+
+<!-- Mark as Complete -->
+<button class="chapter-complete" data-ch="10">Mark as Complete &#10003;</button>
+
+<div style="display:flex;justify-content:space-between;margin:2rem 0">
+  <a href="ch-09.html" class="quiz-btn secondary">&larr; Chapter 10: Daily Conversations</a>
+  <a href="ch-11.html" class="quiz-btn">Next: Chapter 12 -- Kanji &rarr;</a>
+</div>
+
+</section>
+
+</div>
+
+
+</div>
+
+<footer>
+  <p>Zero to Hero: 日本語 for Korean Speakers &middot; Chapter 10</p>
+</footer>
+
+<script src="js/shared.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/quiz-engine.js"></script>
+<script src="js/spaced-repetition.js"></script>
+<script src="js/memory-palace.js"></script>
+<script>
+// ─── Recall Check (top of chapter, from Ch07-08) ───
+QuizEngine.RecallCheck(
+  document.getElementById('recall-check-top'),
+  {
+    fromChapters: 'Ch07-08',
+    items: [
+      { question: 'Particles: What particle marks the topic of a sentence?', answer: 'は (wa)' },
+      { question: 'Particles: What particle marks the direct object?', answer: 'を (wo)' },
+      { question: 'Particles: What particle marks a static location ("at/in")?', answer: 'に (ni)' },
+      { question: 'Conjugation: What is the polite present form of 食べる?', answer: '食べます (tabemasu)' },
+      { question: 'Conjugation: What is the past tense (plain) of 行く?', answer: '行った (itta)' },
+      { question: 'Conjugation: What is the negative form of 飲む?', answer: '飲まない (nomanai)' },
+      { question: 'Conversation: How do you say "Excuse me" / "I\'m sorry" politely?', answer: 'すみません (sumimasen)' }
+    ]
+  }
+);
+
+// ─── Quiz 1: Multiple Choice -- いる vs ある ───
+QuizEngine.MultipleChoice(
+  document.getElementById('quiz-iru-aru'),
+  {
+    title: 'Existence: いる or ある?',
+    questions: [
+      {
+        prompt: '<span class="jp">猫が___。</span> (There is a cat.)',
+        options: ['いる', 'ある'],
+        correctIndex: 0,
+        explanation: 'A cat is a living, moving creature. Use いる for animate beings.'
+      },
+      {
+        prompt: '<span class="jp">テーブルの上に本が___。</span> (There is a book on the table.)',
+        options: ['いる', 'ある'],
+        correctIndex: 1,
+        explanation: 'A book is an inanimate object. Use ある.'
+      },
+      {
+        prompt: '<span class="jp">庭に花が___。</span> (There are flowers in the garden.)',
+        options: ['いる', 'ある'],
+        correctIndex: 1,
+        explanation: 'Plants do not move on their own. Japanese treats them as inanimate -- use ある.'
+      },
+      {
+        prompt: '<span class="jp">幽霊が___！</span> (There is a ghost!)',
+        options: ['いる', 'ある'],
+        correctIndex: 0,
+        explanation: 'Ghosts move and have will. Even though they are dead, Japanese treats them as animate -- use いる.'
+      },
+      {
+        prompt: '<span class="jp">ロボットが___。</span> (There is a robot.)',
+        options: ['いる', 'ある'],
+        correctIndex: 1,
+        explanation: 'Robots are machines, not alive. Use ある. Even humanoid robots get ある.'
+      },
+      {
+        prompt: '<span class="jp">子どもが三人___。</span> (There are three children.)',
+        options: ['いる', 'ある'],
+        correctIndex: 0,
+        explanation: 'Children are living humans. Use いる.'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 2: Fill in the Blank -- -たい construction ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-tai'),
+  {
+    title: 'Desire Form: Build -たい Sentences',
+    questions: [
+      {
+        prompt: 'I want to eat sushi. <span class="kr">초밥을 먹고 싶다.</span> Write in Japanese (hiragana OK):',
+        answer: '寿司が食べたい',
+        acceptAlso: ['すしがたべたい', 'すしをたべたい', '寿司を食べたい', 'sushi ga tabetai', 'sushi wo tabetai'],
+        explanation: '寿司(sushi) + が/を + 食べたい(tabetai). Both が and を are correct.',
+        korean: '초밥을 먹고 싶다'
+      },
+      {
+        prompt: 'I want to go to Japan. <span class="kr">일본에 가고 싶다.</span> Write in Japanese:',
+        answer: '日本に行きたい',
+        acceptAlso: ['にほんにいきたい', 'nihon ni ikitai'],
+        explanation: '日本(nihon) + に(to) + 行きたい(ikitai). Verb stem 行き + たい.',
+        korean: '일본에 가고 싶다'
+      },
+      {
+        prompt: 'I don\'t want to drink coffee. <span class="kr">커피를 마시고 싶지 않다.</span> Write the negative -たい form:',
+        answer: 'コーヒーを飲みたくない',
+        acceptAlso: ['コーヒーが飲みたくない', 'こーひーをのみたくない', 'koohii wo nomitakunai'],
+        explanation: 'Negative: たい → たくない (like い-adjective negative). 飲みたい → 飲みたくない.',
+        korean: '커피를 마시고 싶지 않다'
+      },
+      {
+        prompt: 'I wanted to see that movie. <span class="kr">그 영화를 보고 싶었다.</span> Write the past -たい form:',
+        answer: 'あの映画が見たかった',
+        acceptAlso: ['あの映画を見たかった', 'あのえいがをみたかった', 'あのえいががみたかった', 'ano eiga ga mitakatta'],
+        explanation: 'Past: たい → たかった (like い-adjective past). 見たい → 見たかった.',
+        korean: '그 영화를 보고 싶었다'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 3: Drag Match -- giving/receiving verb selection ───
+QuizEngine.DragMatch(
+  document.getElementById('quiz-giving'),
+  {
+    title: 'Giving and Receiving: Pick the Right Verb',
+    instruction: 'Match each situation to the correct Japanese verb:',
+    pairs: [
+      { left: 'I gave a gift to my friend', right: 'あげた' },
+      { left: 'My mother gave me money', right: 'くれた' },
+      { left: 'I received a book from my teacher', right: 'もらった' },
+      { left: 'I gave chocolate to her', right: 'あげた' },
+      { left: 'My friend gave me advice', right: 'くれた' },
+      { left: 'I received help from a stranger', right: 'もらった' }
+    ]
+  }
+);
+
+// ─── Quiz 4: Sentence Builder -- relative clauses ───
+QuizEngine.SentenceBuilder(
+  document.getElementById('quiz-relative'),
+  {
+    title: 'Build Relative Clauses',
+    sentences: [
+      {
+        hint: 'Build: "the book I read yesterday" -- <span class="kr">[어제 내가 읽은] 책</span>:',
+        words: ['昨日', '私が', '読んだ', '本'],
+        correct: '昨日私が読んだ本'
+      },
+      {
+        hint: 'Build: "the person who came yesterday" -- <span class="kr">[어제 온] 사람</span>:',
+        words: ['昨日', '来た', '人'],
+        correct: '昨日来た人'
+      },
+      {
+        hint: 'Build: "the cake Mom made" -- <span class="kr">[엄마가 만든] 케이크</span>:',
+        words: ['お母さんが', '作った', 'ケーキ'],
+        correct: 'お母さんが作ったケーキ'
+      },
+      {
+        hint: 'Build: "I think it will rain" (reported speech with と) -- <span class="kr">비가 올 거라고 생각한다</span>:',
+        words: ['雨が', '降る', 'と', '思う'],
+        correct: '雨が降ると思う'
+      },
+      {
+        hint: 'Build: "He said \'I\'ll go\'" (reported speech) -- <span class="kr">"간다"라고 말했다</span>:',
+        words: ['「行く」', 'と', '言った'],
+        correct: '「行く」と言った'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 5: Recall Check from Ch07-08 ───
+QuizEngine.RecallCheck(
+  document.getElementById('quiz-recall'),
+  {
+    fromChapters: 'Ch07-08',
+    items: [
+      { question: 'Particles: Translate to Japanese -- "I ate ramen AT the restaurant." (에서 = ?)', answer: 'レストランで ラーメンを食べた (de = action location particle)' },
+      { question: 'Particles: What particle means "from"? (에서/부터 = ?)', answer: 'から (kara)' },
+      { question: 'Conjugation: Convert 書く (kaku, to write) into て-form.', answer: '書いて (kaite) -- く→いて pattern' },
+      { question: 'Conjugation: Convert 飲む (nomu, to drink) into て-form.', answer: '飲んで (nonde) -- む→んで pattern' },
+      { question: 'Conjugation: What is the polite past tense of する (to do)?', answer: 'しました (shimashita)' },
+      { question: 'Conversation: How do you say "I\'m sorry for being late" politely?', answer: '遅れてすみません (okurete sumimasen)' },
+      { question: 'Conversation: Translate "Where is the station?" to Japanese.', answer: '駅はどこですか？ (eki wa doko desu ka?)' }
+    ]
+  }
+);
+</script>
+</body>
+</html>

@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ch00: 기억 과학 — Zero to Hero 日本語</title>
+<link rel="stylesheet" href="css/design-system.css">
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <span class="logo-badge">Zero to Hero — 기억 설계 에디션</span>
+    <div class="logo-title">한국어 화자를 위한 日本語</div>
+    <div class="logo-sub">한국어에서 日本語로 — 기억 설계자의 안내서</div>
+  </a>
+  <div class="sidebar-progress">
+    <div class="sidebar-progress-label">진행률</div>
+    <div class="sidebar-progress-bar">
+      <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+    </div>
+    <div class="sidebar-progress-count">0/22 완료</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="ch-00.html" class="toc-link active"><span class="toc-num">00</span><span class="toc-check" data-ch="00"></span>기억 과학</a>
+    <a href="ch-01.html" class="toc-link"><span class="toc-num">01</span><span class="toc-check" data-ch="01"></span>한국어의 이점</a>
+    <a href="ch-02.html" class="toc-link"><span class="toc-num">02</span><span class="toc-check" data-ch="02"></span>히라가나</a>
+    <a href="ch-03.html" class="toc-link"><span class="toc-num">03</span><span class="toc-check" data-ch="03"></span>가타카나</a>
+    <a href="ch-04.html" class="toc-link"><span class="toc-num">04</span><span class="toc-check" data-ch="04"></span>발음</a>
+    <a href="ch-05.html" class="toc-link"><span class="toc-num">05</span><span class="toc-check" data-ch="05"></span>서바이벌 일본어</a>
+    <a href="ch-06.html" class="toc-link"><span class="toc-num">06</span><span class="toc-check" data-ch="06"></span>조수사</a>
+    <a href="ch-07.html" class="toc-link"><span class="toc-num">07</span><span class="toc-check" data-ch="07"></span>조사</a>
+    <a href="ch-08.html" class="toc-link"><span class="toc-num">08</span><span class="toc-check" data-ch="08"></span>동사 활용</a>
+    <a href="ch-09.html" class="toc-link"><span class="toc-num">09</span><span class="toc-check" data-ch="09"></span>일상 회화</a>
+    <a href="ch-10.html" class="toc-link"><span class="toc-num">10</span><span class="toc-check" data-ch="10"></span>문형</a>
+    <a href="ch-11.html" class="toc-link"><span class="toc-num">11</span><span class="toc-check" data-ch="11"></span>한자</a>
+    <a href="ch-12.html" class="toc-link"><span class="toc-num">12</span><span class="toc-check" data-ch="12"></span>한자어</a>
+    <a href="ch-13.html" class="toc-link"><span class="toc-num">13</span><span class="toc-check" data-ch="13"></span>고유어</a>
+    <a href="ch-14.html" class="toc-link"><span class="toc-num">14</span><span class="toc-check" data-ch="14"></span>경어</a>
+    <a href="ch-15.html" class="toc-link"><span class="toc-num">15</span><span class="toc-check" data-ch="15"></span>독해</a>
+    <a href="ch-16.html" class="toc-link"><span class="toc-num">16</span><span class="toc-check" data-ch="16"></span>작문</a>
+    <a href="ch-17.html" class="toc-link"><span class="toc-num">17</span><span class="toc-check" data-ch="17"></span>청해</a>
+    <a href="ch-18.html" class="toc-link"><span class="toc-num">18</span><span class="toc-check" data-ch="18"></span>문화 화용론</a>
+    <a href="ch-19.html" class="toc-link"><span class="toc-num">19</span><span class="toc-check" data-ch="19"></span>JLPT와 그 너머</a>
+    <a href="ch-20.html" class="toc-link"><span class="toc-num">20</span><span class="toc-check" data-ch="20"></span>기억의 궁전</a>
+    <a href="ch-21.html" class="toc-link"><span class="toc-num">21</span><span class="toc-check" data-ch="21"></span>90일 스프린트</a>
+    <a href="appendices.html" class="toc-link" style="margin-top:.5rem;border-top:1px solid var(--border);padding-top:.8rem"><span class="toc-num">+</span>부록</a>
+  </nav>
+</aside>
+
+<div class="main">
+<div class="content-wrap">
+
+<section id="ch00" data-ch="00" style="padding-top:3rem">
+<h2><span class="ch-label">제00장</span>기억의 작동 원리 &mdash; 이 책의 과학적 기반</h2>
+
+<div class="callout memory">
+  <div class="callout-title">기억 기법 스포트라이트: 망각 곡선</div>
+  <p>헤르만 에빙하우스는 복습 없이는 24시간 이내에 약 70%를 잊어버린다는 사실을 증명했습니다. 이 장의 모든 기법은 그 곡선을 평탄하게 만들기 위해 설계되었습니다. 이 장의 끝에 나오는 간격 반복 일정이 여러분의 가장 강력한 무기입니다.</p>
+</div>
+
+<p>일본어 단어를 하나라도 배우기 전에, <strong>여러분의 뇌가 언어를 어떻게 저장하고 인출하는지</strong> 이해해야 합니다. 이것은 선택적인 배경지식이 아닙니다 &mdash; 여러분의 전체 학습 여정이 실행되는 운영 체제입니다. 이 원리들을 마스터하면 공부한 것의 80%를 기억하게 됩니다. 무시하면 80%를 잊어버리게 됩니다.</p>
+
+<div class="pq">
+  "이 책은 단순히 일본어를 가르치지 않습니다. 일본어를 <em>기억하는 방법</em>을 가르칩니다. 모든 연습, 모든 레이아웃, 모든 복습 프롬프트는 이 장에서 배울 열두 가지 기억의 기둥 위에 세워져 있습니다."
+</div>
+
+<!-- ================================================================ -->
+<!-- 섹션 0A: 망각 곡선                                                 -->
+<!-- ================================================================ -->
+<nav class="chapter-toc">
+  <details open>
+    <summary class="chapter-toc-title">이 장의 내용</summary>
+  <ol>
+    <li><a href="#0a-망각-곡선-당신의-적">망각 곡선: 당신의 적</a></li>
+    <li><a href="#0b-기억의-열두-기둥-학습자를-위한-간략-정리">기억의 열두 기둥 (학습자를 위한 간략 정리)</a></li>
+    <li><a href="#0c-첫-번째-기억의-궁전-만들기">첫 번째 기억의 궁전 만들기</a></li>
+    <li><a href="#0d-일일-루틴">일일 루틴</a></li>
+  </ol>
+  </details>
+</nav>
+
+<h3 id="0a-망각-곡선-당신의-적">망각 곡선: 당신의 적</h3>
+
+<p>1885년, 독일의 심리학자 헤르만 에빙하우스는 모든 언어 학습자를 공포에 빠뜨릴 발견을 했습니다: <strong>의도적인 복습 없이는 새로운 자료의 약 80%를 48시간 이내에 잊어버립니다</strong>. 그는 이것을 <em>망각 곡선</em>으로 표현했습니다 &mdash; 100% 기억률에서 거의 0까지 가파르고 무자비하게 하락하는 곡선입니다.</p>
+
+<p>그러나 에빙하우스는 해독제도 발견했습니다. <em>적절한 순간에</em> &mdash; 잊어버리기 직전에 &mdash; 복습할 때마다 곡선은 평탄해집니다. 4~5회의 적절한 시점의 복습 후, 정보는 취약한 단기 저장소에서 견고한 장기 기억으로 이동합니다.</p>
+
+<div class="diagram">
+  <svg viewBox="0 0 700 350" xmlns="http://www.w3.org/2000/svg">
+    <!-- Grid lines -->
+    <line x1="80" y1="40" x2="80" y2="290" stroke="var(--border)" stroke-width="1"/>
+    <line x1="80" y1="290" x2="660" y2="290" stroke="var(--border)" stroke-width="1"/>
+    <line x1="80" y1="90" x2="660" y2="90" stroke="var(--border)" stroke-width=".5" stroke-dasharray="4,4" opacity=".4"/>
+    <line x1="80" y1="140" x2="660" y2="140" stroke="var(--border)" stroke-width=".5" stroke-dasharray="4,4" opacity=".4"/>
+    <line x1="80" y1="190" x2="660" y2="190" stroke="var(--border)" stroke-width=".5" stroke-dasharray="4,4" opacity=".4"/>
+    <line x1="80" y1="240" x2="660" y2="240" stroke="var(--border)" stroke-width=".5" stroke-dasharray="4,4" opacity=".4"/>
+
+    <!-- Y-axis labels -->
+    <text x="70" y="45" text-anchor="end" font-size="11" fill="var(--text-muted)">100%</text>
+    <text x="70" y="95" text-anchor="end" font-size="11" fill="var(--text-muted)">80%</text>
+    <text x="70" y="145" text-anchor="end" font-size="11" fill="var(--text-muted)">60%</text>
+    <text x="70" y="195" text-anchor="end" font-size="11" fill="var(--text-muted)">40%</text>
+    <text x="70" y="245" text-anchor="end" font-size="11" fill="var(--text-muted)">20%</text>
+    <text x="70" y="295" text-anchor="end" font-size="11" fill="var(--text-muted)">0%</text>
+    <text x="30" y="170" text-anchor="middle" font-size="11" fill="var(--text-muted)" transform="rotate(-90,30,170)">기억률</text>
+
+    <!-- X-axis labels -->
+    <text x="80" y="310" text-anchor="middle" font-size="10" fill="var(--text-muted)">학습</text>
+    <text x="195" y="310" text-anchor="middle" font-size="10" fill="var(--text-muted)">1시간</text>
+    <text x="310" y="310" text-anchor="middle" font-size="10" fill="var(--text-muted)">1일</text>
+    <text x="425" y="310" text-anchor="middle" font-size="10" fill="var(--text-muted)">3일</text>
+    <text x="540" y="310" text-anchor="middle" font-size="10" fill="var(--text-muted)">1주</text>
+    <text x="660" y="310" text-anchor="middle" font-size="10" fill="var(--text-muted)">1개월</text>
+
+    <!-- Line 1: No review (red, drops to ~20%) -->
+    <polyline points="80,40 140,170 195,210 250,235 310,252 370,260 425,265 480,268 540,270 600,272 660,274"
+      fill="none" stroke="#e74c3c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="665" y="268" font-size="10" fill="#e74c3c" font-weight="600">복습 없음</text>
+
+    <!-- Line 2: Single review (orange, drops slower to ~45%) -->
+    <polyline points="80,40 140,100 195,110 250,130 280,138 310,150 340,160 370,168 425,178 480,185 540,188 600,190 660,192"
+      fill="none" stroke="#e67e22" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Review marker -->
+    <circle cx="195" cy="110" r="5" fill="#e67e22"/>
+    <text x="205" y="106" font-size="9" fill="#e67e22">복습 1회</text>
+    <text x="665" y="186" font-size="10" fill="#e67e22" font-weight="600">1회 복습</text>
+
+    <!-- Line 3: Spaced reviews (green, stays at 80%+) -->
+    <polyline points="80,40 140,100 195,68 250,100 310,78 370,95 425,82 480,88 540,84 600,86 660,85"
+      fill="none" stroke="var(--a3)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Review markers -->
+    <circle cx="195" cy="68" r="5" fill="var(--a3)"/>
+    <circle cx="310" cy="78" r="5" fill="var(--a3)"/>
+    <circle cx="425" cy="82" r="5" fill="var(--a3)"/>
+    <circle cx="540" cy="84" r="5" fill="var(--a3)"/>
+    <text x="200" y="60" font-size="9" fill="var(--a3)">R1</text>
+    <text x="315" y="70" font-size="9" fill="var(--a3)">R2</text>
+    <text x="430" y="74" font-size="9" fill="var(--a3)">R3</text>
+    <text x="545" y="76" font-size="9" fill="var(--a3)">R4</text>
+    <text x="665" y="79" font-size="10" fill="var(--a3)" font-weight="600">간격 반복 복습</text>
+
+    <!-- Title -->
+    <text x="370" y="335" text-anchor="middle" font-size="13" font-weight="600" fill="var(--text)">에빙하우스 망각 곡선</text>
+  </svg>
+  <div class="diagram-caption">복습 없이는 며칠 이내에 약 80%를 잃게 됩니다(빨간색). 한 번의 복습은 도움이 됩니다(주황색). 그러나 점점 늘어나는 간격으로 반복 복습하면 기억률이 영구적으로 80% 이상 유지됩니다(초록색). 이 책은 모든 장에 간격 반복 복습을 내장하고 있습니다.</div>
+</div>
+
+<div class="callout warn">
+  <div class="callout-title">냉혹한 진실</div>
+  <p>오늘 밤 일본어 단어 50개를 공부하고 한 번도 복습하지 않으면, 다음 주까지 <strong>대략 10개 정도</strong>만 기억할 것입니다. 이것은 의지력의 문제가 아닙니다 &mdash; 생물학입니다. 체계 없이는, 여러분의 뇌가 에너지를 절약하기 위해 새로운 정보를 적극적으로 버립니다.</p>
+  <p style="margin-bottom:0"><strong>이 책이 바로 그 체계입니다.</strong> 모든 퀴즈, 모든 궁전 산책, 모든 복습 프롬프트는 망각이 일어나기 전에 차단하도록 시간이 조정되어 있습니다.</p>
+</div>
+
+<!-- ================================================================ -->
+<!-- 섹션 0B: 기억의 열두 기둥                                           -->
+<!-- ================================================================ -->
+<h3 id="0b-기억의-열두-기둥-학습자를-위한-간략-정리">기억의 열두 기둥 (학습자를 위한 간략 정리)</h3>
+
+<p>인지과학은 장기 기억을 극적으로 향상시키는 열두 가지 증거 기반 기법을 확인했습니다. 이 책의 각 장은 여러 기둥을 활용합니다 &mdash; 의식적으로 생각할 필요는 없습니다. 그러나 각 연습이 <em>왜</em> 존재하는지 이해하면 더 전략적인 학습자가 될 수 있습니다.</p>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>1. 인출 연습</h4>
+    <p style="font-size:.92rem;color:var(--accent);margin-bottom:.5rem;font-style:italic">"운동 영상을 보는 것이 아니라, 직접 역기를 드는 것"</p>
+    <p>자기 테스트는 평가가 아닙니다 &mdash; 학습 그 자체입니다. 답을 다시 읽는 대신 기억에서 끌어낼 때마다 신경 경로가 강화됩니다. 이 책이 단순한 설명이 아닌 퀴즈로 가득한 이유가 바로 이것입니다.</p>
+  </div>
+  <div class="card">
+    <h4>2. 간격 반복</h4>
+    <p style="font-size:.92rem;color:var(--accent);margin-bottom:.5rem;font-style:italic">"한꺼번에 물을 쏟는 것이 아니라, 정기적으로 물을 주는 것"</p>
+    <p>점점 늘어나는 간격으로 복습합니다: 1일, 3일, 7일, 14일, 30일. 각 복습은 더 높은 기준선에서 망각 곡선을 초기화합니다. 이 책에 내장된 SM-2 알고리즘이 여러분의 최적 복습 타이밍을 자동으로 계산합니다.</p>
+  </div>
+  <div class="card">
+    <h4>3. 장소법(로키법)</h4>
+    <p style="font-size:.92rem;color:var(--accent);margin-bottom:.5rem;font-style:italic">"집의 각 방에 물건을 배치하는 것"</p>
+    <p>여러분의 공간 기억은 놀라울 정도로 강력합니다. 일본어 어휘를 익숙한 건물의 특정 위치에 정신적으로 "배치"함으로써, 생생하고 지속적인 기억을 만들 수 있습니다. 아래 섹션 0C에서 첫 번째 기억의 궁전을 만들게 됩니다.</p>
+  </div>
+  <div class="card">
+    <h4>4. 키워드 기억술</h4>
+    <p style="font-size:.92rem;color:var(--accent);margin-bottom:.5rem;font-style:italic">"언어 사이에 기이한 다리를 놓는 것"</p>
+    <p>새로운 일본어 단어를 발음이 비슷한 한국어나 영어 단어와 생생한 정신적 이미지를 통해 연결합니다. 이미지가 이상할수록 기억은 더 강해집니다. 예시: <span class="jp">鍵 (kagi)</span> = 열쇠. 거대한 열쇠가 <em>새장(cage)</em>에 꽂혀 있는 모습을 상상하세요 (kagi는 "cage"와 비슷하게 들립니다).</p>
+  </div>
+  <div class="card">
+    <h4>5. 이중 부호화</h4>
+    <p style="font-size:.92rem;color:var(--accent);margin-bottom:.5rem;font-style:italic">"보고 또 듣기 = 두 배의 기억"</p>
+    <p>두 채널(시각 + 언어)을 통해 부호화된 정보는 하나가 아닌 두 개의 인출 경로를 만듭니다. 이 책의 모든 어휘 항목에 텍스트, 이미지 연상, 음성 맥락이 있는 이유가 바로 이것입니다. 같은 기억에 대한 두 경로는 회상 가능성을 두 배로 높입니다.</p>
+  </div>
+  <div class="card">
+    <h4>6. 정교화 질문</h4>
+    <p style="font-size:.92rem;color:var(--accent);margin-bottom:.5rem;font-style:italic">"'왜'라고 묻는 것이 답을 굳힌다"</p>
+    <p>"이것이 왜 이렇게 작동하는가?"라고 물으면 새로운 정보가 기존 지식과 연결됩니다. 이 책 전체에서 노란색 콜아웃 박스가 답을 보여주기 전에 <em>왜</em>인지 생각해보도록 유도합니다.</p>
+  </div>
+  <div class="card">
+    <h4>7. 교차 연습</h4>
+    <p style="font-size:.92rem;color:var(--accent);margin-bottom:.5rem;font-style:italic">"한 가지만 반복하는 것이 아니라, 연습 유형을 섞는 것"</p>
+    <p>A-A-A-B-B-B 방식의 연습은 더 쉽게 느껴지지만, A-B-C-A-B-C보다 약한 기억을 만듭니다. 이 책은 각 세션에서 문법, 어휘, 독해, 청해를 혼합하여 여러분의 뇌가 개념들을 <em>구별하는 방법</em>을 학습하도록 합니다.</p>
+  </div>
+  <div class="card">
+    <h4>8. 생성 효과</h4>
+    <p style="font-size:.92rem;color:var(--accent);margin-bottom:.5rem;font-style:italic">"보기 전에 추측하기 = 더 강한 부호화"</p>
+    <p>답을 보기 전에 &mdash; 틀리더라도 &mdash; 답을 만들어보려는 시도는 수동적 읽기보다 더 강한 부호화를 만듭니다. 연습 문제가 먼저 <em>시도해보고</em> 확인하도록 하는 이유가 바로 이것입니다. 그 어려움이 곧 학습입니다.</p>
+  </div>
+  <div class="card">
+    <h4>9. 바람직한 어려움</h4>
+    <p style="font-size:.92rem;color:var(--accent);margin-bottom:.5rem;font-style:italic">"더 어려운 연습 = 더 오래가는 기억"</p>
+    <p>연습이 너무 쉽게 느껴진다면, 효율적으로 학습하고 있지 않다는 뜻입니다. 인출 시 약간의 어려움 &mdash; "혀끝에서 맴도는" 느낌 &mdash; 은 깊은 처리가 이루어지고 있다는 신호입니다. 이 책은 진행에 따라 의도적으로 난이도를 높입니다.</p>
+  </div>
+  <div class="card">
+    <h4>10. 맥락 의존 기억</h4>
+    <p style="font-size:.92rem;color:var(--accent);margin-bottom:.5rem;font-style:italic">"사용할 상황에서 배우기"</p>
+    <p>인출 맥락이 부호화 맥락과 일치할 때 정보를 더 잘 기억합니다. 이 책이 고립된 단어 목록이 아닌 실제적인 대화와 시나리오 안에서 어휘를 가르치는 이유가 바로 이것입니다.</p>
+  </div>
+  <div class="card">
+    <h4>11. 자기 참조 효과</h4>
+    <p style="font-size:.92rem;color:var(--accent);margin-bottom:.5rem;font-style:italic">"모든 것을 당신의 삶과 연결하기"</p>
+    <p>자기 자신과 관련된 정보는 추상적인 사실보다 훨씬 더 잘 기억됩니다. 연습 문제에서 여러분 자신의 삶, 집, 일상에 대한 문장을 만들도록 요청할 것입니다 &mdash; 일본어를 개인적이고 기억에 남게 만드는 것입니다.</p>
+  </div>
+  <div class="card">
+    <h4>12. 수면 공고화</h4>
+    <p style="font-size:.92rem;color:var(--accent);margin-bottom:.5rem;font-style:italic">"잠자는 동안 뇌가 정리한다"</p>
+    <p>수면 중에 뇌는 하루의 학습을 재생하고 공고화하여, 정보를 해마에서 피질로 옮깁니다. 섹션 0D의 일과가 취침 전 짧은 궁전 산책으로 끝나는 이유가 바로 이것입니다.</p>
+  </div>
+</div>
+
+<div class="callout info">
+  <div class="callout-title">열두 기둥을 외울 필요는 없습니다</div>
+  <p style="margin-bottom:0">이 책의 모든 장은 연습과 구조를 통해 이 기둥들을 자동으로 활성화합니다. 이를 이해하는 것은 단순히 각 활동이 <em>왜</em> 중요한지 깨닫고 &mdash; 복습을 건너뛰지 않고 해야 할 동기를 부여하기 위함입니다.</p>
+</div>
+
+<!-- ================================================================ -->
+<!-- 섹션 0C: 첫 번째 기억의 궁전 만들기                                  -->
+<!-- ================================================================ -->
+<h3 id="0c-첫-번째-기억의-궁전-만들기">첫 번째 기억의 궁전 만들기</h3>
+
+<p>장소법(기억의 궁전)은 지금까지 발견된 가장 강력한 기억 기법입니다. 고대 그리스의 웅변가들은 한 시간짜리 연설을 기억에서 전달하기 위해 이 방법을 사용했습니다. 여러분은 이것을 사용하여 일본어 어휘를 마음속에 영구적으로 정착시킬 것입니다.</p>
+
+<p>궁전은 여러분이 <strong>속속들이</strong> 아는 장소여야 합니다 &mdash; 한국의 여러분 집, 어린 시절의 아파트, 현재의 <span class="kr">집</span>. 눈을 감고도 정신적으로 그 안을 걸어다닐 수 있어야 합니다.</p>
+
+<div class="callout ok">
+  <div class="callout-title">안내 연습: 12개 장소(로쿠스) 설정하기</div>
+  <p>눈을 감고 정신적으로 집에 들어가세요. 고정된 순서로 12개의 특정 지점을 걸어볼 것입니다. 이 순서는 절대 변하지 않습니다 &mdash; 일관성이 궁전을 작동하게 만드는 요소입니다.</p>
+  <p style="margin-bottom:0">각 지점에서 10~15초를 보내세요. 색상, 질감, 냄새를 주목하세요. 정신적 이미지가 생생할수록 기억 앵커가 더 강해집니다.</p>
+</div>
+
+<table>
+  <thead>
+    <tr><th>장소 #</th><th>위치</th><th>한국어</th><th>주목할 점</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>1</strong></td><td>현관문</td><td class="kr">현관문</td><td>문 손잡이, 초인종, 현관 매트</td></tr>
+    <tr><td><strong>2</strong></td><td>신발장</td><td class="kr">신발장</td><td>줄지어 놓인 신발들, 가죽 냄새, 작은 단차</td></tr>
+    <tr><td><strong>3</strong></td><td>부엌</td><td class="kr">부엌</td><td>가스레인지, 쉭쉭거리는 밥솥, 냉장고 윙윙 소리</td></tr>
+    <tr><td><strong>4</strong></td><td>식탁</td><td class="kr">식탁</td><td>의자들, 테이블 표면, 위의 조명</td></tr>
+    <tr><td><strong>5</strong></td><td>거실</td><td class="kr">거실</td><td>넓은 공간, 바닥, 방의 주된 느낌</td></tr>
+    <tr><td><strong>6</strong></td><td>소파</td><td class="kr">소파</td><td>쿠션 질감, 담요, 팔걸이</td></tr>
+    <tr><td><strong>7</strong></td><td>TV 앞</td><td class="kr">TV 앞</td><td>화면, 리모컨, 뒤쪽의 케이블</td></tr>
+    <tr><td><strong>8</strong></td><td>화장실</td><td class="kr">화장실</td><td>거울, 흐르는 물소리, 타일</td></tr>
+    <tr><td><strong>9</strong></td><td>침실</td><td class="kr">침실</td><td>침대, 베개, 이불의 무게감</td></tr>
+    <tr><td><strong>10</strong></td><td>책상</td><td class="kr">책상</td><td>스탠드, 키보드, 펜과 종이</td></tr>
+    <tr><td><strong>11</strong></td><td>창문</td><td class="kr">창문</td><td>바깥 풍경, 커튼, 들어오는 빛</td></tr>
+    <tr><td><strong>12</strong></td><td>발코니</td><td class="kr">발코니</td><td>난간, 바깥 공기, 위의 하늘</td></tr>
+  </tbody>
+</table>
+
+<!-- SVG Floor Plan -->
+<div class="diagram">
+  <svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg">
+    <!-- Outer walls -->
+    <rect x="50" y="30" width="600" height="360" rx="4" fill="none" stroke="var(--text-muted)" stroke-width="2"/>
+
+    <!-- Room dividers -->
+    <!-- Kitchen / Dining wall -->
+    <line x1="300" y1="30" x2="300" y2="180" stroke="var(--text-muted)" stroke-width="1.5"/>
+    <!-- Living room / Bedroom wall -->
+    <line x1="400" y1="180" x2="400" y2="390" stroke="var(--text-muted)" stroke-width="1.5"/>
+    <!-- Horizontal divider (upper / lower areas) -->
+    <line x1="50" y1="180" x2="650" y2="180" stroke="var(--text-muted)" stroke-width="1.5"/>
+    <!-- Bathroom wall -->
+    <line x1="50" y1="300" x2="400" y2="300" stroke="var(--text-muted)" stroke-width="1.5"/>
+    <line x1="200" y1="300" x2="200" y2="390" stroke="var(--text-muted)" stroke-width="1.5"/>
+
+    <!-- Room labels -->
+    <text x="160" y="55" text-anchor="middle" font-size="11" fill="var(--text-muted)" font-weight="600">부엌</text>
+    <text x="480" y="55" text-anchor="middle" font-size="11" fill="var(--text-muted)" font-weight="600">식사 공간</text>
+    <text x="220" y="225" text-anchor="middle" font-size="11" fill="var(--text-muted)" font-weight="600">거실</text>
+    <text x="530" y="225" text-anchor="middle" font-size="11" fill="var(--text-muted)" font-weight="600">침실</text>
+    <text x="120" y="340" text-anchor="middle" font-size="11" fill="var(--text-muted)" font-weight="600">화장실</text>
+    <text x="300" y="340" text-anchor="middle" font-size="11" fill="var(--text-muted)" font-weight="600">복도</text>
+
+    <!-- Door opening -->
+    <line x1="80" y1="390" x2="140" y2="390" stroke="var(--accent)" stroke-width="3"/>
+    <text x="110" y="410" text-anchor="middle" font-size="9" fill="var(--accent)">입구</text>
+
+    <!-- Walking route (dashed) -->
+    <polyline points="110,380 110,370 110,345 160,110 160,85 480,85 480,140 220,240 170,240 170,270 330,270 330,240 220,260 530,280 530,330 580,330 600,200 600,130"
+      fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="6,4" opacity=".5"/>
+
+    <!-- Locus markers (numbered circles) -->
+    <!-- 1: Front Door -->
+    <circle cx="110" cy="380" r="14" fill="var(--accent)" opacity=".9"/>
+    <text x="110" y="385" text-anchor="middle" font-size="11" fill="white" font-weight="700">1</text>
+
+    <!-- 2: Shoe Area -->
+    <circle cx="110" cy="345" r="14" fill="var(--accent)" opacity=".9"/>
+    <text x="110" y="350" text-anchor="middle" font-size="11" fill="white" font-weight="700">2</text>
+
+    <!-- 3: Kitchen -->
+    <circle cx="160" cy="110" r="14" fill="var(--accent)" opacity=".9"/>
+    <text x="160" y="115" text-anchor="middle" font-size="11" fill="white" font-weight="700">3</text>
+
+    <!-- 4: Dining Table -->
+    <circle cx="480" cy="110" r="14" fill="var(--accent)" opacity=".9"/>
+    <text x="480" y="115" text-anchor="middle" font-size="11" fill="white" font-weight="700">4</text>
+
+    <!-- 5: Living Room -->
+    <circle cx="220" cy="220" r="14" fill="var(--accent)" opacity=".9"/>
+    <text x="220" y="225" text-anchor="middle" font-size="11" fill="white" font-weight="700">5</text>
+
+    <!-- 6: Sofa -->
+    <circle cx="170" cy="260" r="14" fill="var(--accent)" opacity=".9"/>
+    <text x="170" y="265" text-anchor="middle" font-size="11" fill="white" font-weight="700">6</text>
+
+    <!-- 7: TV Area -->
+    <circle cx="330" cy="250" r="14" fill="var(--accent)" opacity=".9"/>
+    <text x="330" y="255" text-anchor="middle" font-size="11" fill="white" font-weight="700">7</text>
+
+    <!-- 8: Bathroom -->
+    <circle cx="120" cy="350" r="14" fill="var(--a2)" opacity=".9"/>
+    <text x="120" y="355" text-anchor="middle" font-size="11" fill="white" font-weight="700">8</text>
+
+    <!-- 9: Bedroom -->
+    <circle cx="530" cy="280" r="14" fill="var(--accent)" opacity=".9"/>
+    <text x="530" y="285" text-anchor="middle" font-size="11" fill="white" font-weight="700">9</text>
+
+    <!-- 10: Desk -->
+    <circle cx="580" cy="330" r="14" fill="var(--accent)" opacity=".9"/>
+    <text x="580" y="335" text-anchor="middle" font-size="11" fill="white" font-weight="700">10</text>
+
+    <!-- 11: Window -->
+    <circle cx="600" cy="200" r="14" fill="var(--accent)" opacity=".9"/>
+    <text x="600" y="205" text-anchor="middle" font-size="11" fill="white" font-weight="700">11</text>
+
+    <!-- 12: Balcony -->
+    <circle cx="620" cy="100" r="14" fill="var(--accent)" opacity=".9"/>
+    <text x="620" y="105" text-anchor="middle" font-size="11" fill="white" font-weight="700">12</text>
+
+    <!-- Balcony area -->
+    <rect x="590" y="60" width="60" height="80" rx="3" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <text x="620" y="75" text-anchor="middle" font-size="9" fill="var(--accent)">발코니</text>
+  </svg>
+  <div class="diagram-caption">12개 장소가 산책 순서로 표시된 기억의 궁전 평면도. 현관문(1)에서 발코니(12)까지. 이 책 전체에서 이 위치들에 일본어 어휘를 배치하게 됩니다.</div>
+</div>
+
+<div class="callout info">
+  <div class="callout-title">정교화 질문</div>
+  <p><strong>왜 공간 기억은 언어 학습에 그렇게 효과적인 것일까요?</strong></p>
+  <p style="margin-bottom:0">이것을 생각해 보세요: 여러분은 아마 수십 년이 지난 후에도 어린 시절 집의 구조를 완벽하게 묘사할 수 있을 것입니다. 공간 기억은 생존을 위해 수백만 년에 걸쳐 진화했습니다 &mdash; 음식, 물, 위험이 있는 위치를 기억하기 위해서입니다. 공간 탐색을 처리하는 해마는 새로운 장기 기억을 형성하는 데 관여하는 바로 그 뇌 영역입니다. 어휘를 장소와 연결함으로써, 여러분은 뇌의 가장 오래되고 신뢰할 수 있는 기억 체계를 활용하는 것입니다.</p>
+</div>
+
+<p><strong>지금 연습하세요:</strong> 눈을 감고 12개의 장소를 순서대로 걸어보세요. 세 번 반복하세요. 산책은 자동적이 되어야 합니다 &mdash; 생각하지 않고도 "현관문, 신발장, 부엌, 식탁, 거실, 소파, TV 앞, 화장실, 침실, 책상, 창문, 발코니"를 암송할 수 있어야 합니다. 이 경로가 여러분의 전체 학습 체계의 근간입니다.</p>
+
+<!-- ================================================================ -->
+<!-- 섹션 0D: 일일 루틴                                                 -->
+<!-- ================================================================ -->
+<h3 id="0d-일일-루틴">일일 루틴</h3>
+
+<p>꾸준함이 강도를 이깁니다. 매일 30분이 매주 주말 4시간보다 낫습니다. 다음 루틴은 열두 기둥을 중심으로 설계되었습니다 &mdash; 모든 세션에 부호화, 인출, 간격, 공고화가 포함되도록 보장합니다.</p>
+
+<table>
+  <thead>
+    <tr><th>시간</th><th>활동</th><th>소요 시간</th><th>활성화되는 기둥</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>아침</strong></td>
+      <td>새로운 자료 &mdash; 다음 장 섹션을 학습하고, 예문을 읽고, 기억술에 참여합니다</td>
+      <td>20&ndash;30분</td>
+      <td>이중 부호화, 키워드 기억술, 정교화 질문</td>
+    </tr>
+    <tr>
+      <td><strong>낮</strong></td>
+      <td>생성 &amp; 산출 &mdash; 퀴즈를 풀고, 자신의 삶에 대한 문장을 쓰고, 노트 없이 회상을 시도합니다</td>
+      <td>5&ndash;10분</td>
+      <td>인출 연습, 생성 효과, 자기 참조</td>
+    </tr>
+    <tr>
+      <td><strong>저녁</strong></td>
+      <td>일일 복습 &mdash; SM-2 간격 반복 카드, 이전 장 자료와 교차 연습</td>
+      <td>10&ndash;15분</td>
+      <td>간격 반복, 교차 연습, 바람직한 어려움</td>
+    </tr>
+    <tr>
+      <td><strong>취침 전</strong></td>
+      <td>궁전 산책 &mdash; 정신적으로 모든 장소를 걸으며, 그날 배치한 항목을 회상합니다</td>
+      <td>5분</td>
+      <td>장소법, 맥락 의존 기억, 수면 공고화</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="card" style="text-align:center">
+  <div style="display:flex;justify-content:center;gap:3rem;flex-wrap:wrap;margin:1rem 0">
+    <div>
+      <div style="font-size:2.5rem;font-family:var(--serif);color:var(--accent)">40&ndash;60</div>
+      <div style="font-size:.82rem;color:var(--text-muted)">하루 총 소요 시간(분)</div>
+    </div>
+    <div style="display:flex;align-items:center;font-size:1.5rem;color:var(--a3)">=</div>
+    <div>
+      <div style="font-size:2.5rem;font-family:var(--serif);color:var(--a3)">80%+</div>
+      <div style="font-size:.82rem;color:var(--a3)">장기 기억률</div>
+    </div>
+  </div>
+  <p style="font-size:.88rem;color:var(--text-muted);margin-bottom:0">체계 없는 학습의 약 20% 기억률과 비교됩니다. 이 체계는 여러분의 노력을 4배로 증폭시킵니다.</p>
+</div>
+
+<h4>연속 학습(스트릭) 시스템</h4>
+<p>전체 루틴을 완료하는 매일이 연속 학습 1일로 계산됩니다. 연속 학습 기록은 여러분의 가장 소중한 자산입니다 &mdash; 반드시 지키세요.</p>
+
+<div class="callout ok">
+  <div class="callout-title">스트릭이 효과적인 이유</div>
+  <p>스트릭은 두 가지 심리적 힘을 활용합니다: <strong>손실 회피</strong>(연속 기록을 쌓는 즐거움보다 깨는 것을 더 싫어합니다)와 <strong>정체성 형성</strong>(30일 후에는 "일본어를 공부하는 사람"에서 "매일 일본어를 공부하는 사람"이 됩니다). 습관이 여러분의 정체성의 일부가 됩니다.</p>
+  <p style="margin-bottom:0">규칙: 전체 루틴을 정말 할 수 없다면, <strong>최소 실행 가능 세션</strong> &mdash; 5분짜리 궁전 산책 한 번 &mdash; 을 하세요. 연속 기록을 절대 완전히 끊지 마세요.</p>
+</div>
+
+<!-- Mark as Complete -->
+<button class="chapter-complete" data-ch="00">완료로 표시 &#10003;</button>
+
+<div style="text-align:center;margin:2rem 0">
+  <a href="ch-01.html" class="quiz-btn">다음: 제01장 &mdash; 한국어의 이점 &rarr;</a>
+</div>
+
+</section>
+
+</div>
+
+
+</div>
+
+<footer>
+  <p>Zero to Hero: 日本語 한국어 화자를 위한 &middot; 제00장 &mdash; 기억 설계 에디션</p>
+</footer>
+
+<script src="js/shared.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+</body>
+</html>

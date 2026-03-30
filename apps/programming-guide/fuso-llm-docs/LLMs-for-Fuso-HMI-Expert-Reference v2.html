@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLM-Powered HMI Design for Mitsubishi Fuso — Expert Reference</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0c12;--bg-card:#10131c;--border:#1a1f30;--border-accent:#252d45;--text:#b8bfce;--text-muted:#5e6880;--text-bright:#dce1ec;--heading:#eef1f8;--accent:#4a90e2;--accent-glow:rgba(74,144,226,.1);--a2:#7c6dd8;--a3:#2ebd80;--a4:#e8943a;--a5:#e05c7a;--code-bg:#141825;--serif:'Instrument Serif',Georgia,serif;--sans:'DM Sans',-apple-system,sans-serif;--mono:'JetBrains Mono',monospace;--df:#141a28;--dl:#2a3350;--sidebar-w:260px}
+[data-theme="light"]{--bg:#f3f4f8;--bg-card:#fff;--border:#d8dce6;--border-accent:#bfc5d4;--text:#3a4055;--text-muted:#6e7590;--text-bright:#1a1e30;--heading:#0d1020;--accent:#2a6bc9;--accent-glow:rgba(42,107,201,.07);--a2:#6550b0;--a3:#1a8c5e;--a4:#c47a1a;--a5:#b84060;--code-bg:#e8eaf0;--df:#e4e6ee;--dl:#a8aec2}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:2rem}
+html,html *{transition:background-color .3s,color .3s,border-color .3s}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.78;font-size:17px;-webkit-font-smoothing:antialiased}
+
+.sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--bg-card);border-right:1px solid var(--border);overflow-y:auto;z-index:150;padding:1.5rem 0 2rem}
+.sidebar::-webkit-scrollbar{width:3px}.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.sidebar-logo{padding:0 1.2rem .8rem;font-family:var(--serif);font-size:1rem;color:var(--heading);line-height:1.3;border-bottom:1px solid var(--border);margin-bottom:.6rem}
+.sidebar-logo span{font-size:.7rem;color:var(--accent);font-family:var(--mono);display:block;margin-bottom:.15rem;letter-spacing:.05em;text-transform:uppercase}
+.toc-group-title{padding:.55rem 1.2rem .3rem;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);background:var(--accent-glow)}
+.toc-link{display:flex;align-items:baseline;gap:.5rem;padding:.35rem 1.2rem;font-size:.82rem;color:var(--text-muted);text-decoration:none;border-left:2px solid transparent;transition:all .2s}
+.toc-link:hover,.toc-link.active{color:var(--heading);background:var(--accent-glow);border-left-color:var(--accent)}
+.toc-link .toc-num{font-family:var(--mono);font-size:.72rem;color:var(--accent);min-width:2.2ch}
+.main{margin-left:var(--sidebar-w)}
+
+.hamburger{display:none;position:fixed;top:1rem;left:1rem;z-index:250;width:40px;height:40px;border-radius:10px;background:var(--bg-card);border:1px solid var(--border);cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.hamburger span{display:block;width:18px;height:2px;background:var(--text-muted);border-radius:1px;transition:transform .3s,opacity .3s}
+.hamburger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:140}
+@media(max-width:900px){.sidebar{transform:translateX(-100%);width:280px}.sidebar.open{transform:translateX(0)}.sidebar-overlay.open{display:block}.hamburger{display:flex}.main{margin-left:0}}
+
+.toggle{position:fixed;top:1.2rem;right:1.2rem;z-index:1000;width:44px;height:44px;border-radius:50%;border:1px solid var(--border-accent);background:var(--bg-card);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+.toggle:hover{transform:scale(1.08);border-color:var(--accent)}
+.toggle .is,.toggle .im{position:absolute;transition:transform .4s,opacity .3s;width:18px;height:18px}
+.toggle .is{opacity:1;transform:rotate(0) scale(1)}.toggle .im{opacity:0;transform:rotate(-90deg) scale(.5)}
+[data-theme="light"] .toggle .is{opacity:0;transform:rotate(90deg) scale(.5)}
+[data-theme="light"] .toggle .im{opacity:1;transform:rotate(0) scale(1)}
+
+.hero{min-height:82vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:4rem 2rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-28%;left:50%;transform:translateX(-50%);width:750px;height:750px;background:radial-gradient(circle,var(--accent-glow) 0%,transparent 70%);pointer-events:none}
+.hero-truck{position:absolute;bottom:-10px;right:-40px;width:min(520px,45vw);opacity:.04;pointer-events:none;z-index:0}
+[data-theme="light"] .hero-truck{opacity:.05}
+.hero-logos{display:flex;align-items:center;gap:1.5rem;margin-bottom:1.8rem;opacity:.55}
+.hero-logos svg{height:36px;width:auto}
+.hero-badge{display:inline-block;padding:.35rem 1rem;border:1px solid var(--border-accent);border-radius:999px;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:1.5rem;font-weight:600}
+.hero h1{font-family:var(--serif);font-size:clamp(2.2rem,5vw,3.4rem);color:var(--heading);line-height:1.15;max-width:740px;font-weight:400;margin-bottom:1rem}
+.hero h1 em{font-style:italic;color:var(--accent)}
+.hero-sub{font-size:1.02rem;color:var(--text-muted);max-width:600px;line-height:1.7;margin-bottom:2rem}
+.hero-meta{display:flex;gap:2rem;font-size:.82rem;color:var(--text-muted);flex-wrap:wrap;justify-content:center}
+
+.content-wrap{max-width:820px;margin:0 auto;padding:0 2rem}
+section[id^="ch"]{padding:5rem 0 3rem;position:relative}
+section[id^="ch"]::before{content:'';display:block;width:100%;height:2px;background:linear-gradient(90deg,transparent 5%,var(--accent) 25%,var(--a2) 50%,var(--a3) 75%,transparent 95%);margin-bottom:2.8rem;opacity:.6}
+section[id^="ch"]:first-of-type::before{display:none}
+section[id^="ch"] + section[id^="ch"]{margin-top:1.5rem}
+section[id^="ch"]::after{content:attr(data-ch);position:absolute;top:2.8rem;right:0;font-family:var(--serif);font-size:5rem;font-weight:400;color:var(--accent);opacity:.06;line-height:1;pointer-events:none}
+section[id^="ch"]:first-of-type{padding-top:3rem}
+section[id^="ch"]:first-of-type::after{display:none}
+section h2{font-family:var(--serif);font-size:1.9rem;color:var(--heading);margin-bottom:.3rem;font-weight:400;line-height:1.25}
+section h2 .ch-label{font-family:var(--mono);font-size:.8rem;color:var(--accent);display:block;margin-bottom:.4rem;letter-spacing:.06em}
+section h3{font-size:1.15rem;color:var(--heading);margin:2rem 0 .6rem;font-weight:600}
+section h4{font-size:1rem;color:var(--text-bright);margin:1.5rem 0 .4rem;font-weight:600}
+section p{margin-bottom:1rem}
+section ul,section ol{margin:0 0 1.2rem 1.4rem}
+section li{margin-bottom:.4rem;font-size:.95rem}
+strong{color:var(--text-bright);font-weight:600}
+
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:1.5rem;margin:1.2rem 0}
+.card h4{margin-top:0}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin:1.2rem 0}
+.stakes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:1.2rem 0}
+.stakes-grid .card{display:flex;flex-direction:column}
+.stakes-grid .card p:last-child{margin-top:auto}
+table{width:100%;border-collapse:collapse;margin:1.2rem 0;font-size:.9rem}
+th{text-align:left;padding:.6rem .8rem;border-bottom:2px solid var(--border-accent);color:var(--heading);font-weight:600;font-size:.82rem;text-transform:uppercase;letter-spacing:.04em}
+td{padding:.55rem .8rem;border-bottom:1px solid var(--border);vertical-align:top}
+tr:hover td{background:var(--accent-glow)}
+
+.prompt-block{background:var(--code-bg);border:1px solid var(--border);border-radius:8px;padding:1.3rem 1.5rem;margin:1.2rem 0;font-size:.88rem;line-height:1.7}
+.prompt-block .label{font-family:var(--mono);font-size:.72rem;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.6rem;display:block;font-weight:500}
+code{font-family:var(--mono);font-size:.88em;background:var(--code-bg);padding:.15rem .4rem;border-radius:4px;color:var(--a2)}
+pre{background:var(--code-bg);border:1px solid var(--border);border-radius:8px;padding:1.2rem 1.5rem;overflow-x:auto;font-size:.85rem;line-height:1.6;margin:1rem 0;max-width:100%}
+pre code{background:none;padding:0}
+
+.pe{background:var(--bg-card);border:1px solid var(--border);border-radius:11px;overflow:hidden;margin:1.4rem 0}
+.ph{padding:.55rem 1.1rem;font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;border-bottom:1px solid var(--border)}
+.pb .ph{color:var(--a5);background:rgba(224,92,122,.05)}.pg .ph{color:var(--a3);background:rgba(46,189,128,.05)}
+.pp{padding:1.1rem;font-size:.92rem;line-height:1.7}
+.pr{display:flex;gap:1.15rem;margin:1.4rem 0;padding:1.15rem;background:var(--bg-card);border-radius:11px;border:1px solid var(--border)}
+.pn{font-family:var(--serif);font-size:1.8rem;color:var(--accent);line-height:1;min-width:32px}
+.pb2 h5{font-weight:600;color:var(--text-bright);margin-bottom:.35rem}
+.pb2 p{font-size:.9rem;color:var(--text-muted);margin-bottom:0;line-height:1.6}
+.pq{border-left:3px solid var(--a2);padding:.9rem 0 .9rem 1.4rem;margin:1.8rem 0;font-family:var(--serif);font-size:1.2rem;color:var(--text-bright);font-style:italic;line-height:1.55}
+.pqa{font-family:var(--sans);font-size:.82rem;font-style:normal;color:var(--text-muted);margin-top:.4rem}
+
+.callout{border:1px solid var(--border-accent);border-radius:8px;padding:1.2rem 1.4rem;margin:1.2rem 0;background:var(--bg-card)}
+.callout.warn{border-left:4px solid var(--a4)}.callout.critical{border-left:4px solid var(--a5)}.callout.info{border-left:4px solid var(--accent)}.callout.ok{border-left:4px solid var(--a3)}
+.callout .callout-title{font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.04em;margin-bottom:.4rem}
+.callout.warn .callout-title{color:var(--a4)}.callout.critical .callout-title{color:var(--a5)}.callout.info .callout-title{color:var(--accent)}.callout.ok .callout-title{color:var(--a3)}
+
+.sources{font-size:.82rem;color:var(--text-muted);margin-top:1rem;padding-top:.8rem;border-top:1px solid var(--border)}
+.sources a{color:var(--accent);text-decoration:none}.sources a:hover{text-decoration:underline}
+
+.diagram,.dw{margin:1.5rem 0;padding:1.5rem;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;overflow-x:auto}
+.diagram svg,.dw svg{display:block;margin:0 auto;max-width:100%;height:auto}
+.diagram svg text,.dw svg text{font-family:var(--sans);fill:var(--text)}
+.diagram svg .node-fill,.dw svg .node-fill{fill:var(--bg-card);stroke:var(--border-accent)}
+.diagram svg .node-accent,.dw svg .node-accent{fill:var(--accent-glow);stroke:var(--accent)}
+.diagram svg .label-text,.dw svg .label-text{fill:var(--heading);font-size:11px;font-weight:600}
+.diagram svg .sub-text,.dw svg .sub-text{fill:var(--text-muted);font-size:9px}
+.diagram svg .arrow,.dw svg .arrow{stroke:var(--accent);fill:none;stroke-width:1.5;marker-end:url(#arrowhead)}
+.diagram-caption,.dc{text-align:center;font-size:.78rem;color:var(--text-muted);margin-top:.6rem;font-style:italic}
+
+.tl{position:relative;padding-left:2rem;margin:1.8rem 0}
+.tl::before{content:'';position:absolute;left:6px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--accent),var(--a2),var(--a3));border-radius:1px}
+.ti{position:relative;margin-bottom:1.8rem;padding-left:1.4rem}
+.ti::before{content:'';position:absolute;left:-2rem;top:.55rem;width:13px;height:13px;border-radius:50%;border:2px solid var(--accent);background:var(--bg)}
+.ty{font-family:var(--mono);font-size:.78rem;color:var(--accent);font-weight:500}
+.tt{font-weight:600;color:var(--text-bright);margin-top:.15rem}
+.td{font-size:.9rem;color:var(--text-muted);margin-top:.25rem;line-height:1.6}
+
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin:1.4rem 0}
+.cc{background:var(--bg-card);border:1px solid var(--border);border-radius:11px;padding:1.15rem}
+.cc h5{font-size:.92rem;color:var(--text-bright);margin-bottom:.65rem;font-weight:600}
+.cc p{font-size:.87rem;line-height:1.6;color:var(--text-muted);margin-bottom:0}
+
+@keyframes pulse-amber{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes pulse-red{0%,100%{opacity:1}50%{opacity:.3}}
+.anim-pulse-amber{animation:pulse-amber 1.5s ease-in-out infinite}
+.anim-pulse-red{animation:pulse-red .6s ease-in-out infinite}
+
+footer{padding:3rem 0;text-align:center;font-size:.82rem;color:var(--text-muted);border-top:1px solid var(--border)}
+footer a{color:var(--accent);text-decoration:none}
+@media(max-width:700px){.hero h1{font-size:2rem}.content-wrap{padding:0 1.2rem}section{padding:2rem 0}.card-grid,.cg{grid-template-columns:1fr}.stakes-grid{grid-template-columns:1fr}.hero-meta{flex-direction:column;gap:.5rem}.pr{flex-direction:column;gap:.7rem}}
+</style>
+</head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+<marker id="arrowhead-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--a5)"/></marker>
+<marker id="a" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--dl)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo"><span>Expert Reference</span>FUSO HMI × LLMs</div>
+  <div class="toc-group">
+    <div class="toc-group-title">The Vehicle & Design</div>
+    <a href="#ch01" class="toc-link"><span class="toc-num">01</span>FUSO Product & Platform Landscape</a>
+    <a href="#ch02" class="toc-link"><span class="toc-num">02</span>Regulations, Safety & Display Architecture</a>
+    <a href="#ch03" class="toc-link"><span class="toc-num">03</span>ADAS, Powertrain & Telltale Design</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">The Tools</div>
+    <a href="#ch04" class="toc-link"><span class="toc-num">04</span>What LLMs Are & How We Got Here</a>
+    <a href="#ch05" class="toc-link"><span class="toc-num">05</span>How LLMs Work</a>
+    <a href="#ch06" class="toc-link"><span class="toc-num">06</span>Models, Tiers & Capabilities</a>
+    <a href="#ch07" class="toc-link"><span class="toc-num">07</span>Prompt Engineering for FUSO HMI</a>
+    <a href="#ch08" class="toc-link"><span class="toc-num">08</span>Advanced Techniques & Context</a>
+    <a href="#ch09" class="toc-link"><span class="toc-num">09</span>Claude Cowork for HMI Design</a>
+    <a href="#ch10" class="toc-link"><span class="toc-num">10</span>Verification & Safety Protocols</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">The Future</div>
+    <a href="#ch11" class="toc-link"><span class="toc-num">11</span>ARCHION, Coretura & SDV-Era</a>
+    <a href="#ch12" class="toc-link"><span class="toc-num">12</span>Expert Workflow & Checklist</a>
+  </div>
+</aside>
+
+<div class="main">
+<section class="hero">
+  <svg class="hero-truck" viewBox="0 0 520 260" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="var(--heading)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Cab-over flat-front cab (FUSO Super Great silhouette) -->
+    <path d="M40,195 L40,55 Q40,35 60,35 L145,35 Q155,35 158,45 L170,80 L175,80 Q185,80 185,90 L185,195" fill="var(--heading)"/>
+    <!-- Windshield -->
+    <path d="M52,50 L52,78 L145,78 L135,50 Z" fill="var(--bg)" stroke="var(--heading)" stroke-width="1.5" opacity=".6"/>
+    <!-- Side window -->
+    <rect x="52" y="86" width="60" height="40" rx="3" fill="var(--bg)" stroke="var(--heading)" stroke-width="1.2" opacity=".4"/>
+    <!-- Headlight -->
+    <rect x="42" y="140" width="16" height="28" rx="4" fill="var(--heading)" opacity=".5"/>
+    <!-- Step -->
+    <rect x="120" y="155" width="65" height="8" rx="2" fill="var(--heading)" opacity=".3"/>
+    <rect x="155" y="163" width="30" height="32" rx="2" fill="var(--heading)" opacity=".2"/>
+    <!-- Chassis rail -->
+    <rect x="170" y="178" width="310" height="17" rx="3" fill="var(--heading)"/>
+    <!-- Cargo body -->
+    <rect x="195" y="52" width="285" height="126" rx="4" fill="var(--heading)"/>
+    <!-- Cargo body panel lines -->
+    <line x1="295" y1="56" x2="295" y2="174" stroke="var(--bg)" stroke-width="1" opacity=".08"/>
+    <line x1="395" y1="56" x2="395" y2="174" stroke="var(--bg)" stroke-width="1" opacity=".08"/>
+    <!-- Rear light -->
+    <rect x="474" y="130" width="4" height="22" rx="2" fill="var(--a5)" opacity=".3"/>
+    <!-- Fender/mudguard arches -->
+    <path d="M60,195 Q60,170 85,170 Q110,170 110,195" fill="var(--bg)" stroke="var(--heading)" stroke-width="2"/>
+    <path d="M300,195 Q300,170 325,170 Q350,170 350,195" fill="var(--bg)" stroke="var(--heading)" stroke-width="2"/>
+    <path d="M375,195 Q375,170 400,170 Q425,170 425,195" fill="var(--bg)" stroke="var(--heading)" stroke-width="2"/>
+    <!-- Wheels -->
+    <circle cx="85" cy="205" r="26" fill="var(--heading)"/>
+    <circle cx="85" cy="205" r="12" fill="var(--bg)" opacity=".15"/>
+    <circle cx="325" cy="205" r="26" fill="var(--heading)"/>
+    <circle cx="325" cy="205" r="12" fill="var(--bg)" opacity=".15"/>
+    <circle cx="400" cy="205" r="26" fill="var(--heading)"/>
+    <circle cx="400" cy="205" r="12" fill="var(--bg)" opacity=".15"/>
+    <!-- Ground line -->
+    <line x1="30" y1="231" x2="490" y2="231" stroke="var(--heading)" stroke-width="1" opacity=".3"/>
+    <!-- Mirror -->
+    <rect x="30" y="58" width="8" height="18" rx="3" fill="var(--heading)" opacity=".6"/>
+    <line x1="34" y1="58" x2="40" y2="50" stroke="var(--heading)" stroke-width="1.5" opacity=".5"/>
+    <!-- Three-diamond Mitsubishi mark (subtle, on cab door) -->
+    <path d="M88,110 L95,98 L102,110 L95,104 Z" fill="var(--accent)" opacity=".12"/>
+  </svg>
+  <div class="hero-logos">
+    <!-- Mitsubishi Three-Diamond Mark (actual corporate geometry) + FUSO wordmark -->
+    <svg viewBox="20 5 155 185" xmlns="http://www.w3.org/2000/svg" style="height:64px;width:auto">
+      <g fill="var(--heading)">
+        <!-- Three diamonds — actual Mitsubishi mark geometry -->
+        <path d="M96.4 88l23.2-40.3L96.4 8.5 73.1 47.7 96.4 88z"/>
+        <path d="M25.9 127.4l23.4-39.4h47.2L73.7 127.4H25.9z"/>
+        <path d="M166.9 127.4l-23.4-39.4H96.4l22.7 39.4h47.8z"/>
+      </g>
+      <!-- FUSO wordmark paths (extracted from official logo SVG) -->
+      <g fill="var(--heading)">
+        <path d="M66.995 165.2h11.35v2.69h-7.72v4.86h7.72v2.65h-7.72v8.2h-3.63v-18.4z"/>
+        <path d="M92.7 165.2v14.31a4.75 4.75 0 01-4.74 4.74h-2.21a4.75 4.75 0 01-4.74-4.74V165.2h2.96v13.63c0 1.59 1.3 2.89 2.89 2.89s2.89-1.3 2.89-2.89V165.2h2.95z"/>
+        <path d="M96.21 178.3h2.91s-.15 3.27 2.88 3.27c3.06 0 2.94-2.43 2.94-2.77 0-.36.43-1.8-3.25-3.2-3.63-1.42-5.31-2.45-5.31-5.5 0-3.06 1.87-5.2 5.7-5.2 3.87 0 5.31 2.89 5.31 5.27h-2.74s-.1-2.7-2.57-2.7c-2.45 0-2.77 1.57-2.77 2.36 0 .77.44 1.78 3.9 3.34 3.49 1.56 4.62 2.57 4.62 5.75 0 3.15-2.43 5.1-5.63 5.1-3.2 0-5.99-1.4-5.99-5.72z"/>
+        <path d="M116.98 165.09c4.79 0 7.1 4.23 7.1 9.45s-2.17 9.45-7.1 9.45c-4.9 0-7.07-4.23-7.07-9.45s2.29-9.45 7.07-9.45z"/>
+        <path d="M116.98 167.61c3.2 0 4.18 3.13 4.18 6.95 0 3.85-1.18 6.97-4.18 6.97-2.98 0-4.16-3.13-4.16-6.97 0-3.82.99-6.95 4.16-6.95z" fill="var(--bg)"/>
+      </g>
+    </svg>
+  </div>
+  <div class="hero-badge">Expert Reference — Mitsubishi Fuso</div>
+  <h1>LLM-Powered HMI Design for <em>FUSO Heavy-Duty Trucks</em></h1>
+  <p class="hero-sub">A complete reference for UI/UX designers working on digital instrument clusters for the Mitsubishi Fuso Super Great, eCanter, and the incoming ARCHION product family. From zero LLM knowledge to expert-level workflow integration.</p>
+  <div class="hero-meta"><span>~31 min read</span><span>12 chapters</span><span>March 2026</span></div>
+</section>
+
+<div class="content-wrap">
+
+<!-- ===== CH 01 ===== -->
+<section id="ch01" data-ch="01">
+<h2><span class="ch-label">Chapter 01</span>The FUSO Product & Platform Landscape (2026)</h2>
+<p>Mitsubishi Fuso Truck and Bus Corporation (MFTBC), a subsidiary of Daimler Truck AG, manufactures commercial vehicles across light-, medium-, and heavy-duty segments primarily for the Japanese and Asian markets. As of March 2026, the HMI designer's product scope spans four distinct vehicle lines with significantly different powertrain, display, and interaction requirements.</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 180" xmlns="http://www.w3.org/2000/svg">
+  <rect class="node-accent" x="270" y="10" width="160" height="44" rx="8"/>
+  <text class="label-text" x="350" y="37" text-anchor="middle">FUSO Design System</text>
+  <rect class="node-fill" x="20" y="100" width="140" height="60" rx="8"/>
+  <text class="label-text" x="90" y="124" text-anchor="middle">Super Great</text>
+  <text class="sub-text" x="90" y="140" text-anchor="middle">Heavy · Diesel · 6R30</text>
+  <line class="arrow" x1="300" y1="54" x2="130" y2="100"/>
+  <rect class="node-fill" x="190" y="100" width="140" height="60" rx="8"/>
+  <text class="label-text" x="260" y="124" text-anchor="middle">Fighter</text>
+  <text class="sub-text" x="260" y="140" text-anchor="middle">Medium · Diesel</text>
+  <line class="arrow" x1="340" y1="54" x2="270" y2="100"/>
+  <rect class="node-fill" x="370" y="100" width="140" height="60" rx="8"/>
+  <text class="label-text" x="440" y="124" text-anchor="middle">Canter</text>
+  <text class="sub-text" x="440" y="140" text-anchor="middle">Light · Diesel/Hybrid</text>
+  <line class="arrow" x1="370" y1="54" x2="430" y2="100"/>
+  <rect class="node-accent" x="540" y="100" width="140" height="60" rx="8"/>
+  <text class="label-text" x="610" y="124" text-anchor="middle">eCanter</text>
+  <text class="sub-text" x="610" y="140" text-anchor="middle">Light · All-Electric</text>
+  <line class="arrow" x1="400" y1="54" x2="580" y2="100"/>
+</svg>
+<div class="diagram-caption">The FUSO product family spans diesel, hybrid, and fully electric powertrains — each requiring distinct HMI states and display strategies.</div>
+</div>
+
+<h3>Super Great (Heavy-Duty)</h3>
+<p>The flagship. Powered by the <strong>6R30 12.8L inline-6 diesel</strong> with <strong>SHIFTPILOT 12-speed AMT</strong>. Comprehensive ADAS suite: ABA6 (Active Brake Assist 6), Active Sideguard Assist 2.0, FBIS (Front Blindspot Information System), Active Attention Assist, and LDW. Exhaust aftertreatment: BlueTec SCR + DPF. Telematics: Truckonnect. <strong>Right-hand drive for Japan market</strong> — critical for zone placement analysis.</p>
+
+<h3>eCanter (Light-Duty Electric)</h3>
+<p>All-electric with <strong>modular battery packs</strong> (S/M/L configurations). The cluster must handle unique EV states: state-of-charge (SOC), estimated range (eRange), recuperation levels, charging status (AC L1/L2/DC), battery temperature warnings, cell balancing indicators, and V2X readiness. No tachometer — the power/regen gauge replaces it.</p>
+
+<h3>Fighter & Canter</h3>
+<p>Medium- and light-duty diesel platforms. Fighter shares many ADAS systems with Super Great at a lower tier. Canter includes diesel and mild-hybrid variants. Both use simpler cluster configurations but share the core design system with the heavy-duty line.</p>
+
+<div class="callout warn">
+<div class="callout-title">Hallucination Risk: Display Resolution</div>
+<p>Some LLM outputs may state the Super Great display is "12.3-inch 1920×720." MFTBC does not publish detailed display specifications publicly. No Japanese heavy-duty OEM (FUSO, Hino, Isuzu, UD Trucks) makes this data available in press materials. Treat all LLM-generated display specs as unverified until confirmed against internal documentation.</p>
+</div>
+</section>
+
+<!-- ===== CH 02 ===== -->
+<section id="ch02" data-ch="02">
+<h2><span class="ch-label">Chapter 02</span>Regulations, Safety & Display Architecture</h2>
+<p>Your instrument cluster design must comply with multiple overlapping regulatory layers. Understanding which are mandatory versus advisory is critical for prioritizing design decisions.</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 160" xmlns="http://www.w3.org/2000/svg">
+  <rect class="node-accent" x="10" y="10" width="200" height="50" rx="8"/>
+  <text class="label-text" x="110" y="30" text-anchor="middle">Mandatory</text>
+  <text class="sub-text" x="110" y="46" text-anchor="middle">UNECE R121 · MLIT · FMVSS</text>
+  <rect class="node-accent" x="250" y="10" width="200" height="50" rx="8"/>
+  <text class="label-text" x="350" y="30" text-anchor="middle">Standards</text>
+  <text class="sub-text" x="350" y="46" text-anchor="middle">ISO 15005 · 26262 · 2575</text>
+  <rect class="node-fill" x="490" y="10" width="200" height="50" rx="8"/>
+  <text class="label-text" x="590" y="30" text-anchor="middle">Advisory / Rating</text>
+  <text class="sub-text" x="590" y="46" text-anchor="middle">Euro NCAP 2026</text>
+  <line class="arrow" x1="110" y1="60" x2="200" y2="100"/>
+  <line class="arrow" x1="350" y1="60" x2="350" y2="100"/>
+  <line class="arrow" x1="590" y1="60" x2="500" y2="100"/>
+  <rect class="node-fill" x="150" y="102" width="400" height="44" rx="8"/>
+  <text class="label-text" x="350" y="128" text-anchor="middle">Your Instrument Cluster Design</text>
+</svg>
+<div class="diagram-caption">All three regulatory layers converge on your cluster design decisions.</div>
+</div>
+
+<table>
+<tr><th>Standard</th><th>Scope</th><th>Key HMI Requirement</th></tr>
+<tr><td><strong>ISO 15005:2017</strong></td><td>Dialogue principles</td><td>1.5s maximum single-glance time for any displayed element</td></tr>
+<tr><td><strong>ISO 26262:2018</strong></td><td>Functional safety</td><td>ASIL B: 200ms telltale display latency, 100ms unmotivated telltale response</td></tr>
+<tr><td><strong>ISO 2575:2021</strong></td><td>Symbols &amp; colors</td><td>Standardized telltale symbols, mandated colors (red/amber/green)</td></tr>
+<tr><td><strong>ISO 15008:2017</strong></td><td>Character height</td><td>Minimum character height and contrast ratios at viewing distance</td></tr>
+<tr><td><strong>UNECE R121</strong></td><td>Telltale identification</td><td>Mandatory telltale symbols and placement rules</td></tr>
+<tr><td><strong>Euro NCAP 2026</strong></td><td>Safety rating</td><td>Physical controls mandate — climate, hazard lights, SOS must not be display-only</td></tr>
+</table>
+
+<h3>Functional Safety — ASIL B Pipeline</h3>
+<p>The instrument cluster is classified as <strong>ASIL B</strong> under ISO 26262. This classification defines hard technical constraints on your display pipeline.</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 130" xmlns="http://www.w3.org/2000/svg">
+  <rect class="node-fill" x="10" y="40" width="110" height="50" rx="6"/>
+  <text class="label-text" x="65" y="60" text-anchor="middle">CAN Message</text>
+  <text class="sub-text" x="65" y="76" text-anchor="middle">CRC + Counter</text>
+  <line class="arrow" x1="120" y1="65" x2="160" y2="65"/>
+  <rect class="node-fill" x="160" y="40" width="110" height="50" rx="6"/>
+  <text class="label-text" x="215" y="60" text-anchor="middle">Integrity Check</text>
+  <text class="sub-text" x="215" y="76" text-anchor="middle">Pass / Fail</text>
+  <line class="arrow" x1="270" y1="65" x2="310" y2="65"/>
+  <rect class="node-accent" x="310" y="40" width="110" height="50" rx="6"/>
+  <text class="label-text" x="365" y="60" text-anchor="middle">Render</text>
+  <text class="sub-text" x="365" y="76" text-anchor="middle">≤ 200 ms</text>
+  <line class="arrow" x1="420" y1="65" x2="460" y2="65"/>
+  <rect class="node-fill" x="460" y="40" width="110" height="50" rx="6"/>
+  <text class="label-text" x="515" y="60" text-anchor="middle">Readback</text>
+  <text class="sub-text" x="515" y="76" text-anchor="middle">Frame verify</text>
+  <line class="arrow" x1="570" y1="65" x2="610" y2="65"/>
+  <rect class="node-fill" x="610" y="40" width="80" height="50" rx="6"/>
+  <text class="label-text" x="650" y="60" text-anchor="middle">Display</text>
+  <text class="sub-text" x="650" y="76" text-anchor="middle">Driver sees</text>
+  <line x1="215" y1="90" x2="215" y2="118" stroke="var(--a5)" stroke-width="1.5" marker-end="url(#arrowhead-muted)"/>
+  <line x1="515" y1="90" x2="515" y2="118" stroke="var(--a5)" stroke-width="1.5" marker-end="url(#arrowhead-muted)"/>
+  <rect x="170" y="108" width="400" height="22" rx="4" fill="rgba(208,74,106,.1)" stroke="var(--a5)"/>
+  <text x="370" y="123" text-anchor="middle" fill="var(--a5)" style="font-size:10px;font-weight:600">SAFE STATE: Screen off (kill pin) — within 100–200 ms</text>
+</svg>
+<div class="diagram-caption">ASIL B safety pipeline: from CAN message receipt to driver perception. Failure at any stage triggers safe state (screen off via hardware kill pin).</div>
+</div>
+
+<h3>Glance-Time Budget</h3>
+<div class="diagram">
+<svg viewBox="0 0 700 80" xmlns="http://www.w3.org/2000/svg">
+  <rect x="10" y="20" width="680" height="14" rx="7" fill="var(--border)"/>
+  <rect x="10" y="20" width="145" height="14" rx="7" fill="var(--a3)"/>
+  <text class="sub-text" x="82" y="16" text-anchor="middle" fill="var(--a3)" style="font-weight:700">1.5s SAFE</text>
+  <rect x="155" y="20" width="50" height="14" rx="0" fill="var(--a4)"/>
+  <text class="sub-text" x="180" y="50" text-anchor="middle">2.0s Euro NCAP limit</text>
+  <rect x="205" y="20" width="485" height="14" rx="7" fill="rgba(208,74,106,.3)"/>
+  <text class="sub-text" x="450" y="16" text-anchor="middle" fill="var(--a5)" style="font-weight:700">DANGER: No forward awareness</text>
+  <text class="sub-text" x="10" y="62" text-anchor="start">0 m</text>
+  <text class="sub-text" x="145" y="62" text-anchor="middle">~35 m @ 85 km/h</text>
+  <text class="sub-text" x="690" y="62" text-anchor="end">Increasing distance blind</text>
+</svg>
+<div class="diagram-caption">At 85 km/h, a 1.5-second glance covers ~35 m of blind travel. Every display element must be readable within this budget.</div>
+</div>
+
+<p>SAE J941's Class B (heavy truck) eye ellipses have <strong>not been updated since 2010</strong> and don't account for height-adjustable seats. Treat J941-based cluster placement as approximate.</p>
+
+<h3>Display Hardware & CAN Architecture</h3>
+<p>The instrument cluster receives data from dozens of ECUs via the vehicle's CAN bus network. Understanding this pipeline is essential — it determines what data you can display, how fast it arrives, and what safety constraints apply.</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg">
+  <rect class="node-fill" x="10" y="20" width="110" height="50" rx="6"/>
+  <text class="label-text" x="65" y="42" text-anchor="middle">Engine ECU</text>
+  <text class="sub-text" x="65" y="56" text-anchor="middle">6R30 / BMS</text>
+  <rect class="node-fill" x="10" y="85" width="110" height="50" rx="6"/>
+  <text class="label-text" x="65" y="107" text-anchor="middle">ADAS ECU</text>
+  <text class="sub-text" x="65" y="121" text-anchor="middle">ABA6 / ASA 2.0</text>
+  <rect class="node-fill" x="10" y="150" width="110" height="50" rx="6"/>
+  <text class="label-text" x="65" y="172" text-anchor="middle">Body ECU</text>
+  <text class="sub-text" x="65" y="186" text-anchor="middle">Lights / Doors</text>
+  <line x1="120" y1="45" x2="280" y2="92" class="arrow" stroke-dasharray="6 3"/>
+  <line x1="120" y1="110" x2="280" y2="100" class="arrow"/>
+  <line x1="120" y1="175" x2="280" y2="108" class="arrow" stroke-dasharray="6 3"/>
+  <rect class="node-accent" x="280" y="75" width="140" height="55" rx="8"/>
+  <text class="label-text" x="350" y="98" text-anchor="middle">CAN / CAN FD</text>
+  <text class="sub-text" x="350" y="114" text-anchor="middle">J1939 250 kbps / FD up to 2 Mbps</text>
+  <line class="arrow" x1="420" y1="100" x2="510" y2="100"/>
+  <rect class="node-accent" x="510" y="70" width="170" height="65" rx="8"/>
+  <text class="label-text" x="595" y="95" text-anchor="middle">Instrument Cluster</text>
+  <text class="sub-text" x="595" y="111" text-anchor="middle">200 ms display budget</text>
+  <text class="sub-text" x="595" y="124" text-anchor="middle">CRC + counter check</text>
+</svg>
+<div class="diagram-caption">CAN bus pipeline from ECU to cluster display. J1939 protocol, CRC-protected messages, 200ms maximum render latency for ASIL B telltales.</div>
+</div>
+
+<div class="callout warn">
+<div class="callout-title">CAN Signal Names in LLM Output</div>
+<p>All CAN signal names generated by LLMs (e.g., <code>BMS_StateOfCharge</code>, <code>DPF_RegenStatus</code>) are <strong>illustrative placeholders</strong>. Real signal names come from the vehicle's DBC file, which is proprietary. Always verify against your actual DBC before using in specifications.</p>
+</div>
+
+<div class="sources">Sources: <a href="https://www.iso.org/standard/55530.html" target="_blank">ISO 15005</a> · <a href="https://www.iso.org/standard/68383.html" target="_blank">ISO 26262</a> · <a href="https://www.euroncap.com/" target="_blank">Euro NCAP</a></div>
+</section>
+
+<!-- ===== CH 03 ===== -->
+<section id="ch03" data-ch="03">
+<h2><span class="ch-label">Chapter 03</span>ADAS, Powertrain & Telltale Design</h2>
+<p>The 2024+ Super Great carries one of the most comprehensive ADAS suites in the Japanese heavy-duty segment. The cluster must handle warning escalation across multiple systems while maintaining clear visual hierarchy.</p>
+
+<h3>ABA6 Warning Escalation</h3>
+<div class="diagram">
+<svg viewBox="0 0 700 90" xmlns="http://www.w3.org/2000/svg">
+  <rect class="node-fill" x="10" y="20" width="120" height="50" rx="6"/>
+  <circle cx="30" cy="45" r="8" fill="#28b070"/>
+  <text class="label-text" x="80" y="42" text-anchor="middle">Standby</text>
+  <text class="sub-text" x="80" y="56" text-anchor="middle">Static · Green</text>
+  <line class="arrow" x1="130" y1="45" x2="160" y2="45"/>
+  <rect class="node-fill" x="160" y="20" width="120" height="50" rx="6"/>
+  <circle cx="180" cy="45" r="8" fill="#d88a30" class="anim-pulse-amber"/>
+  <text class="label-text" x="230" y="42" text-anchor="middle">Warning</text>
+  <text class="sub-text" x="230" y="56" text-anchor="middle">Pulse · Amber</text>
+  <line class="arrow" x1="280" y1="45" x2="310" y2="45"/>
+  <rect class="node-fill" x="310" y="20" width="130" height="50" rx="6"/>
+  <circle cx="330" cy="45" r="8" fill="#d04a6a" class="anim-pulse-red"/>
+  <text class="label-text" x="385" y="42" text-anchor="middle">Brake Rec.</text>
+  <text class="sub-text" x="385" y="56" text-anchor="middle">Rapid · Amber→Red</text>
+  <line class="arrow" x1="440" y1="45" x2="470" y2="45"/>
+  <rect x="470" y="20" width="130" height="50" rx="6" fill="rgba(208,74,106,.15)" stroke="#d04a6a" stroke-width="2"/>
+  <circle cx="490" cy="45" r="8" fill="#d04a6a" class="anim-pulse-red"/>
+  <text class="label-text" x="545" y="42" text-anchor="middle">E-Brake</text>
+  <text class="sub-text" x="545" y="56" text-anchor="middle">Full takeover · Red</text>
+  <line class="arrow" x1="600" y1="45" x2="630" y2="45"/>
+  <rect class="node-fill" x="630" y="20" width="60" height="50" rx="6"/>
+  <text class="label-text" x="660" y="42" text-anchor="middle">Fault</text>
+  <text class="sub-text" x="660" y="56" text-anchor="middle">Amber</text>
+</svg>
+<div class="diagram-caption">ABA6 warning escalation: each stage increases visual urgency through color, animation rate, and screen real estate.</div>
+</div>
+
+<p><strong>Active Sideguard Assist 2.0</strong> monitors blind spots on both sides during turns and lane changes. Three-stage escalation at ≤20 km/h: visual alert → audible alarm + A-pillar lamp → damage mitigation brake. When multiple ADAS systems trigger simultaneously, prioritize by criticality — emergency interventions (ABA full brake, ASA emergency stop) take absolute priority.</p>
+
+<h3>Cross-Powertrain HMI Architecture</h3>
+<div class="diagram">
+<svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg">
+  <rect class="node-accent" x="200" y="10" width="300" height="40" rx="6"/>
+  <text class="label-text" x="350" y="35" text-anchor="middle">Shared Zone: Speed · ADAS Telltales · Warnings</text>
+  <rect class="node-fill" x="30" y="80" width="180" height="100" rx="8"/>
+  <text class="label-text" x="120" y="105" text-anchor="middle">Diesel Module</text>
+  <text class="sub-text" x="120" y="122" text-anchor="middle">Tachometer · Fuel</text>
+  <text class="sub-text" x="120" y="136" text-anchor="middle">DPF Status · AdBlue</text>
+  <text class="sub-text" x="120" y="150" text-anchor="middle">Coolant · Turbo Boost</text>
+  <line class="arrow" x1="260" y1="50" x2="120" y2="80"/>
+  <rect class="node-accent" x="260" y="80" width="180" height="100" rx="8"/>
+  <text class="label-text" x="350" y="105" text-anchor="middle">EV Module</text>
+  <text class="sub-text" x="350" y="122" text-anchor="middle">SOC · eRange</text>
+  <text class="sub-text" x="350" y="136" text-anchor="middle">Recuperation · Charging</text>
+  <text class="sub-text" x="350" y="150" text-anchor="middle">Battery Temp · V2X</text>
+  <line class="arrow" x1="350" y1="50" x2="350" y2="80"/>
+  <rect class="node-fill" x="490" y="80" width="180" height="100" rx="8"/>
+  <text class="label-text" x="580" y="105" text-anchor="middle">Hydrogen Module</text>
+  <text class="sub-text" x="580" y="122" text-anchor="middle">H2 Pressure · Range</text>
+  <text class="sub-text" x="580" y="136" text-anchor="middle">FC Stack Status</text>
+  <text class="sub-text" x="580" y="150" text-anchor="middle">Refuel Progress</text>
+  <line class="arrow" x1="440" y1="50" x2="580" y2="80"/>
+</svg>
+<div class="diagram-caption">Modular cross-powertrain architecture: shared display zone for speed, ADAS, and warnings, with swappable powertrain-specific modules.</div>
+</div>
+
+<p><strong>Diesel (Super Great, Fighter, Canter):</strong> DPF regeneration has 4 states: inactive, passive regen, active regen request (pull over), DPF full (derate imminent). AdBlue uses 3-level depletion warning: advisory (>500km), warning (100-500km), critical (&lt;100km — torque derestriction). Both follow ISO 2575 color conventions.</p>
+
+<p><strong>EV (eCanter):</strong> The cluster replaces the tachometer with a power/recuperation gauge. Key unique states: SOC with range estimation, charge port status with time-to-full, cell balancing indicator, thermal management warnings, V2X pre-conditioning.</p>
+
+<p><strong>Hydrogen (Hino Profia Z FCV — ARCHION context):</strong> Uses 6×70MPa tanks with Toyota MIRAI-derived fuel cell stacks. HMI must display: tank pressure per bank, FC stack temperature, hydrogen leak warning (safety-critical), dual-source range estimation.</p>
+
+<h3>Competitive Landscape</h3>
+<p>Japanese heavy-duty OEM competitors: <strong>Hino Profia</strong> (now within ARCHION), <strong>Isuzu Giga</strong>, <strong>UD Trucks Quon</strong> (Isuzu Motors). European benchmarks: Mercedes-Benz Actros, Volvo FH, Scania S-Series, DAF XG+. None publish detailed display specifications publicly — making LLM-assisted image analysis particularly valuable for building competitor benchmark libraries.</p>
+</section>
+
+<!-- ===== CH 04 ===== -->
+<section id="ch04" data-ch="04">
+<h2><span class="ch-label">Chapter 04</span>What LLMs Are & How We Got Here</h2>
+<p>A <strong>Large Language Model (LLM)</strong> is a type of AI trained on enormous amounts of text — books, websites, code, technical manuals — to learn the patterns of human language. Given some input text, it predicts what should come next. Scale this up to billions of internal parameters and trillions of training words, and the simple act of next-word prediction becomes surprisingly capable: it can write prose, generate code, analyze documents, and reason through multi-step problems.</p>
+
+<p>For your work designing graphic display panels for FUSO trucks, this means you can use an LLM to draft HMI layout specifications, generate UI copy for cluster warning states, analyze ISO 15005 glance-time requirements against your designs, brainstorm icon sets for eCanter battery-level indicators, or review a CAN signal mapping and extract the data points your cluster needs to display.</p>
+
+<p>LLMs don't "understand" in the way a human engineer does. They are pattern-matching systems that produce statistically likely text. Think of it as a brilliant, well-read colleague who has never worked at your company, doesn't know your specific situation, and occasionally makes things up with complete confidence. The more context you give, the better the output.</p>
+
+<div class="callout warn">
+<div class="callout-title">Key Limitation</div>
+<p>An LLM has no access to your internal FUSO design system, your Figma files, or your company's proprietary CAN database — unless you provide that information in your prompt. The model's knowledge has a training cutoff date. It may know about ISO 26262:2018 but it has never seen MFTBC's internal specifications.</p>
+</div>
+
+<h3>How We Got Here</h3>
+<div class="tl">
+<div class="ti"><div class="ty">1990s–2010s</div><div class="tt">Recurrent Neural Networks (RNNs)</div><div class="td">The first approach: process text one word at a time, carrying forward a "state." Worked for short sequences but forgot earlier words in long ones — the vanishing gradient problem.</div></div>
+<div class="ti"><div class="ty">1997</div><div class="tt">LSTMs</div><div class="td">Added memory gates to selectively remember or forget. Powered early Google Translate. Still sequential — each word waited for the last — so training was slow.</div></div>
+<div class="ti"><div class="ty">2014</div><div class="tt">Attention Mechanisms</div><div class="td">Let the model look back at all previous words and focus on the relevant ones. Like a spotlight the model could point at any part of the input.</div></div>
+<div class="ti"><div class="ty">2017</div><div class="tt">The Transformer ("Attention Is All You Need")</div><div class="td">Google researchers removed sequential processing entirely — using only attention. All words processed in parallel. This is the architecture behind every major LLM today.</div></div>
+<div class="ti"><div class="ty">2018–2020</div><div class="tt">GPT, BERT, GPT-3</div><div class="td">Transformer-based models trained on increasingly large datasets. GPT-3's 175 billion parameters showed emergent abilities — performing tasks from just a few examples in the prompt.</div></div>
+<div class="ti"><div class="ty">Nov 2022</div><div class="tt">ChatGPT</div><div class="td">GPT-3.5 refined for conversation. 100 million users in two months. Made LLMs accessible to non-technical users for the first time.</div></div>
+<div class="ti"><div class="ty">2023–2024</div><div class="tt">Multimodal & Reasoning Models</div><div class="td">GPT-4 added image understanding. Claude introduced 200K-token contexts (hundreds of pages). Reasoning models (o1) learned step-by-step thinking, scoring 83% on AIME 2024 math competition problems vs 12% for standard models (GPT-4o).</div></div>
+<div class="ti"><div class="ty">2025–2026</div><div class="tt">AI Agents</div><div class="td">AI shifted from chatting to acting — coding agents, research agents, autonomous task execution (Claude Cowork, Claude Code). Models that can plan, use tools, and iterate on results independently.</div></div>
+</div>
+</section>
+
+<!-- ===== CH 05 ===== -->
+<section id="ch05" data-ch="05">
+<h2><span class="ch-label">Chapter 05</span>How LLMs Work — Tokens, Attention & Training</h2>
+
+<h3>Step 1: Tokenization</h3>
+<p>The model breaks your text into <strong>tokens</strong> — sub-word pieces. "instrument cluster" becomes ["instrument", " cluster"]. "eCanter" might become ["e", "C", "anter"]. Each token gets a numeric ID.</p>
+
+<div class="dw">
+<svg viewBox="0 0 700 130" xmlns="http://www.w3.org/2000/svg">
+<text x="350" y="16" fill="var(--accent)" font-family="var(--mono)" font-size="10.5" font-weight="600" text-anchor="middle">TOKENIZATION — HMI CONTEXT</text>
+<rect x="96" y="28" width="508" height="28" rx="6" fill="var(--df)" stroke="var(--dl)" stroke-width="1.4"/>
+<text x="350" y="47" fill="var(--text)" font-family="var(--mono)" font-size="12" text-anchor="middle">"Super Great battery charge telltale"</text>
+<line x1="350" y1="56" x2="350" y2="70" stroke="var(--dl)" stroke-width="1.4" marker-end="url(#a)"/>
+<rect x="96" y="76" width="78" height="26" rx="4" fill="var(--df)" stroke="var(--accent)" stroke-width="1.2"/><text x="135" y="94" fill="var(--accent)" font-family="var(--mono)" font-size="10" text-anchor="middle">Super</text>
+<rect x="182" y="76" width="78" height="26" rx="4" fill="var(--df)" stroke="var(--accent)" stroke-width="1.2"/><text x="221" y="94" fill="var(--accent)" font-family="var(--mono)" font-size="10" text-anchor="middle">Great</text>
+<rect x="268" y="76" width="78" height="26" rx="4" fill="var(--df)" stroke="var(--a2)" stroke-width="1.2"/><text x="307" y="94" fill="var(--a2)" font-family="var(--mono)" font-size="10" text-anchor="middle">battery</text>
+<rect x="354" y="76" width="78" height="26" rx="4" fill="var(--df)" stroke="var(--a3)" stroke-width="1.2"/><text x="393" y="94" fill="var(--a3)" font-family="var(--mono)" font-size="10" text-anchor="middle">charge</text>
+<rect x="440" y="76" width="78" height="26" rx="4" fill="var(--df)" stroke="var(--a4)" stroke-width="1.2"/><text x="479" y="94" fill="var(--a4)" font-family="var(--mono)" font-size="10" text-anchor="middle">tell</text>
+<rect x="526" y="76" width="78" height="26" rx="4" fill="var(--df)" stroke="var(--a4)" stroke-width="1.2"/><text x="565" y="94" fill="var(--a4)" font-family="var(--mono)" font-size="10" text-anchor="middle">tale</text>
+<text x="135" y="118" fill="var(--text-muted)" font-family="var(--mono)" font-size="8" text-anchor="middle">5765</text>
+<text x="221" y="118" fill="var(--text-muted)" font-family="var(--mono)" font-size="8" text-anchor="middle">8120</text>
+<text x="307" y="118" fill="var(--text-muted)" font-family="var(--mono)" font-size="8" text-anchor="middle">11402</text>
+<text x="393" y="118" fill="var(--text-muted)" font-family="var(--mono)" font-size="8" text-anchor="middle">5894</text>
+<text x="479" y="118" fill="var(--text-muted)" font-family="var(--mono)" font-size="8" text-anchor="middle">2025</text>
+<text x="565" y="118" fill="var(--text-muted)" font-family="var(--mono)" font-size="8" text-anchor="middle">8102</text>
+</svg>
+<div class="dc">"telltale" gets split into two tokens. Rare or compound words are broken into sub-word pieces. Numbers below are illustrative token IDs.</div>
+</div>
+
+<p>This matters because LLMs have a <strong>context window</strong> — a maximum number of tokens they can process at once. Everything you send — your prompt, pasted spec documents, and the model's response — must fit inside this window. A full DBC file might be 50,000+ tokens. A single ISO standard section might be 10,000 tokens.</p>
+
+<h3>Step 2: Embeddings</h3>
+<p>Each token becomes a vector — a list of hundreds of numbers representing its meaning in mathematical space. "Speedometer" and "tachometer" would be close together; "speedometer" and "refrigerator" would be far apart. As tokens pass through the model's layers, attention enriches these vectors with context — so "charge" in "battery charge level" becomes distinct from "charge" in "service charge."</p>
+
+<h3>Step 3: Attention — How LLMs Understand Context</h3>
+<p>This is what makes Transformers work. For each token, the model computes how much it should "focus on" every other token. When processing "The brake warning activated because <strong>it</strong> sensed danger," attention lets the model figure out that "it" refers to the brake warning system — not the danger. It does this by matching <strong>Queries</strong> against <strong>Keys</strong> to produce attention scores, then using those scores to gather information from <strong>Values</strong>.</p>
+
+<p>Think of it like a library: the <strong>Query</strong> is your search question ("which system sensed danger?"), the <strong>Key</strong> is the label on each book's spine (each token's identifier), and the <strong>Value</strong> is the content inside the book (each token's information). You match your question against the spine labels to find the relevant books, then read their content. The attention mechanism does this for every token simultaneously, building a complete picture of how all words relate to each other.</p>
+
+<div class="dw">
+<svg viewBox="0 0 700 210" xmlns="http://www.w3.org/2000/svg">
+<text x="350" y="16" fill="var(--accent)" font-family="var(--mono)" font-size="10.5" font-weight="600" text-anchor="middle">ATTENTION SCORES — Resolving "it"</text>
+<text x="50" y="46" fill="var(--text-muted)" font-family="var(--sans)" font-size="9.5">Input:</text>
+<rect x="95" y="32" width="52" height="24" rx="4" fill="var(--df)" stroke="var(--dl)" stroke-width="1"/><text x="121" y="49" fill="var(--text)" font-family="var(--sans)" font-size="10.5" text-anchor="middle">The</text>
+<rect x="153" y="32" width="62" height="24" rx="4" fill="var(--df)" stroke="var(--dl)" stroke-width="1"/><text x="184" y="49" fill="var(--text)" font-family="var(--sans)" font-size="10.5" text-anchor="middle">brake</text>
+<rect x="221" y="32" width="72" height="24" rx="4" fill="var(--df)" stroke="var(--dl)" stroke-width="1"/><text x="257" y="49" fill="var(--text)" font-family="var(--sans)" font-size="10.5" text-anchor="middle">warning</text>
+<rect x="299" y="32" width="78" height="24" rx="4" fill="var(--df)" stroke="var(--dl)" stroke-width="1"/><text x="338" y="49" fill="var(--text)" font-family="var(--sans)" font-size="10.5" text-anchor="middle">activated</text>
+<rect x="383" y="32" width="72" height="24" rx="4" fill="var(--df)" stroke="var(--dl)" stroke-width="1"/><text x="419" y="49" fill="var(--text)" font-family="var(--sans)" font-size="10.5" text-anchor="middle">because</text>
+<rect x="461" y="32" width="32" height="24" rx="4" fill="var(--df)" stroke="var(--accent)" stroke-width="2"/><text x="477" y="49" fill="var(--accent)" font-family="var(--sans)" font-size="10.5" font-weight="700" text-anchor="middle">it</text>
+<rect x="499" y="32" width="65" height="24" rx="4" fill="var(--df)" stroke="var(--dl)" stroke-width="1"/><text x="531" y="49" fill="var(--text)" font-family="var(--sans)" font-size="10.5" text-anchor="middle">sensed</text>
+<rect x="570" y="32" width="68" height="24" rx="4" fill="var(--df)" stroke="var(--dl)" stroke-width="1"/><text x="604" y="49" fill="var(--text)" font-family="var(--sans)" font-size="10.5" text-anchor="middle">danger</text>
+
+<text x="50" y="90" fill="var(--a2)" font-family="var(--mono)" font-size="9.5" font-weight="600">SCORES</text>
+<text x="121" y="98" fill="var(--text)" font-family="var(--sans)" font-size="9" text-anchor="middle">The</text>
+<rect x="103" y="104" width="36" height="6" rx="3" fill="var(--dl)"/><rect x="103" y="104" width="4" height="6" rx="3" fill="var(--accent)" opacity=".3"/>
+<text x="184" y="98" fill="var(--text)" font-family="var(--sans)" font-size="9" text-anchor="middle">brake</text>
+<rect x="163" y="104" width="42" height="6" rx="3" fill="var(--dl)"/><rect x="163" y="104" width="36" height="6" rx="3" fill="var(--accent)"/>
+<text x="257" y="98" fill="var(--text)" font-family="var(--sans)" font-size="9" text-anchor="middle">warning</text>
+<rect x="234" y="104" width="46" height="6" rx="3" fill="var(--dl)"/><rect x="234" y="104" width="32" height="6" rx="3" fill="var(--accent)" opacity=".8"/>
+<text x="338" y="98" fill="var(--text)" font-family="var(--sans)" font-size="9" text-anchor="middle">activated</text>
+<rect x="315" y="104" width="46" height="6" rx="3" fill="var(--dl)"/><rect x="315" y="104" width="8" height="6" rx="3" fill="var(--accent)" opacity=".3"/>
+<text x="419" y="98" fill="var(--text)" font-family="var(--sans)" font-size="9" text-anchor="middle">because</text>
+<rect x="398" y="104" width="42" height="6" rx="3" fill="var(--dl)"/><rect x="398" y="104" width="6" height="6" rx="3" fill="var(--accent)" opacity=".3"/>
+<text x="531" y="98" fill="var(--text)" font-family="var(--sans)" font-size="9" text-anchor="middle">sensed</text>
+<rect x="510" y="104" width="42" height="6" rx="3" fill="var(--dl)"/><rect x="510" y="104" width="18" height="6" rx="3" fill="var(--accent)" opacity=".5"/>
+<text x="604" y="98" fill="var(--text)" font-family="var(--sans)" font-size="9" text-anchor="middle">danger</text>
+<rect x="583" y="104" width="42" height="6" rx="3" fill="var(--dl)"/><rect x="583" y="104" width="8" height="6" rx="3" fill="var(--accent)" opacity=".35"/>
+
+<text x="50" y="140" fill="var(--a2)" font-family="var(--mono)" font-size="9.5" font-weight="600">RESULT</text>
+<rect x="95" y="126" width="543" height="28" rx="6" fill="var(--accent)" opacity=".07" stroke="var(--accent)" stroke-width="1"/>
+<text x="366" y="145" fill="var(--accent)" font-family="var(--sans)" font-size="11" text-anchor="middle">"it" resolves to "brake warning" — the system that sensed danger</text>
+
+<text x="350" y="182" fill="var(--text-muted)" font-family="var(--sans)" font-size="9.5" text-anchor="middle">The model resolved the pronoun through contextual attention scores.</text>
+<text x="350" y="200" fill="var(--text-muted)" font-family="var(--sans)" font-size="9.5" text-anchor="middle">Modern models run 12–96 of these in parallel ("heads"), each tracking different relationships.</text>
+</svg>
+</div>
+
+<h3>Step 4: The Training Pipeline</h3>
+<div class="dw">
+<svg viewBox="0 0 700 150" xmlns="http://www.w3.org/2000/svg">
+<text x="350" y="16" fill="var(--accent)" font-family="var(--mono)" font-size="10.5" font-weight="600" text-anchor="middle">THREE-STAGE TRAINING</text>
+<rect x="25" y="32" width="195" height="82" rx="8" fill="var(--accent)" opacity=".06" stroke="var(--accent)" stroke-width="1.4"/>
+<text x="122" y="52" fill="var(--accent)" font-family="var(--mono)" font-size="9" font-weight="600" text-anchor="middle">1. PRE-TRAINING</text>
+<text x="122" y="70" fill="var(--text)" font-family="var(--sans)" font-size="9.5" text-anchor="middle">Trillions of tokens from the web</text>
+<text x="122" y="84" fill="var(--text)" font-family="var(--sans)" font-size="9.5" text-anchor="middle">"Predict the next word"</text>
+<text x="122" y="104" fill="var(--text-muted)" font-family="var(--sans)" font-size="8.5" text-anchor="middle">Months · $Millions · → Raw knowledge</text>
+<line x1="220" y1="73" x2="240" y2="73" stroke="var(--dl)" stroke-width="1.4" marker-end="url(#a)"/>
+<rect x="244" y="32" width="185" height="82" rx="8" fill="var(--a2)" opacity=".06" stroke="var(--a2)" stroke-width="1.4"/>
+<text x="336" y="52" fill="var(--a2)" font-family="var(--mono)" font-size="9" font-weight="600" text-anchor="middle">2. SUPERVISED FINE-TUNING</text>
+<text x="336" y="70" fill="var(--text)" font-family="var(--sans)" font-size="9.5" text-anchor="middle">Curated Q&amp;A examples</text>
+<text x="336" y="84" fill="var(--text)" font-family="var(--sans)" font-size="9.5" text-anchor="middle">"Here's ideal assistant behavior"</text>
+<text x="336" y="104" fill="var(--text-muted)" font-family="var(--sans)" font-size="8.5" text-anchor="middle">Days · Supervised · → Follows instructions</text>
+<line x1="429" y1="73" x2="449" y2="73" stroke="var(--dl)" stroke-width="1.4" marker-end="url(#a)"/>
+<rect x="453" y="32" width="222" height="82" rx="8" fill="var(--a3)" opacity=".06" stroke="var(--a3)" stroke-width="1.4"/>
+<text x="564" y="52" fill="var(--a3)" font-family="var(--mono)" font-size="9" font-weight="600" text-anchor="middle">3. REINFORCEMENT LEARNING</text>
+<text x="564" y="70" fill="var(--text)" font-family="var(--sans)" font-size="9.5" text-anchor="middle">Human rankings (RLHF) or</text>
+<text x="564" y="84" fill="var(--text)" font-family="var(--sans)" font-size="9.5" text-anchor="middle">verifiable rewards — math, code (RLVR)</text>
+<text x="564" y="104" fill="var(--text-muted)" font-family="var(--sans)" font-size="8.5" text-anchor="middle">Weeks · RL · → Aligned, can reason</text>
+<text x="350" y="140" fill="var(--text-muted)" font-family="var(--sans)" font-size="9.5" text-anchor="middle">Pre-training is the heavy lift. SFT and RL are refinements layered on top.</text>
+</svg>
+</div>
+
+<p>Beyond attention, the Transformer architecture includes three other critical components. <strong>Feed-forward networks</strong> are dense layers within each Transformer block — this is where much of the model's factual knowledge is stored, acting like a compressed lookup table built from trillions of training tokens. <strong>Residual connections</strong> (skip connections) route information around each layer, preventing information loss as data passes through dozens of stacked blocks — without them, deep models lose track of earlier signals. <strong>Positional encoding</strong> injects word-order information into the input, since attention processes all tokens in parallel with no inherent sense of sequence — the model needs to know that "brake warning" differs from "warning brake."</p>
+
+<h3>Temperature: Controlling Creativity</h3>
+<p><strong>Temperature</strong> controls randomness in the model's output. At each step, the model produces a probability distribution over possible next tokens. Temperature scales these probabilities: low values sharpen the distribution (the most likely token wins almost every time), while high values flatten it (less likely tokens get a fair chance). Most models default to approximately 0.7.</p>
+<table>
+<tr><th>Task</th><th>Temperature</th><th>Why</th></tr>
+<tr><td>Spec generation, state matrices</td><td>0 – 0.2</td><td>Deterministic, consistent output</td></tr>
+<tr><td>ISO compliance checks</td><td>0</td><td>No creativity — factual matching</td></tr>
+<tr><td>CAN signal extraction, DBC parsing</td><td>0</td><td>Precise data extraction, no embellishment</td></tr>
+<tr><td>Alert text copywriting</td><td>0.3 – 0.5</td><td>Some variety, still controlled</td></tr>
+<tr><td>Brainstorming layout alternatives</td><td>0.7 – 0.9</td><td>Explore diverse approaches</td></tr>
+<tr><td>Icon metaphor exploration, naming conventions</td><td>0.8 – 1.0</td><td>Maximum creative range</td></tr>
+</table>
+
+<h3>Fundamental Limitations</h3>
+<ul>
+<li><strong>Hallucination:</strong> Generates plausible-sounding but false information with full confidence. This isn't a bug — it's inherent to how next-token prediction works.</li>
+<li><strong>Knowledge cutoff:</strong> Training data has a frozen date. The model doesn't know about events or updates after that date unless it can search the web.</li>
+<li><strong>No persistent memory:</strong> Each conversation starts blank unless you provide context.</li>
+<li><strong>Sycophancy:</strong> Models tend to agree with you, even when you're wrong. If you present an incorrect premise, the model may build on it rather than correcting you. Explicitly invite disagreement.</li>
+<li><strong>Consistency:</strong> The same prompt can produce different results each time due to randomness in token sampling. For tasks requiring reproducibility, run the same prompt multiple times and compare.</li>
+<li><strong>Math errors:</strong> LLMs can make arithmetic mistakes. For critical calculations, ask the model to write code rather than doing mental math.</li>
+</ul>
+</section>
+
+<!-- ===== CH 06 ===== -->
+<section id="ch06" data-ch="06">
+<h2><span class="ch-label">Chapter 06</span>Models, Tiers & Capabilities</h2>
+<p>Not all LLMs are equal. Models exist on a spectrum of capability, speed, and cost — and choosing the right tier for the right task is a core skill. Using a flagship model for every quick question wastes time and money; using a small model for complex specification work produces unreliable results.</p>
+
+<h3>The Three Tiers</h3>
+<table>
+<tr><th>Tier</th><th>Examples</th><th>Strengths</th><th>Best FUSO Use Cases</th></tr>
+<tr><td><strong>Flagship</strong></td><td>Claude Opus, GPT-4o, Gemini Ultra</td><td>Deep reasoning, nuance, long context, complex multi-step tasks</td><td>ISO compliance analysis, cross-system state matrix generation, HMI architecture planning, spec review with edge cases</td></tr>
+<tr><td><strong>Mid-tier</strong></td><td>Claude Sonnet, GPT-4o-mini, Gemini Flash</td><td>Good reasoning at faster speed, strong instruction following</td><td>Prompt iteration, alert copywriting, competitor analysis summaries, documentation drafts</td></tr>
+<tr><td><strong>Small / Fast</strong></td><td>Claude Haiku, GPT-3.5</td><td>Very fast, low cost, good for simple structured tasks</td><td>CAN signal name formatting, quick translations, boilerplate text, simple lookups</td></tr>
+</table>
+
+<div class="callout info">
+<div class="callout-title">Rule of Thumb</div>
+<p>Start with the smallest model you think might work. If the output quality isn't sufficient, move up one tier. This is faster and cheaper than always defaulting to flagship. Most daily tasks — copywriting alert messages, reformatting tables, generating boilerplate — work perfectly on mid-tier models.</p>
+</div>
+
+<h3>Multimodal Capabilities</h3>
+<p>Modern flagship and mid-tier models can <strong>see images</strong>. This unlocks powerful HMI workflows:</p>
+<ul>
+<li><strong>Screenshot analysis:</strong> Paste a cluster screenshot and ask "Does this layout satisfy ISO 15005 glance-time constraints?"</li>
+<li><strong>Competitor benchmarking:</strong> Upload photos of Actros, Volvo FH, and Scania clusters and ask for a structured comparison of information hierarchy</li>
+<li><strong>Icon evaluation:</strong> Share a telltale icon set and ask "Which symbols might be confused at 1.5-second glance time?"</li>
+<li><strong>Handwritten sketches:</strong> Photograph a whiteboard sketch and ask the model to convert it into a structured layout specification</li>
+</ul>
+
+<h3>Model-Specific Behavior</h3>
+<p>Different model families have distinct personalities. Claude tends toward careful, nuanced responses and will express uncertainty. GPT models tend toward confident, comprehensive outputs. Neither approach is inherently better — but awareness helps you calibrate your verification effort.</p>
+
+<div class="card-grid">
+<div class="card">
+<h4>Claude (Anthropic)</h4>
+<ul>
+<li>Tends to flag uncertainty rather than guess</li>
+<li>Strong at following complex multi-part instructions</li>
+<li>Will push back if asked to do something it considers harmful</li>
+<li>Very large context windows (200K tokens)</li>
+<li>Cowork mode for autonomous file/browser tasks</li>
+</ul>
+</div>
+<div class="card">
+<h4>GPT-4 / ChatGPT (OpenAI)</h4>
+<ul>
+<li>Strong code generation and structured output</li>
+<li>More likely to produce confident answers even when uncertain</li>
+<li>Good at creative tasks and brainstorming</li>
+<li>Extensive plugin/tool ecosystem</li>
+<li>Image generation via DALL-E integration</li>
+</ul>
+</div>
+</div>
+
+<h3>Context Window Sizes</h3>
+<p>The context window determines how much information you can include in a single conversation. For HMI specification work, this matters enormously — a full CAN DBC file, multiple ISO standard excerpts, and your design system documentation can easily exceed 100K tokens.</p>
+
+<div class="dw">
+<svg viewBox="0 0 700 130" xmlns="http://www.w3.org/2000/svg">
+<text x="350" y="16" fill="var(--accent)" font-family="var(--mono)" font-size="10.5" font-weight="600" text-anchor="middle">CONTEXT WINDOW COMPARISON</text>
+<rect x="96" y="35" width="508" height="22" rx="4" fill="var(--df)" stroke="var(--dl)" stroke-width="1"/>
+<text x="96" y="30" fill="var(--text-muted)" font-family="var(--sans)" font-size="9">GPT-3.5: 4K tokens (~3 pages)</text>
+<rect x="96" y="35" width="10" height="22" rx="4" fill="var(--a5)" opacity=".5"/>
+<text x="96" y="74" fill="var(--text-muted)" font-family="var(--sans)" font-size="9">GPT-4o: 128K tokens (~100 pages)</text>
+<rect x="96" y="78" width="508" height="22" rx="4" fill="var(--df)" stroke="var(--dl)" stroke-width="1"/>
+<rect x="96" y="78" width="320" height="22" rx="4" fill="var(--a4)" opacity=".4"/>
+<text x="96" y="117" fill="var(--text-muted)" font-family="var(--sans)" font-size="9">Claude Opus/Sonnet: 200K tokens (~150 pages)</text>
+<rect x="96" y="78" width="508" height="22" rx="4" fill="transparent"/>
+<rect x="96" y="103" width="508" height="22" rx="4" fill="var(--df)" stroke="var(--dl)" stroke-width="1"/>
+<rect x="96" y="103" width="508" height="22" rx="4" fill="var(--accent)" opacity=".3"/>
+</svg>
+<div class="dc">Larger windows let you include more reference material, but the model may lose focus on details buried in the middle of very long contexts.</div>
+</div>
+
+<div class="callout warn">
+<div class="callout-title">Bigger Isn't Always Better</div>
+<p>Just because a model <em>can</em> accept 200K tokens doesn't mean you should always fill that window. Research shows models perform best when key information appears near the beginning or end of the context. Critical requirements buried in the middle of a massive prompt may be overlooked. Be strategic about what you include.</p>
+</div>
+</section>
+
+<!-- ===== CH 07 ===== -->
+<section id="ch07" data-ch="07">
+<h2><span class="ch-label">Chapter 07</span>Prompt Engineering for FUSO HMI</h2>
+<p>Prompt engineering is the skill of communicating with LLMs effectively. A well-structured prompt is the difference between a vague, generic response and a precise, actionable output tailored to your specific FUSO HMI design task. This is the single most important skill to develop.</p>
+
+<h3>The Five Foundational Principles</h3>
+<div class="tl">
+<div class="ti"><div class="ty">Principle 1</div><div class="tt">Specificity Compounding</div><div class="td">Every specific detail you add compounds quality. "Design a warning icon" produces generic clip art. "Design a DPF regeneration warning icon for the Super Great cluster, amber per ISO 2575, minimum 7mm height at 800mm viewing distance, must be distinguishable from the AdBlue warning in peripheral vision at highway speed" produces something you can actually use. Each constraint narrows the output space toward your real requirements.</div></div>
+<div class="ti"><div class="ty">Principle 2</div><div class="tt">Positive Framing — Tell What To Do, Not What To Avoid</div><div class="td">Instead of "Don't make it too complex" or "Avoid cluttering the display," say "Use a maximum of 4 information elements in the primary zone" or "Prioritize the three highest-severity telltales." Negative instructions leave the model guessing what you <em>do</em> want. Positive framing gives it a clear target. One specific "do" instruction is worth five "don't" instructions.</div></div>
+<div class="ti"><div class="ty">Principle 3</div><div class="tt">Context Is King — The Goldilocks Principle</div><div class="td"><strong>Too little context</strong> forces the model to guess — and it will fill gaps with generic assumptions. <strong>Too much context</strong> buries your actual question in noise and the model loses focus. The sweet spot: include everything the model needs to answer correctly, and nothing it doesn't. For FUSO HMI work, this usually means: vehicle model, powertrain type, applicable standards, your specific design constraints, and what format you want the answer in.</div></div>
+<div class="ti"><div class="ty">Principle 4</div><div class="tt">Structured Output Control</div><div class="td">Tell the model exactly how to format its response. "Return a markdown table with columns: Signal Name, Display Zone, Priority Level, Color, Animation." Without format instructions, you get prose paragraphs that need manual reformatting. With them, you get structured data you can paste directly into specs or spreadsheets.</div></div>
+<div class="ti"><div class="ty">Principle 5</div><div class="tt">Zero-Shot First, Then Escalate</div><div class="td">Start with the simplest prompt (zero-shot — no examples). If the output isn't right, add one or two examples (few-shot). If that's still insufficient, add step-by-step reasoning instructions (Chain-of-Thought). Don't over-engineer your prompt from the start — many tasks work perfectly with a clear, specific zero-shot instruction.</div></div>
+</div>
+
+<h3>Putting Principles Into Practice</h3>
+<p>The five principles above describe <em>what</em> makes a good prompt. Here's the concrete checklist for <em>how</em> to build one:</p>
+
+<div class="pr"><div class="pn">1</div><div class="pb2"><h5>Be Specific</h5><p>Not "design a dashboard" but "design a DPF regen warning for the Super Great 2025, amber per ISO 2575, RHD Japan market, readable within 1.5-second glance at 85 km/h."</p></div></div>
+<div class="pr"><div class="pn">2</div><div class="pb2"><h5>Provide Context</h5><p>Paste the relevant CAN signals, display dimensions, and ISO clauses the model needs. Example: include the DPF-related signals from your DBC file and the ISO 2575 color mandates for caution states.</p></div></div>
+<div class="pr"><div class="pn">3</div><div class="pb2"><h5>Define Output Format</h5><p>"Respond as a markdown table" / "Return as JSON" / "Structure as a Figma component spec with layers, colors, and spacing values."</p></div></div>
+<div class="pr"><div class="pn">4</div><div class="pb2"><h5>Assign a Role</h5><p>"You are a senior automotive HMI designer familiar with ISO 26262 ASIL B constraints and Japanese commercial vehicle regulations for the right-hand drive market."</p></div></div>
+<div class="pr"><div class="pn">5</div><div class="pb2"><h5>Iterate</h5><p>The first output is a draft, not a final answer. Refine with specific feedback: "make the DPF status icon more prominent," "add the signal-lost fallback state," "shorten the warning text to under 20 characters."</p></div></div>
+
+<h4>The Prompt Skeleton</h4>
+<pre><code>Role:        Who should the AI act as?
+Context:     Vehicle, display, CAN signals, standards
+Task:        What exactly should it produce?
+Format:      Table, JSON, prose, Figma spec?
+Constraints: Glance time, ASIL level, RHD, character limits
+Examples:    (Optional) Show the pattern you want</code></pre>
+
+<h3>Prompt Anatomy — A Real FUSO Example</h3>
+<p>Here's how the skeleton maps to a real-world prompt:</p>
+
+<div class="pe">
+<div class="pb"><div class="ph">Weak Prompt</div><div class="pp">Make a warning for the DPF filter.</div></div>
+</div>
+<div class="pe">
+<div class="pg"><div class="ph">Strong Prompt</div><div class="pp"><strong>Role:</strong> You are a UI/UX designer specializing in heavy-duty truck instrument clusters for the Japanese market (right-hand drive).<br><br>
+<strong>Context:</strong> I'm designing the DPF regeneration warning flow for the Mitsubishi Fuso Super Great's 12-inch digital cluster. The 6R30 diesel engine uses a DPF (Diesel Particulate Filter) that requires periodic regeneration. There are 4 states: inactive, passive regen (automatic), active regen request (driver must pull over), and DPF full (torque derate imminent).<br><br>
+<strong>Task:</strong> Create a complete DPF regeneration display specification covering all 4 states. For each state, define:<br>
+1. Telltale icon description and color (per ISO 2575)<br>
+2. Accompanying text string (max 2 lines, max 24 characters per line)<br>
+3. Display zone and priority level<br>
+4. Animation behavior (static, pulse rate, flash rate)<br>
+5. Escalation trigger (what causes transition to next state)<br><br>
+<strong>Constraints:</strong> All elements must be readable within the ISO 15005 1.5-second glance budget. The active regen request must use the highest available non-safety-critical priority. Colors follow ISO 2575: green=normal, amber=caution, red=danger.<br><br>
+<strong>Format:</strong> Return as a markdown table with one row per state.</div></div>
+</div>
+
+<h3>Six Prompt Patterns for Daily HMI Work</h3>
+
+<div class="pr"><div class="pn">1</div><div class="pb2"><h5>The Spec Generator</h5><p>"Given [vehicle model], [powertrain], and [applicable standards], generate a complete [component] specification including [specific fields]. Format as [table/JSON/markdown]."</p></div></div>
+<div class="pr"><div class="pn">2</div><div class="pb2"><h5>The Compliance Checker</h5><p>"Review this [design/specification] against [ISO standard]. For each element, state whether it meets the requirement, cite the specific clause, and flag any violations with suggested corrections."</p></div></div>
+<div class="pr"><div class="pn">3</div><div class="pb2"><h5>The State Matrix Builder</h5><p>"For the [system name] with states [list states], create a state transition matrix. Include: trigger conditions, display changes at each transition, priority level, and fallback behavior if the CAN signal is lost."</p></div></div>
+<div class="pr"><div class="pn">4</div><div class="pb2"><h5>The Copywriter</h5><p>"Write [number] alert text variants for [warning type] on the [vehicle] cluster. Each must be under [character limit], use [language], and follow the [tone] voice. Rate each variant for clarity at highway-speed glance time."</p></div></div>
+<div class="pr"><div class="pn">5</div><div class="pb2"><h5>The Layout Analyst</h5><p>"Analyze this cluster screenshot. Identify the information hierarchy, estimate glance-time compliance per zone, and suggest improvements for [specific concern]. Consider that this is a right-hand drive vehicle for the Japan market."</p></div></div>
+<div class="pr"><div class="pn">6</div><div class="pb2"><h5>The Competitor Benchmarker</h5><p>"Compare the [competitor vehicle] instrument cluster against our [FUSO model] design for [specific aspect]. Structure the comparison as: feature, their approach, our approach, advantage/gap, recommendation."</p></div></div>
+
+<h3>Few-Shot Prompting — Teaching By Example</h3>
+<p>When zero-shot doesn't produce the format or quality you need, show the model what you want with one or two examples:</p>
+
+<div class="prompt-block">
+<span class="label">Few-Shot Prompt</span>
+I need telltale specifications for FUSO cluster warnings. Follow this exact format:
+
+<strong>Example:</strong>
+SIGNAL: Engine Oil Pressure Low
+ICON: Oil can with drop, filled
+COLOR: Red (per ISO 2575 — immediate danger)
+PRIORITY: Critical — Zone A (center cluster)
+ANIMATION: 2 Hz flash, continuous
+TEXT: "Stop Engine — Oil Pressure"
+SOUND: Continuous chime, 2400 Hz
+
+Now generate specifications for:
+1. DPF Regeneration Request (active — pull over)
+2. AdBlue Level Critical (&lt;100 km remaining)
+3. Battery Cell Imbalance Warning (eCanter)
+</div>
+
+<h3>Chain-of-Thought — Step-by-Step Reasoning</h3>
+<p>For complex decisions where you need the model to show its work, ask it to reason step by step. This produces higher-quality analysis because the model can catch its own errors mid-reasoning.</p>
+
+<div class="prompt-block">
+<span class="label">Chain-of-Thought Prompt</span>
+A FUSO Super Great driver is traveling at 85 km/h on a Japanese expressway when both ABA6 (forward collision) and Active Sideguard Assist (blind spot) trigger warnings simultaneously.
+
+Think through this step by step:
+1. What is the relative severity of each warning?
+2. Which takes visual priority on the cluster and why?
+3. How should the display transition if ABA6 escalates to emergency braking?
+4. What happens to the ASA warning during the ABA6 event?
+5. After the ABA6 event clears, how should the display recover?
+
+Show your reasoning for each step before giving your final recommendation.
+</div>
+
+<div class="callout critical">
+<div class="callout-title">Right-Hand Drive Warning</div>
+<p>Japan market = right-hand drive. The driver's primary viewing angle is mirrored compared to LHD markets. When asking an LLM about display zone placement, always specify "right-hand drive, Japan market." Without this, the model defaults to LHD assumptions from its predominantly Western training data, placing critical information in the wrong zones.</p>
+</div>
+</section>
+
+<!-- ===== CH 08 ===== -->
+<section id="ch08" data-ch="08">
+<h2><span class="ch-label">Chapter 08</span>Advanced Techniques & Context Engineering</h2>
+<p>Beyond basic prompting, advanced techniques let you extract consistently higher-quality results, manage long design sessions, and tackle complex multi-part HMI specifications that would be difficult with single prompts.</p>
+
+<h3>Self-Consistency Through Multiple Passes</h3>
+<p>For critical specifications, don't rely on a single model response. Run the same prompt 3 times and compare results. Where all three agree, you have high confidence. Where they diverge, that's exactly where you need human expert judgment. This technique is especially valuable for:</p>
+<ul>
+<li>Warning priority rankings — does the model consistently rank ABA6 above DPF warnings?</li>
+<li>Glance-time estimates — are the timing recommendations consistent?</li>
+<li>Color assignments — does it always map to ISO 2575 correctly?</li>
+</ul>
+
+<h3>Reflection & Self-Correction</h3>
+<p>Ask the model to review its own output before you accept it. This simple technique catches errors the model would miss in a single pass.</p>
+
+<div class="prompt-block">
+<span class="label">Reflection Pattern</span>
+[After receiving output]
+
+Now review your own specification above. Check for:
+1. Any ISO 2575 color violations
+2. Any text strings exceeding 24 characters per line
+3. Any state transitions that could leave the display in an undefined state
+4. Any conflicts between simultaneous warning priorities
+
+List every issue you find, then provide a corrected version.
+</div>
+
+<h3>Devil's Advocate Technique</h3>
+<p>Force the model to argue against its own recommendation. This surfaces edge cases and risks you might not have considered.</p>
+
+<div class="prompt-block">
+<span class="label">Devil's Advocate Prompt</span>
+You just recommended placing the SOC indicator in the left cluster zone for the eCanter.
+
+Now argue against this placement. What are the strongest reasons this could be wrong? Consider:
+- Right-hand drive viewing angles
+- Competition with ADAS warnings for visual attention
+- Low-light readability
+- Driver expectations coming from diesel FUSO models
+
+Give me your three strongest counterarguments.
+</div>
+
+<h3>Context Engineering — Managing Long Sessions</h3>
+<p>In extended design sessions, the conversation grows and the model's earlier context gets compressed or lost. This is <strong>context drift</strong> — the model gradually "forgets" constraints you set at the beginning. Symptoms:</p>
+<ul>
+<li>The model stops applying your design system rules</li>
+<li>Outputs start contradicting earlier specifications</li>
+<li>Format consistency degrades</li>
+<li>The model forgets which vehicle model or powertrain you're designing for</li>
+</ul>
+
+<h4>The WSCI Framework</h4>
+<p>Four strategies for managing context effectively — think of them as memory management for LLMs:</p>
+<div class="card-grid">
+<div class="card">
+<h4>Write — Save for Later</h4>
+<p>Persist key decisions outside the conversation. Save successful prompt templates, finalized specifications, and design decisions to files. Retrieve them when starting new sessions instead of re-explaining everything.</p>
+</div>
+<div class="card">
+<h4>Select — Pull Only What's Relevant</h4>
+<p>Don't paste your entire DBC file. Extract the 15 signals relevant to the current display zone. Include only the ISO clauses that apply to this specific task. Surgical context selection beats brute-force dumping.</p>
+</div>
+<div class="card">
+<h4>Compress — Summarize Long Context</h4>
+<p>Before a long conversation drifts, summarize what's been decided: "So far we've defined: DPF has 4 states, amber/red per ISO 2575, 200ms render budget. Now let's tackle the animation timing."</p>
+</div>
+<div class="card">
+<h4>Isolate — Split Complex Tasks</h4>
+<p>One massive prompt handling telltales + layout + state machines + translations will underperform four focused prompts, each with its own tailored context. Break your HMI spec into sub-tasks.</p>
+</div>
+</div>
+
+<div class="pq">The LLM is a CPU. The context window is RAM. You are the operating system — deciding what information to load, when, and in what format. The quality of your memory management directly determines the quality of the model's output.<div class="pqa">Andrej Karpathy</div></div>
+
+<h3>System Prompts — Your Persistent Persona</h3>
+<p>A system prompt sets the model's behavior for the entire conversation. For FUSO HMI work, a well-crafted system prompt eliminates repetitive context-setting.</p>
+
+<pre><code>You are an expert UI/UX designer for Mitsubishi Fuso heavy-duty
+truck instrument clusters. You work within these constraints:
+
+Vehicle: Super Great (6R30 diesel, SHIFTPILOT 12-speed AMT)
+Market: Japan (right-hand drive)
+Standards: ISO 15005 (1.5s glance), ISO 26262 ASIL B (200ms
+  telltale latency), ISO 2575 (symbol colors), UNECE R121
+Display: Digital cluster, 200ms render budget
+Protocol: CAN/CAN FD (J1939), CRC-protected messages
+
+Rules:
+- All telltale colors follow ISO 2575 (red/amber/green)
+- All text fits within 1.5-second glance budget
+- Right-hand drive zone placement (mirror LHD assumptions)
+- Flag any specification as UNVERIFIED if based on general
+  knowledge rather than confirmed FUSO data
+- CAN signal names are illustrative — always note this</code></pre>
+
+<h3>Context Window Strategy</h3>
+<p>Think of your context window as a budget. Here's how to spend it wisely:</p>
+
+<div class="dw">
+<svg viewBox="0 0 700 170" xmlns="http://www.w3.org/2000/svg">
+<text x="350" y="16" fill="var(--accent)" font-family="var(--mono)" font-size="10.5" font-weight="600" text-anchor="middle">CONTEXT WINDOW BUDGET</text>
+<rect x="96" y="30" width="508" height="30" rx="6" fill="var(--df)" stroke="var(--dl)" stroke-width="1.4"/>
+<rect x="96" y="30" width="100" height="30" rx="6" fill="var(--accent)" opacity=".2" stroke="var(--accent)" stroke-width="1"/>
+<text x="146" y="50" fill="var(--accent)" font-family="var(--sans)" font-size="9" text-anchor="middle" font-weight="600">System Prompt</text>
+<rect x="196" y="30" width="70" height="30" rx="0" fill="var(--a2)" opacity=".15" stroke="var(--a2)" stroke-width="1"/>
+<text x="231" y="50" fill="var(--a2)" font-family="var(--sans)" font-size="9" text-anchor="middle" font-weight="600">Standards</text>
+<rect x="266" y="30" width="120" height="30" rx="0" fill="var(--a3)" opacity=".15" stroke="var(--a3)" stroke-width="1"/>
+<text x="326" y="50" fill="var(--a3)" font-family="var(--sans)" font-size="9" text-anchor="middle" font-weight="600">Reference Material</text>
+<rect x="386" y="30" width="100" height="30" rx="0" fill="var(--a4)" opacity=".15" stroke="var(--a4)" stroke-width="1"/>
+<text x="436" y="50" fill="var(--a4)" font-family="var(--sans)" font-size="9" text-anchor="middle" font-weight="600">Your Question</text>
+<rect x="486" y="30" width="118" height="30" rx="6" fill="var(--text-muted)" opacity=".1" stroke="var(--text-muted)" stroke-width="1"/>
+<text x="545" y="50" fill="var(--text-muted)" font-family="var(--sans)" font-size="9" text-anchor="middle" font-weight="600">Response Space</text>
+<text x="350" y="85" fill="var(--text-muted)" font-family="var(--sans)" font-size="9.5" text-anchor="middle">Total: 200,000 tokens (Claude) — everything must fit</text>
+<text x="350" y="105" fill="var(--text)" font-family="var(--sans)" font-size="10" text-anchor="middle">Place critical info at the START and END of context — not buried in the middle</text>
+<text x="350" y="125" fill="var(--text)" font-family="var(--sans)" font-size="10" text-anchor="middle">Leave 20-30% of the window for the model's response</text>
+<text x="350" y="150" fill="var(--text-muted)" font-family="var(--sans)" font-size="9" text-anchor="middle">1 token ≈ 0.75 words · 1 page ≈ 400 tokens · Full ISO doc section ≈ 10,000 tokens</text>
+</svg>
+</div>
+
+<div class="callout info">
+<div class="callout-title">The Goldilocks Principle Applied</div>
+<p><strong>Too little:</strong> "Design a warning." → Generic, useless output.<br>
+<strong>Too much:</strong> Pasting 5 complete ISO standards + entire DBC file + full design system doc → Model loses focus, key requirements get buried.<br>
+<strong>Just right:</strong> Relevant ISO clauses + applicable CAN signals + specific design constraints + clear question → Precise, actionable output.</p>
+</div>
+</section>
+
+<!-- ===== CH 09 ===== -->
+<section id="ch09" data-ch="09">
+<h2><span class="ch-label">Chapter 09</span>Claude Cowork for HMI Design</h2>
+<p><strong>Claude Cowork</strong> (launched January 2026) represents a shift from conversation to autonomous action. Instead of asking Claude questions and receiving text answers, Cowork can independently browse the web, read and write files, execute multi-step research workflows, and iterate on its own results — all while you continue other work.</p>
+
+<h3>The Autonomy Slider</h3>
+<p>Think of AI assistance as a sliding scale, not an on/off switch:</p>
+
+<div class="dw">
+<svg viewBox="0 0 700 120" xmlns="http://www.w3.org/2000/svg">
+<text x="350" y="16" fill="var(--accent)" font-family="var(--mono)" font-size="10.5" font-weight="600" text-anchor="middle">THE AUTONOMY SLIDER</text>
+<rect x="60" y="50" width="580" height="8" rx="4" fill="var(--df)"/>
+<rect x="60" y="50" width="580" height="8" rx="4" fill="url(#autoGrad)"/>
+<defs><linearGradient id="autoGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="var(--a3)"/><stop offset="50%" stop-color="var(--accent)"/><stop offset="100%" stop-color="var(--a2)"/></linearGradient></defs>
+<circle cx="60" cy="54" r="6" fill="var(--a3)" stroke="var(--bg-card)" stroke-width="2"/>
+<circle cx="253" cy="54" r="6" fill="var(--accent)" stroke="var(--bg-card)" stroke-width="2"/>
+<circle cx="447" cy="54" r="6" fill="var(--accent)" stroke="var(--bg-card)" stroke-width="2"/>
+<circle cx="640" cy="54" r="6" fill="var(--a2)" stroke="var(--bg-card)" stroke-width="2"/>
+<text x="60" y="82" fill="var(--a3)" font-family="var(--sans)" font-size="9" text-anchor="middle" font-weight="600">Autocomplete</text>
+<text x="60" y="94" fill="var(--text-muted)" font-family="var(--sans)" font-size="8" text-anchor="middle">Finishes your sentence</text>
+<text x="253" y="82" fill="var(--accent)" font-family="var(--sans)" font-size="9" text-anchor="middle" font-weight="600">Chat</text>
+<text x="253" y="94" fill="var(--text-muted)" font-family="var(--sans)" font-size="8" text-anchor="middle">Q&A conversation</text>
+<text x="447" y="82" fill="var(--accent)" font-family="var(--sans)" font-size="9" text-anchor="middle" font-weight="600">Cowork</text>
+<text x="447" y="94" fill="var(--text-muted)" font-family="var(--sans)" font-size="8" text-anchor="middle">Autonomous with oversight</text>
+<text x="640" y="82" fill="var(--a2)" font-family="var(--sans)" font-size="9" text-anchor="middle" font-weight="600">Full Agent</text>
+<text x="640" y="94" fill="var(--text-muted)" font-family="var(--sans)" font-size="8" text-anchor="middle">Independent execution</text>
+</svg>
+</div>
+
+<p>For FUSO HMI design work, the <strong>Cowork</strong> position is the sweet spot. The model works autonomously on well-defined tasks while you retain oversight and final approval. Full agent mode is for development and testing workflows, not safety-critical specification work.</p>
+
+<h3>The Agent Loop</h3>
+<p>When Cowork operates autonomously, it follows a structured loop:</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 130" xmlns="http://www.w3.org/2000/svg">
+<rect class="node-accent" x="30" y="40" width="100" height="50" rx="8"/>
+<text class="label-text" x="80" y="62" text-anchor="middle">Plan</text>
+<text class="sub-text" x="80" y="78" text-anchor="middle">Analyze task</text>
+<line class="arrow" x1="130" y1="65" x2="170" y2="65"/>
+<rect class="node-fill" x="170" y="40" width="100" height="50" rx="8"/>
+<text class="label-text" x="220" y="62" text-anchor="middle">Act</text>
+<text class="sub-text" x="220" y="78" text-anchor="middle">Execute step</text>
+<line class="arrow" x1="270" y1="65" x2="310" y2="65"/>
+<rect class="node-fill" x="310" y="40" width="100" height="50" rx="8"/>
+<text class="label-text" x="360" y="62" text-anchor="middle">Observe</text>
+<text class="sub-text" x="360" y="78" text-anchor="middle">Check result</text>
+<line class="arrow" x1="410" y1="65" x2="450" y2="65"/>
+<rect class="node-fill" x="450" y="40" width="100" height="50" rx="8"/>
+<text class="label-text" x="500" y="62" text-anchor="middle">Adjust</text>
+<text class="sub-text" x="500" y="78" text-anchor="middle">Refine approach</text>
+<line class="arrow" x1="550" y1="65" x2="590" y2="65"/>
+<rect class="node-accent" x="590" y="40" width="100" height="50" rx="8"/>
+<text class="label-text" x="640" y="62" text-anchor="middle">Repeat</text>
+<text class="sub-text" x="640" y="78" text-anchor="middle">Until complete</text>
+<path d="M640,90 L640,115 L80,115 L80,90" fill="none" stroke="var(--accent)" stroke-width="1.2" stroke-dasharray="5 3" marker-end="url(#arrowhead)"/>
+<text x="360" y="112" fill="var(--text-muted)" font-family="var(--sans)" font-size="8.5" text-anchor="middle">Loop until task is complete or human intervention needed</text>
+</svg>
+</div>
+
+<h3>Seven Cowork Use Cases for FUSO HMI</h3>
+
+<div class="pr"><div class="pn">1</div><div class="pb2"><h5>Competitor Cluster Research</h5><p>"Browse automotive press sites and create a comparison matrix of 2024-2025 heavy-duty truck digital clusters from Actros, Volvo FH, Scania S, and DAF XG+. Include: display size, resolution, information layout approach, ADAS visualization method, and night mode implementation."</p></div></div>
+<div class="pr"><div class="pn">2</div><div class="pb2"><h5>ISO Standard Cross-Reference</h5><p>"Read my DPF warning specification file and cross-reference every element against ISO 2575:2021 Annex A and ISO 15005:2017 clause 5.2. Flag violations and suggest corrections. Save results to a new file."</p></div></div>
+<div class="pr"><div class="pn">3</div><div class="pb2"><h5>Design System Audit</h5><p>"Review all telltale specifications in our design system folder. Check for: color consistency with ISO 2575, animation rate consistency across warning levels, text length compliance, and icon uniqueness. Generate an audit report."</p></div></div>
+<div class="pr"><div class="pn">4</div><div class="pb2"><h5>CAN Signal Mapping</h5><p>"Parse the attached DBC file. Extract all signals relevant to the instrument cluster. For each signal, determine: display zone, update rate, value range, and what the driver should see. Format as a signal-to-display mapping table."</p></div></div>
+<div class="pr"><div class="pn">5</div><div class="pb2"><h5>Multi-Language Alert Validation</h5><p>"Take our warning text specifications and verify the Japanese translations fit within the character limit for each display zone. Check that no Japanese string exceeds the allocated pixel width at 24px font size. Flag any that overflow."</p></div></div>
+<div class="pr"><div class="pn">6</div><div class="pb2"><h5>State Machine Completeness Check</h5><p>"Review the ADAS state machine I've defined. Verify that every state has a defined entry condition, exit condition, display specification, and fallback behavior. Identify any unreachable states or missing transitions. Generate a DOT graph of the complete state machine."</p></div></div>
+<div class="pr"><div class="pn">7</div><div class="pb2"><h5>ARCHION Transition Research</h5><p>"Research the ARCHION Corporation formation timeline (FUSO + Hino, Daimler Truck + Toyota). Find published information about shared platform implications for instrument cluster design. Focus on whether existing FUSO or Hino HMI design systems will be unified."</p></div></div>
+
+<div class="callout info">
+<div class="callout-title">The 80/20 Rule</div>
+<p>Focus 80% of your LLM usage on the 20% of tasks that consume the most time: specification writing, compliance checking, research aggregation, and state machine validation. Don't use Cowork for tasks that take 2 minutes by hand — the overhead of writing a good prompt exceeds the time saved.</p>
+</div>
+</section>
+
+<!-- ===== CH 10 ===== -->
+<section id="ch10" data-ch="10">
+<h2><span class="ch-label">Chapter 10</span>Verification & Safety Protocols</h2>
+<p>Every LLM output in your HMI workflow must be verified before it enters a specification, gets committed to a design file, or influences a safety-relevant decision. This isn't optional — it's the difference between using LLMs productively and introducing silent errors into safety-critical vehicle systems.</p>
+
+<div class="pq">Treat every LLM output as a smart intern's first draft — impressive in scope and structure, but absolutely requiring expert review before it goes anywhere near production.<div class="pqa">Core principle for safety-critical HMI work</div></div>
+
+<h3>Why Verification Matters More Here</h3>
+<p>Unlike web design or marketing copy, errors in truck instrument cluster specifications can have physical safety consequences. A wrong color mapping for a brake warning. An incorrect priority ranking that suppresses a critical alert. A telltale timing that violates ASIL B requirements. These aren't cosmetic bugs — they affect driver safety.</p>
+
+<div class="stakes-grid">
+<div class="card">
+<h4 style="color:var(--a3)">Low Stakes</h4>
+<p>Marketing copy, brainstorming, competitor research summaries, internal documentation formatting</p>
+<p><strong>Verification:</strong> Quick sanity check</p>
+</div>
+<div class="card">
+<h4 style="color:var(--a4)">Medium Stakes</h4>
+<p>Layout proposals, icon design suggestions, CAN signal mapping drafts, non-safety UI text</p>
+<p><strong>Verification:</strong> Cross-reference against design system + peer review</p>
+</div>
+<div class="card">
+<h4 style="color:var(--a5)">High Stakes</h4>
+<p>Telltale color/priority specs, ASIL B timing values, ADAS warning escalation logic, regulatory compliance claims</p>
+<p><strong>Verification:</strong> Manual expert verification against primary sources + team review + testing</p>
+</div>
+</div>
+
+<h3>The Three Verification Traps</h3>
+
+<h4>1. Sycophancy — The Model Agrees With You</h4>
+<p>LLMs have a strong tendency to agree with whatever premise you present. If you say "The DPF warning should be green, right?" the model is likely to say "Yes, that makes sense" — even though ISO 2575 mandates amber for caution states. This is <strong>sycophancy</strong>, and it's one of the most dangerous failure modes in safety-critical work.</p>
+<div class="card">
+<h4>How to Counter Sycophancy</h4>
+<ul>
+<li><strong>Ask neutral questions:</strong> "What color should the DPF warning be?" — not "The DPF warning should be green, right?"</li>
+<li><strong>Invite disagreement:</strong> Add "Challenge any assumptions in my question that may be incorrect" to your prompt</li>
+<li><strong>Test with wrong premises:</strong> Deliberately include an error and see if the model catches it. If it doesn't, your verification process needs to be stronger</li>
+<li><strong>Use the Devil's Advocate technique</strong> from Chapter 08 after every critical recommendation</li>
+</ul>
+</div>
+
+<h4>2. Automation Bias — Trusting Because It's AI</h4>
+<p>When output is well-formatted and confidently stated, humans tend to accept it without scrutiny. A table with perfect markdown formatting, clear headers, and professional language <em>looks</em> authoritative — even if the content contains errors. The more polished the output, the more carefully you need to verify the substance.</p>
+<div class="card">
+<h4>How to Counter Automation Bias</h4>
+<ul>
+<li><strong>Verify the hardest items first:</strong> Start with the cells in the table that require the most domain knowledge — those are where errors hide</li>
+<li><strong>Check specific numbers:</strong> Timing values, character counts, pixel dimensions — verify these against primary sources, not the model's output</li>
+<li><strong>Separate format from content:</strong> A beautifully formatted wrong answer is still wrong</li>
+</ul>
+</div>
+
+<h4>3. Consistency Illusion — Same Input, Different Output</h4>
+<p>The same prompt can produce different results each time due to randomness in token sampling. You might run a compliance check today and get "all clear," then run the identical check tomorrow and get three violations flagged. For critical specifications:</p>
+<ul>
+<li>Run the same verification prompt at least 3 times</li>
+<li>Set temperature to 0 for maximum consistency</li>
+<li>Treat any inconsistency across runs as a flag requiring human expert review</li>
+</ul>
+
+<h3>The Verification Checklist</h3>
+<p>Apply this checklist to every LLM output that will enter a specification document:</p>
+
+<table>
+<tr><th>Check</th><th>Question</th><th>Red Flag</th></tr>
+<tr><td><strong>Source</strong></td><td>Can I trace this claim to a primary source (ISO doc, DBC file, MFTBC spec)?</td><td>Model cites a standard clause that doesn't exist</td></tr>
+<tr><td><strong>Color</strong></td><td>Do all telltale colors match ISO 2575 mandates?</td><td>Green used for a caution state, amber for informational</td></tr>
+<tr><td><strong>Timing</strong></td><td>Do all latency values meet ASIL B requirements?</td><td>Render time > 200ms, unmotivated response > 100ms</td></tr>
+<tr><td><strong>Glance</strong></td><td>Can each display element be read in ≤ 1.5 seconds?</td><td>Text strings exceeding 3 lines or 24+ characters with complex terminology</td></tr>
+<tr><td><strong>Priority</strong></td><td>Is the warning priority ranking consistent with safety criticality?</td><td>Convenience alerts ranked above safety warnings</td></tr>
+<tr><td><strong>RHD</strong></td><td>Are zone placements correct for right-hand drive?</td><td>Critical info placed assuming left-hand drive</td></tr>
+<tr><td><strong>CAN</strong></td><td>Are signal names marked as illustrative/unverified?</td><td>Model presents invented signal names as factual</td></tr>
+<tr><td><strong>Completeness</strong></td><td>Are all states covered, including edge cases and failures?</td><td>Missing "signal lost" or "sensor fault" states</td></tr>
+</table>
+
+<div class="callout critical">
+<div class="callout-title">Non-Negotiable Rule</div>
+<p>No LLM-generated specification for safety-critical display elements (ASIL B telltales, ADAS warnings, brake system indicators) should ever be used without manual verification against the primary standard documents and internal MFTBC specifications. The LLM accelerates your work — it does not replace your engineering judgment.</p>
+</div>
+</section>
+
+<!-- ===== CH 11 ===== -->
+<section id="ch11" data-ch="11">
+<h2><span class="ch-label">Chapter 11</span>ARCHION, Coretura & SDV-Era HMI</h2>
+<p>The Japanese heavy-duty truck industry is undergoing its largest structural transformation in decades. Two major partnerships will reshape the competitive and technical landscape that your HMI designs must navigate.</p>
+
+<h3>ARCHION Corporation (April 2026)</h3>
+<p><strong>ARCHION Corporation</strong> is a holding company that brings Mitsubishi Fuso (Daimler Truck) and Hino Motors (Toyota Motor) under a single corporate umbrella. FUSO and Hino continue to operate as separate brands — this is not a brand merger, but a structural unification creating Japan's largest commercial vehicle group. For HMI designers, the implications are significant: potential design system convergence between FUSO and Hino product lines, shared ADAS platforms requiring consistent warning interfaces, and a combined product portfolio spanning light-duty (eCanter, Dutro) through heavy-duty (Super Great, Profia).</p>
+
+<h3>Coretura AB</h3>
+<p><strong>Coretura AB</strong> is a separate joint venture between Daimler Truck and Volvo Group focused on developing a shared <strong>Software-Defined Vehicle (SDV)</strong> platform. This is purely a software collaboration — the companies remain competitors in vehicle sales. The SDV platform will provide the middleware and software architecture that future truck instrument clusters run on.</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg">
+  <rect class="node-fill" x="30" y="20" width="160" height="45" rx="8"/>
+  <text class="label-text" x="110" y="40" text-anchor="middle">Toyota Motor</text>
+  <text class="sub-text" x="110" y="55" text-anchor="middle">Parent of Hino</text>
+  <rect class="node-fill" x="270" y="20" width="160" height="45" rx="8"/>
+  <text class="label-text" x="350" y="40" text-anchor="middle">Daimler Truck</text>
+  <text class="sub-text" x="350" y="55" text-anchor="middle">Parent of FUSO</text>
+  <rect class="node-fill" x="520" y="20" width="160" height="45" rx="8"/>
+  <text class="label-text" x="600" y="40" text-anchor="middle">Volvo Group</text>
+  <text class="sub-text" x="600" y="55" text-anchor="middle">Volvo Trucks · Renault · Mack</text>
+  <line class="arrow" x1="110" y1="65" x2="200" y2="108"/>
+  <line class="arrow" x1="310" y1="65" x2="260" y2="108"/>
+  <rect class="node-accent" x="140" y="105" width="230" height="50" rx="8"/>
+  <text class="label-text" x="255" y="128" text-anchor="middle">ARCHION Corporation</text>
+  <text class="sub-text" x="255" y="142" text-anchor="middle">FUSO + Hino · April 2026</text>
+  <line class="arrow" x1="390" y1="65" x2="450" y2="108"/>
+  <line class="arrow" x1="600" y1="65" x2="540" y2="108"/>
+  <rect class="node-accent" x="390" y="105" width="230" height="50" rx="8"/>
+  <text class="label-text" x="505" y="128" text-anchor="middle">Coretura AB</text>
+  <text class="sub-text" x="505" y="142" text-anchor="middle">SDV Software Platform</text>
+  <line x1="255" y1="155" x2="255" y2="185" stroke="var(--dl)" stroke-width="1.4" marker-end="url(#a)"/>
+  <line x1="505" y1="155" x2="505" y2="185" stroke="var(--dl)" stroke-width="1.4" marker-end="url(#a)"/>
+  <rect x="100" y="185" width="310" height="30" rx="6" fill="var(--df)" stroke="var(--dl)" stroke-width="1"/>
+  <text x="255" y="205" fill="var(--text-muted)" font-family="var(--sans)" font-size="9.5" text-anchor="middle">Shared Vehicles · Unified Design System</text>
+  <rect x="420" y="185" width="200" height="30" rx="6" fill="var(--df)" stroke="var(--dl)" stroke-width="1"/>
+  <text x="520" y="205" fill="var(--text-muted)" font-family="var(--sans)" font-size="9.5" text-anchor="middle">Shared Software · SDV Stack</text>
+</svg>
+<div class="diagram-caption">Two parallel partnerships: ARCHION unifies vehicles and design, Coretura unifies software. Daimler Truck sits at the center of both.</div>
+</div>
+
+<h3>What SDV Means for HMI Design</h3>
+<p>Software-Defined Vehicles separate hardware from software update cycles. For instrument cluster designers, this means:</p>
+<ul>
+<li><strong>Over-the-air updates:</strong> HMI changes can ship after vehicle delivery. Your design must handle versioning — different trucks in the same fleet may display different UI versions</li>
+<li><strong>Shared rendering platform:</strong> Coretura's middleware may standardize the graphics pipeline across Daimler and Volvo products. Your FUSO-specific design system will need to work within this shared framework</li>
+<li><strong>API-driven displays:</strong> Instead of hardcoded screen layouts, clusters may consume display data from a standardized API — making your design specifications more like design tokens and less like pixel-perfect mockups</li>
+<li><strong>Longer design lifecycles:</strong> When software updates can change the UI independently of hardware, your initial design must accommodate years of iterative updates while maintaining visual and functional consistency</li>
+</ul>
+
+<h3>Hydrogen & Next-Gen Powertrains</h3>
+<p>The Hino Profia Z FCV (hydrogen fuel cell) joins the ARCHION product family, adding a third powertrain type to your HMI scope. Hydrogen-specific displays require: tank pressure per bank (6x 70MPa), fuel cell stack temperature, hydrogen leak warnings (safety-critical — immediate action required), and dual-source range estimation. Your design system needs to be modular enough to accommodate this without a ground-up redesign.</p>
+
+<div class="callout info">
+<div class="callout-title">LLMs as a Research Tool for Industry Transitions</div>
+<p>Use LLMs to stay current on ARCHION and Coretura developments. Set up periodic Cowork research tasks to scan industry press, Daimler Truck investor presentations, and Toyota corporate announcements for HMI-relevant updates. The model can synthesize information from multiple sources faster than manual monitoring — but always verify key claims against primary corporate communications.</p>
+</div>
+</section>
+
+<!-- ===== CH 12 ===== -->
+<section id="ch12" data-ch="12">
+<h2><span class="ch-label">Chapter 12</span>Expert Workflow & Checklist</h2>
+<p>You've now covered the complete foundation: the vehicle platforms, the regulations, how LLMs work, how to prompt them effectively, how to use advanced techniques, how to verify their output, and how the industry is evolving. This final chapter puts it all together into a practical daily workflow.</p>
+
+<div class="pq">AI doesn't replace thinking — it amplifies it. The quality of your output is still determined by the quality of your thinking. LLMs let you execute faster, explore more options, and catch more errors — but only if you bring the domain expertise and critical judgment.<div class="pqa">The guiding principle</div></div>
+
+<h3>Start Small, Then Compound</h3>
+<p>Don't try to revolutionize your entire workflow on day one. Start with one use case — perhaps using an LLM to draft alert text for a single warning type. Master that. Then expand to specification tables. Then to compliance checking. Each successful use case builds your prompt engineering intuition and your confidence in verification. This is <strong>compounding</strong> — small, consistent improvements that accumulate into transformative workflow change.</p>
+
+<h3>The Daily Workflow</h3>
+<div class="tl">
+<div class="ti"><div class="ty">Step 1</div><div class="tt">Set Your Context</div><div class="td">Begin each session with your system prompt (Chapter 08). Specify vehicle model, powertrain, market, applicable standards. This eliminates 80% of generic/wrong outputs.</div></div>
+<div class="ti"><div class="ty">Step 2</div><div class="tt">Draft with LLM</div><div class="td">Use prompt patterns from Chapter 07 to generate first-draft specifications, state matrices, alert text, or layout analyses. Start with zero-shot; escalate to few-shot or CoT only if needed.</div></div>
+<div class="ti"><div class="ty">Step 3</div><div class="tt">Verify Against Sources</div><div class="td">Apply the verification checklist from Chapter 10. Check every safety-critical value against primary sources. Use self-consistency (run 3 times) for critical specs. Use the Devil's Advocate technique for design decisions.</div></div>
+<div class="ti"><div class="ty">Step 4</div><div class="tt">Iterate and Refine</div><div class="td">Use reflection prompts to have the model review its own output. Adjust your prompt based on what worked and what didn't. Save successful prompts as templates for reuse.</div></div>
+<div class="ti"><div class="ty">Step 5</div><div class="tt">Delegate Research to Cowork</div><div class="td">For time-consuming research, competitor analysis, or multi-file audits — hand off to Cowork and continue other work. Review results when they return.</div></div>
+</div>
+
+<h3>Common Mistakes to Avoid</h3>
+<div class="cg">
+<div class="cc"><h5>Trusting Without Verifying</h5><p>The number one mistake. LLM output looks authoritative even when wrong. Always verify safety-critical specifications against primary sources.</p></div>
+<div class="cc"><h5>Under-Specifying Prompts</h5><p>"Design a warning" will produce generic output. "Design a DPF regen warning for the Super Great, amber per ISO 2575, RHD Japan market" produces usable output.</p></div>
+<div class="cc"><h5>Over-Prompting Simple Tasks</h5><p>Not every task needs a 500-word prompt with few-shot examples and chain-of-thought. Match your prompt complexity to the task complexity.</p></div>
+<div class="cc"><h5>Ignoring Context Drift</h5><p>Long conversations degrade quality. Break sessions by topic. Re-state critical constraints periodically. Don't assume the model remembers your requirements from 30 messages ago.</p></div>
+<div class="cc"><h5>Using Wrong Model Tier</h5><p>Flagship models for simple formatting tasks waste time and money. Small models for complex compliance analysis miss critical nuances. Match the model to the task.</p></div>
+<div class="cc"><h5>Not Saving Successful Prompts</h5><p>When a prompt produces excellent output, save it as a template. Building a personal prompt library compounds your efficiency over time.</p></div>
+</div>
+
+<h3>Your Expert Checklist</h3>
+<p>Pin this to your workstation. Before sending any LLM-generated specification forward:</p>
+
+<div class="card" style="border-left:4px solid var(--accent)">
+<table>
+<tr><td style="width:32px;text-align:center;color:var(--accent);font-size:1.2rem">&#9744;</td><td><strong>Context set:</strong> Vehicle model, powertrain, market, and standards specified in prompt</td></tr>
+<tr><td style="text-align:center;color:var(--accent);font-size:1.2rem">&#9744;</td><td><strong>ISO 2575 colors verified:</strong> Red = danger, amber = caution, green = normal — no exceptions</td></tr>
+<tr><td style="text-align:center;color:var(--accent);font-size:1.2rem">&#9744;</td><td><strong>ASIL B timing confirmed:</strong> ≤ 200ms telltale display, ≤ 100ms unmotivated response</td></tr>
+<tr><td style="text-align:center;color:var(--accent);font-size:1.2rem">&#9744;</td><td><strong>Glance budget respected:</strong> All elements readable within 1.5-second single glance (ISO 15005)</td></tr>
+<tr><td style="text-align:center;color:var(--accent);font-size:1.2rem">&#9744;</td><td><strong>RHD zones correct:</strong> Zone placement verified for right-hand drive Japan market</td></tr>
+<tr><td style="text-align:center;color:var(--accent);font-size:1.2rem">&#9744;</td><td><strong>CAN signals marked:</strong> All signal names flagged as illustrative/unverified unless from actual DBC</td></tr>
+<tr><td style="text-align:center;color:var(--accent);font-size:1.2rem">&#9744;</td><td><strong>Edge cases covered:</strong> Signal lost, sensor fault, simultaneous warnings, CAN bus failure states defined</td></tr>
+<tr><td style="text-align:center;color:var(--accent);font-size:1.2rem">&#9744;</td><td><strong>Hallucination check:</strong> No display specs, CAN signal names, or standard clauses taken at face value</td></tr>
+<tr><td style="text-align:center;color:var(--accent);font-size:1.2rem">&#9744;</td><td><strong>Self-consistency passed:</strong> Critical specifications verified by running prompt 3 times and comparing</td></tr>
+<tr><td style="text-align:center;color:var(--accent);font-size:1.2rem">&#9744;</td><td><strong>Peer reviewed:</strong> Another team member has reviewed the LLM-generated specification</td></tr>
+</table>
+</div>
+
+<h3>Quick-Reference: Before & After Every Prompt</h3>
+<div class="cg">
+<div class="cc"><h5>Before You Prompt</h5>
+<ol style="margin:0;padding-left:1.2rem">
+<li>What exactly do I need? (Be specific in your own mind first)</li>
+<li>What context does the model need that it doesn't have?</li>
+<li>What format do I want the output in?</li>
+<li>What's the quality bar? (First draft vs. final spec)</li>
+<li>How will I verify the output?</li>
+</ol>
+</div>
+<div class="cc"><h5>After You Get Output</h5>
+<ol style="margin:0;padding-left:1.2rem">
+<li>Does this match what I actually needed?</li>
+<li>Are the key facts verifiable against primary sources?</li>
+<li>Is the reasoning sound? (Follow the logic)</li>
+<li>What's missing that I should add?</li>
+<li>If iterating: what specific feedback should I give?</li>
+</ol>
+</div>
+</div>
+
+<h3>Measuring Your Impact</h3>
+<p>Track these metrics to quantify how LLMs improve your workflow:</p>
+<ul>
+<li><strong>Specification draft time:</strong> How long from blank page to first complete draft? (Target: 50-70% reduction)</li>
+<li><strong>Compliance review coverage:</strong> How many standards clauses checked per review? (Target: 2-3x increase)</li>
+<li><strong>Iteration cycles:</strong> How many prompt-adjust-verify loops to reach final spec? (Decreases as prompt skills improve)</li>
+<li><strong>Error rate:</strong> Errors caught in verification per specification. (Should decrease as you build better prompts and system contexts)</li>
+</ul>
+
+<div class="pq">The goal isn't to replace your expertise with AI. The goal is to spend less time on the mechanical parts of specification work — drafting, formatting, cross-referencing — so you can spend more time on the parts that require human judgment: making design decisions that keep drivers safe.</div>
+</section>
+
+</div>
+</div>
+
+<footer>
+<p>Compiled March 2026 · Expert reference for FUSO / Japanese heavy-duty truck HMI design.</p>
+<p style="margin-top:.4rem;opacity:.5">Based on research from Anthropic, OpenAI, ISO, Daimler Truck, MFTBC, and practitioner sources. Verify all standards references.</p>
+</footer>
+
+<script>
+(function(){
+  var t=document.getElementById('themeToggle'),h=document.documentElement;
+  try{var saved=localStorage.getItem('fuso-hmi-theme');if(saved==='light') h.setAttribute('data-theme','light')}catch(e){}
+  t.addEventListener('click',function(){
+    var isLight=h.getAttribute('data-theme')==='light';
+    if(isLight){h.removeAttribute('data-theme');try{localStorage.setItem('fuso-hmi-theme','dark')}catch(e){}}
+    else{h.setAttribute('data-theme','light');try{localStorage.setItem('fuso-hmi-theme','light')}catch(e){}}
+  });
+  var ham=document.getElementById('hamburger'),sb=document.getElementById('sidebar'),ov=document.getElementById('sidebar-overlay');
+  ham.addEventListener('click',function(){ham.classList.toggle('open');sb.classList.toggle('open');ov.classList.toggle('open')});
+  ov.addEventListener('click',function(){ham.classList.remove('open');sb.classList.remove('open');ov.classList.remove('open')});
+  sb.querySelectorAll('.toc-link').forEach(function(l){l.addEventListener('click',function(){if(window.innerWidth<=900){ham.classList.remove('open');sb.classList.remove('open');ov.classList.remove('open')}})});
+  var secs=document.querySelectorAll('section[id]'),links=document.querySelectorAll('.toc-link');
+  var obs=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(entry.isIntersecting){links.forEach(function(l){l.classList.remove('active')});var active=sb.querySelector('a[href="#'+entry.target.id+'"]');if(active)active.classList.add('active')}})},{rootMargin:'-20% 0px -70% 0px'});
+  secs.forEach(function(s){obs.observe(s)});
+})();
+</script>
+</body>
+</html>

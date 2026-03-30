@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ch13: 일본어 고유어 — Zero to Hero 日本語</title>
+<link rel="stylesheet" href="css/design-system.css">
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <span class="logo-badge">Zero to Hero — 기억 설계 에디션</span>
+    <div class="logo-title">한국어 화자를 위한 日本語</div>
+    <div class="logo-sub">한국어에서 日本語로 — 기억 설계자의 안내서</div>
+  </a>
+  <div class="sidebar-progress">
+    <div class="sidebar-progress-label">진행률</div>
+    <div class="sidebar-progress-bar">
+      <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+    </div>
+    <div class="sidebar-progress-count">0/22 완료</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="ch-00.html" class="toc-link"><span class="toc-num">00</span><span class="toc-check" data-ch="00"></span>기억 과학</a>
+    <a href="ch-01.html" class="toc-link"><span class="toc-num">01</span><span class="toc-check" data-ch="01"></span>한국어의 이점</a>
+    <a href="ch-02.html" class="toc-link"><span class="toc-num">02</span><span class="toc-check" data-ch="02"></span>히라가나</a>
+    <a href="ch-03.html" class="toc-link"><span class="toc-num">03</span><span class="toc-check" data-ch="03"></span>가타카나</a>
+    <a href="ch-04.html" class="toc-link"><span class="toc-num">04</span><span class="toc-check" data-ch="04"></span>발음</a>
+    <a href="ch-05.html" class="toc-link"><span class="toc-num">05</span><span class="toc-check" data-ch="05"></span>서바이벌 일본어</a>
+    <a href="ch-06.html" class="toc-link"><span class="toc-num">06</span><span class="toc-check" data-ch="06"></span>조수사</a>
+    <a href="ch-07.html" class="toc-link"><span class="toc-num">07</span><span class="toc-check" data-ch="07"></span>조사</a>
+    <a href="ch-08.html" class="toc-link"><span class="toc-num">08</span><span class="toc-check" data-ch="08"></span>동사 활용</a>
+    <a href="ch-09.html" class="toc-link"><span class="toc-num">09</span><span class="toc-check" data-ch="09"></span>일상 회화</a>
+    <a href="ch-10.html" class="toc-link"><span class="toc-num">10</span><span class="toc-check" data-ch="10"></span>문형</a>
+    <a href="ch-11.html" class="toc-link"><span class="toc-num">11</span><span class="toc-check" data-ch="11"></span>한자</a>
+    <a href="ch-12.html" class="toc-link"><span class="toc-num">12</span><span class="toc-check" data-ch="12"></span>한자어</a>
+    <a href="ch-13.html" class="toc-link active"><span class="toc-num">13</span><span class="toc-check" data-ch="13"></span>고유어</a>
+    <a href="ch-14.html" class="toc-link"><span class="toc-num">14</span><span class="toc-check" data-ch="14"></span>경어</a>
+    <a href="ch-15.html" class="toc-link"><span class="toc-num">15</span><span class="toc-check" data-ch="15"></span>독해</a>
+    <a href="ch-16.html" class="toc-link"><span class="toc-num">16</span><span class="toc-check" data-ch="16"></span>작문</a>
+    <a href="ch-17.html" class="toc-link"><span class="toc-num">17</span><span class="toc-check" data-ch="17"></span>청해</a>
+    <a href="ch-18.html" class="toc-link"><span class="toc-num">18</span><span class="toc-check" data-ch="18"></span>문화 화용론</a>
+    <a href="ch-19.html" class="toc-link"><span class="toc-num">19</span><span class="toc-check" data-ch="19"></span>JLPT와 그 너머</a>
+    <a href="ch-20.html" class="toc-link"><span class="toc-num">20</span><span class="toc-check" data-ch="20"></span>기억의 궁전</a>
+    <a href="ch-21.html" class="toc-link"><span class="toc-num">21</span><span class="toc-check" data-ch="21"></span>90일 스프린트</a>
+    <a href="appendices.html" class="toc-link" style="margin-top:.5rem;border-top:1px solid var(--border);padding-top:.8rem"><span class="toc-num">+</span>부록</a>
+  </nav>
+</aside>
+
+<div class="main">
+<div class="content-wrap">
+
+<section id="ch13" data-ch="13" style="padding-top:3rem">
+<h2><span class="ch-label">제13장</span>일본어 고유어 -- 한국어가 도움이 되지 않는 단어들</h2>
+
+<div class="callout memory"><div class="callout-title">기억 기법 스포트라이트: 키워드 연상법 + 장소법</div><p>한국어로 유추할 수 없는 단어에는 생생한 이미지가 필수입니다.</p></div>
+
+<p>제5장에서 <span class="jp">水</span> (<span class="jp">みず</span>, 물)와 <span class="jp">美味しい</span> (<span class="jp">おいしい</span>, 맛있는)을 서바이벌 표현으로 배웠습니다. 이제 모든 분야에 걸쳐 체계적으로 <strong>和語</strong> (와고) 어휘를 쌓아 봅시다.</p>
+
+<div class="pq">
+  "한자어(漢語)는 여러분의 지름길입니다. 和語는 지름길이 끝나고 암기가 시작되는 곳입니다. 이 장의 모든 단어를 반복 학습하고, 기억법을 활용하여, 자동으로 떠오르게 만들어야 합니다."
+</div>
+
+<div class="callout warn">
+  <div class="callout-title">여기서부터 로마자 없음</div>
+  <p>제11장부터 <strong>로마자는 사라집니다</strong>. 모든 읽기는 히라가나로 표기합니다. 이 시점에서 가나를 유창하게 읽을 수 있어야 합니다. 아직 로마자에 의존하고 있다면, 계속하기 전에 제2~3장으로 돌아가서 복습하십시오.</p>
+</div>
+
+<div class="callout info">
+  <div class="callout-title">한국어 화자에게 和語가 어려운 이유</div>
+  <p>한자어(한자어)에 대한 한국어의 이점은 막대합니다 -- 하지만 그것은 격식체, 학술적, 합성어 위주입니다. 일본어의 일상적이고, 감정적이며, 구체적인 어휘는 <strong>和語</strong> -- 한국어와 <em>전혀</em> 겹치지 않는 일본 고유어에서 옵니다. <span class="kr">물</span>(물)은 <span class="jp">みず</span>와 관련이 없습니다. <span class="kr">먹다</span>(먹다)는 <span class="jp">たべる</span>와 무관합니다. 이 장에서는 무작정 암기가 아닌 체계적 기억법을 통해 모든 단어에 키워드 연상법을 제공합니다.</p>
+</div>
+
+<!-- ─── RECALL CHECK (top of chapter, from Ch10-11) ─── -->
+<nav class="chapter-toc">
+  <details open>
+    <summary class="chapter-toc-title">이 장의 내용</summary>
+  <ol>
+    <li><a href="#복습-확인----제1011장">복습 확인 -- 제10~11장</a></li>
+    <li><a href="#1-신체----体のことば">신체 -- 体のことば</a></li>
+    <li><a href="#2-음식과-음료----食べ物と飲み物">음식과 음료 -- 食べ物と飲み物</a></li>
+    <li><a href="#3-자연----自然のことば">자연 -- 自然のことば</a></li>
+    <li><a href="#4-시간----時のことば">시간 -- 時のことば</a></li>
+    <li><a href="#5-동작----動きのことば">동작 -- 動きのことば</a></li>
+    <li><a href="#6-형용사----形容詞">형용사 -- 形容詞</a></li>
+    <li><a href="#7-사람과-관계----人と関係">사람과 관계 -- 人と関係</a></li>
+    <li><a href="#8-의성어의태어----オノマトペ">의성어/의태어 -- オノマトペ</a></li>
+    <li><a href="#보너스-장소와-집----場所と家">보너스: 장소와 집 -- 場所と家</a></li>
+    <li><a href="#대화형-연습-문제">대화형 연습 문제</a></li>
+    <li><a href="#복습-확인----제1011장-복습">복습 확인 -- 제10~11장 복습</a></li>
+  </ol>
+  </details>
+</nav>
+
+<h3 id="복습-확인----제1011장">복습 확인 -- 제10~11장</h3>
+<p>새로운 어휘를 쌓기 전에, 한자와 한자어의 기초가 탄탄한지 확인합니다.</p>
+
+<div id="recall-check-top"></div>
+
+<!-- ─── MNEMONIC SVG: 和語 vs 漢語 ─── -->
+<div class="diagram">
+  <svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg">
+    <!-- 漢語 region -->
+    <rect x="30" y="30" width="300" height="220" rx="12" fill="none" stroke="var(--a2)" stroke-width="2" opacity=".6"/>
+    <text x="180" y="58" text-anchor="middle" font-size="16" font-weight="600" fill="var(--a2)">漢語 (한자어)</text>
+    <text x="180" y="82" text-anchor="middle" font-size="11" fill="var(--text-muted)">한국어 한자어가 도움이 되는 영역</text>
+    <text x="180" y="110" text-anchor="middle" font-size="10" fill="var(--text-muted)">学生 (がくせい) = 학생</text>
+    <text x="180" y="128" text-anchor="middle" font-size="10" fill="var(--text-muted)">図書館 (としょかん) = 도서관</text>
+    <text x="180" y="146" text-anchor="middle" font-size="10" fill="var(--text-muted)">経済 (けいざい) = 경제</text>
+    <text x="180" y="164" text-anchor="middle" font-size="10" fill="var(--text-muted)">病院 (びょういん) = 병원</text>
+    <text x="180" y="190" text-anchor="middle" font-size="12" font-weight="600" fill="var(--a2)">격식체 / 학술적 / 합성어</text>
+    <text x="180" y="210" text-anchor="middle" font-size="10" fill="var(--a3)">전이율: ~40-60%</text>
+    <text x="180" y="230" text-anchor="middle" font-size="22" fill="var(--a2)">지름길 영역</text>
+
+    <!-- 和語 region -->
+    <rect x="370" y="30" width="300" height="220" rx="12" fill="none" stroke="var(--accent)" stroke-width="2" opacity=".6"/>
+    <text x="520" y="58" text-anchor="middle" font-size="16" font-weight="600" fill="var(--accent)">和語 (고유어)</text>
+    <text x="520" y="82" text-anchor="middle" font-size="11" fill="var(--text-muted)">한국어가 도움이 안 되는 영역</text>
+    <text x="520" y="110" text-anchor="middle" font-size="10" fill="var(--text-muted)">食べる (たべる) = 먹다</text>
+    <text x="520" y="128" text-anchor="middle" font-size="10" fill="var(--text-muted)">水 (みず) = 물</text>
+    <text x="520" y="146" text-anchor="middle" font-size="10" fill="var(--text-muted)">嬉しい (うれしい) = 기쁜</text>
+    <text x="520" y="164" text-anchor="middle" font-size="10" fill="var(--text-muted)">走る (はしる) = 달리다</text>
+    <text x="520" y="190" text-anchor="middle" font-size="12" font-weight="600" fill="var(--accent)">일상 / 감정 / 구체적</text>
+    <text x="520" y="210" text-anchor="middle" font-size="10" fill="var(--a3)">전이율: ~0%</text>
+    <text x="520" y="230" text-anchor="middle" font-size="22" fill="var(--accent)">기억법 영역</text>
+  </svg>
+  <div class="diagram-caption">漢語 = 한국어의 이점. 和語 = 순수 암기 영역. 이 장에서 오른쪽을 정복합니다.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 1: BODY
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="1-신체----体のことば">신체 -- <span class="jp">体のことば</span></h3>
+
+<p>신체 부위는 가장 기본적인 和語에 속합니다. 이 단어들은 중국어에서 유래한 것이 아니므로 한국어가 전혀 도움이 되지 않습니다. 모든 단어에 고유한 기억법이 필요합니다.</p>
+
+<table>
+  <thead>
+    <tr><th>일본어</th><th>읽기</th><th>의미</th><th>기억법</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="jp">体</td><td class="jp">からだ</td><td>몸</td><td>"가라데(KARATE)는 온몸을 쓴다"</td></tr>
+    <tr><td class="jp">頭</td><td class="jp">あたま</td><td>머리</td><td>"아(A) 라마(LLAMA)는 머리가 크다"</td></tr>
+    <tr><td class="jp">顔</td><td class="jp">かお</td><td>얼굴</td><td>"카오(KAO) -- 소(COW) 얼굴을 상상해 보세요"</td></tr>
+    <tr><td class="jp">目</td><td class="jp">め</td><td>눈</td><td>"메(ME)! 나(ME)를 봐! -- 눈을 가리키며"</td></tr>
+    <tr><td class="jp">耳</td><td class="jp">みみ</td><td>귀</td><td>"미미(MIMI)! 내(ME) 목소리가 메아리(ECHO)친다"</td></tr>
+    <tr><td class="jp">鼻</td><td class="jp">はな</td><td>코</td><td>"하나(HANA)는 코가 크다"</td></tr>
+    <tr><td class="jp">口</td><td class="jp">くち</td><td>입</td><td>"쿠치(KUCHI) -- 아기 입에 쿠치쿠치"</td></tr>
+    <tr><td class="jp">歯</td><td class="jp">は</td><td>이/치아</td><td>"하(HA)! 웃을 때 이를 드러낸다"</td></tr>
+    <tr><td class="jp">舌</td><td class="jp">した</td><td>혀</td><td>"시타(SHITA) -- 치타(cheetah)가 헐떡이며 혀를 내민다"</td></tr>
+    <tr><td class="jp">首</td><td class="jp">くび</td><td>목</td><td>"쿠비(KUBI) -- 큐빅(CUBIC) 목 -- 네모난 목"</td></tr>
+    <tr><td class="jp">肩</td><td class="jp">かた</td><td>어깨</td><td>"카타(KATA, 가라데 형) -- 어깨를 펴고"</td></tr>
+    <tr><td class="jp">胸</td><td class="jp">むね</td><td>가슴</td><td>"무네(MUNE) -- 달빛(MOON)이 가슴을 비추다"</td></tr>
+    <tr><td class="jp">背中</td><td class="jp">せなか</td><td>등</td><td>"세나카(SENAKA) -- 등의 나카(NAKA, 가운데)"</td></tr>
+    <tr><td class="jp">腕</td><td class="jp">うで</td><td>팔</td><td>"우데(UDE) -- 우와! 튼튼한 팔!"</td></tr>
+    <tr><td class="jp">手</td><td class="jp">て</td><td>손</td><td>"테(TE) -- 테이블(TABLE) 위에서 카드를 나눠 주는 손"</td></tr>
+    <tr><td class="jp">指</td><td class="jp">ゆび</td><td>손가락</td><td>"유비(YUBI) -- 벌(BEE)이 네 손가락을 쏘았다"</td></tr>
+    <tr><td class="jp">爪</td><td class="jp">つめ</td><td>손톱/발톱</td><td>"쯔메(TSUME) -- 손톱이 쭉쭉(ZOOM) 자란다"</td></tr>
+    <tr><td class="jp">腹</td><td class="jp">はら</td><td>배</td><td>"하라(HARA) -- 하라키리 -- 배를 가르다"</td></tr>
+    <tr><td class="jp">腰</td><td class="jp">こし</td><td>허리/엉덩이</td><td>"코시(KOSHI) -- 허리를 편안히(COZY) 기대다"</td></tr>
+    <tr><td class="jp">足</td><td class="jp">あし</td><td>발/다리</td><td>"아시(ASHI) -- 건조한(ASHY) 다리에 로션이 필요하다"</td></tr>
+    <tr><td class="jp">膝</td><td class="jp">ひざ</td><td>무릎</td><td>"히자(HIZA) -- 그가(HE'S-A) 무릎을 꿇다"</td></tr>
+    <tr><td class="jp">心</td><td class="jp">こころ</td><td>마음</td><td>"코코로(KOKORO) -- 따뜻한 코코아(COCOA)가 마음을 데운다"</td></tr>
+    <tr><td class="jp">血</td><td class="jp">ち</td><td>피</td><td>"치(CHI) -- 기(氣)의 에너지는 곧 피"</td></tr>
+    <tr><td class="jp">骨</td><td class="jp">ほね</td><td>뼈</td><td>"호네(HONE) -- 뼈 위에 꿀(HONEY) -- 바비큐 갈비"</td></tr>
+    <tr><td class="jp">皮</td><td class="jp">かわ</td><td>피부/가죽</td><td>"카와(KAWA) -- 소가죽(COWHIDE) -- 소 피부 = 가죽"</td></tr>
+    <tr><td class="jp">髪</td><td class="jp">かみ</td><td>머리카락</td><td>"카미(KAMI) -- 빗질해줘(COMB-ME) -- 내 머리카락을"</td></tr>
+    <tr><td class="jp">涙</td><td class="jp">なみだ</td><td>눈물</td><td>"나미다(NAMIDA) -- 파도(NAMI)처럼 쏟아지는 눈물"</td></tr>
+    <tr><td class="jp">汗</td><td class="jp">あせ</td><td>땀</td><td>"아세(ASE) -- 에이스(ACE) 선수가 땀을 뻘뻘 흘리다"</td></tr>
+    <tr><td class="jp">息</td><td class="jp">いき</td><td>숨</td><td>"이키(IKI) -- 으(EEKY)악 -- 입냄새가 지독하다"</td></tr>
+    <tr><td class="jp">声</td><td class="jp">こえ</td><td>목소리</td><td>"코에(KOE) -- 동료(CO-worker)의 목소리"</td></tr>
+  </tbody>
+</table>
+
+<div class="callout warn">
+  <div class="callout-title">정교한 질문법</div>
+  <p><strong>왜 신체 부위 단어는 거의 항상 漢語가 아닌 和語일까요?</strong></p>
+  <p>신체 부위는 모든 언어에서 가장 오래되고 기본적인 어휘입니다. 중국의 영향이 일본에 도달하기 훨씬 전(6세기)에 이미 이름이 붙여졌습니다. 이 단어들은 한자 자체보다 앞섭니다. 한자는 나중에 기존 고유어에 할당된 것(訓読み/くんよみ)이지, 그 반대가 아닙니다. 이것이 신체 어휘가 한자어로 대체되지 않는 이유입니다 -- 일상 언어에 너무 깊이 박혀 있기 때문입니다.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 2: FOOD & DRINK
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="2-음식과-음료----食べ物と飲み物">음식과 음료 -- <span class="jp">食べ物と飲み物</span></h3>
+
+<p>매일 먹고 마시는 일입니다. 이 단어들은 대화, 메뉴, 일상생활에서 끊임없이 등장합니다. 일찍 마스터하십시오.</p>
+
+<table>
+  <thead>
+    <tr><th>일본어</th><th>읽기</th><th>의미</th><th>기억법</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="jp">食べる</td><td class="jp">たべる</td><td>먹다</td><td>"타베루(TABERU) -- 테이블(TABLE)에서 먹는다"</td></tr>
+    <tr><td class="jp">飲む</td><td class="jp">のむ</td><td>마시다</td><td>"노무(NOMU) -- 냠냠(NOM-NOM) 마시는 소리"</td></tr>
+    <tr><td class="jp">水</td><td class="jp">みず</td><td>물</td><td>"미즈(MIZU) -- 안개(MIST)처럼 뿌리는 물"</td></tr>
+    <tr><td class="jp">湯</td><td class="jp">ゆ</td><td>뜨거운 물</td><td>"유(YU) -- 당신(YOU)을 위한 목욕 뜨거운 물"</td></tr>
+    <tr><td class="jp">氷</td><td class="jp">こおり</td><td>얼음</td><td>"코오리(KOORI) -- 시원해(COOL), 정말(REALLY)"</td></tr>
+    <tr><td class="jp">米</td><td class="jp">こめ</td><td>쌀 (날것)</td><td>"코메(KOME) -- 와서(COME) 쌀을 가져가세요"</td></tr>
+    <tr><td class="jp">ご飯</td><td class="jp">ごはん</td><td>밥 / 식사</td><td>"고한(GOHAN) -- 한(HAN) 그릇 먹으러 가자(GO)"</td></tr>
+    <tr><td class="jp">魚</td><td class="jp">さかな</td><td>생선</td><td>"사카나(SAKANA) -- 선착장의 생선"</td></tr>
+    <tr><td class="jp">肉</td><td class="jp">にく</td><td>고기</td><td>"니쿠(NIKU) -- 칼로 고기를 자르다(NICK)"</td></tr>
+    <tr><td class="jp">野菜</td><td class="jp">やさい</td><td>야채</td><td>"야사이(YASAI) -- 야, 한숨(YEAH-SIGH), 야채 먹어"</td></tr>
+    <tr><td class="jp">卵</td><td class="jp">たまご</td><td>달걀</td><td>"타마고(TAMAGO) -- 토마토와 달걀은 함께 간다(TOMATO-GO)"</td></tr>
+    <tr><td class="jp">塩</td><td class="jp">しお</td><td>소금</td><td>"시오(SHIO) -- 시(SHE) 오! 소금이 너무 많아!"</td></tr>
+    <tr><td class="jp">砂糖</td><td class="jp">さとう</td><td>설탕</td><td>"사토(SATO) -- 사토(SATO) 씨는 설탕을 좋아한다"</td></tr>
+    <tr><td class="jp">醤油</td><td class="jp">しょうゆ</td><td>간장</td><td>"쇼유(SHOUYU) -- 간장을 보여줄게(SHOW-YOU)"</td></tr>
+    <tr><td class="jp">味</td><td class="jp">あじ</td><td>맛</td><td>"아지(AJI) -- 아지노모토(AJINOMOTO) -- AJI = 맛"</td></tr>
+    <tr><td class="jp">美味しい</td><td class="jp">おいしい</td><td>맛있는</td><td>"오이시(OISHII) -- 오, 맛있어! (OH-ISH-EE)"</td></tr>
+    <tr><td class="jp">不味い</td><td class="jp">まずい</td><td>맛없는</td><td>"마즈이(MAZUI) -- 물렁물렁(MUSHY) -- 물렁한 음식은 맛없다"</td></tr>
+    <tr><td class="jp">甘い</td><td class="jp">あまい</td><td>달콤한</td><td>"아마이(AMAI) -- 놀랍게(AMAZE) 달콤한"</td></tr>
+    <tr><td class="jp">辛い</td><td class="jp">からい</td><td>매운</td><td>"카라이(KARAI) -- 한국 카레(CURRY)는 맵다"</td></tr>
+    <tr><td class="jp">苦い</td><td class="jp">にがい</td><td>쓴</td><td>"니가이(NIGAI) -- 쓴 라이벌에게 무릎(KNEE) 맞은 남자(GUY)"</td></tr>
+    <tr><td class="jp">酸っぱい</td><td class="jp">すっぱい</td><td>신</td><td>"숩파이(SUPPAI) -- 신 수프(SOUP)를 먹고 찡그린 얼굴"</td></tr>
+    <tr><td class="jp">焼く</td><td class="jp">やく</td><td>굽다</td><td>"야쿠(YAKU) -- 야키니쿠, 야키토리"</td></tr>
+    <tr><td class="jp">煮る</td><td class="jp">にる</td><td>끓이다/조리다</td><td>"니루(NIRU) -- 무릎(KNEE) 높이의 냄비에서 끓이다"</td></tr>
+    <tr><td class="jp">切る</td><td class="jp">きる</td><td>자르다</td><td>"키루(KIRU) -- 사무라이가 칼로 자르다(KILL)"</td></tr>
+    <tr><td class="jp">混ぜる</td><td class="jp">まぜる</td><td>섞다/젓다</td><td>"마제루(MAZERU) -- 미로(MAZE) 무늬처럼 젓다"</td></tr>
+    <tr><td class="jp">茶</td><td class="jp">ちゃ</td><td>차</td><td>"챠(CHA) -- 한국어 차와 같다!"</td></tr>
+    <tr><td class="jp">酒</td><td class="jp">さけ</td><td>술 / 사케</td><td>"사케(SAKE) -- 이미 영어에도 있다!"</td></tr>
+  </tbody>
+</table>
+
+<div class="callout ok">
+  <div class="callout-title">한국어 연결 고리: 茶 (ちゃ)</div>
+  <p>드문 연결 고리가 하나 있습니다: <span class="jp">茶</span> (<span class="jp">ちゃ</span>) = <span class="kr">차</span> (차). 둘 다 중국어에서 왔지만 발음이 비슷하여 도움이 됩니다. <span class="jp">豆腐</span> (<span class="jp">とうふ</span>) = <span class="kr">두부</span>와 같은 다른 공통 음식 차용어도 주목하십시오.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 3: NATURE
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="3-자연----自然のことば">자연 -- <span class="jp">自然のことば</span></h3>
+
+<p>일본인의 자연에 대한 관계는 깊으며, 자연계에 대한 고유어 어휘 또한 풍부합니다.</p>
+
+<table>
+  <thead>
+    <tr><th>일본어</th><th>읽기</th><th>의미</th><th>기억법</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="jp">山</td><td class="jp">やま</td><td>산</td><td>"야마(YAMA) -- 라마(LLAMA)가 산 위에"</td></tr>
+    <tr><td class="jp">川</td><td class="jp">かわ</td><td>강</td><td>"카와(KAWA) -- 커브(CURVE)처럼 흐르는 강"</td></tr>
+    <tr><td class="jp">海</td><td class="jp">うみ</td><td>바다</td><td>"우미(UMI) -- 우와 나(OO-ME)! 바다가 거대해!"</td></tr>
+    <tr><td class="jp">空</td><td class="jp">そら</td><td>하늘</td><td>"소라(SORA) -- 새가 하늘에서 솟아오른다(SOAR)"</td></tr>
+    <tr><td class="jp">雲</td><td class="jp">くも</td><td>구름</td><td>"쿠모(KUMO) -- 적란운(CUMULUS) 구름"</td></tr>
+    <tr><td class="jp">雨</td><td class="jp">あめ</td><td>비</td><td>"아메(AME) -- 아, 비가 올지도(AH-MAY rain)"</td></tr>
+    <tr><td class="jp">雪</td><td class="jp">ゆき</td><td>눈</td><td>"유키(YUKI) -- 눈이 녹으면 지저분해진다(YUCKY)"</td></tr>
+    <tr><td class="jp">風</td><td class="jp">かぜ</td><td>바람</td><td>"카제(KAZE) -- 카주(KAZOO)를 통과하는 바람"</td></tr>
+    <tr><td class="jp">雷</td><td class="jp">かみなり</td><td>천둥/번개</td><td>"카미나리(KAMINARI) -- 신(KAMI)이 포효하는(NARI) 소리"</td></tr>
+    <tr><td class="jp">星</td><td class="jp">ほし</td><td>별</td><td>"호시(HOSHI) -- 뜨겁게 반짝이는(HOT SHIMMER) 별"</td></tr>
+    <tr><td class="jp">月</td><td class="jp">つき</td><td>달</td><td>"쯔키(TSUKI) -- 으스스한(SPOOKY) 밤의 달"</td></tr>
+    <tr><td class="jp">日</td><td class="jp">ひ</td><td>해 / 날</td><td>"히(HI) -- 그(HE, 해)는 매일 떠오른다"</td></tr>
+    <tr><td class="jp">火</td><td class="jp">ひ</td><td>불</td><td>"히(HI) -- 불도 히(HI) (열(HEAT))"</td></tr>
+    <tr><td class="jp">土</td><td class="jp">つち</td><td>흙</td><td>"쯔치(TSUCHI) -- 흙을 만져봐(TOUCH)"</td></tr>
+    <tr><td class="jp">石</td><td class="jp">いし</td><td>돌</td><td>"이시(ISHI) -- 돌처럼 차가운(STONE-cold) 이름"</td></tr>
+    <tr><td class="jp">木</td><td class="jp">き</td><td>나무</td><td>"키(KI) -- 열쇠(KEY) 모양의 나무"</td></tr>
+    <tr><td class="jp">花</td><td class="jp">はな</td><td>꽃</td><td>"하나(HANA) -- 코와 같은 읽기! 코 근처의 꽃"</td></tr>
+    <tr><td class="jp">草</td><td class="jp">くさ</td><td>풀</td><td>"쿠사(KUSA) -- 풀밭에서 편안하게(COZY)"</td></tr>
+    <tr><td class="jp">葉</td><td class="jp">は</td><td>잎</td><td>"하(HA)! 나뭇잎이 떨어졌다 -- 하!"</td></tr>
+    <tr><td class="jp">森</td><td class="jp">もり</td><td>숲</td><td>"모리(MORI) -- 나무가 더(MORE) 많으면 = 숲"</td></tr>
+    <tr><td class="jp">林</td><td class="jp">はやし</td><td>수풀/작은 숲</td><td>"하야시(HAYASHI) -- 하야시라는 이름의 작은 숲"</td></tr>
+    <tr><td class="jp">島</td><td class="jp">しま</td><td>섬</td><td>"시마(SHIMA) -- 열기 속에 반짝이는(SHIMMER) 섬"</td></tr>
+    <tr><td class="jp">波</td><td class="jp">なみ</td><td>파도</td><td>"나미(NAMI) -- 쓰나미(TSUNAMI) 파도"</td></tr>
+    <tr><td class="jp">滝</td><td class="jp">たき</td><td>폭포</td><td>"타키(TAKI) -- 촌스러운(TACKY) 관광 폭포 사진"</td></tr>
+    <tr><td class="jp">池</td><td class="jp">いけ</td><td>연못</td><td>"이케(IKE) -- 으악(EEK)! 연못에 개구리가!"</td></tr>
+    <tr><td class="jp">畑</td><td class="jp">はたけ</td><td>밭</td><td>"하타케(HATAKE) -- 밭에서 핫케이크(HOTCAKE)를 기르다"</td></tr>
+  </tbody>
+</table>
+
+<div class="callout warn">
+  <div class="callout-title">정교한 질문법</div>
+  <p><strong>왜 日 (해/날)과 火 (불)은 같은 고유어 읽기 ひ를 공유할까요?</strong></p>
+  <p>고대 일본어에서 해와 불은 빛과 열의 원천으로서 개념적으로 연결되어 있었습니다. <span class="jp">ひ</span>라는 말은 원래 빛나는 열이라는 근본 개념을 가리켰습니다. 한자는 나중에 중국에서 들어와 글자 형태를 구별했지만, 말은 통합된 기원을 유지했습니다. 문맥이 항상 의미를 분명히 해 줍니다.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 4: TIME
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="4-시간----時のことば">시간 -- <span class="jp">時のことば</span></h3>
+
+<p>시간 관련 단어는 거의 모든 대화에서 사용됩니다. 이 중 많은 것이 한국어 동계어가 없는 일본어 고유어입니다.</p>
+
+<table>
+  <thead>
+    <tr><th>일본어</th><th>읽기</th><th>의미</th><th>기억법</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="jp">朝</td><td class="jp">あさ</td><td>아침</td><td>"아사(ASA) -- 아사히(ASAHI) 맥주, 일출 양조 = 아침"</td></tr>
+    <tr><td class="jp">昼</td><td class="jp">ひる</td><td>낮 / 대낮</td><td>"히루(HIRU) -- 해가 정점(HEEL)에 있는 정오"</td></tr>
+    <tr><td class="jp">夕</td><td class="jp">ゆう</td><td>저녁</td><td>"유(YUU) -- 저녁에 만나요(see YOU)"</td></tr>
+    <tr><td class="jp">夜</td><td class="jp">よる</td><td>밤</td><td>"요루(YORU) -- 당신의(YOUR) 밤, 쉴 시간"</td></tr>
+    <tr><td class="jp">今</td><td class="jp">いま</td><td>지금</td><td>"이마(IMA) -- 지금(I'MA) 바로 할 거야"</td></tr>
+    <tr><td class="jp">今日</td><td class="jp">きょう</td><td>오늘</td><td>"쿄(KYOU) -- Q (오늘의 질문)"</td></tr>
+    <tr><td class="jp">昨日</td><td class="jp">きのう</td><td>어제</td><td>"키노(KINOU) -- 어제 알고 있었어(I KNEW)"</td></tr>
+    <tr><td class="jp">明日</td><td class="jp">あした</td><td>내일</td><td>"아시타(ASHITA) -- 내일 이후(AFTER)에 봐요"</td></tr>
+    <tr><td class="jp">今朝</td><td class="jp">けさ</td><td>오늘 아침</td><td>"케사(KESA) -- 케소(QUESO)처럼 -- 오늘 아침 치즈를 먹었다"</td></tr>
+    <tr><td class="jp">今晩</td><td class="jp">こんばん</td><td>오늘 저녁</td><td>"콘반(KONBAN) -- 콘반와(KONBANWA) -- 오늘 밤"</td></tr>
+    <tr><td class="jp">毎日</td><td class="jp">まいにち</td><td>매일</td><td>"마이니치(MAINICHI) -- 나의(MY) 매일의 틈새(NICHE)"</td></tr>
+    <tr><td class="jp">毎朝</td><td class="jp">まいあさ</td><td>매일 아침</td><td>"마이아사(MAIASA) -- 나의(MY) 아침 루틴"</td></tr>
+    <tr><td class="jp">前</td><td class="jp">まえ</td><td>전 / 앞</td><td>"마에(MAE) -- 5월(MAY)은 6월 전(BEFORE)에 온다"</td></tr>
+    <tr><td class="jp">後</td><td class="jp">あと</td><td>후 / 뒤</td><td>"아토(ATO) -- 오토만(OTTOMAN) 제국 이후(AFTER)"</td></tr>
+    <tr><td class="jp">去年</td><td class="jp">きょねん</td><td>작년</td><td>"쿄넨(KYONEN) -- 작년은 갔다(GONE-EN)"</td></tr>
+    <tr><td class="jp">来年</td><td class="jp">らいねん</td><td>내년</td><td>"라이넨(RAINEN) -- 내년에도 비(RAINING)가 온다"</td></tr>
+    <tr><td class="jp">春</td><td class="jp">はる</td><td>봄</td><td>"하루(HARU) -- 봄에 수확(HARvest)이 시작된다"</td></tr>
+    <tr><td class="jp">夏</td><td class="jp">なつ</td><td>여름</td><td>"나츠(NATSU) -- 여름이 얼마나 더운지 미친(NUTS) 짓이다"</td></tr>
+    <tr><td class="jp">秋</td><td class="jp">あき</td><td>가을</td><td>"아키(AKI) -- 아키타(AKITA) 개는 가을 단풍을 좋아한다"</td></tr>
+    <tr><td class="jp">冬</td><td class="jp">ふゆ</td><td>겨울</td><td>"후유(FUYU) -- 후유(PHEW)! 겨울은 춥다!"</td></tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 5: ACTIONS (VERBS)
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="5-동작----動きのことば">동작 -- <span class="jp">動きのことば</span></h3>
+
+<p>和語 동사는 일상 일본어의 뼈대입니다. 이 동사들은 모든 대화에서 사용하게 될 것이며 -- 한국어 대응어와 닮은 것은 단 하나도 없습니다.</p>
+
+<h4>이동과 방향</h4>
+<table>
+  <thead>
+    <tr><th>일본어</th><th>읽기</th><th>의미</th><th>기억법</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="jp">行く</td><td class="jp">いく</td><td>가다</td><td>"이쿠(IKU) -- 매주(each week) 어딘가 간다(GO)"</td></tr>
+    <tr><td class="jp">来る</td><td class="jp">くる</td><td>오다</td><td>"쿠루(KURU) -- 이리 와(COME), 시원해(COOL)"</td></tr>
+    <tr><td class="jp">帰る</td><td class="jp">かえる</td><td>돌아가다</td><td>"카에루(KAERU) -- 개구리(KAERU)가 연못으로 돌아가듯"</td></tr>
+    <tr><td class="jp">走る</td><td class="jp">はしる</td><td>달리다</td><td>"하시루(HASHIRU) -- 해시(HASH) 달리기 경주를 달리다"</td></tr>
+    <tr><td class="jp">歩く</td><td class="jp">あるく</td><td>걷다</td><td>"아루쿠(ARUKU) -- 체스판 위의 룩(ROOK)을 걸어서 움직이다"</td></tr>
+    <tr><td class="jp">止まる</td><td class="jp">とまる</td><td>멈추다</td><td>"토마루(TOMARU) -- 토마토(TOMATO) 빨간 신호에서 멈춰라"</td></tr>
+    <tr><td class="jp">登る</td><td class="jp">のぼる</td><td>오르다</td><td>"노보루(NOBORU) -- 고귀한(NOBLE) 높이로 오르다"</td></tr>
+    <tr><td class="jp">降りる</td><td class="jp">おりる</td><td>내리다 / 하차하다</td><td>"오리루(ORIRU) -- 노(OAR)를 저어 강을 내려가다"</td></tr>
+    <tr><td class="jp">乗る</td><td class="jp">のる</td><td>타다</td><td>"노루(NORU) -- 버스에도 기차에도(NOR) 타다"</td></tr>
+    <tr><td class="jp">渡る</td><td class="jp">わたる</td><td>건너다</td><td>"와타루(WATARU) -- 물(WATER)을 건너다"</td></tr>
+    <tr><td class="jp">入る</td><td class="jp">はいる</td><td>들어가다</td><td>"하이루(HAIRU) -- 높이(HIGH) 들어가다"</td></tr>
+    <tr><td class="jp">出る</td><td class="jp">でる</td><td>나가다 / 나오다</td><td>"데루(DERU) -- 감히(DARE) 나가 봐"</td></tr>
+    <tr><td class="jp">立つ</td><td class="jp">たつ</td><td>서다</td><td>"타츠(TATSU) -- 타투(TATTOO) 아티스트가 하루 종일 서 있다"</td></tr>
+    <tr><td class="jp">座る</td><td class="jp">すわる</td><td>앉다</td><td>"스와루(SUWARU) -- 방석 위에 앉다(SIT)"</td></tr>
+    <tr><td class="jp">飛ぶ</td><td class="jp">とぶ</td><td>날다 / 뛰다</td><td>"토부(TOBU) -- 튜브(TUBE) 속을 날아가다"</td></tr>
+    <tr><td class="jp">泳ぐ</td><td class="jp">およぐ</td><td>수영하다</td><td>"오요구(OYOGU) -- 오! 요! 가서 수영하자(GO swim)!"</td></tr>
+    <tr><td class="jp">落ちる</td><td class="jp">おちる</td><td>떨어지다</td><td>"오치루(OCHIRU) -- 오! 치어리더가 떨어졌다"</td></tr>
+    <tr><td class="jp">転ぶ</td><td class="jp">ころぶ</td><td>넘어지다 / 굴러지다</td><td>"코로부(KOROBU) -- 쓰러져(COLLAPSE) 넘어지다"</td></tr>
+  </tbody>
+</table>
+
+<h4>지각과 의사소통</h4>
+<table>
+  <thead>
+    <tr><th>일본어</th><th>읽기</th><th>의미</th><th>기억법</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="jp">見る</td><td class="jp">みる</td><td>보다</td><td>"미루(MIRU) -- 거울(MIRROR)에서 자신을 보다"</td></tr>
+    <tr><td class="jp">聞く</td><td class="jp">きく</td><td>듣다 / 묻다</td><td>"키쿠(KIKU) -- 킥(KICK) 드럼 소리를 듣다"</td></tr>
+    <tr><td class="jp">話す</td><td class="jp">はなす</td><td>말하다</td><td>"하나스(HANASU) -- 솔직하게(HONEST) 말하다"</td></tr>
+    <tr><td class="jp">言う</td><td class="jp">いう</td><td>말하다 (내용)</td><td>"이우(IU) -- 으(EWW), 뭐라고 말했어?"</td></tr>
+    <tr><td class="jp">読む</td><td class="jp">よむ</td><td>읽다</td><td>"요무(YOMU) -- 야! 이거 읽어봐!"</td></tr>
+    <tr><td class="jp">書く</td><td class="jp">かく</td><td>쓰다 / 그리다</td><td>"카쿠(KAKU) -- 앵무새(COCKATOO)가 부리로 쓰다"</td></tr>
+    <tr><td class="jp">教える</td><td class="jp">おしえる</td><td>가르치다</td><td>"오시에루(OSHIERU) -- 오, 그녀(SHE)는 가르치기를 잘한다"</td></tr>
+    <tr><td class="jp">習う</td><td class="jp">ならう</td><td>배우다 (누군가에게서)</td><td>"나라우(NARAU) -- 좁혀(NARROW) 집중해서 배우다"</td></tr>
+    <tr><td class="jp">覚える</td><td class="jp">おぼえる</td><td>외우다 / 기억하다</td><td>"오보에루(OBOERU) -- 오보에(OBOE)를 암기해서 연주하다"</td></tr>
+    <tr><td class="jp">忘れる</td><td class="jp">わすれる</td><td>잊다</td><td>"와스레루(WASURERU) -- 세탁기(WASHER)에 넣어서 잊어버렸다"</td></tr>
+    <tr><td class="jp">考える</td><td class="jp">かんがえる</td><td>생각하다</td><td>"칸가에루(KANGAERU) -- 캥거루(KANGAROO)가 열심히 생각하다"</td></tr>
+    <tr><td class="jp">知る</td><td class="jp">しる</td><td>알다 (사실)</td><td>"시루(SHIRU) -- 그녀(SHE)가 답을 안다"</td></tr>
+    <tr><td class="jp">分かる</td><td class="jp">わかる</td><td>이해하다</td><td>"와카루(WAKARU) -- 이해될 때까지 걸어(WALK) 보다"</td></tr>
+    <tr><td class="jp">笑う</td><td class="jp">わらう</td><td>웃다</td><td>"와라우(WARAU) -- 전쟁(WAR)은 웃을(LAUGH) 일이 아니다"</td></tr>
+    <tr><td class="jp">泣く</td><td class="jp">なく</td><td>울다</td><td>"나쿠(NAKU) -- 노크(KNOCK) 소리에 아기가 울다"</td></tr>
+    <tr><td class="jp">叫ぶ</td><td class="jp">さけぶ</td><td>소리치다</td><td>"사케부(SAKEBU) -- 사케(SAKE) 더 달라고 소리치다!"</td></tr>
+    <tr><td class="jp">呼ぶ</td><td class="jp">よぶ</td><td>부르다</td><td>"요부(YOBU) -- 야(YO)! 널 부르고 있어!"</td></tr>
+  </tbody>
+</table>
+
+<h4>일상 동작</h4>
+<table>
+  <thead>
+    <tr><th>일본어</th><th>읽기</th><th>의미</th><th>기억법</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="jp">買う</td><td class="jp">かう</td><td>사다</td><td>"카우(KAU) -- 소(COW)를 사다 -- かう는 COW처럼 들린다"</td></tr>
+    <tr><td class="jp">売る</td><td class="jp">うる</td><td>팔다</td><td>"우루(URU) -- 바닥(FLOOR) 위의 모든 것을 팔다"</td></tr>
+    <tr><td class="jp">使う</td><td class="jp">つかう</td><td>사용하다</td><td>"쯔카우(TSUKAU) -- 스컹크(SKUNK) 스프레이를 사용하다"</td></tr>
+    <tr><td class="jp">持つ</td><td class="jp">もつ</td><td>들다 / 가지다</td><td>"모츠(MOTSU) -- 손에 단어(MOT)를 들다"</td></tr>
+    <tr><td class="jp">取る</td><td class="jp">とる</td><td>잡다 / 가져가다</td><td>"토루(TORU) -- 찢어서(TORE) 가져갔다(TOOK)"</td></tr>
+    <tr><td class="jp">置く</td><td class="jp">おく</td><td>놓다 / 두다</td><td>"오쿠(OKU) -- 오크(OAK) 테이블 위에 놓다"</td></tr>
+    <tr><td class="jp">送る</td><td class="jp">おくる</td><td>보내다</td><td>"오쿠루(OKURU) -- 오크(OAK) 소포를 보내다"</td></tr>
+    <tr><td class="jp">届く</td><td class="jp">とどく</td><td>도착하다 / 닿다</td><td>"토도쿠(TODOKU) -- 소포가 선착장(DOCK)에 도착하다"</td></tr>
+    <tr><td class="jp">開ける</td><td class="jp">あける</td><td>열다</td><td>"아케루(AKERU) -- 에이커(ACRE)만큼 넓게 열다"</td></tr>
+    <tr><td class="jp">閉める</td><td class="jp">しめる</td><td>닫다</td><td>"시메루(SHIMERU) -- 문을 닫으면 반짝임(SHIMMER)이 사라진다"</td></tr>
+    <tr><td class="jp">作る</td><td class="jp">つくる</td><td>만들다</td><td>"쯔쿠루(TSUKURU) -- 요리사(COOK)가 저녁을 만들다"</td></tr>
+    <tr><td class="jp">壊す</td><td class="jp">こわす</td><td>부수다 / 망가뜨리다</td><td>"코와스(KOWASU) -- 소 엉덩이(COW-ASS) -- 소가 앉아서 부서졌다"</td></tr>
+    <tr><td class="jp">直す</td><td class="jp">なおす</td><td>고치다 / 수리하다</td><td>"나오스(NAOSU) -- 지금(NOW) 바로 고쳐!"</td></tr>
+    <tr><td class="jp">洗う</td><td class="jp">あらう</td><td>씻다</td><td>"아라우(ARAU) -- 날것(RAW)의 고기를 씻다"</td></tr>
+    <tr><td class="jp">着る</td><td class="jp">きる</td><td>입다 (상의)</td><td>"키루(KIRU) -- 기모노(KIMONO)를 입다(きる)"</td></tr>
+    <tr><td class="jp">脱ぐ</td><td class="jp">ぬぐ</td><td>벗다 (옷)</td><td>"누구(NUGU) -- 헌 것을 벗고(TAKE OFF) 새것(NEW)을 입다"</td></tr>
+    <tr><td class="jp">住む</td><td class="jp">すむ</td><td>살다 (거주하다)</td><td>"스무(SUMU) -- 스모(SUMO) 선수가 도장에서 살다"</td></tr>
+    <tr><td class="jp">寝る</td><td class="jp">ねる</td><td>자다</td><td>"네루(NERU) -- 스네어(SNARE) 드럼 자장가를 들으며 자다"</td></tr>
+    <tr><td class="jp">起きる</td><td class="jp">おきる</td><td>일어나다</td><td>"오키루(OKIRU) -- 일어나, 참나무(OAK)가 꽃피고 있어"</td></tr>
+    <tr><td class="jp">遊ぶ</td><td class="jp">あそぶ</td><td>놀다</td><td>"아소부(ASOBU) -- 나가서 놀자, 친구(BUDDY)야"</td></tr>
+    <tr><td class="jp">休む</td><td class="jp">やすむ</td><td>쉬다</td><td>"야스무(YASUMU) -- 하품(YAWN)하고 침대로 가서 쉬다"</td></tr>
+    <tr><td class="jp">働く</td><td class="jp">はたらく</td><td>일하다</td><td>"하타라쿠(HATARAKU) -- 더울수록(HOTTER) 더 열심히 일하다"</td></tr>
+    <tr><td class="jp">待つ</td><td class="jp">まつ</td><td>기다리다</td><td>"마츠(MATSU) -- 매트(MAT) 위에 앉아서 기다리다"</td></tr>
+    <tr><td class="jp">探す</td><td class="jp">さがす</td><td>찾다 / 검색하다</td><td>"사가스(SAGASU) -- 긴 사가(SAGA)처럼 찾아 헤매다"</td></tr>
+    <tr><td class="jp">見つける</td><td class="jp">みつける</td><td>발견하다</td><td>"미츠케루(MITSUKERU) -- 장갑(MITTS)을 찾았다! 발견했다!"</td></tr>
+    <tr><td class="jp">始める</td><td class="jp">はじめる</td><td>시작하다</td><td>"하지메루(HAJIMERU) -- 하지메마시테 -- 만남을 시작하다"</td></tr>
+    <tr><td class="jp">終わる</td><td class="jp">おわる</td><td>끝나다</td><td>"오와루(OWARU) -- 오! 전쟁(WAR)이 끝났다(OVER)"</td></tr>
+    <tr><td class="jp">変わる</td><td class="jp">かわる</td><td>변하다</td><td>"카와루(KAWARU) -- 강(KAWA)은 항상 흐름이 변한다"</td></tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 6: ADJECTIVES
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="6-형용사----形容詞">형용사 -- <span class="jp">形容詞</span></h3>
+
+<p>い형용사는 거의 전부 和語입니다. 크기, 온도, 감정, 품질 등 일상 세계를 묘사합니다. 모든 단어를 새로 암기해야 합니다.</p>
+
+<h4>크기, 모양, 정도</h4>
+<table>
+  <thead>
+    <tr><th>일본어</th><th>읽기</th><th>의미</th><th>기억법</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="jp">大きい</td><td class="jp">おおきい</td><td>큰</td><td>"오오키(OOKII) -- 오오! 열쇠(KEY)가 크다!"</td></tr>
+    <tr><td class="jp">小さい</td><td class="jp">ちいさい</td><td>작은</td><td>"치사이(CHIISAI) -- 치즈(CHEESE) 눈(EYE) -- 작은 치즈 눈"</td></tr>
+    <tr><td class="jp">長い</td><td class="jp">ながい</td><td>긴</td><td>"나가이(NAGAI) -- 긴(LONG) 잔소리(NAG)"</td></tr>
+    <tr><td class="jp">短い</td><td class="jp">みじかい</td><td>짧은 (길이)</td><td>"미지카이(MIJIKAI) -- 모기(MIDGE)는 짧은(SHORT) 파리"</td></tr>
+    <tr><td class="jp">高い</td><td class="jp">たかい</td><td>높은 / 비싼</td><td>"타카이(TAKAI) -- 촌스러운(TACKY) 높은 건물 / 비싼 물건"</td></tr>
+    <tr><td class="jp">低い</td><td class="jp">ひくい</td><td>낮은</td><td>"히쿠이(HIKUI) -- 하이킹(HIKE)하며 낮은 곳으로 내려가다"</td></tr>
+    <tr><td class="jp">太い</td><td class="jp">ふとい</td><td>굵은 / 뚱뚱한</td><td>"후토이(FUTOI) -- 두꺼운(THICK) 이불(FUTON)"</td></tr>
+    <tr><td class="jp">細い</td><td class="jp">ほそい</td><td>가는 / 날씬한</td><td>"호소이(HOSOI) -- 정원 호스(HOSE)는 가늘다"</td></tr>
+    <tr><td class="jp">広い</td><td class="jp">ひろい</td><td>넓은</td><td>"히로이(HIROI) -- 영웅(HERO)에게는 넓은 공간이 필요하다"</td></tr>
+    <tr><td class="jp">狭い</td><td class="jp">せまい</td><td>좁은</td><td>"세마이(SEMAI) -- 이 좁은 공간에서 내 이름을 말해(SAY-MY)"</td></tr>
+    <tr><td class="jp">多い</td><td class="jp">おおい</td><td>많은</td><td>"오오이(OOI) -- 오! 많다(MANY)!"</td></tr>
+    <tr><td class="jp">少ない</td><td class="jp">すくない</td><td>적은</td><td>"스쿠나이(SUKUNAI) -- 밤에(NIGH) 학교(SCHOOL)에 학생이 적다"</td></tr>
+    <tr><td class="jp">安い</td><td class="jp">やすい</td><td>싼</td><td>"야스이(YASUI) -- 지갑에 쉬운(EASY) = 싼"</td></tr>
+    <tr><td class="jp">重い</td><td class="jp">おもい</td><td>무거운</td><td>"오모이(OMOI) -- 오 맙소사(OH MY)! 무겁다!"</td></tr>
+    <tr><td class="jp">軽い</td><td class="jp">かるい</td><td>가벼운</td><td>"카루이(KARUI) -- 시원하고(COOL) 가벼운"</td></tr>
+  </tbody>
+</table>
+
+<h4>온도와 감각</h4>
+<table>
+  <thead>
+    <tr><th>일본어</th><th>읽기</th><th>의미</th><th>기억법</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="jp">暑い</td><td class="jp">あつい</td><td>더운 (날씨)</td><td>"아츠이(ATSUI) -- 더워서 에취(ACHOO)!"</td></tr>
+    <tr><td class="jp">寒い</td><td class="jp">さむい</td><td>추운 (날씨)</td><td>"사무이(SAMUI) -- 추위 속의 사무라이(SAMURAI)"</td></tr>
+    <tr><td class="jp">熱い</td><td class="jp">あつい</td><td>뜨거운 (물체)</td><td>"아츠이(ATSUI) -- 같은 소리, 만지면 뜨겁다!"</td></tr>
+    <tr><td class="jp">冷たい</td><td class="jp">つめたい</td><td>차가운 (물체)</td><td>"쯔메타이(TSUMETAI) -- 차가운 토마토 넥타이"</td></tr>
+    <tr><td class="jp">暖かい</td><td class="jp">あたたかい</td><td>따뜻한</td><td>"아타타카이(ATATAKAI) -- 아기(tot)는 따뜻하다"</td></tr>
+    <tr><td class="jp">涼しい</td><td class="jp">すずしい</td><td>시원한 / 상쾌한</td><td>"스즈시(SUZUSHII) -- 초밥(SUSHI)처럼 시원하고 상쾌한"</td></tr>
+    <tr><td class="jp">痛い</td><td class="jp">いたい</td><td>아픈 / 아야</td><td>"이타이(ITAI) -- 아파! (매듭을 너무 세게 묶어서)"</td></tr>
+    <tr><td class="jp">眠い</td><td class="jp">ねむい</td><td>졸린</td><td>"네무이(NEMUI) -- 졸린 니모(NEMO) 물고기"</td></tr>
+    <tr><td class="jp">うるさい</td><td class="jp">うるさい</td><td>시끄러운</td><td>"우루사이(URUSAI) -- 너무 시끄러워서 한숨(SIGH)"</td></tr>
+  </tbody>
+</table>
+
+<h4>감정과 품질</h4>
+<table>
+  <thead>
+    <tr><th>일본어</th><th>읽기</th><th>의미</th><th>기억법</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="jp">嬉しい</td><td class="jp">うれしい</td><td>기쁜</td><td>"우레시(URESHII) -- 만세(HOORAY)! 기뻐!"</td></tr>
+    <tr><td class="jp">悲しい</td><td class="jp">かなしい</td><td>슬픈</td><td>"카나시(KANASHII) -- 그녀가 울 수 있을까? 너무 슬퍼"</td></tr>
+    <tr><td class="jp">楽しい</td><td class="jp">たのしい</td><td>즐거운</td><td>"타노시(TANOSHII) -- 장난질이 한 통(TONNEAU) = 즐거움"</td></tr>
+    <tr><td class="jp">怖い</td><td class="jp">こわい</td><td>무서운</td><td>"코와이(KOWAI) -- 소 눈(COW-EYE) -- 소가 노려보면 무섭다"</td></tr>
+    <tr><td class="jp">寂しい</td><td class="jp">さびしい</td><td>외로운</td><td>"사비시(SABISHII) -- 와사비(WASABI)만 혼자 -- 외로운"</td></tr>
+    <tr><td class="jp">恥ずかしい</td><td class="jp">はずかしい</td><td>부끄러운</td><td>"하즈카시(HAZUKASHII) -- 계산원(CASHIER)이 봤어? 부끄러워!"</td></tr>
+    <tr><td class="jp">優しい</td><td class="jp">やさしい</td><td>상냥한 / 친절한</td><td>"야사시(YASASHII) -- 그녀는 정말 친절해"</td></tr>
+    <tr><td class="jp">厳しい</td><td class="jp">きびしい</td><td>엄격한</td><td>"키비시(KIBISHII) -- 키부츠(KIBBUTZ)는 엄격하다"</td></tr>
+    <tr><td class="jp">強い</td><td class="jp">つよい</td><td>강한</td><td>"쯔요이(TSUYOI) -- 장난감(TOY) 병사는 강하다"</td></tr>
+    <tr><td class="jp">弱い</td><td class="jp">よわい</td><td>약한</td><td>"요와이(YOWAI) -- 약한 새끼 고양이처럼 야옹(YOWL)"</td></tr>
+    <tr><td class="jp">新しい</td><td class="jp">あたらしい</td><td>새로운</td><td>"아타라시(ATARASHII) -- 그녀의 티아라(TIARA)는 새것"</td></tr>
+    <tr><td class="jp">古い</td><td class="jp">ふるい</td><td>오래된 (물건)</td><td>"후루이(FURUI) -- 바보(FOOL)만 오래된 것을 간직한다"</td></tr>
+    <tr><td class="jp">若い</td><td class="jp">わかい</td><td>젊은</td><td>"와카이(WAKAI) -- 엉뚱한(WACKY) 젊은이들"</td></tr>
+    <tr><td class="jp">早い</td><td class="jp">はやい</td><td>이른 / 빠른</td><td>"하야이(HAYAI) -- 하이야(HI-YAH)! 가라데 빠른 손동작!"</td></tr>
+    <tr><td class="jp">遅い</td><td class="jp">おそい</td><td>늦은 / 느린</td><td>"오소이(OSOI) -- 오 너무(OH SO) 느려"</td></tr>
+    <tr><td class="jp">近い</td><td class="jp">ちかい</td><td>가까운</td><td>"치카이(CHIKAI) -- 병아리(CHICK)가 눈(EYE) 가까이에"</td></tr>
+    <tr><td class="jp">遠い</td><td class="jp">とおい</td><td>먼</td><td>"토오이(TOOI) -- 발가락(TOE)은 머리에서 멀다"</td></tr>
+    <tr><td class="jp">明るい</td><td class="jp">あかるい</td><td>밝은</td><td>"아카루이(AKARUI) -- 아카리(AKARI, 등)는 밝다"</td></tr>
+    <tr><td class="jp">暗い</td><td class="jp">くらい</td><td>어두운</td><td>"쿠라이(KURAI) -- 어둠 속에 기어다니는(CRAWLY) 것들"</td></tr>
+    <tr><td class="jp">正しい</td><td class="jp">ただしい</td><td>올바른</td><td>"타다시(TADASHII) -- 짜잔(TADA)! 그녀가 정답을 맞혔다!"</td></tr>
+    <tr><td class="jp">難しい</td><td class="jp">むずかしい</td><td>어려운</td><td>"무즈카시(MUZUKASHII) -- 손가락이 뻣뻣해서 음악이 어렵다"</td></tr>
+    <tr><td class="jp">易しい</td><td class="jp">やさしい</td><td>쉬운</td><td>"야사시(YASASHII) -- 친절한과 같은 소리! 문맥으로 구별: 쉬운 또는 친절한"</td></tr>
+    <tr><td class="jp">汚い</td><td class="jp">きたない</td><td>더러운</td><td>"키타나이(KITANAI) -- 더러운 새끼 고양이(KITTEN)"</td></tr>
+    <tr><td class="jp">綺麗</td><td class="jp">きれい</td><td>깨끗한 / 아름다운 (な형용사)</td><td>"키레이(KIREI) -- 티아라(TIARA)처럼 깨끗하고 예쁜"</td></tr>
+    <tr><td class="jp">丸い</td><td class="jp">まるい</td><td>둥근</td><td>"마루이(MARUI) -- 구슬(MARBLE)은 둥글다"</td></tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 7: PEOPLE & RELATIONS
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="7-사람과-관계----人と関係">사람과 관계 -- <span class="jp">人と関係</span></h3>
+
+<p>일본어의 가족 호칭은 겸양형(자기 가족)과 존경형(남의 가족)으로 나뉩니다. 이 섹션에서는 기본 단어를 다룹니다. 경어 변형은 제14장에서 자세히 설명합니다.</p>
+
+<table>
+  <thead>
+    <tr><th>일본어</th><th>읽기</th><th>의미</th><th>기억법</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="jp">人</td><td class="jp">ひと</td><td>사람</td><td>"히토(HITO) -- 모든 사람(PERSON)에겐 그(HE)와 발가락(TOE)이 있다"</td></tr>
+    <tr><td class="jp">男</td><td class="jp">おとこ</td><td>남자</td><td>"오토코(OTOKO) -- 오! 타코(TACO)를 먹는 남자"</td></tr>
+    <tr><td class="jp">女</td><td class="jp">おんな</td><td>여자</td><td>"온나(ONNA) -- 무대(ON-A stage) 위의 여자"</td></tr>
+    <tr><td class="jp">子供</td><td class="jp">こども</td><td>어린이</td><td>"코도모(KODOMO) -- 콘도(CONDO)에서 뛰어다니는 아이들"</td></tr>
+    <tr><td class="jp">赤ちゃん</td><td class="jp">あかちゃん</td><td>아기</td><td>"아카짱(AKACHAN) -- 빨간(AKA) 볼, 귀여운 아기"</td></tr>
+    <tr><td class="jp">友達</td><td class="jp">ともだち</td><td>친구</td><td>"토모다치(TOMODACHI) -- 친구와 토마토(TOMATO)를 나눠 먹다"</td></tr>
+    <tr><td class="jp">家族</td><td class="jp">かぞく</td><td>가족</td><td>"카조쿠(KAZOKU) -- 아늑한(COZY) 가족"</td></tr>
+    <tr><td class="jp">父</td><td class="jp">ちち</td><td>아버지 (겸양)</td><td>"치치(CHICHI) -- 아빠의 유치한(cheesy) 농담"</td></tr>
+    <tr><td class="jp">お父さん</td><td class="jp">おとうさん</td><td>아버지 (존경)</td><td>"오토산(OTOUSAN) -- 큰 발가락(TOE)의 산(SAN, 씨) = 아빠"</td></tr>
+    <tr><td class="jp">母</td><td class="jp">はは</td><td>어머니 (겸양)</td><td>"하하(HAHA) -- 엄마가 하하하 웃다"</td></tr>
+    <tr><td class="jp">お母さん</td><td class="jp">おかあさん</td><td>어머니 (존경)</td><td>"오카상(OKAASAN) -- 네 엄마, 오케이(OK) 산(SAN)!"</td></tr>
+    <tr><td class="jp">兄</td><td class="jp">あに</td><td>형/오빠 (겸양)</td><td>"아니(ANI) -- 애니메(ANIME)처럼 -- 형은 애니메를 본다"</td></tr>
+    <tr><td class="jp">お兄さん</td><td class="jp">おにいさん</td><td>형/오빠 (존경)</td><td>"오니상(ONIISAN) -- 형은 가끔 도깨비(ONI) 같다"</td></tr>
+    <tr><td class="jp">姉</td><td class="jp">あね</td><td>누나/언니 (겸양)</td><td>"아네(ANE) -- 그녀는 뭐든 싫다(NAY)고 한다"</td></tr>
+    <tr><td class="jp">お姉さん</td><td class="jp">おねえさん</td><td>누나/언니 (존경)</td><td>"오네상(ONEESAN) -- 오 네상(NEE-SAN), 언니"</td></tr>
+    <tr><td class="jp">弟</td><td class="jp">おとうと</td><td>남동생</td><td>"오토토(OTOUTO) -- 남동생은 완전(TOTAL) 따라쟁이"</td></tr>
+    <tr><td class="jp">妹</td><td class="jp">いもうと</td><td>여동생</td><td>"이모토(IMOUTO) -- 여동생은 에모(EMO) 시기를 겪는다"</td></tr>
+    <tr><td class="jp">夫</td><td class="jp">おっと</td><td>남편</td><td>"옷토(OTTO) -- 어머나(UH-OH), 남편이 기념일을 잊었다"</td></tr>
+    <tr><td class="jp">妻</td><td class="jp">つま</td><td>아내</td><td>"쯔마(TSUMA) -- 투마(TWO-MA) -- 아내와 엄마, 두 역할"</td></tr>
+    <tr><td class="jp">息子</td><td class="jp">むすこ</td><td>아들</td><td>"무스코(MUSUKO) -- 근육질(MUSCULAR)인 나의 아들"</td></tr>
+    <tr><td class="jp">娘</td><td class="jp">むすめ</td><td>딸</td><td>"무스메(MUSUME) -- 나의 뮤즈(MUSE), 나의 딸"</td></tr>
+    <tr><td class="jp">祖父</td><td class="jp">そふ</td><td>할아버지 (겸양)</td><td>"소후(SOFU) -- 소파(SOFA) 위의 할아버지"</td></tr>
+    <tr><td class="jp">祖母</td><td class="jp">そぼ</td><td>할머니 (겸양)</td><td>"소보(SOBO) -- 할머니는 정말(SO) 대담하다(BOLD)"</td></tr>
+    <tr><td class="jp">孫</td><td class="jp">まご</td><td>손자/손녀</td><td>"마고(MAGO) -- 손자가 마음을 부드럽게(GO soft) 만든다"</td></tr>
+    <tr><td class="jp">彼</td><td class="jp">かれ</td><td>그 / 남자 친구</td><td>"카레(KARE) -- 커리(CURRY) -- 그(HE)는 커리를 좋아한다"</td></tr>
+    <tr><td class="jp">彼女</td><td class="jp">かのじょ</td><td>그녀 / 여자 친구</td><td>"카노조(KANOJO) -- 그녀(SHE)는 할 수 있어!"</td></tr>
+    <tr><td class="jp">自分</td><td class="jp">じぶん</td><td>자기 자신</td><td>"지분(JIBUN) -- 자기 자신(BUN, 자기)이 해라"</td></tr>
+    <tr><td class="jp">皆</td><td class="jp">みんな</td><td>모두</td><td>"민나(MINNA) -- 미니(MINI)어 모두(EVERYONE)"</td></tr>
+    <tr><td class="jp">誰</td><td class="jp">だれ</td><td>누구</td><td>"다레(DARE) -- 감히(DARE) 누가 들어왔느냐?"</td></tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 8: ONOMATOPOEIA
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="8-의성어의태어----オノマトペ">의성어/의태어 -- <span class="jp">オノマトペ</span></h3>
+
+<p>일본어는 세계에서 가장 풍부한 의성어/의태어 체계를 가지고 있습니다. 영어와 달리 일본어는 소리뿐만 아니라 <strong>감정, 질감, 상태, 동작</strong>에도 음상징 단어를 사용합니다. 자연스러운 일본어를 위해 필수적입니다.</p>
+
+<div class="callout info">
+  <div class="callout-title">의성어/의태어의 세 가지 유형</div>
+  <p><strong>擬音語 (ぎおんご)</strong> -- 실제 소리를 흉내냄 (ドンドン = 쿵쿵)<br>
+  <strong>擬態語 (ぎたいご)</strong> -- 상태/감정을 묘사 (ワクワク = 설레는)<br>
+  <strong>擬容語 (ぎようご)</strong> -- 외관/움직임을 묘사 (キラキラ = 반짝반짝)<br>
+  한국어에도 비슷한 체계(의성어/의태어)가 있어 개념 자체는 전이되지만, 구체적인 단어는 다릅니다.</p>
+</div>
+
+<div class="diagram">
+  <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg">
+    <rect x="20" y="20" width="200" height="160" rx="12" fill="none" stroke="var(--accent)" stroke-width="2" opacity=".6"/>
+    <text x="120" y="50" text-anchor="middle" font-size="14" font-weight="600" fill="var(--accent)">擬音語</text>
+    <text x="120" y="70" text-anchor="middle" font-size="10" fill="var(--text-muted)">소리 단어</text>
+    <text x="120" y="95" text-anchor="middle" font-size="11" fill="var(--text-muted)">ドンドン (쿵쿵)</text>
+    <text x="120" y="112" text-anchor="middle" font-size="11" fill="var(--text-muted)">ザーザー (억수같은 비)</text>
+    <text x="120" y="129" text-anchor="middle" font-size="11" fill="var(--text-muted)">ワンワン (멍멍)</text>
+    <text x="120" y="155" text-anchor="middle" font-size="9" fill="var(--a2)">한국어: 쿵쿵, 주룩주룩, 멍멍</text>
+
+    <rect x="250" y="20" width="200" height="160" rx="12" fill="none" stroke="var(--a3)" stroke-width="2" opacity=".6"/>
+    <text x="350" y="50" text-anchor="middle" font-size="14" font-weight="600" fill="var(--a3)">擬態語</text>
+    <text x="350" y="70" text-anchor="middle" font-size="10" fill="var(--text-muted)">상태 / 감정 단어</text>
+    <text x="350" y="95" text-anchor="middle" font-size="11" fill="var(--text-muted)">ドキドキ (심장 두근거림)</text>
+    <text x="350" y="112" text-anchor="middle" font-size="11" fill="var(--text-muted)">ワクワク (설레는)</text>
+    <text x="350" y="129" text-anchor="middle" font-size="11" fill="var(--text-muted)">イライラ (짜증나는)</text>
+    <text x="350" y="155" text-anchor="middle" font-size="9" fill="var(--a2)">한국어: 두근두근, 설레설레, 짜증짜증</text>
+
+    <rect x="480" y="20" width="200" height="160" rx="12" fill="none" stroke="var(--a4)" stroke-width="2" opacity=".6"/>
+    <text x="580" y="50" text-anchor="middle" font-size="14" font-weight="600" fill="var(--a4)">擬容語</text>
+    <text x="580" y="70" text-anchor="middle" font-size="10" fill="var(--text-muted)">외관 / 움직임</text>
+    <text x="580" y="95" text-anchor="middle" font-size="11" fill="var(--text-muted)">キラキラ (반짝반짝)</text>
+    <text x="580" y="112" text-anchor="middle" font-size="11" fill="var(--text-muted)">フワフワ (폭신폭신)</text>
+    <text x="580" y="129" text-anchor="middle" font-size="11" fill="var(--text-muted)">ペラペラ (유창한)</text>
+    <text x="580" y="155" text-anchor="middle" font-size="9" fill="var(--a2)">한국어: 반짝반짝, 폭신폭신, 유창유창</text>
+  </svg>
+  <div class="diagram-caption">일본어 의성어/의태어: 세 가지 범주. 개념은 한국어에도 있지만 모든 단어가 다릅니다.</div>
+</div>
+
+<h4>감정과 상태</h4>
+<table>
+  <thead>
+    <tr><th>일본어</th><th>의미</th><th>사용 예시</th><th>한국어 대응어</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="jp">ドキドキ</td><td>심장 두근거림 (흥분/긴장)</td><td class="jp">彼を見ると、ドキドキする。(그를 보면 심장이 두근거린다.)</td><td class="kr">두근두근</td></tr>
+    <tr><td class="jp">ワクワク</td><td>설레는 / 두근거리는</td><td class="jp">旅行が楽しみでワクワクする。(여행이 기대되어 설레다.)</td><td class="kr">설레설레 / 두근두근</td></tr>
+    <tr><td class="jp">イライラ</td><td>짜증나는 / 답답한</td><td class="jp">待ち時間が長くてイライラする。(대기 시간이 길어서 짜증난다.)</td><td class="kr">짜증나다</td></tr>
+    <tr><td class="jp">ウキウキ</td><td>들뜬 / 기분 좋은</td><td class="jp">春になるとウキウキする。(봄이 되면 기분이 들뜬다.)</td><td class="kr">들뜨다</td></tr>
+    <tr><td class="jp">ソワソワ</td><td>안절부절 / 불안한</td><td class="jp">結果が気になってソワソワする。(결과가 궁금해서 안절부절하다.)</td><td class="kr">안절부절</td></tr>
+    <tr><td class="jp">ビクビク</td><td>두려움에 떨리는</td><td class="jp">暗い道をビクビクしながら歩く。(어두운 길을 두려워하며 걷다.)</td><td class="kr">벌벌 떨다</td></tr>
+    <tr><td class="jp">メソメソ</td><td>훌쩍훌쩍 / 찔찔</td><td class="jp">メソメソ泣かないで。(찔찔 울지 마.)</td><td class="kr">찔찔 울다</td></tr>
+    <tr><td class="jp">ニコニコ</td><td>방긋방긋 웃는</td><td class="jp">おばあちゃんがニコニコしている。(할머니가 방긋 웃고 계신다.)</td><td class="kr">빙글빙글 (웃다)</td></tr>
+    <tr><td class="jp">ゲラゲラ</td><td>깔깔 웃는</td><td class="jp">友達とゲラゲラ笑った。(친구들과 깔깔 웃었다.)</td><td class="kr">깔깔 (웃다)</td></tr>
+    <tr><td class="jp">ぼんやり</td><td>멍한 / 방심한</td><td class="jp">ぼんやりしていて聞こえなかった。(멍하니 있어서 못 들었다.)</td><td class="kr">멍하니</td></tr>
+    <tr><td class="jp">しっかり</td><td>확실히 / 단단히</td><td class="jp">しっかり勉強しなさい。(확실하게 공부하세요.)</td><td class="kr">제대로 / 확실히</td></tr>
+    <tr><td class="jp">ぐっすり</td><td>푹 잠든</td><td class="jp">昨夜はぐっすり寝た。(어젯밤 푹 잤다.)</td><td class="kr">푹 (자다)</td></tr>
+  </tbody>
+</table>
+
+<h4>외관과 질감</h4>
+<table>
+  <thead>
+    <tr><th>일본어</th><th>의미</th><th>사용 예시</th><th>한국어 대응어</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="jp">キラキラ</td><td>반짝반짝</td><td class="jp">星がキラキラ光っている。(별이 반짝반짝 빛나고 있다.)</td><td class="kr">반짝반짝</td></tr>
+    <tr><td class="jp">ピカピカ</td><td>번쩍번쩍 / 반들반들</td><td class="jp">靴をピカピカに磨いた。(구두를 반들반들하게 닦았다.)</td><td class="kr">번쩍번쩍</td></tr>
+    <tr><td class="jp">フワフワ</td><td>폭신폭신 / 부드러운</td><td class="jp">フワフワのパンケーキ。(폭신폭신한 팬케이크.)</td><td class="kr">폭신폭신</td></tr>
+    <tr><td class="jp">ツルツル</td><td>매끈매끈 / 미끄러운</td><td class="jp">氷の上はツルツルだ。(얼음 위는 미끄럽다.)</td><td class="kr">미끌미끌</td></tr>
+    <tr><td class="jp">ザラザラ</td><td>거칠거칠 / 까끌까끌</td><td class="jp">砂でザラザラする。(모래 때문에 까끌까끌하다.)</td><td class="kr">까칠까칠 / 거칠거칠</td></tr>
+    <tr><td class="jp">ベタベタ</td><td>끈적끈적</td><td class="jp">手がベタベタする。(손이 끈적끈적하다.)</td><td class="kr">끈적끈적</td></tr>
+    <tr><td class="jp">ペラペラ</td><td>유창한 (말하기)</td><td class="jp">日本語がペラペラだ。(일본어가 유창하다.)</td><td class="kr">유창하다</td></tr>
+    <tr><td class="jp">バラバラ</td><td>뿔뿔이 / 제각각</td><td class="jp">意見がバラバラだ。(의견이 제각각이다.)</td><td class="kr">뿔뿔이</td></tr>
+    <tr><td class="jp">ボロボロ</td><td>너덜너덜 / 낡은</td><td class="jp">靴がボロボロだ。(신발이 너덜너덜하다.)</td><td class="kr">너덜너덜</td></tr>
+    <tr><td class="jp">カチカチ</td><td>딱딱한 / 꽁꽁 언</td><td class="jp">パンがカチカチだ。(빵이 딱딱하다.)</td><td class="kr">딱딱</td></tr>
+  </tbody>
+</table>
+
+<h4>소리</h4>
+<table>
+  <thead>
+    <tr><th>일본어</th><th>의미</th><th>사용 예시</th><th>한국어 대응어</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="jp">ドンドン</td><td>쿵쿵 / 점점</td><td class="jp">ドアをドンドン叩いた。(문을 쿵쿵 두드렸다.)</td><td class="kr">쿵쿵</td></tr>
+    <tr><td class="jp">ゴロゴロ</td><td>우르르 / 뒹굴뒹굴</td><td class="jp">雷がゴロゴロ鳴っている。(천둥이 우르르 울리고 있다.) / 家でゴロゴロする。(집에서 뒹굴뒹굴하다.)</td><td class="kr">우르르 (천둥) / 뒹굴뒹굴 (게으름)</td></tr>
+    <tr><td class="jp">ザーザー</td><td>억수같이 쏟아지는 비</td><td class="jp">雨がザーザー降っている。(비가 억수같이 내리고 있다.)</td><td class="kr">주룩주룩</td></tr>
+    <tr><td class="jp">シトシト</td><td>보슬보슬 내리는 비</td><td class="jp">雨がシトシト降っている。(비가 보슬보슬 내리고 있다.)</td><td class="kr">부슬부슬</td></tr>
+    <tr><td class="jp">パチパチ</td><td>타닥타닥 / 박수</td><td class="jp">火がパチパチ燃えている。(불이 타닥타닥 타고 있다.)</td><td class="kr">타닥타닥</td></tr>
+    <tr><td class="jp">ガタガタ</td><td>덜컹덜컹 / 흔들리는</td><td class="jp">窓がガタガタ揺れている。(창문이 덜컹덜컹 흔들리고 있다.)</td><td class="kr">덜컹덜컹</td></tr>
+    <tr><td class="jp">ペコペコ</td><td>배가 꼬르륵 (몹시 배고픈)</td><td class="jp">お腹がペコペコだ。(배가 꼬르륵이다.)</td><td class="kr">꼬르륵</td></tr>
+    <tr><td class="jp">ガブガブ</td><td>벌컥벌컥 마시는</td><td class="jp">水をガブガブ飲む。(물을 벌컥벌컥 마시다.)</td><td class="kr">벌컥벌컥</td></tr>
+    <tr><td class="jp">ワンワン</td><td>멍멍 (개)</td><td class="jp">犬がワンワン吠えている。(개가 멍멍 짖고 있다.)</td><td class="kr">멍멍</td></tr>
+    <tr><td class="jp">ニャーニャー</td><td>야옹야옹 (고양이)</td><td class="jp">猫がニャーニャー鳴いている。(고양이가 야옹야옹 울고 있다.)</td><td class="kr">야옹야옹</td></tr>
+    <tr><td class="jp">コケコッコー</td><td>꼬끼오 (닭)</td><td class="jp">朝、コケコッコーと鳴いた。(아침에 꼬끼오 하고 울었다.)</td><td class="kr">꼬꼬댁</td></tr>
+    <tr><td class="jp">ブーブー</td><td>빵빵 (경적) / 꿀꿀 (돼지)</td><td class="jp">車がブーブー鳴っている。(차가 빵빵 울리고 있다.)</td><td class="kr">빵빵 (경적) / 꿀꿀 (돼지)</td></tr>
+    <tr><td class="jp">ガチャガチャ</td><td>달그락달그락</td><td class="jp">鍵をガチャガチャ鳴らす。(열쇠를 달그락달그락 소리내다.)</td><td class="kr">달그락달그락</td></tr>
+    <tr><td class="jp">バタバタ</td><td>허둥지둥 / 파닥파닥</td><td class="jp">朝からバタバタしている。(아침부터 허둥지둥하고 있다.)</td><td class="kr">허둥지둥</td></tr>
+    <tr><td class="jp">スラスラ</td><td>술술 (읽기/쓰기가 유창한)</td><td class="jp">漢字がスラスラ読める。(한자를 술술 읽을 수 있다.)</td><td class="kr">술술</td></tr>
+    <tr><td class="jp">コツコツ</td><td>꾸준히 / 톡톡 (두드리는 소리)</td><td class="jp">コツコツ努力する。(꾸준히 노력하다.)</td><td class="kr">꾸준히</td></tr>
+    <tr><td class="jp">ブツブツ</td><td>투덜투덜</td><td class="jp">ブツブツ文句を言う。(투덜투덜 불평하다.)</td><td class="kr">투덜투덜</td></tr>
+    <tr><td class="jp">ヘトヘト</td><td>녹초가 된 / 기진맥진</td><td class="jp">仕事でヘトヘトだ。(일 때문에 녹초가 되었다.)</td><td class="kr">녹초가 되다</td></tr>
+  </tbody>
+</table>
+
+<div class="callout warn">
+  <div class="callout-title">정교한 질문법</div>
+  <p><strong>왜 일본어 의성어/의태어는 주로 가타카나로 쓸까요?</strong></p>
+  <p>가타카나는 강조, 이국성, 효과음에 사용됩니다. 만화, 광고, 일상 글에서 의성어/의태어를 가타카나로 쓰면 시각적으로 "튀는" 효과가 있습니다. 그러나 부드럽고 잔잔한 의성어/의태어(<span class="jp">しとしと</span>, 보슬비 같은)는 그 부드러움을 시각적으로 전달하기 위해 히라가나로 쓰는 경우가 많습니다. 문자 선택 자체가 의미를 담고 있는 것입니다. 한국어에는 이러한 이중 문자 도구가 없습니다.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BONUS: LOCATION & HOME WORDS
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="보너스-장소와-집----場所と家">보너스: 장소와 집 -- <span class="jp">場所と家</span></h3>
+
+<p>200개 이상의 어휘 목표를 달성하기 위한 필수 장소 및 가정 관련 단어입니다.</p>
+
+<table>
+  <thead>
+    <tr><th>일본어</th><th>읽기</th><th>의미</th><th>기억법</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="jp">家</td><td class="jp">いえ / うち</td><td>집</td><td>"이에/우치(IE/UCHI) -- 아늑한 나의 집"</td></tr>
+    <tr><td class="jp">部屋</td><td class="jp">へや</td><td>방</td><td>"헤야(HEYA) -- 헤이야(HEY-YA)! 여기가 내 방이야!"</td></tr>
+    <tr><td class="jp">窓</td><td class="jp">まど</td><td>창문</td><td>"마도(MADO) -- 열린 창문에 화가 나서(MAD)"</td></tr>
+    <tr><td class="jp">戸</td><td class="jp">と</td><td>문 (미닫이)</td><td>"토(TO) -- 발가락(TOE)을 문에 부딪히다"</td></tr>
+    <tr><td class="jp">鍵</td><td class="jp">かぎ</td><td>열쇠</td><td>"카기(KAGI) -- 차고(garage)의 열쇠"</td></tr>
+    <tr><td class="jp">庭</td><td class="jp">にわ</td><td>정원 / 뜰</td><td>"니와(NIWA) -- 정원에서 무릎 꿇고(KNEE-WAH)"</td></tr>
+    <tr><td class="jp">道</td><td class="jp">みち</td><td>길</td><td>"미치(MICHI) -- 미시간(MICHIGAN)으로 가는 길"</td></tr>
+    <tr><td class="jp">橋</td><td class="jp">はし</td><td>다리</td><td>"하시(HASHI) -- 다리 아래에서"</td></tr>
+    <tr><td class="jp">店</td><td class="jp">みせ</td><td>가게</td><td>"미세(MISE) -- 붐비는 가게에서의 고통(MISERY)"</td></tr>
+    <tr><td class="jp">村</td><td class="jp">むら</td><td>마을</td><td>"무라(MURA) -- 뮬란(MULAN)의 마을"</td></tr>
+    <tr><td class="jp">町</td><td class="jp">まち</td><td>동네</td><td>"마치(MACHI) -- 지도에서 동네를 찾아(MATCH) 보세요"</td></tr>
+    <tr><td class="jp">国</td><td class="jp">くに</td><td>나라</td><td>"쿠니(KUNI) -- 모든 나라에는 지도자가 있다"</td></tr>
+    <tr><td class="jp">中</td><td class="jp">なか</td><td>안 / 가운데</td><td>"나카(NAKA) -- 문을 두드려(KNOCK) 안으로 들어가다"</td></tr>
+    <tr><td class="jp">外</td><td class="jp">そと</td><td>밖</td><td>"소토(SOTO) -- 그러니까(SO), 밖으로(TO) 나가서 놀자"</td></tr>
+    <tr><td class="jp">上</td><td class="jp">うえ</td><td>위</td><td>"우에(UE) -- 저 위(WAY UP) 높이"</td></tr>
+    <tr><td class="jp">下</td><td class="jp">した</td><td>아래</td><td>"시타(SHITA) -- 나무 아래에 앉다"</td></tr>
+    <tr><td class="jp">右</td><td class="jp">みぎ</td><td>오른쪽</td><td>"미기(MIGI) -- 미기(MIGGI) 표지판에서 오른쪽으로"</td></tr>
+    <tr><td class="jp">左</td><td class="jp">ひだり</td><td>왼쪽</td><td>"히다리(HIDARI) -- 숨어(HIDE) 있는 왼쪽"</td></tr>
+    <tr><td class="jp">隣</td><td class="jp">となり</td><td>옆 / 이웃</td><td>"토나리(TONARI) -- 토토로는 옆집에 산다 (となりのトトロ)"</td></tr>
+    <tr><td class="jp">向こう</td><td class="jp">むこう</td><td>저쪽 / 건너편</td><td>"무코(MUKOU) -- 저쪽(YONDER)을 봐라"</td></tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     VOCABULARY COUNT SUMMARY
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="card" style="text-align:center;margin:2rem 0">
+  <div style="font-size:2.5rem;font-family:var(--serif);color:var(--accent)">200+</div>
+  <div style="font-size:1rem;color:var(--text-muted)">이 장에서 다룬 和語 단어</div>
+  <div style="display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;margin-top:1rem">
+    <div><strong>30</strong> <span style="font-size:.82rem;color:var(--text-muted)">신체</span></div>
+    <div><strong>27</strong> <span style="font-size:.82rem;color:var(--text-muted)">음식</span></div>
+    <div><strong>26</strong> <span style="font-size:.82rem;color:var(--text-muted)">자연</span></div>
+    <div><strong>20</strong> <span style="font-size:.82rem;color:var(--text-muted)">시간</span></div>
+    <div><strong>45</strong> <span style="font-size:.82rem;color:var(--text-muted)">동작</span></div>
+    <div><strong>39</strong> <span style="font-size:.82rem;color:var(--text-muted)">형용사</span></div>
+    <div><strong>30</strong> <span style="font-size:.82rem;color:var(--text-muted)">사람</span></div>
+    <div><strong>40</strong> <span style="font-size:.82rem;color:var(--text-muted)">의성어/의태어</span></div>
+    <div><strong>20</strong> <span style="font-size:.82rem;color:var(--text-muted)">장소</span></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     INTERACTIVE EXERCISES
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="대화형-연습-문제">대화형 연습 문제</h3>
+
+<!-- Quiz 1: Flashcard -- 30+ vocabulary cards with mnemonics -->
+<div id="quiz-flashcard"></div>
+
+<!-- Quiz 2: TimedSprint -- rapid wago recognition -->
+<div id="quiz-timed"></div>
+
+<!-- Quiz 3: FillBlank -- complete sentences with correct wago -->
+<div id="quiz-fillblank"></div>
+
+<!-- Quiz 4: DragMatch -- match Japanese words to English meanings -->
+<div id="quiz-dragmatch"></div>
+
+<!-- Quiz 5: RecallCheck from Ch10-11 -->
+<h3 id="복습-확인----제1011장-복습">복습 확인 -- 제10~11장 복습</h3>
+<p>이전 장의 한자 읽기와 한자어를 혼합 복습합니다. 합성어 인식 능력을 유지하십시오.</p>
+
+<div id="quiz-recall-bottom"></div>
+
+<!-- Mark as Complete -->
+<button class="chapter-complete" data-ch="13">완료 표시 &#10003;</button>
+
+<div style="display:flex;justify-content:space-between;margin:2rem 0">
+  <a href="ch-12.html" class="quiz-btn secondary">&larr; 제13장: 한자어</a>
+  <a href="ch-14.html" class="quiz-btn">다음: 제15장 -- 경어 &rarr;</a>
+</div>
+
+</section>
+
+</div>
+
+
+</div>
+
+<footer>
+  <p>Zero to Hero: 日本語 for Korean Speakers &middot; 제13장</p>
+</footer>
+
+<script src="js/shared.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/quiz-engine.js"></script>
+<script src="js/spaced-repetition.js"></script>
+<script src="js/memory-palace.js"></script>
+<script>
+// ─── 복습 확인 (장 상단, 제10~11장에서) ───
+QuizEngine.RecallCheck(
+  document.getElementById('recall-check-top'),
+  {
+    fromChapters: '제10~11장',
+    items: [
+      { question: '한자: 山의 くんよみ(고유 읽기)는 무엇입니까?', answer: 'やま' },
+      { question: '한자: 山의 おんよみ(한자 읽기)는 무엇입니까?', answer: 'さん / ざん' },
+      { question: '한자: 食의 くんよみ는 무엇입니까?', answer: 'た(べる)' },
+      { question: '한자어: 学生은 어떻게 읽습니까?', answer: 'がくせい (학생)' },
+      { question: '한자어: 図書館은 어떻게 읽습니까?', answer: 'としょかん (도서관)' },
+      { question: '한자어: 電話는 어떻게 읽습니까?', answer: 'でんわ (전화)' },
+      { question: '한자: 話, 読, 言이 공유하는 부수는 무엇입니까?', answer: '言 (ごんべん) -- 말씀 부수' }
+    ]
+  }
+);
+
+// ─── Quiz 1: 플래시카드 -- 30개 이상의 어휘 카드와 기억법 ───
+QuizEngine.Flashcard(
+  document.getElementById('quiz-flashcard'),
+  {
+    cards: [
+      { front: '<span class="jp" style="font-size:2.5rem">頭</span>', back: 'あたま -- 머리', detail: '기억법: "아(A) 라마(LLAMA)는 머리가 크다"' },
+      { front: '<span class="jp" style="font-size:2.5rem">目</span>', back: 'め -- 눈', detail: '기억법: "나(ME)를 봐! 나(ME)를 봐!" (눈을 가리키며)' },
+      { front: '<span class="jp" style="font-size:2.5rem">食べる</span>', back: 'たべる -- 먹다', detail: '기억법: "테이블(TABLE)에서 먹는다"' },
+      { front: '<span class="jp" style="font-size:2.5rem">飲む</span>', back: 'のむ -- 마시다', detail: '기억법: "냠냠(NOM-NOM) 마시는 소리"' },
+      { front: '<span class="jp" style="font-size:2.5rem">水</span>', back: 'みず -- 물', detail: '기억법: "안개(MIST)처럼 뿌리는 물"' },
+      { front: '<span class="jp" style="font-size:2.5rem">山</span>', back: 'やま -- 산', detail: '기억법: "라마(LLAMA)가 산 위에"' },
+      { front: '<span class="jp" style="font-size:2.5rem">川</span>', back: 'かわ -- 강', detail: '기억법: "커브(CURVE)처럼 흐르는 강"' },
+      { front: '<span class="jp" style="font-size:2.5rem">海</span>', back: 'うみ -- 바다', detail: '기억법: "우와 나(OO-ME)! 바다가 거대해!"' },
+      { front: '<span class="jp" style="font-size:2.5rem">空</span>', back: 'そら -- 하늘', detail: '기억법: "새가 하늘에서 솟아오른다(SOAR)"' },
+      { front: '<span class="jp" style="font-size:2.5rem">朝</span>', back: 'あさ -- 아침', detail: '기억법: "아사히(ASAHI) 일출 양조"' },
+      { front: '<span class="jp" style="font-size:2.5rem">夜</span>', back: 'よる -- 밤', detail: '기억법: "당신의(YOUR) 밤, 쉴 시간"' },
+      { front: '<span class="jp" style="font-size:2.5rem">見る</span>', back: 'みる -- 보다', detail: '기억법: "거울(MIRROR)에서 자신을 보다"' },
+      { front: '<span class="jp" style="font-size:2.5rem">聞く</span>', back: 'きく -- 듣다', detail: '기억법: "킥(KICK) 드럼 소리를 듣다"' },
+      { front: '<span class="jp" style="font-size:2.5rem">買う</span>', back: 'かう -- 사다', detail: '기억법: "소(COW)를 사다"' },
+      { front: '<span class="jp" style="font-size:2.5rem">行く</span>', back: 'いく -- 가다', detail: '기억법: "매주(each week, EEKU) 어딘가 가다"' },
+      { front: '<span class="jp" style="font-size:2.5rem">来る</span>', back: 'くる -- 오다', detail: '기억법: "이리 와(COME), 시원해(COOL)"' },
+      { front: '<span class="jp" style="font-size:2.5rem">大きい</span>', back: 'おおきい -- 큰', detail: '기억법: "오오! 열쇠(KEY)가 크다!"' },
+      { front: '<span class="jp" style="font-size:2.5rem">小さい</span>', back: 'ちいさい -- 작은', detail: '기억법: "치즈(CHEESE) 눈(EYE) -- 작은 치즈 눈"' },
+      { front: '<span class="jp" style="font-size:2.5rem">高い</span>', back: 'たかい -- 높은 / 비싼', detail: '기억법: "촌스러운(TACKY) 높은 건물 / 비싼 물건"' },
+      { front: '<span class="jp" style="font-size:2.5rem">安い</span>', back: 'やすい -- 싼', detail: '기억법: "지갑에 쉬운(EASY) = 싼"' },
+      { front: '<span class="jp" style="font-size:2.5rem">人</span>', back: 'ひと -- 사람', detail: '기억법: "모든 사람에겐 그(HE)와 발가락(TOE)이 있다"' },
+      { front: '<span class="jp" style="font-size:2.5rem">友達</span>', back: 'ともだち -- 친구', detail: '기억법: "친구와 토마토(TOMATO)를 나눠 먹다"' },
+      { front: '<span class="jp" style="font-size:2.5rem">子供</span>', back: 'こども -- 어린이', detail: '기억법: "콘도(CONDO)에서 뛰어다니는 아이들"' },
+      { front: '<span class="jp" style="font-size:2.5rem">ドキドキ</span>', back: '심장 두근거림', detail: '한국어: 두근두근 -- 같은 개념, 다른 소리!' },
+      { front: '<span class="jp" style="font-size:2.5rem">キラキラ</span>', back: '반짝반짝', detail: '한국어: 반짝반짝' },
+      { front: '<span class="jp" style="font-size:2.5rem">嬉しい</span>', back: 'うれしい -- 기쁜', detail: '기억법: "만세(HOORAY)! 기뻐!"' },
+      { front: '<span class="jp" style="font-size:2.5rem">悲しい</span>', back: 'かなしい -- 슬픈', detail: '기억법: "그녀가 울 수 있을까? 너무 슬퍼"' },
+      { front: '<span class="jp" style="font-size:2.5rem">走る</span>', back: 'はしる -- 달리다', detail: '기억법: "해시(HASH) 달리기 경주"' },
+      { front: '<span class="jp" style="font-size:2.5rem">歩く</span>', back: 'あるく -- 걷다', detail: '기억법: "체스판의 룩(ROOK)을 걸어서 움직이다"' },
+      { front: '<span class="jp" style="font-size:2.5rem">春</span>', back: 'はる -- 봄', detail: '기억법: "봄에 수확(HARvest)이 시작된다"' },
+      { front: '<span class="jp" style="font-size:2.5rem">夏</span>', back: 'なつ -- 여름', detail: '기억법: "여름이 얼마나 더운지 미쳤다(NUTS)!"' },
+      { front: '<span class="jp" style="font-size:2.5rem">秋</span>', back: 'あき -- 가을', detail: '기억법: "아키타(AKITA) 개는 가을 단풍을 좋아한다"' },
+      { front: '<span class="jp" style="font-size:2.5rem">冬</span>', back: 'ふゆ -- 겨울', detail: '기억법: "후유(PHEW)! 겨울은 춥다!"' }
+    ]
+  }
+);
+
+// ─── Quiz 2: 스피드 라운드 -- 빠른 和語 인식 ───
+QuizEngine.TimedSprint(
+  document.getElementById('quiz-timed'),
+  {
+    title: '스피드 라운드: 和語 인식',
+    timeLimit: 60,
+    items: [
+      { prompt: '頭', answer: 'あたま (머리)' },
+      { prompt: '目', answer: 'め (눈)' },
+      { prompt: '耳', answer: 'みみ (귀)' },
+      { prompt: '口', answer: 'くち (입)' },
+      { prompt: '手', answer: 'て (손)' },
+      { prompt: '足', answer: 'あし (발/다리)' },
+      { prompt: '食べる', answer: 'たべる (먹다)' },
+      { prompt: '飲む', answer: 'のむ (마시다)' },
+      { prompt: '水', answer: 'みず (물)' },
+      { prompt: '山', answer: 'やま (산)' },
+      { prompt: '川', answer: 'かわ (강)' },
+      { prompt: '海', answer: 'うみ (바다)' },
+      { prompt: '空', answer: 'そら (하늘)' },
+      { prompt: '朝', answer: 'あさ (아침)' },
+      { prompt: '夜', answer: 'よる (밤)' },
+      { prompt: '今日', answer: 'きょう (오늘)' },
+      { prompt: '見る', answer: 'みる (보다)' },
+      { prompt: '聞く', answer: 'きく (듣다)' },
+      { prompt: '行く', answer: 'いく (가다)' },
+      { prompt: '来る', answer: 'くる (오다)' },
+      { prompt: '買う', answer: 'かう (사다)' },
+      { prompt: '大きい', answer: 'おおきい (큰)' },
+      { prompt: '小さい', answer: 'ちいさい (작은)' },
+      { prompt: '高い', answer: 'たかい (높은/비싼)' },
+      { prompt: '人', answer: 'ひと (사람)' },
+      { prompt: '花', answer: 'はな (꽃)' },
+      { prompt: '雨', answer: 'あめ (비)' },
+      { prompt: '風', answer: 'かぜ (바람)' },
+      { prompt: '心', answer: 'こころ (마음)' },
+      { prompt: '嬉しい', answer: 'うれしい (기쁜)' },
+      { prompt: '悲しい', answer: 'かなしい (슬픈)' },
+      { prompt: '怖い', answer: 'こわい (무서운)' },
+      { prompt: '春', answer: 'はる (봄)' },
+      { prompt: '夏', answer: 'なつ (여름)' },
+      { prompt: '友達', answer: 'ともだち (친구)' }
+    ]
+  }
+);
+
+// ─── Quiz 3: 빈칸 채우기 -- 올바른 和語로 문장 완성 ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-fillblank'),
+  {
+    title: '빈칸 채우기: 문맥 속의 和語',
+    questions: [
+      {
+        prompt: '<span class="jp">___が痛い。</span> (머리가 아프다.)',
+        answer: '頭',
+        acceptAlso: ['あたま'],
+        explanation: '頭 (あたま) = 머리. 頭が痛い는 매우 흔한 표현입니다.'
+      },
+      {
+        prompt: '<span class="jp">朝ご飯を___。</span> (아침밥을 먹었다.)',
+        answer: '食べた',
+        acceptAlso: ['たべた'],
+        explanation: '食べた (たべた) = 먹었다. 食べる의 과거형.'
+      },
+      {
+        prompt: '<span class="jp">___を飲みたい。</span> (물을 마시고 싶다.)',
+        answer: '水',
+        acceptAlso: ['みず'],
+        explanation: '水 (みず) = 물.'
+      },
+      {
+        prompt: '<span class="jp">今日は___が暑い。</span> (오늘은 하늘이 덥다.) -- 힌트: 하늘/날씨',
+        answer: '空',
+        acceptAlso: ['そら'],
+        explanation: '空 (そら) = 하늘. 天気가 날씨로 더 흔하지만 空도 "하늘이 덥다"로 사용 가능합니다.'
+      },
+      {
+        prompt: '<span class="jp">あの___はとても高い。</span> (저 산은 매우 높다.)',
+        answer: '山',
+        acceptAlso: ['やま'],
+        explanation: '山 (やま) = 산. 여기서 高い는 높다는 뜻입니다.'
+      },
+      {
+        prompt: '<span class="jp">___に帰りたい。</span> (집에 돌아가고 싶다.)',
+        answer: '家',
+        acceptAlso: ['いえ', 'うち'],
+        explanation: '家 (いえ/うち) = 집.'
+      },
+      {
+        prompt: '<span class="jp">彼女は___がいい。</span> (그녀는 성격이 상냥하다.) -- 힌트: 상냥한/친절한 형용사',
+        answer: '優しい',
+        acceptAlso: ['やさしい'],
+        explanation: '優しい (やさしい) = 상냥한, 친절한.'
+      },
+      {
+        prompt: '<span class="jp">___がキラキラ光っている。</span> (별이 반짝반짝 빛나고 있다.)',
+        answer: '星',
+        acceptAlso: ['ほし'],
+        explanation: '星 (ほし) = 별. キラキラ = 반짝반짝 의태어.'
+      },
+      {
+        prompt: '<span class="jp">お腹が___だ。</span> (배가 고프다.) -- 힌트: 의태어',
+        answer: 'ペコペコ',
+        acceptAlso: ['ぺこぺこ'],
+        explanation: 'ペコペコ = 배가 고픈 (꼬르륵). 한국어: 꼬르륵.'
+      },
+      {
+        prompt: '<span class="jp">日本語が___になりたい。</span> (일본어가 유창해지고 싶다.) -- 힌트: 유창한의 의태어',
+        answer: 'ペラペラ',
+        acceptAlso: ['ぺらぺら'],
+        explanation: 'ペラペラ = 말하기가 유창한.'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 4: 드래그 매칭 -- 일본어 단어를 의미와 연결 ───
+QuizEngine.DragMatch(
+  document.getElementById('quiz-dragmatch'),
+  {
+    title: '매칭: 和語와 의미',
+    instruction: '각 일본어 단어를 한국어 의미와 연결하세요:',
+    pairs: [
+      { left: '走る (はしる)', right: '달리다' },
+      { left: '歩く (あるく)', right: '걷다' },
+      { left: '寝る (ねる)', right: '자다' },
+      { left: '起きる (おきる)', right: '일어나다' },
+      { left: '作る (つくる)', right: '만들다' },
+      { left: '壊す (こわす)', right: '부수다' },
+      { left: '開ける (あける)', right: '열다' },
+      { left: '閉める (しめる)', right: '닫다' },
+      { left: '暑い (あつい)', right: '더운 (날씨)' },
+      { left: '寒い (さむい)', right: '추운 (날씨)' },
+      { left: '嬉しい (うれしい)', right: '기쁜' },
+      { left: '悲しい (かなしい)', right: '슬픈' }
+    ]
+  }
+);
+
+// ─── Quiz 5: 제10~11장 복습 확인 ───
+QuizEngine.RecallCheck(
+  document.getElementById('quiz-recall-bottom'),
+  {
+    fromChapters: '제10~11장',
+    items: [
+      { question: '한자: 水의 おんよみ는 무엇입니까?', answer: 'すい (水曜日 = すいようび에서처럼)' },
+      { question: '한자: 日의 おんよみ는 무엇입니까?', answer: 'にち / じつ' },
+      { question: '한자어: 経済는 어떻게 읽습니까?', answer: 'けいざい (경제)' },
+      { question: '한자어: 約束는 어떻게 읽습니까?', answer: 'やくそく (약속)' },
+      { question: '한자어: 準備는 어떻게 읽습니까?', answer: 'じゅんび (준비)' },
+      { question: '한자: 부수 氵(さんずい)는 무엇과 관련 있습니까?', answer: '물 -- 海, 池, 波, 泳, 汗 등에서 볼 수 있습니다.' },
+      { question: '한자어: 한국어 병원은 어떤 일본어 단어에 대응합니까?', answer: '病院 (びょういん) -- 병원' }
+    ]
+  }
+);
+</script>
+</body>
+</html>

@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ch12: 한자어 터보차저 — Zero to Hero 日本語</title>
+<link rel="stylesheet" href="css/design-system.css">
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <span class="logo-badge">Zero to Hero — 기억 설계 에디션</span>
+    <div class="logo-title">한국어 화자를 위한 日本語</div>
+    <div class="logo-sub">한국어에서 日本語로 — 기억 설계자의 안내서</div>
+  </a>
+  <div class="sidebar-progress">
+    <div class="sidebar-progress-label">진행률</div>
+    <div class="sidebar-progress-bar">
+      <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+    </div>
+    <div class="sidebar-progress-count">0/22 완료</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="ch-00.html" class="toc-link"><span class="toc-num">00</span><span class="toc-check" data-ch="00"></span>기억 과학</a>
+    <a href="ch-01.html" class="toc-link"><span class="toc-num">01</span><span class="toc-check" data-ch="01"></span>한국어의 이점</a>
+    <a href="ch-02.html" class="toc-link"><span class="toc-num">02</span><span class="toc-check" data-ch="02"></span>히라가나</a>
+    <a href="ch-03.html" class="toc-link"><span class="toc-num">03</span><span class="toc-check" data-ch="03"></span>가타카나</a>
+    <a href="ch-04.html" class="toc-link"><span class="toc-num">04</span><span class="toc-check" data-ch="04"></span>발음</a>
+    <a href="ch-05.html" class="toc-link"><span class="toc-num">05</span><span class="toc-check" data-ch="05"></span>서바이벌 일본어</a>
+    <a href="ch-06.html" class="toc-link"><span class="toc-num">06</span><span class="toc-check" data-ch="06"></span>조수사</a>
+    <a href="ch-07.html" class="toc-link"><span class="toc-num">07</span><span class="toc-check" data-ch="07"></span>조사</a>
+    <a href="ch-08.html" class="toc-link"><span class="toc-num">08</span><span class="toc-check" data-ch="08"></span>동사 활용</a>
+    <a href="ch-09.html" class="toc-link"><span class="toc-num">09</span><span class="toc-check" data-ch="09"></span>일상 회화</a>
+    <a href="ch-10.html" class="toc-link"><span class="toc-num">10</span><span class="toc-check" data-ch="10"></span>문형</a>
+    <a href="ch-11.html" class="toc-link"><span class="toc-num">11</span><span class="toc-check" data-ch="11"></span>한자</a>
+    <a href="ch-12.html" class="toc-link active"><span class="toc-num">12</span><span class="toc-check" data-ch="12"></span>한자어</a>
+    <a href="ch-13.html" class="toc-link"><span class="toc-num">13</span><span class="toc-check" data-ch="13"></span>고유어</a>
+    <a href="ch-14.html" class="toc-link"><span class="toc-num">14</span><span class="toc-check" data-ch="14"></span>경어</a>
+    <a href="ch-15.html" class="toc-link"><span class="toc-num">15</span><span class="toc-check" data-ch="15"></span>독해</a>
+    <a href="ch-16.html" class="toc-link"><span class="toc-num">16</span><span class="toc-check" data-ch="16"></span>작문</a>
+    <a href="ch-17.html" class="toc-link"><span class="toc-num">17</span><span class="toc-check" data-ch="17"></span>청해</a>
+    <a href="ch-18.html" class="toc-link"><span class="toc-num">18</span><span class="toc-check" data-ch="18"></span>문화 화용론</a>
+    <a href="ch-19.html" class="toc-link"><span class="toc-num">19</span><span class="toc-check" data-ch="19"></span>JLPT와 그 너머</a>
+    <a href="ch-20.html" class="toc-link"><span class="toc-num">20</span><span class="toc-check" data-ch="20"></span>기억의 궁전</a>
+    <a href="ch-21.html" class="toc-link"><span class="toc-num">21</span><span class="toc-check" data-ch="21"></span>90일 스프린트</a>
+    <a href="appendices.html" class="toc-link" style="margin-top:.5rem;border-top:1px solid var(--border);padding-top:.8rem"><span class="toc-num">+</span>부록</a>
+  </nav>
+</aside>
+
+<div class="main">
+<div class="content-wrap">
+
+<section id="ch12" data-ch="12" style="padding-top:3rem">
+<h2><span class="ch-label">제12장</span>한자어 터보차저 — 漢字語 파워업</h2>
+
+<div class="callout memory"><div class="callout-title">기억 기법 스포트라이트: 전이 활성화</div><p>한자어 동형어를 통해 기존 한국어 어휘에서 일본어 어휘로 다리를 놓습니다.</p></div>
+
+<p>한국어와 일본어는 한자에서 유래한 어휘의 <strong>40~60%</strong>를 공유합니다. 이 장에서는 그 공유 어휘를 체계적으로 활용하여 일본어 어휘력을 폭발적으로 확장합니다. 한국어 한자어 지식은 여러분의 <strong>가장 강력한 무기</strong>입니다.</p>
+
+<div class="pq">
+  "한국어 한자어를 알면 일본어 어휘의 절반은 이미 여러분의 것입니다. 음운 대응 규칙을 배우면 나머지 절반도 예측할 수 있습니다."
+</div>
+
+<!-- ─── RECALL CHECK FROM CH10 ─── -->
+<div id="recall-ch10"></div>
+
+<!-- ============================================================
+     SECTION 1: EXPANDED SOUND CORRESPONDENCE RULES
+     ============================================================ -->
+<nav class="chapter-toc">
+  <details open>
+    <summary class="chapter-toc-title">이 장의 내용</summary>
+  <ol>
+    <li><a href="#1-확장-음운-대응-규칙-한국어로부터-일본어-읽기-예측하기">확장 음운 대응 규칙 — 한국어로부터 일본어 읽기 예측하기</a></li>
+    <li><a href="#2-분야별-한자-동계어-목록">분야별 한자 동계어 목록</a></li>
+    <li><a href="#3-거짓-친구-偽りの友-같아-보이지만-뜻이-다른-단어들">거짓 친구 (偽りの友) — 같아 보이지만 뜻이 다른 단어들</a></li>
+    <li><a href="#4-합성어-만들기-한자-구성-요소로-의미-추론하기">합성어 만들기 — 한자 구성 요소로 의미 추론하기</a></li>
+    <li><a href="#연습-문제">연습 문제</a></li>
+  </ol>
+  </details>
+</nav>
+
+<h3 id="1-확장-음운-대응-규칙-한국어로부터-일본어-읽기-예측하기">확장 음운 대응 규칙 — 한국어로부터 일본어 읽기 예측하기</h3>
+
+<p>제11장에서 기본적인 음운 대응을 배웠습니다. 이제 각 규칙을 더 많은 예시와 함께 확장합니다. 이 규칙들을 완벽히 익히면 한국어 한자 읽기로부터 일본어 음독을 <strong>예측</strong>할 수 있습니다.</p>
+
+<div class="callout info">
+  <div class="callout-title">핵심 원리</div>
+  <p>한자는 중국에서 한국과 일본에 각각 따로 전해졌습니다. 같은 글자라도 전래 시기와 경로에 따라 다른 발음으로 발전했지만, 이러한 변화는 <strong>규칙적인 패턴</strong>을 따릅니다. 패턴을 알면 읽기를 예측할 수 있습니다.</p>
+</div>
+
+<!-- Rule 1: ㅎ → か行 -->
+<h4>규칙 1: 한국어 ㅎ → 일본어 か행 (k)</h4>
+<table>
+  <thead><tr><th>한국어 읽기</th><th>일본어 읽기</th><th>漢字</th><th>의미</th></tr></thead>
+  <tbody>
+    <tr><td class="kr">학 (hak)</td><td class="jp">がく</td><td>学</td><td>배움</td></tr>
+    <tr><td class="kr">한 (han)</td><td class="jp">かん</td><td>韓</td><td>한국</td></tr>
+    <tr><td class="kr">해 (hae)</td><td class="jp">かい</td><td>海</td><td>바다</td></tr>
+    <tr><td class="kr">화 (hwa)</td><td class="jp">か</td><td>花</td><td>꽃</td></tr>
+    <tr><td class="kr">회 (hoe)</td><td class="jp">かい</td><td>会</td><td>모임</td></tr>
+    <tr><td class="kr">화 (hwa)</td><td class="jp">か</td><td>火</td><td>불</td></tr>
+    <tr><td class="kr">항 (hang)</td><td class="jp">こう</td><td>航</td><td>항해</td></tr>
+    <tr><td class="kr">확 (hwak)</td><td class="jp">かく</td><td>確</td><td>확실한</td></tr>
+    <tr><td class="kr">형 (hyeong)</td><td class="jp">けい</td><td>形</td><td>모양</td></tr>
+    <tr><td class="kr">현 (hyeon)</td><td class="jp">げん</td><td>現</td><td>나타나다</td></tr>
+    <tr><td class="kr">혁 (hyeok)</td><td class="jp">かく</td><td>革</td><td>가죽 / 개혁</td></tr>
+    <tr><td class="kr">합 (hap)</td><td class="jp">ごう</td><td>合</td><td>합치다</td></tr>
+  </tbody>
+</table>
+
+<!-- Rule 2: ㅇ (initial) → あ行 / が行 -->
+<h4>규칙 2: 한국어 ㅇ (무성 초성) → 일본어 あ행 / が행</h4>
+<table>
+  <thead><tr><th>한국어 읽기</th><th>일본어 읽기</th><th>漢字</th><th>의미</th></tr></thead>
+  <tbody>
+    <tr><td class="kr">안 (an)</td><td class="jp">あん</td><td>安</td><td>평안한</td></tr>
+    <tr><td class="kr">악 (ak)</td><td class="jp">あく</td><td>悪</td><td>악</td></tr>
+    <tr><td class="kr">암 (am)</td><td class="jp">がん</td><td>岩</td><td>바위</td></tr>
+    <tr><td class="kr">의 (ui)</td><td class="jp">い</td><td>意</td><td>뜻 / 의도</td></tr>
+    <tr><td class="kr">약 (yak)</td><td class="jp">やく</td><td>約</td><td>약속</td></tr>
+    <tr><td class="kr">언 (eon)</td><td class="jp">げん・ごん</td><td>言</td><td>말</td></tr>
+    <tr><td class="kr">영 (yeong)</td><td class="jp">えい</td><td>英</td><td>영어 / 뛰어난</td></tr>
+    <tr><td class="kr">원 (won)</td><td class="jp">えん</td><td>園</td><td>정원</td></tr>
+    <tr><td class="kr">운 (un)</td><td class="jp">うん</td><td>運</td><td>나르다 / 운</td></tr>
+    <tr><td class="kr">열 (yeol)</td><td class="jp">ねつ</td><td>熱</td><td>열</td></tr>
+  </tbody>
+</table>
+
+<!-- Rule 3: ㄱ → か行 -->
+<h4>규칙 3: 한국어 ㄱ → 일본어 か행 (k/g)</h4>
+<table>
+  <thead><tr><th>한국어 읽기</th><th>일본어 읽기</th><th>漢字</th><th>의미</th></tr></thead>
+  <tbody>
+    <tr><td class="kr">교 (gyo)</td><td class="jp">きょう</td><td>教</td><td>가르치다</td></tr>
+    <tr><td class="kr">경 (gyeong)</td><td class="jp">けい</td><td>経</td><td>지나다 / 경전</td></tr>
+    <tr><td class="kr">기 (gi)</td><td class="jp">き</td><td>気</td><td>기운 / 공기</td></tr>
+    <tr><td class="kr">간 (gan)</td><td class="jp">かん</td><td>間</td><td>사이 / 간격</td></tr>
+    <tr><td class="kr">공 (gong)</td><td class="jp">こう</td><td>工</td><td>공예 / 건설</td></tr>
+    <tr><td class="kr">관 (gwan)</td><td class="jp">かん</td><td>館</td><td>관 / 건물</td></tr>
+    <tr><td class="kr">금 (geum)</td><td class="jp">きん</td><td>金</td><td>금 / 금속</td></tr>
+    <tr><td class="kr">국 (guk)</td><td class="jp">こく</td><td>国</td><td>나라</td></tr>
+    <tr><td class="kr">결 (gyeol)</td><td class="jp">けつ</td><td>決</td><td>결정하다</td></tr>
+    <tr><td class="kr">거 (geo)</td><td class="jp">きょ</td><td>居</td><td>거주하다</td></tr>
+  </tbody>
+</table>
+
+<!-- Rule 4: ㅈ → さ行 / た行 -->
+<h4>규칙 4: 한국어 ㅈ → 일본어 さ행 / た행</h4>
+<table>
+  <thead><tr><th>한국어 읽기</th><th>일본어 읽기</th><th>漢字</th><th>의미</th></tr></thead>
+  <tbody>
+    <tr><td class="kr">전 (jeon)</td><td class="jp">でん</td><td>電</td><td>전기</td></tr>
+    <tr><td class="kr">정 (jeong)</td><td class="jp">せい・じょう</td><td>正</td><td>바른</td></tr>
+    <tr><td class="kr">자 (ja)</td><td class="jp">じ・し</td><td>自</td><td>스스로</td></tr>
+    <tr><td class="kr">장 (jang)</td><td class="jp">ちょう・じょう</td><td>長</td><td>긴 / 우두머리</td></tr>
+    <tr><td class="kr">제 (je)</td><td class="jp">せい・だい</td><td>第</td><td>차례 접두사</td></tr>
+    <tr><td class="kr">준 (jun)</td><td class="jp">じゅん</td><td>準</td><td>기준 / 준-</td></tr>
+    <tr><td class="kr">중 (jung)</td><td class="jp">ちゅう・じゅう</td><td>中</td><td>가운데</td></tr>
+    <tr><td class="kr">직 (jik)</td><td class="jp">しょく・ちょく</td><td>職</td><td>직업</td></tr>
+    <tr><td class="kr">진 (jin)</td><td class="jp">しん</td><td>真</td><td>참</td></tr>
+    <tr><td class="kr">절 (jeol)</td><td class="jp">せつ</td><td>節</td><td>마디 / 계절</td></tr>
+  </tbody>
+</table>
+
+<!-- Rule 5: ㅂ → は行 / ば行 -->
+<h4>규칙 5: 한국어 ㅂ → 일본어 は행 / ば행</h4>
+<table>
+  <thead><tr><th>한국어 읽기</th><th>일본어 읽기</th><th>漢字</th><th>의미</th></tr></thead>
+  <tbody>
+    <tr><td class="kr">발 (bal)</td><td class="jp">はつ</td><td>発</td><td>내다 / 출발하다</td></tr>
+    <tr><td class="kr">법 (beop)</td><td class="jp">ほう</td><td>法</td><td>법 / 방법</td></tr>
+    <tr><td class="kr">병 (byeong)</td><td class="jp">びょう</td><td>病</td><td>병</td></tr>
+    <tr><td class="kr">반 (ban)</td><td class="jp">はん</td><td>半</td><td>반</td></tr>
+    <tr><td class="kr">분 (bun)</td><td class="jp">ぶん・ふん</td><td>分</td><td>나누다 / 분</td></tr>
+    <tr><td class="kr">방 (bang)</td><td class="jp">ぼう・ほう</td><td>方</td><td>방향</td></tr>
+    <tr><td class="kr">비 (bi)</td><td class="jp">ひ</td><td>費</td><td>비용</td></tr>
+    <tr><td class="kr">백 (baek)</td><td class="jp">はく・ひゃく</td><td>百</td><td>백</td></tr>
+    <tr><td class="kr">보 (bo)</td><td class="jp">ほ</td><td>保</td><td>보존하다</td></tr>
+    <tr><td class="kr">복 (bok)</td><td class="jp">ふく</td><td>服</td><td>옷</td></tr>
+  </tbody>
+</table>
+
+<!-- Rule 6: ㅅ → さ行 -->
+<h4>규칙 6: 한국어 ㅅ → 일본어 さ행</h4>
+<table>
+  <thead><tr><th>한국어 읽기</th><th>일본어 읽기</th><th>漢字</th><th>의미</th></tr></thead>
+  <tbody>
+    <tr><td class="kr">산 (san)</td><td class="jp">さん</td><td>山</td><td>산</td></tr>
+    <tr><td class="kr">생 (saeng)</td><td class="jp">せい・しょう</td><td>生</td><td>삶 / 태어나다</td></tr>
+    <tr><td class="kr">선 (seon)</td><td class="jp">せん</td><td>先</td><td>먼저 / 이전</td></tr>
+    <tr><td class="kr">시 (si)</td><td class="jp">し</td><td>市</td><td>도시 / 시장</td></tr>
+    <tr><td class="kr">신 (sin)</td><td class="jp">しん</td><td>新</td><td>새로운</td></tr>
+    <tr><td class="kr">성 (seong)</td><td class="jp">せい・じょう</td><td>城</td><td>성</td></tr>
+    <tr><td class="kr">수 (su)</td><td class="jp">すう</td><td>数</td><td>수</td></tr>
+    <tr><td class="kr">상 (sang)</td><td class="jp">しょう</td><td>商</td><td>상업</td></tr>
+    <tr><td class="kr">식 (sik)</td><td class="jp">しょく</td><td>食</td><td>먹다 / 음식</td></tr>
+    <tr><td class="kr">석 (seok)</td><td class="jp">せき</td><td>席</td><td>자리</td></tr>
+  </tbody>
+</table>
+
+<!-- Rule 7: ㄷ → た行 -->
+<h4>규칙 7: 한국어 ㄷ → 일본어 た행</h4>
+<table>
+  <thead><tr><th>한국어 읽기</th><th>일본어 읽기</th><th>漢字</th><th>의미</th></tr></thead>
+  <tbody>
+    <tr><td class="kr">대 (dae)</td><td class="jp">だい・たい</td><td>大</td><td>큰 / 위대한</td></tr>
+    <tr><td class="kr">도 (do)</td><td class="jp">と・ど</td><td>度</td><td>도 / 정도</td></tr>
+    <tr><td class="kr">동 (dong)</td><td class="jp">とう・どう</td><td>東</td><td>동쪽</td></tr>
+    <tr><td class="kr">단 (dan)</td><td class="jp">だん・たん</td><td>団</td><td>단체</td></tr>
+    <tr><td class="kr">답 (dap)</td><td class="jp">とう</td><td>答</td><td>대답</td></tr>
+    <tr><td class="kr">독 (dok)</td><td class="jp">どく</td><td>独</td><td>홀로</td></tr>
+    <tr><td class="kr">달 (dal)</td><td class="jp">たつ</td><td>達</td><td>이르다 / 도달하다</td></tr>
+    <tr><td class="kr">덕 (deok)</td><td class="jp">とく</td><td>徳</td><td>덕</td></tr>
+    <tr><td class="kr">당 (dang)</td><td class="jp">とう・どう</td><td>堂</td><td>전당</td></tr>
+    <tr><td class="kr">등 (deung)</td><td class="jp">とう</td><td>等</td><td>등급 / 같은</td></tr>
+  </tbody>
+</table>
+
+<!-- Rule 8: ㅁ → ま行 -->
+<h4>규칙 8: 한국어 ㅁ → 일본어 ま행</h4>
+<table>
+  <thead><tr><th>한국어 읽기</th><th>일본어 읽기</th><th>漢字</th><th>의미</th></tr></thead>
+  <tbody>
+    <tr><td class="kr">문 (mun)</td><td class="jp">もん・ぶん</td><td>文</td><td>글 / 문장</td></tr>
+    <tr><td class="kr">목 (mok)</td><td class="jp">もく</td><td>目</td><td>눈</td></tr>
+    <tr><td class="kr">명 (myeong)</td><td class="jp">めい・みょう</td><td>名</td><td>이름</td></tr>
+    <tr><td class="kr">민 (min)</td><td class="jp">みん</td><td>民</td><td>백성</td></tr>
+    <tr><td class="kr">물 (mul)</td><td class="jp">もつ・ぶつ</td><td>物</td><td>물건</td></tr>
+    <tr><td class="kr">미 (mi)</td><td class="jp">び・み</td><td>美</td><td>아름다움</td></tr>
+    <tr><td class="kr">면 (myeon)</td><td class="jp">めん</td><td>面</td><td>면 / 표면</td></tr>
+    <tr><td class="kr">만 (man)</td><td class="jp">まん</td><td>万</td><td>만</td></tr>
+    <tr><td class="kr">무 (mu)</td><td class="jp">む・ぶ</td><td>無</td><td>없다 / ~없이</td></tr>
+    <tr><td class="kr">말 (mal)</td><td class="jp">まつ</td><td>末</td><td>끝</td></tr>
+  </tbody>
+</table>
+
+<!-- Rule 9: 받침 ㄹ → つ / ち / い -->
+<h4>규칙 9: 한국어 받침 ㄹ → 일본어 つ / ち / い</h4>
+<table>
+  <thead><tr><th>한국어 읽기</th><th>일본어 읽기</th><th>漢字</th><th>의미</th></tr></thead>
+  <tbody>
+    <tr><td class="kr">일 (il)</td><td class="jp">いち・いつ</td><td>一</td><td>하나</td></tr>
+    <tr><td class="kr">발 (bal)</td><td class="jp">はつ</td><td>発</td><td>내다 / 출발하다</td></tr>
+    <tr><td class="kr">월 (wol)</td><td class="jp">げつ</td><td>月</td><td>달</td></tr>
+    <tr><td class="kr">필 (pil)</td><td class="jp">ひつ</td><td>必</td><td>반드시</td></tr>
+    <tr><td class="kr">실 (sil)</td><td class="jp">しつ</td><td>室</td><td>방</td></tr>
+    <tr><td class="kr">물 (mul)</td><td class="jp">ぶつ</td><td>物</td><td>물건</td></tr>
+    <tr><td class="kr">결 (gyeol)</td><td class="jp">けつ</td><td>決</td><td>결정하다</td></tr>
+    <tr><td class="kr">절 (jeol)</td><td class="jp">せつ</td><td>節</td><td>마디 / 계절</td></tr>
+    <tr><td class="kr">열 (yeol)</td><td class="jp">ねつ</td><td>熱</td><td>열</td></tr>
+    <tr><td class="kr">별 (byeol)</td><td class="jp">べつ</td><td>別</td><td>나누다 / 다른</td></tr>
+  </tbody>
+</table>
+
+<!-- Rule 10: 받침 ㄱ → く / き -->
+<h4>규칙 10: 한국어 받침 ㄱ → 일본어 く / き</h4>
+<table>
+  <thead><tr><th>한국어 읽기</th><th>일본어 읽기</th><th>漢字</th><th>의미</th></tr></thead>
+  <tbody>
+    <tr><td class="kr">학 (hak)</td><td class="jp">がく</td><td>学</td><td>배움</td></tr>
+    <tr><td class="kr">국 (guk)</td><td class="jp">こく</td><td>国</td><td>나라</td></tr>
+    <tr><td class="kr">약 (yak)</td><td class="jp">やく</td><td>薬</td><td>약</td></tr>
+    <tr><td class="kr">목 (mok)</td><td class="jp">もく</td><td>目</td><td>눈</td></tr>
+    <tr><td class="kr">식 (sik)</td><td class="jp">しょく</td><td>食</td><td>먹다 / 음식</td></tr>
+    <tr><td class="kr">직 (jik)</td><td class="jp">しょく</td><td>職</td><td>직업</td></tr>
+    <tr><td class="kr">독 (dok)</td><td class="jp">どく</td><td>独</td><td>홀로</td></tr>
+    <tr><td class="kr">악 (ak)</td><td class="jp">あく</td><td>悪</td><td>악</td></tr>
+    <tr><td class="kr">북 (buk)</td><td class="jp">ほく</td><td>北</td><td>북쪽</td></tr>
+    <tr><td class="kr">복 (bok)</td><td class="jp">ふく</td><td>福</td><td>복 / 축복</td></tr>
+  </tbody>
+</table>
+
+<div class="callout warn">
+  <div class="callout-title">정교한 질문법</div>
+  <p><strong>왜 한국어 ㅂ이 일본어 は행(h)에 대응할까요?</strong></p>
+  <p>역사적으로 일본어 は행은 p → ɸ → h로 음운 변화를 겪었습니다. 한자가 처음 전래되었을 때 일본어 は행은 아직 [p]로 발음되었기 때문에, 한국어 ㅂ [p/b]와 같은 음이 사용되었습니다. 시간이 지나면서 일본어 쪽만 h로 변했고, 한국어는 b/p 음을 유지했습니다.</p>
+</div>
+
+<!-- ─── Sound Rules Summary Diagram ─── -->
+<div class="diagram">
+  <svg viewBox="0 0 700 350" xmlns="http://www.w3.org/2000/svg">
+    <text x="350" y="30" text-anchor="middle" class="label-text" font-size="14" fill="var(--heading)">한국어 자음 → 일본어 행 대응표</text>
+
+    <!-- Korean consonants (left) -->
+    <rect x="30" y="55" width="80" height="32" rx="4" class="node-accent" style="fill:var(--kr-highlight);stroke:var(--a2)"/>
+    <text x="70" y="76" text-anchor="middle" font-size="13" fill="var(--a2)" font-weight="600">ㅎ</text>
+
+    <rect x="30" y="100" width="80" height="32" rx="4" class="node-accent" style="fill:var(--kr-highlight);stroke:var(--a2)"/>
+    <text x="70" y="121" text-anchor="middle" font-size="13" fill="var(--a2)" font-weight="600">ㄱ</text>
+
+    <rect x="30" y="145" width="80" height="32" rx="4" class="node-accent" style="fill:var(--kr-highlight);stroke:var(--a2)"/>
+    <text x="70" y="166" text-anchor="middle" font-size="13" fill="var(--a2)" font-weight="600">ㅂ</text>
+
+    <rect x="30" y="190" width="80" height="32" rx="4" class="node-accent" style="fill:var(--kr-highlight);stroke:var(--a2)"/>
+    <text x="70" y="211" text-anchor="middle" font-size="13" fill="var(--a2)" font-weight="600">ㄷ</text>
+
+    <rect x="30" y="235" width="80" height="32" rx="4" class="node-accent" style="fill:var(--kr-highlight);stroke:var(--a2)"/>
+    <text x="70" y="256" text-anchor="middle" font-size="13" fill="var(--a2)" font-weight="600">ㅅ</text>
+
+    <rect x="30" y="280" width="80" height="32" rx="4" class="node-accent" style="fill:var(--kr-highlight);stroke:var(--a2)"/>
+    <text x="70" y="301" text-anchor="middle" font-size="13" fill="var(--a2)" font-weight="600">ㅁ</text>
+
+    <!-- Japanese rows (right) -->
+    <rect x="550" y="55" width="110" height="32" rx="4" class="node-accent" style="fill:var(--jp-highlight);stroke:var(--accent)"/>
+    <text x="605" y="76" text-anchor="middle" font-size="13" fill="var(--accent)" font-weight="600">か行 (k/g)</text>
+
+    <rect x="550" y="145" width="110" height="32" rx="4" class="node-accent" style="fill:var(--jp-highlight);stroke:var(--accent)"/>
+    <text x="605" y="166" text-anchor="middle" font-size="13" fill="var(--accent)" font-weight="600">は/ば行 (h/b)</text>
+
+    <rect x="550" y="190" width="110" height="32" rx="4" class="node-accent" style="fill:var(--jp-highlight);stroke:var(--accent)"/>
+    <text x="605" y="211" text-anchor="middle" font-size="13" fill="var(--accent)" font-weight="600">た/だ行 (t/d)</text>
+
+    <rect x="550" y="235" width="110" height="32" rx="4" class="node-accent" style="fill:var(--jp-highlight);stroke:var(--accent)"/>
+    <text x="605" y="256" text-anchor="middle" font-size="13" fill="var(--accent)" font-weight="600">さ行 (s/sh)</text>
+
+    <rect x="550" y="280" width="110" height="32" rx="4" class="node-accent" style="fill:var(--jp-highlight);stroke:var(--accent)"/>
+    <text x="605" y="301" text-anchor="middle" font-size="13" fill="var(--accent)" font-weight="600">ま行 (m)</text>
+
+    <!-- Arrows -->
+    <line x1="110" y1="71" x2="548" y2="71" class="arrow"/>
+    <line x1="110" y1="116" x2="548" y2="71" class="arrow"/>
+    <line x1="110" y1="161" x2="548" y2="161" class="arrow"/>
+    <line x1="110" y1="206" x2="548" y2="206" class="arrow"/>
+    <line x1="110" y1="251" x2="548" y2="251" class="arrow"/>
+    <line x1="110" y1="296" x2="548" y2="296" class="arrow"/>
+    <!-- ㅈ splits to さ and た -->
+    <rect x="30" y="325" width="80" height="32" rx="4" class="node-accent" style="fill:var(--kr-highlight);stroke:var(--a2)"/>
+    <text x="70" y="346" text-anchor="middle" font-size="13" fill="var(--a2)" font-weight="600">ㅈ</text>
+    <line x1="110" y1="341" x2="548" y2="251" class="arrow" style="stroke-dasharray:4"/>
+    <line x1="110" y1="341" x2="548" y2="206" class="arrow" style="stroke-dasharray:4"/>
+  </svg>
+  <div class="diagram-caption">한국어 초성 자음과 일본어 가나 행의 대응표. ㅎ과 ㄱ 모두 か행에 대응합니다. ㅈ은 さ행과 た행에 걸쳐 있습니다.</div>
+</div>
+
+<!-- ============================================================
+     SECTION 2: DOMAIN-SPECIFIC COGNATE LISTS
+     ============================================================ -->
+<h3 id="2-분야별-한자-동계어-목록">분야별 한자 동계어 목록</h3>
+
+<p>아래는 분야별로 정리한 한일 공통 한자어입니다. 한국어 단어를 알면 <strong>일본어 의미와 읽기를 추론</strong>할 수 있습니다. 모든 읽기는 한자 + 가나로만 표기합니다.</p>
+
+<!-- ─── 2a. Education 교육/教育 ─── -->
+<h4>2a. 교육 (教育 / きょういく)</h4>
+<table>
+  <thead><tr><th>#</th><th>한국어</th><th>일본어</th><th>漢字</th><th>의미</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td class="kr">학교</td><td class="jp">がっこう</td><td>学校</td><td>학교</td></tr>
+    <tr><td>2</td><td class="kr">학생</td><td class="jp">がくせい</td><td>学生</td><td>학생</td></tr>
+    <tr><td>3</td><td class="kr">선생</td><td class="jp">せんせい</td><td>先生</td><td>선생님</td></tr>
+    <tr><td>4</td><td class="kr">교실</td><td class="jp">きょうしつ</td><td>教室</td><td>교실</td></tr>
+    <tr><td>5</td><td class="kr">시험</td><td class="jp">しけん</td><td>試験</td><td>시험</td></tr>
+    <tr><td>6</td><td class="kr">수업</td><td class="jp">じゅぎょう</td><td>授業</td><td>수업</td></tr>
+    <tr><td>7</td><td class="kr">대학</td><td class="jp">だいがく</td><td>大学</td><td>대학교</td></tr>
+    <tr><td>8</td><td class="kr">교수</td><td class="jp">きょうじゅ</td><td>教授</td><td>교수</td></tr>
+    <tr><td>9</td><td class="kr">졸업</td><td class="jp">そつぎょう</td><td>卒業</td><td>졸업</td></tr>
+    <tr><td>10</td><td class="kr">입학</td><td class="jp">にゅうがく</td><td>入学</td><td>입학</td></tr>
+    <tr><td>11</td><td class="kr">도서관</td><td class="jp">としょかん</td><td>図書館</td><td>도서관</td></tr>
+    <tr><td>12</td><td class="kr">교과서</td><td class="jp">きょうかしょ</td><td>教科書</td><td>교과서</td></tr>
+    <tr><td>13</td><td class="kr">성적</td><td class="jp">せいせき</td><td>成績</td><td>성적</td></tr>
+    <tr><td>14</td><td class="kr">학기</td><td class="jp">がっき</td><td>学期</td><td>학기</td></tr>
+    <tr><td>15</td><td class="kr">교육</td><td class="jp">きょういく</td><td>教育</td><td>교육</td></tr>
+    <tr><td>16</td><td class="kr">연구</td><td class="jp">けんきゅう</td><td>研究</td><td>연구</td></tr>
+    <tr><td>17</td><td class="kr">학위</td><td class="jp">がくい</td><td>学位</td><td>학위</td></tr>
+    <tr><td>18</td><td class="kr">논문</td><td class="jp">ろんぶん</td><td>論文</td><td>논문</td></tr>
+    <tr><td>19</td><td class="kr">전공</td><td class="jp">せんこう</td><td>専攻</td><td>전공</td></tr>
+    <tr><td>20</td><td class="kr">장학금</td><td class="jp">しょうがくきん</td><td>奨学金</td><td>장학금</td></tr>
+    <tr><td>21</td><td class="kr">학원</td><td class="jp">がくいん</td><td>学院</td><td>학원</td></tr>
+    <tr><td>22</td><td class="kr">복습</td><td class="jp">ふくしゅう</td><td>復習</td><td>복습</td></tr>
+    <tr><td>23</td><td class="kr">예습</td><td class="jp">よしゅう</td><td>予習</td><td>예습</td></tr>
+    <tr><td>24</td><td class="kr">출석</td><td class="jp">しゅっせき</td><td>出席</td><td>출석</td></tr>
+    <tr><td>25</td><td class="kr">결석</td><td class="jp">けっせき</td><td>欠席</td><td>결석</td></tr>
+    <tr><td>26</td><td class="kr">수학</td><td class="jp">すうがく</td><td>数学</td><td>수학</td></tr>
+    <tr><td>27</td><td class="kr">문학</td><td class="jp">ぶんがく</td><td>文学</td><td>문학</td></tr>
+    <tr><td>28</td><td class="kr">역사</td><td class="jp">れきし</td><td>歴史</td><td>역사</td></tr>
+    <tr><td>29</td><td class="kr">과학</td><td class="jp">かがく</td><td>科学</td><td>과학</td></tr>
+    <tr><td>30</td><td class="kr">철학</td><td class="jp">てつがく</td><td>哲学</td><td>철학</td></tr>
+    <tr><td>31</td><td class="kr">유학</td><td class="jp">りゅうがく</td><td>留学</td><td>유학</td></tr>
+    <tr><td>32</td><td class="kr">과목</td><td class="jp">かもく</td><td>科目</td><td>과목</td></tr>
+    <tr><td>33</td><td class="kr">실험</td><td class="jp">じっけん</td><td>実験</td><td>실험</td></tr>
+    <tr><td>34</td><td class="kr">참고서</td><td class="jp">さんこうしょ</td><td>参考書</td><td>참고서</td></tr>
+    <tr><td>35</td><td class="kr">학부</td><td class="jp">がくぶ</td><td>学部</td><td>학부</td></tr>
+    <tr><td>36</td><td class="kr">교장</td><td class="jp">こうちょう</td><td>校長</td><td>교장</td></tr>
+    <tr><td>37</td><td class="kr">강의</td><td class="jp">こうぎ</td><td>講義</td><td>강의</td></tr>
+    <tr><td>38</td><td class="kr">등교</td><td class="jp">とうこう</td><td>登校</td><td>등교</td></tr>
+    <tr><td>39</td><td class="kr">합격</td><td class="jp">ごうかく</td><td>合格</td><td>합격</td></tr>
+    <tr><td>40</td><td class="kr">불합격</td><td class="jp">ふごうかく</td><td>不合格</td><td>불합격</td></tr>
+    <tr><td>41</td><td class="kr">진학</td><td class="jp">しんがく</td><td>進学</td><td>진학</td></tr>
+    <tr><td>42</td><td class="kr">교원</td><td class="jp">きょういん</td><td>教員</td><td>교원</td></tr>
+    <tr><td>43</td><td class="kr">학과</td><td class="jp">がっか</td><td>学科</td><td>학과</td></tr>
+    <tr><td>44</td><td class="kr">필기</td><td class="jp">ひっき</td><td>筆記</td><td>필기</td></tr>
+    <tr><td>45</td><td class="kr">문제</td><td class="jp">もんだい</td><td>問題</td><td>문제</td></tr>
+    <tr><td>46</td><td class="kr">해답</td><td class="jp">かいとう</td><td>解答</td><td>해답</td></tr>
+    <tr><td>47</td><td class="kr">질문</td><td class="jp">しつもん</td><td>質問</td><td>질문</td></tr>
+    <tr><td>48</td><td class="kr">학습</td><td class="jp">がくしゅう</td><td>学習</td><td>학습</td></tr>
+    <tr><td>49</td><td class="kr">교재</td><td class="jp">きょうざい</td><td>教材</td><td>교재</td></tr>
+    <tr><td>50</td><td class="kr">대학원</td><td class="jp">だいがくいん</td><td>大学院</td><td>대학원</td></tr>
+  </tbody>
+</table>
+
+<!-- ─── 2b. Medical 의료/医療 ─── -->
+<h4>2b. 의료 (医療 / いりょう)</h4>
+<table>
+  <thead><tr><th>#</th><th>한국어</th><th>일본어</th><th>漢字</th><th>의미</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td class="kr">병원</td><td class="jp">びょういん</td><td>病院</td><td>병원</td></tr>
+    <tr><td>2</td><td class="kr">의사</td><td class="jp">いしゃ</td><td>医者</td><td>의사</td></tr>
+    <tr><td>3</td><td class="kr">약</td><td class="jp">くすり (やく)</td><td>薬</td><td>약</td></tr>
+    <tr><td>4</td><td class="kr">수술</td><td class="jp">しゅじゅつ</td><td>手術</td><td>수술</td></tr>
+    <tr><td>5</td><td class="kr">진찰</td><td class="jp">しんさつ</td><td>診察</td><td>진찰</td></tr>
+    <tr><td>6</td><td class="kr">치료</td><td class="jp">ちりょう</td><td>治療</td><td>치료</td></tr>
+    <tr><td>7</td><td class="kr">환자</td><td class="jp">かんじゃ</td><td>患者</td><td>환자</td></tr>
+    <tr><td>8</td><td class="kr">간호사</td><td class="jp">かんごし</td><td>看護師</td><td>간호사</td></tr>
+    <tr><td>9</td><td class="kr">입원</td><td class="jp">にゅういん</td><td>入院</td><td>입원</td></tr>
+    <tr><td>10</td><td class="kr">퇴원</td><td class="jp">たいいん</td><td>退院</td><td>퇴원</td></tr>
+    <tr><td>11</td><td class="kr">진단</td><td class="jp">しんだん</td><td>診断</td><td>진단</td></tr>
+    <tr><td>12</td><td class="kr">증상</td><td class="jp">しょうじょう</td><td>症状</td><td>증상</td></tr>
+    <tr><td>13</td><td class="kr">주사</td><td class="jp">ちゅうしゃ</td><td>注射</td><td>주사</td></tr>
+    <tr><td>14</td><td class="kr">처방</td><td class="jp">しょほう</td><td>処方</td><td>처방</td></tr>
+    <tr><td>15</td><td class="kr">내과</td><td class="jp">ないか</td><td>内科</td><td>내과</td></tr>
+    <tr><td>16</td><td class="kr">외과</td><td class="jp">げか</td><td>外科</td><td>외과</td></tr>
+    <tr><td>17</td><td class="kr">치과</td><td class="jp">しか</td><td>歯科</td><td>치과</td></tr>
+    <tr><td>18</td><td class="kr">안과</td><td class="jp">がんか</td><td>眼科</td><td>안과</td></tr>
+    <tr><td>19</td><td class="kr">이비인후과</td><td class="jp">じびいんこうか</td><td>耳鼻咽喉科</td><td>이비인후과</td></tr>
+    <tr><td>20</td><td class="kr">약국</td><td class="jp">やっきょく</td><td>薬局</td><td>약국</td></tr>
+    <tr><td>21</td><td class="kr">검사</td><td class="jp">けんさ</td><td>検査</td><td>검사</td></tr>
+    <tr><td>22</td><td class="kr">혈액</td><td class="jp">けつえき</td><td>血液</td><td>혈액</td></tr>
+    <tr><td>23</td><td class="kr">혈압</td><td class="jp">けつあつ</td><td>血圧</td><td>혈압</td></tr>
+    <tr><td>24</td><td class="kr">체온</td><td class="jp">たいおん</td><td>体温</td><td>체온</td></tr>
+    <tr><td>25</td><td class="kr">감기</td><td class="jp">かぜ (かんき)</td><td>感気</td><td>감기</td></tr>
+    <tr><td>26</td><td class="kr">두통</td><td class="jp">ずつう</td><td>頭痛</td><td>두통</td></tr>
+    <tr><td>27</td><td class="kr">복통</td><td class="jp">ふくつう</td><td>腹痛</td><td>복통</td></tr>
+    <tr><td>28</td><td class="kr">응급</td><td class="jp">おうきゅう</td><td>応急</td><td>응급</td></tr>
+    <tr><td>29</td><td class="kr">구급차</td><td class="jp">きゅうきゅうしゃ</td><td>救急車</td><td>구급차</td></tr>
+    <tr><td>30</td><td class="kr">건강</td><td class="jp">けんこう</td><td>健康</td><td>건강</td></tr>
+    <tr><td>31</td><td class="kr">예방</td><td class="jp">よぼう</td><td>予防</td><td>예방</td></tr>
+    <tr><td>32</td><td class="kr">접종</td><td class="jp">せっしゅ</td><td>接種</td><td>접종</td></tr>
+    <tr><td>33</td><td class="kr">알레르기</td><td class="jp">アレルギー</td><td>-</td><td>알레르기</td></tr>
+    <tr><td>34</td><td class="kr">소아과</td><td class="jp">しょうにか</td><td>小児科</td><td>소아과</td></tr>
+    <tr><td>35</td><td class="kr">산부인과</td><td class="jp">さんふじんか</td><td>産婦人科</td><td>산부인과</td></tr>
+    <tr><td>36</td><td class="kr">의료</td><td class="jp">いりょう</td><td>医療</td><td>의료</td></tr>
+    <tr><td>37</td><td class="kr">보험</td><td class="jp">ほけん</td><td>保険</td><td>보험</td></tr>
+    <tr><td>38</td><td class="kr">통증</td><td class="jp">つうしょう</td><td>痛症</td><td>통증</td></tr>
+    <tr><td>39</td><td class="kr">수혈</td><td class="jp">しゅけつ</td><td>輸血</td><td>수혈</td></tr>
+    <tr><td>40</td><td class="kr">심장</td><td class="jp">しんぞう</td><td>心臓</td><td>심장</td></tr>
+    <tr><td>41</td><td class="kr">위장</td><td class="jp">いちょう</td><td>胃腸</td><td>위장</td></tr>
+    <tr><td>42</td><td class="kr">신경</td><td class="jp">しんけい</td><td>神経</td><td>신경</td></tr>
+    <tr><td>43</td><td class="kr">피부과</td><td class="jp">ひふか</td><td>皮膚科</td><td>피부과</td></tr>
+    <tr><td>44</td><td class="kr">정형외과</td><td class="jp">せいけいげか</td><td>整形外科</td><td>정형외과</td></tr>
+    <tr><td>45</td><td class="kr">재활</td><td class="jp">リハビリ</td><td>-</td><td>재활</td></tr>
+    <tr><td>46</td><td class="kr">처방전</td><td class="jp">しょほうせん</td><td>処方箋</td><td>처방전</td></tr>
+    <tr><td>47</td><td class="kr">부작용</td><td class="jp">ふくさよう</td><td>副作用</td><td>부작용</td></tr>
+    <tr><td>48</td><td class="kr">만성</td><td class="jp">まんせい</td><td>慢性</td><td>만성</td></tr>
+    <tr><td>49</td><td class="kr">급성</td><td class="jp">きゅうせい</td><td>急性</td><td>급성</td></tr>
+    <tr><td>50</td><td class="kr">진료</td><td class="jp">しんりょう</td><td>診療</td><td>진료</td></tr>
+  </tbody>
+</table>
+
+<!-- ─── 2c. Business 비즈니스/ビジネス ─── -->
+<h4>2c. 비즈니스 / 경제 (経済 / けいざい)</h4>
+<table>
+  <thead><tr><th>#</th><th>한국어</th><th>일본어</th><th>漢字</th><th>의미</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td class="kr">회사</td><td class="jp">かいしゃ</td><td>会社</td><td>회사</td></tr>
+    <tr><td>2</td><td class="kr">경제</td><td class="jp">けいざい</td><td>経済</td><td>경제</td></tr>
+    <tr><td>3</td><td class="kr">회의</td><td class="jp">かいぎ</td><td>会議</td><td>회의</td></tr>
+    <tr><td>4</td><td class="kr">계약</td><td class="jp">けいやく</td><td>契約</td><td>계약</td></tr>
+    <tr><td>5</td><td class="kr">사장</td><td class="jp">しゃちょう</td><td>社長</td><td>사장</td></tr>
+    <tr><td>6</td><td class="kr">부장</td><td class="jp">ぶちょう</td><td>部長</td><td>부장</td></tr>
+    <tr><td>7</td><td class="kr">과장</td><td class="jp">かちょう</td><td>課長</td><td>과장</td></tr>
+    <tr><td>8</td><td class="kr">은행</td><td class="jp">ぎんこう</td><td>銀行</td><td>은행</td></tr>
+    <tr><td>9</td><td class="kr">투자</td><td class="jp">とうし</td><td>投資</td><td>투자</td></tr>
+    <tr><td>10</td><td class="kr">주식</td><td class="jp">かぶしき</td><td>株式</td><td>주식</td></tr>
+    <tr><td>11</td><td class="kr">급여</td><td class="jp">きゅうよ</td><td>給与</td><td>급여</td></tr>
+    <tr><td>12</td><td class="kr">월급</td><td class="jp">げっきゅう</td><td>月給</td><td>월급</td></tr>
+    <tr><td>13</td><td class="kr">세금</td><td class="jp">ぜいきん</td><td>税金</td><td>세금</td></tr>
+    <tr><td>14</td><td class="kr">무역</td><td class="jp">ぼうえき</td><td>貿易</td><td>무역</td></tr>
+    <tr><td>15</td><td class="kr">수출</td><td class="jp">しゅしゅつ</td><td>輸出</td><td>수출</td></tr>
+    <tr><td>16</td><td class="kr">수입</td><td class="jp">しゅにゅう</td><td>輸入</td><td>수입</td></tr>
+    <tr><td>17</td><td class="kr">취직</td><td class="jp">しゅうしょく</td><td>就職</td><td>취직</td></tr>
+    <tr><td>18</td><td class="kr">면접</td><td class="jp">めんせつ</td><td>面接</td><td>면접</td></tr>
+    <tr><td>19</td><td class="kr">이력서</td><td class="jp">りれきしょ</td><td>履歴書</td><td>이력서</td></tr>
+    <tr><td>20</td><td class="kr">사업</td><td class="jp">じぎょう</td><td>事業</td><td>사업</td></tr>
+    <tr><td>21</td><td class="kr">기업</td><td class="jp">きぎょう</td><td>企業</td><td>기업</td></tr>
+    <tr><td>22</td><td class="kr">거래</td><td class="jp">とりひき</td><td>取引</td><td>거래</td></tr>
+    <tr><td>23</td><td class="kr">이익</td><td class="jp">りえき</td><td>利益</td><td>이익</td></tr>
+    <tr><td>24</td><td class="kr">손실</td><td class="jp">そんしつ</td><td>損失</td><td>손실</td></tr>
+    <tr><td>25</td><td class="kr">판매</td><td class="jp">はんばい</td><td>販売</td><td>판매</td></tr>
+    <tr><td>26</td><td class="kr">구매</td><td class="jp">こうばい</td><td>購買</td><td>구매</td></tr>
+    <tr><td>27</td><td class="kr">생산</td><td class="jp">せいさん</td><td>生産</td><td>생산</td></tr>
+    <tr><td>28</td><td class="kr">소비</td><td class="jp">しょうひ</td><td>消費</td><td>소비</td></tr>
+    <tr><td>29</td><td class="kr">광고</td><td class="jp">こうこく</td><td>広告</td><td>광고</td></tr>
+    <tr><td>30</td><td class="kr">경영</td><td class="jp">けいえい</td><td>経営</td><td>경영</td></tr>
+    <tr><td>31</td><td class="kr">부서</td><td class="jp">ぶしょ</td><td>部署</td><td>부서</td></tr>
+    <tr><td>32</td><td class="kr">출장</td><td class="jp">しゅっちょう</td><td>出張</td><td>출장</td></tr>
+    <tr><td>33</td><td class="kr">회계</td><td class="jp">かいけい</td><td>会計</td><td>회계</td></tr>
+    <tr><td>34</td><td class="kr">예산</td><td class="jp">よさん</td><td>予算</td><td>예산</td></tr>
+    <tr><td>35</td><td class="kr">결산</td><td class="jp">けっさん</td><td>決算</td><td>결산</td></tr>
+    <tr><td>36</td><td class="kr">인사</td><td class="jp">じんじ</td><td>人事</td><td>인사</td></tr>
+    <tr><td>37</td><td class="kr">퇴직</td><td class="jp">たいしょく</td><td>退職</td><td>퇴직</td></tr>
+    <tr><td>38</td><td class="kr">승진</td><td class="jp">しょうしん</td><td>昇進</td><td>승진</td></tr>
+    <tr><td>39</td><td class="kr">연봉</td><td class="jp">ねんぽう</td><td>年俸</td><td>연봉</td></tr>
+    <tr><td>40</td><td class="kr">보너스</td><td class="jp">ボーナス</td><td>-</td><td>보너스</td></tr>
+    <tr><td>41</td><td class="kr">상품</td><td class="jp">しょうひん</td><td>商品</td><td>상품</td></tr>
+    <tr><td>42</td><td class="kr">시장</td><td class="jp">しじょう</td><td>市場</td><td>시장</td></tr>
+    <tr><td>43</td><td class="kr">경쟁</td><td class="jp">きょうそう</td><td>競争</td><td>경쟁</td></tr>
+    <tr><td>44</td><td class="kr">자본</td><td class="jp">しほん</td><td>資本</td><td>자본</td></tr>
+    <tr><td>45</td><td class="kr">수익</td><td class="jp">しゅうえき</td><td>収益</td><td>수익</td></tr>
+    <tr><td>46</td><td class="kr">보고서</td><td class="jp">ほうこくしょ</td><td>報告書</td><td>보고서</td></tr>
+    <tr><td>47</td><td class="kr">기획</td><td class="jp">きかく</td><td>企画</td><td>기획</td></tr>
+    <tr><td>48</td><td class="kr">영업</td><td class="jp">えいぎょう</td><td>営業</td><td>영업</td></tr>
+    <tr><td>49</td><td class="kr">재정</td><td class="jp">ざいせい</td><td>財政</td><td>재정</td></tr>
+    <tr><td>50</td><td class="kr">물가</td><td class="jp">ぶっか</td><td>物価</td><td>물가</td></tr>
+  </tbody>
+</table>
+
+<!-- ─── 2d. Government/Law 정치/政治 ─── -->
+<h4>2d. 정치 / 법률 (政治 / せいじ, 法律 / ほうりつ)</h4>
+<table>
+  <thead><tr><th>#</th><th>한국어</th><th>일본어</th><th>漢字</th><th>의미</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td class="kr">정부</td><td class="jp">せいふ</td><td>政府</td><td>정부</td></tr>
+    <tr><td>2</td><td class="kr">법률</td><td class="jp">ほうりつ</td><td>法律</td><td>법률</td></tr>
+    <tr><td>3</td><td class="kr">대통령</td><td class="jp">だいとうりょう</td><td>大統領</td><td>대통령</td></tr>
+    <tr><td>4</td><td class="kr">국회</td><td class="jp">こっかい</td><td>国会</td><td>국회</td></tr>
+    <tr><td>5</td><td class="kr">선거</td><td class="jp">せんきょ</td><td>選挙</td><td>선거</td></tr>
+    <tr><td>6</td><td class="kr">투표</td><td class="jp">とうひょう</td><td>投票</td><td>투표</td></tr>
+    <tr><td>7</td><td class="kr">헌법</td><td class="jp">けんぽう</td><td>憲法</td><td>헌법</td></tr>
+    <tr><td>8</td><td class="kr">민주주의</td><td class="jp">みんしゅしゅぎ</td><td>民主主義</td><td>민주주의</td></tr>
+    <tr><td>9</td><td class="kr">재판</td><td class="jp">さいばん</td><td>裁判</td><td>재판</td></tr>
+    <tr><td>10</td><td class="kr">검찰</td><td class="jp">けんさつ</td><td>検察</td><td>검찰</td></tr>
+    <tr><td>11</td><td class="kr">경찰</td><td class="jp">けいさつ</td><td>警察</td><td>경찰</td></tr>
+    <tr><td>12</td><td class="kr">범죄</td><td class="jp">はんざい</td><td>犯罪</td><td>범죄</td></tr>
+    <tr><td>13</td><td class="kr">국방</td><td class="jp">こくぼう</td><td>国防</td><td>국방</td></tr>
+    <tr><td>14</td><td class="kr">외교</td><td class="jp">がいこう</td><td>外交</td><td>외교</td></tr>
+    <tr><td>15</td><td class="kr">조약</td><td class="jp">じょうやく</td><td>条約</td><td>조약</td></tr>
+    <tr><td>16</td><td class="kr">의회</td><td class="jp">ぎかい</td><td>議会</td><td>의회</td></tr>
+    <tr><td>17</td><td class="kr">장관</td><td class="jp">ちょうかん</td><td>長官</td><td>장관</td></tr>
+    <tr><td>18</td><td class="kr">총리</td><td class="jp">そうり</td><td>総理</td><td>총리</td></tr>
+    <tr><td>19</td><td class="kr">공무원</td><td class="jp">こうむいん</td><td>公務員</td><td>공무원</td></tr>
+    <tr><td>20</td><td class="kr">권리</td><td class="jp">けんり</td><td>権利</td><td>권리</td></tr>
+    <tr><td>21</td><td class="kr">의무</td><td class="jp">ぎむ</td><td>義務</td><td>의무</td></tr>
+    <tr><td>22</td><td class="kr">자유</td><td class="jp">じゆう</td><td>自由</td><td>자유</td></tr>
+    <tr><td>23</td><td class="kr">평등</td><td class="jp">びょうどう</td><td>平等</td><td>평등</td></tr>
+    <tr><td>24</td><td class="kr">사법</td><td class="jp">しほう</td><td>司法</td><td>사법</td></tr>
+    <tr><td>25</td><td class="kr">행정</td><td class="jp">ぎょうせい</td><td>行政</td><td>행정</td></tr>
+    <tr><td>26</td><td class="kr">입법</td><td class="jp">りっぽう</td><td>立法</td><td>입법</td></tr>
+    <tr><td>27</td><td class="kr">조세</td><td class="jp">そぜい</td><td>租税</td><td>조세</td></tr>
+    <tr><td>28</td><td class="kr">국민</td><td class="jp">こくみん</td><td>国民</td><td>국민</td></tr>
+    <tr><td>29</td><td class="kr">시민</td><td class="jp">しみん</td><td>市民</td><td>시민</td></tr>
+    <tr><td>30</td><td class="kr">인권</td><td class="jp">じんけん</td><td>人権</td><td>인권</td></tr>
+    <tr><td>31</td><td class="kr">변호사</td><td class="jp">べんごし</td><td>弁護士</td><td>변호사</td></tr>
+    <tr><td>32</td><td class="kr">판사</td><td class="jp">はんじ</td><td>判事</td><td>판사</td></tr>
+    <tr><td>33</td><td class="kr">피고</td><td class="jp">ひこく</td><td>被告</td><td>피고</td></tr>
+    <tr><td>34</td><td class="kr">원고</td><td class="jp">げんこく</td><td>原告</td><td>원고</td></tr>
+    <tr><td>35</td><td class="kr">형벌</td><td class="jp">けいばつ</td><td>刑罰</td><td>형벌</td></tr>
+    <tr><td>36</td><td class="kr">감옥</td><td class="jp">かんごく</td><td>監獄</td><td>감옥</td></tr>
+    <tr><td>37</td><td class="kr">외무부</td><td class="jp">がいむしょう</td><td>外務省</td><td>외무부</td></tr>
+    <tr><td>38</td><td class="kr">국적</td><td class="jp">こくせき</td><td>国籍</td><td>국적</td></tr>
+    <tr><td>39</td><td class="kr">여권</td><td class="jp">りょけん</td><td>旅券</td><td>여권</td></tr>
+    <tr><td>40</td><td class="kr">비자</td><td class="jp">ビザ</td><td>-</td><td>비자</td></tr>
+    <tr><td>41</td><td class="kr">조례</td><td class="jp">じょうれい</td><td>条例</td><td>조례</td></tr>
+    <tr><td>42</td><td class="kr">공공</td><td class="jp">こうきょう</td><td>公共</td><td>공공</td></tr>
+    <tr><td>43</td><td class="kr">복지</td><td class="jp">ふくし</td><td>福祉</td><td>복지</td></tr>
+    <tr><td>44</td><td class="kr">예산</td><td class="jp">よさん</td><td>予算</td><td>예산</td></tr>
+    <tr><td>45</td><td class="kr">정책</td><td class="jp">せいさく</td><td>政策</td><td>정책</td></tr>
+    <tr><td>46</td><td class="kr">개혁</td><td class="jp">かいかく</td><td>改革</td><td>개혁</td></tr>
+    <tr><td>47</td><td class="kr">통일</td><td class="jp">とういつ</td><td>統一</td><td>통일</td></tr>
+    <tr><td>48</td><td class="kr">안보</td><td class="jp">あんぽ</td><td>安保</td><td>안보</td></tr>
+    <tr><td>49</td><td class="kr">외교관</td><td class="jp">がいこうかん</td><td>外交官</td><td>외교관</td></tr>
+    <tr><td>50</td><td class="kr">대사관</td><td class="jp">たいしかん</td><td>大使館</td><td>대사관</td></tr>
+  </tbody>
+</table>
+
+<!-- ─── 2e. Daily Life 일상생활 ─── -->
+<h4>2e. 일상생활 (日常生活 / にちじょうせいかつ)</h4>
+<table>
+  <thead><tr><th>#</th><th>한국어</th><th>일본어</th><th>漢字</th><th>의미</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td class="kr">전화</td><td class="jp">でんわ</td><td>電話</td><td>전화</td></tr>
+    <tr><td>2</td><td class="kr">약속</td><td class="jp">やくそく</td><td>約束</td><td>약속</td></tr>
+    <tr><td>3</td><td class="kr">준비</td><td class="jp">じゅんび</td><td>準備</td><td>준비</td></tr>
+    <tr><td>4</td><td class="kr">연습</td><td class="jp">れんしゅう</td><td>練習</td><td>연습</td></tr>
+    <tr><td>5</td><td class="kr">식사</td><td class="jp">しょくじ</td><td>食事</td><td>식사</td></tr>
+    <tr><td>6</td><td class="kr">여행</td><td class="jp">りょこう</td><td>旅行</td><td>여행</td></tr>
+    <tr><td>7</td><td class="kr">운동</td><td class="jp">うんどう</td><td>運動</td><td>운동</td></tr>
+    <tr><td>8</td><td class="kr">산책</td><td class="jp">さんぽ</td><td>散歩</td><td>산책</td></tr>
+    <tr><td>9</td><td class="kr">사진</td><td class="jp">しゃしん</td><td>写真</td><td>사진</td></tr>
+    <tr><td>10</td><td class="kr">음악</td><td class="jp">おんがく</td><td>音楽</td><td>음악</td></tr>
+    <tr><td>11</td><td class="kr">영화</td><td class="jp">えいが</td><td>映画</td><td>영화</td></tr>
+    <tr><td>12</td><td class="kr">신문</td><td class="jp">しんぶん</td><td>新聞</td><td>신문</td></tr>
+    <tr><td>13</td><td class="kr">잡지</td><td class="jp">ざっし</td><td>雑誌</td><td>잡지</td></tr>
+    <tr><td>14</td><td class="kr">교통</td><td class="jp">こうつう</td><td>交通</td><td>교통</td></tr>
+    <tr><td>15</td><td class="kr">지하철</td><td class="jp">ちかてつ</td><td>地下鉄</td><td>지하철</td></tr>
+    <tr><td>16</td><td class="kr">공항</td><td class="jp">くうこう</td><td>空港</td><td>공항</td></tr>
+    <tr><td>17</td><td class="kr">역</td><td class="jp">えき</td><td>駅</td><td>역</td></tr>
+    <tr><td>18</td><td class="kr">주소</td><td class="jp">じゅうしょ</td><td>住所</td><td>주소</td></tr>
+    <tr><td>19</td><td class="kr">우체국</td><td class="jp">ゆうびんきょく</td><td>郵便局</td><td>우체국</td></tr>
+    <tr><td>20</td><td class="kr">도서관</td><td class="jp">としょかん</td><td>図書館</td><td>도서관</td></tr>
+    <tr><td>21</td><td class="kr">백화점</td><td class="jp">ひゃっかてん</td><td>百貨店</td><td>백화점</td></tr>
+    <tr><td>22</td><td class="kr">식당</td><td class="jp">しょくどう</td><td>食堂</td><td>식당</td></tr>
+    <tr><td>23</td><td class="kr">공원</td><td class="jp">こうえん</td><td>公園</td><td>공원</td></tr>
+    <tr><td>24</td><td class="kr">미술관</td><td class="jp">びじゅつかん</td><td>美術館</td><td>미술관</td></tr>
+    <tr><td>25</td><td class="kr">박물관</td><td class="jp">はくぶつかん</td><td>博物館</td><td>박물관</td></tr>
+    <tr><td>26</td><td class="kr">동물원</td><td class="jp">どうぶつえん</td><td>動物園</td><td>동물원</td></tr>
+    <tr><td>27</td><td class="kr">시간</td><td class="jp">じかん</td><td>時間</td><td>시간</td></tr>
+    <tr><td>28</td><td class="kr">계절</td><td class="jp">きせつ</td><td>季節</td><td>계절</td></tr>
+    <tr><td>29</td><td class="kr">천기</td><td class="jp">てんき</td><td>天気</td><td>날씨</td></tr>
+    <tr><td>30</td><td class="kr">온도</td><td class="jp">おんど</td><td>温度</td><td>온도</td></tr>
+    <tr><td>31</td><td class="kr">가족</td><td class="jp">かぞく</td><td>家族</td><td>가족</td></tr>
+    <tr><td>32</td><td class="kr">부모</td><td class="jp">ふぼ</td><td>父母</td><td>부모</td></tr>
+    <tr><td>33</td><td class="kr">형제</td><td class="jp">きょうだい</td><td>兄弟</td><td>형제</td></tr>
+    <tr><td>34</td><td class="kr">결혼</td><td class="jp">けっこん</td><td>結婚</td><td>결혼</td></tr>
+    <tr><td>35</td><td class="kr">생일</td><td class="jp">たんじょうび</td><td>誕生日</td><td>생일</td></tr>
+    <tr><td>36</td><td class="kr">출발</td><td class="jp">しゅっぱつ</td><td>出発</td><td>출발</td></tr>
+    <tr><td>37</td><td class="kr">도착</td><td class="jp">とうちゃく</td><td>到着</td><td>도착</td></tr>
+    <tr><td>38</td><td class="kr">예약</td><td class="jp">よやく</td><td>予約</td><td>예약</td></tr>
+    <tr><td>39</td><td class="kr">안내</td><td class="jp">あんない</td><td>案内</td><td>안내</td></tr>
+    <tr><td>40</td><td class="kr">주의</td><td class="jp">ちゅうい</td><td>注意</td><td>주의</td></tr>
+    <tr><td>41</td><td class="kr">위험</td><td class="jp">きけん</td><td>危険</td><td>위험</td></tr>
+    <tr><td>42</td><td class="kr">안전</td><td class="jp">あんぜん</td><td>安全</td><td>안전</td></tr>
+    <tr><td>43</td><td class="kr">금지</td><td class="jp">きんし</td><td>禁止</td><td>금지</td></tr>
+    <tr><td>44</td><td class="kr">무료</td><td class="jp">むりょう</td><td>無料</td><td>무료</td></tr>
+    <tr><td>45</td><td class="kr">유료</td><td class="jp">ゆうりょう</td><td>有料</td><td>유료</td></tr>
+    <tr><td>46</td><td class="kr">비상구</td><td class="jp">ひじょうぐち</td><td>非常口</td><td>비상구</td></tr>
+    <tr><td>47</td><td class="kr">입구</td><td class="jp">いりぐち</td><td>入口</td><td>입구</td></tr>
+    <tr><td>48</td><td class="kr">출구</td><td class="jp">でぐち</td><td>出口</td><td>출구</td></tr>
+    <tr><td>49</td><td class="kr">화장실</td><td class="jp">かしょうしつ</td><td>化粧室</td><td>화장실</td></tr>
+    <tr><td>50</td><td class="kr">주차장</td><td class="jp">ちゅうしゃじょう</td><td>駐車場</td><td>주차장</td></tr>
+  </tbody>
+</table>
+
+<!-- ─── 2f. Science/Technology 과학/科学 ─── -->
+<h4>2f. 과학 / 기술 (科学 / かがく, 技術 / ぎじゅつ)</h4>
+<table>
+  <thead><tr><th>#</th><th>한국어</th><th>일본어</th><th>漢字</th><th>의미</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td class="kr">과학</td><td class="jp">かがく</td><td>科学</td><td>과학</td></tr>
+    <tr><td>2</td><td class="kr">기술</td><td class="jp">ぎじゅつ</td><td>技術</td><td>기술</td></tr>
+    <tr><td>3</td><td class="kr">연구</td><td class="jp">けんきゅう</td><td>研究</td><td>연구</td></tr>
+    <tr><td>4</td><td class="kr">실험</td><td class="jp">じっけん</td><td>実験</td><td>실험</td></tr>
+    <tr><td>5</td><td class="kr">발명</td><td class="jp">はつめい</td><td>発明</td><td>발명</td></tr>
+    <tr><td>6</td><td class="kr">발견</td><td class="jp">はっけん</td><td>発見</td><td>발견</td></tr>
+    <tr><td>7</td><td class="kr">원자</td><td class="jp">げんし</td><td>原子</td><td>원자</td></tr>
+    <tr><td>8</td><td class="kr">분자</td><td class="jp">ぶんし</td><td>分子</td><td>분자</td></tr>
+    <tr><td>9</td><td class="kr">에너지</td><td class="jp">エネルギー</td><td>-</td><td>에너지</td></tr>
+    <tr><td>10</td><td class="kr">전자</td><td class="jp">でんし</td><td>電子</td><td>전자</td></tr>
+    <tr><td>11</td><td class="kr">화학</td><td class="jp">かがく</td><td>化学</td><td>화학</td></tr>
+    <tr><td>12</td><td class="kr">물리</td><td class="jp">ぶつり</td><td>物理</td><td>물리</td></tr>
+    <tr><td>13</td><td class="kr">생물</td><td class="jp">せいぶつ</td><td>生物</td><td>생물</td></tr>
+    <tr><td>14</td><td class="kr">천문</td><td class="jp">てんもん</td><td>天文</td><td>천문</td></tr>
+    <tr><td>15</td><td class="kr">지구</td><td class="jp">ちきゅう</td><td>地球</td><td>지구</td></tr>
+    <tr><td>16</td><td class="kr">우주</td><td class="jp">うちゅう</td><td>宇宙</td><td>우주</td></tr>
+    <tr><td>17</td><td class="kr">환경</td><td class="jp">かんきょう</td><td>環境</td><td>환경</td></tr>
+    <tr><td>18</td><td class="kr">자연</td><td class="jp">しぜん</td><td>自然</td><td>자연</td></tr>
+    <tr><td>19</td><td class="kr">전기</td><td class="jp">でんき</td><td>電気</td><td>전기</td></tr>
+    <tr><td>20</td><td class="kr">자기</td><td class="jp">じき</td><td>磁気</td><td>자기</td></tr>
+    <tr><td>21</td><td class="kr">인공지능</td><td class="jp">じんこうちのう</td><td>人工知能</td><td>인공지능</td></tr>
+    <tr><td>22</td><td class="kr">통신</td><td class="jp">つうしん</td><td>通信</td><td>통신</td></tr>
+    <tr><td>23</td><td class="kr">정보</td><td class="jp">じょうほう</td><td>情報</td><td>정보</td></tr>
+    <tr><td>24</td><td class="kr">데이터</td><td class="jp">データ</td><td>-</td><td>데이터</td></tr>
+    <tr><td>25</td><td class="kr">프로그램</td><td class="jp">プログラム</td><td>-</td><td>프로그램</td></tr>
+    <tr><td>26</td><td class="kr">온도</td><td class="jp">おんど</td><td>温度</td><td>온도</td></tr>
+    <tr><td>27</td><td class="kr">습도</td><td class="jp">しつど</td><td>湿度</td><td>습도</td></tr>
+    <tr><td>28</td><td class="kr">기압</td><td class="jp">きあつ</td><td>気圧</td><td>기압</td></tr>
+    <tr><td>29</td><td class="kr">속도</td><td class="jp">そくど</td><td>速度</td><td>속도</td></tr>
+    <tr><td>30</td><td class="kr">중력</td><td class="jp">じゅうりょく</td><td>重力</td><td>중력</td></tr>
+    <tr><td>31</td><td class="kr">산소</td><td class="jp">さんそ</td><td>酸素</td><td>산소</td></tr>
+    <tr><td>32</td><td class="kr">수소</td><td class="jp">すいそ</td><td>水素</td><td>수소</td></tr>
+    <tr><td>33</td><td class="kr">질소</td><td class="jp">ちっそ</td><td>窒素</td><td>질소</td></tr>
+    <tr><td>34</td><td class="kr">탄소</td><td class="jp">たんそ</td><td>炭素</td><td>탄소</td></tr>
+    <tr><td>35</td><td class="kr">세포</td><td class="jp">さいぼう</td><td>細胞</td><td>세포</td></tr>
+    <tr><td>36</td><td class="kr">유전자</td><td class="jp">いでんし</td><td>遺伝子</td><td>유전자</td></tr>
+    <tr><td>37</td><td class="kr">면역</td><td class="jp">めんえき</td><td>免疫</td><td>면역</td></tr>
+    <tr><td>38</td><td class="kr">세균</td><td class="jp">さいきん</td><td>細菌</td><td>세균</td></tr>
+    <tr><td>39</td><td class="kr">바이러스</td><td class="jp">ウイルス</td><td>-</td><td>바이러스</td></tr>
+    <tr><td>40</td><td class="kr">수학</td><td class="jp">すうがく</td><td>数学</td><td>수학</td></tr>
+    <tr><td>41</td><td class="kr">계산</td><td class="jp">けいさん</td><td>計算</td><td>계산</td></tr>
+    <tr><td>42</td><td class="kr">방정식</td><td class="jp">ほうていしき</td><td>方程式</td><td>방정식</td></tr>
+    <tr><td>43</td><td class="kr">함수</td><td class="jp">かんすう</td><td>関数</td><td>함수</td></tr>
+    <tr><td>44</td><td class="kr">통계</td><td class="jp">とうけい</td><td>統計</td><td>통계</td></tr>
+    <tr><td>45</td><td class="kr">확률</td><td class="jp">かくりつ</td><td>確率</td><td>확률</td></tr>
+    <tr><td>46</td><td class="kr">이론</td><td class="jp">りろん</td><td>理論</td><td>이론</td></tr>
+    <tr><td>47</td><td class="kr">가설</td><td class="jp">かせつ</td><td>仮説</td><td>가설</td></tr>
+    <tr><td>48</td><td class="kr">증명</td><td class="jp">しょうめい</td><td>証明</td><td>증명</td></tr>
+    <tr><td>49</td><td class="kr">분석</td><td class="jp">ぶんせき</td><td>分析</td><td>분석</td></tr>
+    <tr><td>50</td><td class="kr">관측</td><td class="jp">かんそく</td><td>観測</td><td>관측</td></tr>
+  </tbody>
+</table>
+
+<!-- ============================================================
+     SECTION 3: FALSE FRIENDS
+     ============================================================ -->
+<h3 id="3-거짓-친구-偽りの友-같아-보이지만-뜻이-다른-단어들">거짓 친구 (偽りの友) — 같아 보이지만 뜻이 다른 단어들</h3>
+
+<p>한자 동계어에서 가장 위험한 함정은 <strong>같은 한자를 쓰면서도 한국어와 일본어에서 다른 의미를 가진 단어</strong>입니다. 아래 30개 이상의 "거짓 친구"를 반드시 암기하십시오.</p>
+
+<div class="callout critical">
+  <div class="callout-title">경고: 거짓 친구는 의사소통 사고를 유발합니다</div>
+  <p>같은 한자가 같은 뜻이라고 가정하면 심각한 오해가 발생할 수 있습니다. 위험도가 높을수록 더 주의 깊게 학습해야 합니다.</p>
+</div>
+
+<table>
+  <thead>
+    <tr><th>漢字</th><th>한국어 의미</th><th>일본어 의미</th><th>위험도</th><th>일본어 예문</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>大丈夫</strong></td>
+      <td class="kr">대장부 (훌륭한 사나이)</td>
+      <td class="jp">だいじょうぶ (괜찮다, 문제없다)</td>
+      <td><span class="transfer-tag none">위험</span></td>
+      <td class="jp">大丈夫ですか？ = 괜찮으세요?</td>
+    </tr>
+    <tr>
+      <td><strong>勉強</strong></td>
+      <td class="kr">면강 (억지로, 겨우)</td>
+      <td class="jp">べんきょう (공부, 학습)</td>
+      <td><span class="transfer-tag none">위험</span></td>
+      <td class="jp">毎日勉強します。 = 매일 공부합니다.</td>
+    </tr>
+    <tr>
+      <td><strong>丈夫</strong></td>
+      <td class="kr">장부 (장부, 회계 장부)</td>
+      <td class="jp">じょうぶ (튼튼한, 견고한)</td>
+      <td><span class="transfer-tag none">위험</span></td>
+      <td class="jp">この靴は丈夫だ。 = 이 신발은 튼튼하다.</td>
+    </tr>
+    <tr>
+      <td><strong>手紙</strong></td>
+      <td class="kr">수지 (화장지, 휴지)</td>
+      <td class="jp">てがみ (편지)</td>
+      <td><span class="transfer-tag none">위험</span></td>
+      <td class="jp">手紙を書く。 = 편지를 쓰다.</td>
+    </tr>
+    <tr>
+      <td><strong>汽車</strong></td>
+      <td class="kr">기차 (기차)</td>
+      <td class="jp">きしゃ (증기 기관차)</td>
+      <td><span class="transfer-tag partial">주의</span></td>
+      <td class="jp">汽車に乗る。 = 증기 기관차를 타다.</td>
+    </tr>
+    <tr>
+      <td><strong>人参</strong></td>
+      <td class="kr">인삼 (고려 인삼)</td>
+      <td class="jp">にんじん (당근)</td>
+      <td><span class="transfer-tag none">위험</span></td>
+      <td class="jp">人参を切る。 = 당근을 자르다.</td>
+    </tr>
+    <tr>
+      <td><strong>無理</strong></td>
+      <td class="kr">무리 (무리한, 과로)</td>
+      <td class="jp">むり (불가능한, 무리한)</td>
+      <td><span class="transfer-tag partial">주의</span></td>
+      <td class="jp">無理しないでね。 = 무리하지 마세요.</td>
+    </tr>
+    <tr>
+      <td><strong>愛人</strong></td>
+      <td class="kr">애인 (연인, 사랑하는 사람)</td>
+      <td class="jp">あいじん (정부/불륜 상대)</td>
+      <td><span class="transfer-tag none">위험</span></td>
+      <td class="jp">일본에서는 "연인"을 恋人(こいびと)라고 합니다</td>
+    </tr>
+    <tr>
+      <td><strong>外出</strong></td>
+      <td class="kr">외출 (외출)</td>
+      <td class="jp">がいしゅつ (외출)</td>
+      <td><span class="transfer-tag full">안전</span></td>
+      <td class="jp">外出する。 = 외출하다. (같은 의미)</td>
+    </tr>
+    <tr>
+      <td><strong>新聞</strong></td>
+      <td class="kr">신문 (새로운 소식)</td>
+      <td class="jp">しんぶん (신문)</td>
+      <td><span class="transfer-tag partial">주의</span></td>
+      <td class="jp">新聞を読む。 = 신문을 읽다.</td>
+    </tr>
+    <tr>
+      <td><strong>経理</strong></td>
+      <td class="kr">경리 (회계)</td>
+      <td class="jp">けいり (회계)</td>
+      <td><span class="transfer-tag full">안전</span></td>
+      <td class="jp">経理の仕事。 = 회계 업무.</td>
+    </tr>
+    <tr>
+      <td><strong>工夫</strong></td>
+      <td class="kr">공부 (공부, 학습)</td>
+      <td class="jp">くふう (궁리, 방법을 고안하다)</td>
+      <td><span class="transfer-tag none">위험</span></td>
+      <td class="jp">工夫する。 = 방법을 궁리하다.</td>
+    </tr>
+    <tr>
+      <td><strong>得意</strong></td>
+      <td class="kr">득의 (의기양양한)</td>
+      <td class="jp">とくい (잘하는, 장기)</td>
+      <td><span class="transfer-tag partial">주의</span></td>
+      <td class="jp">料理が得意です。 = 요리를 잘합니다.</td>
+    </tr>
+    <tr>
+      <td><strong>苦手</strong></td>
+      <td class="kr">(직접 대응 없음)</td>
+      <td class="jp">にがて (못하는, 약점)</td>
+      <td><span class="transfer-tag partial">주의</span></td>
+      <td class="jp">数学が苦手だ。 = 수학을 못한다.</td>
+    </tr>
+    <tr>
+      <td><strong>切手</strong></td>
+      <td class="kr">절수 (자르다?)</td>
+      <td class="jp">きって (우표)</td>
+      <td><span class="transfer-tag none">위험</span></td>
+      <td class="jp">切手を貼る。 = 우표를 붙이다.</td>
+    </tr>
+    <tr>
+      <td><strong>床</strong></td>
+      <td class="kr">상 (침대, 받침대)</td>
+      <td class="jp">ゆか (바닥)</td>
+      <td><span class="transfer-tag none">위험</span></td>
+      <td class="jp">床に座る。 = 바닥에 앉다.</td>
+    </tr>
+    <tr>
+      <td><strong>質問</strong></td>
+      <td class="kr">질문 (질문)</td>
+      <td class="jp">しつもん (질문)</td>
+      <td><span class="transfer-tag full">안전</span></td>
+      <td class="jp">質問があります。 = 질문이 있습니다.</td>
+    </tr>
+    <tr>
+      <td><strong>娘</strong></td>
+      <td class="kr">낭 (젊은 여인)</td>
+      <td class="jp">むすめ (딸)</td>
+      <td><span class="transfer-tag partial">주의</span></td>
+      <td class="jp">娘は学生です。 = 딸은 학생입니다.</td>
+    </tr>
+    <tr>
+      <td><strong>走</strong></td>
+      <td class="kr">주 (달리다)</td>
+      <td class="jp">はしる (달리다)</td>
+      <td><span class="transfer-tag full">안전</span></td>
+      <td class="jp">走る。 = 달리다.</td>
+    </tr>
+    <tr>
+      <td><strong>先生</strong></td>
+      <td class="kr">선생 (선생님)</td>
+      <td class="jp">せんせい (선생님, 또한 의사, 변호사 등 — 존칭)</td>
+      <td><span class="transfer-tag partial">주의</span></td>
+      <td class="jp">일본에서는 先生을 의사에게도 사용합니다</td>
+    </tr>
+    <tr>
+      <td><strong>高校</strong></td>
+      <td class="kr">(고교 = 고등학교)</td>
+      <td class="jp">こうこう (고등학교)</td>
+      <td><span class="transfer-tag full">안전</span></td>
+      <td class="jp">高校に通う。 = 고등학교에 다니다.</td>
+    </tr>
+    <tr>
+      <td><strong>番号</strong></td>
+      <td class="kr">번호 (번호)</td>
+      <td class="jp">ばんごう (번호)</td>
+      <td><span class="transfer-tag full">안전</span></td>
+      <td class="jp">電話番号。 = 전화번호.</td>
+    </tr>
+    <tr>
+      <td><strong>泥棒</strong></td>
+      <td class="kr">(직접 대응 없음)</td>
+      <td class="jp">どろぼう (도둑)</td>
+      <td><span class="transfer-tag partial">주의</span></td>
+      <td class="jp">泥棒に入られた。 = 도둑이 들었다.</td>
+    </tr>
+    <tr>
+      <td><strong>便利</strong></td>
+      <td class="kr">편리 (편리한)</td>
+      <td class="jp">べんり (편리한)</td>
+      <td><span class="transfer-tag full">안전</span></td>
+      <td class="jp">とても便利です。 = 매우 편리합니다.</td>
+    </tr>
+    <tr>
+      <td><strong>我慢</strong></td>
+      <td class="kr">아만 (오만, 자만)</td>
+      <td class="jp">がまん (인내, 참음)</td>
+      <td><span class="transfer-tag none">위험</span></td>
+      <td class="jp">我慢できない。 = 참을 수 없다.</td>
+    </tr>
+    <tr>
+      <td><strong>迷惑</strong></td>
+      <td class="kr">미혹 (미혹되다, 유혹되다)</td>
+      <td class="jp">めいわく (폐, 민폐)</td>
+      <td><span class="transfer-tag none">위험</span></td>
+      <td class="jp">迷惑をかける。 = (남에게) 폐를 끼치다.</td>
+    </tr>
+    <tr>
+      <td><strong>返事</strong></td>
+      <td class="kr">반사 (반사, 되돌리다)</td>
+      <td class="jp">へんじ (대답, 답장)</td>
+      <td><span class="transfer-tag partial">주의</span></td>
+      <td class="jp">返事をください。 = 답장 주세요.</td>
+    </tr>
+    <tr>
+      <td><strong>約束</strong></td>
+      <td class="kr">약속 (약속)</td>
+      <td class="jp">やくそく (약속)</td>
+      <td><span class="transfer-tag full">안전</span></td>
+      <td class="jp">約束を守る。 = 약속을 지키다.</td>
+    </tr>
+    <tr>
+      <td><strong>皮肉</strong></td>
+      <td class="kr">피육 (피부와 살)</td>
+      <td class="jp">ひにく (비꼼, 풍자)</td>
+      <td><span class="transfer-tag none">위험</span></td>
+      <td class="jp">皮肉を言う。 = 비꼬는 말을 하다.</td>
+    </tr>
+    <tr>
+      <td><strong>気分</strong></td>
+      <td class="kr">기분 (기분, 느낌)</td>
+      <td class="jp">きぶん (기분, 느낌)</td>
+      <td><span class="transfer-tag full">안전</span></td>
+      <td class="jp">気分がいい。 = 기분이 좋다.</td>
+    </tr>
+    <tr>
+      <td><strong>八方美人</strong></td>
+      <td class="kr">팔방미인 (다재다능한 사람 — 긍정적)</td>
+      <td class="jp">はっぽうびじん (아첨꾼 — 부정적)</td>
+      <td><span class="transfer-tag none">위험</span></td>
+      <td class="jp">あの人は八方美人だ。 = 그 사람은 줏대 없는 아첨꾼이다.</td>
+    </tr>
+    <tr>
+      <td><strong>天井</strong></td>
+      <td class="kr">천정 (하늘 꼭대기?)</td>
+      <td class="jp">てんじょう (천장)</td>
+      <td><span class="transfer-tag partial">주의</span></td>
+      <td class="jp">天井が高い。 = 천장이 높다.</td>
+    </tr>
+    <tr>
+      <td><strong>用意</strong></td>
+      <td class="kr">용의 (혐의, 의도)</td>
+      <td class="jp">ようい (준비, 마련)</td>
+      <td><span class="transfer-tag none">위험</span></td>
+      <td class="jp">用意する。 = 준비하다.</td>
+    </tr>
+    <tr>
+      <td><strong>留守</strong></td>
+      <td class="kr">유수 (남아서 지키다)</td>
+      <td class="jp">るす (부재, 집을 비우다)</td>
+      <td><span class="transfer-tag none">위험</span></td>
+      <td class="jp">留守にする。 = 집을 비우다.</td>
+    </tr>
+    <tr>
+      <td><strong>邪魔</strong></td>
+      <td class="kr">사마 (사악한 마귀)</td>
+      <td class="jp">じゃま (방해, 성가심)</td>
+      <td><span class="transfer-tag partial">주의</span></td>
+      <td class="jp">邪魔しないで。 = 방해하지 마세요.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout warn">
+  <div class="callout-title">정교한 질문법</div>
+  <p><strong>왜 같은 한자가 한국어와 일본어에서 다른 의미를 가질까요?</strong></p>
+  <p>한자가 전래된 이후 각 나라에서 독자적인 의미 변화가 일어났기 때문입니다. 예를 들어, 勉強은 원래 중국어에서 "마지못해 하다"라는 뜻이었습니다. 일본에서는 "마지못해서라도 하는 것 = 공부"로 의미가 확장되었고, 한국어에서는 원래의 "겨우, 억지로"라는 뜻을 유지했습니다.</p>
+</div>
+
+<!-- ============================================================
+     SECTION 4: COMPOUND WORD BUILDING
+     ============================================================ -->
+<h3 id="4-합성어-만들기-한자-구성-요소로-의미-추론하기">합성어 만들기 — 한자 구성 요소로 의미 추론하기</h3>
+
+<p>개별 한자의 의미를 알면 <strong>낯선 합성어의 의미를 추론</strong>할 수 있습니다. 이것이 한자 학습의 진정한 위력입니다.</p>
+
+<div class="card">
+  <h4>핵심 원리: 한자 = 레고 블록</h4>
+  <p>대부분의 한자어는 <strong>2~3개 한자의 조합</strong>으로 만들어집니다. 각 한자의 의미를 알면 전체 의미를 조립할 수 있습니다.</p>
+</div>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>구성 요소 분석 예시 1</h4>
+    <p style="font-size:1.3rem;text-align:center"><span class="jp">図書館</span></p>
+    <p style="text-align:center;font-size:.9rem">
+      <span class="jp">図</span>(도면) + <span class="jp">書</span>(글) + <span class="jp">館</span>(관)<br>
+      = 도면과 글을 보관하는 관 = <strong>도서관</strong>
+    </p>
+  </div>
+  <div class="card">
+    <h4>구성 요소 분석 예시 2</h4>
+    <p style="font-size:1.3rem;text-align:center"><span class="jp">自動販売機</span></p>
+    <p style="text-align:center;font-size:.9rem">
+      <span class="jp">自</span>(스스로) + <span class="jp">動</span>(움직이다) + <span class="jp">販</span>(팔다) + <span class="jp">売</span>(팔다) + <span class="jp">機</span>(기계)<br>
+      = 스스로 파는 기계 = <strong>자동판매기</strong>
+    </p>
+  </div>
+  <div class="card">
+    <h4>구성 요소 분석 예시 3</h4>
+    <p style="font-size:1.3rem;text-align:center"><span class="jp">不動産</span></p>
+    <p style="text-align:center;font-size:.9rem">
+      <span class="jp">不</span>(아닌) + <span class="jp">動</span>(움직이다) + <span class="jp">産</span>(재산)<br>
+      = 움직이지 않는 재산 = <strong>부동산</strong>
+    </p>
+  </div>
+  <div class="card">
+    <h4>구성 요소 분석 예시 4</h4>
+    <p style="font-size:1.3rem;text-align:center"><span class="jp">心理学</span></p>
+    <p style="text-align:center;font-size:.9rem">
+      <span class="jp">心</span>(마음) + <span class="jp">理</span>(이치/원리) + <span class="jp">学</span>(학문)<br>
+      = 마음의 원리를 연구하는 학문 = <strong>심리학</strong>
+    </p>
+  </div>
+</div>
+
+<h4>주요 접두사와 접미사</h4>
+<table>
+  <thead><tr><th>漢字</th><th>한국어</th><th>일본어 읽기</th><th>의미</th><th>합성어 예시</th></tr></thead>
+  <tbody>
+    <tr><td>不</td><td class="kr">불/부</td><td class="jp">ふ・ぶ</td><td>아닌 (부정)</td><td class="jp">不安(ふあん), 不便(ふべん), 不足(ふそく)</td></tr>
+    <tr><td>無</td><td class="kr">무</td><td class="jp">む・ぶ</td><td>없다 / ~없이</td><td class="jp">無料(むりょう), 無理(むり), 無視(むし)</td></tr>
+    <tr><td>未</td><td class="kr">미</td><td class="jp">み</td><td>아직 ~않은</td><td class="jp">未来(みらい), 未定(みてい), 未満(みまん)</td></tr>
+    <tr><td>再</td><td class="kr">재</td><td class="jp">さい</td><td>다시 / 재-</td><td class="jp">再開(さいかい), 再生(さいせい), 再会(さいかい)</td></tr>
+    <tr><td>新</td><td class="kr">신</td><td class="jp">しん</td><td>새로운</td><td class="jp">新聞(しんぶん), 新年(しんねん), 新人(しんじん)</td></tr>
+    <tr><td>全</td><td class="kr">전</td><td class="jp">ぜん</td><td>모든 / 전체</td><td class="jp">全部(ぜんぶ), 全国(ぜんこく), 全員(ぜんいん)</td></tr>
+    <tr><td>的</td><td class="kr">적</td><td class="jp">てき</td><td>~적 (형용사화)</td><td class="jp">国際的(こくさいてき), 基本的(きほんてき)</td></tr>
+    <tr><td>化</td><td class="kr">화</td><td class="jp">か</td><td>~화 (변화)</td><td class="jp">国際化(こくさいか), 近代化(きんだいか)</td></tr>
+    <tr><td>者</td><td class="kr">자</td><td class="jp">しゃ</td><td>~하는 사람</td><td class="jp">医者(いしゃ), 学者(がくしゃ), 記者(きしゃ)</td></tr>
+    <tr><td>場</td><td class="kr">장</td><td class="jp">じょう・ば</td><td>장소</td><td class="jp">駐車場(ちゅうしゃじょう), 工場(こうじょう)</td></tr>
+    <tr><td>館</td><td class="kr">관</td><td class="jp">かん</td><td>큰 건물</td><td class="jp">図書館(としょかん), 美術館(びじゅつかん)</td></tr>
+    <tr><td>学</td><td class="kr">학</td><td class="jp">がく</td><td>학문 / ~학</td><td class="jp">科学(かがく), 文学(ぶんがく), 医学(いがく)</td></tr>
+  </tbody>
+</table>
+
+<div class="callout ok">
+  <div class="callout-title">실전 팁: 모르는 단어를 만났을 때</div>
+  <p>글을 읽다가 모르는 한자어를 만나면 각 한자를 한국어 한자 읽기로 읽어 보십시오. 한국어 단어가 떠오르면 의미를 즉시 알 수 있습니다. 예: <span class="jp">国際連合</span> → 한국어로 읽기: <span class="kr">국제연합</span> → 바로 유엔입니다!</p>
+</div>
+
+<!-- ─── Compound Building Mnemonic SVG ─── -->
+<div class="diagram">
+  <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg">
+    <text x="350" y="25" text-anchor="middle" class="label-text" font-size="14" fill="var(--heading)">합성어 조립 과정</text>
+
+    <!-- Block 1 -->
+    <rect x="40" y="50" width="90" height="60" rx="6" style="fill:var(--jp-highlight);stroke:var(--accent);stroke-width:2"/>
+    <text x="85" y="78" text-anchor="middle" font-size="22" fill="var(--accent)" font-weight="700">国</text>
+    <text x="85" y="100" text-anchor="middle" font-size="10" fill="var(--text-muted)">나라</text>
+
+    <text x="150" y="85" text-anchor="middle" font-size="22" fill="var(--text-muted)">+</text>
+
+    <!-- Block 2 -->
+    <rect x="170" y="50" width="90" height="60" rx="6" style="fill:var(--jp-highlight);stroke:var(--accent);stroke-width:2"/>
+    <text x="215" y="78" text-anchor="middle" font-size="22" fill="var(--accent)" font-weight="700">際</text>
+    <text x="215" y="100" text-anchor="middle" font-size="10" fill="var(--text-muted)">즈음</text>
+
+    <text x="280" y="85" text-anchor="middle" font-size="22" fill="var(--text-muted)">+</text>
+
+    <!-- Block 3 -->
+    <rect x="300" y="50" width="90" height="60" rx="6" style="fill:var(--jp-highlight);stroke:var(--accent);stroke-width:2"/>
+    <text x="345" y="78" text-anchor="middle" font-size="22" fill="var(--accent)" font-weight="700">連</text>
+    <text x="345" y="100" text-anchor="middle" font-size="10" fill="var(--text-muted)">잇다</text>
+
+    <text x="410" y="85" text-anchor="middle" font-size="22" fill="var(--text-muted)">+</text>
+
+    <!-- Block 4 -->
+    <rect x="430" y="50" width="90" height="60" rx="6" style="fill:var(--jp-highlight);stroke:var(--accent);stroke-width:2"/>
+    <text x="475" y="78" text-anchor="middle" font-size="22" fill="var(--accent)" font-weight="700">合</text>
+    <text x="475" y="100" text-anchor="middle" font-size="10" fill="var(--text-muted)">합치다</text>
+
+    <text x="540" y="85" text-anchor="middle" font-size="22" fill="var(--a3)">=</text>
+
+    <!-- Result -->
+    <rect x="560" y="45" width="120" height="70" rx="6" style="fill:var(--cognate-highlight);stroke:var(--a3);stroke-width:2"/>
+    <text x="620" y="73" text-anchor="middle" font-size="18" fill="var(--a3)" font-weight="700">国際連合</text>
+    <text x="620" y="95" text-anchor="middle" font-size="11" fill="var(--a3)">국제연합</text>
+    <text x="620" y="108" text-anchor="middle" font-size="9" fill="var(--text-muted)">こくさいれんごう</text>
+
+    <!-- Arrow showing prediction flow -->
+    <text x="350" y="150" text-anchor="middle" font-size="12" fill="var(--a2)" font-weight="600">한국어 한자 읽기로 읽어 보세요</text>
+    <text x="350" y="170" text-anchor="middle" font-size="11" fill="var(--text-muted)">국 + 제 + 련 + 합 → 국제연합 → "아, 유엔이구나!"</text>
+    <text x="350" y="195" text-anchor="middle" font-size="11" fill="var(--accent)">일본어 읽기: こく + さい + れん + ごう → こくさいれんごう</text>
+  </svg>
+  <div class="diagram-caption">한자 구성 요소를 알면 한국어 지식으로 의미를 추론하고 음운 대응 규칙으로 일본어 읽기를 예측할 수 있습니다.</div>
+</div>
+
+<!-- ============================================================
+     INTERACTIVE EXERCISES
+     ============================================================ -->
+<h3 id="연습-문제">연습 문제</h3>
+
+<!-- Quiz 1: FillBlank — Predict and Verify -->
+<div id="quiz-predict"></div>
+
+<!-- Quiz 2: MultipleChoice — False Friends -->
+<div id="quiz-false-friends"></div>
+
+<!-- Quiz 3: DragMatch — Domain-specific matching -->
+<div id="quiz-domain-match"></div>
+
+<!-- Quiz 4: Flashcard — Rapid cognate recognition -->
+<div id="quiz-cognate-flash"></div>
+
+<!-- Quiz 5: RecallCheck from Ch10 — Kanji + Sound Rules -->
+<div id="quiz-recall-ch10-rules"></div>
+
+<!-- Mark as Complete -->
+<button class="chapter-complete" data-ch="12">완료 표시 &#10003;</button>
+
+<div style="display:flex;justify-content:space-between;margin:2rem 0">
+  <a href="ch-11.html" class="quiz-btn secondary">&larr; 제12장: 한자</a>
+  <a href="ch-13.html" class="quiz-btn">다음: 제14장 -- 고유어 &rarr;</a>
+</div>
+
+</section>
+
+</div>
+
+
+</div>
+
+<footer>
+  <p>Zero to Hero: 日本語 for Korean Speakers &middot; 제12장</p>
+</footer>
+
+<script src="js/shared.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/quiz-engine.js"></script>
+<script src="js/spaced-repetition.js"></script>
+<script src="js/memory-palace.js"></script>
+<script>
+// ─── Recall Check from Ch10 ───
+QuizEngine.RecallCheck(
+  document.getElementById('recall-ch10'),
+  {
+    fromChapters: '제11장',
+    items: [
+      { question: '한자를 읽는 두 가지 방법은 무엇입니까?', answer: '음독(おんよみ, 한자음 읽기)과 훈독(くんよみ, 고유 일본어 읽기)' },
+      { question: '한국어 ㅎ은 일본어 어느 가나 행에 대응합니까?', answer: 'か행 (k/g). 예: 학(hak) → がく, 해(hae) → かい' },
+      { question: '日, 月, 年의 음독은 무엇입니까?', answer: 'にち/じつ, げつ/がつ, ねん' },
+      { question: '한국어 받침 ㄹ은 일본어에서 어떻게 변합니까?', answer: 'つ 또는 ち로 변합니다. 예: 일(一) → いち, 발(発) → はつ' },
+      { question: '漢字의 한국어 읽기와 의미는 무엇입니까?', answer: '한자 (かんじ) — 중국에서 유래한 문자' }
+    ]
+  }
+);
+
+// ─── Quiz 1: FillBlank — 예측 후 확인 ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-predict'),
+  {
+    title: '예측 후 확인 — 한국어로부터 일본어 읽기를 추측하세요',
+    questions: [
+      { prompt: '학교 (학교) → 일본어 음독은? (漢字: 学校)', answer: 'がっこう', acceptAlso: ['ガッコウ'], explanation: '학 → がく, 교 → こう → がっこう (촉음 발생)' },
+      { prompt: '경제 (경제) → 일본어 음독은? (漢字: 経済)', answer: 'けいざい', acceptAlso: ['ケイザイ'], explanation: '경 → けい, 제 → ざい' },
+      { prompt: '전화 (전화) → 일본어 음독은? (漢字: 電話)', answer: 'でんわ', acceptAlso: ['デンワ'], explanation: '전 → でん, 화 → わ' },
+      { prompt: '병원 (병원) → 일본어 음독은? (漢字: 病院)', answer: 'びょういん', acceptAlso: ['ビョウイン'], explanation: '병 → びょう, 원 → いん' },
+      { prompt: '대학 (대학교) → 일본어 음독은? (漢字: 大学)', answer: 'だいがく', acceptAlso: ['ダイガク'], explanation: '대 → だい, 학 → がく' },
+      { prompt: '도서관 (도서관) → 일본어 음독은? (漢字: 図書館)', answer: 'としょかん', acceptAlso: ['トショカン'], explanation: '도 → と, 서 → しょ, 관 → かん' },
+      { prompt: '약속 (약속) → 일본어 음독은? (漢字: 約束)', answer: 'やくそく', acceptAlso: ['ヤクソク'], explanation: '약 → やく, 속 → そく' },
+      { prompt: '준비 (준비) → 일본어 음독은? (漢字: 準備)', answer: 'じゅんび', acceptAlso: ['ジュンビ'], explanation: '준 → じゅん, 비 → び' },
+      { prompt: '선생 (선생님) → 일본어 음독은? (漢字: 先生)', answer: 'せんせい', acceptAlso: ['センセイ'], explanation: '선 → せん, 생 → せい' },
+      { prompt: '안전 (안전) → 일본어 음독은? (漢字: 安全)', answer: 'あんぜん', acceptAlso: ['アンゼン'], explanation: '안 → あん, 전 → ぜん' },
+      { prompt: '교통 (교통) → 일본어 음독은? (漢字: 交通)', answer: 'こうつう', acceptAlso: ['コウツウ'], explanation: '교 → こう, 통 → つう' },
+      { prompt: '과학 (과학) → 일본어 음독은? (漢字: 科学)', answer: 'かがく', acceptAlso: ['カガク'], explanation: '과 → か, 학 → がく' },
+      { prompt: '정부 (정부) → 일본어 음독은? (漢字: 政府)', answer: 'せいふ', acceptAlso: ['セイフ'], explanation: '정 → せい, 부 → ふ' },
+      { prompt: '건강 (건강) → 일본어 음독은? (漢字: 健康)', answer: 'けんこう', acceptAlso: ['ケンコウ'], explanation: '건 → けん, 강 → こう' },
+      { prompt: '회의 (회의) → 일본어 음독은? (漢字: 会議)', answer: 'かいぎ', acceptAlso: ['カイギ'], explanation: '회 → かい, 의 → ぎ' },
+      { prompt: '음악 (음악) → 일본어 음독은? (漢字: 音楽)', answer: 'おんがく', acceptAlso: ['オンガク'], explanation: '음 → おん, 악 → がく' },
+      { prompt: '심장 (심장) → 일본어 음독은? (漢字: 心臓)', answer: 'しんぞう', acceptAlso: ['シンゾウ'], explanation: '심 → しん, 장 → ぞう' },
+      { prompt: '자연 (자연) → 일본어 음독은? (漢字: 自然)', answer: 'しぜん', acceptAlso: ['シゼン'], explanation: '자 → し, 연 → ぜん' },
+      { prompt: '문제 (문제) → 일본어 음독은? (漢字: 問題)', answer: 'もんだい', acceptAlso: ['モンダイ'], explanation: '문 → もん, 제 → だい' },
+      { prompt: '환경 (환경) → 일본어 음독은? (漢字: 環境)', answer: 'かんきょう', acceptAlso: ['カンキョウ'], explanation: '환 → かん, 경 → きょう' }
+    ]
+  }
+);
+
+// ─── Quiz 2: MultipleChoice — 거짓 친구 ───
+QuizEngine.MultipleChoice(
+  document.getElementById('quiz-false-friends'),
+  {
+    title: '거짓 친구 식별 퀴즈',
+    questions: [
+      {
+        prompt: '大丈夫(だいじょうぶ)는 일본어에서 무슨 뜻입니까?',
+        options: ['훌륭한 사나이 (영웅)', '괜찮다 / 문제없다', '매우 튼튼한', '큰 사람'],
+        correctIndex: 1,
+        explanation: '大丈夫는 일본어에서 "괜찮다 / 문제없다"라는 뜻입니다. 한국어의 "대장부(훌륭한 사나이)"와는 완전히 다릅니다.'
+      },
+      {
+        prompt: '勉強(べんきょう)는 일본어에서 무슨 뜻입니까?',
+        options: ['마지못해 하다', '겨우 / 억지로', '공부 / 학습', '강한 노력'],
+        correctIndex: 2,
+        explanation: '勉強는 일본어에서 "공부"라는 뜻입니다. 한국어 면강(겨우 / 억지로)과 다릅니다.'
+      },
+      {
+        prompt: '手紙(てがみ)는 일본어에서 무슨 뜻입니까?',
+        options: ['손수건', '화장지', '편지', '공책'],
+        correctIndex: 2,
+        explanation: '手紙는 일본어에서 "편지"라는 뜻입니다. 화장지가 아닙니다!'
+      },
+      {
+        prompt: '人参(にんじん)는 일본어에서 무슨 뜻입니까?',
+        options: ['고려 인삼', '당근', '인간 참여', '인원수'],
+        correctIndex: 1,
+        explanation: '人参는 일본어에서 "당근"이라는 뜻입니다. 한국어의 "인삼"과 다릅니다. 일본어에서 인삼은 高麗人参(こうらいにんじん)입니다.'
+      },
+      {
+        prompt: '愛人(あいじん)는 일본어에서 무슨 뜻입니까?',
+        options: ['연인 / 사랑하는 사람', '사랑받는 사람', '정부 / 불륜 상대', '아내'],
+        correctIndex: 2,
+        explanation: '愛人는 일본어에서 "정부/불륜 상대"를 뜻합니다 — 부정적인 의미입니다. "연인"은 恋人(こいびと)를 사용하세요.'
+      },
+      {
+        prompt: '工夫(くふう)는 일본어에서 무슨 뜻입니까?',
+        options: ['공부 / 학습', '궁리 / 방법을 고안하다', '노동자', '건설'],
+        correctIndex: 1,
+        explanation: '工夫는 일본어에서 "궁리하다/고안하다"라는 뜻입니다. 한국어의 "공부"는 일본어에서 勉強(べんきょう)입니다.'
+      },
+      {
+        prompt: '我慢(がまん)는 일본어에서 무슨 뜻입니까?',
+        options: ['오만 / 자만', '인내 / 참음', '자기중심적인', '자부심'],
+        correctIndex: 1,
+        explanation: '我慢는 일본어에서 "인내 / 참음"이라는 뜻입니다. 한국어 의미인 "오만"과는 반대입니다.'
+      },
+      {
+        prompt: '迷惑(めいわく)는 일본어에서 무슨 뜻입니까?',
+        options: ['미혹되다 / 유혹되다', '길을 잃다', '폐 / 민폐 / 피해를 주다', '혼란스럽다'],
+        correctIndex: 2,
+        explanation: '迷惑는 일본어에서 "폐 / 민폐를 끼치다"라는 뜻입니다. 한국어 미혹(미혹되다/유혹되다)과 다릅니다.'
+      },
+      {
+        prompt: '八方美人(はっぽうびじん)는 일본어에서 무슨 뜻입니까?',
+        options: ['다재다능한 사람 (긍정적)', '팔방의 미인', '줏대 없는 아첨꾼 (부정적)', '매우 아름다운 사람'],
+        correctIndex: 2,
+        explanation: '八方美人는 일본어에서 "줏대 없는 아첨꾼"이라는 부정적인 의미입니다. 긍정적인 한국어 의미와 반대입니다.'
+      },
+      {
+        prompt: '用意(ようい)는 일본어에서 무슨 뜻입니까?',
+        options: ['혐의 / 의도', '용도', '준비 / 마련', '지시 사항'],
+        correctIndex: 2,
+        explanation: '用意는 일본어에서 "준비하다 / 마련하다"라는 뜻입니다. 한국어의 "용의(혐의)"와는 완전히 다릅니다.'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 3: DragMatch — 분야별 매칭 ───
+QuizEngine.DragMatch(
+  document.getElementById('quiz-domain-match'),
+  {
+    title: '분야별 동계어 매칭',
+    instruction: '한국어 단어와 일본어 읽기를 연결하세요:',
+    pairs: [
+      { left: '병원 (病院)', right: 'びょういん' },
+      { left: '경제 (経済)', right: 'けいざい' },
+      { left: '선거 (選挙)', right: 'せんきょ' },
+      { left: '수술 (手術)', right: 'しゅじゅつ' },
+      { left: '과학 (科学)', right: 'かがく' },
+      { left: '계약 (契約)', right: 'けいやく' },
+      { left: '환경 (環境)', right: 'かんきょう' },
+      { left: '교통 (交通)', right: 'こうつう' }
+    ]
+  }
+);
+
+// ─── Quiz 4: Flashcard — 빠른 동계어 인식 ───
+QuizEngine.Flashcard(
+  document.getElementById('quiz-cognate-flash'),
+  {
+    cards: [
+      { front: '学生', back: 'がくせい', detail: '한국어: 학생 — 학생' },
+      { front: '電話', back: 'でんわ', detail: '한국어: 전화 — 전화' },
+      { front: '病院', back: 'びょういん', detail: '한국어: 병원 — 병원' },
+      { front: '大学', back: 'だいがく', detail: '한국어: 대학 — 대학교' },
+      { front: '約束', back: 'やくそく', detail: '한국어: 약속 — 약속' },
+      { front: '準備', back: 'じゅんび', detail: '한국어: 준비 — 준비' },
+      { front: '経済', back: 'けいざい', detail: '한국어: 경제 — 경제' },
+      { front: '政府', back: 'せいふ', detail: '한국어: 정부 — 정부' },
+      { front: '科学', back: 'かがく', detail: '한국어: 과학 — 과학' },
+      { front: '会議', back: 'かいぎ', detail: '한국어: 회의 — 회의' },
+      { front: '契約', back: 'けいやく', detail: '한국어: 계약 — 계약' },
+      { front: '研究', back: 'けんきゅう', detail: '한국어: 연구 — 연구' },
+      { front: '安全', back: 'あんぜん', detail: '한국어: 안전 — 안전' },
+      { front: '環境', back: 'かんきょう', detail: '한국어: 환경 — 환경' },
+      { front: '交通', back: 'こうつう', detail: '한국어: 교통 — 교통' },
+      { front: '音楽', back: 'おんがく', detail: '한국어: 음악 — 음악' },
+      { front: '映画', back: 'えいが', detail: '한국어: 영화 — 영화' },
+      { front: '健康', back: 'けんこう', detail: '한국어: 건강 — 건강' },
+      { front: '自然', back: 'しぜん', detail: '한국어: 자연 — 자연' },
+      { front: '大丈夫', back: 'だいじょうぶ', detail: '주의! 거짓 친구 — 일본어: 괜찮다/문제없다 (한국어 대장부 = 훌륭한 사나이가 아닙니다!)' },
+      { front: '勉強', back: 'べんきょう', detail: '주의! 거짓 친구 — 일본어: 공부 (한국어 면강 = 겨우가 아닙니다!)' },
+      { front: '手紙', back: 'てがみ', detail: '주의! 거짓 친구 — 일본어: 편지 (화장지가 아닙니다!)' },
+      { front: '人参', back: 'にんじん', detail: '주의! 거짓 친구 — 일본어: 당근 (인삼이 아닙니다!)' },
+      { front: '愛人', back: 'あいじん', detail: '주의! 거짓 친구 — 일본어: 정부 (연인이 아닙니다! 恋人를 사용하세요)' }
+    ]
+  }
+);
+
+// ─── Quiz 5: RecallCheck from Ch10 — 한자 + 음운 규칙 ───
+QuizEngine.RecallCheck(
+  document.getElementById('quiz-recall-ch10-rules'),
+  {
+    fromChapters: '제11장 한자 + 음운 규칙',
+    items: [
+      { question: '한국어 ㅂ은 일본어 어느 행에 대응합니까? 예시 2개를 드세요.', answer: 'は/ば행. 예: 발(発) → はつ, 병(病) → びょう' },
+      { question: '한국어 ㅅ은 일본어 어느 행에 대응합니까?', answer: 'さ행. 예: 산(山) → さん, 선(先) → せん' },
+      { question: '"大丈夫"의 한국어와 일본어 의미 차이는 무엇입니까?', answer: '한국어: 대장부 (훌륭한 사나이) / 일본어: だいじょうぶ (괜찮다, 문제없다)' },
+      { question: '自動販売機에서 각 한자의 의미와 전체 의미는 무엇입니까?', answer: '自(스스로)+動(움직이다)+販(팔다)+売(팔다)+機(기계) = 자동판매기' },
+      { question: '한국어 받침 ㄱ은 일본어에서 어떻게 변합니까? 예시 2개를 드세요.', answer: 'く/き로 변합니다. 예: 학(学) → がく, 국(国) → こく' },
+      { question: '접두사 不(ふ/ぶ)가 포함된 일본어 단어를 3개 말하세요.', answer: '不安(ふあん, 불안), 不便(ふべん, 불편), 不足(ふそく, 부족)' }
+    ]
+  }
+);
+</script>
+</body>
+</html>

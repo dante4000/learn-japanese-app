@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ch03: 가타카나 — Zero to Hero 日本語</title>
+<link rel="stylesheet" href="css/design-system.css">
+</head>
+<body>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<button class="toggle" id="themeToggle" aria-label="테마 전환">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <span class="logo-badge">Zero to Hero — 기억 설계 에디션</span>
+    <div class="logo-title">한국어 화자를 위한 日本語</div>
+    <div class="logo-sub">한국어에서 日本語로 — 기억 설계자의 안내서</div>
+  </a>
+  <div class="sidebar-progress">
+    <div class="sidebar-progress-label">진행률</div>
+    <div class="sidebar-progress-bar">
+      <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+    </div>
+    <div class="sidebar-progress-count">0/22 완료</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="ch-00.html" class="toc-link"><span class="toc-num">00</span><span class="toc-check" data-ch="00"></span>기억 과학</a>
+    <a href="ch-01.html" class="toc-link"><span class="toc-num">01</span><span class="toc-check" data-ch="01"></span>한국어의 이점</a>
+    <a href="ch-02.html" class="toc-link"><span class="toc-num">02</span><span class="toc-check" data-ch="02"></span>히라가나</a>
+    <a href="ch-03.html" class="toc-link active"><span class="toc-num">03</span><span class="toc-check" data-ch="03"></span>가타카나</a>
+    <a href="ch-04.html" class="toc-link"><span class="toc-num">04</span><span class="toc-check" data-ch="04"></span>발음</a>
+    <a href="ch-05.html" class="toc-link"><span class="toc-num">05</span><span class="toc-check" data-ch="05"></span>서바이벌 일본어</a>
+    <a href="ch-06.html" class="toc-link"><span class="toc-num">06</span><span class="toc-check" data-ch="06"></span>조수사</a>
+    <a href="ch-07.html" class="toc-link"><span class="toc-num">07</span><span class="toc-check" data-ch="07"></span>조사</a>
+    <a href="ch-08.html" class="toc-link"><span class="toc-num">08</span><span class="toc-check" data-ch="08"></span>동사 활용</a>
+    <a href="ch-09.html" class="toc-link"><span class="toc-num">09</span><span class="toc-check" data-ch="09"></span>일상 회화</a>
+    <a href="ch-10.html" class="toc-link"><span class="toc-num">10</span><span class="toc-check" data-ch="10"></span>문형</a>
+    <a href="ch-11.html" class="toc-link"><span class="toc-num">11</span><span class="toc-check" data-ch="11"></span>한자</a>
+    <a href="ch-12.html" class="toc-link"><span class="toc-num">12</span><span class="toc-check" data-ch="12"></span>한자어</a>
+    <a href="ch-13.html" class="toc-link"><span class="toc-num">13</span><span class="toc-check" data-ch="13"></span>고유어</a>
+    <a href="ch-14.html" class="toc-link"><span class="toc-num">14</span><span class="toc-check" data-ch="14"></span>경어</a>
+    <a href="ch-15.html" class="toc-link"><span class="toc-num">15</span><span class="toc-check" data-ch="15"></span>독해</a>
+    <a href="ch-16.html" class="toc-link"><span class="toc-num">16</span><span class="toc-check" data-ch="16"></span>작문</a>
+    <a href="ch-17.html" class="toc-link"><span class="toc-num">17</span><span class="toc-check" data-ch="17"></span>청해</a>
+    <a href="ch-18.html" class="toc-link"><span class="toc-num">18</span><span class="toc-check" data-ch="18"></span>문화 화용론</a>
+    <a href="ch-19.html" class="toc-link"><span class="toc-num">19</span><span class="toc-check" data-ch="19"></span>JLPT와 그 너머</a>
+    <a href="ch-20.html" class="toc-link"><span class="toc-num">20</span><span class="toc-check" data-ch="20"></span>기억의 궁전</a>
+    <a href="ch-21.html" class="toc-link"><span class="toc-num">21</span><span class="toc-check" data-ch="21"></span>90일 스프린트</a>
+    <a href="appendices.html" class="toc-link" style="margin-top:.5rem;border-top:1px solid var(--border);padding-top:.8rem"><span class="toc-num">+</span>부록</a>
+  </nav>
+</aside>
+
+<div class="main">
+<div class="content-wrap">
+
+<section id="ch03" data-ch="03" style="padding-top:3rem">
+<h2><span class="ch-label">제3장</span>가타카나 &mdash; 외래어 문자 (カタカナ)</h2>
+
+<div class="callout memory"><div class="callout-title">기억 기법 스포트라이트: 이중 부호화</div><p>히라가나와 가타카나를 시각적으로 짝지어 두 가지 검색 경로를 만듭니다.</p></div>
+
+<p>가타카나는 히라가나의 <strong>각진 쌍둥이</strong>입니다. 같은 46개 소리를 나타내지만, 생김새는 완전히 다릅니다. 히라가나가 둥글고 유려한 반면, 가타카나는 날카롭고 직선적입니다 -- 초서체가 아닌 한자의 일부에서 파생되었기 때문입니다. <strong>외래어</strong>, 강조, 의성어/의태어, 과학 용어 등에 사용됩니다. 목표: <strong>3~5일</strong> (이미 소리를 알고 있으므로 히라가나보다 빠릅니다).</p>
+
+<div class="callout info">
+  <div class="callout-title">한국어의 이점: 콩글리시 = 지름길</div>
+  <p>한국어에는 영어 외래어(콩글리시)가 가득합니다: 커피, 텔레비전, 버스, 호텔... 일본어에도 가타카나로 쓰인 <strong>똑같은 단어</strong>가 있습니다! 가타카나를 읽을 수 있으면, 한국어에서 이미 알고 있는 수백 개의 일본어 단어를 즉시 인식할 수 있습니다. 이 장에서 그 능력을 드립니다.</p>
+</div>
+
+<div class="callout info">
+  <div class="callout-title">가타카나는 언제 사용하나요?</div>
+  <p><strong>1. 외래어:</strong> コーヒー (커피), テレビ (TV)<br>
+  <strong>2. 외국 이름:</strong> ソウル (서울), キム (김)<br>
+  <strong>3. 강조:</strong> 영어의 대문자나 굵은 글씨처럼 -- ダメ! (안 돼!)<br>
+  <strong>4. 의성어/의태어:</strong> ドキドキ (두근두근), ワクワク (설렘)<br>
+  <strong>5. 과학/기술 용어:</strong> ウイルス (바이러스), エネルギー (에너지)</p>
+</div>
+
+<!-- ─── RECALL CHECK (Ch02) ─── -->
+<div id="recall-check-02"></div>
+
+<!-- ─── VOWEL ROW ─── -->
+<nav class="chapter-toc">
+  <details open>
+    <summary class="chapter-toc-title">이 장의 내용</summary>
+  <ol>
+    <li><a href="#5개의-모음----ア-イ-ウ-エ-オ">5개의 모음 -- ア イ ウ エ オ</a></li>
+    <li><a href="#카행----カ-キ-ク-ケ-コ">카행 -- カ キ ク ケ コ</a></li>
+    <li><a href="#사행----サ-シ-ス-セ-ソ">사행 -- サ シ ス セ ソ</a></li>
+    <li><a href="#타행----タ-チ-ツ-テ-ト">타행 -- タ チ ツ テ ト</a></li>
+    <li><a href="#나행----ナ-ニ-ヌ-ネ-ノ">나행 -- ナ ニ ヌ ネ ノ</a></li>
+    <li><a href="#하행----ハ-ヒ-フ-ヘ-ホ">하행 -- ハ ヒ フ ヘ ホ</a></li>
+    <li><a href="#마행----マ-ミ-ム-メ-モ">마행 -- マ ミ ム メ モ</a></li>
+    <li><a href="#야행----ヤ-ユ-ヨ-3개만">야행 -- ヤ ユ ヨ (3개만)</a></li>
+    <li><a href="#라행----ラ-リ-ル-レ-ロ">라행 -- ラ リ ル レ ロ</a></li>
+    <li><a href="#와행----ワ-ヲ-특수-ン">와행 -- ワ ヲ + 특수: ン</a></li>
+    <li><a href="#히라가나-가타카나-비교표">히라가나-가타카나 비교표</a></li>
+    <li><a href="#탁점과-반탁점----가타카나-유성음-부호">탁점(゛)과 반탁점(゜) -- 가타카나 유성음 부호</a></li>
+    <li><a href="#가타카나의-장음----ー-대시">가타카나의 장음 -- ー 대시</a></li>
+    <li><a href="#외래어-전용-가타카나-조합">외래어 전용 가타카나 조합</a></li>
+    <li><a href="#외래어-브릿지-한일-공통-외래어-50개">외래어 브릿지: 한일 공통 외래어 50개</a></li>
+    <li><a href="#작은-ッ-촉음----이중-자음">작은 ッ (촉음) -- 이중 자음</a></li>
+    <li><a href="#연습-문제">연습 문제</a></li>
+  </ol>
+  </details>
+</nav>
+
+<h3 id="5개의-모음----ア-イ-ウ-エ-オ">5개의 모음 -- ア イ ウ エ オ</h3>
+<p>히라가나 あ い う え お와 같은 소리이지만, 더 날카로운 모양입니다. 쌍으로 함께 익히세요.</p>
+
+<div class="mnemonic-card">
+  <div>
+    <svg class="char-svg" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <text x="40" y="58" text-anchor="middle" font-size="52" font-family="'Shippori Mincho', serif" fill="var(--heading)">ア</text>
+    </svg>
+  </div>
+  <div class="char-info">
+    <div class="char-reading">a -- 히라가나 짝: あ</div>
+    <div class="char-korean">한국어 근사값: 아</div>
+    <div class="char-story"><strong>기억법:</strong> 옥상 위의 <strong>안</strong>테나 -- 각진 획이 TV 안테나처럼 보입니다. 둥근 あ와 비교해 보세요. 외래어: <span class="jp">アイス</span> (아이스) = 아이스크림 / 아이스.</div>
+  </div>
+  <div class="char-display">ア</div>
+</div>
+
+<div class="mnemonic-card">
+  <div>
+    <svg class="char-svg" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <text x="40" y="58" text-anchor="middle" font-size="52" font-family="'Shippori Mincho', serif" fill="var(--heading)">イ</text>
+    </svg>
+  </div>
+  <div class="char-info">
+    <div class="char-reading">i -- 히라가나 짝: い</div>
+    <div class="char-korean">한국어 근사값: 이</div>
+    <div class="char-story"><strong>기억법:</strong> 기울어진 알파벳 "<strong>I</strong>" 같은 모양 -- 두 개의 직선 획이 이젤처럼 서로 기대고 있습니다. 외래어: <span class="jp">インターネット</span> (인타아넷토) = 인터넷 / 인터넷.</div>
+  </div>
+  <div class="char-display">イ</div>
+</div>
+
+<div class="mnemonic-card">
+  <div>
+    <svg class="char-svg" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <text x="40" y="58" text-anchor="middle" font-size="52" font-family="'Shippori Mincho', serif" fill="var(--heading)">ウ</text>
+    </svg>
+  </div>
+  <div class="char-info">
+    <div class="char-reading">u -- 히라가나 짝: う</div>
+    <div class="char-korean">한국어 근사값: 우 (비원순)</div>
+    <div class="char-story"><strong>기억법:</strong> 위를 향한 왕관 모양 -- 세 획이 왕관 형태를 이룹니다. 외래어: <span class="jp">ウイスキー</span> (우이스키이) = 위스키 / 위스키.</div>
+  </div>
+  <div class="char-display">ウ</div>
+</div>
+
+<div class="mnemonic-card">
+  <div>
+    <svg class="char-svg" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <text x="40" y="58" text-anchor="middle" font-size="52" font-family="'Shippori Mincho', serif" fill="var(--heading)">エ</text>
+    </svg>
+  </div>
+  <div class="char-info">
+    <div class="char-reading">e -- 히라가나 짝: え</div>
+    <div class="char-korean">한국어 근사값: 에</div>
+    <div class="char-story"><strong>기억법:</strong> <strong>엘</strong>리베이터 -- 위아래의 수평선을 수직 축이 연결합니다. 대문자 "I"나 I형 빔처럼 보입니다. 외래어: <span class="jp">エレベーター</span> (에레베에타아) = 엘리베이터 / 엘리베이터.</div>
+  </div>
+  <div class="char-display">エ</div>
+</div>
+
+<div class="mnemonic-card">
+  <div>
+    <svg class="char-svg" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <text x="40" y="58" text-anchor="middle" font-size="52" font-family="'Shippori Mincho', serif" fill="var(--heading)">オ</text>
+    </svg>
+  </div>
+  <div class="char-info">
+    <div class="char-reading">o -- 히라가나 짝: お</div>
+    <div class="char-korean">한국어 근사값: 오</div>
+    <div class="char-story"><strong>기억법:</strong> 팔을 벌린 <strong>오</strong>페라 가수 -- 가로 획과 세로 획이 포즈를 취하는 사람처럼 보입니다. 외래어: <span class="jp">オレンジ</span> (오렌지) = 오렌지 / 오렌지.</div>
+  </div>
+  <div class="char-display">オ</div>
+</div>
+
+<!-- Vowel quiz -->
+<div id="quiz-vowels"></div>
+
+<!-- ─── K ROW ─── -->
+<h3 id="카행----カ-キ-ク-ケ-コ">카행 -- カ キ ク ケ コ</h3>
+<p>"k" 자음 행입니다. 각각 히라가나 짝이 있습니다. 가타카나 버전이 더 각집니다.</p>
+
+<div class="mnemonic-card">
+  <div class="char-display">カ</div>
+  <div class="char-info">
+    <div class="char-reading">ka -- 히라가나 짝: か</div>
+    <div class="char-korean">한국어: 가/카</div>
+    <div class="char-story"><strong>기억법:</strong> 날카로운 <strong>카</strong>타나(칼) -- 각진 획이 대각선으로 베어냅니다. 둥근 か와 비교해 보세요. 외래어: <span class="jp">カメラ</span> (카메라) = 카메라 / 카메라.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">キ</div>
+  <div class="char-info">
+    <div class="char-reading">ki -- 히라가나 짝: き</div>
+    <div class="char-korean">한국어: 기/키</div>
+    <div class="char-story"><strong>기억법:</strong> 날카로운 이가 있는 <strong>키</strong>(열쇠) -- き에서 아래쪽 곡선이 없는 형태입니다. 외래어: <span class="jp">キムチ</span> (키무치) = 김치 / 김치.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">ク</div>
+  <div class="char-info">
+    <div class="char-reading">ku -- 히라가나 짝: く</div>
+    <div class="char-korean">한국어: 구/쿠</div>
+    <div class="char-story"><strong>기억법:</strong> 각진 갈고리 모양 -- く가 날카로워진 것 같습니다. 외래어: <span class="jp">クラス</span> (쿠라스) = 클래스 / 클래스.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">ケ</div>
+  <div class="char-info">
+    <div class="char-reading">ke -- 히라가나 짝: け</div>
+    <div class="char-korean">한국어: 게/케</div>
+    <div class="char-story"><strong>기억법:</strong> 주둥이가 있는 <strong>케</strong>틀(주전자) -- 가로 획이 손잡이, 대각선이 주둥이입니다. 외래어: <span class="jp">ケーキ</span> (케에키) = 케이크 / 케이크.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">コ</div>
+  <div class="char-info">
+    <div class="char-reading">ko -- 히라가나 짝: こ</div>
+    <div class="char-korean">한국어: 고/코</div>
+    <div class="char-story"><strong>기억법:</strong> <strong>코</strong>너(모퉁이) -- 두 개의 직각이 열린 상자를 만듭니다. こ를 세로로 쌓은 모양입니다. 외래어: <span class="jp">コーヒー</span> (코오히이) = 커피 / 커피.</div>
+  </div>
+</div>
+
+<!-- ─── S ROW ─── -->
+<h3 id="사행----サ-シ-ス-セ-ソ">사행 -- サ シ ス セ ソ</h3>
+
+<div class="mnemonic-card">
+  <div class="char-display">サ</div>
+  <div class="char-info">
+    <div class="char-reading">sa -- 히라가나 짝: さ</div>
+    <div class="char-korean">한국어: 사</div>
+    <div class="char-story"><strong>기억법:</strong> <strong>사</strong>무라이의 교차된 칼 -- 날카로운 대각선 획입니다. 외래어: <span class="jp">サラダ</span> (사라다) = 샐러드 / 샐러드.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">シ</div>
+  <div class="char-info">
+    <div class="char-reading">shi -- 히라가나 짝: し</div>
+    <div class="char-korean">한국어: 시</div>
+    <div class="char-story"><strong>기억법:</strong> 윙크하는 얼굴 -- 세 획이 옆으로 기울어진 웃는 얼굴을 만듭니다. 점이 눈이고 곡선이 미소입니다. 주의: ツ (츠)와 혼동하지 마세요! シ는 점이 <em>아래에서 위로</em> 가고 곡선이 <em>더 수평적</em>입니다. 외래어: <span class="jp">シャツ</span> (샤츠) = 셔츠 / 셔츠.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">ス</div>
+  <div class="char-info">
+    <div class="char-reading">su -- 히라가나 짝: す</div>
+    <div class="char-korean">한국어: 스</div>
+    <div class="char-story"><strong>기억법:</strong> <strong>스</strong>키 슬로프 -- 하나의 직선 획이 아래로 기울어집니다. 외래어: <span class="jp">スプーン</span> (스푸운) = 스푼 / 스푼.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">セ</div>
+  <div class="char-info">
+    <div class="char-reading">se -- 히라가나 짝: せ</div>
+    <div class="char-korean">한국어: 세</div>
+    <div class="char-story"><strong>기억법:</strong> 올라가는 <strong>세</strong>단(계단) -- 각진 획이 위로 올라갑니다. 외래어: <span class="jp">セーター</span> (세에타아) = 스웨터 / 스웨터.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">ソ</div>
+  <div class="char-info">
+    <div class="char-reading">so -- 히라가나 짝: そ</div>
+    <div class="char-korean">한국어: 소</div>
+    <div class="char-story"><strong>기억법:</strong> <strong>소</strong>프트 아이스크림 -- 두 획이 아래로 휩쓸립니다. 주의: ン (n)과 혼동하지 마세요! ソ는 획이 <em>위에서 아래로</em> 가고 곡선이 <em>더 수직적</em>입니다. 외래어: <span class="jp">ソファー</span> (소파아) = 소파 / 소파.</div>
+  </div>
+</div>
+
+<!-- ─── COMMONLY CONFUSED PAIRS ─── -->
+<div class="callout warn">
+  <div class="callout-title">주의 구간: 혼동하기 쉬운 가타카나</div>
+  <p>이 쌍은 모든 초보자를 당혹스럽게 합니다. 주의 깊게 학습하세요:</p>
+  <p><strong>シ (shi) vs ツ (tsu):</strong> シ는 점이 <em>대각선 위로</em> (왼쪽 아래에서 오른쪽 위로) 가고 곡선이 <em>수평적</em>입니다. ツ는 점이 <em>대각선 아래로</em> (왼쪽 위에서 오른쪽 아래로) 가고 곡선이 <em>수직적</em>입니다. シ는 웃는 얼굴(수평 입), ツ는 눈물이 떨어지는 모양(수직 물방울)으로 기억하세요.</p>
+  <p><strong>ソ (so) vs ン (n):</strong> 같은 원리입니다! ソ의 획은 <em>아래로</em> 휩쓸립니다 (ツ의 패턴과 같습니다). ン의 획은 <em>위로</em> 휩쓸립니다 (シ의 패턴과 같습니다). ソ = 짧고 날카롭습니다. ン = 길고 위로 올라갑니다.</p>
+  <p><strong>ウ (u) vs ワ (wa) vs フ (fu):</strong> ウ는 윗획이 평평합니다. ワ는 위가 열려 있습니다. フ는 옆획 없이 두 획만 있습니다.</p>
+</div>
+
+<!-- ─── T ROW ─── -->
+<h3 id="타행----タ-チ-ツ-テ-ト">타행 -- タ チ ツ テ ト</h3>
+
+<div class="mnemonic-card">
+  <div class="char-display">タ</div>
+  <div class="char-info">
+    <div class="char-reading">ta -- 히라가나 짝: た</div>
+    <div class="char-korean">한국어: 다/타</div>
+    <div class="char-story"><strong>기억법:</strong> 큰 알파벳 "T"에 장식을 더한 모양입니다. 외래어: <span class="jp">タクシー</span> (타쿠시이) = 택시 / 택시.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">チ</div>
+  <div class="char-info">
+    <div class="char-reading">chi -- 히라가나 짝: ち</div>
+    <div class="char-korean">한국어: 치</div>
+    <div class="char-story"><strong>기억법:</strong> 날카롭게 발차기하는 <strong>치</strong>어리더 -- ち의 각진 버전입니다. 외래어: <span class="jp">チキン</span> (치킨) = 치킨 / 치킨.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">ツ</div>
+  <div class="char-info">
+    <div class="char-reading">tsu -- 히라가나 짝: つ</div>
+    <div class="char-korean">한국어: 쓰 (가장 근사)</div>
+    <div class="char-story"><strong>기억법:</strong> <strong>쓰</strong>나미의 물방울 세 개 -- 점이 아래로 튀고 곡선이 수직으로 휩쓸립니다. 기억하세요: 점이 <em>위에서 아래로</em> 갑니다 (シ와 반대). 외래어: <span class="jp">ツアー</span> (츠아아) = 투어 / 투어.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">テ</div>
+  <div class="char-info">
+    <div class="char-reading">te -- 히라가나 짝: て</div>
+    <div class="char-korean">한국어: 데/테</div>
+    <div class="char-story"><strong>기억법:</strong> <strong>테</strong>레비전 전신주 -- 위에 가로 막대가 있고 아래로 직선이 내려갑니다. 외래어: <span class="jp">テレビ</span> (테레비) = TV / 텔레비전.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">ト</div>
+  <div class="char-info">
+    <div class="char-reading">to -- 히라가나 짝: と</div>
+    <div class="char-korean">한국어: 도/토</div>
+    <div class="char-story"><strong>기억법:</strong> <strong>토</strong>템 기둥 -- 하나의 세로선에 작은 가로 가지가 있습니다. 가장 단순한 가타카나입니다! 외래어: <span class="jp">トイレ</span> (토이레) = 화장실 / 화장실.</div>
+  </div>
+</div>
+
+<!-- ─── N ROW ─── -->
+<h3 id="나행----ナ-ニ-ヌ-ネ-ノ">나행 -- ナ ニ ヌ ネ ノ</h3>
+
+<div class="mnemonic-card">
+  <div class="char-display">ナ</div>
+  <div class="char-info">
+    <div class="char-reading">na -- 히라가나 짝: な</div>
+    <div class="char-korean">한국어: 나</div>
+    <div class="char-story"><strong>기억법:</strong> 비스듬히 박힌 <strong>나</strong>사못 -- 대각선 획이 있는 십자 모양입니다. 외래어: <span class="jp">ナイフ</span> (나이후) = 나이프 / 나이프.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">ニ</div>
+  <div class="char-info">
+    <div class="char-reading">ni -- 히라가나 짝: に</div>
+    <div class="char-korean">한국어: 니</div>
+    <div class="char-story"><strong>기억법:</strong> 두 개의 가로선 = <strong>ni</strong> (일본어로 2)! 글자 자체가 숫자 2처럼 보입니다. 외래어: <span class="jp">ニュース</span> (뉴우스) = 뉴스 / 뉴스.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">ヌ</div>
+  <div class="char-info">
+    <div class="char-reading">nu -- 히라가나 짝: ぬ</div>
+    <div class="char-korean">한국어: 누</div>
+    <div class="char-story"><strong>기억법:</strong> 각진 그릇 안의 <strong>누</strong>들(면) -- 각진 교차 획입니다. 외래어: <span class="jp">カヌー</span> (카누우) = 카누 / 카누.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">ネ</div>
+  <div class="char-info">
+    <div class="char-reading">ne -- 히라가나 짝: ね</div>
+    <div class="char-korean">한국어: 네</div>
+    <div class="char-story"><strong>기억법:</strong> <strong>네</strong>트(그물) -- 그물처럼 교차하는 각진 획입니다. 외래어: <span class="jp">ネクタイ</span> (네쿠타이) = 넥타이 / 넥타이.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">ノ</div>
+  <div class="char-info">
+    <div class="char-reading">no -- 히라가나 짝: の</div>
+    <div class="char-korean">한국어: 노</div>
+    <div class="char-story"><strong>기억법:</strong> 하나의 사선 -- "<strong>노</strong>!" 하고 날카롭게 긋는 느낌입니다. 가장 단순한 가타카나: 대각선 한 획뿐입니다. 외래어: <span class="jp">ノート</span> (노오토) = 노트 / 노트.</div>
+  </div>
+</div>
+
+<!-- ─── H ROW ─── -->
+<h3 id="하행----ハ-ヒ-フ-ヘ-ホ">하행 -- ハ ヒ フ ヘ ホ</h3>
+
+<div class="mnemonic-card">
+  <div class="char-display">ハ</div>
+  <div class="char-info">
+    <div class="char-reading">ha -- 히라가나 짝: は</div>
+    <div class="char-korean">한국어: 하</div>
+    <div class="char-story"><strong>기억법:</strong> "<strong>하</strong>!" -- 두 획이 웃으며 팔을 벌린 모양으로 펼쳐집니다. 외래어: <span class="jp">ハンバーガー</span> (한바아가아) = 햄버거 / 햄버거.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">ヒ</div>
+  <div class="char-info">
+    <div class="char-reading">hi -- 히라가나 짝: ひ</div>
+    <div class="char-korean">한국어: 히</div>
+    <div class="char-story"><strong>기억법:</strong> "<strong>히</strong>" 하고 웃는 사람 -- 옆으로 돌린 웃는 입처럼 보입니다. 외래어: <span class="jp">ヒーロー</span> (히이로오) = 히어로 / 히어로.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">フ</div>
+  <div class="char-info">
+    <div class="char-reading">fu -- 히라가나 짝: ふ</div>
+    <div class="char-korean">한국어: 후 (입술이 닿지 않음)</div>
+    <div class="char-story"><strong>기억법:</strong> <strong>후</strong>지산의 봉우리 -- 두 획이 단순한 산봉우리를 이룹니다. 외래어: <span class="jp">フライドポテト</span> (후라이도포테토) = 감자튀김 / 감자튀김.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">ヘ</div>
+  <div class="char-info">
+    <div class="char-reading">he -- 히라가나 짝: へ</div>
+    <div class="char-korean">한국어: 헤</div>
+    <div class="char-story"><strong>기억법:</strong> 히라가나 へ와 <em>똑같이</em> 생겼습니다! 히라가나 짝과 동일한 몇 안 되는 가타카나 중 하나입니다. 단순한 산봉우리/지붕 모양입니다. 외래어: <span class="jp">ヘリコプター</span> (헤리코푸타아) = 헬리콥터 / 헬리콥터.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">ホ</div>
+  <div class="char-info">
+    <div class="char-reading">ho -- 히라가나 짝: ほ</div>
+    <div class="char-korean">한국어: 호</div>
+    <div class="char-story"><strong>기억법:</strong> 신성한 십자가 -- 세로 획에 가로 막대와 비스듬한 양옆이 있습니다. 외래어: <span class="jp">ホテル</span> (호테루) = 호텔 / 호텔.</div>
+  </div>
+</div>
+
+<!-- ─── M ROW ─── -->
+<h3 id="마행----マ-ミ-ム-メ-モ">마행 -- マ ミ ム メ モ</h3>
+
+<div class="mnemonic-card"><div class="char-display">マ</div><div class="char-info"><div class="char-reading">ma -- 히라가나 짝: ま</div><div class="char-korean">한국어: 마</div><div class="char-story"><strong>기억법:</strong> <strong>마</strong>름모 각도 -- 두 획이 부등호 모양의 날카로운 각을 이룹니다. 외래어: <span class="jp">マクドナルド</span> (마쿠도나루도) = 맥도날드 / 맥도날드.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">ミ</div><div class="char-info"><div class="char-reading">mi -- 히라가나 짝: み</div><div class="char-korean">한국어: 미</div><div class="char-story"><strong>기억법:</strong> 세 개의 가로선 = <strong>mi</strong> (일본어로 3)! ニ (ni=2)처럼 선이 세 개입니다. 외래어: <span class="jp">ミルク</span> (미루쿠) = 밀크 / 밀크.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">ム</div><div class="char-info"><div class="char-reading">mu -- 히라가나 짝: む</div><div class="char-korean">한국어: 무</div><div class="char-story"><strong>기억법:</strong> 소의 얼굴 -- 각진 선이 "<strong>무</strong>~" 하는 소를 만듭니다. 외래어: <span class="jp">ムード</span> (무우도) = 무드 / 무드.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">メ</div><div class="char-info"><div class="char-reading">me -- 히라가나 짝: め</div><div class="char-korean">한국어: 메</div><div class="char-story"><strong>기억법:</strong> "X" 표시 -- <strong>메</strong>뉴에서 체크하는 것처럼 보입니다. 외래어: <span class="jp">メニュー</span> (메뉴우) = 메뉴 / 메뉴.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">モ</div><div class="char-info"><div class="char-reading">mo -- 히라가나 짝: も</div><div class="char-korean">한국어: 모</div><div class="char-story"><strong>기억법:</strong> 더 많은 선 -- 가로 막대들을 세로선이 연결하며, 선반을 더 추가하는 모양입니다. 외래어: <span class="jp">モデル</span> (모데루) = 모델 / 모델.</div></div></div>
+
+<!-- ─── Y ROW ─── -->
+<h3 id="야행----ヤ-ユ-ヨ-3개만">야행 -- ヤ ユ ヨ (3개만)</h3>
+
+<div class="mnemonic-card"><div class="char-display">ヤ</div><div class="char-info"><div class="char-reading">ya -- 히라가나 짝: や</div><div class="char-korean">한국어: 야</div><div class="char-story"><strong>기억법:</strong> <strong>야</strong>크트(요트)의 돛대 -- 범선 장비처럼 각진 획입니다. 외래어: <span class="jp">ヤクルト</span> (야쿠루토) = 야쿠르트 / 야쿠르트.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">ユ</div><div class="char-info"><div class="char-reading">yu -- 히라가나 짝: ゆ</div><div class="char-korean">한국어: 유</div><div class="char-story"><strong>기억법:</strong> <strong>유</strong>니크한 갈고리 -- 낚시 바늘에 막대가 하나 더 있는 모양입니다. 외래어: <span class="jp">ユニフォーム</span> (유니포오무) = 유니폼 / 유니폼.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">ヨ</div><div class="char-info"><div class="char-reading">yo -- 히라가나 짝: よ</div><div class="char-korean">한국어: 요</div><div class="char-story"><strong>기억법:</strong> <strong>요</strong>가 자세 -- 알파벳 "E"에서 아래쪽 선이 없는 모양, 사람이 몸을 굽히는 형태입니다. 외래어: <span class="jp">ヨーグルト</span> (요오구루토) = 요거트 / 요거트.</div></div></div>
+
+<!-- ─── R ROW ─── -->
+<h3 id="라행----ラ-リ-ル-レ-ロ">라행 -- ラ リ ル レ ロ</h3>
+<p>히라가나와 같은 탄음 "r" -- 모음 사이의 한국어 ㄹ과 비슷합니다.</p>
+
+<div class="mnemonic-card"><div class="char-display">ラ</div><div class="char-info"><div class="char-reading">ra -- 히라가나 짝: ら</div><div class="char-korean">한국어: 라</div><div class="char-story"><strong>기억법:</strong> <strong>라</strong>비트(토끼) 귀 -- 위로 솟은 각진 획입니다. 외래어: <span class="jp">ラーメン</span> (라아멘) = 라면 / 라면.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">リ</div><div class="char-info"><div class="char-reading">ri -- 히라가나 짝: り</div><div class="char-korean">한국어: 리</div><div class="char-story"><strong>기억법:</strong> 두 개의 <strong>리</strong>버(강) -- り와 비슷하지만 더 날카롭습니다. い와 비슷하지만 오른쪽 획이 휘어집니다. 외래어: <span class="jp">リモコン</span> (리모콘) = 리모컨 / 리모컨.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">ル</div><div class="char-info"><div class="char-reading">ru -- 히라가나 짝: る</div><div class="char-korean">한국어: 루</div><div class="char-story"><strong>기억법:</strong> 나무 <strong>루</strong>트(뿌리) -- 두 선이 아래에서 뿌리처럼 펼쳐집니다. 외래어: <span class="jp">ルール</span> (루우루) = 룰 / 룰.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">レ</div><div class="char-info"><div class="char-reading">re -- 히라가나 짝: れ</div><div class="char-korean">한국어: 레</div><div class="char-story"><strong>기억법:</strong> 날카로운 <strong>레</strong>이스 바톤(릴레이 바톤) -- 위로 올라가며 꺾이는 하나의 각진 획입니다. 외래어: <span class="jp">レストラン</span> (레스토란) = 레스토랑 / 레스토랑.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">ロ</div><div class="char-info"><div class="char-reading">ro -- 히라가나 짝: ろ</div><div class="char-korean">한국어: 로</div><div class="char-story"><strong>기억법:</strong> <strong>로</strong>봇의 입 -- 단순한 열린 직사각형입니다. 가장 기억하기 쉬운 가타카나입니다! 외래어: <span class="jp">ロボット</span> (로봇토) = 로봇 / 로봇.</div></div></div>
+
+<!-- ─── W ROW + N ─── -->
+<h3 id="와행----ワ-ヲ-특수-ン">와행 -- ワ ヲ + 특수: ン</h3>
+
+<div class="mnemonic-card"><div class="char-display">ワ</div><div class="char-info"><div class="char-reading">wa -- 히라가나 짝: わ</div><div class="char-korean">한국어: 와</div><div class="char-story"><strong>기억법:</strong> 위가 열린 지갑 -- ウ에서 윗획이 없는 모양입니다. 외래어: <span class="jp">ワイン</span> (와인) = 와인 / 와인.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">ヲ</div><div class="char-info"><div class="char-reading">wo (발음은 "o") -- 히라가나 짝: を</div><div class="char-korean">한국어: 목적격 조사 을/를</div><div class="char-story"><strong>기억법:</strong> 현대 일본어에서는 거의 사용되지 않습니다 (대신 を를 사용합니다). 아주 오래된 문헌이나 특수한 맥락에서만 볼 수 있습니다. フ 위에 가로 획이 하나 더 있는 모양입니다.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">ン</div><div class="char-info"><div class="char-reading">n (독립 자음) -- 히라가나 짝: ん</div><div class="char-korean">한국어: ㄴ받침</div><div class="char-story"><strong>기억법:</strong> 유일한 자음 단독 문자입니다. 주의: ソ (so)와 혼동하지 마세요! ン의 획은 <em>위로</em> 휩쓸립니다 (シ처럼), ソ의 획은 <em>아래로</em> 갑니다 (ツ처럼). 외래어: <span class="jp">パン</span> (판) = 빵 / 빵.</div></div></div>
+
+<!-- ─── HIRAGANA-KATAKANA COMPARISON TABLE ─── -->
+<h3 id="히라가나-가타카나-비교표">히라가나-가타카나 비교표</h3>
+<p>빠른 참고를 위해 이 표를 활용하세요. 각 가타카나는 히라가나 짝과 같은 소리입니다.</p>
+
+<table>
+  <thead><tr><th></th><th>a</th><th>i</th><th>u</th><th>e</th><th>o</th></tr></thead>
+  <tbody>
+    <tr><td><strong>모음</strong></td><td>あ/ア</td><td>い/イ</td><td>う/ウ</td><td>え/エ</td><td>お/オ</td></tr>
+    <tr><td><strong>K</strong></td><td>か/カ</td><td>き/キ</td><td>く/ク</td><td>け/ケ</td><td>こ/コ</td></tr>
+    <tr><td><strong>S</strong></td><td>さ/サ</td><td>し/シ</td><td>す/ス</td><td>せ/セ</td><td>そ/ソ</td></tr>
+    <tr><td><strong>T</strong></td><td>た/タ</td><td>ち/チ</td><td>つ/ツ</td><td>て/テ</td><td>と/ト</td></tr>
+    <tr><td><strong>N</strong></td><td>な/ナ</td><td>に/ニ</td><td>ぬ/ヌ</td><td>ね/ネ</td><td>の/ノ</td></tr>
+    <tr><td><strong>H</strong></td><td>は/ハ</td><td>ひ/ヒ</td><td>ふ/フ</td><td>へ/ヘ</td><td>ほ/ホ</td></tr>
+    <tr><td><strong>M</strong></td><td>ま/マ</td><td>み/ミ</td><td>む/ム</td><td>め/メ</td><td>も/モ</td></tr>
+    <tr><td><strong>Y</strong></td><td>や/ヤ</td><td></td><td>ゆ/ユ</td><td></td><td>よ/ヨ</td></tr>
+    <tr><td><strong>R</strong></td><td>ら/ラ</td><td>り/リ</td><td>る/ル</td><td>れ/レ</td><td>ろ/ロ</td></tr>
+    <tr><td><strong>W</strong></td><td>わ/ワ</td><td></td><td></td><td></td><td>を/ヲ</td></tr>
+    <tr><td><strong>N</strong></td><td colspan="5" style="text-align:center">ん/ン</td></tr>
+  </tbody>
+</table>
+
+<!-- ─── DAKUTEN & HANDAKUTEN ─── -->
+<h3 id="탁점과-반탁점----가타카나-유성음-부호">탁점(゛)과 반탁점(゜) -- 가타카나 유성음 부호</h3>
+
+<p>히라가나와 같은 유성음 규칙입니다. ゛을 붙이면 자음이 유성음이 되고, ゜은 하행에만 적용되어 p음을 만듭니다.</p>
+
+<table>
+  <thead><tr><th>기본형</th><th>+ ゛ (탁점)</th><th>+ ゜ (반탁점)</th></tr></thead>
+  <tbody>
+    <tr><td>カ (ka)</td><td class="jp">ガ (ga)</td><td>--</td></tr>
+    <tr><td>キ (ki)</td><td class="jp">ギ (gi)</td><td>--</td></tr>
+    <tr><td>ク (ku)</td><td class="jp">グ (gu)</td><td>--</td></tr>
+    <tr><td>ケ (ke)</td><td class="jp">ゲ (ge)</td><td>--</td></tr>
+    <tr><td>コ (ko)</td><td class="jp">ゴ (go)</td><td>--</td></tr>
+    <tr><td>サ (sa)</td><td class="jp">ザ (za)</td><td>--</td></tr>
+    <tr><td>シ (shi)</td><td class="jp">ジ (ji)</td><td>--</td></tr>
+    <tr><td>ス (su)</td><td class="jp">ズ (zu)</td><td>--</td></tr>
+    <tr><td>セ (se)</td><td class="jp">ゼ (ze)</td><td>--</td></tr>
+    <tr><td>ソ (so)</td><td class="jp">ゾ (zo)</td><td>--</td></tr>
+    <tr><td>タ (ta)</td><td class="jp">ダ (da)</td><td>--</td></tr>
+    <tr><td>チ (chi)</td><td class="jp">ヂ (ji)</td><td>--</td></tr>
+    <tr><td>ツ (tsu)</td><td class="jp">ヅ (zu)</td><td>--</td></tr>
+    <tr><td>テ (te)</td><td class="jp">デ (de)</td><td>--</td></tr>
+    <tr><td>ト (to)</td><td class="jp">ド (do)</td><td>--</td></tr>
+    <tr><td>ハ (ha)</td><td class="jp">バ (ba)</td><td class="jp">パ (pa)</td></tr>
+    <tr><td>ヒ (hi)</td><td class="jp">ビ (bi)</td><td class="jp">ピ (pi)</td></tr>
+    <tr><td>フ (fu)</td><td class="jp">ブ (bu)</td><td class="jp">プ (pu)</td></tr>
+    <tr><td>ヘ (he)</td><td class="jp">ベ (be)</td><td class="jp">ペ (pe)</td></tr>
+    <tr><td>ホ (ho)</td><td class="jp">ボ (bo)</td><td class="jp">ポ (po)</td></tr>
+  </tbody>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">한국어와의 비교</div>
+  <p>탁점은 한국어 자음의 유성음화와 비슷합니다: ㄱ(g) / ㅋ(k) / ㄲ(kk). 일본어는 더 단순합니다 -- 기본형(무성음)과 탁점(유성음) 두 가지 변형만 있습니다. 반탁점(゜)은 하행에만 적용되어 ha/ba/pa 세트를 완성합니다.</p>
+</div>
+
+<!-- ─── KATAKANA LONG VOWELS ─── -->
+<h3 id="가타카나의-장음----ー-대시">가타카나의 장음 -- ー 대시</h3>
+<p>가타카나에서 장음은 간단한 <strong>대시</strong>(ー), "쵸온"으로 표기합니다. 추가 모음 문자를 사용하는 히라가나와는 다릅니다.</p>
+
+<table>
+  <thead><tr><th>가타카나</th><th>읽기</th><th>의미</th><th>한국어</th></tr></thead>
+  <tbody>
+    <tr><td class="jp">コーヒー</td><td>koohii</td><td>커피</td><td>커피</td></tr>
+    <tr><td class="jp">ケーキ</td><td>keeki</td><td>케이크</td><td>케이크</td></tr>
+    <tr><td class="jp">ビール</td><td>biiru</td><td>맥주</td><td>맥주</td></tr>
+    <tr><td class="jp">カレー</td><td>karee</td><td>카레</td><td>카레</td></tr>
+    <tr><td class="jp">スーパー</td><td>suupaa</td><td>슈퍼마켓</td><td>슈퍼</td></tr>
+    <tr><td class="jp">ラーメン</td><td>raamen</td><td>라면</td><td>라면</td></tr>
+  </tbody>
+</table>
+
+<div class="callout warn">
+  <div class="callout-title">대시를 잊지 마세요!</div>
+  <p>장음 대시 ー는 의미를 바꿉니다! <span class="jp">ビル</span> (biru) = 빌딩이지만, <span class="jp">ビール</span> (biiru) = 맥주입니다. 대시를 빠뜨리는 것은 "사막"과 "디저트"를 헷갈리는 것과 같습니다.</p>
+</div>
+
+<!-- ─── KATAKANA SPECIAL COMBINATIONS ─── -->
+<h3 id="외래어-전용-가타카나-조합">외래어 전용 가타카나 조합</h3>
+<p>가타카나에는 히라가나에 없는 <strong>추가 조합</strong>이 있으며, 일본어에 본래 없는 외국어 소리를 표현하는 데 사용됩니다:</p>
+
+<table>
+  <thead><tr><th>조합</th><th>소리</th><th>예시</th><th>한국어</th></tr></thead>
+  <tbody>
+    <tr><td class="jp">ティ</td><td>ti</td><td class="jp">パーティー (paatii) = 파티</td><td>파티</td></tr>
+    <tr><td class="jp">ディ</td><td>di</td><td class="jp">ディズニー (dizunii) = 디즈니</td><td>디즈니</td></tr>
+    <tr><td class="jp">ファ</td><td>fa</td><td class="jp">ファッション (fasshon) = 패션</td><td>패션</td></tr>
+    <tr><td class="jp">フィ</td><td>fi</td><td class="jp">フィルム (firumu) = 필름</td><td>필름</td></tr>
+    <tr><td class="jp">フェ</td><td>fe</td><td class="jp">カフェ (kafe) = 카페</td><td>카페</td></tr>
+    <tr><td class="jp">フォ</td><td>fo</td><td class="jp">フォーク (fooku) = 포크</td><td>포크</td></tr>
+    <tr><td class="jp">ヴ</td><td>vu</td><td class="jp">ヴァイオリン (vaiorin) = 바이올린</td><td>바이올린</td></tr>
+    <tr><td class="jp">ウィ</td><td>wi</td><td class="jp">ウィキペディア (wikipedia) = 위키피디아</td><td>위키피디아</td></tr>
+    <tr><td class="jp">ウェ</td><td>we</td><td class="jp">ウェブサイト (webusaito) = 웹사이트</td><td>웹사이트</td></tr>
+    <tr><td class="jp">ウォ</td><td>wo</td><td class="jp">ウォーター (wootaa) = 워터</td><td>워터</td></tr>
+  </tbody>
+</table>
+
+<!-- ─── LOANWORD BRIDGE ─── -->
+<h3 id="외래어-브릿지-한일-공통-외래어-50개">외래어 브릿지: 한일 공통 외래어 50개</h3>
+<p>이것이 여러분의 <strong>비밀 무기</strong>입니다. 한국어와 일본어 모두 영어에서 많은 단어를 차용했습니다. 한국어 외래어를 알고 있다면, 이미 그 일본어 단어를 알고 있는 것입니다 -- 가타카나로 읽기만 하면 됩니다. 이 목록을 학습하면 일본어 어휘에 50개의 단어를 즉시 추가할 수 있습니다!</p>
+
+<div class="callout info">
+  <div class="callout-title">외래어의 변환 원리</div>
+  <p>영어 단어가 각 언어의 음운 체계에 맞게 변환됩니다. 한국어는 받침을 추가하고 한국어 모음을 사용합니다. 일본어는 자음 연쇄를 없애고 모든 자음 뒤에 모음을 추가합니다. 그 결과가 종종 놀라울 정도로 비슷합니다!<br>
+  <strong>영어 "coffee":</strong> 한국어 커피 (keopi) / 일본어 コーヒー (koohii)<br>
+  <strong>영어 "bus":</strong> 한국어 버스 (beoseu) / 일본어 バス (basu)</p>
+</div>
+
+<table>
+  <thead><tr><th>#</th><th>일본어 (カタカナ)</th><th>읽기</th><th>영어</th><th>한국어</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td class="jp">コーヒー</td><td>koohii</td><td>coffee</td><td>커피</td></tr>
+    <tr><td>2</td><td class="jp">テレビ</td><td>terebi</td><td>television</td><td>텔레비전</td></tr>
+    <tr><td>3</td><td class="jp">バス</td><td>basu</td><td>bus</td><td>버스</td></tr>
+    <tr><td>4</td><td class="jp">タクシー</td><td>takushii</td><td>taxi</td><td>택시</td></tr>
+    <tr><td>5</td><td class="jp">ホテル</td><td>hoteru</td><td>hotel</td><td>호텔</td></tr>
+    <tr><td>6</td><td class="jp">レストラン</td><td>resutoran</td><td>restaurant</td><td>레스토랑</td></tr>
+    <tr><td>7</td><td class="jp">カメラ</td><td>kamera</td><td>camera</td><td>카메라</td></tr>
+    <tr><td>8</td><td class="jp">パソコン</td><td>pasokon</td><td>PC/computer</td><td>컴퓨터</td></tr>
+    <tr><td>9</td><td class="jp">インターネット</td><td>intaanetto</td><td>internet</td><td>인터넷</td></tr>
+    <tr><td>10</td><td class="jp">スマートフォン</td><td>sumaatofon</td><td>smartphone</td><td>스마트폰</td></tr>
+    <tr><td>11</td><td class="jp">アイスクリーム</td><td>aisukuriimu</td><td>ice cream</td><td>아이스크림</td></tr>
+    <tr><td>12</td><td class="jp">チョコレート</td><td>chokoreeto</td><td>chocolate</td><td>초콜릿</td></tr>
+    <tr><td>13</td><td class="jp">ケーキ</td><td>keeki</td><td>cake</td><td>케이크</td></tr>
+    <tr><td>14</td><td class="jp">サラダ</td><td>sarada</td><td>salad</td><td>샐러드</td></tr>
+    <tr><td>15</td><td class="jp">サンドイッチ</td><td>sandoicchi</td><td>sandwich</td><td>샌드위치</td></tr>
+    <tr><td>16</td><td class="jp">ジュース</td><td>juusu</td><td>juice</td><td>주스</td></tr>
+    <tr><td>17</td><td class="jp">ビール</td><td>biiru</td><td>beer</td><td>맥주</td></tr>
+    <tr><td>18</td><td class="jp">ワイン</td><td>wain</td><td>wine</td><td>와인</td></tr>
+    <tr><td>19</td><td class="jp">ミルク</td><td>miruku</td><td>milk</td><td>밀크</td></tr>
+    <tr><td>20</td><td class="jp">パン</td><td>pan</td><td>bread (포르투갈어 유래)</td><td>빵</td></tr>
+    <tr><td>21</td><td class="jp">メニュー</td><td>menyuu</td><td>menu</td><td>메뉴</td></tr>
+    <tr><td>22</td><td class="jp">トイレ</td><td>toire</td><td>toilet</td><td>화장실</td></tr>
+    <tr><td>23</td><td class="jp">エレベーター</td><td>erebeetaa</td><td>elevator</td><td>엘리베이터</td></tr>
+    <tr><td>24</td><td class="jp">エスカレーター</td><td>esukareetaa</td><td>escalator</td><td>에스컬레이터</td></tr>
+    <tr><td>25</td><td class="jp">ラーメン</td><td>raamen</td><td>ramen</td><td>라면</td></tr>
+    <tr><td>26</td><td class="jp">ハンバーガー</td><td>hanbaagaa</td><td>hamburger</td><td>햄버거</td></tr>
+    <tr><td>27</td><td class="jp">ピザ</td><td>piza</td><td>pizza</td><td>피자</td></tr>
+    <tr><td>28</td><td class="jp">パスタ</td><td>pasuta</td><td>pasta</td><td>파스타</td></tr>
+    <tr><td>29</td><td class="jp">カレー</td><td>karee</td><td>curry</td><td>카레</td></tr>
+    <tr><td>30</td><td class="jp">スーパー</td><td>suupaa</td><td>supermarket</td><td>슈퍼</td></tr>
+    <tr><td>31</td><td class="jp">デパート</td><td>depaato</td><td>department store</td><td>백화점</td></tr>
+    <tr><td>32</td><td class="jp">コンビニ</td><td>konbini</td><td>convenience store</td><td>편의점</td></tr>
+    <tr><td>33</td><td class="jp">チキン</td><td>chikin</td><td>chicken</td><td>치킨</td></tr>
+    <tr><td>34</td><td class="jp">スプーン</td><td>supuun</td><td>spoon</td><td>스푼</td></tr>
+    <tr><td>35</td><td class="jp">フォーク</td><td>fooku</td><td>fork</td><td>포크</td></tr>
+    <tr><td>36</td><td class="jp">ナイフ</td><td>naifu</td><td>knife</td><td>나이프</td></tr>
+    <tr><td>37</td><td class="jp">グラス</td><td>gurasu</td><td>glass</td><td>글라스</td></tr>
+    <tr><td>38</td><td class="jp">ニュース</td><td>nyuusu</td><td>news</td><td>뉴스</td></tr>
+    <tr><td>39</td><td class="jp">スポーツ</td><td>supootsu</td><td>sports</td><td>스포츠</td></tr>
+    <tr><td>40</td><td class="jp">サッカー</td><td>sakkaa</td><td>soccer</td><td>축구</td></tr>
+    <tr><td>41</td><td class="jp">テニス</td><td>tenisu</td><td>tennis</td><td>테니스</td></tr>
+    <tr><td>42</td><td class="jp">シャツ</td><td>shatsu</td><td>shirt</td><td>셔츠</td></tr>
+    <tr><td>43</td><td class="jp">ネクタイ</td><td>nekutai</td><td>necktie</td><td>넥타이</td></tr>
+    <tr><td>44</td><td class="jp">ドア</td><td>doa</td><td>door</td><td>도어</td></tr>
+    <tr><td>45</td><td class="jp">ソファー</td><td>sofaa</td><td>sofa</td><td>소파</td></tr>
+    <tr><td>46</td><td class="jp">テーブル</td><td>teeburu</td><td>table</td><td>테이블</td></tr>
+    <tr><td>47</td><td class="jp">ベッド</td><td>beddo</td><td>bed</td><td>침대</td></tr>
+    <tr><td>48</td><td class="jp">ノート</td><td>nooto</td><td>notebook</td><td>노트</td></tr>
+    <tr><td>49</td><td class="jp">ペン</td><td>pen</td><td>pen</td><td>펜</td></tr>
+    <tr><td>50</td><td class="jp">ボタン</td><td>botan</td><td>button</td><td>버튼</td></tr>
+  </tbody>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">심화 사고</div>
+  <p>위 표를 보세요. 어떤 단어는 한국어와 일본어에서 거의 동일한데 (예: 카메라/カメラ), 다른 단어는 완전히 다른 이유 (예: 축구/サッカー)는 무엇일까요? <em>힌트: 두 언어가 같은 원어에서 같은 시기에 차용했는지에 따라 다릅니다.</em></p>
+</div>
+
+<!-- ─── SMALL TSU (DOUBLE CONSONANTS) ─── -->
+<h3 id="작은-ッ-촉음----이중-자음">작은 ッ (촉음) -- 이중 자음</h3>
+<p>자음 앞의 작은 ッ는 해당 자음을 겹치게 합니다. 짧은 정지 -- 목에서 살짝 걸리는 느낌이라고 생각하세요.</p>
+
+<table>
+  <thead><tr><th>단어</th><th>읽기</th><th>의미</th><th>한국어</th></tr></thead>
+  <tbody>
+    <tr><td class="jp">サッカー</td><td>sa<strong>kk</strong>aa</td><td>축구</td><td>축구</td></tr>
+    <tr><td class="jp">ロボット</td><td>robo<strong>tt</strong>o</td><td>로봇</td><td>로봇</td></tr>
+    <tr><td class="jp">ベッド</td><td>be<strong>dd</strong>o</td><td>침대</td><td>침대</td></tr>
+    <tr><td class="jp">カップ</td><td>ka<strong>pp</strong>u</td><td>컵</td><td>컵</td></tr>
+    <tr><td class="jp">チケット</td><td>chike<strong>tt</strong>o</td><td>티켓</td><td>티켓</td></tr>
+  </tbody>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">한국어와의 비교</div>
+  <p>한국어에도 쌍자음(ㄲ, ㅆ, ㅃ 등)이라는 비슷한 개념이 있습니다. 일본어의 작은 ッ는 한국어 받침 뒤에 같은 자음이 오는 것과 유사하게 작동합니다: "카<strong>ㅂ</strong>" → "카<strong>pp</strong>u" (カップ). 이미 그 긴장감을 이해하고 계십니다!</p>
+</div>
+
+<!-- ─── QUIZZES ─── -->
+<h3 id="연습-문제">연습 문제</h3>
+
+<!-- Warm-Up: Flashcard -->
+<h4>준비 운동: 플래시카드 복습</h4>
+<div id="quiz-flashcard"></div>
+
+<!-- Challenge: Read the Menu fill-in -->
+<h4>도전: 메뉴 읽기</h4>
+<p>일본 레스토랑에 왔습니다. 가타카나 메뉴 항목을 읽고 영어로 무엇인지 입력하세요!</p>
+<div id="quiz-menu"></div>
+
+<!-- Challenge: Drag-and-Drop Matching -->
+<h4>도전: 가타카나와 히라가나 매칭</h4>
+<div id="quiz-match"></div>
+
+<!-- Challenge: Confused Pairs -->
+<h4>도전: 혼동하기 쉬운 가타카나 쌍</h4>
+<div id="quiz-confused"></div>
+
+<!-- Boss Level: Timed Sprint -->
+<h4>보스 레벨: 시간 제한 인식 스프린트 (90초)</h4>
+<div id="quiz-sprint"></div>
+
+<!-- Mark as Complete -->
+<button class="chapter-complete" data-ch="03">학습 완료 표시 &#10003;</button>
+
+<div style="display:flex;justify-content:space-between;margin:2rem 0">
+  <a href="ch-02.html" class="quiz-btn secondary">&larr; 제2장: 히라가나</a>
+  <a href="ch-04.html" class="quiz-btn">다음: 제4장 -- 발음 &rarr;</a>
+</div>
+
+</section>
+</div>
+
+
+</div>
+
+<footer><p>Zero to Hero: 한국어 화자를 위한 日本語 &middot; 제3장</p></footer>
+
+<script src="js/shared.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/quiz-engine.js"></script>
+<script>
+// ─── 제2장 복습 확인 ───
+QuizEngine.RecallCheck(
+  document.getElementById('recall-check-02'),
+  {
+    fromChapters: '제2장',
+    items: [
+      { question: '일본어의 5개 모음을 히라가나로 쓰세요.', answer: 'あ (a), い (i), う (u), え (e), お (o)' },
+      { question: '일본어 う는 한국어 우와 어떻게 다릅니까?', answer: '일본어 う는 비원순 모음입니다 -- 한국어 우처럼 입술을 둥글게 하지 않고, 입술을 편하게 살짝 벌린 상태로 발음합니다.' },
+      { question: '탁점(゛)은 자음에 어떤 변화를 줍니까?', answer: '자음을 유성음으로 바꿉니다: か(ka)→が(ga), さ(sa)→ざ(za), た(ta)→だ(da), は(ha)→ば(ba)' },
+      { question: 'は는 조사로 쓸 때와 단어 안에서 발음이 어떻게 다릅니까?', answer: '조사일 때: "wa" (한국어 는과 같은 역할). 단어 안에서: "ha" (예: はな = hana = 꽃).' },
+      { question: '모음 없이 자음만으로 된 유일한 히라가나는 무엇입니까?', answer: 'ん (n) -- 독립 비음 자음, 한국어 ㄴ받침과 같습니다' }
+    ]
+  }
+);
+
+// ─── 모음 퀴즈 ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-vowels'),
+  {
+    title: '가타카나 모음 확인',
+    questions: [
+      { prompt: '<span class="jp" style="font-size:1.8rem">ア</span>의 소리는 무엇입니까?', answer: 'a', acceptAlso: ['ah'], explanation: 'ア = a, 한국어 아와 같습니다. 히라가나 짝: あ' },
+      { prompt: '<span class="jp" style="font-size:1.8rem">エ</span>의 소리는 무엇입니까?', answer: 'e', explanation: 'エ = e, 한국어 에와 같습니다. 히라가나 짝: え' },
+      { prompt: '<span class="jp" style="font-size:1.8rem">ウ</span>의 소리는 무엇입니까?', answer: 'u', acceptAlso: ['oo'], explanation: 'ウ = u (비원순!). 히라가나 짝: う' },
+      { prompt: '<span class="jp" style="font-size:1.8rem">オ</span>의 히라가나 짝은 무엇입니까?', answer: 'お', explanation: 'オ = o, 히라가나 짝은 お입니다. 한국어: 오' },
+      { prompt: '<span class="jp" style="font-size:1.8rem">イ</span>의 히라가나 짝은 무엇입니까?', answer: 'い', explanation: 'イ = i, 히라가나 짝은 い입니다. 한국어: 이' }
+    ]
+  }
+);
+
+// ─── 플래시카드 ───
+QuizEngine.Flashcard(
+  document.getElementById('quiz-flashcard'),
+  {
+    cards: [
+      { front: 'ア', back: 'a', detail: '옥상 안테나 (한국어: 아) | 히라가나: あ' },
+      { front: 'イ', back: 'i', detail: '기울어진 알파벳 "I" (한국어: 이) | 히라가나: い' },
+      { front: 'ウ', back: 'u', detail: '위를 향한 왕관 (한국어: 우) | 히라가나: う' },
+      { front: 'エ', back: 'e', detail: '엘리베이터 (한국어: 에) | 히라가나: え' },
+      { front: 'オ', back: 'o', detail: '오페라 가수 (한국어: 오) | 히라가나: お' },
+      { front: 'カ', back: 'ka', detail: '날카로운 카타나 칼 (한국어: 카) | 히라가나: か' },
+      { front: 'キ', back: 'ki', detail: '날카로운 이의 열쇠 (한국어: 키) | 히라가나: き' },
+      { front: 'ク', back: 'ku', detail: '각진 갈고리 (한국어: 쿠) | 히라가나: く' },
+      { front: 'ケ', back: 'ke', detail: '주둥이 있는 주전자 (한국어: 케) | 히라가나: け' },
+      { front: 'コ', back: 'ko', detail: '모퉁이 / 열린 상자 (한국어: 코) | 히라가나: こ' },
+      { front: 'サ', back: 'sa', detail: '사무라이 교차 칼 (한국어: 사) | 히라가나: さ' },
+      { front: 'シ', back: 'shi', detail: '윙크하는 얼굴 (한국어: 시) | 히라가나: し' },
+      { front: 'ス', back: 'su', detail: '스키 슬로프 (한국어: 스) | 히라가나: す' },
+      { front: 'タ', back: 'ta', detail: '큰 알파벳 T (한국어: 타) | 히라가나: た' },
+      { front: 'チ', back: 'chi', detail: '치어리더 발차기 (한국어: 치) | 히라가나: ち' },
+      { front: 'ツ', back: 'tsu', detail: '쓰나미 물방울 (한국어: 쓰) | 히라가나: つ' },
+      { front: 'テ', back: 'te', detail: '전신주 (한국어: 테) | 히라가나: て' },
+      { front: 'ナ', back: 'na', detail: '비스듬한 나사못 (한국어: 나) | 히라가나: な' },
+      { front: 'ニ', back: 'ni', detail: '두 선 = ni (2) (한국어: 니) | 히라가나: に' },
+      { front: 'ハ', back: 'ha', detail: '웃으며 팔 벌리기 (한국어: 하) | 히라가나: は' },
+      { front: 'フ', back: 'fu', detail: '후지산 봉우리 (한국어: 후) | 히라가나: ふ' },
+      { front: 'マ', back: 'ma', detail: '수학 각도 (한국어: 마) | 히라가나: ま' },
+      { front: 'ミ', back: 'mi', detail: '세 선 = mi (3) (한국어: 미) | 히라가나: み' },
+      { front: 'ヤ', back: 'ya', detail: '요트 돛대 (한국어: 야) | 히라가나: や' },
+      { front: 'ユ', back: 'yu', detail: '유니크한 갈고리 (한국어: 유) | 히라가나: ゆ' },
+      { front: 'ヨ', back: 'yo', detail: '요가 자세 (한국어: 요) | 히라가나: よ' },
+      { front: 'ラ', back: 'ra', detail: '토끼 귀 (한국어: 라) | 히라가나: ら' },
+      { front: 'リ', back: 'ri', detail: '두 강줄기 (한국어: 리) | 히라가나: り' },
+      { front: 'ル', back: 'ru', detail: '나무 뿌리 (한국어: 루) | 히라가나: る' },
+      { front: 'レ', back: 're', detail: '릴레이 바톤 (한국어: 레) | 히라가나: れ' },
+      { front: 'ロ', back: 'ro', detail: '로봇의 입 (한국어: 로) | 히라가나: ろ' },
+      { front: 'ワ', back: 'wa', detail: '열린 지갑 (한국어: 와) | 히라가나: わ' },
+      { front: 'ン', back: 'n', detail: '독립 자음 (한국어: ㄴ) | 히라가나: ん' }
+    ]
+  }
+);
+
+// ─── 메뉴 읽기 (빈칸 채우기) ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-menu'),
+  {
+    title: '메뉴를 읽어보세요!',
+    questions: [
+      { prompt: '메뉴 항목: <span class="jp" style="font-size:1.5rem">コーヒー</span> — 이 음료는 무엇입니까?', answer: 'coffee', acceptAlso: ['koohii', 'kohii'], explanation: 'コーヒー (koohii) = 커피. 한국어: 커피' },
+      { prompt: '메뉴 항목: <span class="jp" style="font-size:1.5rem">サラダ</span> — 이 음식은 무엇입니까?', answer: 'salad', acceptAlso: ['sarada'], explanation: 'サラダ (sarada) = 샐러드. 한국어: 샐러드' },
+      { prompt: '메뉴 항목: <span class="jp" style="font-size:1.5rem">ハンバーガー</span> — 이 음식은 무엇입니까?', answer: 'hamburger', acceptAlso: ['hanbaagaa', 'burger'], explanation: 'ハンバーガー (hanbaagaa) = 햄버거. 한국어: 햄버거' },
+      { prompt: '메뉴 항목: <span class="jp" style="font-size:1.5rem">ジュース</span> — 이 음료는 무엇입니까?', answer: 'juice', acceptAlso: ['juusu'], explanation: 'ジュース (juusu) = 주스. 한국어: 주스' },
+      { prompt: '메뉴 항목: <span class="jp" style="font-size:1.5rem">ケーキ</span> — 이 디저트는 무엇입니까?', answer: 'cake', acceptAlso: ['keeki'], explanation: 'ケーキ (keeki) = 케이크. 한국어: 케이크' },
+      { prompt: '메뉴 항목: <span class="jp" style="font-size:1.5rem">ピザ</span> — 이 음식은 무엇입니까?', answer: 'pizza', acceptAlso: ['piza'], explanation: 'ピザ (piza) = 피자. 한국어: 피자' },
+      { prompt: '메뉴 항목: <span class="jp" style="font-size:1.5rem">パスタ</span> — 이 음식은 무엇입니까?', answer: 'pasta', acceptAlso: ['pasuta'], explanation: 'パスタ (pasuta) = 파스타. 한국어: 파스타' },
+      { prompt: '메뉴 항목: <span class="jp" style="font-size:1.5rem">ワイン</span> — 이 음료는 무엇입니까?', answer: 'wine', acceptAlso: ['wain'], explanation: 'ワイン (wain) = 와인. 한국어: 와인' },
+      { prompt: '메뉴 항목: <span class="jp" style="font-size:1.5rem">チョコレート</span> — 이것은 무엇입니까?', answer: 'chocolate', acceptAlso: ['chokoreeto'], explanation: 'チョコレート (chokoreeto) = 초콜릿. 한국어: 초콜릿' },
+      { prompt: '메뉴 항목: <span class="jp" style="font-size:1.5rem">カレー</span> — 이 음식은 무엇입니까?', answer: 'curry', acceptAlso: ['karee'], explanation: 'カレー (karee) = 카레. 한국어: 카레' }
+    ]
+  }
+);
+
+// ─── 드래그 앤 드롭: 가타카나-히라가나 매칭 ───
+QuizEngine.DragMatch(
+  document.getElementById('quiz-match'),
+  {
+    title: '가타카나-히라가나 매칭',
+    instruction: '각 가타카나를 히라가나 짝과 연결하세요:',
+    pairs: [
+      { left: 'カ', right: 'か' },
+      { left: 'シ', right: 'し' },
+      { left: 'テ', right: 'て' },
+      { left: 'ナ', right: 'な' },
+      { left: 'フ', right: 'ふ' },
+      { left: 'ミ', right: 'み' },
+      { left: 'ヨ', right: 'よ' },
+      { left: 'ル', right: 'る' }
+    ]
+  }
+);
+
+// ─── 혼동 쌍 퀴즈 ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-confused'),
+  {
+    title: '혼동하기 쉬운 가타카나',
+    questions: [
+      { prompt: '이 글자는 <span class="jp" style="font-size:2.2rem">シ</span>입니다. 읽기는 무엇입니까?', answer: 'shi', acceptAlso: ['si'], explanation: 'シ = shi. 기억하세요: 점이 아래에서 위로, 곡선은 더 수평적입니다. ツ (tsu)와 혼동하지 마세요!' },
+      { prompt: '이 글자는 <span class="jp" style="font-size:2.2rem">ツ</span>입니다. 읽기는 무엇입니까?', answer: 'tsu', acceptAlso: ['tu'], explanation: 'ツ = tsu. 점이 위에서 아래로, 곡선은 더 수직적입니다. シ (shi)와 혼동하지 마세요!' },
+      { prompt: '이 글자는 <span class="jp" style="font-size:2.2rem">ソ</span>입니다. 읽기는 무엇입니까?', answer: 'so', explanation: 'ソ = so. 획이 아래로 휩쓸립니다 (ツ 패턴과 같음). ン (n)과 혼동하지 마세요!' },
+      { prompt: '이 글자는 <span class="jp" style="font-size:2.2rem">ン</span>입니다. 읽기는 무엇입니까?', answer: 'n', explanation: 'ン = n. 획이 위로 휩쓸립니다 (シ 패턴과 같음). ソ (so)와 혼동하지 마세요!' },
+      { prompt: '이 단어를 읽으세요: <span class="jp" style="font-size:1.5rem">ラーメン</span>', answer: 'raamen', acceptAlso: ['ramen', 'raamenn'], explanation: 'ラ(ra) ー(장음) メ(me) ン(n) = raamen (라면)' },
+      { prompt: '이 단어를 읽으세요: <span class="jp" style="font-size:1.5rem">テニス</span>', answer: 'tenisu', acceptAlso: ['tennis'], explanation: 'テ(te) ニ(ni) ス(su) = tenisu (테니스)' }
+    ]
+  }
+);
+
+// ─── 타임 스프린트 ───
+QuizEngine.TimedSprint(
+  document.getElementById('quiz-sprint'),
+  {
+    title: '보스 레벨: 90초 가타카나 스프린트',
+    timeLimit: 90,
+    items: [
+      { prompt: 'ア', answer: 'a' }, { prompt: 'イ', answer: 'i' },
+      { prompt: 'ウ', answer: 'u' }, { prompt: 'エ', answer: 'e' },
+      { prompt: 'オ', answer: 'o' }, { prompt: 'カ', answer: 'ka' },
+      { prompt: 'キ', answer: 'ki' }, { prompt: 'ク', answer: 'ku' },
+      { prompt: 'ケ', answer: 'ke' }, { prompt: 'コ', answer: 'ko' },
+      { prompt: 'サ', answer: 'sa' }, { prompt: 'シ', answer: 'shi' },
+      { prompt: 'ス', answer: 'su' }, { prompt: 'セ', answer: 'se' },
+      { prompt: 'ソ', answer: 'so' }, { prompt: 'タ', answer: 'ta' },
+      { prompt: 'チ', answer: 'chi' }, { prompt: 'ツ', answer: 'tsu' },
+      { prompt: 'テ', answer: 'te' }, { prompt: 'ト', answer: 'to' },
+      { prompt: 'ナ', answer: 'na' }, { prompt: 'ニ', answer: 'ni' },
+      { prompt: 'ヌ', answer: 'nu' }, { prompt: 'ネ', answer: 'ne' },
+      { prompt: 'ノ', answer: 'no' }, { prompt: 'ハ', answer: 'ha' },
+      { prompt: 'ヒ', answer: 'hi' }, { prompt: 'フ', answer: 'fu', acceptAlso: ['hu'] },
+      { prompt: 'ヘ', answer: 'he' }, { prompt: 'ホ', answer: 'ho' },
+      { prompt: 'マ', answer: 'ma' }, { prompt: 'ミ', answer: 'mi' },
+      { prompt: 'ム', answer: 'mu' }, { prompt: 'メ', answer: 'me' },
+      { prompt: 'モ', answer: 'mo' }, { prompt: 'ヤ', answer: 'ya' },
+      { prompt: 'ユ', answer: 'yu' }, { prompt: 'ヨ', answer: 'yo' },
+      { prompt: 'ラ', answer: 'ra' }, { prompt: 'リ', answer: 'ri' },
+      { prompt: 'ル', answer: 'ru' }, { prompt: 'レ', answer: 're' },
+      { prompt: 'ロ', answer: 'ro' }, { prompt: 'ワ', answer: 'wa' },
+      { prompt: 'ヲ', answer: 'wo', acceptAlso: ['o'] },
+      { prompt: 'ン', answer: 'n' }
+    ]
+  }
+);
+</script>
+<script src="js/spaced-repetition.js"></script>
+<script src="js/memory-palace.js"></script>
+</body>
+</html>

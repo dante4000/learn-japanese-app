@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ch04: 발음 — Zero to Hero 日本語</title>
+<link rel="stylesheet" href="css/design-system.css">
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<button class="toggle" id="themeToggle" aria-label="테마 전환">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <span class="logo-badge">Zero to Hero — 기억 설계 에디션</span>
+    <div class="logo-title">한국어 화자를 위한 日本語</div>
+    <div class="logo-sub">한국어에서 日本語로 — 기억 설계자의 안내서</div>
+  </a>
+  <div class="sidebar-progress">
+    <div class="sidebar-progress-label">진행률</div>
+    <div class="sidebar-progress-bar">
+      <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+    </div>
+    <div class="sidebar-progress-count">0/22 완료</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="ch-00.html" class="toc-link"><span class="toc-num">00</span><span class="toc-check" data-ch="00"></span>기억 과학</a>
+    <a href="ch-01.html" class="toc-link"><span class="toc-num">01</span><span class="toc-check" data-ch="01"></span>한국어의 이점</a>
+    <a href="ch-02.html" class="toc-link"><span class="toc-num">02</span><span class="toc-check" data-ch="02"></span>히라가나</a>
+    <a href="ch-03.html" class="toc-link"><span class="toc-num">03</span><span class="toc-check" data-ch="03"></span>가타카나</a>
+    <a href="ch-04.html" class="toc-link active"><span class="toc-num">04</span><span class="toc-check" data-ch="04"></span>발음</a>
+    <a href="ch-05.html" class="toc-link"><span class="toc-num">05</span><span class="toc-check" data-ch="05"></span>서바이벌 일본어</a>
+    <a href="ch-06.html" class="toc-link"><span class="toc-num">06</span><span class="toc-check" data-ch="06"></span>조수사</a>
+    <a href="ch-07.html" class="toc-link"><span class="toc-num">07</span><span class="toc-check" data-ch="07"></span>조사</a>
+    <a href="ch-08.html" class="toc-link"><span class="toc-num">08</span><span class="toc-check" data-ch="08"></span>동사 활용</a>
+    <a href="ch-09.html" class="toc-link"><span class="toc-num">09</span><span class="toc-check" data-ch="09"></span>일상 회화</a>
+    <a href="ch-10.html" class="toc-link"><span class="toc-num">10</span><span class="toc-check" data-ch="10"></span>문형</a>
+    <a href="ch-11.html" class="toc-link"><span class="toc-num">11</span><span class="toc-check" data-ch="11"></span>한자</a>
+    <a href="ch-12.html" class="toc-link"><span class="toc-num">12</span><span class="toc-check" data-ch="12"></span>한자어</a>
+    <a href="ch-13.html" class="toc-link"><span class="toc-num">13</span><span class="toc-check" data-ch="13"></span>고유어</a>
+    <a href="ch-14.html" class="toc-link"><span class="toc-num">14</span><span class="toc-check" data-ch="14"></span>경어</a>
+    <a href="ch-15.html" class="toc-link"><span class="toc-num">15</span><span class="toc-check" data-ch="15"></span>독해</a>
+    <a href="ch-16.html" class="toc-link"><span class="toc-num">16</span><span class="toc-check" data-ch="16"></span>작문</a>
+    <a href="ch-17.html" class="toc-link"><span class="toc-num">17</span><span class="toc-check" data-ch="17"></span>청해</a>
+    <a href="ch-18.html" class="toc-link"><span class="toc-num">18</span><span class="toc-check" data-ch="18"></span>문화 화용론</a>
+    <a href="ch-19.html" class="toc-link"><span class="toc-num">19</span><span class="toc-check" data-ch="19"></span>JLPT와 그 너머</a>
+    <a href="ch-20.html" class="toc-link"><span class="toc-num">20</span><span class="toc-check" data-ch="20"></span>기억의 궁전</a>
+    <a href="ch-21.html" class="toc-link"><span class="toc-num">21</span><span class="toc-check" data-ch="21"></span>90일 스프린트</a>
+    <a href="appendices.html" class="toc-link" style="margin-top:.5rem;border-top:1px solid var(--border);padding-top:.8rem"><span class="toc-num">+</span>부록</a>
+  </nav>
+</aside>
+
+<div class="main">
+<div class="content-wrap">
+
+<section id="ch04" data-ch="04" style="padding-top:3rem">
+<h2><span class="ch-label">제4장</span>발음 &mdash; 한국어 화자를 위한 일본어 음성학 (発音)</h2>
+
+<div class="callout memory"><div class="callout-title">기억 기법 스포트라이트: 정교화 질문</div><p>왜 이 발음이 다른지 이해하면 교정이 고정됩니다.</p></div>
+
+<p>히라가나와 가타카나를 모두 배웠습니다. 이제 <strong>올바른 소리</strong>를 낼 차례입니다. 좋은 소식: 일본어 음성 체계는 한국어보다 <em>단순합니다</em>. 자음이 적고, 음절 구조가 간단하며, 받침(종성 자음)이 없습니다. <strong>다운시프트</strong>하는 셈입니다. 하지만 단순함은 그 나름의 함정을 가져옵니다 &mdash; 한국어 습관이 일본어가 원하지 않는 곳에 복잡성을 더하려 하기 때문입니다.</p>
+
+<div class="callout ok">
+  <div class="callout-title">한국어보다 쉬운 점</div>
+  <p><strong>자음이 적습니다:</strong> 한국어는 3중 대립(ㄱ/ㅋ/ㄲ)을 가지고 있습니다. 일본어는 2중(유성/무성)뿐입니다. 신경 쓸 것이 줄어듭니다.<br>
+  <strong>음절이 단순합니다:</strong> 모든 일본어 음절은 (C)V &mdash; 자음 + 모음, 또는 모음만으로 구성됩니다. 자음 연쇄도, 받침도 없습니다.<br>
+  <strong>종성 자음이 없습니다:</strong> 한국어 학(hak)에는 ㄱ 받침이 있지만, 일본어 がく (gaku)는 항상 모음으로 끝납니다. 불파음 걱정이 없습니다.<br>
+  <strong>다운시프트하세요.</strong> 6단 수동 기어에서 오토매틱으로 바꾸는 것이라고 생각하세요.</p>
+</div>
+
+<!-- ─── RECALL CHECK (Ch02-03) ─── -->
+<div id="recall-check-0203"></div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!--  SVG DIAGRAM: CONSONANT MAPPING                       -->
+<!-- ══════════════════════════════════════════════════════ -->
+<nav class="chapter-toc">
+  <details open>
+    <summary class="chapter-toc-title">이 장의 내용</summary>
+  <ol>
+    <li><a href="#자음-대응-한국어-3중-대립-vs-일본어-2중-대립">자음 대응: 한국어 3중 대립 vs. 일본어 2중 대립</a></li>
+    <li><a href="#6가지-발음-함정">6가지 발음 함정</a></li>
+    <li><a href="#핵심-발음-규칙">핵심 발음 규칙</a></li>
+    <li><a href="#촉음-작은-っ">촉음 — 작은 っ</a></li>
+    <li><a href="#연습-문제">연습 문제</a></li>
+  </ol>
+  </details>
+</nav>
+
+<h3 id="자음-대응-한국어-3중-대립-vs-일본어-2중-대립">자음 대응: 한국어 3중 대립 vs. 일본어 2중 대립</h3>
+
+<p>한국어 폐쇄음은 평음(ㄱ), 격음(ㅋ), 경음(ㄲ) 세 가지입니다. 일본어는 무성음(か)과 유성음(が) 두 가지뿐입니다. 이것이 한국어식 일본어 발음의 가장 큰 원인입니다.</p>
+
+<svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;margin:1.5rem auto;display:block;font-family:'Noto Sans JP','Noto Sans KR',sans-serif" role="img" aria-label="한국어 3중 자음 체계와 일본어 2중 자음 체계의 대응 관계 도해">
+  <!-- Background -->
+  <rect x="0" y="0" width="700" height="320" rx="12" fill="var(--card-bg)" stroke="var(--border)" stroke-width="1.5"/>
+
+  <!-- Title -->
+  <text x="350" y="32" text-anchor="middle" font-size="15" font-weight="700" fill="var(--heading)">한국어 3중 폐쇄음 vs. 일본어 2중 폐쇄음</text>
+
+  <!-- Korean side label -->
+  <text x="175" y="62" text-anchor="middle" font-size="13" font-weight="600" fill="var(--accent)">한국어 (한국어)</text>
+  <!-- Japanese side label -->
+  <text x="525" y="62" text-anchor="middle" font-size="13" font-weight="600" fill="var(--accent)">일본어 (日本語)</text>
+
+  <!-- ── K/G Row ── -->
+  <!-- Korean boxes -->
+  <rect x="50" y="80" width="80" height="40" rx="6" fill="var(--bg)" stroke="var(--border)"/>
+  <text x="90" y="106" text-anchor="middle" font-size="16" fill="var(--text)">ㄱ (g/k)</text>
+
+  <rect x="140" y="80" width="80" height="40" rx="6" fill="var(--bg)" stroke="var(--a4)"/>
+  <text x="180" y="106" text-anchor="middle" font-size="16" fill="var(--a4)">ㅋ (k')</text>
+
+  <rect x="230" y="80" width="80" height="40" rx="6" fill="var(--bg)" stroke="var(--border)"/>
+  <text x="270" y="106" text-anchor="middle" font-size="16" fill="var(--text)">ㄲ (kk)</text>
+
+  <!-- Japanese boxes -->
+  <rect x="430" y="78" width="80" height="40" rx="6" fill="var(--bg)" stroke="var(--accent)"/>
+  <text x="470" y="104" text-anchor="middle" font-size="18" fill="var(--heading)">か (ka)</text>
+
+  <rect x="530" y="78" width="80" height="40" rx="6" fill="var(--bg)" stroke="var(--accent)"/>
+  <text x="570" y="104" text-anchor="middle" font-size="18" fill="var(--heading)">が (ga)</text>
+
+  <!-- Arrows K row -->
+  <line x1="310" y1="92" x2="428" y2="92" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="310" y1="108" x2="428" y2="108" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text x="370" y="86" text-anchor="middle" font-size="10" fill="var(--muted)">평음</text>
+  <text x="370" y="118" text-anchor="middle" font-size="10" fill="var(--a4)">ㅋ 아님!</text>
+
+  <!-- ── T/D Row ── -->
+  <rect x="50" y="145" width="80" height="40" rx="6" fill="var(--bg)" stroke="var(--border)"/>
+  <text x="90" y="171" text-anchor="middle" font-size="16" fill="var(--text)">ㄷ (d/t)</text>
+
+  <rect x="140" y="145" width="80" height="40" rx="6" fill="var(--bg)" stroke="var(--a4)"/>
+  <text x="180" y="171" text-anchor="middle" font-size="16" fill="var(--a4)">ㅌ (t')</text>
+
+  <rect x="230" y="145" width="80" height="40" rx="6" fill="var(--bg)" stroke="var(--border)"/>
+  <text x="270" y="171" text-anchor="middle" font-size="16" fill="var(--text)">ㄸ (tt)</text>
+
+  <rect x="430" y="143" width="80" height="40" rx="6" fill="var(--bg)" stroke="var(--accent)"/>
+  <text x="470" y="169" text-anchor="middle" font-size="18" fill="var(--heading)">た (ta)</text>
+
+  <rect x="530" y="143" width="80" height="40" rx="6" fill="var(--bg)" stroke="var(--accent)"/>
+  <text x="570" y="169" text-anchor="middle" font-size="18" fill="var(--heading)">だ (da)</text>
+
+  <line x1="310" y1="157" x2="428" y2="157" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="310" y1="173" x2="428" y2="173" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text x="370" y="152" text-anchor="middle" font-size="10" fill="var(--muted)">평음</text>
+  <text x="370" y="184" text-anchor="middle" font-size="10" fill="var(--a4)">ㅌ 아님!</text>
+
+  <!-- ── P/B Row ── -->
+  <rect x="50" y="210" width="80" height="40" rx="6" fill="var(--bg)" stroke="var(--border)"/>
+  <text x="90" y="236" text-anchor="middle" font-size="16" fill="var(--text)">ㅂ (b/p)</text>
+
+  <rect x="140" y="210" width="80" height="40" rx="6" fill="var(--bg)" stroke="var(--a4)"/>
+  <text x="180" y="236" text-anchor="middle" font-size="16" fill="var(--a4)">ㅍ (p')</text>
+
+  <rect x="230" y="210" width="80" height="40" rx="6" fill="var(--bg)" stroke="var(--border)"/>
+  <text x="270" y="236" text-anchor="middle" font-size="16" fill="var(--text)">ㅃ (pp)</text>
+
+  <rect x="430" y="208" width="80" height="40" rx="6" fill="var(--bg)" stroke="var(--accent)"/>
+  <text x="470" y="234" text-anchor="middle" font-size="18" fill="var(--heading)">ぱ (pa)</text>
+
+  <rect x="530" y="208" width="80" height="40" rx="6" fill="var(--bg)" stroke="var(--accent)"/>
+  <text x="570" y="234" text-anchor="middle" font-size="18" fill="var(--heading)">ば (ba)</text>
+
+  <line x1="310" y1="222" x2="428" y2="222" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="310" y1="238" x2="428" y2="238" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text x="370" y="217" text-anchor="middle" font-size="10" fill="var(--muted)">평음</text>
+  <text x="370" y="249" text-anchor="middle" font-size="10" fill="var(--a4)">ㅍ 아님!</text>
+
+  <!-- Bottom note -->
+  <text x="350" y="280" text-anchor="middle" font-size="12" fill="var(--muted)">한국어 격음(ㅋ, ㅌ, ㅍ)에 해당하는 일본어 자음은 없습니다.</text>
+  <text x="350" y="298" text-anchor="middle" font-size="12" fill="var(--muted)">일본어 무성 폐쇄음에는 ㄱ/ㄷ/ㅂ(평음)을 사용하세요. 기식이 들리면 한국어 억양입니다.</text>
+</svg>
+
+<div class="callout info">
+  <div class="callout-title">핵심 포인트</div>
+  <p>か를 볼 때 ㄱ으로 생각하세요, ㅋ가 <strong>아닙니다</strong>. た를 볼 때 ㄷ으로 생각하세요, ㅌ가 <strong>아닙니다</strong>. 일본어 무성 폐쇄음은 무기음입니다 &mdash; 격음보다는 한국어 평음에 더 가깝습니다. 과도한 기식은 한국어 억양의 1순위 특징입니다.</p>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!--  THE SIX TRAPS                                        -->
+<!-- ══════════════════════════════════════════════════════ -->
+<h3 id="6가지-발음-함정">6가지 발음 함정</h3>
+<p>한국어 습관이 잘못된 방향으로 이끄는 구체적인 소리들입니다. 각 함정은 난이도를 별 1개(쉬운 수정)에서 별 5개(장기 프로젝트)까지 표시했습니다.</p>
+
+<!-- ─── TRAP 1: Over-Aspiration ─── -->
+<h4>함정 1: 과도한 기식 (난이도: &#9733;&#9733;&#9733;)</h4>
+
+<div class="mnemonic-card">
+  <div>
+    <svg class="char-svg" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <text x="40" y="36" text-anchor="middle" font-size="20" font-family="'Noto Sans KR',sans-serif" fill="var(--a4)">ㅋㅌㅍ</text>
+      <line x1="20" y1="44" x2="60" y2="44" stroke="var(--a5)" stroke-width="2"/>
+      <text x="40" y="65" text-anchor="middle" font-size="14" font-family="'Noto Sans JP',serif" fill="var(--accent)">ka ta pa</text>
+    </svg>
+  </div>
+  <div class="char-info">
+    <div class="char-reading">문제: 한국어 3중 폐쇄음을 일본어 2중 체계에 대응</div>
+    <div class="char-korean">한국어 화자는 ㄱ/ㄷ/ㅂ를 써야 할 곳에서 ㅋ/ㅌ/ㅍ를 사용합니다</div>
+    <div class="char-story">
+      <strong>틀리면 어떻게 들리나요:</strong> かわいい가 강한 기식과 함께 "크하와이이"처럼 들립니다. 일본인에게는 과장되거나 외국인 발음으로 들립니다.<br><br>
+      <strong>교정법:</strong> 입 앞에 휴지를 대보세요. か를 발음할 때 휴지가 <em>거의 움직이지 않아야</em> 합니다. 펄럭이면 기식이 있는 것입니다. ㅋ/ㅌ/ㅍ 위치가 아닌 ㄱ/ㄷ/ㅂ 위치를 사용하세요.<br><br>
+      <strong>기억법:</strong> "기식 없이!" &mdash; 일본어 자음은 조용하고 부드럽습니다. ㅋ는 한국어에서만 쓰세요.<br><br>
+      <strong>연습:</strong> 기식을 최소화하면서 다음 단어를 발음하세요:<br>
+      <span class="jp">かさ</span> (kasa, 우산) &mdash; "크하사"가 아닙니다<br>
+      <span class="jp">たべる</span> (taberu, 먹다) &mdash; "타베루"가 아닙니다<br>
+      <span class="jp">ぱん</span> (pan, 빵) &mdash; "판"이 아닙니다
+    </div>
+  </div>
+</div>
+
+<div id="quiz-aspiration"></div>
+
+<!-- ─── TRAP 2: Rounded う ─── -->
+<h4>함정 2: 원순 う (난이도: &#9733;&#9733;)</h4>
+
+<div class="mnemonic-card">
+  <div>
+    <svg class="char-svg" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <text x="40" y="30" text-anchor="middle" font-size="14" fill="var(--a4)">우 (원순)</text>
+      <text x="40" y="52" text-anchor="middle" font-size="20" fill="var(--heading)">&#8595;</text>
+      <text x="40" y="72" text-anchor="middle" font-size="14" fill="var(--accent)">う (비원순)</text>
+    </svg>
+  </div>
+  <div class="char-info">
+    <div class="char-reading">문제: 한국어 우는 원순; 일본어 う는 비원순</div>
+    <div class="char-korean">한국어 우는 입술을 오므리지만 일본어 う는 편하게 펴야 합니다</div>
+    <div class="char-story">
+      <strong>틀리면 어떻게 들리나요:</strong> <span class="jp">すし</span>가 영어 "oo" 소리처럼 "수우시"로 들립니다. 바로 알아챌 수 있습니다.<br><br>
+      <strong>교정법:</strong> 우를 발음한 다음, 입술이 거의 평평해질 때까지 서서히 힘을 빼세요. 혀 위치는 같지만 입술은 중립이 됩니다. 입 안 높은 곳에서 "으"를 느슨하게 발음한다고 생각하세요.<br><br>
+      <strong>기억법:</strong> "게으른 입술!" &mdash; 일본어 う는 가장 게으른 모음입니다. 둥글게 만들려는 노력이 필요 없습니다.<br><br>
+      <strong>연습:</strong> 입술을 편하게 한 채로 발음하세요:<br>
+      <span class="jp">つくる</span> (tsukuru, 만들다)<br>
+      <span class="jp">ふゆ</span> (fuyu, 겨울)<br>
+      <span class="jp">くつ</span> (kutsu, 신발)
+    </div>
+  </div>
+</div>
+
+<div id="quiz-rounded-u"></div>
+
+<!-- ─── TRAP 3: Long Vowels ─── -->
+<h4>함정 3: 장음 (난이도: &#9733;&#9733;&#9733;&#9733;)</h4>
+
+<div class="mnemonic-card">
+  <div>
+    <svg class="char-svg" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <text x="15" y="30" text-anchor="start" font-size="12" fill="var(--muted)">단음</text>
+      <rect x="15" y="35" width="20" height="10" rx="3" fill="var(--accent)"/>
+      <text x="15" y="62" text-anchor="start" font-size="12" fill="var(--muted)">장음</text>
+      <rect x="15" y="67" width="50" height="10" rx="3" fill="var(--a4)"/>
+    </svg>
+  </div>
+  <div class="char-info">
+    <div class="char-reading">문제: 일본어에서 모음 길이가 의미를 바꿉니다</div>
+    <div class="char-korean">현대 한국어는 모음 길이를 구별하지 않습니다</div>
+    <div class="char-story">
+      <strong>틀리면 어떻게 들리나요:</strong> おばあさん (할머니)을 말하려다 おばさん (아줌마)이 되어버립니다. 또는 ビール (맥주)을 말하려다 ビル (빌딩)이 됩니다. 가장 좋은 경우에도 당혹스럽고, 최악의 경우 의사소통에 혼란을 줍니다.<br><br>
+      <strong>교정법:</strong> 박자를 세세요. 각 가나 = 한 박(모라). おばさん = 4박. おばあさん = 5박. 각 모라마다 손가락을 두드리세요. 장음은 두 번 두드립니다.<br><br>
+      <strong>기억법:</strong> "모든 가나에 고유의 북 박자를." 단음 = 한 번 탁. 장음 = 두 번 탁탁. 절대 서두르지 마세요.<br><br>
+      <strong>핵심 최소 쌍 연습:</strong><br>
+      <span class="jp">おじさん</span> (ojisan, 아저씨) vs. <span class="jp">おじいさん</span> (ojiisan, 할아버지)<br>
+      <span class="jp">ここ</span> (koko, 여기) vs. <span class="jp">こうこう</span> (koukou, 고등학교)<br>
+      <span class="jp">ビル</span> (biru, 빌딩) vs. <span class="jp">ビール</span> (biiru, 맥주)<br>
+      <span class="jp">え</span> (e, 그림) vs. <span class="jp">ええ</span> (ee, 네/동의)
+    </div>
+  </div>
+</div>
+
+<table>
+  <thead><tr><th>단음</th><th>장음</th><th>의미 차이</th></tr></thead>
+  <tbody>
+    <tr><td class="jp">おばさん (obasan)</td><td class="jp">おばあさん (obaasan)</td><td>아줌마 vs. 할머니</td></tr>
+    <tr><td class="jp">おじさん (ojisan)</td><td class="jp">おじいさん (ojiisan)</td><td>아저씨 vs. 할아버지</td></tr>
+    <tr><td class="jp">ビル (biru)</td><td class="jp">ビール (biiru)</td><td>빌딩 vs. 맥주</td></tr>
+    <tr><td class="jp">ここ (koko)</td><td class="jp">こうこう (koukou)</td><td>여기 vs. 고등학교</td></tr>
+    <tr><td class="jp">おと (oto)</td><td class="jp">おおとう (&rarr; おとう) (otou)</td><td>소리 vs. 아버지</td></tr>
+    <tr><td class="jp">え (e)</td><td class="jp">ええ (ee)</td><td>그림 vs. 네(동의)</td></tr>
+  </tbody>
+</table>
+
+<div id="quiz-long-vowels"></div>
+
+<!-- ─── TRAP 4: つ (tsu) ─── -->
+<h4>함정 4: つ (tsu) (난이도: &#9733;&#9733;)</h4>
+
+<div class="mnemonic-card">
+  <div>
+    <svg class="char-svg" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <text x="40" y="55" text-anchor="middle" font-size="46" font-family="'Shippori Mincho',serif" fill="var(--heading)">つ</text>
+    </svg>
+  </div>
+  <div class="char-info">
+    <div class="char-reading">문제: ts- 초성은 한국어에 존재하지 않습니다</div>
+    <div class="char-korean">한국어 화자는 쓰, 추, 또는 스로 대체합니다 &mdash; 모두 틀립니다</div>
+    <div class="char-story">
+      <strong>틀리면 어떻게 들리나요:</strong> <span class="jp">つき</span> (달)가 "추키"나 "쓰키"처럼 들립니다. 원어민은 이해하지만 알아챕니다.<br><br>
+      <strong>교정법:</strong> ㄷ 위치(혀가 윗니 뒤)에서 시작하세요. 그다음 추가 아닌 す로 풀어내세요. t + su가 하나의 초성으로 융합된 것입니다. 연습: 천천히 "t...su...t...su...tsu...tsu" 라고 말해보세요. 하나의 매끄러운 소리가 될 때까지 속도를 올리세요.<br><br>
+      <strong>기억법:</strong> "쓰나미는 TSU로 시작합니다!" &mdash; 이 단어를 이미 올바르게 발음하고 있습니다. 같은 초성을 활용하세요.<br><br>
+      <strong>연습:</strong><br>
+      <span class="jp">つき</span> (tsuki, 달) &mdash; "추키"가 아닙니다<br>
+      <span class="jp">つくえ</span> (tsukue, 책상)<br>
+      <span class="jp">なつ</span> (natsu, 여름)<br>
+      <span class="jp">まつ</span> (matsu, 기다리다 / 소나무)
+    </div>
+  </div>
+</div>
+
+<div id="quiz-tsu"></div>
+
+<!-- ─── TRAP 5: ふ (fu) ─── -->
+<h4>함정 5: ふ (fu) (난이도: &#9733;)</h4>
+
+<div class="mnemonic-card">
+  <div>
+    <svg class="char-svg" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <text x="40" y="55" text-anchor="middle" font-size="46" font-family="'Shippori Mincho',serif" fill="var(--heading)">ふ</text>
+    </svg>
+  </div>
+  <div class="char-info">
+    <div class="char-reading">문제: 양순 마찰음 &mdash; 영어 "f"도 한국어 후도 아닙니다</div>
+    <div class="char-korean">영어 "f" (이빨 + 입술)도 한국어 후 (성문음)도 정확하지 않습니다</div>
+    <div class="char-story">
+      <strong>틀리면 어떻게 들리나요:</strong> 영어 "f" (아랫입술이 윗니에 닿는)를 사용하면 거칠게 들립니다. 한국어 후를 사용하면 너무 기식적으로 들립니다. 둘 다 눈에 띕니다.<br><br>
+      <strong>교정법:</strong> 양 입술을 가까이 모으되 (휘파람을 불거나 촛불을 끄려는 것처럼) 그 사이로 공기를 밀어내세요. 이빨은 관여하지 않습니다! "f"와 "h" 사이의 소리입니다.<br><br>
+      <strong>기억법:</strong> "생일 촛불 끄기" &mdash; 부드럽게, 양 입술로, 이빨 없이. 그 후~ 하는 소리가 ふ입니다.<br><br>
+      <strong>연습:</strong><br>
+      <span class="jp">ふね</span> (fune, 배)<br>
+      <span class="jp">ふゆ</span> (fuyu, 겨울)<br>
+      <span class="jp">ふじさん</span> (Fujisan, 후지산)<br>
+      <span class="jp">とうふ</span> (toufu, 두부)
+    </div>
+  </div>
+</div>
+
+<div id="quiz-fu"></div>
+
+<!-- ─── TRAP 6: Pitch Accent ─── -->
+<h4>함정 6: 고저 악센트 (난이도: &#9733;&#9733;&#9733;&#9733;&#9733;)</h4>
+
+<p>이것은 보스급 함정입니다. 한국어는 <strong>강세 악센트</strong> 언어입니다 (미약하지만). 일본어는 <strong>고저 악센트</strong> 언어입니다 &mdash; 단어의 <em>멜로디</em> (각 모라의 높낮이)가 정체성을 결정합니다. 잘못된 고저가 보통 오해를 일으키지는 않지만, 유창하게 들리느냐 외국인처럼 들리느냐의 차이를 만듭니다.</p>
+
+<!-- SVG: Pitch Accent Contour Patterns -->
+<svg viewBox="0 0 700 340" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;margin:1.5rem auto;display:block;font-family:'Noto Sans JP','Noto Sans KR',sans-serif" role="img" aria-label="일본어 단어의 고저 악센트 곡선 패턴">
+  <rect x="0" y="0" width="700" height="340" rx="12" fill="var(--card-bg)" stroke="var(--border)" stroke-width="1.5"/>
+  <text x="350" y="30" text-anchor="middle" font-size="15" font-weight="700" fill="var(--heading)">일본어 고저 악센트 패턴 (도쿄 방언)</text>
+
+  <!-- Pattern 1: Heiban (flat/unaccented) - e.g., さくら -->
+  <text x="40" y="72" font-size="12" font-weight="600" fill="var(--accent)">평판형 (평탄)</text>
+  <text x="40" y="88" font-size="11" fill="var(--muted)">하강 없음</text>
+
+  <!-- Pitch line: L-H-H-H -->
+  <circle cx="160" cy="110" r="5" fill="var(--accent)"/>
+  <circle cx="220" cy="80" r="5" fill="var(--accent)"/>
+  <circle cx="280" cy="80" r="5" fill="var(--accent)"/>
+  <circle cx="340" cy="80" r="5" fill="var(--accent)" opacity="0.5"/>
+  <line x1="160" y1="110" x2="220" y2="80" stroke="var(--accent)" stroke-width="2"/>
+  <line x1="220" y1="80" x2="280" y2="80" stroke="var(--accent)" stroke-width="2"/>
+  <line x1="280" y1="80" x2="340" y2="80" stroke="var(--accent)" stroke-width="2" stroke-dasharray="4"/>
+  <text x="160" y="128" text-anchor="middle" font-size="14" fill="var(--text)">さ</text>
+  <text x="220" y="128" text-anchor="middle" font-size="14" fill="var(--text)">く</text>
+  <text x="280" y="128" text-anchor="middle" font-size="14" fill="var(--text)">ら</text>
+  <text x="340" y="128" text-anchor="middle" font-size="12" fill="var(--muted)">(+)</text>
+
+  <text x="420" y="100" font-size="12" fill="var(--text)">= 벚꽃</text>
+  <text x="420" y="116" font-size="11" fill="var(--muted)">낮게 시작, 이후 높은 상태 유지</text>
+
+  <!-- Pattern 2: Atamadaka (head-high) - e.g., いのち -->
+  <text x="40" y="170" font-size="12" font-weight="600" fill="var(--a4)">두고형 (머리높이)</text>
+  <text x="40" y="186" font-size="11" fill="var(--muted)">1번째 모라 후 하강</text>
+
+  <circle cx="160" cy="170" r="5" fill="var(--a4)"/>
+  <circle cx="220" cy="205" r="5" fill="var(--a4)"/>
+  <circle cx="280" cy="205" r="5" fill="var(--a4)"/>
+  <line x1="160" y1="170" x2="220" y2="205" stroke="var(--a4)" stroke-width="2"/>
+  <line x1="220" y1="205" x2="280" y2="205" stroke="var(--a4)" stroke-width="2"/>
+  <text x="160" y="225" text-anchor="middle" font-size="14" fill="var(--text)">い</text>
+  <text x="220" y="225" text-anchor="middle" font-size="14" fill="var(--text)">の</text>
+  <text x="280" y="225" text-anchor="middle" font-size="14" fill="var(--text)">ち</text>
+
+  <text x="420" y="195" font-size="12" fill="var(--text)">= 생명</text>
+  <text x="420" y="211" font-size="11" fill="var(--muted)">높게 시작, 즉시 하강</text>
+
+  <!-- Pattern 3: Nakadaka (middle-high) - e.g., おとこ -->
+  <text x="40" y="262" font-size="12" font-weight="600" fill="var(--a3)">중고형 (중간하강)</text>
+  <text x="40" y="278" font-size="11" fill="var(--muted)">중간 모라 후 하강</text>
+
+  <circle cx="160" cy="302" r="5" fill="var(--a3)"/>
+  <circle cx="220" cy="268" r="5" fill="var(--a3)"/>
+  <circle cx="280" cy="302" r="5" fill="var(--a3)"/>
+  <line x1="160" y1="302" x2="220" y2="268" stroke="var(--a3)" stroke-width="2"/>
+  <line x1="220" y1="268" x2="280" y2="302" stroke="var(--a3)" stroke-width="2"/>
+  <text x="160" y="322" text-anchor="middle" font-size="14" fill="var(--text)">お</text>
+  <text x="220" y="322" text-anchor="middle" font-size="14" fill="var(--text)">と</text>
+  <text x="280" y="322" text-anchor="middle" font-size="14" fill="var(--text)">こ</text>
+
+  <text x="420" y="288" font-size="12" fill="var(--text)">= 남자</text>
+  <text x="420" y="304" font-size="11" fill="var(--muted)">저-고-저: 중간 후 하강</text>
+</svg>
+
+<div class="mnemonic-card">
+  <div>
+    <svg class="char-svg" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <polyline points="15,55 25,25 45,25 55,55" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="40" y="73" text-anchor="middle" font-size="11" fill="var(--muted)">고저</text>
+    </svg>
+  </div>
+  <div class="char-info">
+    <div class="char-reading">문제: 고저가 동일한 문자열의 단어를 구별합니다</div>
+    <div class="char-korean">한국어는 고저를 이런 방식으로 사용하지 않습니다 &mdash; 완전히 새로운 개념입니다</div>
+    <div class="char-story">
+      <strong>틀리면 어떻게 들리나요:</strong> 모든 단어가 "평평하게" 들리거나 강세가 잘못됩니다. 영어를 단조롭게 말하는 것처럼 &mdash; 이해는 되지만 기계적입니다.<br><br>
+      <strong>교정법 (단기):</strong> 처음에는 고저 악센트에 스트레스 받지 마세요. 나머지 5개 함정부터 집중하세요. 하지만 일본어를 들을 때 고저에 <em>주의를 기울이기</em> 시작하세요. 가장 중요한 규칙: <strong>2번째 모라의 높낮이는 항상 1번째 모라와 다릅니다.</strong> 1번째가 낮으면 2번째는 높고, 그 반대도 마찬가지입니다.<br><br>
+      <strong>교정법 (장기):</strong> 고저 악센트 사전(OJAD 온라인 도구 등)을 사용하세요. 4가지 패턴을 익히세요: 평판형(평탄), 두고형(머리높이), 중고형(중간하강), 미고형(꼬리하강).<br><br>
+      <strong>기억법:</strong> "일본어 단어는 멜로디지, 북 소리가 아닙니다." 한국어의 강조는 힘에 관한 것이고, 일본어는 멜로디에 관한 것입니다. 곡을 흥얼거리세요, 박자를 치지 마세요.<br><br>
+      <strong>최소 쌍 (같은 가나, 다른 고저 = 다른 단어):</strong><br>
+      <span class="jp">はし</span> = 젓가락 (하-시, 고-저) vs. 다리 (하-시, 저-고)<br>
+      <span class="jp">あめ</span> = 비 (아-메, 고-저) vs. 사탕 (아-메, 저-고)<br>
+      <span class="jp">かき</span> = 감 (카-키, 고-저) vs. 굴 (카-키, 저-고)
+    </div>
+  </div>
+</div>
+
+<div class="callout warn">
+  <div class="callout-title">우선순위 확인</div>
+  <p>고저 악센트는 유창함에 중요하지만 <strong>이해에 필수적이지는 않습니다</strong>. 맥락이 대부분의 모호함을 해소합니다. 먼저 함정 1~4(기식, う, 장음, つ)에 에너지를 집중하세요. 고저 악센트는 평생 다듬어가는 프로젝트입니다.</p>
+</div>
+
+<div id="quiz-pitch"></div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!--  PRONUNCIATION RULES SUMMARY                         -->
+<!-- ══════════════════════════════════════════════════════ -->
+<h3 id="핵심-발음-규칙">핵심 발음 규칙</h3>
+
+<table>
+  <thead><tr><th>규칙</th><th>내용</th><th>예시</th></tr></thead>
+  <tbody>
+    <tr><td>장음 (히라가나)</td><td>추가 모음 가나: aa=ああ, ii=いい, uu=うう, ei/ee=えい, ou/oo=おう</td><td class="jp">おかあさん (okaasan) = 어머니</td></tr>
+    <tr><td>장음 (가타카나)</td><td>대시 사용: ー</td><td class="jp">ケーキ (keeki) = 케이크</td></tr>
+    <tr><td>촉음 (っ)</td><td>작은 っ = 다음 자음 앞의 정지/유지</td><td class="jp">きって (kitte) = 우표; いっぱい (ippai) = 가득</td></tr>
+    <tr><td>조사 は</td><td>"wa"로 발음, "ha"가 아님</td><td class="jp">わたしは (watashi wa)</td></tr>
+    <tr><td>조사 へ</td><td>"e"로 발음, "he"가 아님</td><td class="jp">がっこうへ (gakkou e) = 학교에</td></tr>
+    <tr><td>조사 を</td><td>"o"로 발음, "wo"가 아님</td><td class="jp">みずを (mizu o) = 물을</td></tr>
+    <tr><td>모음 앞의 ん</td><td>약간의 비음 분리; 다음 모음과 합치지 않음</td><td class="jp">はんい (han'i) ≠ はに (hani)</td></tr>
+  </tbody>
+</table>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!--  DOUBLE CONSONANTS (っ)                               -->
+<!-- ══════════════════════════════════════════════════════ -->
+<h3 id="촉음-작은-っ">촉음 &mdash; 작은 っ</h3>
+
+<p>작은 っ (츠)는 다음 자음 앞의 짧은 정지, 즉 "걸림"을 나타냅니다. 무음의 한 박자라고 생각하세요. 한국어에도 비슷한 개념이 있습니다: 빨리 같은 단어의 쌍자음(ㅃ). 작은 っ는 다르게 작동하지만 (<em>유지되는</em> 침묵), "음절 사이에 뭔가 추가되는" 개념 자체는 익숙할 것입니다.</p>
+
+<div class="mnemonic-card">
+  <div>
+    <svg class="char-svg" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <text x="40" y="42" text-anchor="middle" font-size="32" font-family="'Shippori Mincho',serif" fill="var(--heading)">っ</text>
+      <text x="40" y="68" text-anchor="middle" font-size="11" fill="var(--muted)">촉음</text>
+    </svg>
+  </div>
+  <div class="char-info">
+    <div class="char-reading">っ = 다음 자음 앞의 한 박자 무음 유지</div>
+    <div class="char-korean">한국어 쌍자음과 비슷한 느낌이지만, 정지로 실현됩니다</div>
+    <div class="char-story">
+      <strong>기억법:</strong> "작은 っ는 과속방지턱." 달리다가 갑자기 &mdash; 쿵! &mdash; 정지 &mdash; 그리고 계속. 단어에 한 모라의 침묵이 더해집니다.<br><br>
+      <strong>예시:</strong><br>
+      <span class="jp">きて</span> (kite, 2박) = "와!" vs. <span class="jp">きって</span> (kitte, 3박) = "우표"<br>
+      <span class="jp">かこ</span> (kako, 2박) = "과거" vs. <span class="jp">かっこ</span> (kakko, 3박) = "괄호/스타일"<br>
+      <span class="jp">いっぱい</span> (ippai, 4박) = "가득" vs. <span class="jp">いぱい</span> = 존재하지 않는 단어
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!--  EXERCISES SECTION                                    -->
+<!-- ══════════════════════════════════════════════════════ -->
+<h3 id="연습-문제">연습 문제</h3>
+
+<!-- Audio Discrimination: Long vs. Short -->
+<h4>청음 변별: 최소 쌍</h4>
+<div id="quiz-audio-minimal"></div>
+
+<!-- Fill-in-the-blank: Pronunciation Rules -->
+<h4>발음 규칙: 빈칸 채우기</h4>
+<div id="quiz-rules-fill"></div>
+
+<!-- Multiple Choice: Trap Identification -->
+<h4>함정 식별: 객관식</h4>
+<div id="quiz-traps-mc"></div>
+
+<!-- Flashcard: Pitch Accent Pairs -->
+<h4>플래시카드: 발음 빠른 복습</h4>
+<div id="quiz-flashcard-pron"></div>
+
+<!-- Mark as Complete -->
+<button class="chapter-complete" data-ch="04">학습 완료 표시 &#10003;</button>
+
+<div style="display:flex;justify-content:space-between;margin:2rem 0">
+  <a href="ch-03.html" class="quiz-btn secondary">&larr; 제3장: 가타카나</a>
+  <a href="ch-05.html" class="quiz-btn">다음: 제5장 -- 서바이벌 일본어 &rarr;</a>
+</div>
+
+</section>
+</div>
+
+
+</div>
+
+<footer><p>Zero to Hero: 한국어 화자를 위한 日本語 &middot; 제4장</p></footer>
+
+<script src="js/shared.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/quiz-engine.js"></script>
+<script>
+// ─── 제2-3장 복습 확인 ───
+QuizEngine.RecallCheck(
+  document.getElementById('recall-check-0203'),
+  {
+    fromChapters: '제2-3장',
+    items: [
+      { question: '일본어의 5개 모음을 히라가나로 쓰세요.', answer: 'あ (a), い (i), う (u), え (e), お (o)' },
+      { question: '탁점(゛)은 자음에 어떤 변화를 줍니까?', answer: '자음을 유성음으로 바꿉니다: か→が, さ→ざ, た→だ, は→ば' },
+      { question: '조사 は는 어떻게 발음합니까?', answer: '조사로 사용될 때 "wa"로 발음합니다 ("ha"가 아님)' },
+      { question: '가타카나 장음 부호는 무엇입니까?', answer: 'ー (가로 대시), 예: ケーキ (keeki = 케이크)' },
+      { question: '이 단어를 읽으세요: ニホン', answer: 'nihon (일본) — ニ(ni) ホ(ho) ン(n)' }
+    ]
+  }
+);
+
+// ─── 함정 1 연습: 기식 ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-aspiration'),
+  {
+    title: '기식 확인',
+    questions: [
+      { prompt: '일본어 か는 한국어 ___에 더 가깝습니다 (ㄱ 또는 ㅋ)?', answer: 'ㄱ', explanation: '일본어 무성 폐쇄음은 무기음이므로 격음(ㅋ)이 아닌 평음(ㄱ)과 같습니다.' },
+      { prompt: '일본어 た는 한국어 ___에 더 가깝습니다 (ㄷ 또는 ㅌ)?', answer: 'ㄷ', explanation: 'た = 무기음이므로 ㄷ과 같습니다. ㅌ는 기류가 너무 강합니다.' },
+      { prompt: '일본어 폐쇄음은 몇 가지 범주가 있습니까? (2 또는 3)', answer: '2', explanation: '일본어는 무성음(か/た/ぱ)과 유성음(が/だ/ば) 2가지뿐입니다. 한국어는 3가지(평음, 격음, 경음)입니다.' }
+    ]
+  }
+);
+
+// ─── 함정 2 연습: 원순 う ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-rounded-u'),
+  {
+    title: 'う vs. 우 확인',
+    questions: [
+      { prompt: '일본어 う는 입술이 ___ 상태로 발음합니다 (원순 또는 비원순)?', answer: '비원순', explanation: '일본어 う는 비원순입니다 — 한국어 우와 달리 입술을 편하고 중립적으로 유지하세요.' },
+      { prompt: '한국어 우는 입술이 ___ 상태로 발음합니다 (원순 또는 비원순)?', answer: '원순', explanation: '한국어 우는 입술을 둥글게 모아야(원순) 합니다. 일본어 う는 그렇지 않습니다.' }
+    ]
+  }
+);
+
+// ─── 함정 3 연습: 장음 ───
+QuizEngine.AudioDiscrimination(
+  document.getElementById('quiz-long-vowels'),
+  {
+    title: '장음 vs. 단음 변별',
+    pairs: [
+      { a: 'おばさん (obasan)', b: 'おばあさん (obaasan)', question: '할머니는 어느 쪽입니까?', answer: 'b', explanation: 'おばあさん의 긴 あ = 할머니. おばさん의 짧은 あ = 아줌마.' },
+      { a: 'ビル (biru)', b: 'ビール (biiru)', question: '맥주는 어느 쪽입니까?', answer: 'b', explanation: 'ビール은 긴 イ (ii)가 있습니다. ビル (짧음) = 빌딩.' },
+      { a: 'え (e)', b: 'ええ (ee)', question: '"네" (비격식 동의)를 표현하는 것은 어느 쪽입니까?', answer: 'b', explanation: 'ええ (ee, 장음) = "네/응". え (e, 단음) = 그림, 또는 놀람의 감탄사.' }
+    ]
+  }
+);
+
+// ─── 함정 4 연습: つ ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-tsu'),
+  {
+    title: 'つ (tsu) 연습',
+    questions: [
+      { prompt: '"달"이라는 단어는 <span class="jp" style="font-size:1.5rem">つき</span>입니다. 로마자를 입력하세요:', answer: 'tsuki', explanation: 'つ(tsu) + き(ki) = tsuki. 기억하세요: t + su가 융합, "chu"나 "su"가 아닙니다.' },
+      { prompt: '"여름"이라는 단어는 <span class="jp" style="font-size:1.5rem">なつ</span>입니다. 로마자를 입력하세요:', answer: 'natsu', explanation: 'な(na) + つ(tsu) = natsu.' },
+      { prompt: '"책상"이라는 단어는 <span class="jp" style="font-size:1.5rem">つくえ</span>입니다. 로마자를 입력하세요:', answer: 'tsukue', explanation: 'つ(tsu) く(ku) え(e) = tsukue.' }
+    ]
+  }
+);
+
+// ─── 함정 5 연습: ふ ───
+QuizEngine.MultipleChoice(
+  document.getElementById('quiz-fu'),
+  {
+    title: 'ふ (fu) 조음법',
+    questions: [
+      {
+        prompt: '일본어 ふ는 어떻게 올바르게 발음합니까?',
+        options: [
+          '윗니가 아랫입술에 닿음 (영어 "f"처럼)',
+          '양 입술을 가까이 모으고 그 사이로 공기를 밀어냄',
+          '혀가 입천장에 닿음',
+          '한국어 후처럼 기식적인 "h"'
+        ],
+        correctIndex: 1,
+        explanation: 'ふ는 양순 마찰음입니다 — 양 입술이 가까이 오고 (닿지 않고) 공기를 밀어냅니다. 이빨은 관여하지 않으며, 한국어 후와도 다릅니다.'
+      },
+      {
+        prompt: 'ふ 발음을 기억하는 데 도움이 되는 기억법은 무엇입니까?',
+        options: [
+          '아랫입술을 살짝 깨물기',
+          '생일 촛불을 부드럽게 끄기',
+          '혀를 이에 대기',
+          '한국어 우처럼 입술을 둥글게 하기'
+        ],
+        correctIndex: 1,
+        explanation: '촛불을 끄면 자연스럽게 ふ의 양순 마찰음이 만들어집니다 — 양 입술을 통한 부드러운 기류.'
+      }
+    ]
+  }
+);
+
+// ─── 함정 6 연습: 고저 악센트 ───
+QuizEngine.AudioDiscrimination(
+  document.getElementById('quiz-pitch'),
+  {
+    title: '고저 악센트 인식',
+    pairs: [
+      { a: 'はし (하-시) — 고-저', b: 'はし (하-시) — 저-고', question: '젓가락을 뜻하는 고저 패턴은 어느 쪽입니까?', answer: 'a', explanation: 'はし의 고-저 (하-시) = 젓가락. 저-고 (하-시) = 다리.' },
+      { a: 'あめ (아-메) — 고-저', b: 'あめ (아-메) — 저-고', question: '비를 뜻하는 고저 패턴은 어느 쪽입니까?', answer: 'a', explanation: 'あめ의 고-저 (아-메) = 비. 저-고 (아-메) = 사탕.' },
+      { a: 'かき (카-키) — 고-저', b: 'かき (카-키) — 저-고', question: '굴을 뜻하는 고저 패턴은 어느 쪽입니까?', answer: 'b', explanation: 'かき의 저-고 (카-키) = 굴. 고-저 (카-키) = 감.' }
+    ]
+  }
+);
+
+// ─── 메인 퀴즈: 최소 쌍 청음 변별 ───
+QuizEngine.AudioDiscrimination(
+  document.getElementById('quiz-audio-minimal'),
+  {
+    title: '최소 쌍 변별',
+    pairs: [
+      { a: 'きて (kite) — 2박', b: 'きって (kitte) — 3박', question: '우표(切手)를 뜻하는 것은 어느 쪽입니까?', answer: 'b', explanation: 'きって (kitte, っ 포함 = 3박) = 우표. きて (kite, 2박) = "와!" 또는 "입고".' },
+      { a: 'おと (oto) — 2박', b: 'おっと (otto) — 3박', question: '남편을 뜻하는 것은 어느 쪽입니까?', answer: 'b', explanation: 'おっと (otto, っ 포함) = 남편. おと (oto) = 소리.' },
+      { a: 'かこ (kako) — 2박', b: 'かっこ (kakko) — 3박', question: '과거(過去)를 뜻하는 것은 어느 쪽입니까?', answer: 'a', explanation: 'かこ (kako, 2박) = 과거. かっこ (kakko, 3박) = 괄호 또는 스타일.' },
+      { a: 'ビル (biru) — 2박', b: 'ビール (biiru) — 3박', question: '빌딩을 뜻하는 것은 어느 쪽입니까?', answer: 'a', explanation: 'ビル (biru, 짧음) = 빌딩. ビール (biiru, 장음) = 맥주.' },
+      { a: 'おじさん (ojisan) — 4박', b: 'おじいさん (ojiisan) — 5박', question: '할아버지를 뜻하는 것은 어느 쪽입니까?', answer: 'b', explanation: 'おじいさん (ojiisan, 긴 い로 5박) = 할아버지. おじさん (ojisan, 4박) = 아저씨.' }
+    ]
+  }
+);
+
+// ─── 발음 규칙 빈칸 채우기 ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-rules-fill'),
+  {
+    title: '발음 규칙',
+    questions: [
+      { prompt: '가타카나에서 장음은 ___(부호 이름)으로 표기합니다', answer: 'dash', acceptAlso: ['ー', 'bar', 'long dash', 'chouon', 'line', '대시', '장음부호'], explanation: '가타카나는 장음에 ー (쵸온)를 사용합니다: コーヒー (koohii = 커피).' },
+      { prompt: '작은 っ는 단어에 몇 박(모라)을 추가합니까?', answer: '1', acceptAlso: ['one', '하나'], explanation: '작은 っ = 무음 한 박. きて (2박) → きって (3박).' },
+      { prompt: '조사 를은 ___로 발음합니다', answer: 'o', explanation: 'を는 "wo"로 쓰지만 현대 일본어에서는 "o"로 발음합니다.' },
+      { prompt: '조사 へ는 ___로 발음합니다', answer: 'e', explanation: 'へ는 방향 조사로 쓸 때 "he"가 아닌 "e"로 발음합니다.' },
+      { prompt: '일본어 모음은 몇 개입니까?', answer: '5', acceptAlso: ['five', '다섯'], explanation: '일본어 모음은 5개: あ(a), い(i), う(u), え(e), お(o). 한국어는 21개!' }
+    ]
+  }
+);
+
+// ─── 함정 식별 객관식 ───
+QuizEngine.MultipleChoice(
+  document.getElementById('quiz-traps-mc'),
+  {
+    title: '함정을 식별하세요',
+    questions: [
+      {
+        prompt: '한국어 화자가 かわいい를 강한 기식과 함께 "크하와이이"라고 발음합니다. 어떤 함정입니까?',
+        options: ['과도한 기식', '원순 う', '장음', '고저 악센트'],
+        correctIndex: 0,
+        explanation: '과도한 기식 (함정 1): 일본어 か에 더 부드러운 ㄱ 대신 ㅋ식 기식을 사용한 것입니다.'
+      },
+      {
+        prompt: '한국어 화자가 すし를 입술을 오므려 "수우시"처럼 발음합니다. 어떤 함정입니까?',
+        options: ['과도한 기식', '원순 う', 'つ 소리', 'ふ 조음'],
+        correctIndex: 1,
+        explanation: '원순 う (함정 2): 한국어 우는 원순이지만, 일본어 う는 편안하고 비원순인 입술이 필요합니다.'
+      },
+      {
+        prompt: '한국어 화자가 おばさん과 おばあさん의 차이를 구별하지 못합니다. 어떤 함정입니까?',
+        options: ['원순 う', 'つ 조음', '장음', '고저 악센트'],
+        correctIndex: 2,
+        explanation: '장음 (함정 3): 모음 길이가 의미를 구별합니다. 현대 한국어는 이 구별을 하지 않습니다.'
+      },
+      {
+        prompt: '한국어 화자가 つき (달)를 "추키"로 발음합니다. 어떤 함정입니까?',
+        options: ['과도한 기식', '장음', 'つ 소리', '고저 악센트'],
+        correctIndex: 2,
+        explanation: 'つ 소리 (함정 4): 한국어에 ts- 초성이 없어서 ㅊ이나 ㅆ로 대체합니다.'
+      },
+      {
+        prompt: '한국어 화자가 ふ를 윗니를 아랫입술에 대고 발음합니다. 어떤 함정입니까?',
+        options: ['과도한 기식', 'ふ 조음', '원순 う', '고저 악센트'],
+        correctIndex: 1,
+        explanation: 'ふ 조음 (함정 5): 일본어 ふ는 양순 마찰음(양 입술)이지, 순치 마찰음(이빨 + 입술)이 아닙니다.'
+      }
+    ]
+  }
+);
+
+// ─── 발음 빠른 복습 플래시카드 ───
+QuizEngine.Flashcard(
+  document.getElementById('quiz-flashcard-pron'),
+  {
+    cards: [
+      { front: '함정 1: 과도한 기식', back: 'ㅋ/ㅌ/ㅍ가 아닌 ㄱ/ㄷ/ㅂ를 사용하세요', detail: '휴지 테스트: か를 말할 때 거의 움직이지 않아야 합니다.' },
+      { front: '함정 2: 원순 う', back: '입술을 편하고 비원순으로 유지하세요', detail: '한국어 우 = 원순. 일본어 う = 게으른 입술.' },
+      { front: '함정 3: 장음', back: '각 가나 = 1박. 장음 = 2박.', detail: 'おばさん (아줌마, 4박) vs. おばあさん (할머니, 5박).' },
+      { front: '함정 4: つ (tsu)', back: 'ㄷ 위치 → す로 풀어내기', detail: '"쓰나미"를 떠올리세요 — 이미 올바르게 발음하고 있습니다!' },
+      { front: '함정 5: ふ (fu)', back: '양순 마찰음 — 양 입술, 이빨 없이', detail: '촛불을 부드럽게 끄세요. 그 부드러운 기류 = ふ.' },
+      { front: '함정 6: 고저 악센트', back: '일본어는 고저 악센트, 강세 악센트가 아닙니다', detail: 'はし: 고-저 = 젓가락, 저-고 = 다리.' },
+      { front: '작은 っ', back: '한 박의 무음 유지', detail: 'きて (2박, 와) vs. きって (3박, 우표).' },
+      { front: '조사 は', back: '"wa"로 발음', detail: 'わたしは = watashi wa, watashi ha가 아닙니다.' },
+      { front: '조사 へ', back: '"e"로 발음', detail: 'がっこうへ = gakkou e, gakkou he가 아닙니다.' },
+      { front: '조사 を', back: '"o"로 발음', detail: 'みずを = mizu o, mizu wo가 아닙니다.' }
+    ]
+  }
+);
+</script>
+<script src="js/spaced-repetition.js"></script>
+<script src="js/memory-palace.js"></script>
+</body>
+</html>

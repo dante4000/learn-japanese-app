@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ch08: 동사 활용 — Zero to Hero 日本語</title>
+<link rel="stylesheet" href="css/design-system.css">
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <span class="logo-badge">Zero to Hero — 기억 설계 에디션</span>
+    <div class="logo-title">한국어 화자를 위한 日本語</div>
+    <div class="logo-sub">한국어에서 日本語로 — 기억 설계자의 안내서</div>
+  </a>
+  <div class="sidebar-progress">
+    <div class="sidebar-progress-label">진행률</div>
+    <div class="sidebar-progress-bar">
+      <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+    </div>
+    <div class="sidebar-progress-count">0/22 완료</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="ch-00.html" class="toc-link"><span class="toc-num">00</span><span class="toc-check" data-ch="00"></span>기억 과학</a>
+    <a href="ch-01.html" class="toc-link"><span class="toc-num">01</span><span class="toc-check" data-ch="01"></span>한국어의 이점</a>
+    <a href="ch-02.html" class="toc-link"><span class="toc-num">02</span><span class="toc-check" data-ch="02"></span>히라가나</a>
+    <a href="ch-03.html" class="toc-link"><span class="toc-num">03</span><span class="toc-check" data-ch="03"></span>가타카나</a>
+    <a href="ch-04.html" class="toc-link"><span class="toc-num">04</span><span class="toc-check" data-ch="04"></span>발음</a>
+    <a href="ch-05.html" class="toc-link"><span class="toc-num">05</span><span class="toc-check" data-ch="05"></span>서바이벌 일본어</a>
+    <a href="ch-06.html" class="toc-link"><span class="toc-num">06</span><span class="toc-check" data-ch="06"></span>조수사</a>
+    <a href="ch-07.html" class="toc-link"><span class="toc-num">07</span><span class="toc-check" data-ch="07"></span>조사</a>
+    <a href="ch-08.html" class="toc-link active"><span class="toc-num">08</span><span class="toc-check" data-ch="08"></span>동사 활용</a>
+    <a href="ch-09.html" class="toc-link"><span class="toc-num">09</span><span class="toc-check" data-ch="09"></span>일상 회화</a>
+    <a href="ch-10.html" class="toc-link"><span class="toc-num">10</span><span class="toc-check" data-ch="10"></span>문형</a>
+    <a href="ch-11.html" class="toc-link"><span class="toc-num">11</span><span class="toc-check" data-ch="11"></span>한자</a>
+    <a href="ch-12.html" class="toc-link"><span class="toc-num">12</span><span class="toc-check" data-ch="12"></span>한자어</a>
+    <a href="ch-13.html" class="toc-link"><span class="toc-num">13</span><span class="toc-check" data-ch="13"></span>고유어</a>
+    <a href="ch-14.html" class="toc-link"><span class="toc-num">14</span><span class="toc-check" data-ch="14"></span>경어</a>
+    <a href="ch-15.html" class="toc-link"><span class="toc-num">15</span><span class="toc-check" data-ch="15"></span>독해</a>
+    <a href="ch-16.html" class="toc-link"><span class="toc-num">16</span><span class="toc-check" data-ch="16"></span>작문</a>
+    <a href="ch-17.html" class="toc-link"><span class="toc-num">17</span><span class="toc-check" data-ch="17"></span>청해</a>
+    <a href="ch-18.html" class="toc-link"><span class="toc-num">18</span><span class="toc-check" data-ch="18"></span>문화 화용론</a>
+    <a href="ch-19.html" class="toc-link"><span class="toc-num">19</span><span class="toc-check" data-ch="19"></span>JLPT와 그 너머</a>
+    <a href="ch-20.html" class="toc-link"><span class="toc-num">20</span><span class="toc-check" data-ch="20"></span>기억의 궁전</a>
+    <a href="ch-21.html" class="toc-link"><span class="toc-num">21</span><span class="toc-check" data-ch="21"></span>90일 스프린트</a>
+    <a href="appendices.html" class="toc-link" style="margin-top:.5rem;border-top:1px solid var(--border);padding-top:.8rem"><span class="toc-num">+</span>부록</a>
+  </nav>
+</aside>
+
+<div class="main">
+<div class="content-wrap">
+
+<section id="ch08" data-ch="08" style="padding-top:3rem">
+<h2><span class="ch-label">제8장</span>동사 활용 -- 같은 시스템, 다른 옷</h2>
+
+<div class="callout memory"><div class="callout-title">기억 기법 스포트라이트: 인터리빙</div><p>동사 그룹을 섞어서 연습하면 더 강한 기억이 형성됩니다.</p></div>
+
+<p>한국어와 일본어는 모두 어간에 접미사를 쌓아 올려 동사를 활용합니다. 여러분은 이미 이 체계를 직관적으로 이해하고 있습니다 -- 한국어에서 <span class="kr">먹다</span>가 <span class="kr">먹습니다</span>, <span class="kr">먹었다</span>, <span class="kr">먹어서</span>, <span class="kr">먹을 수 있다</span>로 변하는 것처럼요. 일본어도 <strong>똑같은 방식</strong>으로 작동합니다. 단지 어미가 다를 뿐입니다.</p>
+
+<div class="pq">
+  "운전할 줄 이미 알고 있습니다. 다만 조작 장치의 배치가 달라진 것뿐입니다."
+</div>
+
+<div class="callout info">
+  <div class="callout-title">핵심 개념</div>
+  <p>한국어에서 활용의 <em>원리</em>를 의식적으로 생각하는 일은 없습니다 -- 그냥 <em>하는</em> 것이죠. 교착어적 체계(어미를 쌓아 올리는 방식)는 이미 여러분의 근육 기억에 저장되어 있습니다. 이 장에서는 일본어 활용 형태를 여러분이 이미 가지고 있는 한국어 체계에 대응시킵니다. 새로운 시스템을 배우는 것이 아니라, <strong>조작 장치에 새 이름표를 붙이는</strong> 것입니다.</p>
+</div>
+
+<!-- ─── RECALL CHECK ─── -->
+<div id="recall-check-top"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 1: ANCHOR VERB 食べる
+     ═══════════════════════════════════════════════════════════════ -->
+<nav class="chapter-toc">
+  <details open>
+    <summary class="chapter-toc-title">이 장의 내용</summary>
+  <ol>
+    <li><a href="#기준-동사-食べる-taberu-먹다">기준 동사: 食べる (taberu) = 먹다</a></li>
+    <li><a href="#세-가지-동사-그룹">세 가지 동사 그룹</a></li>
+    <li><a href="#て형-일본어-활용의-만능-도구">て형: 일본어 활용의 만능 도구</a></li>
+    <li><a href="#실전-연결-이제-왜를-알-수-있습니다">실전 연결: 이제 '왜'를 알 수 있습니다</a></li>
+    <li><a href="#형용사-활용-네-형용사도-활용합니다">형용사 활용: 네, 형용사도 활용합니다</a></li>
+    <li><a href="#연습-문제">연습 문제</a></li>
+  </ol>
+  </details>
+</nav>
+
+<h3 id="기준-동사-食べる-taberu-먹다">기준 동사: 食べる (taberu) = 먹다</h3>
+<p>하나의 동사로 시작하여 모든 형태를 완벽하게 익힙니다. 하나의 동사에서 전체 패턴을 파악하면, 다른 모든 동사는 그 변형에 불과합니다. <span class="jp">食べる</span>를 여러분의 로제타 스톤이라고 생각하십시오.</p>
+
+<h4>완전 활용표: 食べる vs. 먹다</h4>
+<table>
+  <thead>
+    <tr><th>형태</th><th>일본어</th><th>로마자</th><th>한국어</th><th>기능</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>사전형</strong></td>
+      <td class="jp">食べる</td>
+      <td>taberu</td>
+      <td class="kr">먹다</td>
+      <td>반말/일상 현재</td>
+    </tr>
+    <tr>
+      <td><strong>정중형 (masu)</strong></td>
+      <td class="jp">食べます</td>
+      <td>tabemasu</td>
+      <td class="kr">먹습니다 / 먹어요</td>
+      <td>정중 현재/미래</td>
+    </tr>
+    <tr>
+      <td><strong>부정형</strong></td>
+      <td class="jp">食べない</td>
+      <td>tabenai</td>
+      <td class="kr">먹지 않다 / 안 먹다</td>
+      <td>반말 부정</td>
+    </tr>
+    <tr>
+      <td><strong>정중 부정형</strong></td>
+      <td class="jp">食べません</td>
+      <td>tabemasen</td>
+      <td class="kr">먹지 않습니다</td>
+      <td>정중 부정</td>
+    </tr>
+    <tr>
+      <td><strong>과거형</strong></td>
+      <td class="jp">食べた</td>
+      <td>tabeta</td>
+      <td class="kr">먹었다</td>
+      <td>반말 과거</td>
+    </tr>
+    <tr>
+      <td><strong>정중 과거형</strong></td>
+      <td class="jp">食べました</td>
+      <td>tabemashita</td>
+      <td class="kr">먹었습니다</td>
+      <td>정중 과거</td>
+    </tr>
+    <tr>
+      <td><strong>て형</strong></td>
+      <td class="jp">食べて</td>
+      <td>tabete</td>
+      <td class="kr">먹어서 / 먹고</td>
+      <td>접속, 의뢰</td>
+    </tr>
+    <tr>
+      <td><strong>가능형</strong></td>
+      <td class="jp">食べられる</td>
+      <td>taberareru</td>
+      <td class="kr">먹을 수 있다</td>
+      <td>"먹을 수 있다"</td>
+    </tr>
+    <tr>
+      <td><strong>의지형</strong></td>
+      <td class="jp">食べよう</td>
+      <td>tabeyou</td>
+      <td class="kr">먹자</td>
+      <td>"먹자" / 의지</td>
+    </tr>
+    <tr>
+      <td><strong>조건형 (ba)</strong></td>
+      <td class="jp">食べれば</td>
+      <td>tabereba</td>
+      <td class="kr">먹으면</td>
+      <td>"먹으면"</td>
+    </tr>
+    <tr>
+      <td><strong>조건형 (tara)</strong></td>
+      <td class="jp">食べたら</td>
+      <td>tabetara</td>
+      <td class="kr">먹었으면 / 먹으면</td>
+      <td>"먹으면 / 먹었으면"</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout ok">
+  <div class="callout-title">패턴 인식</div>
+  <p>어간 <span class="jp">食べ</span> (tabe)가 모든 형태에서 일정하게 유지되는 것을 주목하십시오. 어미만 변합니다: <strong>-る, -ます, -ない, -た, -て, -られる, -よう, -れば, -たら</strong>. 이것은 한국어에서 <span class="kr">먹</span>을 어간으로 유지하면서 <span class="kr">-다, -습니다, -지 않다, -었다, -어서, -을 수 있다, -자, -으면</span>을 붙이는 것과 동일합니다. 같은 엔진, 다른 연료입니다.</p>
+</div>
+
+<!-- ─── CONJUGATION FLOW DIAGRAM ─── -->
+<div class="diagram">
+  <svg viewBox="0 0 700 350" xmlns="http://www.w3.org/2000/svg">
+    <!-- Center: stem -->
+    <rect x="280" y="140" width="140" height="50" rx="8" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+    <text x="350" y="162" text-anchor="middle" font-size="16" font-weight="700" fill="var(--accent)">食べ (tabe-)</text>
+    <text x="350" y="178" text-anchor="middle" font-size="10" fill="var(--text-muted)">어간</text>
+
+    <!-- Branches -->
+    <!-- Top row -->
+    <line x1="310" y1="140" x2="120" y2="60" stroke="var(--a2)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+    <rect x="30" y="35" width="120" height="40" rx="6" fill="none" stroke="var(--a2)" stroke-width="1.5"/>
+    <text x="90" y="52" text-anchor="middle" font-size="11" fill="var(--a2)">+ る = 食べる</text>
+    <text x="90" y="67" text-anchor="middle" font-size="9" fill="var(--text-muted)">사전형</text>
+
+    <line x1="350" y1="140" x2="350" y2="60" stroke="var(--a2)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+    <rect x="280" y="20" width="140" height="40" rx="6" fill="none" stroke="var(--a2)" stroke-width="1.5"/>
+    <text x="350" y="37" text-anchor="middle" font-size="11" fill="var(--a2)">+ ます = 食べます</text>
+    <text x="350" y="52" text-anchor="middle" font-size="9" fill="var(--text-muted)">정중형</text>
+
+    <line x1="390" y1="140" x2="580" y2="60" stroke="var(--a2)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+    <rect x="510" y="35" width="140" height="40" rx="6" fill="none" stroke="var(--a2)" stroke-width="1.5"/>
+    <text x="580" y="52" text-anchor="middle" font-size="11" fill="var(--a2)">+ ない = 食べない</text>
+    <text x="580" y="67" text-anchor="middle" font-size="9" fill="var(--text-muted)">부정형</text>
+
+    <!-- Bottom row -->
+    <line x1="300" y1="190" x2="80" y2="270" stroke="var(--a3)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+    <rect x="10" y="250" width="130" height="40" rx="6" fill="none" stroke="var(--a3)" stroke-width="1.5"/>
+    <text x="75" y="267" text-anchor="middle" font-size="11" fill="var(--a3)">+ て = 食べて</text>
+    <text x="75" y="282" text-anchor="middle" font-size="9" fill="var(--text-muted)">て형</text>
+
+    <line x1="330" y1="190" x2="230" y2="300" stroke="var(--a3)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+    <rect x="160" y="290" width="140" height="40" rx="6" fill="none" stroke="var(--a3)" stroke-width="1.5"/>
+    <text x="230" y="307" text-anchor="middle" font-size="11" fill="var(--a3)">+ た = 食べた</text>
+    <text x="230" y="322" text-anchor="middle" font-size="9" fill="var(--text-muted)">과거형</text>
+
+    <line x1="370" y1="190" x2="470" y2="300" stroke="var(--a3)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+    <rect x="400" y="290" width="150" height="40" rx="6" fill="none" stroke="var(--a3)" stroke-width="1.5"/>
+    <text x="475" y="307" text-anchor="middle" font-size="11" fill="var(--a3)">+ られる = 食べられる</text>
+    <text x="475" y="322" text-anchor="middle" font-size="9" fill="var(--text-muted)">가능형</text>
+
+    <line x1="400" y1="190" x2="610" y2="270" stroke="var(--a3)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+    <rect x="550" y="250" width="130" height="40" rx="6" fill="none" stroke="var(--a3)" stroke-width="1.5"/>
+    <text x="615" y="267" text-anchor="middle" font-size="11" fill="var(--a3)">+ よう = 食べよう</text>
+    <text x="615" y="282" text-anchor="middle" font-size="9" fill="var(--text-muted)">의지형</text>
+  </svg>
+  <div class="diagram-caption">食べ 어간이 허브입니다. 모든 활용은 다른 접미사를 붙이는 것일 뿐 -- 한국어 먹- 에 다양한 어미를 붙이는 것과 정확히 같습니다.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 2: VERB GROUPS
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="세-가지-동사-그룹">세 가지 동사 그룹</h3>
+<p>일본어 동사는 세 그룹으로 나뉘며, 각 그룹마다 고유한 활용 규칙이 있습니다. 한국어에는 이와 같은 구분이 없으므로, 이 부분은 진정으로 새로운 내용을 배우는 영역입니다. 좋은 소식은, 그룹만 파악하면 활용이 완전히 예측 가능하다는 것입니다.</p>
+
+<!-- Group 2 (ichidan) -->
+<h4>그룹 2 -- 이치단 (一段): "한 단계"</h4>
+<div class="card">
+  <p><strong>규칙:</strong> <span class="jp">る</span>를 떼고 어미를 붙입니다. 그게 전부입니다. 한 단계.</p>
+  <p><strong>판별법:</strong> 동사가 <span class="jp">-いる</span> 또는 <span class="jp">-える</span>로 끝납니다 (일부 예외 있음).</p>
+  <p style="font-size:.88rem;color:var(--text-muted)">한국어 대응: 어간이 절대 변하지 않는 한국어 동사를 생각해 보십시오 -- 예를 들어 <span class="kr">가다 → 가요, 갑니다, 갔다</span>처럼요. <span class="kr">가</span>가 그대로 유지됩니다. 이치단 동사도 같은 방식으로 작동합니다.</p>
+
+  <table>
+    <thead>
+      <tr><th>동사</th><th>의미</th><th>어간</th><th>정중형</th><th>부정형</th><th>て형</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="jp">食べる</td><td>먹다</td><td class="jp">食べ</td>
+        <td class="jp">食べます</td><td class="jp">食べない</td><td class="jp">食べて</td>
+      </tr>
+      <tr>
+        <td class="jp">見る</td><td>보다</td><td class="jp">見</td>
+        <td class="jp">見ます</td><td class="jp">見ない</td><td class="jp">見て</td>
+      </tr>
+      <tr>
+        <td class="jp">起きる</td><td>일어나다</td><td class="jp">起き</td>
+        <td class="jp">起きます</td><td class="jp">起きない</td><td class="jp">起きて</td>
+      </tr>
+      <tr>
+        <td class="jp">教える</td><td>가르치다</td><td class="jp">教え</td>
+        <td class="jp">教えます</td><td class="jp">教えない</td><td class="jp">教えて</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout ok">
+    <div class="callout-title">기억법</div>
+    <p>"<strong>이치단 = 한 단계, 한 번 자르기.</strong>" 한 번만 자르고 (る를 떼고) 새 어미를 붙이면 됩니다. 어간 변화도 없고 함정도 없습니다. 가장 쉬운 그룹입니다.</p>
+  </div>
+</div>
+
+<!-- Group 1 (godan) -->
+<h4>그룹 1 -- 고단 (五段): "다섯 단계"</h4>
+<div class="card">
+  <p><strong>규칙:</strong> 어간의 마지막 자음이 다섯 모음행 (あ段, い段, う段, え段, お段)을 넘나들며 <strong>변화</strong>합니다. 그래서 "다섯 단계"입니다.</p>
+  <p><strong>판별법:</strong> <span class="jp">-いる</span>이나 <span class="jp">-える</span>로 끝나지 않는 대부분의 동사입니다. 다만 일부 -いる/-える 동사가 실제로는 고단인 경우도 있습니다 (주의!).</p>
+
+  <table>
+    <thead>
+      <tr><th>동사</th><th>의미</th><th>う행 (사전형)</th><th>い행 (ます형)</th><th>あ행 (부정형)</th><th>て형</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="jp">飲む</td><td>마시다</td>
+        <td class="jp">飲<strong>む</strong></td><td class="jp">飲<strong>み</strong>ます</td>
+        <td class="jp">飲<strong>ま</strong>ない</td><td class="jp">飲<strong>んで</strong></td>
+      </tr>
+      <tr>
+        <td class="jp">書く</td><td>쓰다</td>
+        <td class="jp">書<strong>く</strong></td><td class="jp">書<strong>き</strong>ます</td>
+        <td class="jp">書<strong>か</strong>ない</td><td class="jp">書<strong>いて</strong></td>
+      </tr>
+      <tr>
+        <td class="jp">話す</td><td>말하다</td>
+        <td class="jp">話<strong>す</strong></td><td class="jp">話<strong>し</strong>ます</td>
+        <td class="jp">話<strong>さ</strong>ない</td><td class="jp">話<strong>して</strong></td>
+      </tr>
+      <tr>
+        <td class="jp">行く</td><td>가다</td>
+        <td class="jp">行<strong>く</strong></td><td class="jp">行<strong>き</strong>ます</td>
+        <td class="jp">行<strong>か</strong>ない</td><td class="jp">行<strong>って</strong></td>
+      </tr>
+      <tr>
+        <td class="jp">待つ</td><td>기다리다</td>
+        <td class="jp">待<strong>つ</strong></td><td class="jp">待<strong>ち</strong>ます</td>
+        <td class="jp">待<strong>た</strong>ない</td><td class="jp">待<strong>って</strong></td>
+      </tr>
+      <tr>
+        <td class="jp">読む</td><td>읽다</td>
+        <td class="jp">読<strong>む</strong></td><td class="jp">読<strong>み</strong>ます</td>
+        <td class="jp">読<strong>ま</strong>ない</td><td class="jp">読<strong>んで</strong></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Godan vowel-row diagram -->
+<div class="diagram">
+  <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg">
+    <!-- Five columns -->
+    <text x="350" y="25" text-anchor="middle" font-size="14" font-weight="600" fill="var(--heading)">고단 동사의 다섯 모음행 (飲む를 예로)</text>
+
+    <!-- Row labels -->
+    <rect x="60" y="55" width="100" height="50" rx="8" fill="none" stroke="var(--a2)" stroke-width="2"/>
+    <text x="110" y="75" text-anchor="middle" font-size="12" font-weight="600" fill="var(--a2)">あ段</text>
+    <text x="110" y="95" text-anchor="middle" font-size="11" fill="var(--text-muted)">飲ま (부정)</text>
+
+    <rect x="180" y="55" width="100" height="50" rx="8" fill="none" stroke="var(--a3)" stroke-width="2"/>
+    <text x="230" y="75" text-anchor="middle" font-size="12" font-weight="600" fill="var(--a3)">い段</text>
+    <text x="230" y="95" text-anchor="middle" font-size="11" fill="var(--text-muted)">飲み (ます형)</text>
+
+    <rect x="300" y="55" width="100" height="50" rx="8" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+    <text x="350" y="75" text-anchor="middle" font-size="12" font-weight="700" fill="var(--accent)">う段</text>
+    <text x="350" y="95" text-anchor="middle" font-size="11" fill="var(--accent)">飲む (사전형)</text>
+
+    <rect x="420" y="55" width="100" height="50" rx="8" fill="none" stroke="var(--a2)" stroke-width="2"/>
+    <text x="470" y="75" text-anchor="middle" font-size="12" font-weight="600" fill="var(--a2)">え段</text>
+    <text x="470" y="95" text-anchor="middle" font-size="11" fill="var(--text-muted)">飲め (가능형)</text>
+
+    <rect x="540" y="55" width="100" height="50" rx="8" fill="none" stroke="var(--a2)" stroke-width="2"/>
+    <text x="590" y="75" text-anchor="middle" font-size="12" font-weight="600" fill="var(--a2)">お段</text>
+    <text x="590" y="95" text-anchor="middle" font-size="11" fill="var(--text-muted)">飲も (의지형)</text>
+
+    <!-- Connecting arrows -->
+    <line x1="160" y1="80" x2="178" y2="80" stroke="var(--border)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+    <line x1="280" y1="80" x2="298" y2="80" stroke="var(--border)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+    <line x1="400" y1="80" x2="418" y2="80" stroke="var(--border)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+    <line x1="520" y1="80" x2="538" y2="80" stroke="var(--border)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+    <!-- Bottom: the consonant -->
+    <text x="350" y="140" text-anchor="middle" font-size="12" fill="var(--text-muted)">자음 <strong>m</strong>은 그대로 유지됩니다. 모음만 변합니다: ま み む め も</text>
+    <text x="350" y="165" text-anchor="middle" font-size="11" fill="var(--a3)">한국어 대응: 먹다의 어간 먹도 변하지 않습니다 -- 다만 한국어는 이런 식으로 모음을 변화시키지 않습니다.</text>
+    <text x="350" y="185" text-anchor="middle" font-size="11" fill="var(--text-muted)">이 모음 변화 패턴은 한국어 화자에게 진정으로 새로운 개념입니다.</text>
+  </svg>
+  <div class="diagram-caption">고단 동사는 다섯 모음행을 "걸어" 다닙니다. 패턴을 파악하면 자동으로 됩니다.</div>
+</div>
+
+<!-- Group 3 (irregular) -->
+<h4>그룹 3 -- 불규칙: 단 두 개의 동사</h4>
+<div class="card">
+  <p><strong>일본어에는 불규칙 동사가 단 두 개뿐입니다.</strong> 그게 전부입니다. 딱 두 개만 외우면 됩니다.</p>
+
+  <table>
+    <thead>
+      <tr><th>형태</th><th class="jp">する (하다)</th><th>한국어</th><th class="jp">来る/くる (오다)</th><th>한국어</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>사전형</td><td class="jp">する</td><td class="kr">하다</td><td class="jp">来る (くる)</td><td class="kr">오다</td></tr>
+      <tr><td>정중형</td><td class="jp">します</td><td class="kr">합니다</td><td class="jp">来ます (きます)</td><td class="kr">옵니다</td></tr>
+      <tr><td>부정형</td><td class="jp">しない</td><td class="kr">하지 않다</td><td class="jp">来ない (こない)</td><td class="kr">오지 않다</td></tr>
+      <tr><td>과거형</td><td class="jp">した</td><td class="kr">했다</td><td class="jp">来た (きた)</td><td class="kr">왔다</td></tr>
+      <tr><td>て형</td><td class="jp">して</td><td class="kr">해서/하고</td><td class="jp">来て (きて)</td><td class="kr">와서/오고</td></tr>
+      <tr><td>가능형</td><td class="jp">できる</td><td class="kr">할 수 있다</td><td class="jp">来られる (こられる)</td><td class="kr">올 수 있다</td></tr>
+      <tr><td>의지형</td><td class="jp">しよう</td><td class="kr">하자</td><td class="jp">来よう (こよう)</td><td class="kr">오자</td></tr>
+      <tr><td>조건형</td><td class="jp">すれば</td><td class="kr">하면</td><td class="jp">来れば (くれば)</td><td class="kr">오면</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout info">
+    <div class="callout-title">한국어와의 연결</div>
+    <p><span class="jp">する</span>는 일본어의 <span class="kr">하다</span>입니다. 한국어에서 명사에 하다를 붙여 동사를 만드는 것처럼 (<span class="kr">勉強하다</span> = 공부하다), 일본어에서는 する를 붙입니다: <span class="jp">勉強する</span> (benkyou suru). 패턴이 <strong>동일</strong>합니다. 또한 <span class="jp">来る</span>는 읽기가 변합니다: くる → きます → こない. 한자는 그대로지만 읽기가 달라집니다. 이것이 유일하게 예측 불가능한 부분입니다.</p>
+  </div>
+</div>
+
+<div class="callout warn">
+  <div class="callout-title">심화 질문</div>
+  <p><strong>왜 일본어에는 불규칙 동사가 2개뿐인데, 한국어에는 불규칙 패턴이 더 많을까요 (ㅂ불규칙, ㄷ불규칙, ㅎ불규칙 등)?</strong></p>
+  <p>일본어의 불규칙성이 する와 来る에만 집중되어 있는 것은, 역사적으로 대부분의 동사가 고단/이치단 체계로 규칙화되었기 때문입니다. 한국어는 중세 한국어에서 더 많은 어간 변화 패턴을 유지했습니다. 여러분에게 좋은 소식입니다 -- 일본어의 불규칙성은 한국어에서 이미 다루고 있는 것보다 훨씬 단순합니다.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 3: TE-FORM (CRITICAL)
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="て형-일본어-활용의-만능-도구">て형: 일본어 활용의 만능 도구</h3>
+<p>て형은 반드시 마스터해야 할 가장 중요한 활용 형태입니다. 문장을 연결하고, 요청을 하고, 진행 중인 동작을 묘사하고, 허가를 부여하는 등 다양한 기능을 합니다. 이치단 동사와 불규칙 동사는 간단합니다. 고단 동사는 사전형의 마지막 가나에 따라 어미가 달라집니다.</p>
+
+<h4>고단 동사의 て형 규칙</h4>
+<table>
+  <thead>
+    <tr><th>사전형 어미</th><th>て형 변화</th><th>예시</th><th>て형</th><th>기억 그룹</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="jp">う, つ, る</td>
+      <td class="jp">→ って</td>
+      <td class="jp">買う, 待つ, 帰る</td>
+      <td class="jp">買って, 待って, 帰って</td>
+      <td><strong>U-TSU-RU</strong></td>
+    </tr>
+    <tr>
+      <td class="jp">む, ぶ, ぬ</td>
+      <td class="jp">→ んで</td>
+      <td class="jp">飲む, 遊ぶ, 死ぬ</td>
+      <td class="jp">飲んで, 遊んで, 死んで</td>
+      <td><strong>M-B-N</strong></td>
+    </tr>
+    <tr>
+      <td class="jp">く</td>
+      <td class="jp">→ いて</td>
+      <td class="jp">書く</td>
+      <td class="jp">書いて</td>
+      <td><strong>K</strong></td>
+    </tr>
+    <tr>
+      <td class="jp">ぐ</td>
+      <td class="jp">→ いで</td>
+      <td class="jp">泳ぐ</td>
+      <td class="jp">泳いで</td>
+      <td><strong>G</strong></td>
+    </tr>
+    <tr>
+      <td class="jp">す</td>
+      <td class="jp">→ して</td>
+      <td class="jp">話す</td>
+      <td class="jp">話して</td>
+      <td><strong>S</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout warn">
+  <div class="callout-title">예외 주의</div>
+  <p><span class="jp">行く</span> (iku = 가다)는 K 규칙을 깨는 유일한 고단 동사입니다. <span class="jp">行いて</span>가 아니라 <span class="jp">行って</span> (itte)가 됩니다. 이 하나의 예외만 외우면 됩니다.</p>
+</div>
+
+<h4>て형 노래 -- 암기 보조</h4>
+<div class="card" style="text-align:center;padding:2rem">
+  <h4 style="color:var(--accent);margin-bottom:1rem">て형 노래</h4>
+  <p style="font-size:1.1rem;line-height:2;font-family:var(--serif)">
+    <span class="jp" style="color:var(--a2)">う、つ、る</span> &rarr; <span class="jp" style="color:var(--accent)">って</span><br>
+    <span class="jp" style="color:var(--a2)">む、ぶ、ぬ</span> &rarr; <span class="jp" style="color:var(--accent)">んで</span><br>
+    <span class="jp" style="color:var(--a2)">く</span> &rarr; <span class="jp" style="color:var(--accent)">いて</span>
+    &nbsp;&nbsp;
+    <span class="jp" style="color:var(--a2)">ぐ</span> &rarr; <span class="jp" style="color:var(--accent)">いで</span><br>
+    <span class="jp" style="color:var(--a2)">す</span> &rarr; <span class="jp" style="color:var(--accent)">して</span><br>
+  </p>
+  <p style="font-size:.88rem;color:var(--text-muted);margin-top:1rem">노래하고, 외치고, 문신으로 새기십시오. 이 패턴 하나면 모든 고단 동사의 て형을 커버합니다. 자동화될 때까지 반복하십시오.</p>
+  <p style="font-size:.85rem;color:var(--a3);margin-top:.5rem"><strong>리듬 기억법:</strong> "U-tsu-ru って! Mu-bu-nu んで! Ku いて, gu いで, su して!" (화살표마다 손뼉을 치세요.)</p>
+</div>
+
+<!-- Te-form mnemonic SVG -->
+<div class="diagram">
+  <svg viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg">
+    <text x="350" y="25" text-anchor="middle" font-size="14" font-weight="600" fill="var(--heading)">て형 맵: 사전형 어미 &rarr; て형</text>
+
+    <!-- Group 1: U-TSU-RU -->
+    <rect x="30" y="50" width="180" height="70" rx="10" fill="none" stroke="var(--accent)" stroke-width="2"/>
+    <text x="120" y="72" text-anchor="middle" font-size="13" font-weight="600" fill="var(--accent)">う つ る</text>
+    <text x="120" y="92" text-anchor="middle" font-size="18" font-weight="700" fill="var(--a3)">→ って</text>
+    <text x="120" y="112" text-anchor="middle" font-size="9" fill="var(--text-muted)">買う→買って 待つ→待って</text>
+
+    <!-- Group 2: M-B-N -->
+    <rect x="260" y="50" width="180" height="70" rx="10" fill="none" stroke="var(--accent)" stroke-width="2"/>
+    <text x="350" y="72" text-anchor="middle" font-size="13" font-weight="600" fill="var(--accent)">む ぶ ぬ</text>
+    <text x="350" y="92" text-anchor="middle" font-size="18" font-weight="700" fill="var(--a3)">→ んで</text>
+    <text x="350" y="112" text-anchor="middle" font-size="9" fill="var(--text-muted)">飲む→飲んで 遊ぶ→遊んで</text>
+
+    <!-- Group 3: K -->
+    <rect x="490" y="50" width="180" height="70" rx="10" fill="none" stroke="var(--accent)" stroke-width="2"/>
+    <text x="580" y="72" text-anchor="middle" font-size="13" font-weight="600" fill="var(--accent)">く</text>
+    <text x="580" y="92" text-anchor="middle" font-size="18" font-weight="700" fill="var(--a3)">→ いて</text>
+    <text x="580" y="112" text-anchor="middle" font-size="9" fill="var(--text-muted)">書く→書いて (예외: 行く→行って)</text>
+
+    <!-- Group 4: G -->
+    <rect x="100" y="170" width="180" height="70" rx="10" fill="none" stroke="var(--a2)" stroke-width="2"/>
+    <text x="190" y="192" text-anchor="middle" font-size="13" font-weight="600" fill="var(--a2)">ぐ</text>
+    <text x="190" y="212" text-anchor="middle" font-size="18" font-weight="700" fill="var(--a3)">→ いで</text>
+    <text x="190" y="232" text-anchor="middle" font-size="9" fill="var(--text-muted)">泳ぐ→泳いで 脱ぐ→脱いで</text>
+
+    <!-- Group 5: S -->
+    <rect x="400" y="170" width="180" height="70" rx="10" fill="none" stroke="var(--a2)" stroke-width="2"/>
+    <text x="490" y="192" text-anchor="middle" font-size="13" font-weight="600" fill="var(--a2)">す</text>
+    <text x="490" y="212" text-anchor="middle" font-size="18" font-weight="700" fill="var(--a3)">→ して</text>
+    <text x="490" y="232" text-anchor="middle" font-size="9" fill="var(--text-muted)">話す→話して 出す→出して</text>
+
+    <!-- Bottom note -->
+    <text x="350" y="280" text-anchor="middle" font-size="11" fill="var(--text-muted)">이치단 동사: る를 떼고 て를 붙임 (食べる→食べて). 불규칙: する→して, 来る→きて.</text>
+  </svg>
+  <div class="diagram-caption">て형 맵. 고단 동사 5그룹, 이치단 1규칙, 불규칙 2개 암기. 이것으로 일본어의 모든 동사를 커버합니다.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 4: PRACTICAL CONNECTION TO CH05
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="실전-연결-이제-왜를-알-수-있습니다">실전 연결: 이제 '왜'를 알 수 있습니다</h3>
+<p>제5장에서는 문법을 모른 채 서바이벌 표현을 통째로 사용했습니다. 이제 그 뒤에 숨겨진 구조를 볼 수 있습니다.</p>
+
+<div class="card">
+  <h4 style="color:var(--accent)">て형으로 제5장 표현 해부하기</h4>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+    <div>
+      <p style="font-size:1.1rem;margin-bottom:.3rem"><span class="jp">止めてください</span></p>
+      <p style="font-size:.82rem;color:var(--text-muted)">tomete kudasai = "세워 주세요"</p>
+      <p style="font-size:.88rem"><span class="jp">止める</span> (이치단, "멈추다") &rarr; る를 떼기 &rarr; <span class="jp">止め</span> + <span class="jp">て</span> = <span class="jp">止めて</span><br>+ <span class="jp">ください</span> = "~해 주세요"</p>
+      <p style="font-size:.82rem;color:var(--a3)"><span class="kr">세우다 → 세워 + 주세요 = 세워주세요</span> -- 같은 패턴!</p>
+    </div>
+    <div>
+      <p style="font-size:1.1rem;margin-bottom:.3rem"><span class="jp">曲がってください</span></p>
+      <p style="font-size:.82rem;color:var(--text-muted)">magatte kudasai = "돌아 주세요"</p>
+      <p style="font-size:.88rem"><span class="jp">曲がる</span> (고단, U-TSU-RU 그룹) &rarr; る → <span class="jp">って</span> = <span class="jp">曲がって</span><br>+ <span class="jp">ください</span> = "~해 주세요"</p>
+      <p style="font-size:.82rem;color:var(--a3)"><span class="kr">돌다 → 돌아 + 주세요 = 돌아주세요</span></p>
+    </div>
+  </div>
+  <div style="margin-top:1.5rem;display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+    <div>
+      <p style="font-size:1.1rem;margin-bottom:.3rem"><span class="jp">見せてください</span></p>
+      <p style="font-size:.82rem;color:var(--text-muted)">misete kudasai = "보여 주세요"</p>
+      <p style="font-size:.88rem"><span class="jp">見せる</span> (이치단) &rarr; る를 떼기 &rarr; <span class="jp">見せ</span> + <span class="jp">て</span> = <span class="jp">見せて</span><br>+ <span class="jp">ください</span> = "~해 주세요"</p>
+    </div>
+    <div>
+      <p style="font-size:1.1rem;margin-bottom:.3rem"><span class="jp">書いてください</span></p>
+      <p style="font-size:.82rem;color:var(--text-muted)">kaite kudasai = "써 주세요"</p>
+      <p style="font-size:.88rem"><span class="jp">書く</span> (고단, K 그룹) &rarr; く → <span class="jp">いて</span> = <span class="jp">書いて</span><br>+ <span class="jp">ください</span> = "~해 주세요"</p>
+    </div>
+  </div>
+
+  <p style="margin-top:1.5rem;font-size:.92rem;color:var(--a3);text-align:center"><strong>て형 + ください = 정중한 요청.</strong> 이것이 て형의 가장 중요한 실용적 쓰임이며, 제5장부터 이미 사용해 왔습니다.</p>
+</div>
+
+<div class="callout ok">
+  <div class="callout-title">만능 요청 공식</div>
+  <p><strong>[동사 て형] + ください</strong> = "~해 주세요." 이것은 한국어의 <strong>[동사 해/아/어형] + 주세요</strong>에 완벽하게 대응합니다. 구조가 동일합니다 -- 구체적인 형태만 다릅니다.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 5: ADJECTIVE SYSTEM
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="형용사-활용-네-형용사도-활용합니다">형용사 활용: 네, 형용사도 활용합니다</h3>
+<p>한국어에서 형용사는 동사처럼 활용됩니다 (<span class="kr">덥다 → 더워요 → 더웠어요</span>). 일본어도 같은 방식입니다 -- 다만 형용사를 서로 다른 규칙을 따르는 두 가지 유형으로 나눕니다.</p>
+
+<!-- い-adjectives -->
+<h4>い형용사: い를 가지고 있습니다</h4>
+<div class="card">
+  <p><strong>규칙:</strong> 마지막 <span class="jp">い</span>를 떼고 어미를 붙입니다.</p>
+
+  <table>
+    <thead>
+      <tr><th>형태</th><th class="jp">暑い (atsui = 덥다)</th><th class="jp">高い (takai = 비싸다/높다)</th><th>한국어 대응</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>현재</td><td class="jp">暑い</td><td class="jp">高い</td><td class="kr">덥다 / 비싸다</td></tr>
+      <tr><td>부정</td><td class="jp">暑<strong>くない</strong></td><td class="jp">高<strong>くない</strong></td><td class="kr">덥지 않다 / 비싸지 않다</td></tr>
+      <tr><td>과거</td><td class="jp">暑<strong>かった</strong></td><td class="jp">高<strong>かった</strong></td><td class="kr">더웠다 / 비쌌다</td></tr>
+      <tr><td>과거 부정</td><td class="jp">暑<strong>くなかった</strong></td><td class="jp">高<strong>くなかった</strong></td><td class="kr">덥지 않았다</td></tr>
+      <tr><td>て형</td><td class="jp">暑<strong>くて</strong></td><td class="jp">高<strong>くて</strong></td><td class="kr">더워서 / 비싸서</td></tr>
+      <tr><td>부사형</td><td class="jp">暑<strong>く</strong></td><td class="jp">高<strong>く</strong></td><td class="kr">덥게 / 비싸게</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout warn">
+    <div class="callout-title">예외: いい (좋다)</div>
+    <p><span class="jp">いい</span> (좋다)는 불규칙입니다. 활용형에서는 <span class="jp">よ-</span>를 어간으로 사용합니다: <span class="jp">よくない</span> (좋지 않다), <span class="jp">よかった</span> (좋았다), <span class="jp">よくなかった</span> (좋지 않았다). 사전형은 いい이지만, 그 외 모든 형태는 よ-를 사용합니다.</p>
+  </div>
+</div>
+
+<!-- な-adjectives -->
+<h4>な형용사: な가 필요합니다</h4>
+<div class="card">
+  <p><strong>규칙:</strong> 명사처럼 작동합니다. 명사 앞에서는 <span class="jp">な</span>를 붙이고, 활용 시에는 <span class="jp">だ/じゃない/だった/じゃなかった</span>를 사용합니다.</p>
+
+  <table>
+    <thead>
+      <tr><th>형태</th><th class="jp">静か (shizuka = 조용하다)</th><th class="jp">元気 (genki = 건강하다/잘 지내다)</th><th>한국어 대응</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>현재</td><td class="jp">静か<strong>だ</strong></td><td class="jp">元気<strong>だ</strong></td><td class="kr">조용하다 / 건강하다</td></tr>
+      <tr><td>명사 수식</td><td class="jp">静か<strong>な</strong>部屋</td><td class="jp">元気<strong>な</strong>人</td><td class="kr">조용<strong>한</strong> 방 / 건강<strong>한</strong> 사람</td></tr>
+      <tr><td>부정</td><td class="jp">静か<strong>じゃない</strong></td><td class="jp">元気<strong>じゃない</strong></td><td class="kr">조용하지 않다</td></tr>
+      <tr><td>과거</td><td class="jp">静か<strong>だった</strong></td><td class="jp">元気<strong>だった</strong></td><td class="kr">조용했다</td></tr>
+      <tr><td>과거 부정</td><td class="jp">静か<strong>じゃなかった</strong></td><td class="jp">元気<strong>じゃなかった</strong></td><td class="kr">조용하지 않았다</td></tr>
+      <tr><td>て형</td><td class="jp">静か<strong>で</strong></td><td class="jp">元気<strong>で</strong></td><td class="kr">조용해서 / 조용하고</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="card" style="text-align:center;padding:1.5rem">
+  <h4 style="color:var(--accent);margin-bottom:1rem">기억법: い vs. な</h4>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem">
+    <div>
+      <p style="font-size:1.5rem;color:var(--a2)"><span class="jp">暑<strong>い</strong></span></p>
+      <p style="font-size:.95rem"><strong>い형용사는 い를 가지고 있습니다.</strong></p>
+      <p style="font-size:.85rem;color:var(--text-muted)">い가 내장되어 있습니다. い를 교체하여 활용합니다.</p>
+    </div>
+    <div>
+      <p style="font-size:1.5rem;color:var(--a3)"><span class="jp">静か<strong>な</strong></span></p>
+      <p style="font-size:.95rem"><strong>な형용사는 な가 필요합니다.</strong></p>
+      <p style="font-size:.85rem;color:var(--text-muted)">무언가 빠져 있어서 -- 명사를 수식하려면 な가 필요합니다.</p>
+    </div>
+  </div>
+  <p style="margin-top:1rem;font-size:.88rem;color:var(--text-muted)">"い를 가지고 있다" vs. "な가 필요하다" -- 이 하나의 기억법으로 모든 형용사를 분류할 수 있습니다.</p>
+</div>
+
+<!-- Adjective mnemonic SVG -->
+<div class="diagram">
+  <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg">
+    <text x="350" y="25" text-anchor="middle" font-size="14" font-weight="600" fill="var(--heading)">형용사 활용 비교</text>
+
+    <!-- い-adj column -->
+    <rect x="40" y="45" width="280" height="160" rx="10" fill="none" stroke="var(--a2)" stroke-width="2"/>
+    <text x="180" y="68" text-anchor="middle" font-size="13" font-weight="600" fill="var(--a2)">い형용사 (い를 가지고 있음)</text>
+    <text x="180" y="92" text-anchor="middle" font-size="11" fill="var(--text-muted)">暑い → 暑くない → 暑かった</text>
+    <text x="180" y="112" text-anchor="middle" font-size="11" fill="var(--text-muted)">高い → 高くない → 高かった</text>
+    <text x="180" y="132" text-anchor="middle" font-size="11" fill="var(--text-muted)">おいしい → おいしくない → おいしかった</text>
+    <text x="180" y="162" text-anchor="middle" font-size="10" font-weight="500" fill="var(--a2)">패턴: い를 떼고 くない / かった를 붙임</text>
+    <text x="180" y="182" text-anchor="middle" font-size="10" fill="var(--a2)">스스로 활용합니다</text>
+
+    <!-- な-adj column -->
+    <rect x="380" y="45" width="280" height="160" rx="10" fill="none" stroke="var(--a3)" stroke-width="2"/>
+    <text x="520" y="68" text-anchor="middle" font-size="13" font-weight="600" fill="var(--a3)">な형용사 (な가 필요함)</text>
+    <text x="520" y="92" text-anchor="middle" font-size="11" fill="var(--text-muted)">静かだ → 静かじゃない → 静かだった</text>
+    <text x="520" y="112" text-anchor="middle" font-size="11" fill="var(--text-muted)">元気だ → 元気じゃない → 元気だった</text>
+    <text x="520" y="132" text-anchor="middle" font-size="11" fill="var(--text-muted)">きれいだ → きれいじゃない → きれいだった</text>
+    <text x="520" y="162" text-anchor="middle" font-size="10" font-weight="500" fill="var(--a3)">패턴: じゃない / だった를 붙임 (명사와 동일)</text>
+    <text x="520" y="182" text-anchor="middle" font-size="10" fill="var(--a3)">명사식 활용을 빌려 씁니다</text>
+  </svg>
+  <div class="diagram-caption">두 가지 형용사 유형, 두 가지 패턴. い형용사는 내부적으로 활용되고, な형용사는 명사식 어미를 사용합니다. 한국어 화자 여러분: な형용사는 하다형 형용사 (조용하다, 건강하다)와 같습니다.</div>
+</div>
+
+<div class="callout warn">
+  <div class="callout-title">심화 질문</div>
+  <p><strong>왜 일본어는 형용사를 두 그룹으로 나누는데, 한국어는 통합된 형용사 활용 체계를 사용할까요?</strong></p>
+  <p>일본어 い형용사는 고대 일본어 고유 형용사 (形容詞)에서 유래했고, な형용사는 명사에 지정사가 결합된 형태 (形容動詞)에서 발전했습니다. 한국어 형용사는 출처에 관계없이 모두 동사식으로 활용됩니다. 일본어의 이 구분은 역사적 유물입니다 -- 하지만 な형용사가 한국어 <span class="kr">하다</span>형 형용사 (조용하다 = 静かだ)와 거의 동일하게 작동한다는 점에 주목하십시오. 처음 보이는 것보다 대응이 훨씬 더 정확합니다.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     INTERACTIVE EXERCISES
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="연습-문제">연습 문제</h3>
+
+<!-- Quiz 1: FillBlank — conjugation exercises -->
+<div id="quiz-conjugation-fill"></div>
+
+<!-- Quiz 2: DragMatch — dictionary to te-form -->
+<div id="quiz-teform-match"></div>
+
+<!-- Quiz 3: SentenceBuilder — conjugated verb sentences -->
+<div id="quiz-sentence-builder"></div>
+
+<!-- Quiz 4: RecallCheck from Ch05-06 -->
+<div id="quiz-recall-check"></div>
+
+<!-- Quiz 5: Multiple Choice — verb groups & adjective types -->
+<div id="quiz-verb-groups"></div>
+
+<!-- Mark as Complete -->
+<button class="chapter-complete" data-ch="08">완료로 표시 &#10003;</button>
+
+<div style="display:flex;justify-content:space-between;margin:2rem 0">
+  <a href="ch-07.html" class="quiz-btn secondary">&larr; 제8장: 조사</a>
+  <a href="ch-09.html" class="quiz-btn">다음: 제10장 -- 일상 회화 &rarr;</a>
+</div>
+
+</section>
+
+</div>
+
+
+</div>
+
+<footer>
+  <p>Zero to Hero: 한국어 화자를 위한 日本語 &middot; 제8장</p>
+</footer>
+
+<script src="js/shared.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/quiz-engine.js"></script>
+<script>
+// ─── Quiz 1: FillBlank — 활용 연습 ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-conjugation-fill'),
+  {
+    title: '활용 연습',
+    questions: [
+      {
+        prompt: '정중형으로 변환하세요: <span class="jp">食べる</span> (먹다) → ___',
+        answer: '食べます',
+        acceptAlso: ['たべます'],
+        korean: '먹다 → 먹습니다',
+        explanation: '이치단: る를 떼고 ます를 붙임 → 食べます'
+      },
+      {
+        prompt: 'て형으로 변환하세요: <span class="jp">飲む</span> (마시다) → ___',
+        answer: '飲んで',
+        acceptAlso: ['のんで'],
+        korean: '마시다 → 마셔서',
+        explanation: '고단 M-B-N 그룹: む → んで → 飲んで'
+      },
+      {
+        prompt: 'て형으로 변환하세요: <span class="jp">書く</span> (쓰다) → ___',
+        answer: '書いて',
+        acceptAlso: ['かいて'],
+        korean: '쓰다 → 써서',
+        explanation: '고단 K 그룹: く → いて → 書いて'
+      },
+      {
+        prompt: '부정형으로 변환하세요: <span class="jp">見る</span> (보다) → ___',
+        answer: '見ない',
+        acceptAlso: ['みない'],
+        korean: '보다 → 보지 않다',
+        explanation: '이치단: る를 떼고 ない를 붙임 → 見ない'
+      },
+      {
+        prompt: '과거형으로 변환하세요: <span class="jp">する</span> (하다) → ___',
+        answer: 'した',
+        korean: '하다 → 했다',
+        explanation: '불규칙: する → した (그냥 외우세요)'
+      },
+      {
+        prompt: 'て형으로 변환하세요: <span class="jp">話す</span> (말하다) → ___',
+        answer: '話して',
+        acceptAlso: ['はなして'],
+        korean: '말하다 → 말해서',
+        explanation: '고단 S 그룹: す → して → 話して'
+      },
+      {
+        prompt: '부정형으로 변환하세요: <span class="jp">暑い</span> (덥다) → ___',
+        answer: '暑くない',
+        acceptAlso: ['あつくない'],
+        korean: '덥다 → 덥지 않다',
+        explanation: 'い형용사: い를 떼고 くない를 붙임 → 暑くない'
+      },
+      {
+        prompt: '과거형으로 변환하세요: <span class="jp">静かだ</span> (조용하다) → ___',
+        answer: '静かだった',
+        acceptAlso: ['しずかだった'],
+        korean: '조용하다 → 조용했다',
+        explanation: 'な형용사: だった를 붙임 → 静かだった'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 2: DragMatch — 사전형에서 て형으로 ───
+QuizEngine.DragMatch(
+  document.getElementById('quiz-teform-match'),
+  {
+    title: 'て형 매칭',
+    instruction: '각 사전형을 올바른 て형에 연결하세요:',
+    pairs: [
+      { left: '食べる (먹다)', right: '食べて' },
+      { left: '飲む (마시다)', right: '飲んで' },
+      { left: '書く (쓰다)', right: '書いて' },
+      { left: '話す (말하다)', right: '話して' },
+      { left: '待つ (기다리다)', right: '待って' },
+      { left: '泳ぐ (수영하다)', right: '泳いで' },
+      { left: '行く (가다)', right: '行って' }
+    ]
+  }
+);
+
+// ─── Quiz 3: SentenceBuilder — 활용 동사로 문장 만들기 ───
+QuizEngine.SentenceBuilder(
+  document.getElementById('quiz-sentence-builder'),
+  {
+    title: '활용 동사로 문장 만들기',
+    sentences: [
+      {
+        hint: '만드세요: "드세요." (て형 + kudasai) -- <span class="kr">드세요 / 먹어 주세요</span>',
+        words: ['食べて', 'ください'],
+        correct: '食べてください'
+      },
+      {
+        hint: '만드세요: "커피를 마셨습니다." (정중 과거) -- <span class="kr">커피를 마셨습니다</span>',
+        words: ['コーヒーを', '飲みました'],
+        correct: 'コーヒーを飲みました'
+      },
+      {
+        hint: '만드세요: "내일은 갈 수 없습니다." (정중 부정) -- <span class="kr">내일은 갈 수 없습니다</span>',
+        words: ['明日は', '行けません'],
+        correct: '明日は行けません'
+      },
+      {
+        hint: '만드세요: "일본어를 공부하자." (의지형) -- <span class="kr">일본어를 공부하자</span>',
+        words: ['日本語を', '勉強しよう'],
+        correct: '日本語を勉強しよう'
+      },
+      {
+        hint: '만드세요: "이 방은 조용하지 않다." (な형용사 부정) -- <span class="kr">이 방은 조용하지 않다</span>',
+        words: ['この部屋は', '静かじゃない'],
+        correct: 'この部屋は静かじゃない'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 4: 제5~6장 복습 확인 ───
+QuizEngine.RecallCheck(
+  document.getElementById('quiz-recall-check'),
+  {
+    fromChapters: '제5~6장',
+    items: [
+      {
+        question: '제5장: "여기서 세워 주세요"를 일본어로 어떻게 말합니까? (택시 표현)',
+        answer: 'ここで止めてください (koko de tomete kudasai)'
+      },
+      {
+        question: '제5장: 식당에서 "계산서 부탁합니다"를 어떻게 말합니까?',
+        answer: 'お会計お願いします (okaikei onegai shimasu)'
+      },
+      {
+        question: '제5장: "실례합니다 / 죄송합니다" (만능 표현)를 어떻게 말합니까?',
+        answer: 'すみません (sumimasen)'
+      },
+      {
+        question: '제7장: 문장의 주제를 나타내는 조사는 무엇입니까? (한국어: 은/는)',
+        answer: 'は (wa) -- 주제 표시 조사, 한국어 은/는과 같은 기능'
+      },
+      {
+        question: '제7장: 동작이 이루어지는 장소를 나타내는 조사는 무엇입니까? (한국어: 에서)',
+        answer: 'で (de) -- 동작 장소 표시 조사, 한국어 에서와 같음'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 5: MultipleChoice — 동사 그룹 & 형용사 유형 ───
+QuizEngine.MultipleChoice(
+  document.getElementById('quiz-verb-groups'),
+  {
+    title: '동사 그룹 & 형용사 유형',
+    questions: [
+      {
+        prompt: '食べる (먹다)는 어떤 동사 그룹에 속합니까?',
+        options: [
+          '그룹 1 (고단)',
+          '그룹 2 (이치단)',
+          '그룹 3 (불규칙)'
+        ],
+        correctIndex: 1,
+        explanation: '食べる는 -える로 끝나므로 이치단 (그룹 2)입니다. る를 떼고 어미를 붙이면 됩니다.'
+      },
+      {
+        prompt: '待つ (기다리다)의 て형은 무엇입니까?',
+        options: ['待いて', '待して', '待って', '待んで'],
+        correctIndex: 2,
+        explanation: '待つ는 つ로 끝나며, U-TSU-RU 그룹에 속합니다: つ → って = 待って.'
+      },
+      {
+        prompt: '일본어에는 진정한 불규칙 동사가 몇 개 있습니까?',
+        options: ['0개', '2개', '5개', '12개'],
+        correctIndex: 1,
+        explanation: 'する (하다)와 来る (오다)만 불규칙입니다. 한국어의 많은 불규칙 패턴과 비교해 보세요!'
+      },
+      {
+        prompt: '静か (조용하다)는 어떤 유형의 형용사입니까?',
+        options: [
+          'い형용사 -- い를 떼고 활용',
+          'な형용사 -- 명사처럼 활용',
+          '불규칙 형용사',
+          'い형과 な형 모두'
+        ],
+        correctIndex: 1,
+        explanation: '静か는 な형용사입니다. 명사를 수식할 때 な가 필요하고 (静かな部屋), だ/じゃない/だった로 활용합니다.'
+      },
+      {
+        prompt: 'い형용사 高い (비싸다)의 부정형은 무엇입니까?',
+        options: ['高いない', '高じゃない', '高くない', '高ないです'],
+        correctIndex: 2,
+        explanation: 'い형용사 규칙: い를 떼고 くない를 붙임 → 高くない. い형용사는 い를 가지고 있으므로, 그것을 교체한다는 점을 기억하세요.'
+      }
+    ]
+  }
+);
+</script>
+<script src="js/spaced-repetition.js"></script>
+<script src="js/memory-palace.js"></script>
+</body>
+</html>

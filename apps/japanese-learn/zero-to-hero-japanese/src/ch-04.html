@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ch04: Pronunciation — Zero to Hero 日本語</title>
+<link rel="stylesheet" href="css/design-system.css">
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <span class="logo-badge">Zero to Hero — Memory Architecture Edition</span>
+    <div class="logo-title">日本語 for Korean Speakers</div>
+    <div class="logo-sub">From 한국어 to 日本語 — The Memory Architect's Guide</div>
+  </a>
+  <div class="sidebar-progress">
+    <div class="sidebar-progress-label">Progress</div>
+    <div class="sidebar-progress-bar">
+      <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+    </div>
+    <div class="sidebar-progress-count">0/22 complete</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="ch-00.html" class="toc-link"><span class="toc-num">00</span><span class="toc-check" data-ch="00"></span>Memory Science</a>
+    <a href="ch-01.html" class="toc-link"><span class="toc-num">01</span><span class="toc-check" data-ch="01"></span>Your Korean Advantage</a>
+    <a href="ch-02.html" class="toc-link"><span class="toc-num">02</span><span class="toc-check" data-ch="02"></span>Hiragana</a>
+    <a href="ch-03.html" class="toc-link"><span class="toc-num">03</span><span class="toc-check" data-ch="03"></span>Katakana</a>
+    <a href="ch-04.html" class="toc-link active"><span class="toc-num">04</span><span class="toc-check" data-ch="04"></span>Pronunciation</a>
+    <a href="ch-05.html" class="toc-link"><span class="toc-num">05</span><span class="toc-check" data-ch="05"></span>Survival Japanese</a>
+    <a href="ch-06.html" class="toc-link"><span class="toc-num">06</span><span class="toc-check" data-ch="06"></span>Counters</a>
+    <a href="ch-07.html" class="toc-link"><span class="toc-num">07</span><span class="toc-check" data-ch="07"></span>Particles</a>
+    <a href="ch-08.html" class="toc-link"><span class="toc-num">08</span><span class="toc-check" data-ch="08"></span>Verb Conjugation</a>
+    <a href="ch-09.html" class="toc-link"><span class="toc-num">09</span><span class="toc-check" data-ch="09"></span>Daily Conversations</a>
+    <a href="ch-10.html" class="toc-link"><span class="toc-num">10</span><span class="toc-check" data-ch="10"></span>Sentence Patterns</a>
+    <a href="ch-11.html" class="toc-link"><span class="toc-num">11</span><span class="toc-check" data-ch="11"></span>Kanji</a>
+    <a href="ch-12.html" class="toc-link"><span class="toc-num">12</span><span class="toc-check" data-ch="12"></span>Sino-Vocabulary</a>
+    <a href="ch-13.html" class="toc-link"><span class="toc-num">13</span><span class="toc-check" data-ch="13"></span>Native Vocabulary</a>
+    <a href="ch-14.html" class="toc-link"><span class="toc-num">14</span><span class="toc-check" data-ch="14"></span>Honorifics</a>
+    <a href="ch-15.html" class="toc-link"><span class="toc-num">15</span><span class="toc-check" data-ch="15"></span>Reading</a>
+    <a href="ch-16.html" class="toc-link"><span class="toc-num">16</span><span class="toc-check" data-ch="16"></span>Writing</a>
+    <a href="ch-17.html" class="toc-link"><span class="toc-num">17</span><span class="toc-check" data-ch="17"></span>Listening</a>
+    <a href="ch-18.html" class="toc-link"><span class="toc-num">18</span><span class="toc-check" data-ch="18"></span>Cultural Pragmatics</a>
+    <a href="ch-19.html" class="toc-link"><span class="toc-num">19</span><span class="toc-check" data-ch="19"></span>JLPT and Beyond</a>
+    <a href="ch-20.html" class="toc-link"><span class="toc-num">20</span><span class="toc-check" data-ch="20"></span>Memory Palace</a>
+    <a href="ch-21.html" class="toc-link"><span class="toc-num">21</span><span class="toc-check" data-ch="21"></span>The 90-Day Sprint</a>
+    <a href="appendices.html" class="toc-link" style="margin-top:.5rem;border-top:1px solid var(--border);padding-top:.8rem"><span class="toc-num">+</span>Appendices</a>
+  </nav>
+</aside>
+
+<div class="main">
+<div class="content-wrap">
+
+<section id="ch04" data-ch="04" style="padding-top:3rem">
+<h2><span class="ch-label">Chapter 04</span>Pronunciation &mdash; Japanese Phonetics for Korean Speakers (発音)</h2>
+
+<div class="callout memory">
+  <div class="callout-title">Memory Technique Spotlight: Motor Encoding + Perceptual Training</div>
+  <p>Pronunciation is stored in procedural (motor) memory. You'll train your mouth muscles through minimal pair drills and exaggerated articulation — the physical act of speaking creates a separate memory trace that reinforces your other learning channels.</p>
+</div>
+
+<p>You already know hiragana and katakana. Now it's time to make them <strong>sound right</strong>. Good news: Japanese phonetics are <em>simpler</em> than Korean. Fewer consonants, simpler syllable structure, no 받침 (final consonants). You're <strong>downshifting</strong>. But simplicity brings its own traps &mdash; because your Korean habits will try to add complexity where Japanese doesn't want it.</p>
+
+<div class="callout ok">
+  <div class="callout-title">What's EASIER Than Korean</div>
+  <p><strong>Fewer consonants:</strong> Korean has a 3-way distinction (ㄱ/ㅋ/ㄲ). Japanese has only 2-way (voiced/voiceless). That's less to juggle.<br>
+  <strong>Simpler syllables:</strong> Every Japanese syllable is (C)V &mdash; consonant + vowel, or just a vowel. No consonant clusters, no 받침.<br>
+  <strong>No final consonants:</strong> Korean 학 (hak) has a ㄱ 받침. Japanese がく (gaku) always ends in a vowel. You never have to worry about unreleased stops.<br>
+  <strong>You're downshifting.</strong> Think of it as going from a 6-speed manual to an automatic.</p>
+</div>
+
+<!-- ─── RECALL CHECK (Ch02-03) ─── -->
+<div id="recall-check-0203"></div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!--  SVG DIAGRAM: CONSONANT MAPPING                       -->
+<!-- ══════════════════════════════════════════════════════ -->
+<nav class="chapter-toc">
+  <details open>
+    <summary class="chapter-toc-title">In This Chapter</summary>
+  <ol>
+    <li><a href="#consonant-mapping-korean-3-way-vs-japanese-2-way">Consonant Mapping: Korean 3-Way vs. Japanese 2-Way</a></li>
+    <li><a href="#the-six-pronunciation-traps">The Six Pronunciation Traps</a></li>
+    <li><a href="#key-pronunciation-rules">Key Pronunciation Rules</a></li>
+    <li><a href="#double-consonants-the-small-っ">Double Consonants — The Small っ</a></li>
+    <li><a href="#exercises">Exercises</a></li>
+  </ol>
+  </details>
+</nav>
+
+<h3 id="consonant-mapping-korean-3-way-vs-japanese-2-way">Consonant Mapping: Korean 3-Way vs. Japanese 2-Way</h3>
+
+<p>Korean stops come in three flavors: plain (ㄱ), aspirated (ㅋ), and tense (ㄲ). Japanese only has two: voiceless (か) and voiced (が). This is the single biggest source of Korean-accented Japanese.</p>
+
+<svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;margin:1.5rem auto;display:block;font-family:'Noto Sans JP','Noto Sans KR',sans-serif" role="img" aria-label="Diagram showing Korean 3-way consonant system mapping to Japanese 2-way system">
+  <!-- Background -->
+  <rect x="0" y="0" width="700" height="320" rx="12" fill="var(--card-bg)" stroke="var(--border)" stroke-width="1.5"/>
+
+  <!-- Title -->
+  <text x="350" y="32" text-anchor="middle" font-size="15" font-weight="700" fill="var(--heading)">Korean 3-Way Stops  vs.  Japanese 2-Way Stops</text>
+
+  <!-- Korean side label -->
+  <text x="175" y="62" text-anchor="middle" font-size="13" font-weight="600" fill="var(--accent)">Korean (한국어)</text>
+  <!-- Japanese side label -->
+  <text x="525" y="62" text-anchor="middle" font-size="13" font-weight="600" fill="var(--accent)">Japanese (日本語)</text>
+
+  <!-- ── K/G Row ── -->
+  <!-- Korean boxes -->
+  <rect x="50" y="80" width="80" height="40" rx="6" fill="var(--bg)" stroke="var(--border)"/>
+  <text x="90" y="106" text-anchor="middle" font-size="16" fill="var(--text)">ㄱ (g/k)</text>
+
+  <rect x="140" y="80" width="80" height="40" rx="6" fill="var(--bg)" stroke="var(--a4)"/>
+  <text x="180" y="106" text-anchor="middle" font-size="16" fill="var(--a4)">ㅋ (k')</text>
+
+  <rect x="230" y="80" width="80" height="40" rx="6" fill="var(--bg)" stroke="var(--border)"/>
+  <text x="270" y="106" text-anchor="middle" font-size="16" fill="var(--text)">ㄲ (kk)</text>
+
+  <!-- Japanese boxes -->
+  <rect x="430" y="78" width="80" height="40" rx="6" fill="var(--bg)" stroke="var(--accent)"/>
+  <text x="470" y="104" text-anchor="middle" font-size="18" fill="var(--heading)">か (ka)</text>
+
+  <rect x="530" y="78" width="80" height="40" rx="6" fill="var(--bg)" stroke="var(--accent)"/>
+  <text x="570" y="104" text-anchor="middle" font-size="18" fill="var(--heading)">が (ga)</text>
+
+  <!-- Arrows K row -->
+  <line x1="310" y1="92" x2="428" y2="92" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="310" y1="108" x2="428" y2="108" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text x="370" y="86" text-anchor="middle" font-size="10" fill="var(--muted)">plain</text>
+  <text x="370" y="118" text-anchor="middle" font-size="10" fill="var(--a4)">NOT ㅋ!</text>
+
+  <!-- ── T/D Row ── -->
+  <rect x="50" y="145" width="80" height="40" rx="6" fill="var(--bg)" stroke="var(--border)"/>
+  <text x="90" y="171" text-anchor="middle" font-size="16" fill="var(--text)">ㄷ (d/t)</text>
+
+  <rect x="140" y="145" width="80" height="40" rx="6" fill="var(--bg)" stroke="var(--a4)"/>
+  <text x="180" y="171" text-anchor="middle" font-size="16" fill="var(--a4)">ㅌ (t')</text>
+
+  <rect x="230" y="145" width="80" height="40" rx="6" fill="var(--bg)" stroke="var(--border)"/>
+  <text x="270" y="171" text-anchor="middle" font-size="16" fill="var(--text)">ㄸ (tt)</text>
+
+  <rect x="430" y="143" width="80" height="40" rx="6" fill="var(--bg)" stroke="var(--accent)"/>
+  <text x="470" y="169" text-anchor="middle" font-size="18" fill="var(--heading)">た (ta)</text>
+
+  <rect x="530" y="143" width="80" height="40" rx="6" fill="var(--bg)" stroke="var(--accent)"/>
+  <text x="570" y="169" text-anchor="middle" font-size="18" fill="var(--heading)">だ (da)</text>
+
+  <line x1="310" y1="157" x2="428" y2="157" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="310" y1="173" x2="428" y2="173" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text x="370" y="152" text-anchor="middle" font-size="10" fill="var(--muted)">plain</text>
+  <text x="370" y="184" text-anchor="middle" font-size="10" fill="var(--a4)">NOT ㅌ!</text>
+
+  <!-- ── P/B Row ── -->
+  <rect x="50" y="210" width="80" height="40" rx="6" fill="var(--bg)" stroke="var(--border)"/>
+  <text x="90" y="236" text-anchor="middle" font-size="16" fill="var(--text)">ㅂ (b/p)</text>
+
+  <rect x="140" y="210" width="80" height="40" rx="6" fill="var(--bg)" stroke="var(--a4)"/>
+  <text x="180" y="236" text-anchor="middle" font-size="16" fill="var(--a4)">ㅍ (p')</text>
+
+  <rect x="230" y="210" width="80" height="40" rx="6" fill="var(--bg)" stroke="var(--border)"/>
+  <text x="270" y="236" text-anchor="middle" font-size="16" fill="var(--text)">ㅃ (pp)</text>
+
+  <rect x="430" y="208" width="80" height="40" rx="6" fill="var(--bg)" stroke="var(--accent)"/>
+  <text x="470" y="234" text-anchor="middle" font-size="18" fill="var(--heading)">ぱ (pa)</text>
+
+  <rect x="530" y="208" width="80" height="40" rx="6" fill="var(--bg)" stroke="var(--accent)"/>
+  <text x="570" y="234" text-anchor="middle" font-size="18" fill="var(--heading)">ば (ba)</text>
+
+  <line x1="310" y1="222" x2="428" y2="222" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="310" y1="238" x2="428" y2="238" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text x="370" y="217" text-anchor="middle" font-size="10" fill="var(--muted)">plain</text>
+  <text x="370" y="249" text-anchor="middle" font-size="10" fill="var(--a4)">NOT ㅍ!</text>
+
+  <!-- Bottom note -->
+  <text x="350" y="280" text-anchor="middle" font-size="12" fill="var(--muted)">Korean aspirated consonants (ㅋ, ㅌ, ㅍ) have NO equivalent in Japanese.</text>
+  <text x="350" y="298" text-anchor="middle" font-size="12" fill="var(--muted)">Use ㄱ/ㄷ/ㅂ (plain) for Japanese voiceless stops. The extra puff of air is a giveaway.</text>
+</svg>
+
+<div class="callout info">
+  <div class="callout-title">Key Insight</div>
+  <p>When you see か, think ㄱ, <strong>not</strong> ㅋ. When you see た, think ㄷ, <strong>not</strong> ㅌ. Japanese voiceless stops are unaspirated &mdash; closer to Korean plain consonants than aspirated ones. Over-aspiration is the #1 Korean accent marker in Japanese.</p>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!--  THE SIX TRAPS                                        -->
+<!-- ══════════════════════════════════════════════════════ -->
+<h3 id="the-six-pronunciation-traps">The Six Pronunciation Traps</h3>
+<p>These are the specific sounds where Korean habits will lead you astray. Each trap is ranked by difficulty from one star (easy fix) to five stars (long-term project).</p>
+
+<!-- ─── TRAP 1: Over-Aspiration ─── -->
+<h4>Trap 1: Over-Aspiration (Difficulty: &#9733;&#9733;&#9733;)</h4>
+
+<div class="mnemonic-card">
+  <div>
+    <svg class="char-svg" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <text x="40" y="36" text-anchor="middle" font-size="20" font-family="'Noto Sans KR',sans-serif" fill="var(--a4)">ㅋㅌㅍ</text>
+      <line x1="20" y1="44" x2="60" y2="44" stroke="var(--a5)" stroke-width="2"/>
+      <text x="40" y="65" text-anchor="middle" font-size="14" font-family="'Noto Sans JP',serif" fill="var(--accent)">ka ta pa</text>
+    </svg>
+  </div>
+  <div class="char-info">
+    <div class="char-reading">Problem: Korean 3-way stops mapped to Japanese 2-way</div>
+    <div class="char-korean">Korean speakers reach for ㅋ/ㅌ/ㅍ when they should use ㄱ/ㄷ/ㅂ</div>
+    <div class="char-story">
+      <strong>What it sounds like when wrong:</strong> かわいい sounds like "KHAWAII" with a strong puff of air. Japanese listeners hear it as over-emphatic or foreign.<br><br>
+      <strong>Fix:</strong> Hold a tissue in front of your mouth. Say か &mdash; the tissue should <em>barely</em> move. If it flutters, you're aspirating. Use your Korean ㄱ/ㄷ/ㅂ position, not ㅋ/ㅌ/ㅍ.<br><br>
+      <strong>Mnemonic:</strong> "No K-pop puff!" &mdash; Japanese consonants are quiet and gentle. Save the ㅋ for Korean.<br><br>
+      <strong>Practice:</strong> Say these pairs, keeping aspiration minimal:<br>
+      <span class="jp">かさ</span> (kasa, umbrella) &mdash; not "khasa"<br>
+      <span class="jp">たべる</span> (taberu, to eat) &mdash; not "thaberu"<br>
+      <span class="jp">ぱん</span> (pan, bread) &mdash; not "phan"
+    </div>
+  </div>
+</div>
+
+<div id="quiz-aspiration"></div>
+
+<!-- ─── TRAP 2: Rounded う ─── -->
+<h4>Trap 2: Rounded う (Difficulty: &#9733;&#9733;)</h4>
+
+<div class="mnemonic-card">
+  <div>
+    <svg class="char-svg" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <text x="40" y="30" text-anchor="middle" font-size="14" fill="var(--a4)">우 (rounded)</text>
+      <text x="40" y="52" text-anchor="middle" font-size="20" fill="var(--heading)">&#8595;</text>
+      <text x="40" y="72" text-anchor="middle" font-size="14" fill="var(--accent)">う (unrounded)</text>
+    </svg>
+  </div>
+  <div class="char-info">
+    <div class="char-reading">Problem: Korean 우 is rounded; Japanese う is unrounded</div>
+    <div class="char-korean">Your lips pucker for 우 but should stay relaxed for う</div>
+    <div class="char-story">
+      <strong>What it sounds like when wrong:</strong> <span class="jp">すし</span> sounds like "sooshi" with an English "oo" quality. It's immediately noticeable.<br><br>
+      <strong>Fix:</strong> Say 우, then gradually relax your lips until they're almost flat. The tongue position stays the same, but the lips go neutral. Think of lazily saying "uh" but higher in the mouth.<br><br>
+      <strong>Mnemonic:</strong> "Lazy lips!" &mdash; Japanese う is the laziest vowel. No effort to round.<br><br>
+      <strong>Practice:</strong> Say these with relaxed lips:<br>
+      <span class="jp">つくる</span> (tsukuru, to make)<br>
+      <span class="jp">ふゆ</span> (fuyu, winter)<br>
+      <span class="jp">くつ</span> (kutsu, shoes)
+    </div>
+  </div>
+</div>
+
+<div id="quiz-rounded-u"></div>
+
+<!-- ─── TRAP 3: Long Vowels ─── -->
+<h4>Trap 3: Long Vowels (Difficulty: &#9733;&#9733;&#9733;&#9733;)</h4>
+
+<div class="mnemonic-card">
+  <div>
+    <svg class="char-svg" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <text x="15" y="30" text-anchor="start" font-size="12" fill="var(--muted)">short</text>
+      <rect x="15" y="35" width="20" height="10" rx="3" fill="var(--accent)"/>
+      <text x="15" y="62" text-anchor="start" font-size="12" fill="var(--muted)">long</text>
+      <rect x="15" y="67" width="50" height="10" rx="3" fill="var(--a4)"/>
+    </svg>
+  </div>
+  <div class="char-info">
+    <div class="char-reading">Problem: Vowel length changes meaning in Japanese</div>
+    <div class="char-korean">Korean doesn't distinguish vowel length (modern standard)</div>
+    <div class="char-story">
+      <strong>What it sounds like when wrong:</strong> Saying おばさん (aunt) when you mean おばあさん (grandmother). Or saying ビル (building) when you mean ビール (beer). Embarrassing at best, confusing at worst.<br><br>
+      <strong>Fix:</strong> Count beats. Each kana = one beat (mora). おばさん = 4 beats. おばあさん = 5 beats. Tap your finger for each mora. The long vowel gets two taps.<br><br>
+      <strong>Mnemonic:</strong> "Every kana gets its own drumbeat." Short vowel = one tap. Long vowel = two taps. Never rush.<br><br>
+      <strong>Practice critical pairs:</strong><br>
+      <span class="jp">おじさん</span> (ojisan, uncle) vs. <span class="jp">おじいさん</span> (ojiisan, grandfather)<br>
+      <span class="jp">ここ</span> (koko, here) vs. <span class="jp">こうこう</span> (koukou, high school)<br>
+      <span class="jp">ビル</span> (biru, building) vs. <span class="jp">ビール</span> (biiru, beer)<br>
+      <span class="jp">え</span> (e, picture) vs. <span class="jp">ええ</span> (ee, yes/agreement)
+    </div>
+  </div>
+</div>
+
+<table>
+  <thead><tr><th>Short</th><th>Long</th><th>Meaning Difference</th></tr></thead>
+  <tbody>
+    <tr><td class="jp">おばさん (obasan)</td><td class="jp">おばあさん (obaasan)</td><td>Aunt vs. Grandmother</td></tr>
+    <tr><td class="jp">おじさん (ojisan)</td><td class="jp">おじいさん (ojiisan)</td><td>Uncle vs. Grandfather</td></tr>
+    <tr><td class="jp">ビル (biru)</td><td class="jp">ビール (biiru)</td><td>Building vs. Beer</td></tr>
+    <tr><td class="jp">ここ (koko)</td><td class="jp">こうこう (koukou)</td><td>Here vs. High school</td></tr>
+    <tr><td class="jp">おと (oto)</td><td class="jp">おおとう (&rarr; おとう) (otou)</td><td>Sound vs. Father</td></tr>
+    <tr><td class="jp">え (e)</td><td class="jp">ええ (ee)</td><td>Picture vs. Yes</td></tr>
+  </tbody>
+</table>
+
+<div id="quiz-long-vowels"></div>
+
+<!-- ─── TRAP 4: つ (tsu) ─── -->
+<h4>Trap 4: つ (tsu) (Difficulty: &#9733;&#9733;)</h4>
+
+<div class="mnemonic-card">
+  <div>
+    <svg class="char-svg" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <text x="40" y="55" text-anchor="middle" font-size="46" font-family="'Shippori Mincho',serif" fill="var(--heading)">つ</text>
+    </svg>
+  </div>
+  <div class="char-info">
+    <div class="char-reading">Problem: The ts- onset doesn't exist in Korean</div>
+    <div class="char-korean">Korean speakers substitute 쓰, 추, or 스 &mdash; all wrong</div>
+    <div class="char-story">
+      <strong>What it sounds like when wrong:</strong> <span class="jp">つき</span> (moon) sounds like "chuki" or "ssuki." Native speakers will understand but notice.<br><br>
+      <strong>Fix:</strong> Start from ㄷ position (tongue behind upper teeth). Now release into す, not 추. It's t + su fused into one onset. Practice: slowly say "t...su...t...su...tsu...tsu." Speed up until it's one smooth sound.<br><br>
+      <strong>Mnemonic:</strong> "Tsunami starts with TSU!" &mdash; You already say this word correctly in English. Channel that same onset.<br><br>
+      <strong>Practice:</strong><br>
+      <span class="jp">つき</span> (tsuki, moon) &mdash; not "chuki"<br>
+      <span class="jp">つくえ</span> (tsukue, desk)<br>
+      <span class="jp">なつ</span> (natsu, summer)<br>
+      <span class="jp">まつ</span> (matsu, to wait / pine tree)
+    </div>
+  </div>
+</div>
+
+<div id="quiz-tsu"></div>
+
+<!-- ─── TRAP 5: ふ (fu) ─── -->
+<h4>Trap 5: ふ (fu) (Difficulty: &#9733;)</h4>
+
+<div class="mnemonic-card">
+  <div>
+    <svg class="char-svg" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <text x="40" y="55" text-anchor="middle" font-size="46" font-family="'Shippori Mincho',serif" fill="var(--heading)">ふ</text>
+    </svg>
+  </div>
+  <div class="char-info">
+    <div class="char-reading">Problem: Bilabial fricative &mdash; not English "f" or Korean 후</div>
+    <div class="char-korean">Neither English "f" (teeth + lip) nor Korean 후 (glottal) is correct</div>
+    <div class="char-story">
+      <strong>What it sounds like when wrong:</strong> Using English "f" (lower lip touches upper teeth) sounds harsh. Using Korean 후 sounds too breathy. Both are noticeable.<br><br>
+      <strong>Fix:</strong> Bring both lips close together (like you're about to whistle or blow out a candle) and push air through the gap. No teeth involved! It's between "f" and "h."<br><br>
+      <strong>Mnemonic:</strong> "Blow out a birthday candle" &mdash; soft, both lips, no teeth. That puff is ふ.<br><br>
+      <strong>Practice:</strong><br>
+      <span class="jp">ふね</span> (fune, ship)<br>
+      <span class="jp">ふゆ</span> (fuyu, winter)<br>
+      <span class="jp">ふじさん</span> (Fujisan, Mt. Fuji)<br>
+      <span class="jp">とうふ</span> (toufu, tofu)
+    </div>
+  </div>
+</div>
+
+<div id="quiz-fu"></div>
+
+<!-- ─── TRAP 6: Pitch Accent ─── -->
+<h4>Trap 6: Pitch Accent (Difficulty: &#9733;&#9733;&#9733;&#9733;&#9733;)</h4>
+
+<p>This is the boss-level trap. Korean is a <strong>stress-accent</strong> language (though it's subtle). Japanese is a <strong>pitch-accent</strong> language &mdash; meaning the <em>melody</em> of a word (high vs. low pitch on each mora) determines its identity. Wrong pitch doesn't usually cause misunderstanding, but it's the difference between sounding fluent and sounding foreign.</p>
+
+<!-- SVG: Pitch Accent Contour Patterns -->
+<svg viewBox="0 0 700 340" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;margin:1.5rem auto;display:block;font-family:'Noto Sans JP','Noto Sans KR',sans-serif" role="img" aria-label="Pitch accent contour patterns for Japanese words">
+  <rect x="0" y="0" width="700" height="340" rx="12" fill="var(--card-bg)" stroke="var(--border)" stroke-width="1.5"/>
+  <text x="350" y="30" text-anchor="middle" font-size="15" font-weight="700" fill="var(--heading)">Japanese Pitch Accent Patterns (Tokyo dialect)</text>
+
+  <!-- Pattern 1: Heiban (flat/unaccented) - e.g., さくら -->
+  <text x="40" y="72" font-size="12" font-weight="600" fill="var(--accent)">Heiban (flat)</text>
+  <text x="40" y="88" font-size="11" fill="var(--muted)">No drop</text>
+
+  <!-- Pitch line: L-H-H-H -->
+  <circle cx="160" cy="110" r="5" fill="var(--accent)"/>
+  <circle cx="220" cy="80" r="5" fill="var(--accent)"/>
+  <circle cx="280" cy="80" r="5" fill="var(--accent)"/>
+  <circle cx="340" cy="80" r="5" fill="var(--accent)" opacity="0.5"/>
+  <line x1="160" y1="110" x2="220" y2="80" stroke="var(--accent)" stroke-width="2"/>
+  <line x1="220" y1="80" x2="280" y2="80" stroke="var(--accent)" stroke-width="2"/>
+  <line x1="280" y1="80" x2="340" y2="80" stroke="var(--accent)" stroke-width="2" stroke-dasharray="4"/>
+  <text x="160" y="128" text-anchor="middle" font-size="14" fill="var(--text)">さ</text>
+  <text x="220" y="128" text-anchor="middle" font-size="14" fill="var(--text)">く</text>
+  <text x="280" y="128" text-anchor="middle" font-size="14" fill="var(--text)">ら</text>
+  <text x="340" y="128" text-anchor="middle" font-size="12" fill="var(--muted)">(+)</text>
+
+  <text x="420" y="100" font-size="12" fill="var(--text)">= cherry blossom</text>
+  <text x="420" y="116" font-size="11" fill="var(--muted)">Low start, then stays high</text>
+
+  <!-- Pattern 2: Atamadaka (head-high) - e.g., いのち -->
+  <text x="40" y="170" font-size="12" font-weight="600" fill="var(--a4)">Atamadaka (head-high)</text>
+  <text x="40" y="186" font-size="11" fill="var(--muted)">Drop after 1st mora</text>
+
+  <circle cx="160" cy="170" r="5" fill="var(--a4)"/>
+  <circle cx="220" cy="205" r="5" fill="var(--a4)"/>
+  <circle cx="280" cy="205" r="5" fill="var(--a4)"/>
+  <line x1="160" y1="170" x2="220" y2="205" stroke="var(--a4)" stroke-width="2"/>
+  <line x1="220" y1="205" x2="280" y2="205" stroke="var(--a4)" stroke-width="2"/>
+  <text x="160" y="225" text-anchor="middle" font-size="14" fill="var(--text)">い</text>
+  <text x="220" y="225" text-anchor="middle" font-size="14" fill="var(--text)">の</text>
+  <text x="280" y="225" text-anchor="middle" font-size="14" fill="var(--text)">ち</text>
+
+  <text x="420" y="195" font-size="12" fill="var(--text)">= life</text>
+  <text x="420" y="211" font-size="11" fill="var(--muted)">High start, drops immediately</text>
+
+  <!-- Pattern 3: Nakadaka (middle-high) - e.g., おとこ -->
+  <text x="40" y="262" font-size="12" font-weight="600" fill="var(--a3)">Nakadaka (mid-drop)</text>
+  <text x="40" y="278" font-size="11" fill="var(--muted)">Drop after middle mora</text>
+
+  <circle cx="160" cy="302" r="5" fill="var(--a3)"/>
+  <circle cx="220" cy="268" r="5" fill="var(--a3)"/>
+  <circle cx="280" cy="302" r="5" fill="var(--a3)"/>
+  <line x1="160" y1="302" x2="220" y2="268" stroke="var(--a3)" stroke-width="2"/>
+  <line x1="220" y1="268" x2="280" y2="302" stroke="var(--a3)" stroke-width="2"/>
+  <text x="160" y="322" text-anchor="middle" font-size="14" fill="var(--text)">お</text>
+  <text x="220" y="322" text-anchor="middle" font-size="14" fill="var(--text)">と</text>
+  <text x="280" y="322" text-anchor="middle" font-size="14" fill="var(--text)">こ</text>
+
+  <text x="420" y="288" font-size="12" fill="var(--text)">= man</text>
+  <text x="420" y="304" font-size="11" fill="var(--muted)">Low-High-Low: drops after middle</text>
+</svg>
+
+<div class="mnemonic-card">
+  <div>
+    <svg class="char-svg" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <polyline points="15,55 25,25 45,25 55,55" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="40" y="73" text-anchor="middle" font-size="11" fill="var(--muted)">pitch</text>
+    </svg>
+  </div>
+  <div class="char-info">
+    <div class="char-reading">Problem: Pitch distinguishes otherwise identical words</div>
+    <div class="char-korean">Korean doesn't use pitch this way &mdash; it's an entirely new concept</div>
+    <div class="char-story">
+      <strong>What it sounds like when wrong:</strong> All your words sound "flat" or have wrong emphasis. Like speaking English in monotone &mdash; understandable but robotic.<br><br>
+      <strong>Fix (short-term):</strong> Don't stress about pitch accent initially. Focus on the other 5 traps first. But start <em>noticing</em> pitch when you listen to Japanese. The most important rule: <strong>the pitch of the 2nd mora is always different from the 1st mora.</strong> If mora 1 is low, mora 2 is high, and vice versa.<br><br>
+      <strong>Fix (long-term):</strong> Use pitch accent dictionaries (like the OJAD online tool). Learn the 4 patterns: heiban (flat), atamadaka (head-high), nakadaka (mid-drop), and odaka (tail-drop).<br><br>
+      <strong>Mnemonic:</strong> "Japanese words are melodies, not drums." Korean emphasis is about strength; Japanese is about melody. Hum the tune, don't pound the beat.<br><br>
+      <strong>Minimal pairs (same kana, different pitch = different word):</strong><br>
+      <span class="jp">はし</span> = chopsticks (HA-shi, high-low) vs. bridge (ha-SHI, low-high)<br>
+      <span class="jp">あめ</span> = rain (A-me, high-low) vs. candy (a-ME, low-high)<br>
+      <span class="jp">かき</span> = persimmon (KA-ki, high-low) vs. oyster (ka-KI, low-high)
+    </div>
+  </div>
+</div>
+
+<div class="callout warn">
+  <div class="callout-title">Priority Check</div>
+  <p>Pitch accent is important for fluency but <strong>not critical for comprehension</strong>. Context resolves most ambiguity. Focus your energy on Traps 1-4 first (aspiration, う, long vowels, つ). Pitch accent is a lifelong refinement project.</p>
+</div>
+
+<div id="quiz-pitch"></div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!--  PRONUNCIATION RULES SUMMARY                         -->
+<!-- ══════════════════════════════════════════════════════ -->
+<h3 id="key-pronunciation-rules">Key Pronunciation Rules</h3>
+
+<table>
+  <thead><tr><th>Rule</th><th>What Happens</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr><td>Long vowels (hiragana)</td><td>Add extra vowel kana: aa=ああ, ii=いい, uu=うう, ei/ee=えい, ou/oo=おう</td><td class="jp">おかあさん (okaasan) = mother</td></tr>
+    <tr><td>Long vowels (katakana)</td><td>Use the dash: ー</td><td class="jp">ケーキ (keeki) = cake</td></tr>
+    <tr><td>Double consonants (っ)</td><td>Small っ = pause/hold before the next consonant</td><td class="jp">きって (kitte) = stamp; いっぱい (ippai) = full</td></tr>
+    <tr><td>Particle は</td><td>Pronounced "wa" not "ha"</td><td class="jp">わたしは (watashi wa)</td></tr>
+    <tr><td>Particle へ</td><td>Pronounced "e" not "he"</td><td class="jp">がっこうへ (gakkou e) = to school</td></tr>
+    <tr><td>Particle を</td><td>Pronounced "o" not "wo"</td><td class="jp">みずを (mizu o) = water [obj]</td></tr>
+    <tr><td>ん before vowels</td><td>Slight nasal separation; don't merge with next vowel</td><td class="jp">はんい (han'i) ≠ はに (hani)</td></tr>
+  </tbody>
+</table>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!--  DOUBLE CONSONANTS (っ)                               -->
+<!-- ══════════════════════════════════════════════════════ -->
+<h3 id="double-consonants-the-small-っ">Double Consonants &mdash; The Small っ</h3>
+
+<p>Small っ (tsu) represents a brief pause or "catch" before the next consonant. Think of it as a silent beat. Korean has a similar concept: 쌍자음 (double consonants) in words like 빨리. The small っ works differently (it's a <em>held</em> silence), but the concept of "something extra between syllables" should feel familiar.</p>
+
+<div class="mnemonic-card">
+  <div>
+    <svg class="char-svg" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <text x="40" y="42" text-anchor="middle" font-size="32" font-family="'Shippori Mincho',serif" fill="var(--heading)">っ</text>
+      <text x="40" y="68" text-anchor="middle" font-size="11" fill="var(--muted)">geminate</text>
+    </svg>
+  </div>
+  <div class="char-info">
+    <div class="char-reading">っ = one beat of held silence before the next consonant</div>
+    <div class="char-korean">Similar feel to Korean 쌍자음, but realized as a pause</div>
+    <div class="char-story">
+      <strong>Mnemonic:</strong> "The tiny っ is a speed bump." You're driving along and suddenly &mdash; bump! &mdash; pause &mdash; then continue. The word gets one extra mora of silence.<br><br>
+      <strong>Examples:</strong><br>
+      <span class="jp">きて</span> (kite, 2 beats) = "come!" vs. <span class="jp">きって</span> (kitte, 3 beats) = "stamp"<br>
+      <span class="jp">かこ</span> (kako, 2 beats) = "past" vs. <span class="jp">かっこ</span> (kakko, 3 beats) = "parentheses/style"<br>
+      <span class="jp">いっぱい</span> (ippai, 4 beats) = "full" vs. <span class="jp">いぱい</span> = not a word
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!--  EXERCISES SECTION                                    -->
+<!-- ══════════════════════════════════════════════════════ -->
+<h3 id="exercises">Exercises</h3>
+
+<!-- Audio Discrimination: Long vs. Short -->
+<h4>Audio Discrimination: Minimal Pairs</h4>
+<div id="quiz-audio-minimal"></div>
+
+<!-- Fill-in-the-blank: Pronunciation Rules -->
+<h4>Pronunciation Rules: Fill in the Blank</h4>
+<div id="quiz-rules-fill"></div>
+
+<!-- Multiple Choice: Trap Identification -->
+<h4>Trap Identification: Multiple Choice</h4>
+<div id="quiz-traps-mc"></div>
+
+<!-- Flashcard: Pitch Accent Pairs -->
+<h4>Flashcard: Pronunciation Quick Review</h4>
+<div id="quiz-flashcard-pron"></div>
+
+<!-- Mark as Complete -->
+<button class="chapter-complete" data-ch="04">Mark as Complete &#10003;</button>
+
+<div style="display:flex;justify-content:space-between;margin:2rem 0">
+  <a href="ch-03.html" class="quiz-btn secondary">&larr; Chapter 03: Katakana</a>
+  <a href="ch-05.html" class="quiz-btn">Next: Chapter 05 -- Survival Japanese &rarr;</a>
+</div>
+
+</section>
+</div>
+
+
+</div>
+
+<footer><p>Zero to Hero: 日本語 for Korean Speakers &middot; Chapter 04</p></footer>
+
+<script src="js/shared.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/quiz-engine.js"></script>
+<script>
+// ─── Recall Check from Ch02-03 ───
+QuizEngine.RecallCheck(
+  document.getElementById('recall-check-0203'),
+  {
+    fromChapters: 'Ch02-03',
+    items: [
+      { question: 'What are the 5 Japanese vowels in hiragana?', answer: 'あ (a), い (i), う (u), え (e), お (o)' },
+      { question: 'What does dakuten (゛) do to a consonant?', answer: 'It voices the consonant: か→が, さ→ざ, た→だ, は→ば' },
+      { question: 'How is the particle は pronounced?', answer: 'As "wa" (not "ha") when used as a particle' },
+      { question: 'What is the katakana long vowel mark?', answer: 'ー (a horizontal dash), e.g., ケーキ (keeki = cake)' },
+      { question: 'Read this word: ニホン', answer: 'nihon (Japan) — ニ(ni) ホ(ho) ン(n)' }
+    ]
+  }
+);
+
+// ─── Trap 1 Exercise: Aspiration ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-aspiration'),
+  {
+    title: 'Aspiration Check',
+    questions: [
+      { prompt: 'Japanese か is closer to Korean ___  (ㄱ or ㅋ)?', answer: 'ㄱ', explanation: 'Japanese voiceless stops are unaspirated, like Korean plain (ㄱ), not aspirated (ㅋ).' },
+      { prompt: 'Japanese た is closer to Korean ___  (ㄷ or ㅌ)?', answer: 'ㄷ', explanation: 'た = unaspirated, like ㄷ. ㅌ has too much airflow.' },
+      { prompt: 'How many consonant categories do Japanese stops have? (2 or 3)', answer: '2', explanation: 'Japanese has only 2: voiceless (か/た/ぱ) and voiced (が/だ/ば). Korean has 3 (plain, aspirated, tense).' }
+    ]
+  }
+);
+
+// ─── Trap 2 Exercise: Rounded う ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-rounded-u'),
+  {
+    title: 'う vs. 우 Check',
+    questions: [
+      { prompt: 'Japanese う is pronounced with lips ___ (rounded or unrounded)?', answer: 'unrounded', explanation: 'Japanese う is unrounded — keep your lips relaxed and neutral, unlike Korean 우.' },
+      { prompt: 'Korean 우 is pronounced with lips ___ (rounded or unrounded)?', answer: 'rounded', explanation: 'Korean 우 requires lip rounding (puckering). Japanese う does not.' }
+    ]
+  }
+);
+
+// ─── Trap 3 Exercise: Long Vowels ───
+QuizEngine.AudioDiscrimination(
+  document.getElementById('quiz-long-vowels'),
+  {
+    title: 'Long vs. Short Vowel Discrimination',
+    pairs: [
+      { a: 'おばさん (obasan)', b: 'おばあさん (obaasan)', question: 'Which means GRANDMOTHER?', answer: 'b', explanation: 'Long あ in おばあさん = grandmother. Short あ in おばさん = aunt.' },
+      { a: 'ビル (biru)', b: 'ビール (biiru)', question: 'Which means BEER?', answer: 'b', explanation: 'ビール has a long イ (ii). ビル (short) = building.' },
+      { a: 'え (e)', b: 'ええ (ee)', question: 'Which one is used to say "yes" (informal agreement)?', answer: 'b', explanation: 'ええ (ee, long vowel) = "yes/yeah". え (e, short) = picture, or an interjection of surprise.' }
+    ]
+  }
+);
+
+// ─── Trap 4 Exercise: つ ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-tsu'),
+  {
+    title: 'つ (tsu) Practice',
+    questions: [
+      { prompt: 'The word for "moon" is <span class="jp" style="font-size:1.5rem">つき</span>. Type the romaji:', answer: 'tsuki', explanation: 'つ(tsu) + き(ki) = tsuki. Remember: t + su fused together, not "chu" or "su".' },
+      { prompt: 'The word for "summer" is <span class="jp" style="font-size:1.5rem">なつ</span>. Type the romaji:', answer: 'natsu', explanation: 'な(na) + つ(tsu) = natsu.' },
+      { prompt: 'The word for "desk" is <span class="jp" style="font-size:1.5rem">つくえ</span>. Type the romaji:', answer: 'tsukue', explanation: 'つ(tsu) く(ku) え(e) = tsukue.' }
+    ]
+  }
+);
+
+// ─── Trap 5 Exercise: ふ ───
+QuizEngine.MultipleChoice(
+  document.getElementById('quiz-fu'),
+  {
+    title: 'ふ (fu) Articulation',
+    questions: [
+      {
+        prompt: 'How is Japanese ふ correctly articulated?',
+        options: [
+          'Upper teeth touch lower lip (like English "f")',
+          'Both lips close together with air pushed through the gap',
+          'Tongue touches the roof of the mouth',
+          'Like Korean 후 with a breathy "h"'
+        ],
+        correctIndex: 1,
+        explanation: 'ふ is a bilabial fricative — both lips come close (not touching) and air is pushed through. No teeth involved, and not like Korean 후.'
+      },
+      {
+        prompt: 'Which mnemonic helps remember how to produce ふ?',
+        options: [
+          'Bite your lower lip gently',
+          'Blow out a birthday candle softly',
+          'Press your tongue to your teeth',
+          'Round your lips like Korean 우'
+        ],
+        correctIndex: 1,
+        explanation: 'Blowing out a candle naturally produces the bilabial fricative for ふ — soft airflow through both lips.'
+      }
+    ]
+  }
+);
+
+// ─── Trap 6 Exercise: Pitch Accent ───
+QuizEngine.AudioDiscrimination(
+  document.getElementById('quiz-pitch'),
+  {
+    title: 'Pitch Accent Awareness',
+    pairs: [
+      { a: 'はし (HA-shi) — high-low', b: 'はし (ha-SHI) — low-high', question: 'Which pitch pattern means CHOPSTICKS?', answer: 'a', explanation: 'はし with high-low pitch (HA-shi) = chopsticks. Low-high (ha-SHI) = bridge.' },
+      { a: 'あめ (A-me) — high-low', b: 'あめ (a-ME) — low-high', question: 'Which pitch pattern means RAIN?', answer: 'a', explanation: 'あめ with high-low (A-me) = rain. Low-high (a-ME) = candy.' },
+      { a: 'かき (KA-ki) — high-low', b: 'かき (ka-KI) — low-high', question: 'Which pitch pattern means OYSTER?', answer: 'b', explanation: 'かき with low-high (ka-KI) = oyster. High-low (KA-ki) = persimmon.' }
+    ]
+  }
+);
+
+// ─── Main Quiz: Audio Discrimination Minimal Pairs ───
+QuizEngine.AudioDiscrimination(
+  document.getElementById('quiz-audio-minimal'),
+  {
+    title: 'Minimal Pair Discrimination',
+    pairs: [
+      { a: 'きて (kite) — 2 beats', b: 'きって (kitte) — 3 beats', question: 'Which one means POSTAGE STAMP (切手)?', answer: 'b', explanation: 'きって (kitte, with っ = 3 beats) = stamp. きて (kite, 2 beats) = "come!" or "wearing."' },
+      { a: 'おと (oto) — 2 beats', b: 'おっと (otto) — 3 beats', question: 'Which one means HUSBAND?', answer: 'b', explanation: 'おっと (otto, with っ) = husband. おと (oto) = sound.' },
+      { a: 'かこ (kako) — 2 beats', b: 'かっこ (kakko) — 3 beats', question: 'Which one means PAST (過去)?', answer: 'a', explanation: 'かこ (kako, 2 beats) = past. かっこ (kakko, 3 beats) = parentheses or style.' },
+      { a: 'ビル (biru) — 2 beats', b: 'ビール (biiru) — 3 beats', question: 'Which one means BUILDING?', answer: 'a', explanation: 'ビル (biru, short) = building. ビール (biiru, long vowel) = beer.' },
+      { a: 'おじさん (ojisan) — 4 beats', b: 'おじいさん (ojiisan) — 5 beats', question: 'Which one means GRANDFATHER?', answer: 'b', explanation: 'おじいさん (ojiisan, 5 beats with long い) = grandfather. おじさん (ojisan, 4 beats) = uncle.' }
+    ]
+  }
+);
+
+// ─── Pronunciation Rules Fill-in-the-Blank ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-rules-fill'),
+  {
+    title: 'Pronunciation Rules',
+    questions: [
+      { prompt: 'In katakana, long vowels are written with a ___ (name the symbol)', answer: 'dash', acceptAlso: ['ー', 'bar', 'long dash', 'chouon', 'line'], explanation: 'Katakana uses ー (chouon) for long vowels: コーヒー (koohii = coffee).' },
+      { prompt: 'Small っ adds how many extra beats (mora) to a word?', answer: '1', acceptAlso: ['one'], explanation: 'Small っ = one silent beat. きて (2 beats) → きって (3 beats).' },
+      { prompt: 'The particle を is pronounced as ___', answer: 'o', explanation: 'を is written "wo" but pronounced "o" in modern Japanese.' },
+      { prompt: 'The particle へ is pronounced as ___', answer: 'e', explanation: 'へ as a direction particle is pronounced "e", not "he".' },
+      { prompt: 'How many vowels does Japanese have?', answer: '5', acceptAlso: ['five'], explanation: 'Japanese has 5 vowels: あ(a), い(i), う(u), え(e), お(o). Korean has 21!' }
+    ]
+  }
+);
+
+// ─── Trap Identification Multiple Choice ───
+QuizEngine.MultipleChoice(
+  document.getElementById('quiz-traps-mc'),
+  {
+    title: 'Identify the Trap',
+    questions: [
+      {
+        prompt: 'A Korean speaker says かわいい as "khawaii" with a big puff of air. Which trap is this?',
+        options: ['Over-aspiration', 'Rounded う', 'Long vowels', 'Pitch accent'],
+        correctIndex: 0,
+        explanation: 'Over-aspiration (Trap 1): Using ㅋ-style aspiration instead of the gentler ㄱ-style for Japanese か.'
+      },
+      {
+        prompt: 'A Korean speaker says すし and it sounds like "sooshi" with pursed lips. Which trap is this?',
+        options: ['Over-aspiration', 'Rounded う', 'The つ sound', 'ふ articulation'],
+        correctIndex: 1,
+        explanation: 'Rounded う (Trap 2): Korean 우 is rounded, but Japanese う needs relaxed, unrounded lips.'
+      },
+      {
+        prompt: 'A Korean speaker can\'t tell the difference between おばさん and おばあさん. Which trap is this?',
+        options: ['Rounded う', 'つ articulation', 'Long vowels', 'Pitch accent'],
+        correctIndex: 2,
+        explanation: 'Long vowels (Trap 3): Vowel length distinguishes meaning. Modern Korean doesn\'t make this distinction.'
+      },
+      {
+        prompt: 'A Korean speaker says つき (moon) as "chuki." Which trap is this?',
+        options: ['Over-aspiration', 'Long vowels', 'The つ sound', 'Pitch accent'],
+        correctIndex: 2,
+        explanation: 'The つ sound (Trap 4): Korean doesn\'t have the ts- onset, so speakers substitute ㅊ or ㅆ.'
+      },
+      {
+        prompt: 'A Korean speaker pronounces ふ by touching upper teeth to lower lip. Which trap is this?',
+        options: ['Over-aspiration', 'ふ articulation', 'Rounded う', 'Pitch accent'],
+        correctIndex: 1,
+        explanation: 'ふ articulation (Trap 5): Japanese ふ is a bilabial fricative (both lips), not a labiodental fricative (teeth + lip).'
+      }
+    ]
+  }
+);
+
+// ─── Pronunciation Quick Review Flashcards ───
+QuizEngine.Flashcard(
+  document.getElementById('quiz-flashcard-pron'),
+  {
+    cards: [
+      { front: 'Trap 1: Over-aspiration', back: 'Use ㄱ/ㄷ/ㅂ, not ㅋ/ㅌ/ㅍ', detail: 'Tissue test: it should barely move when you say か.' },
+      { front: 'Trap 2: Rounded う', back: 'Keep lips relaxed and unrounded', detail: 'Korean 우 = rounded. Japanese う = lazy lips.' },
+      { front: 'Trap 3: Long Vowels', back: 'Each kana = 1 beat. Long vowel = 2 beats.', detail: 'おばさん (aunt, 4 beats) vs. おばあさん (grandmother, 5 beats).' },
+      { front: 'Trap 4: つ (tsu)', back: 'ㄷ position → release into す', detail: 'Think "tsunami" — you already say it correctly in English!' },
+      { front: 'Trap 5: ふ (fu)', back: 'Bilabial fricative — both lips, no teeth', detail: 'Blow out a candle gently. That soft puff = ふ.' },
+      { front: 'Trap 6: Pitch Accent', back: 'Japanese is pitch-accent, not stress-accent', detail: 'はし: high-low = chopsticks, low-high = bridge.' },
+      { front: 'Small っ', back: 'One beat of held silence', detail: 'きて (2 beats, come) vs. きって (3 beats, stamp).' },
+      { front: 'Particle は', back: 'Pronounced "wa"', detail: 'わたしは = watashi wa, not watashi ha.' },
+      { front: 'Particle へ', back: 'Pronounced "e"', detail: 'がっこうへ = gakkou e, not gakkou he.' },
+      { front: 'Particle を', back: 'Pronounced "o"', detail: 'みずを = mizu o, not mizu wo.' }
+    ]
+  }
+);
+</script>
+<script src="js/spaced-repetition.js"></script>
+<script src="js/memory-palace.js"></script>
+</body>
+</html>

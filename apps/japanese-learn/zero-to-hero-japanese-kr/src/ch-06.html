@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>제6장: 조수사 — 세는 법의 형태 — Zero to Hero 日本語</title>
+<link rel="stylesheet" href="css/design-system.css">
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <span class="logo-badge">Zero to Hero — 기억 설계 에디션</span>
+    <div class="logo-title">한국어 화자를 위한 日本語</div>
+    <div class="logo-sub">한국어에서 日本語로 — 기억 설계자의 안내서</div>
+  </a>
+  <div class="sidebar-progress">
+    <div class="sidebar-progress-label">진행률</div>
+    <div class="sidebar-progress-bar">
+      <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+    </div>
+    <div class="sidebar-progress-count">0/22 완료</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="ch-00.html" class="toc-link"><span class="toc-num">00</span><span class="toc-check" data-ch="00"></span>기억 과학</a>
+    <a href="ch-01.html" class="toc-link"><span class="toc-num">01</span><span class="toc-check" data-ch="01"></span>한국어의 이점</a>
+    <a href="ch-02.html" class="toc-link"><span class="toc-num">02</span><span class="toc-check" data-ch="02"></span>히라가나</a>
+    <a href="ch-03.html" class="toc-link"><span class="toc-num">03</span><span class="toc-check" data-ch="03"></span>가타카나</a>
+    <a href="ch-04.html" class="toc-link"><span class="toc-num">04</span><span class="toc-check" data-ch="04"></span>발음</a>
+    <a href="ch-05.html" class="toc-link"><span class="toc-num">05</span><span class="toc-check" data-ch="05"></span>서바이벌 일본어</a>
+    <a href="ch-06.html" class="toc-link active"><span class="toc-num">06</span><span class="toc-check" data-ch="06"></span>조수사</a>
+    <a href="ch-07.html" class="toc-link"><span class="toc-num">07</span><span class="toc-check" data-ch="07"></span>조사</a>
+    <a href="ch-08.html" class="toc-link"><span class="toc-num">08</span><span class="toc-check" data-ch="08"></span>동사 활용</a>
+    <a href="ch-09.html" class="toc-link"><span class="toc-num">09</span><span class="toc-check" data-ch="09"></span>일상 회화</a>
+    <a href="ch-10.html" class="toc-link"><span class="toc-num">10</span><span class="toc-check" data-ch="10"></span>문형</a>
+    <a href="ch-11.html" class="toc-link"><span class="toc-num">11</span><span class="toc-check" data-ch="11"></span>한자</a>
+    <a href="ch-12.html" class="toc-link"><span class="toc-num">12</span><span class="toc-check" data-ch="12"></span>한자어</a>
+    <a href="ch-13.html" class="toc-link"><span class="toc-num">13</span><span class="toc-check" data-ch="13"></span>고유어</a>
+    <a href="ch-14.html" class="toc-link"><span class="toc-num">14</span><span class="toc-check" data-ch="14"></span>경어</a>
+    <a href="ch-15.html" class="toc-link"><span class="toc-num">15</span><span class="toc-check" data-ch="15"></span>독해</a>
+    <a href="ch-16.html" class="toc-link"><span class="toc-num">16</span><span class="toc-check" data-ch="16"></span>작문</a>
+    <a href="ch-17.html" class="toc-link"><span class="toc-num">17</span><span class="toc-check" data-ch="17"></span>청해</a>
+    <a href="ch-18.html" class="toc-link"><span class="toc-num">18</span><span class="toc-check" data-ch="18"></span>문화 화용론</a>
+    <a href="ch-19.html" class="toc-link"><span class="toc-num">19</span><span class="toc-check" data-ch="19"></span>JLPT와 그 너머</a>
+    <a href="ch-20.html" class="toc-link"><span class="toc-num">20</span><span class="toc-check" data-ch="20"></span>기억의 궁전</a>
+    <a href="ch-21.html" class="toc-link"><span class="toc-num">21</span><span class="toc-check" data-ch="21"></span>90일 스프린트</a>
+    <a href="appendices.html" class="toc-link" style="margin-top:.5rem;border-top:1px solid var(--border);padding-top:.8rem"><span class="toc-num">+</span>부록</a>
+  </nav>
+</aside>
+
+<div class="main">
+<div class="content-wrap">
+
+<section id="ch06" data-ch="06" style="padding-top:3rem">
+<h2><span class="ch-label">제6장</span>조수사 -- 세는 법의 형태 (助数詞)</h2>
+
+<!-- ============================================================ -->
+<!--  기억 기법 스포트라이트                                         -->
+<!-- ============================================================ -->
+<div class="callout memory">
+  <h4>기억 기법 스포트라이트: 청킹 + 음성 연상</h4>
+  <p>조수사는 수십 개가 넘지만, <strong>음변화 패턴</strong>으로 그룹화(청킹)하면 학습이 훨씬 빨라집니다.
+  예를 들어, <span class="jp">本(ほん)</span>, <span class="jp">杯(はい)</span>, <span class="jp">匹(ひき)</span>는 모두 <strong>h행</strong>으로 시작하므로
+  같은 음변화 규칙이 적용됩니다. 이 패턴을 하나의 덩어리(chunk)로 묶고, 각 변화에 재미있는 음성 연상을 붙이면
+  개별 암기보다 3배 이상 효율적으로 기억할 수 있습니다.</p>
+  <p><strong>핵심 전략:</strong> "1, 6, 8, 10은 <em>빵빵</em> 터진다 (h &rarr; p)" / "3과 ?는 <em>부드럽게</em> 변한다 (h &rarr; b)"</p>
+</div>
+
+<!-- ============================================================ -->
+<!--  궁전 배치: 부엌                                              -->
+<!-- ============================================================ -->
+<div class="callout info">
+  <h4>궁전 배치: 부엌</h4>
+  <p>기억의 궁전에서 이 장의 무대는 <strong>부엌</strong>입니다. 각 카운터 카테고리를 부엌의 특정 위치에 배치하세요.</p>
+  <ul>
+    <li><strong>냉장고 문</strong> &mdash; <span class="jp">つ</span> (만능 카운터): 냉장고 안에 이것저것 다 들어 있습니다.</li>
+    <li><strong>식탁</strong> &mdash; <span class="jp">人(にん)</span>: 식탁에 사람들이 앉아 있습니다.</li>
+    <li><strong>과일 바구니</strong> &mdash; <span class="jp">個(こ)</span>: 사과, 오렌지 등 작은 물건이 담겨 있습니다.</li>
+    <li><strong>칼꽂이</strong> &mdash; <span class="jp">本(ほん)</span>: 길고 가는 칼이 꽂혀 있습니다.</li>
+    <li><strong>도마 위</strong> &mdash; <span class="jp">枚(まい)</span>: 평평하게 썬 햄 조각들이 놓여 있습니다.</li>
+    <li><strong>찬장</strong> &mdash; <span class="jp">杯(はい)</span>: 컵과 잔이 줄지어 있습니다.</li>
+    <li><strong>창문 옆</strong> &mdash; <span class="jp">匹(ひき)</span> / <span class="jp">頭(とう)</span>: 창밖에 동물이 보입니다.</li>
+    <li><strong>가전 코너</strong> &mdash; <span class="jp">台(だい)</span>: 전자레인지, 믹서기 등 기계가 놓여 있습니다.</li>
+    <li><strong>선반 위 책꽂이</strong> &mdash; <span class="jp">冊(さつ)</span>: 요리책이 꽂혀 있습니다.</li>
+    <li><strong>현관 신발장</strong> &mdash; <span class="jp">足(そく)</span>: 신발이 정리되어 있습니다.</li>
+  </ul>
+</div>
+
+<!-- ============================================================ -->
+<!--  복습 확인                                                    -->
+<!-- ============================================================ -->
+<div id="recall-check-top" class="quiz-box">
+  <h4>복습 확인: 제2장~제5장</h4>
+  <p>이전 장에서 배운 내용을 떠올려 보세요. 아래 항목을 기억하고 있나요?</p>
+  <ul>
+    <li><span class="jp">おはようございます</span>의 뜻은? <span class="kr">(안녕하세요 - 아침 인사)</span></li>
+    <li>히라가나 <span class="jp">あ행</span>의 5글자를 순서대로 쓸 수 있나요?</li>
+    <li>가타카나 <span class="jp">カ행</span>의 5글자를 순서대로 쓸 수 있나요?</li>
+    <li><span class="jp">すみません</span>은 어떤 상황에서 사용하나요? <span class="kr">(실례합니다 / 죄송합니다)</span></li>
+    <li>장음과 단음의 차이가 의미를 바꾸는 예를 하나 들 수 있나요?</li>
+  </ul>
+</div>
+
+<!-- ============================================================ -->
+<!--  6A: 서론 — 왜 조수사가 존재하는가                              -->
+<!-- ============================================================ -->
+<nav class="chapter-toc">
+  <details open>
+    <summary class="chapter-toc-title">이 장의 내용</summary>
+  <ol>
+    <li><a href="#sec-6a">서론 — 왜 조수사가 존재하는가</a></li>
+    <li><a href="#sec-6b">고유 つ 체계 — 만능 안전망</a></li>
+    <li><a href="#sec-6c">사람 카운터 人 — 완전 차트 (1~10)</a></li>
+    <li><a href="#sec-6d">작은 물건 個(こ) — 완전 차트 (1~10)</a></li>
+    <li><a href="#sec-6e">길고 가는 물건 本(ほん) — 완전 차트 (1~10)</a></li>
+    <li><a href="#sec-6f">평평한 것 枚(まい) — 완전 차트 (1~10)</a></li>
+    <li><a href="#sec-6g">동물 카운터 — 작은 동물 匹(ひき) + 큰 동물 頭(とう)</a></li>
+    <li><a href="#sec-6h">음료와 컵 杯(はい) — 완전 차트 (1~10)</a></li>
+    <li><a href="#sec-6i">기계와 차량 台(だい) — 완전 차트 (1~10)</a></li>
+    <li><a href="#sec-6j">책과 권 冊(さつ) — 완전 차트 (1~10)</a></li>
+    <li><a href="#sec-6k">추가 필수 조수사</a></li>
+    <li><a href="#sec-6l">음변화 마스터 차트</a></li>
+    <li><a href="#sec-6m">조수사 의문사 — 몇 개?</a></li>
+    <li><a href="#sec-6n">어순 — 조수사의 위치</a></li>
+    <li><a href="#sec-6o">한일 조수사 대응표</a></li>
+    <li><a href="#sec-6p">실전 조수사 — 생존 상황</a></li>
+    <li><a href="#sec-quizzes">퀴즈</a></li>
+  </ol>
+  </details>
+</nav>
+
+<h3 id="sec-6a">서론 — 왜 조수사가 존재하는가</h3>
+
+<p>영어에서는 "three apples", "five books"처럼 숫자 + 명사만으로 셀 수 있습니다.
+하지만 일본어에서는 반드시 <strong>숫자 + 조수사(카운터)</strong>를 함께 사용해야 합니다.
+<span class="jp">りんご<strong>三個</strong></span>(사과 세 <strong>개</strong>)처럼 말이죠.</p>
+
+<p>이것은 일본어만의 특이한 체계가 아닙니다. 한국어, 중국어, 태국어, 말레이어 등
+아시아 여러 언어에 공통적으로 존재하는 문법 구조입니다.</p>
+
+<div class="callout ok">
+  <h4>한국어의 장점</h4>
+  <p>한국어 화자에게 좋은 소식입니다 &mdash; <strong>한국어도 조수사 체계를 사용합니다!</strong></p>
+  <p>한국어의 주요 조수사를 떠올려 보세요:</p>
+  <ul>
+    <li><span class="kr">개</span> &mdash; 일반 사물 (사과 세 <strong>개</strong>)</li>
+    <li><span class="kr">명</span> / <span class="kr">사람</span> &mdash; 사람 (학생 다섯 <strong>명</strong>)</li>
+    <li><span class="kr">마리</span> &mdash; 동물 (고양이 두 <strong>마리</strong>)</li>
+    <li><span class="kr">잔</span> &mdash; 음료 (커피 한 <strong>잔</strong>)</li>
+    <li><span class="kr">병</span> &mdash; 병에 든 것 (맥주 세 <strong>병</strong>)</li>
+    <li><span class="kr">장</span> &mdash; 종이, 평평한 것 (종이 열 <strong>장</strong>)</li>
+    <li><span class="kr">권</span> &mdash; 책 (책 두 <strong>권</strong>)</li>
+    <li><span class="kr">대</span> &mdash; 기계, 차량 (차 한 <strong>대</strong>)</li>
+    <li><span class="kr">벌</span> &mdash; 옷 (양복 한 <strong>벌</strong>)</li>
+    <li><span class="kr">켤레</span> &mdash; 신발 (신발 두 <strong>켤레</strong>)</li>
+  </ul>
+  <p>이 개념 자체가 익숙하므로, 일본어 조수사를 배울 때 <strong>"어떤 카테고리에 어떤 카운터를 쓰는지"</strong>만
+  대응시키면 됩니다. 한국어에 없는 새로운 개념을 배우는 것이 아니라, 이미 가진 지식에 새 라벨을 붙이는 것입니다.</p>
+</div>
+
+<p>일본어 조수사의 핵심 난이도는 두 가지입니다:</p>
+<ol>
+  <li><strong>숫자와 결합할 때 발음이 변하는 경우</strong> (음변화 = 음편): 예를 들어 <span class="jp">本</span>은 보통 <span class="jp">ほん</span>이지만, 1본은 <span class="jp">い<strong>っぽん</strong></span>이 됩니다.</li>
+  <li><strong>어떤 사물에 어떤 카운터를 사용하는지</strong> 기억하기: 연필은 <span class="jp">本</span>? <span class="jp">個</span>?</li>
+</ol>
+
+<p>이 장에서는 가장 중요한 조수사를 하나씩 정복하겠습니다. 각 조수사마다 <strong>1부터 10까지의 완전한 활용 차트</strong>를 제공합니다.</p>
+
+<!-- ============================================================ -->
+<!--  6B: 고유 つ 체계 — 만능 안전망                                -->
+<!-- ============================================================ -->
+<h3 id="sec-6b">고유 <span class="jp">つ</span> 체계 — 만능 안전망</h3>
+
+<p>일본어에는 고유 숫자 체계(和語数詞)가 있으며, 여기에 <span class="jp">つ</span>를 붙이면
+<strong>거의 모든 사물을 셀 수 있는 만능 카운터</strong>가 됩니다.
+정확한 조수사를 모를 때 이것을 사용하면 대부분 통합니다.</p>
+
+<div class="callout warn">
+  <h4>주의</h4>
+  <p><span class="jp">つ</span> 체계는 <strong>1~10까지만</strong> 존재합니다. 11 이상은 한자어 숫자 + 적절한 조수사를 사용해야 합니다.
+  또한, 사람을 셀 때는 <span class="jp">つ</span>를 사용하지 않습니다.</p>
+</div>
+
+<h4><span class="jp">つ</span> 카운터 완전 차트 (1~10)</h4>
+<table>
+  <thead>
+    <tr><th>숫자</th><th>일본어</th><th>읽기</th><th>한국어 뜻</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td><span class="jp">一つ</span></td><td><span class="jp">ひとつ</span> (hitotsu)</td><td>하나</td></tr>
+    <tr><td>2</td><td><span class="jp">二つ</span></td><td><span class="jp">ふたつ</span> (futatsu)</td><td>둘</td></tr>
+    <tr><td>3</td><td><span class="jp">三つ</span></td><td><span class="jp">みっつ</span> (mittsu)</td><td>셋</td></tr>
+    <tr><td>4</td><td><span class="jp">四つ</span></td><td><span class="jp">よっつ</span> (yottsu)</td><td>넷</td></tr>
+    <tr><td>5</td><td><span class="jp">五つ</span></td><td><span class="jp">いつつ</span> (itsutsu)</td><td>다섯</td></tr>
+    <tr><td>6</td><td><span class="jp">六つ</span></td><td><span class="jp">むっつ</span> (muttsu)</td><td>여섯</td></tr>
+    <tr><td>7</td><td><span class="jp">七つ</span></td><td><span class="jp">ななつ</span> (nanatsu)</td><td>일곱</td></tr>
+    <tr><td>8</td><td><span class="jp">八つ</span></td><td><span class="jp">やっつ</span> (yattsu)</td><td>여덟</td></tr>
+    <tr><td>9</td><td><span class="jp">九つ</span></td><td><span class="jp">ここのつ</span> (kokonotsu)</td><td>아홉</td></tr>
+    <tr><td>10</td><td><span class="jp">十</span></td><td><span class="jp">とお</span> (too)</td><td>열</td></tr>
+    <tr><td>?</td><td><span class="jp">いくつ</span></td><td><span class="jp">いくつ</span> (ikutsu)</td><td>몇 개? / 몇 살?</td></tr>
+  </tbody>
+</table>
+
+<div class="callout info">
+  <h4>패턴 관찰</h4>
+  <p>3, 6, 8에서 <span class="jp">っ</span>(촉음)이 나타납니다: <span class="jp">み<strong>っ</strong>つ</span>,
+  <span class="jp">む<strong>っ</strong>つ</span>, <span class="jp">や<strong>っ</strong>つ</span>.
+  그리고 10은 <span class="jp">つ</span>가 붙지 않고 <span class="jp">とお</span>만 씁니다.
+  <span class="jp">いくつ</span>는 "몇 개?"라는 의문사로, 나이를 물을 때도 사용합니다 (おいくつですか = 몇 살이세요?).</p>
+</div>
+
+<p><strong>사용 예:</strong></p>
+<ul>
+  <li><span class="jp">りんごを<strong>三つ</strong>ください。</span> &mdash; 사과를 세 개 주세요.</li>
+  <li><span class="jp">みかんが<strong>五つ</strong>あります。</span> &mdash; 귤이 다섯 개 있습니다.</li>
+  <li><span class="jp">お子さんは<strong>おいくつ</strong>ですか。</span> &mdash; 자녀분은 몇 살인가요?</li>
+</ul>
+
+<!-- ============================================================ -->
+<!--  6C: 사람 카운터 人                                            -->
+<!-- ============================================================ -->
+<h3 id="sec-6c">사람 카운터 <span class="jp">人</span> — 완전 차트 (1~10)</h3>
+
+<p>사람을 세는 카운터는 <span class="jp">人</span>입니다. 한국어의 <span class="kr">명</span> 또는 <span class="kr">사람</span>에 해당합니다.
+<strong>1명과 2명은 고유 일본어 읽기</strong>를 사용하며, 3명부터는 한자어 숫자 + <span class="jp">にん</span>을 사용합니다.</p>
+
+<h4><span class="jp">人(にん)</span> 카운터 완전 차트</h4>
+<table>
+  <thead>
+    <tr><th>숫자</th><th>일본어</th><th>읽기</th><th>한국어</th><th>비고</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td><span class="jp">一人</span></td><td><span class="jp">ひとり</span> (hitori)</td><td>한 명</td><td class="highlight">특수 읽기!</td></tr>
+    <tr><td>2</td><td><span class="jp">二人</span></td><td><span class="jp">ふたり</span> (futari)</td><td>두 명</td><td class="highlight">특수 읽기!</td></tr>
+    <tr><td>3</td><td><span class="jp">三人</span></td><td><span class="jp">さんにん</span> (sannin)</td><td>세 명</td><td></td></tr>
+    <tr><td>4</td><td><span class="jp">四人</span></td><td><span class="jp">よにん</span> (yonin)</td><td>네 명</td><td><span class="jp">よ</span> 사용</td></tr>
+    <tr><td>5</td><td><span class="jp">五人</span></td><td><span class="jp">ごにん</span> (gonin)</td><td>다섯 명</td><td></td></tr>
+    <tr><td>6</td><td><span class="jp">六人</span></td><td><span class="jp">ろくにん</span> (rokunin)</td><td>여섯 명</td><td></td></tr>
+    <tr><td>7</td><td><span class="jp">七人</span></td><td><span class="jp">しちにん</span> / <span class="jp">ななにん</span></td><td>일곱 명</td><td>두 읽기 모두 가능</td></tr>
+    <tr><td>8</td><td><span class="jp">八人</span></td><td><span class="jp">はちにん</span> (hachinin)</td><td>여덟 명</td><td></td></tr>
+    <tr><td>9</td><td><span class="jp">九人</span></td><td><span class="jp">きゅうにん</span> / <span class="jp">くにん</span></td><td>아홉 명</td><td>두 읽기 모두 가능</td></tr>
+    <tr><td>10</td><td><span class="jp">十人</span></td><td><span class="jp">じゅうにん</span> (juunin)</td><td>열 명</td><td></td></tr>
+    <tr><td>?</td><td><span class="jp">何人</span></td><td><span class="jp">なんにん</span> (nannin)</td><td>몇 명?</td><td></td></tr>
+  </tbody>
+</table>
+
+<div class="callout warn">
+  <h4>필수 암기: 1명과 2명</h4>
+  <p><span class="jp">一人(ひとり)</span>과 <span class="jp">二人(ふたり)</span>는 <strong>절대 규칙적 패턴이 아닙니다</strong>.
+  <span class="jp">いちにん</span>, <span class="jp">ににん</span>이라고 읽지 않습니다!
+  이 두 단어는 개별적으로 완전히 외워야 합니다. 매우 자주 사용되므로 반복 노출을 통해 자연스럽게 익혀지기도 합니다.</p>
+</div>
+
+<p><strong>사용 예:</strong></p>
+<ul>
+  <li><span class="jp"><strong>一人</strong>で来ました。</span> &mdash; 혼자 왔습니다.</li>
+  <li><span class="jp">家族は<strong>四人</strong>です。</span> &mdash; 가족은 네 명입니다.</li>
+  <li><span class="jp"><strong>何人</strong>ですか。</span> &mdash; 몇 명입니까? (식당에서 자주 듣는 질문)</li>
+</ul>
+
+<!-- ============================================================ -->
+<!--  6D: 작은 물건 個 (ko)                                         -->
+<!-- ============================================================ -->
+<h3 id="sec-6d">작은 물건 <span class="jp">個(こ)</span> — 완전 차트 (1~10)</h3>
+
+<p>작고 둥글거나 형태가 뚜렷한 물건을 셀 때 사용합니다: 사과, 계란, 돌, 상자 등.
+한국어의 <span class="kr">개</span>에 해당하며, 한자 <span class="jp">個</span>는 한국 한자음으로 <span class="kr">개</span>입니다.
+<span class="cognate-tag">동족어</span></p>
+
+<h4><span class="jp">個(こ)</span> 카운터 완전 차트</h4>
+<table>
+  <thead>
+    <tr><th>숫자</th><th>일본어</th><th>읽기</th><th>한국어</th><th>비고</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td><span class="jp">一個</span></td><td><span class="jp">いっこ</span> (ikko)</td><td>한 개</td><td><span class="jp">いち</span> &rarr; <span class="jp">いっ</span> (촉음)</td></tr>
+    <tr><td>2</td><td><span class="jp">二個</span></td><td><span class="jp">にこ</span> (niko)</td><td>두 개</td><td></td></tr>
+    <tr><td>3</td><td><span class="jp">三個</span></td><td><span class="jp">さんこ</span> (sanko)</td><td>세 개</td><td></td></tr>
+    <tr><td>4</td><td><span class="jp">四個</span></td><td><span class="jp">よんこ</span> (yonko)</td><td>네 개</td><td></td></tr>
+    <tr><td>5</td><td><span class="jp">五個</span></td><td><span class="jp">ごこ</span> (goko)</td><td>다섯 개</td><td></td></tr>
+    <tr><td>6</td><td><span class="jp">六個</span></td><td><span class="jp">ろっこ</span> (rokko)</td><td>여섯 개</td><td><span class="jp">ろく</span> &rarr; <span class="jp">ろっ</span> (촉음)</td></tr>
+    <tr><td>7</td><td><span class="jp">七個</span></td><td><span class="jp">ななこ</span> (nanako)</td><td>일곱 개</td><td></td></tr>
+    <tr><td>8</td><td><span class="jp">八個</span></td><td><span class="jp">はっこ</span> (hakko)</td><td>여덟 개</td><td><span class="jp">はち</span> &rarr; <span class="jp">はっ</span> (촉음)</td></tr>
+    <tr><td>9</td><td><span class="jp">九個</span></td><td><span class="jp">きゅうこ</span> (kyuuko)</td><td>아홉 개</td><td></td></tr>
+    <tr><td>10</td><td><span class="jp">十個</span></td><td><span class="jp">じゅっこ</span> / <span class="jp">じっこ</span></td><td>열 개</td><td><span class="jp">じゅう</span> &rarr; <span class="jp">じゅっ/じっ</span> (촉음)</td></tr>
+    <tr><td>?</td><td><span class="jp">何個</span></td><td><span class="jp">なんこ</span> (nanko)</td><td>몇 개?</td><td></td></tr>
+  </tbody>
+</table>
+
+<div class="callout info">
+  <h4>음변화 패턴: k행 카운터</h4>
+  <p><span class="jp">個(こ)</span>는 <strong>k행</strong>으로 시작하는 카운터입니다. k행 카운터에서는
+  <strong>1, 6, 8, 10</strong>에서 촉음(<span class="jp">っ</span>)이 들어갑니다:
+  <span class="jp">い<strong>っ</strong>こ</span>, <span class="jp">ろ<strong>っ</strong>こ</span>,
+  <span class="jp">は<strong>っ</strong>こ</span>, <span class="jp">じゅ<strong>っ</strong>こ</span>.
+  이 패턴은 <span class="jp">階(かい)</span>, <span class="jp">回(かい)</span> 등 다른 k행 카운터에도 적용됩니다.</p>
+</div>
+
+<!-- ============================================================ -->
+<!--  6E: 길고 가는 물건 本 (hon)                                    -->
+<!-- ============================================================ -->
+<h3 id="sec-6e">길고 가는 물건 <span class="jp">本(ほん)</span> — 완전 차트 (1~10)</h3>
+
+<p>길고 가늘거나 원통형인 물건을 셀 때 사용합니다: 연필, 우산, 나무, 병, 도로, 강, 넥타이, 전화 통화 등.
+한국어에서 가장 가까운 대응은 맥락에 따라 <span class="kr">자루</span>(연필), <span class="kr">병</span>(음료),
+<span class="kr">그루</span>(나무) 등 다양합니다.</p>
+
+<p><span class="jp">本</span>은 h행 카운터의 대표 주자이며, <strong>가장 복잡한 음변화 패턴</strong>을 보입니다.</p>
+
+<h4><span class="jp">本(ほん)</span> 카운터 완전 차트</h4>
+<table>
+  <thead>
+    <tr><th>숫자</th><th>일본어</th><th>읽기</th><th>한국어</th><th>음변화</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td><span class="jp">一本</span></td><td><span class="jp">い<strong>っぽん</strong></span> (ippon)</td><td>한 자루/병</td><td class="highlight">h &rarr; p (촉음 + 반탁음)</td></tr>
+    <tr><td>2</td><td><span class="jp">二本</span></td><td><span class="jp">にほん</span> (nihon)</td><td>두 자루/병</td><td>변화 없음</td></tr>
+    <tr><td>3</td><td><span class="jp">三本</span></td><td><span class="jp">さん<strong>ぼん</strong></span> (sanbon)</td><td>세 자루/병</td><td class="highlight">h &rarr; b (탁음)</td></tr>
+    <tr><td>4</td><td><span class="jp">四本</span></td><td><span class="jp">よんほん</span> (yonhon)</td><td>네 자루/병</td><td>변화 없음</td></tr>
+    <tr><td>5</td><td><span class="jp">五本</span></td><td><span class="jp">ごほん</span> (gohon)</td><td>다섯 자루/병</td><td>변화 없음</td></tr>
+    <tr><td>6</td><td><span class="jp">六本</span></td><td><span class="jp">ろ<strong>っぽん</strong></span> (roppon)</td><td>여섯 자루/병</td><td class="highlight">h &rarr; p (촉음 + 반탁음)</td></tr>
+    <tr><td>7</td><td><span class="jp">七本</span></td><td><span class="jp">ななほん</span> (nanahon)</td><td>일곱 자루/병</td><td>변화 없음</td></tr>
+    <tr><td>8</td><td><span class="jp">八本</span></td><td><span class="jp">は<strong>っぽん</strong></span> (happon)</td><td>여덟 자루/병</td><td class="highlight">h &rarr; p (촉음 + 반탁음)</td></tr>
+    <tr><td>9</td><td><span class="jp">九本</span></td><td><span class="jp">きゅうほん</span> (kyuuhon)</td><td>아홉 자루/병</td><td>변화 없음</td></tr>
+    <tr><td>10</td><td><span class="jp">十本</span></td><td><span class="jp">じゅ<strong>っぽん</strong></span> (juppon)</td><td>열 자루/병</td><td class="highlight">h &rarr; p (촉음 + 반탁음)</td></tr>
+    <tr><td>?</td><td><span class="jp">何本</span></td><td><span class="jp">なん<strong>ぼん</strong></span> (nanbon)</td><td>몇 자루/병?</td><td class="highlight">h &rarr; b (탁음)</td></tr>
+  </tbody>
+</table>
+
+<div class="callout memory">
+  <h4>음변화 기억법: "1, 6, 8, 10은 빵빵 (p), 3과 ?는 부드러운 b"</h4>
+  <p><strong>빵빵 그룹 (h &rarr; p):</strong> 1(<span class="jp">いっぽん</span>), 6(<span class="jp">ろっぽん</span>),
+  8(<span class="jp">はっぽん</span>), 10(<span class="jp">じゅっぽん</span>) &mdash;
+  숫자 끝이 촉음(<span class="jp">っ</span>)으로 바뀌면서 <span class="jp">ほ</span>가 <span class="jp">ぽ</span>으로 바뀝니다.</p>
+  <p><strong>부드러운 그룹 (h &rarr; b):</strong> 3(<span class="jp">さんぼん</span>), ?(<span class="jp">なんぼん</span>) &mdash;
+  <span class="jp">ん</span> 뒤에서 <span class="jp">ほ</span>가 <span class="jp">ぼ</span>으로 바뀝니다.</p>
+  <p>나머지(2, 4, 5, 7, 9)는 그대로 <span class="jp">ほん</span>입니다.</p>
+</div>
+
+<p><strong>사용 예:</strong></p>
+<ul>
+  <li><span class="jp">ペンを<strong>三本</strong>買いました。</span> &mdash; 펜을 세 자루 샀습니다.</li>
+  <li><span class="jp">ビールを<strong>一本</strong>ください。</span> &mdash; 맥주 한 병 주세요.</li>
+  <li><span class="jp">傘は<strong>何本</strong>ありますか。</span> &mdash; 우산은 몇 자루 있습니까?</li>
+</ul>
+
+<!-- ============================================================ -->
+<!--  6F: 평평한 것 枚 (mai)                                        -->
+<!-- ============================================================ -->
+<h3 id="sec-6f">평평한 것 <span class="jp">枚(まい)</span> — 완전 차트 (1~10)</h3>
+
+<p>평평하고 얇은 것을 셀 때 사용합니다: 종이, 셔츠, 접시, 피자 한 판, CD, 사진 등.
+한국어의 <span class="kr">장</span>에 해당합니다.</p>
+
+<p><strong>좋은 소식:</strong> <span class="jp">枚</span>는 <strong>음변화가 전혀 없습니다!</strong> 모든 숫자에서 <span class="jp">まい</span> 그대로 유지됩니다.</p>
+
+<h4><span class="jp">枚(まい)</span> 카운터 완전 차트</h4>
+<table>
+  <thead>
+    <tr><th>숫자</th><th>일본어</th><th>읽기</th><th>한국어</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td><span class="jp">一枚</span></td><td><span class="jp">いちまい</span> (ichimai)</td><td>한 장</td></tr>
+    <tr><td>2</td><td><span class="jp">二枚</span></td><td><span class="jp">にまい</span> (nimai)</td><td>두 장</td></tr>
+    <tr><td>3</td><td><span class="jp">三枚</span></td><td><span class="jp">さんまい</span> (sanmai)</td><td>세 장</td></tr>
+    <tr><td>4</td><td><span class="jp">四枚</span></td><td><span class="jp">よんまい</span> (yonmai)</td><td>네 장</td></tr>
+    <tr><td>5</td><td><span class="jp">五枚</span></td><td><span class="jp">ごまい</span> (gomai)</td><td>다섯 장</td></tr>
+    <tr><td>6</td><td><span class="jp">六枚</span></td><td><span class="jp">ろくまい</span> (rokumai)</td><td>여섯 장</td></tr>
+    <tr><td>7</td><td><span class="jp">七枚</span></td><td><span class="jp">ななまい</span> (nanamai)</td><td>일곱 장</td></tr>
+    <tr><td>8</td><td><span class="jp">八枚</span></td><td><span class="jp">はちまい</span> (hachimai)</td><td>여덟 장</td></tr>
+    <tr><td>9</td><td><span class="jp">九枚</span></td><td><span class="jp">きゅうまい</span> (kyuumai)</td><td>아홉 장</td></tr>
+    <tr><td>10</td><td><span class="jp">十枚</span></td><td><span class="jp">じゅうまい</span> (juumai)</td><td>열 장</td></tr>
+    <tr><td>?</td><td><span class="jp">何枚</span></td><td><span class="jp">なんまい</span> (nanmai)</td><td>몇 장?</td></tr>
+  </tbody>
+</table>
+
+<p><strong>사용 예:</strong></p>
+<ul>
+  <li><span class="jp">切符を<strong>二枚</strong>ください。</span> &mdash; 표 두 장 주세요.</li>
+  <li><span class="jp">写真を<strong>五枚</strong>撮りました。</span> &mdash; 사진을 다섯 장 찍었습니다.</li>
+  <li><span class="jp">Tシャツが<strong>何枚</strong>ありますか。</span> &mdash; 티셔츠가 몇 장 있습니까?</li>
+</ul>
+
+<!-- ============================================================ -->
+<!--  6G: 동물 — 匹 (hiki) + 頭 (tou)                              -->
+<!-- ============================================================ -->
+<h3 id="sec-6g">동물 카운터 — 작은 동물 <span class="jp">匹(ひき)</span> + 큰 동물 <span class="jp">頭(とう)</span></h3>
+
+<p>한국어에서는 동물을 모두 <span class="kr">마리</span>로 세지만, 일본어에서는 <strong>크기에 따라</strong> 카운터가 달라집니다.</p>
+<ul>
+  <li><span class="jp">匹(ひき)</span> &mdash; 작은/중간 크기 동물: 고양이, 개, 물고기, 벌레, 개구리 등</li>
+  <li><span class="jp">頭(とう)</span> &mdash; 큰 동물: 소, 말, 코끼리, 고래 등 (사람이 안을 수 없을 정도로 큰 동물)</li>
+</ul>
+
+<h4><span class="jp">匹(ひき)</span> 카운터 완전 차트 — 작은 동물</h4>
+<table>
+  <thead>
+    <tr><th>숫자</th><th>일본어</th><th>읽기</th><th>한국어</th><th>음변화</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td><span class="jp">一匹</span></td><td><span class="jp">い<strong>っぴき</strong></span> (ippiki)</td><td>한 마리</td><td class="highlight">h &rarr; p</td></tr>
+    <tr><td>2</td><td><span class="jp">二匹</span></td><td><span class="jp">にひき</span> (nihiki)</td><td>두 마리</td><td>변화 없음</td></tr>
+    <tr><td>3</td><td><span class="jp">三匹</span></td><td><span class="jp">さん<strong>びき</strong></span> (sanbiki)</td><td>세 마리</td><td class="highlight">h &rarr; b</td></tr>
+    <tr><td>4</td><td><span class="jp">四匹</span></td><td><span class="jp">よんひき</span> (yonhiki)</td><td>네 마리</td><td>변화 없음</td></tr>
+    <tr><td>5</td><td><span class="jp">五匹</span></td><td><span class="jp">ごひき</span> (gohiki)</td><td>다섯 마리</td><td>변화 없음</td></tr>
+    <tr><td>6</td><td><span class="jp">六匹</span></td><td><span class="jp">ろ<strong>っぴき</strong></span> (roppiki)</td><td>여섯 마리</td><td class="highlight">h &rarr; p</td></tr>
+    <tr><td>7</td><td><span class="jp">七匹</span></td><td><span class="jp">ななひき</span> (nanahiki)</td><td>일곱 마리</td><td>변화 없음</td></tr>
+    <tr><td>8</td><td><span class="jp">八匹</span></td><td><span class="jp">は<strong>っぴき</strong></span> (happiki)</td><td>여덟 마리</td><td class="highlight">h &rarr; p</td></tr>
+    <tr><td>9</td><td><span class="jp">九匹</span></td><td><span class="jp">きゅうひき</span> (kyuuhiki)</td><td>아홉 마리</td><td>변화 없음</td></tr>
+    <tr><td>10</td><td><span class="jp">十匹</span></td><td><span class="jp">じゅ<strong>っぴき</strong></span> (juppiki)</td><td>열 마리</td><td class="highlight">h &rarr; p</td></tr>
+    <tr><td>?</td><td><span class="jp">何匹</span></td><td><span class="jp">なん<strong>びき</strong></span> (nanbiki)</td><td>몇 마리?</td><td class="highlight">h &rarr; b</td></tr>
+  </tbody>
+</table>
+
+<div class="callout info">
+  <h4><span class="jp">匹</span>의 음변화는 <span class="jp">本</span>과 동일!</h4>
+  <p><span class="jp">匹(ひき)</span>도 h행 카운터이므로 <span class="jp">本(ほん)</span>과 <strong>완전히 같은 패턴</strong>이 적용됩니다.
+  1, 6, 8, 10 &rarr; p음화 / 3, ? &rarr; b음화. 이것이 청킹의 위력입니다!</p>
+</div>
+
+<h4><span class="jp">頭(とう)</span> 카운터 완전 차트 — 큰 동물</h4>
+<table>
+  <thead>
+    <tr><th>숫자</th><th>일본어</th><th>읽기</th><th>한국어</th><th>비고</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td><span class="jp">一頭</span></td><td><span class="jp">いっとう</span> (ittou)</td><td>한 마리 (대형)</td><td>촉음</td></tr>
+    <tr><td>2</td><td><span class="jp">二頭</span></td><td><span class="jp">にとう</span> (nitou)</td><td>두 마리</td><td></td></tr>
+    <tr><td>3</td><td><span class="jp">三頭</span></td><td><span class="jp">さんとう</span> (santou)</td><td>세 마리</td><td></td></tr>
+    <tr><td>4</td><td><span class="jp">四頭</span></td><td><span class="jp">よんとう</span> (yontou)</td><td>네 마리</td><td></td></tr>
+    <tr><td>5</td><td><span class="jp">五頭</span></td><td><span class="jp">ごとう</span> (gotou)</td><td>다섯 마리</td><td></td></tr>
+    <tr><td>6</td><td><span class="jp">六頭</span></td><td><span class="jp">ろくとう</span> (rokutou)</td><td>여섯 마리</td><td></td></tr>
+    <tr><td>7</td><td><span class="jp">七頭</span></td><td><span class="jp">ななとう</span> (nanatou)</td><td>일곱 마리</td><td></td></tr>
+    <tr><td>8</td><td><span class="jp">八頭</span></td><td><span class="jp">はっとう</span> (hattou)</td><td>여덟 마리</td><td>촉음</td></tr>
+    <tr><td>9</td><td><span class="jp">九頭</span></td><td><span class="jp">きゅうとう</span> (kyuutou)</td><td>아홉 마리</td><td></td></tr>
+    <tr><td>10</td><td><span class="jp">十頭</span></td><td><span class="jp">じゅっとう</span> (juttou)</td><td>열 마리</td><td>촉음</td></tr>
+    <tr><td>?</td><td><span class="jp">何頭</span></td><td><span class="jp">なんとう</span> (nantou)</td><td>몇 마리?</td><td></td></tr>
+  </tbody>
+</table>
+
+<p><strong>사용 예:</strong></p>
+<ul>
+  <li><span class="jp">猫が<strong>三匹</strong>います。</span> &mdash; 고양이가 세 마리 있습니다.</li>
+  <li><span class="jp">牛が<strong>二頭</strong>います。</span> &mdash; 소가 두 마리 있습니다.</li>
+  <li><span class="jp">犬は<strong>何匹</strong>飼っていますか。</span> &mdash; 개를 몇 마리 키우고 있습니까?</li>
+</ul>
+
+<!-- ============================================================ -->
+<!--  6H: 음료와 컵 杯 (hai)                                        -->
+<!-- ============================================================ -->
+<h3 id="sec-6h">음료와 컵 <span class="jp">杯(はい)</span> — 완전 차트 (1~10)</h3>
+
+<p>컵이나 그릇에 담긴 음료, 밥 등을 셀 때 사용합니다.
+한국어의 <span class="kr">잔</span>(커피 한 잔), <span class="kr">그릇</span>(밥 한 그릇), <span class="kr">공기</span>(밥 한 공기)에 해당합니다.
+한자 <span class="jp">杯</span>의 한국 한자음은 <span class="kr">배</span>입니다. <span class="cognate-tag">동족어</span></p>
+
+<h4><span class="jp">杯(はい)</span> 카운터 완전 차트</h4>
+<table>
+  <thead>
+    <tr><th>숫자</th><th>일본어</th><th>읽기</th><th>한국어</th><th>음변화</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td><span class="jp">一杯</span></td><td><span class="jp">い<strong>っぱい</strong></span> (ippai)</td><td>한 잔</td><td class="highlight">h &rarr; p</td></tr>
+    <tr><td>2</td><td><span class="jp">二杯</span></td><td><span class="jp">にはい</span> (nihai)</td><td>두 잔</td><td>변화 없음</td></tr>
+    <tr><td>3</td><td><span class="jp">三杯</span></td><td><span class="jp">さん<strong>ばい</strong></span> (sanbai)</td><td>세 잔</td><td class="highlight">h &rarr; b</td></tr>
+    <tr><td>4</td><td><span class="jp">四杯</span></td><td><span class="jp">よんはい</span> (yonhai)</td><td>네 잔</td><td>변화 없음</td></tr>
+    <tr><td>5</td><td><span class="jp">五杯</span></td><td><span class="jp">ごはい</span> (gohai)</td><td>다섯 잔</td><td>변화 없음</td></tr>
+    <tr><td>6</td><td><span class="jp">六杯</span></td><td><span class="jp">ろ<strong>っぱい</strong></span> (roppai)</td><td>여섯 잔</td><td class="highlight">h &rarr; p</td></tr>
+    <tr><td>7</td><td><span class="jp">七杯</span></td><td><span class="jp">ななはい</span> (nanahai)</td><td>일곱 잔</td><td>변화 없음</td></tr>
+    <tr><td>8</td><td><span class="jp">八杯</span></td><td><span class="jp">は<strong>っぱい</strong></span> (happai)</td><td>여덟 잔</td><td class="highlight">h &rarr; p</td></tr>
+    <tr><td>9</td><td><span class="jp">九杯</span></td><td><span class="jp">きゅうはい</span> (kyuuhai)</td><td>아홉 잔</td><td>변화 없음</td></tr>
+    <tr><td>10</td><td><span class="jp">十杯</span></td><td><span class="jp">じゅ<strong>っぱい</strong></span> (juppai)</td><td>열 잔</td><td class="highlight">h &rarr; p</td></tr>
+    <tr><td>?</td><td><span class="jp">何杯</span></td><td><span class="jp">なん<strong>ばい</strong></span> (nanbai)</td><td>몇 잔?</td><td class="highlight">h &rarr; b</td></tr>
+  </tbody>
+</table>
+
+<div class="callout ok">
+  <h4>h행 카운터 3총사: 本, 匹, 杯</h4>
+  <p>이 세 카운터는 <strong>모두 동일한 음변화 규칙</strong>을 따릅니다. 하나를 마스터하면 나머지 둘은 자동입니다!
+  이것이 바로 <strong>청킹</strong>의 힘입니다. 30개가 아니라 1개의 패턴만 외우면 됩니다.</p>
+</div>
+
+<p><strong>사용 예:</strong></p>
+<ul>
+  <li><span class="jp">コーヒーを<strong>一杯</strong>ください。</span> &mdash; 커피 한 잔 주세요.</li>
+  <li><span class="jp">ご飯を<strong>三杯</strong>食べました。</span> &mdash; 밥을 세 그릇 먹었습니다.</li>
+  <li><span class="jp"><strong>何杯</strong>飲みましたか。</span> &mdash; 몇 잔 마셨습니까?</li>
+</ul>
+
+<div class="callout info">
+  <h4>보너스: <span class="jp">いっぱい</span>의 이중 의미</h4>
+  <p><span class="jp">一杯(いっぱい)</span>는 "한 잔"이라는 뜻이지만,
+  <span class="jp">いっぱい</span>라고 히라가나로 쓰면 <strong>"가득"</strong>이라는 의미도 됩니다.
+  <span class="jp">お腹いっぱい</span> = 배부르다 (배가 가득 차다).</p>
+</div>
+
+<!-- ============================================================ -->
+<!--  6I: 기계와 차량 台 (dai)                                       -->
+<!-- ============================================================ -->
+<h3 id="sec-6i">기계와 차량 <span class="jp">台(だい)</span> — 완전 차트 (1~10)</h3>
+
+<p>기계, 차량, 대형 가전제품 등을 셀 때 사용합니다: 자동차, 컴퓨터, 세탁기, 자전거 등.
+한국어의 <span class="kr">대</span>에 정확히 대응하며, 한자도 동일합니다!
+<span class="jp">台</span> = <span class="kr">대</span> <span class="cognate-tag">동족어</span></p>
+
+<h4><span class="jp">台(だい)</span> 카운터 완전 차트</h4>
+<table>
+  <thead>
+    <tr><th>숫자</th><th>일본어</th><th>읽기</th><th>한국어</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td><span class="jp">一台</span></td><td><span class="jp">いちだい</span> (ichidai)</td><td>한 대</td></tr>
+    <tr><td>2</td><td><span class="jp">二台</span></td><td><span class="jp">にだい</span> (nidai)</td><td>두 대</td></tr>
+    <tr><td>3</td><td><span class="jp">三台</span></td><td><span class="jp">さんだい</span> (sandai)</td><td>세 대</td></tr>
+    <tr><td>4</td><td><span class="jp">四台</span></td><td><span class="jp">よんだい</span> (yondai)</td><td>네 대</td></tr>
+    <tr><td>5</td><td><span class="jp">五台</span></td><td><span class="jp">ごだい</span> (godai)</td><td>다섯 대</td></tr>
+    <tr><td>6</td><td><span class="jp">六台</span></td><td><span class="jp">ろくだい</span> (rokudai)</td><td>여섯 대</td></tr>
+    <tr><td>7</td><td><span class="jp">七台</span></td><td><span class="jp">ななだい</span> (nanadai)</td><td>일곱 대</td></tr>
+    <tr><td>8</td><td><span class="jp">八台</span></td><td><span class="jp">はちだい</span> (hachidai)</td><td>여덟 대</td></tr>
+    <tr><td>9</td><td><span class="jp">九台</span></td><td><span class="jp">きゅうだい</span> (kyuudai)</td><td>아홉 대</td></tr>
+    <tr><td>10</td><td><span class="jp">十台</span></td><td><span class="jp">じゅうだい</span> (juudai)</td><td>열 대</td></tr>
+    <tr><td>?</td><td><span class="jp">何台</span></td><td><span class="jp">なんだい</span> (nandai)</td><td>몇 대?</td></tr>
+  </tbody>
+</table>
+
+<p><span class="jp">台</span>는 음변화가 없어 학습 부담이 적습니다. 한국어 <span class="kr">대</span>와의 직접 대응도 기억에 도움이 됩니다.</p>
+
+<p><strong>사용 예:</strong></p>
+<ul>
+  <li><span class="jp">車が<strong>三台</strong>あります。</span> &mdash; 자동차가 세 대 있습니다.</li>
+  <li><span class="jp">パソコンを<strong>一台</strong>買いました。</span> &mdash; 컴퓨터를 한 대 샀습니다.</li>
+  <li><span class="jp">自転車は<strong>何台</strong>ありますか。</span> &mdash; 자전거는 몇 대 있습니까?</li>
+</ul>
+
+<!-- ============================================================ -->
+<!--  6J: 책과 권 冊 (satsu)                                        -->
+<!-- ============================================================ -->
+<h3 id="sec-6j">책과 권 <span class="jp">冊(さつ)</span> — 완전 차트 (1~10)</h3>
+
+<p>책, 노트, 사전 등 제본된 출판물을 셀 때 사용합니다.
+한국어의 <span class="kr">권</span>(책 두 권)에 해당합니다.
+한자 <span class="jp">冊</span>의 한국 한자음은 <span class="kr">책</span>입니다 &mdash; 네, 한국어 <span class="kr">책</span>이라는 단어 자체가 이 한자에서 왔습니다!
+<span class="cognate-tag">동족어</span></p>
+
+<h4><span class="jp">冊(さつ)</span> 카운터 완전 차트</h4>
+<table>
+  <thead>
+    <tr><th>숫자</th><th>일본어</th><th>읽기</th><th>한국어</th><th>음변화</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td><span class="jp">一冊</span></td><td><span class="jp">い<strong>っさつ</strong></span> (issatsu)</td><td>한 권</td><td>촉음</td></tr>
+    <tr><td>2</td><td><span class="jp">二冊</span></td><td><span class="jp">にさつ</span> (nisatsu)</td><td>두 권</td><td></td></tr>
+    <tr><td>3</td><td><span class="jp">三冊</span></td><td><span class="jp">さんさつ</span> (sansatsu)</td><td>세 권</td><td></td></tr>
+    <tr><td>4</td><td><span class="jp">四冊</span></td><td><span class="jp">よんさつ</span> (yonsatsu)</td><td>네 권</td><td></td></tr>
+    <tr><td>5</td><td><span class="jp">五冊</span></td><td><span class="jp">ごさつ</span> (gosatsu)</td><td>다섯 권</td><td></td></tr>
+    <tr><td>6</td><td><span class="jp">六冊</span></td><td><span class="jp">ろくさつ</span> (rokusatsu)</td><td>여섯 권</td><td></td></tr>
+    <tr><td>7</td><td><span class="jp">七冊</span></td><td><span class="jp">ななさつ</span> (nanasatsu)</td><td>일곱 권</td><td></td></tr>
+    <tr><td>8</td><td><span class="jp">八冊</span></td><td><span class="jp">は<strong>っさつ</strong></span> (hassatsu)</td><td>여덟 권</td><td>촉음</td></tr>
+    <tr><td>9</td><td><span class="jp">九冊</span></td><td><span class="jp">きゅうさつ</span> (kyuusatsu)</td><td>아홉 권</td><td></td></tr>
+    <tr><td>10</td><td><span class="jp">十冊</span></td><td><span class="jp">じゅ<strong>っさつ</strong></span> (jussatsu)</td><td>열 권</td><td>촉음</td></tr>
+    <tr><td>?</td><td><span class="jp">何冊</span></td><td><span class="jp">なんさつ</span> (nansatsu)</td><td>몇 권?</td><td></td></tr>
+  </tbody>
+</table>
+
+<div class="callout info">
+  <h4>s행 카운터의 음변화</h4>
+  <p><span class="jp">冊(さつ)</span>은 <strong>s행</strong> 카운터입니다. s행에서는 1, 8, 10에서 촉음이 들어갑니다:
+  <span class="jp">い<strong>っ</strong>さつ</span>, <span class="jp">は<strong>っ</strong>さつ</span>,
+  <span class="jp">じゅ<strong>っ</strong>さつ</span>.
+  h행보다 단순합니다 &mdash; 탁음(b) 변화가 없기 때문입니다.</p>
+</div>
+
+<p><strong>사용 예:</strong></p>
+<ul>
+  <li><span class="jp">本を<strong>一冊</strong>読みました。</span> &mdash; 책을 한 권 읽었습니다.</li>
+  <li><span class="jp">辞書が<strong>三冊</strong>あります。</span> &mdash; 사전이 세 권 있습니다.</li>
+  <li><span class="jp">漫画を<strong>何冊</strong>持っていますか。</span> &mdash; 만화책을 몇 권 가지고 있습니까?</li>
+</ul>
+
+<!-- ============================================================ -->
+<!--  6K: 추가 필수 조수사                                          -->
+<!-- ============================================================ -->
+<h3 id="sec-6k">추가 필수 조수사</h3>
+
+<p>이제 일상생활에서 자주 사용되는 나머지 필수 조수사들을 배워 봅시다.</p>
+
+<!-- 足 (soku) -->
+<h4><span class="jp">足(そく)</span> — 신발 짝 / <span class="kr">켤레</span></h4>
+<p>신발, 양말 등 짝으로 이루어진 신체 착용물을 셀 때 사용합니다.</p>
+<table>
+  <thead>
+    <tr><th>숫자</th><th>일본어</th><th>읽기</th><th>한국어</th><th>음변화</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td><span class="jp">一足</span></td><td><span class="jp">い<strong>っそく</strong></span> (issoku)</td><td>한 켤레</td><td>촉음</td></tr>
+    <tr><td>2</td><td><span class="jp">二足</span></td><td><span class="jp">にそく</span> (nisoku)</td><td>두 켤레</td><td></td></tr>
+    <tr><td>3</td><td><span class="jp">三足</span></td><td><span class="jp">さんぞく</span> (sanzoku)</td><td>세 켤레</td><td>s &rarr; z</td></tr>
+    <tr><td>4</td><td><span class="jp">四足</span></td><td><span class="jp">よんそく</span> (yonsoku)</td><td>네 켤레</td><td></td></tr>
+    <tr><td>5</td><td><span class="jp">五足</span></td><td><span class="jp">ごそく</span> (gosoku)</td><td>다섯 켤레</td><td></td></tr>
+    <tr><td>6</td><td><span class="jp">六足</span></td><td><span class="jp">ろくそく</span> (rokusoku)</td><td>여섯 켤레</td><td></td></tr>
+    <tr><td>7</td><td><span class="jp">七足</span></td><td><span class="jp">ななそく</span> (nanasoku)</td><td>일곱 켤레</td><td></td></tr>
+    <tr><td>8</td><td><span class="jp">八足</span></td><td><span class="jp">は<strong>っそく</strong></span> (hassoku)</td><td>여덟 켤레</td><td>촉음</td></tr>
+    <tr><td>9</td><td><span class="jp">九足</span></td><td><span class="jp">きゅうそく</span> (kyuusoku)</td><td>아홉 켤레</td><td></td></tr>
+    <tr><td>10</td><td><span class="jp">十足</span></td><td><span class="jp">じゅ<strong>っそく</strong></span> (jussoku)</td><td>열 켤레</td><td>촉음</td></tr>
+    <tr><td>?</td><td><span class="jp">何足</span></td><td><span class="jp">なんぞく</span> (nanzoku)</td><td>몇 켤레?</td><td>s &rarr; z</td></tr>
+  </tbody>
+</table>
+
+<!-- 階 (kai) -->
+<h4><span class="jp">階(かい)</span> — 건물 층 / <span class="kr">층</span></h4>
+<p>건물의 층수를 나타낼 때 사용합니다. 한자 <span class="jp">階</span>의 한국 한자음은 <span class="kr">계</span>입니다. <span class="cognate-tag">동족어</span></p>
+<table>
+  <thead>
+    <tr><th>숫자</th><th>일본어</th><th>읽기</th><th>한국어</th><th>비고</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td><span class="jp">一階</span></td><td><span class="jp">い<strong>っかい</strong></span> (ikkai)</td><td>1층</td><td>촉음</td></tr>
+    <tr><td>2</td><td><span class="jp">二階</span></td><td><span class="jp">にかい</span> (nikai)</td><td>2층</td><td></td></tr>
+    <tr><td>3</td><td><span class="jp">三階</span></td><td><span class="jp">さんがい</span> (sangai)</td><td>3층</td><td class="highlight">k &rarr; g</td></tr>
+    <tr><td>4</td><td><span class="jp">四階</span></td><td><span class="jp">よんかい</span> (yonkai)</td><td>4층</td><td></td></tr>
+    <tr><td>5</td><td><span class="jp">五階</span></td><td><span class="jp">ごかい</span> (gokai)</td><td>5층</td><td></td></tr>
+    <tr><td>6</td><td><span class="jp">六階</span></td><td><span class="jp">ろ<strong>っかい</strong></span> (rokkai)</td><td>6층</td><td>촉음</td></tr>
+    <tr><td>7</td><td><span class="jp">七階</span></td><td><span class="jp">ななかい</span> (nanakai)</td><td>7층</td><td></td></tr>
+    <tr><td>8</td><td><span class="jp">八階</span></td><td><span class="jp">は<strong>っかい</strong></span> (hakkai)</td><td>8층</td><td>촉음</td></tr>
+    <tr><td>9</td><td><span class="jp">九階</span></td><td><span class="jp">きゅうかい</span> (kyuukai)</td><td>9층</td><td></td></tr>
+    <tr><td>10</td><td><span class="jp">十階</span></td><td><span class="jp">じゅ<strong>っかい</strong></span> (jukkai)</td><td>10층</td><td>촉음</td></tr>
+    <tr><td>?</td><td><span class="jp">何階</span></td><td><span class="jp">なんがい</span> (nangai)</td><td>몇 층?</td><td class="highlight">k &rarr; g</td></tr>
+  </tbody>
+</table>
+
+<div class="callout warn">
+  <h4>3층 주의!</h4>
+  <p><span class="jp">三階</span>는 <span class="jp">さん<strong>がい</strong></span>로 읽습니다 (k &rarr; g 변화).
+  <span class="jp">さんかい</span>가 아닙니다! 이것은 <span class="jp">階</span> 카운터에서만 나타나는 특수 변화입니다.</p>
+</div>
+
+<!-- 回 (kai) -->
+<h4><span class="jp">回(かい)</span> — 횟수 / <span class="kr">번, 회</span></h4>
+<p>횟수를 셀 때 사용합니다. 한자 <span class="jp">回</span>의 한국 한자음은 <span class="kr">회</span>입니다. <span class="cognate-tag">동족어</span></p>
+<table>
+  <thead>
+    <tr><th>숫자</th><th>일본어</th><th>읽기</th><th>한국어</th><th>비고</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td><span class="jp">一回</span></td><td><span class="jp">い<strong>っかい</strong></span> (ikkai)</td><td>한 번</td><td>촉음</td></tr>
+    <tr><td>2</td><td><span class="jp">二回</span></td><td><span class="jp">にかい</span> (nikai)</td><td>두 번</td><td></td></tr>
+    <tr><td>3</td><td><span class="jp">三回</span></td><td><span class="jp">さんかい</span> (sankai)</td><td>세 번</td><td></td></tr>
+    <tr><td>4</td><td><span class="jp">四回</span></td><td><span class="jp">よんかい</span> (yonkai)</td><td>네 번</td><td></td></tr>
+    <tr><td>5</td><td><span class="jp">五回</span></td><td><span class="jp">ごかい</span> (gokai)</td><td>다섯 번</td><td></td></tr>
+    <tr><td>6</td><td><span class="jp">六回</span></td><td><span class="jp">ろ<strong>っかい</strong></span> (rokkai)</td><td>여섯 번</td><td>촉음</td></tr>
+    <tr><td>7</td><td><span class="jp">七回</span></td><td><span class="jp">ななかい</span> (nanakai)</td><td>일곱 번</td><td></td></tr>
+    <tr><td>8</td><td><span class="jp">八回</span></td><td><span class="jp">は<strong>っかい</strong></span> (hakkai)</td><td>여덟 번</td><td>촉음</td></tr>
+    <tr><td>9</td><td><span class="jp">九回</span></td><td><span class="jp">きゅうかい</span> (kyuukai)</td><td>아홉 번</td><td></td></tr>
+    <tr><td>10</td><td><span class="jp">十回</span></td><td><span class="jp">じゅ<strong>っかい</strong></span> (jukkai)</td><td>열 번</td><td>촉음</td></tr>
+    <tr><td>?</td><td><span class="jp">何回</span></td><td><span class="jp">なんかい</span> (nankai)</td><td>몇 번?</td><td></td></tr>
+  </tbody>
+</table>
+
+<!-- 歳/才 (sai) -->
+<h4><span class="jp">歳/才(さい)</span> — 나이 / <span class="kr">살, 세</span></h4>
+<p>나이를 나타낼 때 사용합니다. <span class="jp">歳</span>가 정식 한자이고, <span class="jp">才</span>는 약자입니다.
+한국어의 <span class="kr">세</span>(歳)에 해당합니다. <span class="cognate-tag">동족어</span></p>
+<table>
+  <thead>
+    <tr><th>숫자</th><th>일본어</th><th>읽기</th><th>한국어</th><th>비고</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td><span class="jp">一歳</span></td><td><span class="jp">い<strong>っさい</strong></span> (issai)</td><td>한 살</td><td>촉음</td></tr>
+    <tr><td>2</td><td><span class="jp">二歳</span></td><td><span class="jp">にさい</span> (nisai)</td><td>두 살</td><td></td></tr>
+    <tr><td>3</td><td><span class="jp">三歳</span></td><td><span class="jp">さんさい</span> (sansai)</td><td>세 살</td><td></td></tr>
+    <tr><td>4</td><td><span class="jp">四歳</span></td><td><span class="jp">よんさい</span> (yonsai)</td><td>네 살</td><td></td></tr>
+    <tr><td>5</td><td><span class="jp">五歳</span></td><td><span class="jp">ごさい</span> (gosai)</td><td>다섯 살</td><td></td></tr>
+    <tr><td>6</td><td><span class="jp">六歳</span></td><td><span class="jp">ろくさい</span> (rokusai)</td><td>여섯 살</td><td></td></tr>
+    <tr><td>7</td><td><span class="jp">七歳</span></td><td><span class="jp">ななさい</span> (nanasai)</td><td>일곱 살</td><td></td></tr>
+    <tr><td>8</td><td><span class="jp">八歳</span></td><td><span class="jp">は<strong>っさい</strong></span> (hassai)</td><td>여덟 살</td><td>촉음</td></tr>
+    <tr><td>9</td><td><span class="jp">九歳</span></td><td><span class="jp">きゅうさい</span> (kyuusai)</td><td>아홉 살</td><td></td></tr>
+    <tr><td>10</td><td><span class="jp">十歳</span></td><td><span class="jp">じゅ<strong>っさい</strong></span> (jussai)</td><td>열 살</td><td>촉음</td></tr>
+    <tr><td>20</td><td><span class="jp">二十歳</span></td><td><span class="jp"><strong>はたち</strong></span> (hatachi)</td><td>스무 살</td><td class="highlight">특수 읽기!</td></tr>
+    <tr><td>?</td><td><span class="jp">何歳</span></td><td><span class="jp">なんさい</span> (nansai)</td><td>몇 살?</td><td></td></tr>
+  </tbody>
+</table>
+
+<div class="callout warn">
+  <h4>20살 = <span class="jp">はたち</span></h4>
+  <p>20살은 <span class="jp">にじゅっさい</span>가 아니라 특수한 고유 읽기인 <span class="jp"><strong>はたち</strong></span>를 사용합니다.
+  일본에서 20세는 법적 성인 나이(2022년부터 18세로 변경되었지만, 이 단어는 여전히 20세에 사용)이므로
+  문화적으로도 중요한 단어입니다.</p>
+</div>
+
+<!-- 着 (chaku) -->
+<h4><span class="jp">着(ちゃく)</span> — 옷 벌 / <span class="kr">벌</span></h4>
+<p>양복, 드레스 등 겉옷의 벌수를 셀 때 사용합니다. 경주에서의 순위(1착, 2착)에도 사용됩니다.</p>
+<table>
+  <thead>
+    <tr><th>숫자</th><th>일본어</th><th>읽기</th><th>한국어</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td><span class="jp">一着</span></td><td><span class="jp">いっちゃく</span> (icchaku)</td><td>한 벌 / 1착</td></tr>
+    <tr><td>2</td><td><span class="jp">二着</span></td><td><span class="jp">にちゃく</span> (nichaku)</td><td>두 벌 / 2착</td></tr>
+    <tr><td>3</td><td><span class="jp">三着</span></td><td><span class="jp">さんちゃく</span> (sanchaku)</td><td>세 벌 / 3착</td></tr>
+    <tr><td>4</td><td><span class="jp">四着</span></td><td><span class="jp">よんちゃく</span> (yonchaku)</td><td>네 벌</td></tr>
+    <tr><td>5</td><td><span class="jp">五着</span></td><td><span class="jp">ごちゃく</span> (gochaku)</td><td>다섯 벌</td></tr>
+    <tr><td>6</td><td><span class="jp">六着</span></td><td><span class="jp">ろくちゃく</span> (rokuchaku)</td><td>여섯 벌</td></tr>
+    <tr><td>7</td><td><span class="jp">七着</span></td><td><span class="jp">ななちゃく</span> (nanachaku)</td><td>일곱 벌</td></tr>
+    <tr><td>8</td><td><span class="jp">八着</span></td><td><span class="jp">はっちゃく</span> (hacchaku)</td><td>여덟 벌</td></tr>
+    <tr><td>9</td><td><span class="jp">九着</span></td><td><span class="jp">きゅうちゃく</span> (kyuuchaku)</td><td>아홉 벌</td></tr>
+    <tr><td>10</td><td><span class="jp">十着</span></td><td><span class="jp">じゅっちゃく</span> (jucchaku)</td><td>열 벌</td></tr>
+    <tr><td>?</td><td><span class="jp">何着</span></td><td><span class="jp">なんちゃく</span> (nanchaku)</td><td>몇 벌?</td></tr>
+  </tbody>
+</table>
+
+<!-- 軒 (ken) -->
+<h4><span class="jp">軒(けん)</span> — 집, 가게 / <span class="kr">채, 곳</span></h4>
+<p>집, 가게, 건물 등을 셀 때 사용합니다.</p>
+<table>
+  <thead>
+    <tr><th>숫자</th><th>일본어</th><th>읽기</th><th>한국어</th><th>비고</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td><span class="jp">一軒</span></td><td><span class="jp">い<strong>っけん</strong></span> (ikken)</td><td>한 채</td><td>촉음</td></tr>
+    <tr><td>2</td><td><span class="jp">二軒</span></td><td><span class="jp">にけん</span> (niken)</td><td>두 채</td><td></td></tr>
+    <tr><td>3</td><td><span class="jp">三軒</span></td><td><span class="jp">さん<strong>げん</strong></span> (sangen)</td><td>세 채</td><td class="highlight">k &rarr; g</td></tr>
+    <tr><td>4</td><td><span class="jp">四軒</span></td><td><span class="jp">よんけん</span> (yonken)</td><td>네 채</td><td></td></tr>
+    <tr><td>5</td><td><span class="jp">五軒</span></td><td><span class="jp">ごけん</span> (goken)</td><td>다섯 채</td><td></td></tr>
+    <tr><td>6</td><td><span class="jp">六軒</span></td><td><span class="jp">ろ<strong>っけん</strong></span> (rokken)</td><td>여섯 채</td><td>촉음</td></tr>
+    <tr><td>7</td><td><span class="jp">七軒</span></td><td><span class="jp">ななけん</span> (nanaken)</td><td>일곱 채</td><td></td></tr>
+    <tr><td>8</td><td><span class="jp">八軒</span></td><td><span class="jp">は<strong>っけん</strong></span> (hakken)</td><td>여덟 채</td><td>촉음</td></tr>
+    <tr><td>9</td><td><span class="jp">九軒</span></td><td><span class="jp">きゅうけん</span> (kyuuken)</td><td>아홉 채</td><td></td></tr>
+    <tr><td>10</td><td><span class="jp">十軒</span></td><td><span class="jp">じゅ<strong>っけん</strong></span> (jukken)</td><td>열 채</td><td>촉음</td></tr>
+    <tr><td>?</td><td><span class="jp">何軒</span></td><td><span class="jp">なん<strong>げん</strong></span> (nangen)</td><td>몇 채?</td><td class="highlight">k &rarr; g</td></tr>
+  </tbody>
+</table>
+
+<!-- ============================================================ -->
+<!--  6L: 음변화 마스터 차트                                        -->
+<!-- ============================================================ -->
+<h3 id="sec-6l">음변화 마스터 차트</h3>
+
+<p>지금까지 배운 모든 카운터의 음변화를 <strong>세 가지 패턴</strong>으로 정리합니다.
+이 차트 하나만 완벽히 이해하면 거의 모든 조수사의 읽기를 예측할 수 있습니다.</p>
+
+<h4>패턴 1: h행 카운터 (h &rarr; p / b)</h4>
+<p>해당 카운터: <span class="jp">本(ほん)</span>, <span class="jp">匹(ひき)</span>, <span class="jp">杯(はい)</span></p>
+<table>
+  <thead>
+    <tr><th>숫자</th><th>변화</th><th><span class="jp">本</span></th><th><span class="jp">匹</span></th><th><span class="jp">杯</span></th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td class="highlight">h &rarr; <strong>p</strong> (촉음+반탁음)</td><td><span class="jp">いっ<strong>ぽ</strong>ん</span></td><td><span class="jp">いっ<strong>ぴ</strong>き</span></td><td><span class="jp">いっ<strong>ぱ</strong>い</span></td></tr>
+    <tr><td>2</td><td>변화 없음</td><td><span class="jp">にほん</span></td><td><span class="jp">にひき</span></td><td><span class="jp">にはい</span></td></tr>
+    <tr><td>3</td><td class="highlight">h &rarr; <strong>b</strong> (탁음)</td><td><span class="jp">さん<strong>ぼ</strong>ん</span></td><td><span class="jp">さん<strong>び</strong>き</span></td><td><span class="jp">さん<strong>ば</strong>い</span></td></tr>
+    <tr><td>4</td><td>변화 없음</td><td><span class="jp">よんほん</span></td><td><span class="jp">よんひき</span></td><td><span class="jp">よんはい</span></td></tr>
+    <tr><td>5</td><td>변화 없음</td><td><span class="jp">ごほん</span></td><td><span class="jp">ごひき</span></td><td><span class="jp">ごはい</span></td></tr>
+    <tr><td>6</td><td class="highlight">h &rarr; <strong>p</strong> (촉음+반탁음)</td><td><span class="jp">ろっ<strong>ぽ</strong>ん</span></td><td><span class="jp">ろっ<strong>ぴ</strong>き</span></td><td><span class="jp">ろっ<strong>ぱ</strong>い</span></td></tr>
+    <tr><td>7</td><td>변화 없음</td><td><span class="jp">ななほん</span></td><td><span class="jp">ななひき</span></td><td><span class="jp">ななはい</span></td></tr>
+    <tr><td>8</td><td class="highlight">h &rarr; <strong>p</strong> (촉음+반탁음)</td><td><span class="jp">はっ<strong>ぽ</strong>ん</span></td><td><span class="jp">はっ<strong>ぴ</strong>き</span></td><td><span class="jp">はっ<strong>ぱ</strong>い</span></td></tr>
+    <tr><td>9</td><td>변화 없음</td><td><span class="jp">きゅうほん</span></td><td><span class="jp">きゅうひき</span></td><td><span class="jp">きゅうはい</span></td></tr>
+    <tr><td>10</td><td class="highlight">h &rarr; <strong>p</strong> (촉음+반탁음)</td><td><span class="jp">じゅっ<strong>ぽ</strong>ん</span></td><td><span class="jp">じゅっ<strong>ぴ</strong>き</span></td><td><span class="jp">じゅっ<strong>ぱ</strong>い</span></td></tr>
+    <tr><td>?</td><td class="highlight">h &rarr; <strong>b</strong> (탁음)</td><td><span class="jp">なん<strong>ぼ</strong>ん</span></td><td><span class="jp">なん<strong>び</strong>き</span></td><td><span class="jp">なん<strong>ば</strong>い</span></td></tr>
+  </tbody>
+</table>
+
+<h4>패턴 2: k행 카운터 (k &rarr; kk, 가끔 g)</h4>
+<p>해당 카운터: <span class="jp">個(こ)</span>, <span class="jp">階(かい)</span>, <span class="jp">回(かい)</span>, <span class="jp">軒(けん)</span></p>
+<table>
+  <thead>
+    <tr><th>숫자</th><th>변화</th><th>설명</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1, 6, 8, 10</td><td class="highlight">촉음 삽입 (k &rarr; kk)</td><td><span class="jp">いっ<strong>こ</strong></span>, <span class="jp">ろっ<strong>こ</strong></span>, <span class="jp">はっ<strong>こ</strong></span>, <span class="jp">じゅっ<strong>こ</strong></span></td></tr>
+    <tr><td>3 (<span class="jp">階, 軒</span>만)</td><td class="highlight">k &rarr; g (탁음)</td><td><span class="jp">さん<strong>が</strong>い</span>, <span class="jp">さん<strong>げ</strong>ん</span></td></tr>
+    <tr><td>? (<span class="jp">階, 軒</span>만)</td><td class="highlight">k &rarr; g (탁음)</td><td><span class="jp">なん<strong>が</strong>い</span>, <span class="jp">なん<strong>げ</strong>ん</span></td></tr>
+    <tr><td>나머지</td><td>변화 없음</td><td>그대로 읽기</td></tr>
+  </tbody>
+</table>
+
+<h4>패턴 3: s행 카운터 (s &rarr; ss)</h4>
+<p>해당 카운터: <span class="jp">冊(さつ)</span>, <span class="jp">足(そく)</span>, <span class="jp">歳(さい)</span></p>
+<table>
+  <thead>
+    <tr><th>숫자</th><th>변화</th><th>설명</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1, 8, 10</td><td class="highlight">촉음 삽입</td><td><span class="jp">い<strong>っ</strong>さつ</span>, <span class="jp">は<strong>っ</strong>さつ</span>, <span class="jp">じゅ<strong>っ</strong>さつ</span></td></tr>
+    <tr><td>나머지</td><td>변화 없음</td><td>그대로 읽기</td></tr>
+  </tbody>
+</table>
+
+<div class="callout memory">
+  <h4>한국어와 비교: 자음 동화</h4>
+  <p>한국어에도 비슷한 음운 현상이 있습니다. 일본어의 음변화가 낯설게 느껴질 때 이렇게 비교해 보세요.</p>
+  <ul>
+    <li>한국어: "한<strong>국</strong>말" &rarr; [한<strong>궁</strong>말] (비음화)</li>
+    <li>한국어: "합<strong>니</strong>다" &rarr; [함<strong>니</strong>다] (비음화)</li>
+    <li>한국어: "입<strong>학</strong>" &rarr; [이<strong>팍</strong>] (격음화)</li>
+    <li>일본어: <span class="jp">いち</span> + <span class="jp">ほん</span> &rarr; <span class="jp">い<strong>っぽん</strong></span> (촉음 + 반탁음)</li>
+  </ul>
+  <p>발음의 편의를 위해 인접 자음이 서로 영향을 주는 현상은 <strong>두 언어 모두에</strong> 존재합니다.
+  원리는 같습니다 &mdash; 입이 편한 쪽으로 소리가 변하는 것입니다.</p>
+</div>
+
+<div class="callout ok">
+  <h4>궁극의 요약: 음변화가 일어나는 숫자</h4>
+  <p><strong>1, 3, 6, 8, 10, ?</strong> &mdash; 이 여섯 자리만 주의하면 됩니다!</p>
+  <ul>
+    <li><strong>1, 6, 8, 10</strong>: 촉음(<span class="jp">っ</span>)이 삽입되고, h행이면 p로 변함</li>
+    <li><strong>3, ?</strong>: <span class="jp">ん</span> 뒤에서 h &rarr; b 또는 k &rarr; g (일부 카운터)</li>
+    <li><strong>2, 4, 5, 7, 9</strong>: 거의 항상 변화 없음!</li>
+  </ul>
+</div>
+
+<!-- ============================================================ -->
+<!--  6M: 조수사 의문사 — 몇 개?                                    -->
+<!-- ============================================================ -->
+<h3 id="sec-6m">조수사 의문사 — 몇 개?</h3>
+
+<p>"몇 개?", "몇 명?", "몇 마리?"처럼 수량을 물을 때는 <span class="jp">何(なん)</span> 또는
+<span class="jp">いくつ</span>를 사용합니다. 아래는 주요 조수사의 의문형 총정리입니다.</p>
+
+<table>
+  <thead>
+    <tr><th>조수사</th><th>의문형</th><th>읽기</th><th>한국어 뜻</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><span class="jp">つ</span> (만능)</td><td><span class="jp">いくつ</span></td><td>ikutsu</td><td>몇 개? / 몇 살?</td></tr>
+    <tr><td><span class="jp">個</span> (작은 물건)</td><td><span class="jp">何個</span></td><td><span class="jp">なんこ</span> (nanko)</td><td>몇 개?</td></tr>
+    <tr><td><span class="jp">人</span> (사람)</td><td><span class="jp">何人</span></td><td><span class="jp">なんにん</span> (nannin)</td><td>몇 명?</td></tr>
+    <tr><td><span class="jp">匹</span> (작은 동물)</td><td><span class="jp">何匹</span></td><td><span class="jp">なん<strong>び</strong>き</span> (nanbiki)</td><td>몇 마리?</td></tr>
+    <tr><td><span class="jp">頭</span> (큰 동물)</td><td><span class="jp">何頭</span></td><td><span class="jp">なんとう</span> (nantou)</td><td>몇 마리? (대형)</td></tr>
+    <tr><td><span class="jp">本</span> (긴 것)</td><td><span class="jp">何本</span></td><td><span class="jp">なん<strong>ぼ</strong>ん</span> (nanbon)</td><td>몇 자루/병?</td></tr>
+    <tr><td><span class="jp">杯</span> (음료)</td><td><span class="jp">何杯</span></td><td><span class="jp">なん<strong>ば</strong>い</span> (nanbai)</td><td>몇 잔?</td></tr>
+    <tr><td><span class="jp">枚</span> (평평한 것)</td><td><span class="jp">何枚</span></td><td><span class="jp">なんまい</span> (nanmai)</td><td>몇 장?</td></tr>
+    <tr><td><span class="jp">台</span> (기계)</td><td><span class="jp">何台</span></td><td><span class="jp">なんだい</span> (nandai)</td><td>몇 대?</td></tr>
+    <tr><td><span class="jp">冊</span> (책)</td><td><span class="jp">何冊</span></td><td><span class="jp">なんさつ</span> (nansatsu)</td><td>몇 권?</td></tr>
+    <tr><td><span class="jp">足</span> (신발)</td><td><span class="jp">何足</span></td><td><span class="jp">なん<strong>ぞ</strong>く</span> (nanzoku)</td><td>몇 켤레?</td></tr>
+    <tr><td><span class="jp">階</span> (층)</td><td><span class="jp">何階</span></td><td><span class="jp">なん<strong>が</strong>い</span> (nangai)</td><td>몇 층?</td></tr>
+    <tr><td><span class="jp">回</span> (횟수)</td><td><span class="jp">何回</span></td><td><span class="jp">なんかい</span> (nankai)</td><td>몇 번?</td></tr>
+    <tr><td><span class="jp">歳</span> (나이)</td><td><span class="jp">何歳</span></td><td><span class="jp">なんさい</span> (nansai)</td><td>몇 살?</td></tr>
+  </tbody>
+</table>
+
+<div class="callout info">
+  <h4><span class="jp">何</span>의 읽기</h4>
+  <p>조수사 앞에서 <span class="jp">何</span>는 거의 항상 <span class="jp"><strong>なん</strong></span>으로 읽습니다.
+  단독으로 쓰일 때의 <span class="jp">なに</span>와 혼동하지 마세요.
+  <span class="jp">何</span>가 <span class="jp">なん</span>으로 읽히면 "몇"이라는 뜻,
+  <span class="jp">なに</span>로 읽히면 "무엇"이라는 뜻입니다.</p>
+</div>
+
+<!-- ============================================================ -->
+<!--  6N: 어순 — 조수사의 위치                                      -->
+<!-- ============================================================ -->
+<h3 id="sec-6n">어순 — 조수사의 위치</h3>
+
+<p>일본어 문장에서 "숫자 + 조수사"는 두 가지 위치에 올 수 있습니다.</p>
+
+<h4>패턴 1: 명사 + 수량 (가장 자연스러운 어순)</h4>
+<p>명사를 먼저 말하고, 조수사가 동사 바로 앞에 옵니다.</p>
+<ul>
+  <li><span class="jp">りんごを<strong>三個</strong>買いました。</span></li>
+  <li><span class="kr">사과를 세 개 샀습니다.</span></li>
+</ul>
+<p>구조: <span class="jp">[명사]を [숫자+조수사] [동사]</span></p>
+
+<h4>패턴 2: 숫자 + 조수사 + の + 명사</h4>
+<p>수량을 먼저 말하고 <span class="jp">の</span>로 명사와 연결합니다. 수량을 강조할 때 사용합니다.</p>
+<ul>
+  <li><span class="jp"><strong>三個の</strong>りんごを買いました。</span></li>
+  <li><span class="kr">세 개의 사과를 샀습니다.</span></li>
+</ul>
+<p>구조: <span class="jp">[숫자+조수사]の [명사]を [동사]</span></p>
+
+<div class="callout info">
+  <h4>어떤 패턴을 사용할까?</h4>
+  <p><strong>패턴 1</strong>이 일상 회화에서 훨씬 자연스럽고 자주 사용됩니다.
+  <strong>패턴 2</strong>는 글이나 형식적 표현에서 더 많이 보입니다.</p>
+  <p>한국어와 비교하면:</p>
+  <ul>
+    <li>패턴 1 = "사과를 세 개 샀어" (자연스러운 어순)</li>
+    <li>패턴 2 = "세 개의 사과를 샀어" (강조 어순)</li>
+  </ul>
+  <p>한국어에서도 두 패턴 모두 가능하므로, 감각적으로 이해하기 쉬울 것입니다.</p>
+</div>
+
+<h4>존재 표현에서의 조수사</h4>
+<p><span class="jp">います</span>(있습니다 - 생물) / <span class="jp">あります</span>(있습니다 - 사물)와 함께 사용할 때:</p>
+<ul>
+  <li><span class="jp">猫が<strong>三匹</strong>います。</span> &mdash; 고양이가 세 마리 있습니다.</li>
+  <li><span class="jp">本が<strong>五冊</strong>あります。</span> &mdash; 책이 다섯 권 있습니다.</li>
+  <li><span class="jp">学生が<strong>二十人</strong>います。</span> &mdash; 학생이 스무 명 있습니다.</li>
+</ul>
+
+<!-- ============================================================ -->
+<!--  6O: 한일 조수사 대응표                                        -->
+<!-- ============================================================ -->
+<h3 id="sec-6o">한일 조수사 대응표</h3>
+
+<p>일본어 조수사와 한국어 조수사의 대응 관계를 한눈에 정리한 표입니다. 동족어 표시가 된 항목은 한자가 같거나 유래가 같은 것입니다.</p>
+
+<table>
+  <thead>
+    <tr><th>일본어 조수사</th><th>읽기</th><th>용도</th><th>한국어 대응</th><th>동족어 여부</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><span class="jp">つ</span></td><td>-tsu</td><td>만능 (일반 사물)</td><td>개 (고유어)</td><td></td></tr>
+    <tr><td><span class="jp">人</span></td><td>-nin / -ri</td><td>사람</td><td>명, 인(人)</td><td><span class="cognate-tag">동족어</span> 人=인</td></tr>
+    <tr><td><span class="jp">個</span></td><td>-ko</td><td>작은 물건</td><td>개(個)</td><td><span class="cognate-tag">동족어</span> 個=개</td></tr>
+    <tr><td><span class="jp">本</span></td><td>-hon</td><td>길고 가는 것</td><td>자루, 병, 그루</td><td></td></tr>
+    <tr><td><span class="jp">枚</span></td><td>-mai</td><td>평평한 것</td><td>장</td><td></td></tr>
+    <tr><td><span class="jp">匹</span></td><td>-hiki</td><td>작은 동물</td><td>마리</td><td></td></tr>
+    <tr><td><span class="jp">頭</span></td><td>-tou</td><td>큰 동물</td><td>마리 (구분 없음)</td><td></td></tr>
+    <tr><td><span class="jp">杯</span></td><td>-hai</td><td>음료, 그릇</td><td>잔, 공기</td><td><span class="cognate-tag">동족어</span> 杯=배</td></tr>
+    <tr><td><span class="jp">台</span></td><td>-dai</td><td>기계, 차량</td><td>대(臺)</td><td><span class="cognate-tag">동족어</span> 台=대</td></tr>
+    <tr><td><span class="jp">冊</span></td><td>-satsu</td><td>책</td><td>권, 책(冊)</td><td><span class="cognate-tag">동족어</span> 冊=책</td></tr>
+    <tr><td><span class="jp">足</span></td><td>-soku</td><td>신발, 양말</td><td>켤레</td><td></td></tr>
+    <tr><td><span class="jp">階</span></td><td>-kai</td><td>건물 층</td><td>층, 계(階)</td><td><span class="cognate-tag">동족어</span> 階=계</td></tr>
+    <tr><td><span class="jp">回</span></td><td>-kai</td><td>횟수</td><td>번, 회(回)</td><td><span class="cognate-tag">동족어</span> 回=회</td></tr>
+    <tr><td><span class="jp">歳/才</span></td><td>-sai</td><td>나이</td><td>살, 세(歲)</td><td><span class="cognate-tag">동족어</span> 歳=세</td></tr>
+    <tr><td><span class="jp">着</span></td><td>-chaku</td><td>옷</td><td>벌</td><td></td></tr>
+    <tr><td><span class="jp">軒</span></td><td>-ken</td><td>집, 가게</td><td>채, 곳</td><td></td></tr>
+  </tbody>
+</table>
+
+<div class="callout ok">
+  <h4>동족어의 힘</h4>
+  <p>위 16개의 조수사 중 <strong>8개</strong>가 한국어와 같은 한자에서 유래했습니다.
+  절반이 동족어라는 뜻입니다! 한자를 아는 한국어 화자에게 이것은 엄청난 이점입니다.
+  <span class="jp">台</span>가 <span class="kr">대</span>이고, <span class="jp">回</span>가 <span class="kr">회</span>라는 것을 알면,
+  새로운 단어를 배우는 것이 아니라 이미 아는 단어의 일본어 발음만 익히는 것입니다.</p>
+</div>
+
+<!-- ============================================================ -->
+<!--  6P: 실전 조수사 — 생존 상황                                    -->
+<!-- ============================================================ -->
+<h3 id="sec-6p">실전 조수사 — 생존 상황</h3>
+
+<p>실제 일본에서 마주칠 수 있는 상황별 표현을 익혀 봅시다. 각 표현에서 조수사가 어떻게 사용되는지 주목하세요.</p>
+
+<h4>상황 1: 식당에서</h4>
+<table>
+  <thead>
+    <tr><th>일본어</th><th>한국어</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><span class="jp">何人ですか。</span></td><td>몇 명이세요? (입구에서 점원이 묻는 말)</td></tr>
+    <tr><td><span class="jp">二人です。</span></td><td>두 명입니다.</td></tr>
+    <tr><td><span class="jp">ビールを三杯ください。</span></td><td>맥주 세 잔 주세요.</td></tr>
+    <tr><td><span class="jp">おにぎりを二個お願いします。</span></td><td>주먹밥 두 개 부탁합니다.</td></tr>
+  </tbody>
+</table>
+
+<h4>상황 2: 쇼핑할 때</h4>
+<table>
+  <thead>
+    <tr><th>일본어</th><th>한국어</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><span class="jp">このTシャツを二枚ください。</span></td><td>이 티셔츠 두 장 주세요.</td></tr>
+    <tr><td><span class="jp">靴を一足試してもいいですか。</span></td><td>신발 한 켤레 신어 봐도 될까요?</td></tr>
+    <tr><td><span class="jp">りんごを五個ください。</span></td><td>사과 다섯 개 주세요.</td></tr>
+  </tbody>
+</table>
+
+<h4>상황 3: 호텔에서</h4>
+<table>
+  <thead>
+    <tr><th>일본어</th><th>한국어</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><span class="jp">一人で泊まります。</span></td><td>혼자 묵겠습니다.</td></tr>
+    <tr><td><span class="jp">三泊お願いします。</span></td><td>3박 부탁합니다.</td></tr>
+  </tbody>
+</table>
+
+<h4>상황 4: 교통 / 이동</h4>
+<table>
+  <thead>
+    <tr><th>일본어</th><th>한국어</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><span class="jp">切符を二枚お願いします。</span></td><td>표 두 장 부탁합니다.</td></tr>
+    <tr><td><span class="jp">次の電車は何分ですか。</span></td><td>다음 전차는 몇 분인가요?</td></tr>
+  </tbody>
+</table>
+
+<h4>상황 5: 일상 대화</h4>
+<table>
+  <thead>
+    <tr><th>일본어</th><th>한국어</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><span class="jp">兄弟は何人いますか。</span></td><td>형제가 몇 명 있습니까?</td></tr>
+    <tr><td><span class="jp">猫を二匹飼っています。</span></td><td>고양이를 두 마리 키우고 있습니다.</td></tr>
+    <tr><td><span class="jp">この本を三回読みました。</span></td><td>이 책을 세 번 읽었습니다.</td></tr>
+    <tr><td><span class="jp">お子さんは何歳ですか。</span></td><td>자녀분은 몇 살인가요?</td></tr>
+    <tr><td><span class="jp">五歳です。</span></td><td>다섯 살입니다.</td></tr>
+  </tbody>
+</table>
+
+<h4>상황 6: 건물에서</h4>
+<table>
+  <thead>
+    <tr><th>일본어</th><th>한국어</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><span class="jp">トイレは何階ですか。</span></td><td>화장실은 몇 층인가요?</td></tr>
+    <tr><td><span class="jp">三階です。</span></td><td>3층입니다.</td></tr>
+  </tbody>
+</table>
+
+<!-- ============================================================ -->
+<!--  퀴즈 섹션                                                    -->
+<!-- ============================================================ -->
+<h3 id="sec-quizzes">퀴즈</h3>
+
+<p>이 장에서 배운 내용을 다양한 형식의 퀴즈로 확인해 봅시다.</p>
+
+<!-- 퀴즈 A: 조수사 매칭 -->
+<div id="quiz-counter-match" class="quiz-box">
+  <h4>퀴즈 A: 조수사 매칭</h4>
+  <p>왼쪽의 사물을 오른쪽의 올바른 조수사에 연결하세요.</p>
+  <table>
+    <thead>
+      <tr><th>사물</th><th>조수사</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1. <span class="jp">りんご</span> (사과)</td><td>A. <span class="jp">匹</span></td></tr>
+      <tr><td>2. <span class="jp">猫</span> (고양이)</td><td>B. <span class="jp">冊</span></td></tr>
+      <tr><td>3. <span class="jp">本</span> (책)</td><td>C. <span class="jp">個</span></td></tr>
+      <tr><td>4. <span class="jp">ペン</span> (펜)</td><td>D. <span class="jp">枚</span></td></tr>
+      <tr><td>5. <span class="jp">紙</span> (종이)</td><td>E. <span class="jp">本</span></td></tr>
+      <tr><td>6. <span class="jp">コーヒー</span> (커피)</td><td>F. <span class="jp">台</span></td></tr>
+      <tr><td>7. <span class="jp">車</span> (자동차)</td><td>G. <span class="jp">杯</span></td></tr>
+      <tr><td>8. <span class="jp">靴</span> (신발)</td><td>H. <span class="jp">足</span></td></tr>
+    </tbody>
+  </table>
+  <details>
+    <summary>정답 보기</summary>
+    <p>1-C, 2-A, 3-B, 4-E, 5-D, 6-G, 7-F, 8-H</p>
+    <ul>
+      <li>사과(둥근 물건) &rarr; <span class="jp">個</span></li>
+      <li>고양이(작은 동물) &rarr; <span class="jp">匹</span></li>
+      <li>책(제본물) &rarr; <span class="jp">冊</span></li>
+      <li>펜(길고 가는 것) &rarr; <span class="jp">本</span></li>
+      <li>종이(평평한 것) &rarr; <span class="jp">枚</span></li>
+      <li>커피(음료) &rarr; <span class="jp">杯</span></li>
+      <li>자동차(기계/차량) &rarr; <span class="jp">台</span></li>
+      <li>신발(짝) &rarr; <span class="jp">足</span></li>
+    </ul>
+  </details>
+</div>
+
+<!-- 퀴즈 B: 음변화 빈칸 -->
+<div id="quiz-sound-change" class="quiz-box">
+  <h4>퀴즈 B: 음변화 빈칸 채우기</h4>
+  <p>빈칸에 올바른 읽기(히라가나)를 채우세요.</p>
+  <ol>
+    <li><span class="jp">一本</span> = _____ (연필 한 자루)</li>
+    <li><span class="jp">三匹</span> = _____ (물고기 세 마리)</li>
+    <li><span class="jp">六杯</span> = _____ (여섯 잔)</li>
+    <li><span class="jp">八本</span> = _____ (여덟 자루)</li>
+    <li><span class="jp">一人</span> = _____ (한 명)</li>
+    <li><span class="jp">三階</span> = _____ (3층)</li>
+    <li><span class="jp">十冊</span> = _____ (열 권)</li>
+    <li><span class="jp">何杯</span> = _____ (몇 잔?)</li>
+    <li><span class="jp">一足</span> = _____ (한 켤레)</li>
+    <li><span class="jp">二十歳</span> = _____ (스무 살)</li>
+  </ol>
+  <details>
+    <summary>정답 보기</summary>
+    <ol>
+      <li><span class="jp">いっぽん</span> (ippon) &mdash; h &rarr; p 음변화</li>
+      <li><span class="jp">さんびき</span> (sanbiki) &mdash; h &rarr; b 음변화</li>
+      <li><span class="jp">ろっぱい</span> (roppai) &mdash; h &rarr; p 음변화</li>
+      <li><span class="jp">はっぽん</span> (happon) &mdash; h &rarr; p 음변화</li>
+      <li><span class="jp">ひとり</span> (hitori) &mdash; 특수 읽기</li>
+      <li><span class="jp">さんがい</span> (sangai) &mdash; k &rarr; g 음변화</li>
+      <li><span class="jp">じゅっさつ</span> (jussatsu) &mdash; 촉음 삽입</li>
+      <li><span class="jp">なんばい</span> (nanbai) &mdash; h &rarr; b 음변화</li>
+      <li><span class="jp">いっそく</span> (issoku) &mdash; 촉음 삽입</li>
+      <li><span class="jp">はたち</span> (hatachi) &mdash; 특수 읽기</li>
+    </ol>
+  </details>
+</div>
+
+<!-- 퀴즈 C: 조수사 스프린트 -->
+<div id="quiz-counter-sprint" class="quiz-box">
+  <h4>퀴즈 C: 조수사 스프린트</h4>
+  <p>다음 한국어 표현을 보고 일본어로 가능한 빨리 답하세요. 시간을 재 봅시다!</p>
+  <ol>
+    <li>사과 세 개 &rarr; _____</li>
+    <li>학생 다섯 명 &rarr; _____</li>
+    <li>고양이 한 마리 &rarr; _____</li>
+    <li>종이 열 장 &rarr; _____</li>
+    <li>맥주 두 병 &rarr; _____</li>
+    <li>커피 한 잔 &rarr; _____</li>
+    <li>책 세 권 &rarr; _____</li>
+    <li>자동차 두 대 &rarr; _____</li>
+    <li>3층 &rarr; _____</li>
+    <li>여덟 살 &rarr; _____</li>
+  </ol>
+  <details>
+    <summary>정답 보기</summary>
+    <ol>
+      <li><span class="jp">りんご三個（さんこ）</span></li>
+      <li><span class="jp">学生五人（ごにん）</span></li>
+      <li><span class="jp">猫一匹（いっぴき）</span></li>
+      <li><span class="jp">紙十枚（じゅうまい）</span></li>
+      <li><span class="jp">ビール二本（にほん）</span></li>
+      <li><span class="jp">コーヒー一杯（いっぱい）</span></li>
+      <li><span class="jp">本三冊（さんさつ）</span></li>
+      <li><span class="jp">車二台（にだい）</span></li>
+      <li><span class="jp">三階（さんがい）</span></li>
+      <li><span class="jp">八歳（はっさい）</span></li>
+    </ol>
+  </details>
+</div>
+
+<!-- 퀴즈 D: 실전 상황 -->
+<div id="quiz-counter-scenarios" class="quiz-box">
+  <h4>퀴즈 D: 실전 상황 — 다지선다</h4>
+  <p>각 상황에 가장 적절한 표현을 고르세요.</p>
+
+  <p><strong>1.</strong> 식당에서 점원이 "몇 분이세요?"라고 묻습니다. 3명일 때 대답은?</p>
+  <ul>
+    <li>a) <span class="jp">三つです。</span></li>
+    <li>b) <span class="jp">三人です。</span></li>
+    <li>c) <span class="jp">三匹です。</span></li>
+    <li>d) <span class="jp">三個です。</span></li>
+  </ul>
+
+  <p><strong>2.</strong> 편의점에서 주먹밥을 2개 사고 싶습니다. 뭐라고 말할까요?</p>
+  <ul>
+    <li>a) <span class="jp">おにぎりを二枚ください。</span></li>
+    <li>b) <span class="jp">おにぎりを二本ください。</span></li>
+    <li>c) <span class="jp">おにぎりを二個ください。</span></li>
+    <li>d) <span class="jp">おにぎりを二冊ください。</span></li>
+  </ul>
+
+  <p><strong>3.</strong> "우산 3자루"를 올바르게 읽은 것은?</p>
+  <ul>
+    <li>a) <span class="jp">傘三本（さんほん）</span></li>
+    <li>b) <span class="jp">傘三本（さんぼん）</span></li>
+    <li>c) <span class="jp">傘三本（さんぽん）</span></li>
+    <li>d) <span class="jp">傘三枚（さんまい）</span></li>
+  </ul>
+
+  <p><strong>4.</strong> "개를 한 마리 키우고 있어요"를 일본어로?</p>
+  <ul>
+    <li>a) <span class="jp">犬を一匹（いちひき）飼っています。</span></li>
+    <li>b) <span class="jp">犬を一匹（いっぴき）飼っています。</span></li>
+    <li>c) <span class="jp">犬を一頭（いっとう）飼っています。</span></li>
+    <li>d) <span class="jp">犬を一個（いっこ）飼っています。</span></li>
+  </ul>
+
+  <p><strong>5.</strong> 엘리베이터에서 "몇 층이세요?"라고 물어볼 때?</p>
+  <ul>
+    <li>a) <span class="jp">何回ですか。</span></li>
+    <li>b) <span class="jp">何個ですか。</span></li>
+    <li>c) <span class="jp">何階ですか。</span></li>
+    <li>d) <span class="jp">何本ですか。</span></li>
+  </ul>
+
+  <details>
+    <summary>정답 보기</summary>
+    <ol>
+      <li><strong>b)</strong> <span class="jp">三人（さんにん）です。</span> &mdash; 사람은 <span class="jp">人</span>으로 셉니다.</li>
+      <li><strong>c)</strong> <span class="jp">おにぎりを二個（にこ）ください。</span> &mdash; 주먹밥은 작고 둥근 물건이므로 <span class="jp">個</span>.</li>
+      <li><strong>b)</strong> <span class="jp">傘三本（さんぼん）</span> &mdash; 3은 h &rarr; b 음변화가 적용됩니다.</li>
+      <li><strong>b)</strong> <span class="jp">犬を一匹（いっぴき）飼っています。</span> &mdash; 개는 작은 동물이므로 <span class="jp">匹</span>, 1은 h &rarr; p 음변화.</li>
+      <li><strong>c)</strong> <span class="jp">何階（なんがい）ですか。</span> &mdash; 건물 층은 <span class="jp">階</span>.</li>
+    </ol>
+  </details>
+</div>
+
+<!-- 퀴즈 E: 문장 만들기 -->
+<div id="quiz-counter-builder" class="quiz-box">
+  <h4>퀴즈 E: 문장 만들기</h4>
+  <p>주어진 단어를 올바른 순서로 배열하여 자연스러운 일본어 문장을 만드세요.</p>
+
+  <p><strong>1.</strong> <span class="jp">[ 買いました / りんご / 三個 / を ]</span></p>
+  <p><strong>2.</strong> <span class="jp">[ います / 猫 / 二匹 / が ]</span></p>
+  <p><strong>3.</strong> <span class="jp">[ ください / コーヒー / 一杯 / を ]</span></p>
+  <p><strong>4.</strong> <span class="jp">[ ですか / 何人 ]</span></p>
+  <p><strong>5.</strong> <span class="jp">[ あります / 何冊 / 本 / が ]</span></p>
+  <p><strong>6.</strong> <span class="jp">[ 読みました / を / この本 / 三回 ]</span></p>
+
+  <details>
+    <summary>정답 보기</summary>
+    <ol>
+      <li><span class="jp">りんごを三個買いました。</span> &mdash; 사과를 세 개 샀습니다.</li>
+      <li><span class="jp">猫が二匹います。</span> &mdash; 고양이가 두 마리 있습니다.</li>
+      <li><span class="jp">コーヒーを一杯ください。</span> &mdash; 커피 한 잔 주세요.</li>
+      <li><span class="jp">何人ですか。</span> &mdash; 몇 명입니까?</li>
+      <li><span class="jp">本が何冊ありますか。</span> &mdash; 책이 몇 권 있습니까?</li>
+      <li><span class="jp">この本を三回読みました。</span> &mdash; 이 책을 세 번 읽었습니다.</li>
+    </ol>
+  </details>
+</div>
+
+<!-- 퀴즈 F: 종합 복습 -->
+<div id="quiz-counter-review" class="quiz-box">
+  <h4>퀴즈 F: 종합 복습</h4>
+  <p>다음 문장을 일본어로 번역하세요. 올바른 조수사와 음변화에 주의하세요.</p>
+  <ol>
+    <li>사진 세 장을 찍었습니다.</li>
+    <li>맥주 여섯 병 주세요.</li>
+    <li>형제가 네 명 있습니다.</li>
+    <li>이 가게에서 신발 한 켤레를 샀습니다.</li>
+    <li>화장실은 몇 층입니까?</li>
+  </ol>
+  <details>
+    <summary>정답 보기</summary>
+    <ol>
+      <li><span class="jp">写真を三枚（さんまい）撮りました。</span></li>
+      <li><span class="jp">ビールを六本（ろっぽん）ください。</span> &mdash; 6 + 本 = ろっぽん (h &rarr; p)</li>
+      <li><span class="jp">兄弟が四人（よにん）います。</span></li>
+      <li><span class="jp">この店で靴を一足（いっそく）買いました。</span></li>
+      <li><span class="jp">トイレは何階（なんがい）ですか。</span> &mdash; ? + 階 = なんがい (k &rarr; g)</li>
+    </ol>
+  </details>
+</div>
+
+<!-- ============================================================ -->
+<!--  장 완료 버튼 및 네비게이션                                      -->
+<!-- ============================================================ -->
+
+<button class="chapter-complete" data-ch="06">완료로 표시 &#10003;</button>
+
+<div style="display:flex;justify-content:space-between;margin:2rem 0">
+  <a href="ch-05.html" class="quiz-btn secondary">&larr; 제5장: 서바이벌 일본어</a>
+  <a href="ch-07.html" class="quiz-btn">다음: 제7장 -- 조사 &rarr;</a>
+</div>
+
+</section>
+</div>
+
+
+</div>
+
+<footer>
+  <p>Zero to Hero: 한국어 화자를 위한 日本語 &middot; 제6장</p>
+</footer>
+
+<script src="js/shared.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/spaced-repetition.js"></script>
+<script src="js/memory-palace.js"></script>
+<script src="js/quiz-engine.js"></script>
+<script>
+// 복습 확인 퀴즈
+if (typeof QuizEngine !== 'undefined' && QuizEngine.RecallCheck) {
+  QuizEngine.RecallCheck(document.getElementById('recall-check-top'), {
+    fromChapters: '제2장~제5장',
+    items: [
+      { q: 'おはようございます의 뜻은?', a: '안녕하세요 (아침 인사)' },
+      { q: '히라가나 あ행의 5글자를 순서대로 쓰세요.', a: 'あ い う え お' },
+      { q: '가타카나 カ행의 5글자를 순서대로 쓰세요.', a: 'カ キ ク ケ コ' },
+      { q: 'すみません은 어떤 상황에서 사용하나요?', a: '실례합니다 / 죄송합니다 / 저기요' },
+      { q: '장음과 단음의 차이 예시를 드세요.', a: 'おばさん(아줌마) vs おばあさん(할머니)' }
+    ]
+  });
+}
+
+// 조수사 매칭 퀴즈
+if (typeof QuizEngine !== 'undefined' && QuizEngine.DragMatch) {
+  QuizEngine.DragMatch(document.getElementById('quiz-counter-match'), {
+    pairs: [
+      { left: 'りんご (사과)', right: '個' },
+      { left: '猫 (고양이)', right: '匹' },
+      { left: '本 (책)', right: '冊' },
+      { left: 'ペン (펜)', right: '本' },
+      { left: '紙 (종이)', right: '枚' },
+      { left: 'コーヒー (커피)', right: '杯' },
+      { left: '車 (자동차)', right: '台' },
+      { left: '靴 (신발)', right: '足' }
+    ]
+  });
+}
+
+// 음변화 빈칸 채우기 퀴즈
+if (typeof QuizEngine !== 'undefined' && QuizEngine.FillBlank) {
+  QuizEngine.FillBlank(document.getElementById('quiz-sound-change'), {
+    questions: [
+      { prompt: '一本 = _____', answer: 'いっぽん', hint: 'h→p 음변화' },
+      { prompt: '三匹 = _____', answer: 'さんびき', hint: 'h→b 음변화' },
+      { prompt: '六杯 = _____', answer: 'ろっぱい', hint: 'h→p 음변화' },
+      { prompt: '八本 = _____', answer: 'はっぽん', hint: 'h→p 음변화' },
+      { prompt: '一人 = _____', answer: 'ひとり', hint: '특수 읽기' },
+      { prompt: '三階 = _____', answer: 'さんがい', hint: 'k→g 음변화' },
+      { prompt: '十冊 = _____', answer: 'じゅっさつ', hint: '촉음 삽입' },
+      { prompt: '何杯 = _____', answer: 'なんばい', hint: 'h→b 음변화' },
+      { prompt: '一足 = _____', answer: 'いっそく', hint: '촉음 삽입' },
+      { prompt: '二十歳 = _____', answer: 'はたち', hint: '특수 읽기' }
+    ]
+  });
+}
+
+// 조수사 스프린트 퀴즈
+if (typeof QuizEngine !== 'undefined' && QuizEngine.TimedSprint) {
+  QuizEngine.TimedSprint(document.getElementById('quiz-counter-sprint'), {
+    timeLimit: 120,
+    questions: [
+      { prompt: '사과 세 개', answer: 'りんご三個（さんこ）' },
+      { prompt: '학생 다섯 명', answer: '学生五人（ごにん）' },
+      { prompt: '고양이 한 마리', answer: '猫一匹（いっぴき）' },
+      { prompt: '종이 열 장', answer: '紙十枚（じゅうまい）' },
+      { prompt: '맥주 두 병', answer: 'ビール二本（にほん）' },
+      { prompt: '커피 한 잔', answer: 'コーヒー一杯（いっぱい）' },
+      { prompt: '책 세 권', answer: '本三冊（さんさつ）' },
+      { prompt: '자동차 두 대', answer: '車二台（にだい）' },
+      { prompt: '3층', answer: '三階（さんがい）' },
+      { prompt: '여덟 살', answer: '八歳（はっさい）' }
+    ]
+  });
+}
+
+// 실전 상황 다지선다 퀴즈
+if (typeof QuizEngine !== 'undefined' && QuizEngine.MultipleChoice) {
+  QuizEngine.MultipleChoice(document.getElementById('quiz-counter-scenarios'), {
+    questions: [
+      {
+        question: '식당에서 3명일 때 대답은?',
+        options: ['三つです', '三人です', '三匹です', '三個です'],
+        correct: 1,
+        explanation: '사람은 人(にん)으로 셉니다.'
+      },
+      {
+        question: '주먹밥 2개를 살 때?',
+        options: ['二枚ください', '二本ください', '二個ください', '二冊ください'],
+        correct: 2,
+        explanation: '주먹밥은 작고 둥근 물건이므로 個(こ)를 사용합니다.'
+      },
+      {
+        question: '우산 3자루의 올바른 읽기는?',
+        options: ['さんほん', 'さんぼん', 'さんぽん', 'さんまい'],
+        correct: 1,
+        explanation: '3+本은 h→b 음변화가 적용되어 さんぼん이 됩니다.'
+      },
+      {
+        question: '개 한 마리를 키울 때?',
+        options: ['一匹（いちひき）', '一匹（いっぴき）', '一頭（いっとう）', '一個（いっこ）'],
+        correct: 1,
+        explanation: '개는 匹으로 세고, 1+匹은 h→p 음변화로 いっぴき가 됩니다.'
+      },
+      {
+        question: '몇 층이세요?',
+        options: ['何回ですか', '何個ですか', '何階ですか', '何本ですか'],
+        correct: 2,
+        explanation: '건물 층은 階(かい)를 사용합니다. 何階=なんがい.'
+      }
+    ]
+  });
+}
+
+// 문장 만들기 퀴즈
+if (typeof QuizEngine !== 'undefined' && QuizEngine.SentenceBuilder) {
+  QuizEngine.SentenceBuilder(document.getElementById('quiz-counter-builder'), {
+    sentences: [
+      { words: ['買いました', 'りんご', '三個', 'を'], answer: 'りんごを三個買いました' },
+      { words: ['います', '猫', '二匹', 'が'], answer: '猫が二匹います' },
+      { words: ['ください', 'コーヒー', '一杯', 'を'], answer: 'コーヒーを一杯ください' },
+      { words: ['ですか', '何人'], answer: '何人ですか' },
+      { words: ['あります', '何冊', '本', 'が'], answer: '本が何冊ありますか' },
+      { words: ['読みました', 'を', 'この本', '三回'], answer: 'この本を三回読みました' }
+    ]
+  });
+}
+</script>
+</body>
+</html>

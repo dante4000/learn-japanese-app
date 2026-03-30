@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLMs for Truck HMI/UX Design — A Field Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0c12;--bg-card:#10131c;--border:#1a1f30;--border-accent:#252d45;--text:#b8bfce;--text-muted:#5e6880;--text-bright:#dce1ec;--heading:#eef1f8;--accent:#4a90e2;--accent-glow:rgba(74,144,226,.1);--a2:#7c6dd8;--a3:#2ebd80;--a4:#e8943a;--a5:#e05c7a;--code-bg:#141825;--serif:'Instrument Serif',Georgia,serif;--sans:'DM Sans',-apple-system,sans-serif;--mono:'JetBrains Mono',monospace;--df:#141a28;--dl:#2a3350}
+[data-theme="light"]{--bg:#f3f4f8;--bg-card:#fff;--border:#d8dce6;--border-accent:#bfc5d4;--text:#3a4055;--text-muted:#6e7590;--text-bright:#1a1e30;--heading:#0d1020;--accent:#2a6bc9;--accent-glow:rgba(42,107,201,.07);--a2:#6550b0;--a3:#1a8c5e;--a4:#c47a1a;--a5:#b84060;--code-bg:#e8eaf0;--df:#e4e6ee;--dl:#a8aec2}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+html,html *{transition:background-color .3s,color .3s,border-color .3s}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.75;font-size:17px;-webkit-font-smoothing:antialiased}
+
+/* Hero */
+.hero{min-height:85vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:4rem 2rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-30%;left:50%;transform:translateX(-50%);width:800px;height:800px;background:radial-gradient(circle,var(--accent-glow) 0%,transparent 70%);pointer-events:none}
+.badge{display:inline-flex;align-items:center;gap:.5rem;padding:.35rem .9rem;border:1px solid var(--border-accent);border-radius:999px;font-size:.75rem;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;font-weight:500;margin-bottom:1.8rem;background:var(--accent-glow)}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.hero h1{font-family:var(--serif);font-size:clamp(2.2rem,6vw,4.8rem);color:var(--heading);line-height:1.08;max-width:780px;font-weight:400}
+.hero h1 em{color:var(--accent);font-style:italic}
+.hero-sub{font-size:1.05rem;color:var(--text-muted);max-width:540px;margin-top:1.3rem;line-height:1.7}
+.hero-meta{display:flex;gap:1.8rem;margin-top:2.5rem;font-size:.82rem;color:var(--text-muted);flex-wrap:wrap;justify-content:center}
+.hero-meta span{display:flex;align-items:center;gap:.4rem}
+
+/* Layout */
+.layout{display:flex;max-width:1100px;margin:0 auto;gap:0}
+.sidebar{display:none}
+.main-col{flex:1;min-width:0;max-width:760px;margin:0 auto;padding:0 2rem 6rem}
+@media(min-width:1060px){
+  .layout{gap:2rem;padding:0 2rem}
+  .sidebar{display:block;width:210px;flex-shrink:0;position:sticky;top:2rem;align-self:flex-start;height:fit-content;max-height:calc(100vh - 4rem);overflow-y:auto;padding:.8rem 0}
+  .sidebar::-webkit-scrollbar{width:3px}.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+  .main-col{padding:0 0 6rem;max-width:760px}
+}
+.side-label{font-size:.62rem;text-transform:uppercase;letter-spacing:.12em;color:var(--text-muted);font-weight:600;padding:0 .7rem;margin-bottom:.6rem}
+.side-link{display:flex;align-items:baseline;gap:.45rem;padding:.35rem .7rem;border-radius:5px;text-decoration:none;color:var(--text-muted);font-size:.78rem;line-height:1.35;transition:all .15s;border-left:2px solid transparent;margin-bottom:1px}
+.side-link:hover{color:var(--text-bright);background:var(--bg-card)}
+.side-link.active{color:var(--accent);border-left-color:var(--accent);background:var(--accent-glow)}
+.side-num{font-family:var(--mono);font-size:.66rem;min-width:16px;opacity:.5}
+
+/* Mobile nav */
+.mob-nav{display:none;position:fixed;bottom:1.2rem;left:50%;transform:translateX(-50%);z-index:999}
+.mob-btn{display:flex;align-items:center;gap:.5rem;padding:.55rem 1.1rem;background:var(--bg-card);border:1px solid var(--border-accent);border-radius:999px;color:var(--text);font-family:var(--sans);font-size:.8rem;font-weight:500;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,.3);transition:all .2s}
+.mob-btn svg{width:15px;height:15px;stroke:var(--accent);fill:none;stroke-width:2;transition:transform .2s}
+.mob-btn.open svg{transform:rotate(180deg)}
+.mob-panel{position:absolute;bottom:calc(100% + .7rem);left:50%;transform:translateX(-50%);width:250px;background:var(--bg-card);border:1px solid var(--border);border-radius:11px;padding:.65rem;box-shadow:0 8px 30px rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;transform:translateX(-50%) translateY(8px)}
+.mob-panel.open{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0)}
+.mob-link{display:flex;align-items:baseline;gap:.45rem;padding:.4rem .55rem;border-radius:5px;text-decoration:none;color:var(--text-muted);font-size:.78rem;line-height:1.3;transition:all .15s}
+.mob-link:hover,.mob-link:active{color:var(--accent);background:var(--accent-glow)}
+.mob-num{font-family:var(--mono);font-size:.65rem;min-width:16px;opacity:.5}
+@media(max-width:1059px){.mob-nav{display:block}}
+
+/* Content */
+.ch{margin-top:4.5rem;padding-top:2.5rem;border-top:1px solid var(--border)}
+.ch:first-child{border-top:none;margin-top:1.5rem}
+.cn{font-family:var(--mono);font-size:.72rem;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem;display:block}
+h2{font-family:var(--serif);font-size:2.3rem;color:var(--heading);font-weight:400;line-height:1.2;margin-bottom:1.4rem}
+h3{font-family:var(--serif);font-size:1.5rem;color:var(--text-bright);font-weight:400;margin-top:2.3rem;margin-bottom:.9rem;line-height:1.3}
+p{margin-bottom:1.2rem}
+strong{color:var(--text-bright);font-weight:600}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:11px;padding:1.4rem;margin:1.4rem 0}
+.card-a{border-left:3px solid var(--accent)}.card-w{border-left:3px solid var(--a4)}.card-s{border-left:3px solid var(--a3)}
+.cl{font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.7rem;display:block}
+.card-a .cl{color:var(--accent)}.card-w .cl{color:var(--a4)}.card-s .cl{color:var(--a3)}
+.card p:last-child{margin-bottom:0}
+
+/* Diagrams */
+.dw{background:var(--bg-card);border:1px solid var(--border);border-radius:11px;padding:1.4rem;margin:1.8rem 0;overflow-x:auto}
+.dw svg{display:block;margin:0 auto;max-width:100%;height:auto}
+.dc{font-size:.78rem;color:var(--text-muted);text-align:center;margin-top:.9rem;font-style:italic}
+
+/* Timeline */
+.tl{position:relative;padding-left:2rem;margin:1.8rem 0}
+.tl::before{content:'';position:absolute;left:6px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--accent),var(--a2),var(--a3));border-radius:1px}
+.ti{position:relative;margin-bottom:1.8rem;padding-left:1.4rem}
+.ti::before{content:'';position:absolute;left:-2rem;top:.55rem;width:13px;height:13px;border-radius:50%;border:2px solid var(--accent);background:var(--bg)}
+.ty{font-family:var(--mono);font-size:.78rem;color:var(--accent);font-weight:500}
+.tt{font-weight:600;color:var(--text-bright);margin-top:.15rem}
+.td{font-size:.9rem;color:var(--text-muted);margin-top:.25rem;line-height:1.6}
+
+/* Code / prompts */
+.cb{background:var(--code-bg);border:1px solid var(--border);border-radius:9px;padding:1.15rem 1.3rem;font-family:var(--mono);font-size:.84rem;line-height:1.7;overflow-x:auto;margin:1.4rem 0;color:var(--text);white-space:pre-wrap}
+code{font-family:var(--mono);font-size:.86em;background:var(--code-bg);padding:.12em .35em;border-radius:4px;color:var(--a2)}
+.pe{background:var(--bg-card);border:1px solid var(--border);border-radius:11px;overflow:hidden;margin:1.4rem 0}
+.ph{padding:.55rem 1.1rem;font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;border-bottom:1px solid var(--border)}
+.pb .ph{color:var(--a5);background:rgba(224,92,122,.05)}.pg .ph{color:var(--a3);background:rgba(46,189,128,.05)}
+.pp{padding:1.1rem;font-size:.92rem;line-height:1.7}
+
+/* Grids */
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin:1.4rem 0}
+.cc{background:var(--bg-card);border:1px solid var(--border);border-radius:11px;padding:1.15rem}
+.cc h5{font-size:.92rem;color:var(--text-bright);margin-bottom:.65rem;font-weight:600}
+.cc p{font-size:.87rem;line-height:1.6;color:var(--text-muted);margin-bottom:0}
+.pr{display:flex;gap:1.15rem;margin:1.4rem 0;padding:1.15rem;background:var(--bg-card);border-radius:11px;border:1px solid var(--border)}
+.pn{font-family:var(--serif);font-size:1.8rem;color:var(--accent);line-height:1;min-width:32px}
+.pb2 h5{font-weight:600;color:var(--text-bright);margin-bottom:.35rem}
+.pb2 p{font-size:.9rem;color:var(--text-muted);margin-bottom:0;line-height:1.6}
+.pq{border-left:3px solid var(--a2);padding:.9rem 0 .9rem 1.4rem;margin:1.8rem 0;font-family:var(--serif);font-size:1.2rem;color:var(--text-bright);font-style:italic;line-height:1.55}
+.pqa{font-family:var(--sans);font-size:.82rem;font-style:normal;color:var(--text-muted);margin-top:.4rem}
+.sg{display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem;margin:1.8rem 0}
+.sc{background:var(--bg-card);border:1px solid var(--border);border-radius:11px;padding:1.15rem;text-align:center}
+.sn{font-family:var(--serif);font-size:2rem;color:var(--accent);line-height:1}
+.sl{font-size:.78rem;color:var(--text-muted);margin-top:.35rem}
+
+/* Toggle */
+.toggle{position:fixed;top:1.2rem;right:1.2rem;z-index:1000;width:44px;height:44px;border-radius:50%;border:1px solid var(--border-accent);background:var(--bg-card);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+.toggle:hover{transform:scale(1.08);border-color:var(--accent)}
+.toggle .is,.toggle .im{position:absolute;transition:transform .4s,opacity .3s;width:18px;height:18px}
+.toggle .is{opacity:1;transform:rotate(0) scale(1)}.toggle .im{opacity:0;transform:rotate(-90deg) scale(.5)}
+[data-theme="light"] .toggle .is{opacity:0;transform:rotate(90deg) scale(.5)}
+[data-theme="light"] .toggle .im{opacity:1;transform:rotate(0) scale(1)}
+
+.footer{text-align:center;padding:2.5rem 2rem;border-top:1px solid var(--border);color:var(--text-muted);font-size:.82rem}
+@media(max-width:700px){.cg{grid-template-columns:1fr}.sg{grid-template-columns:1fr}.hero h1{font-size:2.2rem}h2{font-size:1.9rem}.hero-meta{flex-direction:column;gap:.6rem}.pr{flex-direction:column;gap:.7rem}.main-col{padding:0 1.2rem 5rem}}
+
+/* Arrow marker for SVGs */
+</style>
+</head>
+<body>
+
+<section class="hero">
+<div class="badge"><span class="dot"></span> Field Guide</div>
+<h1>Using <em>LLMs</em> for Heavy Truck HMI Design</h1>
+<p class="hero-sub">A guide for UI/UX designers working on graphic display panels for Japanese heavy-duty trucks. Covers what LLMs are, how they work, and how to use them for real HMI design tasks — with examples grounded in the FUSO ecosystem.</p>
+<div class="hero-meta"><span><span class="dot"></span> ~13 min read</span><span><span class="dot"></span> 11 chapters</span><span><span class="dot"></span> March 2026</span></div>
+</section>
+
+<div class="layout">
+<nav class="sidebar" id="sidebar">
+<div class="side-label">Contents</div>
+<a href="#c1" class="side-link"><span class="side-num">01</span>What Is an LLM?</a>
+<a href="#c2" class="side-link"><span class="side-num">02</span>How We Got Here</a>
+<a href="#c3" class="side-link"><span class="side-num">03</span>How LLMs Work</a>
+<a href="#c4" class="side-link"><span class="side-num">04</span>The Attention Mechanism</a>
+<a href="#c5" class="side-link"><span class="side-num">05</span>Training Pipeline</a>
+<a href="#c6" class="side-link"><span class="side-num">06</span>Models Available Today</a>
+<a href="#c7" class="side-link"><span class="side-num">07</span>Prompting for HMI Work</a>
+<a href="#c8" class="side-link"><span class="side-num">08</span>Advanced Techniques</a>
+<a href="#c9" class="side-link"><span class="side-num">09</span>Context Engineering</a>
+<a href="#c10" class="side-link"><span class="side-num">10</span>Hallucinations</a>
+<a href="#c11" class="side-link"><span class="side-num">11</span>Workflow & Checklist</a>
+</nav>
+
+<main class="main-col">
+
+<!-- ====== CH1 ====== -->
+<section class="ch" id="c1"><span class="cn">Chapter 01</span>
+<h2>What Is an LLM?</h2>
+<p>A <strong>Large Language Model (LLM)</strong> is a type of AI trained on enormous amounts of text — books, websites, code, technical manuals — to learn the patterns of human language. Given some input text, it predicts what should come next. Scale this up to billions of internal parameters and trillions of training words, and the simple act of next-word prediction becomes surprisingly capable: it can write prose, generate code, analyze documents, and reason through multi-step problems.</p>
+
+<p>For your work designing graphic display panels for FUSO trucks, this means you can use an LLM to draft HMI layout specifications, generate UI copy for cluster warning states, analyze ISO 15005 glance-time requirements against your designs, brainstorm icon sets for eCanter battery-level indicators, or review a CAN signal mapping document and extract the data points your instrument cluster needs to display.</p>
+
+<p>LLMs don't "understand" in the way a human engineer does. They are pattern-matching systems that produce statistically likely text. The output can be remarkably useful — but it requires verification, especially for anything safety-critical like ASIL B telltale specifications.</p>
+
+<div class="card card-w"><span class="cl">Key Limitation</span>
+<p>An LLM has no access to your internal FUSO design system, your Figma files, or your company's proprietary CAN database — unless you provide that information in your prompt. Think of it as a well-read colleague who has never worked at your company. The more context you give, the more useful it becomes.</p>
+</div>
+</section>
+
+<!-- ====== CH2 ====== -->
+<section class="ch" id="c2"><span class="cn">Chapter 02</span>
+<h2>How We Got Here</h2>
+<p>LLMs didn't appear overnight. They are the result of decades of research in teaching machines to process sequences — like sentences, where each word's meaning depends on its neighbors.</p>
+
+<div class="tl">
+<div class="ti"><div class="ty">1990s–2010s</div><div class="tt">Recurrent Neural Networks (RNNs)</div><div class="td">The first approach: process text one word at a time, carrying forward a "state." Worked for short sequences but forgot earlier words in long ones — the vanishing gradient problem.</div></div>
+<div class="ti"><div class="ty">1997</div><div class="tt">LSTMs</div><div class="td">Added memory gates to selectively remember or forget. Powered early Google Translate. Still sequential — each word waited for the last — so training was slow.</div></div>
+<div class="ti"><div class="ty">2014</div><div class="tt">Attention Mechanisms</div><div class="td">Let the model look back at all previous words and focus on the relevant ones. Like a spotlight the model could point at any part of the input.</div></div>
+<div class="ti"><div class="ty">2017</div><div class="tt">The Transformer ("Attention Is All You Need")</div><div class="td">Google researchers removed the sequential processing entirely — using only attention. All words processed in parallel. This is the architecture behind every major LLM today.</div></div>
+<div class="ti"><div class="ty">2018–2020</div><div class="tt">GPT, BERT, GPT-3</div><div class="td">Transformer-based language models trained on increasingly large datasets. GPT-3's 175 billion parameters showed emergent abilities — it could perform tasks from just a few examples in the prompt.</div></div>
+<div class="ti"><div class="ty">Nov 2022</div><div class="tt">ChatGPT</div><div class="td">GPT-3.5 refined for conversation. 100 million users in two months. Made LLMs accessible to non-technical users.</div></div>
+<div class="ti"><div class="ty">2023–2024</div><div class="tt">Multimodal & Reasoning Models</div><div class="td">GPT-4 added image understanding. Claude introduced 200K-token contexts (hundreds of pages). Reasoning models (o1) learned to think step-by-step, scoring 83% on math olympiad problems vs 13% for standard models.</div></div>
+<div class="ti"><div class="ty">2025–2026</div><div class="tt">Agents, FUSO-Hino Merger, ARCHION</div><div class="td">AI shifted from chatting to acting — coding agents, research agents. In the truck industry, Daimler Truck concluded agreements integrating Mitsubishi Fuso and Hino Motors into ARCHION, with shared digital platforms and SDV (Software-Defined Vehicle) architectures becoming central.</div></div>
+</div>
+</section>
+
+<!-- ====== CH3 ====== -->
+<section class="ch" id="c3"><span class="cn">Chapter 03</span>
+<h2>How LLMs Work</h2>
+
+<h3>Step 1: Tokenization</h3>
+<p>The model breaks your text into <strong>tokens</strong> — sub-word pieces. "instrument cluster" might become ["instrument", " cluster"]. "eCanter" might become ["e", "C", "anter"]. Each token gets a numeric ID.</p>
+
+<div class="dw">
+<svg viewBox="0 0 700 130" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="a" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--dl)"/></marker></defs>
+<text x="350" y="16" fill="var(--accent)" font-family="var(--mono)" font-size="10.5" font-weight="600" text-anchor="middle">TOKENIZATION — HMI CONTEXT</text>
+<rect x="80" y="28" width="540" height="28" rx="6" fill="var(--df)" stroke="var(--dl)" stroke-width="1.4"/>
+<text x="350" y="47" fill="var(--text)" font-family="var(--mono)" font-size="12" text-anchor="middle">"Super Great battery charge telltale"</text>
+<line x1="350" y1="56" x2="350" y2="70" stroke="var(--dl)" stroke-width="1.4" marker-end="url(#a)"/>
+<rect x="55" y="76" width="72" height="26" rx="4" fill="var(--df)" stroke="var(--accent)" stroke-width="1.2"/><text x="91" y="94" fill="var(--accent)" font-family="var(--mono)" font-size="10" text-anchor="middle">Super</text>
+<rect x="133" y="76" width="72" height="26" rx="4" fill="var(--df)" stroke="var(--accent)" stroke-width="1.2"/><text x="169" y="94" fill="var(--accent)" font-family="var(--mono)" font-size="10" text-anchor="middle">Great</text>
+<rect x="211" y="76" width="85" height="26" rx="4" fill="var(--df)" stroke="var(--a2)" stroke-width="1.2"/><text x="253" y="94" fill="var(--a2)" font-family="var(--mono)" font-size="10" text-anchor="middle">battery</text>
+<rect x="302" y="76" width="78" height="26" rx="4" fill="var(--df)" stroke="var(--a3)" stroke-width="1.2"/><text x="341" y="94" fill="var(--a3)" font-family="var(--mono)" font-size="10" text-anchor="middle">charge</text>
+<rect x="386" y="76" width="62" height="26" rx="4" fill="var(--df)" stroke="var(--a4)" stroke-width="1.2"/><text x="417" y="94" fill="var(--a4)" font-family="var(--mono)" font-size="10" text-anchor="middle">tell</text>
+<rect x="454" y="76" width="60" height="26" rx="4" fill="var(--df)" stroke="var(--a4)" stroke-width="1.2"/><text x="484" y="94" fill="var(--a4)" font-family="var(--mono)" font-size="10" text-anchor="middle">tale</text>
+<text x="91" y="118" fill="var(--text-muted)" font-family="var(--mono)" font-size="8" text-anchor="middle">5765</text>
+<text x="169" y="118" fill="var(--text-muted)" font-family="var(--mono)" font-size="8" text-anchor="middle">8120</text>
+<text x="253" y="118" fill="var(--text-muted)" font-family="var(--mono)" font-size="8" text-anchor="middle">11402</text>
+<text x="341" y="118" fill="var(--text-muted)" font-family="var(--mono)" font-size="8" text-anchor="middle">5new</text>
+<text x="417" y="118" fill="var(--text-muted)" font-family="var(--mono)" font-size="8" text-anchor="middle">2025</text>
+<text x="484" y="118" fill="var(--text-muted)" font-family="var(--mono)" font-size="8" text-anchor="middle">8102</text>
+</svg>
+<div class="dc">Note "telltale" gets split into two tokens. Rare or compound words are broken into sub-word pieces.</div>
+</div>
+
+<p>This matters because LLMs have a <strong>context window</strong> — a maximum number of tokens they can process at once. Claude handles ~200K tokens (roughly 500 pages). Everything you send — your prompt, any pasted spec documents, and the model's response — must fit inside this window.</p>
+
+<h3>Step 2: Embeddings</h3>
+<p>Each token becomes a vector — a list of hundreds of numbers representing its meaning in mathematical space. "Speedometer" and "tachometer" would be close together; "speedometer" and "refrigerator" would be far apart. As tokens pass through the model's layers, attention enriches these vectors with context — so "charge" in "battery charge level" becomes distinct from "charge" in "service charge."</p>
+
+<h3>Step 3: Prediction</h3>
+<p>After processing through dozens of Transformer layers (each applying attention + a feed-forward network), the model produces a probability distribution over its vocabulary for the next token. It picks one, outputs it, feeds the whole sequence back in, and predicts the next. This is why output streams in word-by-word.</p>
+
+<div class="card card-a"><span class="cl">What This Means for You</span>
+<p>Each token the model generates is shaped by everything that came before it in the context window. The structure and content of your prompt directly influences every word of the output. A well-crafted prompt with specific HMI context produces fundamentally different results than a vague one.</p>
+</div>
+</section>
+
+<!-- ====== CH4 ====== -->
+<section class="ch" id="c4"><span class="cn">Chapter 04</span>
+<h2>The Attention Mechanism</h2>
+<p>This is what makes Transformers work. For each token, the model computes how much it should "focus on" every other token to understand context.</p>
+
+<p>When processing a sentence like "The ADAS telltale turned red because <strong>it</strong> detected an obstacle," attention lets the model figure out that "it" refers to the ADAS system, not the telltale or the obstacle. It does this by matching <strong>Queries</strong> ("what am I looking for?") against <strong>Keys</strong> ("what do I contain?") to produce attention scores, then using those scores to gather information from <strong>Values</strong> ("what do I provide?").</p>
+
+<div class="dw">
+<svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg">
+<text x="350" y="16" fill="var(--accent)" font-family="var(--mono)" font-size="10.5" font-weight="600" text-anchor="middle">ATTENTION SCORES — Processing "it"</text>
+<text x="60" y="46" fill="var(--text-muted)" font-family="var(--sans)" font-size="9.5">Input:</text>
+<rect x="105" y="32" width="50" height="24" rx="4" fill="var(--df)" stroke="var(--dl)" stroke-width="1"/><text x="130" y="49" fill="var(--text)" font-family="var(--sans)" font-size="10.5" text-anchor="middle">The</text>
+<rect x="161" y="32" width="62" height="24" rx="4" fill="var(--df)" stroke="var(--dl)" stroke-width="1"/><text x="192" y="49" fill="var(--text)" font-family="var(--sans)" font-size="10.5" text-anchor="middle">ADAS</text>
+<rect x="229" y="32" width="68" height="24" rx="4" fill="var(--df)" stroke="var(--dl)" stroke-width="1"/><text x="263" y="49" fill="var(--text)" font-family="var(--sans)" font-size="10.5" text-anchor="middle">telltale</text>
+<rect x="303" y="32" width="60" height="24" rx="4" fill="var(--df)" stroke="var(--dl)" stroke-width="1"/><text x="333" y="49" fill="var(--text)" font-family="var(--sans)" font-size="10.5" text-anchor="middle">turned</text>
+<rect x="369" y="32" width="42" height="24" rx="4" fill="var(--df)" stroke="var(--dl)" stroke-width="1"/><text x="390" y="49" fill="var(--text)" font-family="var(--sans)" font-size="10.5" text-anchor="middle">red</text>
+<rect x="417" y="32" width="35" height="24" rx="4" fill="var(--df)" stroke="var(--accent)" stroke-width="2"/><text x="434" y="49" fill="var(--accent)" font-family="var(--sans)" font-size="10.5" font-weight="700" text-anchor="middle">it</text>
+<rect x="458" y="32" width="78" height="24" rx="4" fill="var(--df)" stroke="var(--dl)" stroke-width="1"/><text x="497" y="49" fill="var(--text)" font-family="var(--sans)" font-size="10.5" text-anchor="middle">detected</text>
+<rect x="542" y="32" width="78" height="24" rx="4" fill="var(--df)" stroke="var(--dl)" stroke-width="1"/><text x="581" y="49" fill="var(--text)" font-family="var(--sans)" font-size="10.5" text-anchor="middle">obstacle</text>
+
+<text x="60" y="86" fill="var(--a2)" font-family="var(--mono)" font-size="9.5" font-weight="600">SCORES</text>
+<text x="130" y="100" fill="var(--text)" font-family="var(--sans)" font-size="9.5" text-anchor="middle">The</text>
+<rect x="110" y="106" width="40" height="6" rx="3" fill="var(--dl)"/><rect x="110" y="106" width="5" height="6" rx="3" fill="var(--accent)" opacity=".4"/>
+<text x="192" y="100" fill="var(--text)" font-family="var(--sans)" font-size="9.5" text-anchor="middle">ADAS</text>
+<rect x="170" y="106" width="44" height="6" rx="3" fill="var(--dl)"/><rect x="170" y="106" width="38" height="6" rx="3" fill="var(--accent)"/>
+<text x="263" y="100" fill="var(--text)" font-family="var(--sans)" font-size="9.5" text-anchor="middle">telltale</text>
+<rect x="240" y="106" width="46" height="6" rx="3" fill="var(--dl)"/><rect x="240" y="106" width="18" height="6" rx="3" fill="var(--accent)" opacity=".5"/>
+<text x="333" y="100" fill="var(--text)" font-family="var(--sans)" font-size="9.5" text-anchor="middle">turned</text>
+<rect x="314" y="106" width="38" height="6" rx="3" fill="var(--dl)"/><rect x="314" y="106" width="6" height="6" rx="3" fill="var(--accent)" opacity=".3"/>
+<text x="390" y="100" fill="var(--text)" font-family="var(--sans)" font-size="9.5" text-anchor="middle">red</text>
+<rect x="374" y="106" width="32" height="6" rx="3" fill="var(--dl)"/><rect x="374" y="106" width="4" height="6" rx="3" fill="var(--accent)" opacity=".3"/>
+<text x="497" y="100" fill="var(--text)" font-family="var(--sans)" font-size="9.5" text-anchor="middle">detected</text>
+<rect x="474" y="106" width="46" height="6" rx="3" fill="var(--dl)"/><rect x="474" y="106" width="22" height="6" rx="3" fill="var(--accent)" opacity=".55"/>
+<text x="581" y="100" fill="var(--text)" font-family="var(--sans)" font-size="9.5" text-anchor="middle">obstacle</text>
+<rect x="558" y="106" width="46" height="6" rx="3" fill="var(--dl)"/><rect x="558" y="106" width="10" height="6" rx="3" fill="var(--accent)" opacity=".4"/>
+
+<text x="60" y="142" fill="var(--a2)" font-family="var(--mono)" font-size="9.5" font-weight="600">RESULT</text>
+<rect x="120" y="128" width="420" height="28" rx="6" fill="var(--accent)" opacity=".07" stroke="var(--accent)" stroke-width="1"/>
+<text x="330" y="147" fill="var(--accent)" font-family="var(--sans)" font-size="11" text-anchor="middle">New "it" = primarily "ADAS" + some "detected" + traces of others</text>
+
+<text x="350" y="188" fill="var(--text-muted)" font-family="var(--sans)" font-size="9.5" text-anchor="middle">The model resolved "it" → "the ADAS system" through contextual attention scores.</text>
+<text x="350" y="206" fill="var(--text-muted)" font-family="var(--sans)" font-size="9.5" text-anchor="middle">Modern models run 12–96 of these in parallel ("heads"), each tracking different relationship types.</text>
+</svg>
+</div>
+</section>
+
+<!-- ====== CH5 ====== -->
+<section class="ch" id="c5"><span class="cn">Chapter 05</span>
+<h2>The Training Pipeline</h2>
+
+<div class="dw">
+<svg viewBox="0 0 700 150" xmlns="http://www.w3.org/2000/svg">
+<text x="350" y="16" fill="var(--accent)" font-family="var(--mono)" font-size="10.5" font-weight="600" text-anchor="middle">THREE-STAGE TRAINING</text>
+<rect x="25" y="32" width="195" height="82" rx="8" fill="var(--accent)" opacity=".06" stroke="var(--accent)" stroke-width="1.4"/>
+<text x="122" y="52" fill="var(--accent)" font-family="var(--mono)" font-size="9" font-weight="600" text-anchor="middle">1. PRE-TRAINING</text>
+<text x="122" y="70" fill="var(--text)" font-family="var(--sans)" font-size="9.5" text-anchor="middle">Trillions of tokens from the web</text>
+<text x="122" y="84" fill="var(--text)" font-family="var(--sans)" font-size="9.5" text-anchor="middle">"Predict the next word"</text>
+<text x="122" y="104" fill="var(--text-muted)" font-family="var(--sans)" font-size="8.5" text-anchor="middle">Months · $Millions · → Raw knowledge</text>
+<line x1="220" y1="73" x2="240" y2="73" stroke="var(--dl)" stroke-width="1.4" marker-end="url(#a)"/>
+
+<rect x="244" y="32" width="185" height="82" rx="8" fill="var(--a2)" opacity=".06" stroke="var(--a2)" stroke-width="1.4"/>
+<text x="336" y="52" fill="var(--a2)" font-family="var(--mono)" font-size="9" font-weight="600" text-anchor="middle">2. SUPERVISED FINE-TUNING</text>
+<text x="336" y="70" fill="var(--text)" font-family="var(--sans)" font-size="9.5" text-anchor="middle">Curated Q&A examples</text>
+<text x="336" y="84" fill="var(--text)" font-family="var(--sans)" font-size="9.5" text-anchor="middle">"Here's ideal assistant behavior"</text>
+<text x="336" y="104" fill="var(--text-muted)" font-family="var(--sans)" font-size="8.5" text-anchor="middle">Days · Supervised · → Follows instructions</text>
+<line x1="429" y1="73" x2="449" y2="73" stroke="var(--dl)" stroke-width="1.4" marker-end="url(#a)"/>
+
+<rect x="453" y="32" width="222" height="82" rx="8" fill="var(--a3)" opacity=".06" stroke="var(--a3)" stroke-width="1.4"/>
+<text x="564" y="52" fill="var(--a3)" font-family="var(--mono)" font-size="9" font-weight="600" text-anchor="middle">3. REINFORCEMENT LEARNING</text>
+<text x="564" y="70" fill="var(--text)" font-family="var(--sans)" font-size="9.5" text-anchor="middle">Human rankings (RLHF) or</text>
+<text x="564" y="84" fill="var(--text)" font-family="var(--sans)" font-size="9.5" text-anchor="middle">verifiable rewards — math, code (RLVR)</text>
+<text x="564" y="104" fill="var(--text-muted)" font-family="var(--sans)" font-size="8.5" text-anchor="middle">Weeks · RL · → Aligned, can reason</text>
+
+<text x="350" y="140" fill="var(--text-muted)" font-family="var(--sans)" font-size="9.5" text-anchor="middle">Pre-training is the heavy lift. SFT and RL are refinements layered on top.</text>
+</svg>
+</div>
+
+<p><strong>Temperature</strong> is a parameter that controls randomness. Low (0–0.3) = focused, deterministic — good for spec documents or data extraction. High (0.7–1.0) = more creative, varied — useful for brainstorming icon concepts or layout ideas.</p>
+</section>
+
+<!-- ====== CH6 ====== -->
+<section class="ch" id="c6"><span class="cn">Chapter 06</span>
+<h2>Models Available Today</h2>
+<div class="cg">
+<div class="cc"><h5>Claude (Anthropic)</h5><p>200K token context — can process an entire vehicle spec document in one pass. Strong at analysis, writing, and code. Claude Code for agentic coding tasks.</p></div>
+<div class="cc"><h5>GPT-5 / o3 (OpenAI)</h5><p>Multimodal (text, image, audio). o3 reasoning model for complex logic. Strong at inferring intent from minimal prompts. Massive ecosystem.</p></div>
+<div class="cc"><h5>Gemini 2.5 (Google)</h5><p>Up to 2M token context. Deep Google Workspace integration. Prefers short, direct prompts with examples.</p></div>
+<div class="cc"><h5>Open Source (DeepSeek R1, Qwen 3, LLaMA 4)</h5><p>Can be run on local hardware for data-sensitive work — important if your CAN database or ECU architecture is proprietary and cannot leave company infrastructure.</p></div>
+</div>
+<p>For day-to-day HMI design work, any of the major models will serve you well. If you're working with large spec documents (ISO standards, vehicle architecture PDFs), Claude's large context window is especially useful. If you need image analysis of competitor dashboards, GPT-5 or Gemini's multimodal input is the better choice.</p>
+</section>
+
+<!-- ====== CH7 — THE KEY CHAPTER ====== -->
+<section class="ch" id="c7"><span class="cn">Chapter 07</span>
+<h2>Prompting for HMI Design Work</h2>
+<p>This chapter covers how to structure prompts specifically for the kind of work you do — designing graphic display panels for heavy-duty trucks. The principles apply regardless of which LLM you use.</p>
+
+<h3>The Five Principles</h3>
+<div class="pr"><div class="pn">1</div><div class="pb2"><h5>Be Specific</h5><p>Don't say "design a dashboard." Say "I'm designing a 10.25-inch LCD instrument cluster for the FUSO Super Great 2025 facelift. The cluster needs to display SHIFTPILOT gear position, DPF regeneration status, and AdBlue level. What layout hierarchy would you recommend given ISO 15005's 1.5-second glance-time constraint?"</p></div></div>
+<div class="pr"><div class="pn">2</div><div class="pb2"><h5>Provide Context</h5><p>Paste your CAN signal list, your design system constraints, or the relevant section of the ISO standard. The model has no access to your Figma files or internal FUSO specs — you need to bring the context to it.</p></div></div>
+<div class="pr"><div class="pn">3</div><div class="pb2"><h5>Define the Output</h5><p>"Give me a table," "respond in JSON," "structure this as a Figma component spec with layer names." If you don't specify format, the model guesses.</p></div></div>
+<div class="pr"><div class="pn">4</div><div class="pb2"><h5>Assign a Role</h5><p>"You are a senior automotive HMI designer with experience in heavy-duty truck instrument clusters, familiar with ISO 26262 ASIL B requirements and Japanese commercial vehicle regulations."</p></div></div>
+<div class="pr"><div class="pn">5</div><div class="pb2"><h5>Iterate</h5><p>First output rarely perfect. "That's close, but the DPF status needs to be more prominent — it's a safety-critical telltale" gives the model signal to refine.</p></div></div>
+
+<h3>Example: Instrument Cluster Layout Spec</h3>
+<div class="pe pb"><div class="ph">❌ Weak Prompt</div><div class="pp">Help me design a truck dashboard display.</div></div>
+
+<div class="pe pg"><div class="ph">✅ Strong Prompt</div><div class="pp"><strong>Role:</strong> You are a senior automotive HMI designer specializing in commercial vehicle instrument clusters for the Japanese market.<br><br>
+<strong>Context:</strong> I'm designing the digital instrument cluster for a FUSO Super Great (MY2025 facelift). The display is a 12.3-inch full LCD panel (1920×720). The truck uses the 6R30 12.8L diesel engine with SHIFTPILOT 12-speed AMT. Key systems: Active Brake Assist 6, Active Sideguard Assist 2, Front Blindspot Information System, DPF regeneration, AdBlue (urea SCR). The cluster must comply with ISO 15005 (1.5s max glance time) and ISO 26262 ASIL B for safety-critical telltales.<br><br>
+<strong>Task:</strong> Propose a visual hierarchy for the cluster layout. Group the information into tiers:<br>
+— Tier 1: Always visible (speed, gear, engine RPM, critical warnings)<br>
+— Tier 2: Contextual (ADAS status, navigation, DPF regen)<br>
+— Tier 3: On-demand (trip computer, settings, maintenance alerts)<br><br>
+For each tier, specify recommended screen zone placement (left / center / right), relative size allocation (% of display), and whether information should be presented as an analog gauge, numeric readout, icon/telltale, or progress bar.<br><br>
+<strong>Format:</strong> Respond as a structured table, one row per data element.<br>
+<strong>Constraints:</strong> This is for a heavy-duty long-haul truck. Driver cognitive load is the primary concern. Nighttime legibility must be considered.</div></div>
+
+<h3>Example: Generating Telltale State Definitions</h3>
+<div class="pe pg"><div class="ph">✅ CAN Signal → UI State Mapping</div><div class="pp"><strong>Context:</strong> Here are the CAN signals for the eCanter battery management system on the instrument cluster bus:<br><br>
+<code>BMS_SOC</code> (0–100%, 1 byte)<br>
+<code>BMS_ChargingStatus</code> (0=Not charging, 1=AC, 2=DC)<br>
+<code>BMS_TempWarning</code> (0=Normal, 1=High, 2=Critical)<br>
+<code>BMS_CellBalancing</code> (0=Inactive, 1=Active)<br>
+<code>BMS_RangeEstimate_km</code> (0–300, 2 bytes)<br><br>
+<strong>Task:</strong> For each signal, define the UI display states for the instrument cluster. Include: display element type (icon, bar, numeric), color coding per state, animation behavior (static, pulsing, flashing), and the ASIL classification if safety-critical. Use the FUSO eCanter's dark-background cluster aesthetic.<br><br>
+<strong>Format:</strong> One table per signal with columns: Signal Value | Display State | Color | Animation | ASIL</div></div>
+
+<h3>Example: Reviewing a Layout Against Standards</h3>
+<div class="pe pg"><div class="ph">✅ ISO Compliance Check</div><div class="pp"><strong>Role:</strong> Automotive HMI standards reviewer.<br><br>
+<strong>Context:</strong> I've designed a cluster layout where the DPF regeneration status is displayed as a small icon (8×8mm) in the lower-right corner of a 12.3-inch display. The icon changes from grey (inactive) to amber (regen in progress) to red (regen required — pull over).<br><br>
+<strong>Task:</strong> Review this placement and sizing against ISO 15005 glance-time guidelines and NHTSA recommendations. Specifically: is 8×8mm sufficient for a safety-related telltale at normal driver viewing distance (~700mm)? Should the red state use additional visual cues (animation, size change, audible)? Are there precedents from other Japanese heavy-duty OEMs (Hino Profia, Isuzu Giga) for DPF telltale placement?</div></div>
+
+<h3>Example: Generating UI Copy</h3>
+<div class="pe pg"><div class="ph">✅ Multi-Language Alert Text</div><div class="pp"><strong>Context:</strong> FUSO Super Great center display, 7-inch touchscreen. Used for non-critical driver information and settings.<br><br>
+<strong>Task:</strong> Write the on-screen text for a "Low AdBlue" warning sequence with 3 escalation levels:<br>
+1. Advisory (>500km remaining)<br>
+2. Warning (100–500km)<br>
+3. Critical (<100km, torque derestriction imminent)<br><br>
+For each level, provide: headline text (max 20 characters), body text (max 60 characters), and recommended icon description. Provide in both English and Japanese. Keep text scannable — driver will read in <1.5 seconds at highway speed.</div></div>
+
+<div class="card card-s"><span class="cl">Pattern</span>
+<p>Notice every strong prompt follows the same shape: Role → Context (with specific model names, signal names, dimensions) → Task (precise deliverable) → Format (table, JSON, list) → Constraints (standards, cognitive load, screen size). You can reuse this skeleton for any HMI design task.</p>
+</div>
+</section>
+
+<!-- ====== CH8 ====== -->
+<section class="ch" id="c8"><span class="cn">Chapter 08</span>
+<h2>Advanced Techniques</h2>
+
+<h3>Few-Shot Prompting</h3>
+<p>Include 2–3 examples of the pattern you want before giving the actual task. This is especially useful for consistent formatting across a design system.</p>
+
+<div class="pe pg"><div class="ph">✅ Few-Shot for Icon Descriptions</div><div class="pp">I need icon descriptions for our FUSO HMI design system. Here's the format:<br><br>
+<strong>Engine Oil Pressure Warning:</strong> Oil can shape, fill indicates level. Red = critical, amber = low. 24×24px minimum. ASIL B.<br>
+<strong>Parking Brake:</strong> Circle with "P" inset, red when engaged, grey when released. 20×20px minimum. ASIL A.<br><br>
+Now create entries in the same format for: Exhaust Brake Active, Differential Lock Engaged, Air Dryer Warning, and PTO (Power Take-Off) Active.</div></div>
+
+<h3>Chain-of-Thought</h3>
+<p>Ask the model to reason step by step. Useful for complex layout decisions or safety analysis.</p>
+
+<div class="pe pg"><div class="ph">✅ Chain-of-Thought for Layout</div><div class="pp">I need to fit 4 new ADAS telltales into the Super Great cluster. Available space is a 180×40px strip at the top of the display. The telltales are: Active Brake Assist, Sideguard Assist, Lane Departure Warning, and Adaptive Cruise Control.<br><br>
+Think through this step by step:<br>
+1. Calculate available space per telltale at 180×40px for 4 items<br>
+2. Consider minimum touch/glance target size per ISO 15005<br>
+3. Determine if all 4 fit, or if some should be contextual (shown only when active)<br>
+4. Propose a layout with spacing, and flag any that should be always-visible vs contextual</div></div>
+
+<h3>Prompt Chaining</h3>
+<p>Break complex tasks into a sequence. First prompt: "Extract all telltale requirements from this spec document." Second prompt: "Now group them by priority tier." Third prompt: "Now propose screen placement for each group." More reliable than asking everything at once.</p>
+</section>
+
+<!-- ====== CH9 ====== -->
+<section class="ch" id="c9"><span class="cn">Chapter 09</span>
+<h2>Context Engineering</h2>
+
+<div class="pq">The LLM is the CPU, and its context window is the RAM. Context engineering is the art of filling the context window with just the right information for the next step.<div class="pqa">— Andrej Karpathy</div></div>
+
+<p>For HMI work, this means thinking carefully about what to include in each prompt:</p>
+
+<div class="dw">
+<svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg">
+<text x="350" y="16" fill="var(--accent)" font-family="var(--mono)" font-size="10.5" font-weight="600" text-anchor="middle">CONTEXT WINDOW — Your HMI Design Session</text>
+<rect x="45" y="30" width="610" height="130" rx="10" fill="var(--df)" stroke="var(--accent)" stroke-width="1.8" stroke-dasharray="5 3"/>
+<text x="62" y="48" fill="var(--accent)" font-family="var(--mono)" font-size="8" font-weight="600">CONTEXT WINDOW (~200K tokens)</text>
+<rect x="62" y="56" width="115" height="38" rx="5" fill="var(--accent)" opacity=".08" stroke="var(--accent)" stroke-width=".8"/>
+<text x="119" y="72" fill="var(--accent)" font-family="var(--sans)" font-size="9" font-weight="600" text-anchor="middle">Role + Standards</text>
+<text x="119" y="85" fill="var(--text-muted)" font-family="var(--sans)" font-size="8" text-anchor="middle">ISO refs, ASIL level</text>
+<rect x="183" y="56" width="115" height="38" rx="5" fill="var(--a2)" opacity=".08" stroke="var(--a2)" stroke-width=".8"/>
+<text x="240" y="72" fill="var(--a2)" font-family="var(--sans)" font-size="9" font-weight="600" text-anchor="middle">Vehicle Specs</text>
+<text x="240" y="85" fill="var(--text-muted)" font-family="var(--sans)" font-size="8" text-anchor="middle">CAN signals, display size</text>
+<rect x="304" y="56" width="115" height="38" rx="5" fill="var(--a3)" opacity=".08" stroke="var(--a3)" stroke-width=".8"/>
+<text x="361" y="72" fill="var(--a3)" font-family="var(--sans)" font-size="9" font-weight="600" text-anchor="middle">Design System</text>
+<text x="361" y="85" fill="var(--text-muted)" font-family="var(--sans)" font-size="8" text-anchor="middle">Colors, fonts, spacing</text>
+<rect x="425" y="56" width="115" height="38" rx="5" fill="var(--a4)" opacity=".08" stroke="var(--a4)" stroke-width=".8"/>
+<text x="482" y="72" fill="var(--a4)" font-family="var(--sans)" font-size="9" font-weight="600" text-anchor="middle">Prior Decisions</text>
+<text x="482" y="85" fill="var(--text-muted)" font-family="var(--sans)" font-size="8" text-anchor="middle">Chat history, layout v1</text>
+<rect x="62" y="102" width="210" height="38" rx="5" fill="var(--accent)" opacity=".05" stroke="var(--accent)" stroke-width="1.2"/>
+<text x="167" y="118" fill="var(--accent)" font-family="var(--sans)" font-size="9.5" font-weight="600" text-anchor="middle">Your Current Prompt</text>
+<text x="167" y="131" fill="var(--text-muted)" font-family="var(--sans)" font-size="8" text-anchor="middle">Task, specific question, format</text>
+<rect x="284" y="102" width="260" height="38" rx="5" fill="var(--dl)" opacity=".25" stroke="var(--dl)" stroke-width=".8" stroke-dasharray="4 2"/>
+<text x="414" y="125" fill="var(--text-muted)" font-family="var(--sans)" font-size="9.5" text-anchor="middle">← Model's response space →</text>
+<text x="350" y="183" fill="var(--text-muted)" font-family="var(--sans)" font-size="9.5" text-anchor="middle">Include the right context and the model gives you useful, specific output. Leave it out, and you get generic answers.</text>
+</svg>
+</div>
+
+<p><strong>Practical tips:</strong> Paste the relevant section of a spec, not the whole 200-page PDF. Summarize long conversations before continuing. If using Claude Projects, put your design system guidelines and standard ISO references in the project's knowledge base — they'll be automatically included in every conversation.</p>
+</section>
+
+<!-- ====== CH10 ====== -->
+<section class="ch" id="c10"><span class="cn">Chapter 10</span>
+<h2>Hallucinations & Verification</h2>
+<p>LLMs generate statistically likely text — not verified truth. They can confidently cite a nonexistent ISO clause, invent a CAN signal name, or misstate an ASIL requirement. This is called <strong>hallucination</strong>, and it is an inherent property of how these models work.</p>
+
+<p>For HMI design on safety-rated vehicles, this is not optional to manage — it's critical.</p>
+
+<div class="dw">
+<svg viewBox="0 0 700 110" xmlns="http://www.w3.org/2000/svg">
+<text x="350" y="16" fill="var(--accent)" font-family="var(--mono)" font-size="10.5" font-weight="600" text-anchor="middle">VERIFICATION BY STAKES</text>
+<rect x="35" y="30" width="200" height="58" rx="8" fill="var(--a3)" opacity=".05" stroke="var(--a3)" stroke-width="1.4"/>
+<text x="135" y="48" fill="var(--a3)" font-family="var(--mono)" font-size="9" font-weight="600" text-anchor="middle">BRAINSTORMING</text>
+<text x="135" y="64" fill="var(--text)" font-family="var(--sans)" font-size="9.5" text-anchor="middle">Layout ideas, icon concepts</text>
+<text x="135" y="80" fill="var(--text-muted)" font-family="var(--sans)" font-size="9" text-anchor="middle">→ Quick review sufficient</text>
+<rect x="250" y="30" width="200" height="58" rx="8" fill="var(--a4)" opacity=".05" stroke="var(--a4)" stroke-width="1.4"/>
+<text x="350" y="48" fill="var(--a4)" font-family="var(--mono)" font-size="9" font-weight="600" text-anchor="middle">SPEC DOCUMENTS</text>
+<text x="350" y="64" fill="var(--text)" font-family="var(--sans)" font-size="9.5" text-anchor="middle">UI copy, component specs</text>
+<text x="350" y="80" fill="var(--text-muted)" font-family="var(--sans)" font-size="9" text-anchor="middle">→ Cross-check key claims</text>
+<rect x="465" y="30" width="200" height="58" rx="8" fill="var(--a5)" opacity=".05" stroke="var(--a5)" stroke-width="1.4"/>
+<text x="565" y="48" fill="var(--a5)" font-family="var(--mono)" font-size="9" font-weight="600" text-anchor="middle">SAFETY-CRITICAL</text>
+<text x="565" y="64" fill="var(--text)" font-family="var(--sans)" font-size="9.5" text-anchor="middle">ASIL ratings, ISO clauses, telltales</text>
+<text x="565" y="80" fill="var(--text-muted)" font-family="var(--sans)" font-size="9" text-anchor="middle">→ Verify every claim against source</text>
+</svg>
+</div>
+
+<p><strong>Never trust an LLM's citation of a specific ISO clause number without checking it yourself.</strong> The model may correctly describe the intent of a standard while fabricating the exact clause reference. Similarly, if it generates CAN signal names, verify them against your actual DBC file.</p>
+</section>
+
+<!-- ====== CH11 ====== -->
+<section class="ch" id="c11"><span class="cn">Chapter 11</span>
+<h2>Workflow & Checklist</h2>
+
+<div class="card card-a"><span class="cl">Before Prompting</span><p>
+<strong>1.</strong> What exactly do I need? (Layout spec? Icon set? Copy? Standards review?)<br>
+<strong>2.</strong> What context does the model need? (Vehicle model, display size, CAN signals, ISO requirements)<br>
+<strong>3.</strong> What format should the output be? (Table, JSON, prose, Figma-ready spec)<br>
+<strong>4.</strong> Is this safety-critical? (If yes, plan to verify every claim against source documents)</p></div>
+
+<div class="card card-a"><span class="cl">After Getting Output</span><p>
+<strong>1.</strong> Does this match what I asked for?<br>
+<strong>2.</strong> Are specific standards, signal names, or dimensions accurate? (Check any that matter)<br>
+<strong>3.</strong> Does the reasoning hold up?<br>
+<strong>4.</strong> What's missing that I should add in a follow-up?<br>
+<strong>5.</strong> For safety-critical items: has a qualified engineer independently verified?</p></div>
+
+<h3>Where LLMs Fit in Your HMI Workflow</h3>
+
+<p><strong>Concept phase:</strong> Brainstorm layout hierarchies, generate telltale state matrices, explore icon metaphors for unfamiliar signals (e.g., hydrogen fuel cell status for the Hino Profia Z FCV).</p>
+
+<p><strong>Specification phase:</strong> Draft component specifications from CAN signal lists, generate UI copy across escalation levels, produce design-system-consistent naming conventions.</p>
+
+<p><strong>Review phase:</strong> Ask the model to critique your design against glance-time standards, flag potential cognitive overload in your layout, or compare your approach against competitor clusters (Hino, Isuzu Giga, UD Quon).</p>
+
+<p><strong>Documentation:</strong> Generate design rationale documents, write handoff specs for developers, produce test case descriptions for HMI validation against ASIL B requirements.</p>
+
+<div class="pq">The people who get the most out of these tools tend to be the ones who already think clearly about what they need. The LLM handles the throughput; you handle the judgment.</div>
+
+</section>
+</main>
+</div>
+
+<!-- Mobile nav -->
+<div class="mob-nav" id="mobnav">
+<button class="mob-btn" id="mobbtn"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><polyline points="6 9 12 15 18 9"/></svg>Contents</button>
+<div class="mob-panel" id="mobpanel">
+<a href="#c1" class="mob-link"><span class="mob-num">01</span>What Is an LLM?</a>
+<a href="#c2" class="mob-link"><span class="mob-num">02</span>How We Got Here</a>
+<a href="#c3" class="mob-link"><span class="mob-num">03</span>How LLMs Work</a>
+<a href="#c4" class="mob-link"><span class="mob-num">04</span>Attention Mechanism</a>
+<a href="#c5" class="mob-link"><span class="mob-num">05</span>Training Pipeline</a>
+<a href="#c6" class="mob-link"><span class="mob-num">06</span>Models Today</a>
+<a href="#c7" class="mob-link"><span class="mob-num">07</span>Prompting for HMI</a>
+<a href="#c8" class="mob-link"><span class="mob-num">08</span>Advanced Techniques</a>
+<a href="#c9" class="mob-link"><span class="mob-num">09</span>Context Engineering</a>
+<a href="#c10" class="mob-link"><span class="mob-num">10</span>Hallucinations</a>
+<a href="#c11" class="mob-link"><span class="mob-num">11</span>Workflow & Checklist</a>
+</div></div>
+
+<footer class="footer">
+<p>Compiled March 2026 · Contextualized for FUSO / Japanese heavy-duty truck HMI design.</p>
+<p style="margin-top:.4rem;opacity:.5">Based on research from Anthropic, OpenAI, ISO, Daimler Truck, MFTBC, and practitioner sources. Verify all standards references.</p>
+</footer>
+
+<button class="toggle" id="t" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<script>
+(function(){
+  var t=document.getElementById('t'),h=document.documentElement;
+  t.addEventListener('click',function(){h.getAttribute('data-theme')==='light'?h.removeAttribute('data-theme'):h.setAttribute('data-theme','light')});
+
+  var btn=document.getElementById('mobbtn'),panel=document.getElementById('mobpanel');
+  btn.addEventListener('click',function(e){e.stopPropagation();var o=panel.classList.toggle('open');btn.classList.toggle('open',o)});
+  panel.addEventListener('click',function(e){if(e.target.closest('.mob-link')){panel.classList.remove('open');btn.classList.remove('open')}});
+  document.addEventListener('click',function(){panel.classList.remove('open');btn.classList.remove('open')});
+
+  var secs=document.querySelectorAll('.ch[id]'),links=document.querySelectorAll('.side-link');
+  if(secs.length&&links.length){
+    var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){var id=e.target.getAttribute('id');links.forEach(function(l){l.classList.toggle('active',l.getAttribute('href')==='#'+id)})}})},{rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){obs.observe(s)});
+  }
+})();
+</script>
+</body>
+</html>

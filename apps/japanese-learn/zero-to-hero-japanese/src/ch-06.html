@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ch06: Counters — The Shape of Counting — Zero to Hero 日本語</title>
+<link rel="stylesheet" href="css/design-system.css">
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <span class="logo-badge">Zero to Hero — Memory Architecture Edition</span>
+    <div class="logo-title">日本語 for Korean Speakers</div>
+    <div class="logo-sub">From 한국어 to 日本語 — The Memory Architect's Guide</div>
+  </a>
+  <div class="sidebar-progress">
+    <div class="sidebar-progress-label">Progress</div>
+    <div class="sidebar-progress-bar">
+      <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+    </div>
+    <div class="sidebar-progress-count">0/22 complete</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="ch-00.html" class="toc-link"><span class="toc-num">00</span><span class="toc-check" data-ch="00"></span>Memory Science</a>
+    <a href="ch-01.html" class="toc-link"><span class="toc-num">01</span><span class="toc-check" data-ch="01"></span>Your Korean Advantage</a>
+    <a href="ch-02.html" class="toc-link"><span class="toc-num">02</span><span class="toc-check" data-ch="02"></span>Hiragana</a>
+    <a href="ch-03.html" class="toc-link"><span class="toc-num">03</span><span class="toc-check" data-ch="03"></span>Katakana</a>
+    <a href="ch-04.html" class="toc-link"><span class="toc-num">04</span><span class="toc-check" data-ch="04"></span>Pronunciation</a>
+    <a href="ch-05.html" class="toc-link"><span class="toc-num">05</span><span class="toc-check" data-ch="05"></span>Survival Japanese</a>
+    <a href="ch-06.html" class="toc-link active"><span class="toc-num">06</span><span class="toc-check" data-ch="06"></span>Counters</a>
+    <a href="ch-07.html" class="toc-link"><span class="toc-num">07</span><span class="toc-check" data-ch="07"></span>Particles</a>
+    <a href="ch-08.html" class="toc-link"><span class="toc-num">08</span><span class="toc-check" data-ch="08"></span>Verb Conjugation</a>
+    <a href="ch-09.html" class="toc-link"><span class="toc-num">09</span><span class="toc-check" data-ch="09"></span>Daily Conversations</a>
+    <a href="ch-10.html" class="toc-link"><span class="toc-num">10</span><span class="toc-check" data-ch="10"></span>Sentence Patterns</a>
+    <a href="ch-11.html" class="toc-link"><span class="toc-num">11</span><span class="toc-check" data-ch="11"></span>Kanji</a>
+    <a href="ch-12.html" class="toc-link"><span class="toc-num">12</span><span class="toc-check" data-ch="12"></span>Sino-Vocabulary</a>
+    <a href="ch-13.html" class="toc-link"><span class="toc-num">13</span><span class="toc-check" data-ch="13"></span>Native Vocabulary</a>
+    <a href="ch-14.html" class="toc-link"><span class="toc-num">14</span><span class="toc-check" data-ch="14"></span>Honorifics</a>
+    <a href="ch-15.html" class="toc-link"><span class="toc-num">15</span><span class="toc-check" data-ch="15"></span>Reading</a>
+    <a href="ch-16.html" class="toc-link"><span class="toc-num">16</span><span class="toc-check" data-ch="16"></span>Writing</a>
+    <a href="ch-17.html" class="toc-link"><span class="toc-num">17</span><span class="toc-check" data-ch="17"></span>Listening</a>
+    <a href="ch-18.html" class="toc-link"><span class="toc-num">18</span><span class="toc-check" data-ch="18"></span>Cultural Pragmatics</a>
+    <a href="ch-19.html" class="toc-link"><span class="toc-num">19</span><span class="toc-check" data-ch="19"></span>JLPT and Beyond</a>
+    <a href="ch-20.html" class="toc-link"><span class="toc-num">20</span><span class="toc-check" data-ch="20"></span>Memory Palace</a>
+    <a href="ch-21.html" class="toc-link"><span class="toc-num">21</span><span class="toc-check" data-ch="21"></span>The 90-Day Sprint</a>
+    <a href="appendices.html" class="toc-link" style="margin-top:.5rem;border-top:1px solid var(--border);padding-top:.8rem"><span class="toc-num">+</span>Appendices</a>
+  </nav>
+</aside>
+
+<div class="main">
+<div class="content-wrap">
+
+<section id="ch06" data-ch="06" style="padding-top:3rem">
+<h2><span class="ch-label">Chapter 06</span>Counters -- The Shape of Counting (助数詞)</h2>
+
+<div class="callout memory">
+  <div class="callout-title">Memory Technique Spotlight: Chunking + Phonetic Association</div>
+  <p>Japanese counters seem overwhelming -- dozens of counters, each with irregular sound changes at specific numbers. The key is <strong>chunking by pattern</strong>. All h-row counters (本, 匹, 杯) follow the EXACT same sound-change rules. Learn the pattern once, apply it to all three. Then create <strong>phonetic association chains</strong>: "ippon" sounds like "I PAWN one bone" -- vivid mental images lock each reading into long-term memory faster than rote repetition.</p>
+  <p style="margin-top:.5rem">Research shows chunking reduces cognitive load by ~80% (Miller, 1956). Instead of memorizing 120+ individual readings, you learn 3 patterns and apply them systematically.</p>
+</div>
+
+<div class="callout info">
+  <div class="callout-title">Palace Assignment: The Kitchen (부엌)</div>
+  <p>Your kitchen becomes the home of all counters. Assign each counter to a specific kitchen location:</p>
+  <ul style="margin:.5rem 0 0;padding-left:1.2rem">
+    <li><span class="jp">つ</span> on the <strong>counter</strong> (countertop = counter!) -- your universal safety net sits right where you work</li>
+    <li><span class="jp">個</span> in the <strong>egg carton</strong> -- eggs are small, round objects you count with 個</li>
+    <li><span class="jp">人</span> at the <strong>dinner table</strong> -- people sit here, count seats for guests</li>
+    <li><span class="jp">匹</span> near the <strong>pet food bowl</strong> -- animals come here to eat</li>
+    <li><span class="jp">本</span> by the <strong>knife block</strong> -- knives are long, thin objects standing upright</li>
+    <li><span class="jp">杯</span> at the <strong>coffee machine</strong> -- cups and glasses of liquid brewed here</li>
+    <li><span class="jp">枚</span> on the <strong>cutting board</strong> -- flat sliced things laid out flat</li>
+    <li><span class="jp">台</span> by the <strong>microwave</strong> -- machines and appliances counted here</li>
+    <li><span class="jp">冊</span> on the <strong>cookbook shelf</strong> -- books and volumes stored here</li>
+    <li><span class="jp">足</span> at the <strong>kitchen doormat</strong> -- shoes and slippers left at the entrance</li>
+    <li><span class="jp">階</span> on the <strong>step stool</strong> -- climbing floors, going up levels</li>
+    <li><span class="jp">回</span> on the <strong>kitchen timer</strong> -- counting times and repetitions</li>
+  </ul>
+</div>
+
+<p>In Chapter 05, you learned to say <span class="jp">二人です</span> (table for two) and <span class="jp">ビール二杯お願いします</span> (two beers, please). You were already using <strong>counters</strong>. This chapter gives you the complete system -- every major counter, every sound change, every conjugation from 1 to 10.</p>
+
+<div class="pq">
+  "Korean speakers already use counters every day. You never say '사과 셋' -- you say '사과 세 개.' Japanese works exactly the same way. This chapter isn't learning a new concept -- it's translating a system you already own into a new language."
+</div>
+
+<!-- ─── RECALL CHECK ─── -->
+<div id="recall-check-top"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     6A: INTRODUCTION — WHY COUNTERS EXIST
+     ═══════════════════════════════════════════════════════════════ -->
+<nav class="chapter-toc">
+  <details open>
+    <summary class="chapter-toc-title">In This Chapter</summary>
+  <ol>
+    <li><a href="#6a-introduction----why-counters-exist">Introduction -- Why Counters Exist</a></li>
+    <li><a href="#6b-the-native-つ-system----your-universal-safety-net">The Native つ System -- Your Universal Safety Net</a></li>
+    <li><a href="#6c-people-counter-人----complete-chart">People Counter 人 -- Complete Chart</a></li>
+    <li><a href="#6d-small-objects-個-ko----complete-chart">Small Objects 個 (ko) -- Complete Chart</a></li>
+    <li><a href="#6e-long-and-thin-objects-本-hon----complete-chart">Long & Thin Objects 本 (hon) -- Complete Chart</a></li>
+    <li><a href="#6f-flat-things-枚-mai----complete-chart">Flat Things 枚 (mai) -- Complete Chart</a></li>
+    <li><a href="#6g-animals----small-匹-hiki-large-頭-tou">Animals -- Small 匹 (hiki) + Large 頭 (tou)</a></li>
+    <li><a href="#6h-drinks-and-cups-杯-hai----complete-chart">Drinks & Cups 杯 (hai) -- Complete Chart</a></li>
+    <li><a href="#6i-machines-and-vehicles-台-dai----complete-chart">Machines & Vehicles 台 (dai) -- Complete Chart</a></li>
+    <li><a href="#6j-books-and-volumes-冊-satsu----complete-chart">Books & Volumes 冊 (satsu) -- Complete Chart</a></li>
+    <li><a href="#6k-more-essential-counters">More Essential Counters</a></li>
+    <li><a href="#6l-the-sound-change-master-chart">The Sound Change Master Chart</a></li>
+    <li><a href="#6m-counter-question-words----how-many">Counter Question Words -- How Many?</a></li>
+    <li><a href="#6n-word-order----where-counters-go-in-a-sentence">Word Order -- Where Counters Go in a Sentence</a></li>
+    <li><a href="#6o-korean-japanese-counter-parallel-map">Korean-Japanese Counter Parallel Map</a></li>
+    <li><a href="#6p-counters-in-real-life----survival-situations">Counters in Real Life -- Survival Situations</a></li>
+    <li><a href="#interactive-exercises">Interactive Exercises</a></li>
+  </ol>
+  </details>
+</nav>
+
+<h3 id="6a-introduction----why-counters-exist">Introduction -- Why Counters Exist</h3>
+
+<p>In English, you can say "three cats" or "five books" -- just number + noun. But in Japanese (and Korean, and Chinese), you need a <strong>counter word</strong> (助数詞, <span class="kr">조수사</span>) between the number and the thing. The counter classifies the <em>shape, size, or type</em> of what you're counting.</p>
+
+<p>Think of it this way: English actually has counters too, just fewer of them. You say "two <strong>sheets</strong> of paper," "three <strong>head</strong> of cattle," "a <strong>pair</strong> of shoes." Japanese (and Korean) simply have more of these classifiers and use them consistently.</p>
+
+<div class="callout ok">
+  <div class="callout-title">Your Korean Advantage</div>
+  <p>Korean has an almost identical counter system. You already know:</p>
+  <ul style="margin:.5rem 0 0;padding-left:1.2rem">
+    <li><span class="kr">개</span> -- general objects (사과 세 <strong>개</strong>)</li>
+    <li><span class="kr">명</span> -- people (학생 다섯 <strong>명</strong>)</li>
+    <li><span class="kr">마리</span> -- animals (고양이 두 <strong>마리</strong>)</li>
+    <li><span class="kr">잔</span> -- cups/glasses (커피 한 <strong>잔</strong>)</li>
+    <li><span class="kr">병</span> -- bottles (맥주 세 <strong>병</strong>)</li>
+    <li><span class="kr">장</span> -- flat things (종이 열 <strong>장</strong>)</li>
+    <li><span class="kr">권</span> -- books (책 두 <strong>권</strong>)</li>
+    <li><span class="kr">대</span> -- machines/vehicles (차 한 <strong>대</strong>)</li>
+  </ul>
+  <p style="margin-top:.5rem">The SYSTEM is identical. You just need to learn which Japanese counter maps to which Korean counter. Many are even <strong>cognates</strong> -- same Chinese character, similar pronunciation.</p>
+</div>
+
+<div class="card-row">
+  <div class="card">
+    <h4>Korean System</h4>
+    <p><span class="kr">사과</span> + <span class="kr">세</span> + <span class="kr">개</span></p>
+    <p style="font-size:.82rem;color:var(--text-muted)">apple + three + [counter]</p>
+  </div>
+  <div class="card">
+    <h4>Japanese System</h4>
+    <p><span class="jp">りんご</span> + <span class="jp">三つ</span></p>
+    <p style="font-size:.82rem;color:var(--text-muted)">apple + three-[counter]</p>
+  </div>
+</div>
+
+<div class="callout warn">
+  <div class="callout-title">The Big Difference: Sound Changes</div>
+  <p>Korean counters attach cleanly: 한 개, 두 개, 세 개 -- the counter <span class="kr">개</span> never changes form. In Japanese, many counters <strong>change pronunciation</strong> depending on which number precedes them. For example, <span class="jp">本</span> (hon) becomes <strong>ippon</strong> at 1, <strong>sanbon</strong> at 3, and <strong>roppon</strong> at 6. This is the main challenge -- and this chapter gives you every single change, charted and patterned.</p>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     6B: THE NATIVE つ SYSTEM
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="6b-the-native-つ-system----your-universal-safety-net">The Native つ System -- Your Universal Safety Net</h3>
+
+<p>The native Japanese counting system (<span class="jp">ひとつ、ふたつ、みっつ...</span>) works for almost anything up to 10. It's like using <span class="kr">개</span> for everything in Korean -- not always elegant, but always understood. <strong>Learn this first</strong> as your safety net.</p>
+
+<div class="callout info">
+  <div class="callout-title">When to Use つ</div>
+  <p>Use つ when you don't know the specific counter, in casual speech, or for general objects. At stores, <span class="jp">三つください</span> (mittsu kudasai, "three, please") is perfectly natural. Staff will understand even if there's a more specific counter.</p>
+</div>
+
+<table>
+  <thead>
+    <tr><th>#</th><th>Japanese</th><th>Reading</th><th>Mnemonic</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td class="jp">一つ</td><td>hitotsu</td><td>"He <strong>TOTES</strong> one" -- carrying one thing</td></tr>
+    <tr><td>2</td><td class="jp">二つ</td><td>futatsu</td><td>"Two <strong>FOOTSIES</strong>" -- two feet side by side</td></tr>
+    <tr><td>3</td><td class="jp">三つ</td><td>mittsu</td><td>"Three <strong>MITTS</strong>" -- three baseball gloves</td></tr>
+    <tr><td>4</td><td class="jp">四つ</td><td>yottsu</td><td>"Four <strong>YACHTS</strong>" -- four boats in a row</td></tr>
+    <tr><td>5</td><td class="jp">五つ</td><td>itsutsu</td><td>"Five <strong>ITSY</strong> things" -- tiny handful</td></tr>
+    <tr><td>6</td><td class="jp">六つ</td><td>muttsu</td><td>"Six <strong>MUTTS</strong>" -- six scruffy dogs</td></tr>
+    <tr><td>7</td><td class="jp">七つ</td><td>nanatsu</td><td>"Seven <strong>NANAS</strong>" -- seven grandmothers</td></tr>
+    <tr><td>8</td><td class="jp">八つ</td><td>yattsu</td><td>"Eight <strong>YACHTS</strong>" -- a whole marina</td></tr>
+    <tr><td>9</td><td class="jp">九つ</td><td>kokonotsu</td><td>"Nine <strong>COCONUTS</strong>" -- stacked coconut tower</td></tr>
+    <tr><td>10</td><td class="jp">十</td><td>too</td><td>"<strong>TOE</strong> count -- all TEN toes"</td></tr>
+    <tr style="border-top:2px solid var(--accent)"><td>?</td><td class="jp">いくつ</td><td>ikutsu</td><td>"How many?" -- <span class="kr">몇 개?</span></td></tr>
+  </tbody>
+</table>
+
+<div class="callout warn">
+  <div class="callout-title">Important: つ Only Works 1-10</div>
+  <p>The native つ system only goes up to 10. For numbers above 10, you MUST use a specific counter (個, 本, 枚, etc.) with Sino-Japanese numbers. At 11+, there is no "safety net" -- you need to know the right counter.</p>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     6C: PEOPLE COUNTER 人
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="6c-people-counter-人----complete-chart">People Counter <span class="jp">人</span> -- Complete Chart</h3>
+
+<p>Counting people is essential -- restaurants, tickets, groups. The people counter has <strong>two irregular forms</strong> at 1 and 2 that use native Japanese readings (just like Korean uses <span class="kr">한 명</span> and <span class="kr">두 명</span> with native numbers). From 3 onward, it's regular Sino-Japanese + <span class="jp">にん</span>.</p>
+
+<table>
+  <thead>
+    <tr><th>#</th><th>Japanese</th><th>Reading</th><th>Korean</th><th>Notes</th></tr>
+  </thead>
+  <tbody>
+    <tr style="background:var(--accent-faint)"><td>1</td><td class="jp">一人</td><td><strong>hitori</strong></td><td class="kr">한 명</td><td>Special! Native reading (like Korean 한)</td></tr>
+    <tr style="background:var(--accent-faint)"><td>2</td><td class="jp">二人</td><td><strong>futari</strong></td><td class="kr">두 명</td><td>Special! Native reading (like Korean 두)</td></tr>
+    <tr><td>3</td><td class="jp">三人</td><td>sannin</td><td class="kr">세 명</td><td>Regular from here</td></tr>
+    <tr><td>4</td><td class="jp">四人</td><td>yonin</td><td class="kr">네 명</td><td>Uses よ (yon), not し (shi)</td></tr>
+    <tr><td>5</td><td class="jp">五人</td><td>gonin</td><td class="kr">다섯 명</td><td></td></tr>
+    <tr><td>6</td><td class="jp">六人</td><td>rokunin</td><td class="kr">여섯 명</td><td></td></tr>
+    <tr><td>7</td><td class="jp">七人</td><td>shichinin / nananin</td><td class="kr">일곱 명</td><td>Both readings OK</td></tr>
+    <tr><td>8</td><td class="jp">八人</td><td>hachinin</td><td class="kr">여덟 명</td><td></td></tr>
+    <tr><td>9</td><td class="jp">九人</td><td>kyuunin / kunin</td><td class="kr">아홉 명</td><td>Both readings OK</td></tr>
+    <tr><td>10</td><td class="jp">十人</td><td>juunin</td><td class="kr">열 명</td><td></td></tr>
+    <tr style="border-top:2px solid var(--accent)"><td>?</td><td class="jp">何人</td><td>nannin</td><td class="kr">몇 명</td><td>"How many people?"</td></tr>
+  </tbody>
+</table>
+
+<div class="callout ok">
+  <div class="callout-title">Korean Parallel: Native Numbers for 1-2</div>
+  <p>Notice how both languages use native number readings for 1 and 2 people: Korean uses <span class="kr">한/두</span> (native) rather than <span class="kr">일/이</span> (Sino), and Japanese uses <span class="jp">hitori/futari</span> (native) rather than *ichinin/*ninin. The pattern is the same -- irregular at the small numbers, regular from 3 up.</p>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     6D: SMALL OBJECTS 個
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="6d-small-objects-個-ko----complete-chart">Small Objects <span class="jp">個</span> (ko) -- Complete Chart</h3>
+
+<p>The <span class="jp">個</span> counter is for small, discrete, often roundish objects -- eggs, apples, balls, boxes. Korean cognate: <span class="kr">個 = 개</span>. <span class="cognate-tag">Cognate</span> Same kanji, same concept!</p>
+
+<div class="callout info">
+  <div class="callout-title">Sound Change Pattern: k-doubling</div>
+  <p>When the preceding number ends in a clipped consonant (1, 6, 8, 10), the k doubles: ko becomes <strong>kko</strong>. Think of it as the consonant "bumping" into the k and doubling it.</p>
+</div>
+
+<table>
+  <thead>
+    <tr><th>#</th><th>Japanese</th><th>Reading</th><th>Sound Change</th></tr>
+  </thead>
+  <tbody>
+    <tr style="background:var(--accent-faint)"><td>1</td><td class="jp">一個</td><td><strong>ikko</strong></td><td>k &rarr; kk</td></tr>
+    <tr><td>2</td><td class="jp">二個</td><td>niko</td><td>--</td></tr>
+    <tr><td>3</td><td class="jp">三個</td><td>sanko</td><td>--</td></tr>
+    <tr><td>4</td><td class="jp">四個</td><td>yonko</td><td>--</td></tr>
+    <tr><td>5</td><td class="jp">五個</td><td>goko</td><td>--</td></tr>
+    <tr style="background:var(--accent-faint)"><td>6</td><td class="jp">六個</td><td><strong>rokko</strong></td><td>k &rarr; kk</td></tr>
+    <tr><td>7</td><td class="jp">七個</td><td>nanako</td><td>--</td></tr>
+    <tr style="background:var(--accent-faint)"><td>8</td><td class="jp">八個</td><td><strong>hakko</strong> / hachiko</td><td>k &rarr; kk</td></tr>
+    <tr><td>9</td><td class="jp">九個</td><td>kyuuko</td><td>--</td></tr>
+    <tr style="background:var(--accent-faint)"><td>10</td><td class="jp">十個</td><td><strong>jukko</strong> / jikko</td><td>k &rarr; kk</td></tr>
+    <tr style="border-top:2px solid var(--accent)"><td>?</td><td class="jp">何個</td><td>nanko</td><td>--</td></tr>
+  </tbody>
+</table>
+
+<p>Examples: <span class="jp">卵三個</span> (tamago sanko, 3 eggs), <span class="jp">りんご五個</span> (ringo goko, 5 apples), <span class="jp">おにぎり一個</span> (onigiri ikko, 1 rice ball).</p>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     6E: LONG & THIN OBJECTS 本
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="6e-long-and-thin-objects-本-hon----complete-chart">Long &amp; Thin Objects <span class="jp">本</span> (hon) -- Complete Chart</h3>
+
+<p>The <span class="jp">本</span> counter is for anything long and cylindrical: bottles, pens, umbrellas, trees, roads, bananas, films, telephone calls. Think "long like a <strong>BONE</strong>." Korean parallels: <span class="kr">병</span> (bottles), <span class="kr">자루</span> (pens).</p>
+
+<div class="callout warn">
+  <div class="callout-title">The h-Row Sound Change Pattern</div>
+  <p>This is the MOST IMPORTANT sound change pattern in Japanese counters. When h meets certain numbers:</p>
+  <ul style="margin:.5rem 0 0;padding-left:1.2rem">
+    <li><strong>h &rarr; p</strong> at 1, 6, 8, 10 (doubles: ippon, roppon, happon, juppon)</li>
+    <li><strong>h &rarr; b</strong> at 3 and ? (sanbOn, nanbOn)</li>
+  </ul>
+  <p style="margin-top:.5rem">This SAME pattern applies to ALL h-row counters: 本, 匹, 杯. Learn it once, use it three times.</p>
+</div>
+
+<table>
+  <thead>
+    <tr><th>#</th><th>Japanese</th><th>Reading</th><th>Sound Change</th></tr>
+  </thead>
+  <tbody>
+    <tr style="background:var(--accent-faint)"><td>1</td><td class="jp">一本</td><td><strong>ippon</strong></td><td>h &rarr; p (doubled)</td></tr>
+    <tr><td>2</td><td class="jp">二本</td><td>nihon</td><td>--</td></tr>
+    <tr style="background:var(--accent-faint)"><td>3</td><td class="jp">三本</td><td><strong>sanbon</strong></td><td>h &rarr; b</td></tr>
+    <tr><td>4</td><td class="jp">四本</td><td>yonhon</td><td>--</td></tr>
+    <tr><td>5</td><td class="jp">五本</td><td>gohon</td><td>--</td></tr>
+    <tr style="background:var(--accent-faint)"><td>6</td><td class="jp">六本</td><td><strong>roppon</strong></td><td>h &rarr; p (doubled)</td></tr>
+    <tr><td>7</td><td class="jp">七本</td><td>nanahon</td><td>--</td></tr>
+    <tr style="background:var(--accent-faint)"><td>8</td><td class="jp">八本</td><td><strong>happon</strong></td><td>h &rarr; p (doubled)</td></tr>
+    <tr><td>9</td><td class="jp">九本</td><td>kyuuhon</td><td>--</td></tr>
+    <tr style="background:var(--accent-faint)"><td>10</td><td class="jp">十本</td><td><strong>juppon</strong> / jippon</td><td>h &rarr; p (doubled)</td></tr>
+    <tr style="border-top:2px solid var(--accent);background:var(--accent-faint)"><td>?</td><td class="jp">何本</td><td><strong>nanbon</strong></td><td>h &rarr; b</td></tr>
+  </tbody>
+</table>
+
+<p>Examples: <span class="jp">ペン三本</span> (pen sanbon, 3 pens), <span class="jp">ビール一本</span> (biiru ippon, 1 bottle of beer), <span class="jp">傘二本</span> (kasa nihon, 2 umbrellas), <span class="jp">バナナ六本</span> (banana roppon, 6 bananas), <span class="jp">映画一本</span> (eiga ippon, 1 film).</p>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     6F: FLAT THINGS 枚
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="6f-flat-things-枚-mai----complete-chart">Flat Things <span class="jp">枚</span> (mai) -- Complete Chart</h3>
+
+<p>The <span class="jp">枚</span> counter is for flat, thin objects: paper, tickets, plates, photos, shirts, CDs, slices. Think "<strong>MY</strong> flat thing." Korean parallel: <span class="kr">장</span>.</p>
+
+<div class="callout ok">
+  <div class="callout-title">Great News: NO Sound Changes!</div>
+  <p><span class="jp">枚</span> is the <strong>easiest</strong> counter. The reading <em>mai</em> never changes -- just attach it to the regular Sino-Japanese number. This is your stress-free counter to build confidence.</p>
+</div>
+
+<table>
+  <thead>
+    <tr><th>#</th><th>Japanese</th><th>Reading</th><th>Sound Change</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td class="jp">一枚</td><td>ichimai</td><td>--</td></tr>
+    <tr><td>2</td><td class="jp">二枚</td><td>nimai</td><td>--</td></tr>
+    <tr><td>3</td><td class="jp">三枚</td><td>sanmai</td><td>--</td></tr>
+    <tr><td>4</td><td class="jp">四枚</td><td>yonmai</td><td>--</td></tr>
+    <tr><td>5</td><td class="jp">五枚</td><td>gomai</td><td>--</td></tr>
+    <tr><td>6</td><td class="jp">六枚</td><td>rokumai</td><td>--</td></tr>
+    <tr><td>7</td><td class="jp">七枚</td><td>nanamai</td><td>--</td></tr>
+    <tr><td>8</td><td class="jp">八枚</td><td>hachimai</td><td>--</td></tr>
+    <tr><td>9</td><td class="jp">九枚</td><td>kyuumai</td><td>--</td></tr>
+    <tr><td>10</td><td class="jp">十枚</td><td>juumai</td><td>--</td></tr>
+    <tr style="border-top:2px solid var(--accent)"><td>?</td><td class="jp">何枚</td><td>nanmai</td><td>--</td></tr>
+  </tbody>
+</table>
+
+<p>Examples: <span class="jp">切符二枚</span> (kippu nimai, 2 tickets), <span class="jp">写真五枚</span> (shashin gomai, 5 photos), <span class="jp">シャツ三枚</span> (shatsu sanmai, 3 shirts), <span class="jp">紙十枚</span> (kami juumai, 10 sheets of paper), <span class="jp">CD一枚</span> (shiidii ichimai, 1 CD).</p>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     6G: ANIMALS — SMALL 匹 + LARGE 頭
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="6g-animals----small-匹-hiki-large-頭-tou">Animals -- Small <span class="jp">匹</span> (hiki) + Large <span class="jp">頭</span> (tou)</h3>
+
+<p>Korean uses <span class="kr">마리</span> for ALL animals. Japanese distinguishes by size: <span class="jp">匹</span> (hiki) for small/medium animals (cats, dogs, fish, insects) and <span class="jp">頭</span> (tou) for large animals (horses, cows, elephants, whales).</p>
+
+<h4>Small/Medium Animals: <span class="jp">匹</span> (hiki)</h4>
+
+<p><span class="jp">匹</span> follows the <strong>same h-row pattern</strong> as <span class="jp">本</span>: h &rarr; p at 1, 6, 8, 10 and h &rarr; b at 3 and ?.</p>
+
+<table>
+  <thead>
+    <tr><th>#</th><th>Japanese</th><th>Reading</th><th>Sound Change</th></tr>
+  </thead>
+  <tbody>
+    <tr style="background:var(--accent-faint)"><td>1</td><td class="jp">一匹</td><td><strong>ippiki</strong></td><td>h &rarr; p (doubled)</td></tr>
+    <tr><td>2</td><td class="jp">二匹</td><td>nihiki</td><td>--</td></tr>
+    <tr style="background:var(--accent-faint)"><td>3</td><td class="jp">三匹</td><td><strong>sanbiki</strong></td><td>h &rarr; b</td></tr>
+    <tr><td>4</td><td class="jp">四匹</td><td>yonhiki</td><td>--</td></tr>
+    <tr><td>5</td><td class="jp">五匹</td><td>gohiki</td><td>--</td></tr>
+    <tr style="background:var(--accent-faint)"><td>6</td><td class="jp">六匹</td><td><strong>roppiki</strong></td><td>h &rarr; p (doubled)</td></tr>
+    <tr><td>7</td><td class="jp">七匹</td><td>nanahiki</td><td>--</td></tr>
+    <tr style="background:var(--accent-faint)"><td>8</td><td class="jp">八匹</td><td><strong>happiki</strong></td><td>h &rarr; p (doubled)</td></tr>
+    <tr><td>9</td><td class="jp">九匹</td><td>kyuuhiki</td><td>--</td></tr>
+    <tr style="background:var(--accent-faint)"><td>10</td><td class="jp">十匹</td><td><strong>juppiki</strong> / jippiki</td><td>h &rarr; p (doubled)</td></tr>
+    <tr style="border-top:2px solid var(--accent);background:var(--accent-faint)"><td>?</td><td class="jp">何匹</td><td><strong>nanbiki</strong></td><td>h &rarr; b</td></tr>
+  </tbody>
+</table>
+
+<p>Examples: <span class="jp">猫一匹</span> (neko ippiki, 1 cat), <span class="jp">犬三匹</span> (inu sanbiki, 3 dogs), <span class="jp">魚六匹</span> (sakana roppiki, 6 fish).</p>
+
+<h4>Large Animals: <span class="jp">頭</span> (tou)</h4>
+
+<p>Used for large animals: horses, cows, elephants, whales, gorillas. Sound changes are minimal -- mostly doubling at 1 and 8.</p>
+
+<table>
+  <thead>
+    <tr><th>#</th><th>Japanese</th><th>Reading</th><th>Sound Change</th></tr>
+  </thead>
+  <tbody>
+    <tr style="background:var(--accent-faint)"><td>1</td><td class="jp">一頭</td><td><strong>ittou</strong></td><td>t doubled</td></tr>
+    <tr><td>2</td><td class="jp">二頭</td><td>nitou</td><td>--</td></tr>
+    <tr><td>3</td><td class="jp">三頭</td><td>santou</td><td>--</td></tr>
+    <tr><td>4</td><td class="jp">四頭</td><td>yontou</td><td>--</td></tr>
+    <tr><td>5</td><td class="jp">五頭</td><td>gotou</td><td>--</td></tr>
+    <tr><td>6</td><td class="jp">六頭</td><td>rokutou</td><td>--</td></tr>
+    <tr><td>7</td><td class="jp">七頭</td><td>nanatou</td><td>--</td></tr>
+    <tr style="background:var(--accent-faint)"><td>8</td><td class="jp">八頭</td><td><strong>hattou</strong></td><td>t doubled</td></tr>
+    <tr><td>9</td><td class="jp">九頭</td><td>kyuutou</td><td>--</td></tr>
+    <tr><td>10</td><td class="jp">十頭</td><td>juttou</td><td>--</td></tr>
+    <tr style="border-top:2px solid var(--accent)"><td>?</td><td class="jp">何頭</td><td>nantou</td><td>--</td></tr>
+  </tbody>
+</table>
+
+<p>Examples: <span class="jp">馬一頭</span> (uma ittou, 1 horse), <span class="jp">牛三頭</span> (ushi santou, 3 cows), <span class="jp">象二頭</span> (zou nitou, 2 elephants).</p>
+
+<div class="callout info">
+  <div class="callout-title">Which Animals Use Which Counter?</div>
+  <p><span class="jp">匹</span>: cats, dogs, fish, insects, mice, rabbits, birds (small/medium)<br>
+  <span class="jp">頭</span>: horses, cows, elephants, whales, gorillas, bears (large)<br>
+  The dividing line is roughly "can you carry it?" If yes &rarr; 匹. If no &rarr; 頭.</p>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     6H: DRINKS & CUPS 杯
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="6h-drinks-and-cups-杯-hai----complete-chart">Drinks &amp; Cups <span class="jp">杯</span> (hai) -- Complete Chart</h3>
+
+<p>The <span class="jp">杯</span> counter is for cups, glasses, and bowls of liquid: coffee, beer, ramen, rice bowls. Korean parallel: <span class="kr">잔</span>. Cognate: <span class="jp">杯</span> = <span class="kr">배</span>. <span class="cognate-tag">Cognate</span></p>
+
+<p>Same h-row sound change pattern as <span class="jp">本</span> and <span class="jp">匹</span>.</p>
+
+<table>
+  <thead>
+    <tr><th>#</th><th>Japanese</th><th>Reading</th><th>Sound Change</th></tr>
+  </thead>
+  <tbody>
+    <tr style="background:var(--accent-faint)"><td>1</td><td class="jp">一杯</td><td><strong>ippai</strong></td><td>h &rarr; p (doubled)</td></tr>
+    <tr><td>2</td><td class="jp">二杯</td><td>nihai</td><td>--</td></tr>
+    <tr style="background:var(--accent-faint)"><td>3</td><td class="jp">三杯</td><td><strong>sanbai</strong></td><td>h &rarr; b</td></tr>
+    <tr><td>4</td><td class="jp">四杯</td><td>yonhai</td><td>--</td></tr>
+    <tr><td>5</td><td class="jp">五杯</td><td>gohai</td><td>--</td></tr>
+    <tr style="background:var(--accent-faint)"><td>6</td><td class="jp">六杯</td><td><strong>roppai</strong></td><td>h &rarr; p (doubled)</td></tr>
+    <tr><td>7</td><td class="jp">七杯</td><td>nanahai</td><td>--</td></tr>
+    <tr style="background:var(--accent-faint)"><td>8</td><td class="jp">八杯</td><td><strong>happai</strong></td><td>h &rarr; p (doubled)</td></tr>
+    <tr><td>9</td><td class="jp">九杯</td><td>kyuuhai</td><td>--</td></tr>
+    <tr style="background:var(--accent-faint)"><td>10</td><td class="jp">十杯</td><td><strong>juppai</strong></td><td>h &rarr; p (doubled)</td></tr>
+    <tr style="border-top:2px solid var(--accent);background:var(--accent-faint)"><td>?</td><td class="jp">何杯</td><td><strong>nanbai</strong></td><td>h &rarr; b</td></tr>
+  </tbody>
+</table>
+
+<p>Examples: <span class="jp">コーヒー一杯</span> (koohii ippai, 1 cup of coffee), <span class="jp">ビール三杯</span> (biiru sanbai, 3 glasses of beer), <span class="jp">ラーメン一杯</span> (raamen ippai, 1 bowl of ramen).</p>
+
+<div class="callout ok">
+  <div class="callout-title">Bonus: いっぱい as "Full / A Lot"</div>
+  <p><span class="jp">いっぱい</span> (ippai) also means "full" or "a lot" in casual speech! <span class="jp">お腹いっぱい</span> (onaka ippai) = "I'm full" (stomach is full). Context makes it clear whether you mean "one cup" or "a lot."</p>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     6I: MACHINES & VEHICLES 台
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="6i-machines-and-vehicles-台-dai----complete-chart">Machines &amp; Vehicles <span class="jp">台</span> (dai) -- Complete Chart</h3>
+
+<p>The <span class="jp">台</span> counter is for machines, vehicles, and electronics: cars, computers, TVs, washing machines. Korean cognate: <span class="jp">台</span> = <span class="kr">대</span>. <span class="cognate-tag">Cognate</span> Same kanji, same use, same concept!</p>
+
+<div class="callout ok">
+  <div class="callout-title">NO Sound Changes!</div>
+  <p>Like <span class="jp">枚</span>, the <span class="jp">台</span> counter has NO irregular sound changes. Just attach <em>dai</em> to the standard number. AND it's a cognate with Korean <span class="kr">대</span>. Double win.</p>
+</div>
+
+<table>
+  <thead>
+    <tr><th>#</th><th>Japanese</th><th>Reading</th><th>Sound Change</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td class="jp">一台</td><td>ichidai</td><td>--</td></tr>
+    <tr><td>2</td><td class="jp">二台</td><td>nidai</td><td>--</td></tr>
+    <tr><td>3</td><td class="jp">三台</td><td>sandai</td><td>--</td></tr>
+    <tr><td>4</td><td class="jp">四台</td><td>yondai</td><td>--</td></tr>
+    <tr><td>5</td><td class="jp">五台</td><td>godai</td><td>--</td></tr>
+    <tr><td>6</td><td class="jp">六台</td><td>rokudai</td><td>--</td></tr>
+    <tr><td>7</td><td class="jp">七台</td><td>nanadai</td><td>--</td></tr>
+    <tr><td>8</td><td class="jp">八台</td><td>hachidai</td><td>--</td></tr>
+    <tr><td>9</td><td class="jp">九台</td><td>kyuudai</td><td>--</td></tr>
+    <tr><td>10</td><td class="jp">十台</td><td>juudai</td><td>--</td></tr>
+    <tr style="border-top:2px solid var(--accent)"><td>?</td><td class="jp">何台</td><td>nandai</td><td>--</td></tr>
+  </tbody>
+</table>
+
+<p>Examples: <span class="jp">車一台</span> (kuruma ichidai, 1 car), <span class="jp">パソコン三台</span> (pasokon sandai, 3 computers), <span class="jp">テレビ二台</span> (terebi nidai, 2 TVs).</p>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     6J: BOOKS & VOLUMES 冊
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="6j-books-and-volumes-冊-satsu----complete-chart">Books &amp; Volumes <span class="jp">冊</span> (satsu) -- Complete Chart</h3>
+
+<p>The <span class="jp">冊</span> counter is for books, notebooks, magazines, and volumes. Korean parallel: <span class="kr">권</span>. Cognate: <span class="jp">冊</span> = <span class="kr">책</span>. <span class="cognate-tag">Cognate</span> The kanji 冊 literally pictures bamboo strips bound together -- a book!</p>
+
+<div class="callout info">
+  <div class="callout-title">Sound Change Pattern: s-doubling</div>
+  <p>The s-row pattern: s doubles to ss at 1, 8, and 10. Simpler than the h-row pattern!</p>
+</div>
+
+<table>
+  <thead>
+    <tr><th>#</th><th>Japanese</th><th>Reading</th><th>Sound Change</th></tr>
+  </thead>
+  <tbody>
+    <tr style="background:var(--accent-faint)"><td>1</td><td class="jp">一冊</td><td><strong>issatsu</strong></td><td>s &rarr; ss</td></tr>
+    <tr><td>2</td><td class="jp">二冊</td><td>nisatsu</td><td>--</td></tr>
+    <tr><td>3</td><td class="jp">三冊</td><td>sansatsu</td><td>--</td></tr>
+    <tr><td>4</td><td class="jp">四冊</td><td>yonsatsu</td><td>--</td></tr>
+    <tr><td>5</td><td class="jp">五冊</td><td>gosatsu</td><td>--</td></tr>
+    <tr><td>6</td><td class="jp">六冊</td><td>rokusatsu</td><td>--</td></tr>
+    <tr><td>7</td><td class="jp">七冊</td><td>nanasatsu</td><td>--</td></tr>
+    <tr style="background:var(--accent-faint)"><td>8</td><td class="jp">八冊</td><td><strong>hassatsu</strong></td><td>s &rarr; ss</td></tr>
+    <tr><td>9</td><td class="jp">九冊</td><td>kyuusatsu</td><td>--</td></tr>
+    <tr style="background:var(--accent-faint)"><td>10</td><td class="jp">十冊</td><td><strong>jussatsu</strong></td><td>s &rarr; ss</td></tr>
+    <tr style="border-top:2px solid var(--accent)"><td>?</td><td class="jp">何冊</td><td>nansatsu</td><td>--</td></tr>
+  </tbody>
+</table>
+
+<p>Examples: <span class="jp">本一冊</span> (hon issatsu, 1 book), <span class="jp">漫画三冊</span> (manga sansatsu, 3 manga), <span class="jp">雑誌五冊</span> (zasshi gosatsu, 5 magazines).</p>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     6K: MORE ESSENTIAL COUNTERS
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="6k-more-essential-counters">More Essential Counters</h3>
+
+<p>Beyond the core counters above, here are six more you'll encounter regularly in daily life.</p>
+
+<!-- 足 (soku) — Pairs of Footwear -->
+<h4><span class="jp">足</span> (soku) -- Pairs of Footwear</h4>
+<p>For shoes, boots, socks, slippers -- anything that comes in pairs for your feet. Korean: <span class="kr">켤레</span>. The kanji 足 means "foot/leg" -- SOKU sounds like "SOCKs."</p>
+
+<table>
+  <thead>
+    <tr><th>#</th><th>Japanese</th><th>Reading</th><th>Sound Change</th></tr>
+  </thead>
+  <tbody>
+    <tr style="background:var(--accent-faint)"><td>1</td><td class="jp">一足</td><td><strong>issoku</strong></td><td>s &rarr; ss</td></tr>
+    <tr><td>2</td><td class="jp">二足</td><td>nisoku</td><td>--</td></tr>
+    <tr><td>3</td><td class="jp">三足</td><td>sansoku</td><td>--</td></tr>
+    <tr><td>4</td><td class="jp">四足</td><td>yonsoku</td><td>--</td></tr>
+    <tr><td>5</td><td class="jp">五足</td><td>gosoku</td><td>--</td></tr>
+    <tr><td>6</td><td class="jp">六足</td><td>rokusoku</td><td>--</td></tr>
+    <tr><td>7</td><td class="jp">七足</td><td>nanasoku</td><td>--</td></tr>
+    <tr style="background:var(--accent-faint)"><td>8</td><td class="jp">八足</td><td><strong>hassoku</strong></td><td>s &rarr; ss</td></tr>
+    <tr><td>9</td><td class="jp">九足</td><td>kyuusoku</td><td>--</td></tr>
+    <tr style="background:var(--accent-faint)"><td>10</td><td class="jp">十足</td><td><strong>jussoku</strong></td><td>s &rarr; ss</td></tr>
+    <tr style="border-top:2px solid var(--accent)"><td>?</td><td class="jp">何足</td><td>nansoku</td><td>--</td></tr>
+  </tbody>
+</table>
+
+<!-- 階 (kai) — Building Floors -->
+<h4><span class="jp">階</span> (kai) -- Building Floors</h4>
+<p>For floors in a building. Korean: <span class="kr">층</span>. Cognate: <span class="jp">階</span> = <span class="kr">계</span>. <span class="cognate-tag">Cognate</span> This counter uses the k-row pattern: k doubles at 1, 6, 8, 10, and k voices to g at 3 and ?.</p>
+
+<table>
+  <thead>
+    <tr><th>#</th><th>Japanese</th><th>Reading</th><th>Sound Change</th></tr>
+  </thead>
+  <tbody>
+    <tr style="background:var(--accent-faint)"><td>1</td><td class="jp">一階</td><td><strong>ikkai</strong></td><td>k &rarr; kk</td></tr>
+    <tr><td>2</td><td class="jp">二階</td><td>nikai</td><td>--</td></tr>
+    <tr style="background:var(--accent-faint)"><td>3</td><td class="jp">三階</td><td><strong>sangai</strong></td><td>k &rarr; g</td></tr>
+    <tr><td>4</td><td class="jp">四階</td><td>yonkai</td><td>--</td></tr>
+    <tr><td>5</td><td class="jp">五階</td><td>gokai</td><td>--</td></tr>
+    <tr style="background:var(--accent-faint)"><td>6</td><td class="jp">六階</td><td><strong>rokkai</strong></td><td>k &rarr; kk</td></tr>
+    <tr><td>7</td><td class="jp">七階</td><td>nanakai</td><td>--</td></tr>
+    <tr style="background:var(--accent-faint)"><td>8</td><td class="jp">八階</td><td><strong>hakkai</strong></td><td>k &rarr; kk</td></tr>
+    <tr><td>9</td><td class="jp">九階</td><td>kyuukai</td><td>--</td></tr>
+    <tr style="background:var(--accent-faint)"><td>10</td><td class="jp">十階</td><td><strong>jukkai</strong></td><td>k &rarr; kk</td></tr>
+    <tr style="border-top:2px solid var(--accent);background:var(--accent-faint)"><td>?</td><td class="jp">何階</td><td><strong>nangai</strong></td><td>k &rarr; g</td></tr>
+  </tbody>
+</table>
+
+<!-- 回 (kai) — Times/Occurrences -->
+<h4><span class="jp">回</span> (kai) -- Times / Occurrences</h4>
+<p>For counting times or occurrences. Korean: <span class="kr">번/회</span>. Cognate: <span class="jp">回</span> = <span class="kr">회</span>. <span class="cognate-tag">Cognate</span> Same k-row pattern as 階, but voicing to g is less common here.</p>
+
+<table>
+  <thead>
+    <tr><th>#</th><th>Japanese</th><th>Reading</th><th>Sound Change</th></tr>
+  </thead>
+  <tbody>
+    <tr style="background:var(--accent-faint)"><td>1</td><td class="jp">一回</td><td><strong>ikkai</strong></td><td>k &rarr; kk</td></tr>
+    <tr><td>2</td><td class="jp">二回</td><td>nikai</td><td>--</td></tr>
+    <tr><td>3</td><td class="jp">三回</td><td>sankai</td><td>--</td></tr>
+    <tr><td>4</td><td class="jp">四回</td><td>yonkai</td><td>--</td></tr>
+    <tr><td>5</td><td class="jp">五回</td><td>gokai</td><td>--</td></tr>
+    <tr style="background:var(--accent-faint)"><td>6</td><td class="jp">六回</td><td><strong>rokkai</strong></td><td>k &rarr; kk</td></tr>
+    <tr><td>7</td><td class="jp">七回</td><td>nanakai</td><td>--</td></tr>
+    <tr style="background:var(--accent-faint)"><td>8</td><td class="jp">八回</td><td><strong>hakkai</strong></td><td>k &rarr; kk</td></tr>
+    <tr><td>9</td><td class="jp">九回</td><td>kyuukai</td><td>--</td></tr>
+    <tr style="background:var(--accent-faint)"><td>10</td><td class="jp">十回</td><td><strong>jukkai</strong></td><td>k &rarr; kk</td></tr>
+    <tr style="border-top:2px solid var(--accent)"><td>?</td><td class="jp">何回</td><td>nankai</td><td>--</td></tr>
+  </tbody>
+</table>
+
+<!-- 歳/才 (sai) — Age -->
+<h4><span class="jp">歳/才</span> (sai) -- Age</h4>
+<p>For counting age. Korean: <span class="kr">살/세</span>. The simplified kanji 才 is commonly used in place of 歳. Special: 20 years old = <span class="jp">はたち</span> (hatachi) -- a completely irregular, standalone word.</p>
+
+<table>
+  <thead>
+    <tr><th>#</th><th>Japanese</th><th>Reading</th><th>Sound Change</th></tr>
+  </thead>
+  <tbody>
+    <tr style="background:var(--accent-faint)"><td>1</td><td class="jp">一歳</td><td><strong>issai</strong></td><td>s &rarr; ss</td></tr>
+    <tr><td>2</td><td class="jp">二歳</td><td>nisai</td><td>--</td></tr>
+    <tr><td>3</td><td class="jp">三歳</td><td>sansai</td><td>--</td></tr>
+    <tr><td>4</td><td class="jp">四歳</td><td>yonsai</td><td>--</td></tr>
+    <tr><td>5</td><td class="jp">五歳</td><td>gosai</td><td>--</td></tr>
+    <tr><td>6</td><td class="jp">六歳</td><td>rokusai</td><td>--</td></tr>
+    <tr><td>7</td><td class="jp">七歳</td><td>nanasai</td><td>--</td></tr>
+    <tr style="background:var(--accent-faint)"><td>8</td><td class="jp">八歳</td><td><strong>hassai</strong></td><td>s &rarr; ss</td></tr>
+    <tr><td>9</td><td class="jp">九歳</td><td>kyuusai</td><td>--</td></tr>
+    <tr style="background:var(--accent-faint)"><td>10</td><td class="jp">十歳</td><td><strong>jussai</strong></td><td>s &rarr; ss</td></tr>
+    <tr style="background:var(--accent-faint)"><td>20</td><td class="jp">二十歳</td><td><strong>hatachi</strong></td><td>Completely irregular!</td></tr>
+    <tr style="border-top:2px solid var(--accent)"><td>?</td><td class="jp">何歳</td><td>nansai</td><td>--</td></tr>
+  </tbody>
+</table>
+
+<div class="callout warn">
+  <div class="callout-title">はたち (hatachi) -- The Big Exception</div>
+  <p>Twenty years old is always <span class="jp">はたち</span> (hatachi), NOT *nijussai. This is because 20 is the traditional age of adulthood in Japan (成人, seijin). Even though the legal age changed to 18 in 2022, はたち persists in the language. Korean parallel: how <span class="kr">스무 살</span> uses the native number rather than <span class="kr">이십 세</span>.</p>
+</div>
+
+<!-- 着 (chaku) — Suits of Clothing -->
+<h4><span class="jp">着</span> (chaku) -- Suits of Clothing</h4>
+<p>For suits, dresses, and sets of clothing (not individual garments like shirts -- those use 枚). Korean: no direct equivalent; uses <span class="kr">벌</span>.</p>
+
+<table>
+  <thead>
+    <tr><th>#</th><th>Japanese</th><th>Reading</th><th>Sound Change</th></tr>
+  </thead>
+  <tbody>
+    <tr style="background:var(--accent-faint)"><td>1</td><td class="jp">一着</td><td><strong>icchaku</strong></td><td>ch doubled</td></tr>
+    <tr><td>2</td><td class="jp">二着</td><td>nichaku</td><td>--</td></tr>
+    <tr><td>3</td><td class="jp">三着</td><td>sanchaku</td><td>--</td></tr>
+    <tr><td>4</td><td class="jp">四着</td><td>yonchaku</td><td>--</td></tr>
+    <tr><td>5</td><td class="jp">五着</td><td>gochaku</td><td>--</td></tr>
+    <tr><td>6</td><td class="jp">六着</td><td>rokuchaku</td><td>--</td></tr>
+    <tr><td>7</td><td class="jp">七着</td><td>nanachaku</td><td>--</td></tr>
+    <tr style="background:var(--accent-faint)"><td>8</td><td class="jp">八着</td><td><strong>hacchaku</strong></td><td>ch doubled</td></tr>
+    <tr><td>9</td><td class="jp">九着</td><td>kyuuchaku</td><td>--</td></tr>
+    <tr><td>10</td><td class="jp">十着</td><td>jutchaku</td><td>--</td></tr>
+    <tr style="border-top:2px solid var(--accent)"><td>?</td><td class="jp">何着</td><td>nanchaku</td><td>--</td></tr>
+  </tbody>
+</table>
+
+<!-- 軒 (ken) — Houses/Shops -->
+<h4><span class="jp">軒</span> (ken) -- Houses / Shops</h4>
+<p>For counting houses, shops, and other buildings. Korean: <span class="kr">채</span> (houses) or <span class="kr">곳</span> (places).</p>
+
+<table>
+  <thead>
+    <tr><th>#</th><th>Japanese</th><th>Reading</th><th>Sound Change</th></tr>
+  </thead>
+  <tbody>
+    <tr style="background:var(--accent-faint)"><td>1</td><td class="jp">一軒</td><td><strong>ikken</strong></td><td>k &rarr; kk</td></tr>
+    <tr><td>2</td><td class="jp">二軒</td><td>niken</td><td>--</td></tr>
+    <tr style="background:var(--accent-faint)"><td>3</td><td class="jp">三軒</td><td><strong>sangen</strong></td><td>k &rarr; g</td></tr>
+    <tr><td>4</td><td class="jp">四軒</td><td>yonken</td><td>--</td></tr>
+    <tr><td>5</td><td class="jp">五軒</td><td>goken</td><td>--</td></tr>
+    <tr style="background:var(--accent-faint)"><td>6</td><td class="jp">六軒</td><td><strong>rokken</strong></td><td>k &rarr; kk</td></tr>
+    <tr><td>7</td><td class="jp">七軒</td><td>nanaken</td><td>--</td></tr>
+    <tr style="background:var(--accent-faint)"><td>8</td><td class="jp">八軒</td><td><strong>hakken</strong></td><td>k &rarr; kk</td></tr>
+    <tr><td>9</td><td class="jp">九軒</td><td>kyuuken</td><td>--</td></tr>
+    <tr style="background:var(--accent-faint)"><td>10</td><td class="jp">十軒</td><td><strong>jukken</strong></td><td>k &rarr; kk</td></tr>
+    <tr style="border-top:2px solid var(--accent);background:var(--accent-faint)"><td>?</td><td class="jp">何軒</td><td><strong>nangen</strong></td><td>k &rarr; g</td></tr>
+  </tbody>
+</table>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     6L: THE SOUND CHANGE MASTER CHART
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="6l-the-sound-change-master-chart">The Sound Change Master Chart</h3>
+
+<p>This is the definitive reference. All sound changes follow <strong>three predictable patterns</strong> based on the counter's initial consonant. Master this chart and you'll never be surprised by a counter reading again.</p>
+
+<div class="callout info">
+  <div class="callout-title">The Three Patterns</div>
+  <ul style="margin:.5rem 0 0;padding-left:1.2rem">
+    <li><strong>h-Row</strong> (本, 匹, 杯): h &rarr; <strong>p</strong> (doubled) at 1, 6, 8, 10; h &rarr; <strong>b</strong> at 3 and ?</li>
+    <li><strong>k-Row</strong> (個, 階, 回, 軒): k &rarr; <strong>kk</strong> (doubled) at 1, 6, 8, 10; sometimes k &rarr; <strong>g</strong> at 3 and ?</li>
+    <li><strong>s-Row</strong> (冊, 足, 歳): s &rarr; <strong>ss</strong> (doubled) at 1, 8, 10</li>
+  </ul>
+</div>
+
+<div style="overflow-x:auto">
+<table>
+  <thead>
+    <tr><th>Counter</th><th>Base</th><th>1</th><th>3</th><th>6</th><th>8</th><th>10</th><th>?</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="jp">本 hon</td><td>h</td>
+      <td style="background:var(--accent-faint)"><strong>ippon</strong> (p)</td>
+      <td style="background:var(--accent-faint)"><strong>sanbon</strong> (b)</td>
+      <td style="background:var(--accent-faint)"><strong>roppon</strong> (p)</td>
+      <td style="background:var(--accent-faint)"><strong>happon</strong> (p)</td>
+      <td style="background:var(--accent-faint)"><strong>juppon</strong> (p)</td>
+      <td style="background:var(--accent-faint)"><strong>nanbon</strong> (b)</td>
+    </tr>
+    <tr>
+      <td class="jp">匹 hiki</td><td>h</td>
+      <td style="background:var(--accent-faint)"><strong>ippiki</strong> (p)</td>
+      <td style="background:var(--accent-faint)"><strong>sanbiki</strong> (b)</td>
+      <td style="background:var(--accent-faint)"><strong>roppiki</strong> (p)</td>
+      <td style="background:var(--accent-faint)"><strong>happiki</strong> (p)</td>
+      <td style="background:var(--accent-faint)"><strong>juppiki</strong> (p)</td>
+      <td style="background:var(--accent-faint)"><strong>nanbiki</strong> (b)</td>
+    </tr>
+    <tr>
+      <td class="jp">杯 hai</td><td>h</td>
+      <td style="background:var(--accent-faint)"><strong>ippai</strong> (p)</td>
+      <td style="background:var(--accent-faint)"><strong>sanbai</strong> (b)</td>
+      <td style="background:var(--accent-faint)"><strong>roppai</strong> (p)</td>
+      <td style="background:var(--accent-faint)"><strong>happai</strong> (p)</td>
+      <td style="background:var(--accent-faint)"><strong>juppai</strong> (p)</td>
+      <td style="background:var(--accent-faint)"><strong>nanbai</strong> (b)</td>
+    </tr>
+    <tr>
+      <td class="jp">個 ko</td><td>k</td>
+      <td style="background:var(--accent-faint)"><strong>ikko</strong> (kk)</td>
+      <td>sanko</td>
+      <td style="background:var(--accent-faint)"><strong>rokko</strong> (kk)</td>
+      <td style="background:var(--accent-faint)"><strong>hakko</strong> (kk)</td>
+      <td style="background:var(--accent-faint)"><strong>jukko</strong> (kk)</td>
+      <td>nanko</td>
+    </tr>
+    <tr>
+      <td class="jp">階 kai</td><td>k</td>
+      <td style="background:var(--accent-faint)"><strong>ikkai</strong> (kk)</td>
+      <td style="background:var(--accent-faint)"><strong>sangai</strong> (g)</td>
+      <td style="background:var(--accent-faint)"><strong>rokkai</strong> (kk)</td>
+      <td style="background:var(--accent-faint)"><strong>hakkai</strong> (kk)</td>
+      <td style="background:var(--accent-faint)"><strong>jukkai</strong> (kk)</td>
+      <td style="background:var(--accent-faint)"><strong>nangai</strong> (g)</td>
+    </tr>
+    <tr>
+      <td class="jp">軒 ken</td><td>k</td>
+      <td style="background:var(--accent-faint)"><strong>ikken</strong> (kk)</td>
+      <td style="background:var(--accent-faint)"><strong>sangen</strong> (g)</td>
+      <td style="background:var(--accent-faint)"><strong>rokken</strong> (kk)</td>
+      <td style="background:var(--accent-faint)"><strong>hakken</strong> (kk)</td>
+      <td style="background:var(--accent-faint)"><strong>jukken</strong> (kk)</td>
+      <td style="background:var(--accent-faint)"><strong>nangen</strong> (g)</td>
+    </tr>
+    <tr>
+      <td class="jp">冊 satsu</td><td>s</td>
+      <td style="background:var(--accent-faint)"><strong>issatsu</strong> (ss)</td>
+      <td>sansatsu</td>
+      <td>rokusatsu</td>
+      <td style="background:var(--accent-faint)"><strong>hassatsu</strong> (ss)</td>
+      <td style="background:var(--accent-faint)"><strong>jussatsu</strong> (ss)</td>
+      <td>nansatsu</td>
+    </tr>
+    <tr>
+      <td class="jp">足 soku</td><td>s</td>
+      <td style="background:var(--accent-faint)"><strong>issoku</strong> (ss)</td>
+      <td>sansoku</td>
+      <td>rokusoku</td>
+      <td style="background:var(--accent-faint)"><strong>hassoku</strong> (ss)</td>
+      <td style="background:var(--accent-faint)"><strong>jussoku</strong> (ss)</td>
+      <td>nansoku</td>
+    </tr>
+    <tr>
+      <td class="jp">歳 sai</td><td>s</td>
+      <td style="background:var(--accent-faint)"><strong>issai</strong> (ss)</td>
+      <td>sansai</td>
+      <td>rokusai</td>
+      <td style="background:var(--accent-faint)"><strong>hassai</strong> (ss)</td>
+      <td style="background:var(--accent-faint)"><strong>jussai</strong> (ss)</td>
+      <td>nansai</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout ok">
+  <div class="callout-title">No Sound Changes (Easy Counters!)</div>
+  <p>Some counters have <strong>NO sound changes at all</strong>: <span class="jp">枚</span> (mai), <span class="jp">台</span> (dai), <span class="jp">人</span> (nin, from 3+). The initial consonant (m, d, n) doesn't trigger doubling or voicing. Enjoy the free pass!</p>
+</div>
+
+<div class="callout info">
+  <div class="callout-title">Korean Parallel: Consonant Assimilation</div>
+  <p>Korean has similar consonant assimilation rules. Think of <span class="kr">합니다</span> &rarr; <span class="kr">합니까</span>, or how <span class="kr">독립</span> is pronounced [dongnim]. The underlying phonetic principle is the same: when two consonants collide, one assimilates to the other. Japanese counters just have this happen more visibly in the spelling.</p>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     6M: COUNTER QUESTION WORDS
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="6m-counter-question-words----how-many">Counter Question Words -- How Many?</h3>
+
+<p>Each counter has its own "how many?" question word. In Korean, you use <span class="kr">몇</span> + counter. In Japanese, you use <span class="jp">何</span> (nan-) + counter, or <span class="jp">いくつ</span> for the generic つ system.</p>
+
+<table>
+  <thead>
+    <tr><th>Counter</th><th>Question Form</th><th>Reading</th><th>Korean Equivalent</th><th>Usage</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="jp">つ</td><td class="jp">いくつ</td><td>ikutsu</td><td class="kr">몇 개</td><td>General: how many?</td></tr>
+    <tr><td class="jp">個</td><td class="jp">何個</td><td>nanko</td><td class="kr">몇 개</td><td>Small objects</td></tr>
+    <tr><td class="jp">人</td><td class="jp">何人</td><td>nannin</td><td class="kr">몇 명</td><td>People</td></tr>
+    <tr><td class="jp">匹</td><td class="jp">何匹</td><td>nanbiki</td><td class="kr">몇 마리</td><td>Small animals</td></tr>
+    <tr><td class="jp">頭</td><td class="jp">何頭</td><td>nantou</td><td class="kr">몇 마리</td><td>Large animals</td></tr>
+    <tr><td class="jp">本</td><td class="jp">何本</td><td>nanbon</td><td class="kr">몇 병 / 몇 자루</td><td>Long/thin things</td></tr>
+    <tr><td class="jp">杯</td><td class="jp">何杯</td><td>nanbai</td><td class="kr">몇 잔</td><td>Cups/glasses</td></tr>
+    <tr><td class="jp">枚</td><td class="jp">何枚</td><td>nanmai</td><td class="kr">몇 장</td><td>Flat things</td></tr>
+    <tr><td class="jp">台</td><td class="jp">何台</td><td>nandai</td><td class="kr">몇 대</td><td>Machines/vehicles</td></tr>
+    <tr><td class="jp">冊</td><td class="jp">何冊</td><td>nansatsu</td><td class="kr">몇 권</td><td>Books</td></tr>
+    <tr><td class="jp">足</td><td class="jp">何足</td><td>nansoku</td><td class="kr">몇 켤레</td><td>Pairs of footwear</td></tr>
+    <tr><td class="jp">階</td><td class="jp">何階</td><td>nangai</td><td class="kr">몇 층</td><td>Floors</td></tr>
+    <tr><td class="jp">回</td><td class="jp">何回</td><td>nankai</td><td class="kr">몇 번</td><td>Times/occurrences</td></tr>
+    <tr><td class="jp">歳</td><td class="jp">何歳</td><td>nansai</td><td class="kr">몇 살</td><td>Age</td></tr>
+  </tbody>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">Polite Age Question</div>
+  <p>Asking someone's age directly with <span class="jp">何歳ですか</span> can be too direct. The polite form is <span class="jp">おいくつですか</span> (oikutsu desu ka) -- using the generic counter with the polite お prefix. Korean equivalent: <span class="kr">연세가 어떻게 되세요?</span></p>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     6N: WORD ORDER
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="6n-word-order----where-counters-go-in-a-sentence">Word Order -- Where Counters Go in a Sentence</h3>
+
+<p>Japanese counters can go in two positions. Both are correct, but they create slightly different nuances.</p>
+
+<div class="card-row">
+  <div class="card">
+    <h4>Pattern 1: Noun + Number-Counter</h4>
+    <p><span class="jp">りんご<strong>三個</strong></span></p>
+    <p style="font-size:.82rem;color:var(--text-muted)">ringo sanko</p>
+    <p>More natural in speech. The counter floats after the noun, often before the verb.</p>
+    <p>Korean parallel: <span class="kr">사과 <strong>세 개</strong></span></p>
+  </div>
+  <div class="card">
+    <h4>Pattern 2: Number-Counter + の + Noun</h4>
+    <p><span class="jp"><strong>三個の</strong>りんご</span></p>
+    <p style="font-size:.82rem;color:var(--text-muted)">sanko no ringo</p>
+    <p>More literary/formal. The counter modifies the noun directly with の.</p>
+    <p>Korean parallel: <span class="kr"><strong>세 개의</strong> 사과</span></p>
+  </div>
+</div>
+
+<h4>Full Sentence Examples</h4>
+<table>
+  <thead>
+    <tr><th>Pattern</th><th>Japanese</th><th>Reading</th><th>Korean</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Pattern 1</td>
+      <td class="jp">りんごを三個ください</td>
+      <td>ringo wo sanko kudasai</td>
+      <td class="kr">사과 세 개 주세요</td>
+    </tr>
+    <tr>
+      <td>Pattern 2</td>
+      <td class="jp">三個のりんごをください</td>
+      <td>sanko no ringo wo kudasai</td>
+      <td class="kr">세 개의 사과를 주세요</td>
+    </tr>
+    <tr>
+      <td>Pattern 1</td>
+      <td class="jp">猫を二匹飼っています</td>
+      <td>neko wo nihiki katte imasu</td>
+      <td class="kr">고양이 두 마리 키우고 있어요</td>
+    </tr>
+    <tr>
+      <td>Pattern 1</td>
+      <td class="jp">ビールを三杯飲んだ</td>
+      <td>biiru wo sanbai nonda</td>
+      <td class="kr">맥주 세 잔 마셨어</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout ok">
+  <div class="callout-title">Tip: Just Use Pattern 1</div>
+  <p>In everyday speech, Pattern 1 (noun + counter) is far more common. It matches the Korean word order you already know: <span class="kr">사과 세 개</span> = <span class="jp">りんご三個</span>. Use Pattern 2 only in formal writing or when you want to emphasize the quantity.</p>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     6O: KOREAN-JAPANESE COUNTER PARALLEL MAP
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="6o-korean-japanese-counter-parallel-map">Korean-Japanese Counter Parallel Map</h3>
+
+<p>The master comparison table. Every counter covered in this chapter, with its Korean equivalent and cognate status.</p>
+
+<table>
+  <thead>
+    <tr><th>Japanese</th><th>Reading</th><th>Used For</th><th>Korean</th><th>Cognate?</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="jp">つ</td><td>-tsu</td><td>General (1-10 only)</td><td class="kr">개</td><td>--</td></tr>
+    <tr><td class="jp">個</td><td>ko</td><td>Small objects</td><td class="kr">개 (個)</td><td><span class="cognate-tag">Cognate</span></td></tr>
+    <tr><td class="jp">人</td><td>nin / ri</td><td>People</td><td class="kr">명 / 사람 (人)</td><td><span class="cognate-tag">Cognate</span></td></tr>
+    <tr><td class="jp">匹</td><td>hiki</td><td>Small/medium animals</td><td class="kr">마리</td><td>--</td></tr>
+    <tr><td class="jp">頭</td><td>tou</td><td>Large animals</td><td class="kr">마리</td><td>--</td></tr>
+    <tr><td class="jp">本</td><td>hon</td><td>Long/thin objects</td><td class="kr">병 / 자루</td><td>--</td></tr>
+    <tr><td class="jp">杯</td><td>hai</td><td>Cups/glasses</td><td class="kr">잔 / 배 (杯)</td><td><span class="cognate-tag">Cognate</span></td></tr>
+    <tr><td class="jp">枚</td><td>mai</td><td>Flat things</td><td class="kr">장</td><td>--</td></tr>
+    <tr><td class="jp">台</td><td>dai</td><td>Machines/vehicles</td><td class="kr">대 (台)</td><td><span class="cognate-tag">Cognate</span></td></tr>
+    <tr><td class="jp">冊</td><td>satsu</td><td>Books/volumes</td><td class="kr">권 / 책 (冊)</td><td><span class="cognate-tag">Cognate</span></td></tr>
+    <tr><td class="jp">足</td><td>soku</td><td>Pairs of footwear</td><td class="kr">켤레</td><td>--</td></tr>
+    <tr><td class="jp">階</td><td>kai</td><td>Building floors</td><td class="kr">층 / 계 (階)</td><td><span class="cognate-tag">Cognate</span></td></tr>
+    <tr><td class="jp">回</td><td>kai</td><td>Times/occurrences</td><td class="kr">번 / 회 (回)</td><td><span class="cognate-tag">Cognate</span></td></tr>
+    <tr><td class="jp">歳/才</td><td>sai</td><td>Age</td><td class="kr">살 / 세 (歲)</td><td><span class="cognate-tag">Cognate</span></td></tr>
+    <tr><td class="jp">着</td><td>chaku</td><td>Suits of clothing</td><td class="kr">벌</td><td>--</td></tr>
+    <tr><td class="jp">軒</td><td>ken</td><td>Houses/shops</td><td class="kr">채 / 곳</td><td>--</td></tr>
+  </tbody>
+</table>
+
+<div class="callout ok">
+  <div class="callout-title">Cognate Wins -- Free Counters from Korean</div>
+  <p>These counters share the same Chinese character (kanji/hanja) with Korean. You get them almost free because the CONCEPT is already in your head:</p>
+  <ul style="margin:.5rem 0 0;padding-left:1.2rem">
+    <li><span class="jp">個</span> (ko) = <span class="kr">개</span> -- general small objects <span class="cognate-tag">Cognate</span></li>
+    <li><span class="jp">台</span> (dai) = <span class="kr">대</span> -- machines, vehicles <span class="cognate-tag">Cognate</span></li>
+    <li><span class="jp">回</span> (kai) = <span class="kr">회</span> -- times, occurrences <span class="cognate-tag">Cognate</span></li>
+    <li><span class="jp">階</span> (kai) = <span class="kr">계/층</span> -- floors <span class="cognate-tag">Cognate</span></li>
+    <li><span class="jp">杯</span> (hai) = <span class="kr">배/잔</span> -- cups, glasses <span class="cognate-tag">Cognate</span></li>
+    <li><span class="jp">冊</span> (satsu) = <span class="kr">책</span> -- books (same radical 冊) <span class="cognate-tag">Cognate</span></li>
+    <li><span class="jp">歳</span> (sai) = <span class="kr">세</span> -- age <span class="cognate-tag">Cognate</span></li>
+  </ul>
+  <p style="margin-top:.5rem">That's <strong>7 out of 16 counters</strong> where the kanji alone tells you what it counts. Korean gives you a massive head start.</p>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     6P: COUNTERS IN REAL LIFE
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="6p-counters-in-real-life----survival-situations">Counters in Real Life -- Survival Situations</h3>
+
+<p>Here are 10 real-world scenarios where you'll use counters. Each includes the full Japanese phrase, reading, and Korean equivalent.</p>
+
+<table>
+  <thead>
+    <tr><th>Situation</th><th>Japanese</th><th>Reading</th><th>Korean Equivalent</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Ordering drinks</td>
+      <td class="jp">ビール二杯お願いします</td>
+      <td>biiru nihai onegai shimasu</td>
+      <td class="kr">맥주 두 잔 주세요</td>
+    </tr>
+    <tr>
+      <td>Buying items</td>
+      <td class="jp">りんご五個ください</td>
+      <td>ringo goko kudasai</td>
+      <td class="kr">사과 다섯 개 주세요</td>
+    </tr>
+    <tr>
+      <td>Table for N</td>
+      <td class="jp">三人です</td>
+      <td>sannin desu</td>
+      <td class="kr">세 명이요</td>
+    </tr>
+    <tr>
+      <td>Buying tickets</td>
+      <td class="jp">大人二枚ください</td>
+      <td>otona nimai kudasai</td>
+      <td class="kr">어른 두 장 주세요</td>
+    </tr>
+    <tr>
+      <td>Asking about floors</td>
+      <td class="jp">三階はどこですか</td>
+      <td>sangai wa doko desu ka</td>
+      <td class="kr">3층이 어디예요?</td>
+    </tr>
+    <tr>
+      <td>Telling your age</td>
+      <td class="jp">二十五歳です</td>
+      <td>nijuugo sai desu</td>
+      <td class="kr">스물다섯 살이에요</td>
+    </tr>
+    <tr>
+      <td>Asking age (polite)</td>
+      <td class="jp">おいくつですか</td>
+      <td>oikutsu desu ka</td>
+      <td class="kr">연세가 어떻게 되세요?</td>
+    </tr>
+    <tr>
+      <td>Talking about pets</td>
+      <td class="jp">猫を二匹飼っています</td>
+      <td>neko wo nihiki katte imasu</td>
+      <td class="kr">고양이 두 마리 키우고 있어요</td>
+    </tr>
+    <tr>
+      <td>Buying books</td>
+      <td class="jp">この本を三冊ください</td>
+      <td>kono hon wo sansatsu kudasai</td>
+      <td class="kr">이 책 세 권 주세요</td>
+    </tr>
+    <tr>
+      <td>Talking about cars</td>
+      <td class="jp">車が一台あります</td>
+      <td>kuruma ga ichidai arimasu</td>
+      <td class="kr">차가 한 대 있어요</td>
+    </tr>
+    <tr>
+      <td>Asking to repeat</td>
+      <td class="jp">もう一回お願いします</td>
+      <td>mou ikkai onegai shimasu</td>
+      <td class="kr">한 번 더 부탁합니다</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">Pro Tip: Counter + ください is Your Power Phrase</div>
+  <p>The formula <strong>[number][counter] + ください</strong> handles most shopping and ordering situations. Just swap in the right counter:</p>
+  <ul style="margin:.5rem 0 0;padding-left:1.2rem">
+    <li><span class="jp">三つください</span> -- "Three (of those), please" (safest)</li>
+    <li><span class="jp">二杯ください</span> -- "Two cups/glasses, please"</li>
+    <li><span class="jp">一枚ください</span> -- "One (flat thing/ticket), please"</li>
+    <li><span class="jp">五個ください</span> -- "Five (small items), please"</li>
+  </ul>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     INTERACTIVE EXERCISES & QUIZZES
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="interactive-exercises">Interactive Exercises</h3>
+
+<!-- Quiz 1: Counter Category Matching -->
+<div id="quiz-counter-match"></div>
+
+<!-- Quiz 2: Sound Change Fill-in -->
+<div id="quiz-sound-change"></div>
+
+<!-- Quiz 3: Counter Sprint -->
+<div id="quiz-counter-sprint"></div>
+
+<!-- Quiz 4: Real-world Counter Scenarios -->
+<div id="quiz-counter-scenarios"></div>
+
+<!-- Quiz 5: Sentence Builder with Counters -->
+<div id="quiz-counter-builder"></div>
+
+
+<!-- Mark as Complete -->
+<button class="chapter-complete" data-ch="06">Mark as Complete &#10003;</button>
+
+<div style="display:flex;justify-content:space-between;margin:2rem 0">
+  <a href="ch-05.html" class="quiz-btn secondary">&larr; Chapter 05: Survival Japanese</a>
+  <a href="ch-07.html" class="quiz-btn">Next: Chapter 07 -- Particles &rarr;</a>
+</div>
+
+</section>
+
+</div>
+
+
+</div>
+
+<footer>
+  <p>Zero to Hero: 日本語 for Korean Speakers &middot; Chapter 06</p>
+</footer>
+
+<script src="js/shared.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/spaced-repetition.js"></script>
+<script src="js/memory-palace.js"></script>
+<script src="js/quiz-engine.js"></script>
+<script>
+// ─── Recall Check (top of chapter, from Ch02-05) ───
+QuizEngine.RecallCheck(
+  document.getElementById('recall-check-top'),
+  {
+    fromChapters: 'Ch02-05',
+    items: [
+      { question: 'Read this hiragana: さ し す せ そ (Ch02)', answer: 'sa shi su se so' },
+      { question: 'Read this katakana: ビール (Ch03)', answer: 'biiru (beer)' },
+      { question: 'Pronunciation: Japanese う is different from Korean 우 how? (Ch04)', answer: 'Japanese う is unrounded -- lips stay relaxed and slightly spread, unlike Korean 우 which rounds the lips' },
+      { question: 'How do you say "Table for 2" in Japanese? (Ch05)', answer: '二人です (futari desu)' },
+      { question: 'How do you say "Excuse me" in Japanese? (Ch05)', answer: 'すみません (sumimasen)' },
+      { question: 'What does おいしい mean? (Ch05)', answer: 'Delicious (맛있다)' },
+      { question: 'Read this katakana: コーヒー (Ch03)', answer: 'koohii (coffee)' }
+    ]
+  }
+);
+
+// ─── Quiz 1: Counter Category Matching (DragMatch) ───
+QuizEngine.DragMatch(
+  document.getElementById('quiz-counter-match'),
+  {
+    title: 'Match the Counter to What It Counts',
+    instruction: 'Drag each counter to its category:',
+    pairs: [
+      { left: '匹 (hiki)', right: 'Small/medium animals (마리)' },
+      { left: '本 (hon)', right: 'Long, thin objects (병/자루)' },
+      { left: '杯 (hai)', right: 'Cups & glasses (잔)' },
+      { left: '枚 (mai)', right: 'Flat things (장)' },
+      { left: '台 (dai)', right: 'Machines & vehicles (대)' },
+      { left: '冊 (satsu)', right: 'Books & volumes (권)' },
+      { left: '個 (ko)', right: 'Small discrete objects (개)' },
+      { left: '回 (kai)', right: 'Times / occurrences (번/회)' },
+      { left: '人 (nin)', right: 'People (명)' },
+      { left: '階 (kai)', right: 'Building floors (층)' },
+      { left: '足 (soku)', right: 'Pairs of footwear (켤레)' },
+      { left: '頭 (tou)', right: 'Large animals (마리 - large)' }
+    ]
+  }
+);
+
+// ─── Quiz 2: Sound Change Fill-in (FillBlank) ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-sound-change'),
+  {
+    title: 'Sound Change Challenge',
+    questions: [
+      {
+        prompt: 'How do you say "1 long thing" (一本)? Write the reading:',
+        answer: 'ippon',
+        acceptAlso: ['いっぽん'],
+        explanation: 'h → p at 1: 一本 = ippon (not *ichihon)',
+        korean: '한 자루/한 병'
+      },
+      {
+        prompt: 'How do you say "3 animals" (三匹)? Write the reading:',
+        answer: 'sanbiki',
+        acceptAlso: ['さんびき'],
+        explanation: 'h → b at 3: 三匹 = sanbiki (not *sanhiki)',
+        korean: '세 마리'
+      },
+      {
+        prompt: 'How do you say "6 cups" (六杯)? Write the reading:',
+        answer: 'roppai',
+        acceptAlso: ['ろっぱい'],
+        explanation: 'h → p at 6: 六杯 = roppai (not *rokuhai)',
+        korean: '여섯 잔'
+      },
+      {
+        prompt: 'How do you say "1 book/volume" (一冊)? Write the reading:',
+        answer: 'issatsu',
+        acceptAlso: ['いっさつ'],
+        explanation: 's → ss at 1: 一冊 = issatsu (not *ichisatsu)',
+        korean: '한 권'
+      },
+      {
+        prompt: 'How do you say "8 long things" (八本)? Write the reading:',
+        answer: 'happon',
+        acceptAlso: ['はっぽん'],
+        explanation: 'h → p at 8: 八本 = happon (not *hachihon)',
+        korean: '여덟 병/여덟 자루'
+      },
+      {
+        prompt: 'How do you say "3rd floor" (三階)? Write the reading:',
+        answer: 'sangai',
+        acceptAlso: ['さんがい'],
+        explanation: 'k → g at 3: 三階 = sangai (not *sankai)',
+        korean: '3층'
+      },
+      {
+        prompt: 'How do you say "1 small object" (一個)? Write the reading:',
+        answer: 'ikko',
+        acceptAlso: ['いっこ'],
+        explanation: 'k → kk at 1: 一個 = ikko (not *ichiko)',
+        korean: '한 개'
+      },
+      {
+        prompt: 'How do you say "10 bottles/pens" (十本)? Write the reading:',
+        answer: 'juppon',
+        acceptAlso: ['じゅっぽん', 'jippon', 'じっぽん'],
+        explanation: 'h → p at 10: 十本 = juppon/jippon',
+        korean: '열 병/열 자루'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 3: Counter Sprint (TimedSprint) ───
+QuizEngine.TimedSprint(
+  document.getElementById('quiz-counter-sprint'),
+  {
+    title: 'Counter Speed Drill',
+    instruction: 'Read each counter expression as fast as you can! 60 seconds.',
+    timeLimit: 60,
+    items: [
+      { prompt: '一人', answer: 'hitori' },
+      { prompt: '二人', answer: 'futari' },
+      { prompt: '三本', answer: 'sanbon' },
+      { prompt: '一杯', answer: 'ippai' },
+      { prompt: '二枚', answer: 'nimai' },
+      { prompt: '一匹', answer: 'ippiki' },
+      { prompt: '三人', answer: 'sannin' },
+      { prompt: '六本', answer: 'roppon' },
+      { prompt: '一冊', answer: 'issatsu' },
+      { prompt: '三匹', answer: 'sanbiki' },
+      { prompt: '一個', answer: 'ikko' },
+      { prompt: '八杯', answer: 'happai' },
+      { prompt: '一台', answer: 'ichidai' },
+      { prompt: '三階', answer: 'sangai' },
+      { prompt: '一回', answer: 'ikkai' },
+      { prompt: '十本', answer: 'juppon' },
+      { prompt: '五枚', answer: 'gomai' },
+      { prompt: '二匹', answer: 'nihiki' },
+      { prompt: '四人', answer: 'yonin' },
+      { prompt: '七つ', answer: 'nanatsu' }
+    ]
+  }
+);
+
+// ─── Quiz 4: Real-world Counter Scenarios (MultipleChoice) ───
+QuizEngine.MultipleChoice(
+  document.getElementById('quiz-counter-scenarios'),
+  {
+    title: 'Real-World Counter Scenarios',
+    items: [
+      {
+        question: 'You want to order 3 beers. Which counter do you use?',
+        choices: ['三本 (sanbon)', '三杯 (sanbai)', '三個 (sanko)', '三枚 (sanmai)'],
+        correct: 1,
+        explanation: '杯 (hai) is for cups, glasses, and bowls of liquid. Beer in glasses = 杯. (Korean: 잔)'
+      },
+      {
+        question: 'You want to buy 2 movie tickets. Which is correct?',
+        choices: ['二冊ください', '二枚ください', '二本ください', '二台ください'],
+        correct: 1,
+        explanation: '枚 (mai) is for flat things like tickets, paper, and photos. (Korean: 장)'
+      },
+      {
+        question: 'How do you say "I have 3 cats"?',
+        choices: ['猫が三頭います', '猫が三匹います', '猫が三人います', '猫が三個います'],
+        correct: 1,
+        explanation: '匹 (hiki) is for small/medium animals. Cats are small → 匹. (Korean: 마리)'
+      },
+      {
+        question: 'You want to say "5th floor." What is the correct reading of 五階?',
+        choices: ['gokai', 'gogai', 'gokkai', 'itsukai'],
+        correct: 0,
+        explanation: '五階 = gokai. No sound change at 5! Sound changes happen at 1, 3, 6, 8, 10.'
+      },
+      {
+        question: '"One more time, please" in Japanese is:',
+        choices: ['もう一本お願いします', 'もう一枚お願いします', 'もう一回お願いします', 'もう一杯お願いします'],
+        correct: 2,
+        explanation: '回 (kai) counts times/occurrences. 一回 (ikkai) = one time. もう一回 = one more time. (Korean: 한 번 더)'
+      },
+      {
+        question: 'Which counter would you use for 4 bananas?',
+        choices: ['四個 (yonko)', '四本 (yonhon)', '四枚 (yonmai)', '四匹 (yonhiki)'],
+        correct: 1,
+        explanation: '本 (hon) is for long, thin objects. Bananas are long and cylindrical → 本.'
+      },
+      {
+        question: 'How do you say "How old are you?" politely in Japanese?',
+        choices: ['何歳ですか', 'いくらですか', 'おいくつですか', '何人ですか'],
+        correct: 2,
+        explanation: 'おいくつですか (oikutsu desu ka) is the polite way to ask age, using the generic counter with honorific お prefix.'
+      },
+      {
+        question: 'You need to say you have 2 computers. Which is correct?',
+        choices: ['パソコンが二台あります', 'パソコンが二個あります', 'パソコンが二冊あります', 'パソコンが二本あります'],
+        correct: 0,
+        explanation: '台 (dai) is for machines and electronics. パソコン (personal computer) → 台. (Korean: 대)'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 5: Sentence Builder with Counters ───
+QuizEngine.SentenceBuilder(
+  document.getElementById('quiz-counter-builder'),
+  {
+    title: 'Build Counter Sentences',
+    sentences: [
+      {
+        hint: 'Say "Two beers, please" -- <span class="kr">맥주 두 잔 주세요</span>:',
+        words: ['ビール', '二杯', 'お願いします'],
+        correct: 'ビール二杯お願いします'
+      },
+      {
+        hint: 'Say "I have one cat" -- <span class="kr">고양이 한 마리 있어요</span>:',
+        words: ['猫が', '一匹', 'います'],
+        correct: '猫が一匹います'
+      },
+      {
+        hint: 'Say "Three tickets, please" -- <span class="kr">세 장 주세요</span>:',
+        words: ['三枚', 'ください'],
+        correct: '三枚ください'
+      },
+      {
+        hint: 'Say "Where is the 3rd floor?" -- <span class="kr">3층이 어디예요?</span>:',
+        words: ['三階は', 'どこですか'],
+        correct: '三階はどこですか'
+      },
+      {
+        hint: 'Say "One more time, please" -- <span class="kr">한 번 더 부탁합니다</span>:',
+        words: ['もう', '一回', 'お願いします'],
+        correct: 'もう一回お願いします'
+      },
+      {
+        hint: 'Say "Please give me 5 apples" -- <span class="kr">사과 다섯 개 주세요</span>:',
+        words: ['りんごを', '五個', 'ください'],
+        correct: 'りんごを五個ください'
+      },
+      {
+        hint: 'Say "I am 25 years old" -- <span class="kr">스물다섯 살이에요</span>:',
+        words: ['二十五歳', 'です'],
+        correct: '二十五歳です'
+      },
+      {
+        hint: 'Say "Please give me 3 of this book" -- <span class="kr">이 책 세 권 주세요</span>:',
+        words: ['この本を', '三冊', 'ください'],
+        correct: 'この本を三冊ください'
+      }
+    ]
+  }
+);
+</script>
+</body>
+</html>

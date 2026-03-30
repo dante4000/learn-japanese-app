@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ch15: 실전 일본어 독해 — Zero to Hero 日本語</title>
+<link rel="stylesheet" href="css/design-system.css">
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <span class="logo-badge">Zero to Hero — 기억 설계 에디션</span>
+    <div class="logo-title">한국어 화자를 위한 日本語</div>
+    <div class="logo-sub">한국어에서 日本語로 — 기억 설계자의 안내서</div>
+  </a>
+  <div class="sidebar-progress">
+    <div class="sidebar-progress-label">진행률</div>
+    <div class="sidebar-progress-bar">
+      <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+    </div>
+    <div class="sidebar-progress-count">0/22 완료</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="ch-00.html" class="toc-link"><span class="toc-num">00</span><span class="toc-check" data-ch="00"></span>기억 과학</a>
+    <a href="ch-01.html" class="toc-link"><span class="toc-num">01</span><span class="toc-check" data-ch="01"></span>한국어의 이점</a>
+    <a href="ch-02.html" class="toc-link"><span class="toc-num">02</span><span class="toc-check" data-ch="02"></span>히라가나</a>
+    <a href="ch-03.html" class="toc-link"><span class="toc-num">03</span><span class="toc-check" data-ch="03"></span>가타카나</a>
+    <a href="ch-04.html" class="toc-link"><span class="toc-num">04</span><span class="toc-check" data-ch="04"></span>발음</a>
+    <a href="ch-05.html" class="toc-link"><span class="toc-num">05</span><span class="toc-check" data-ch="05"></span>서바이벌 일본어</a>
+    <a href="ch-06.html" class="toc-link"><span class="toc-num">06</span><span class="toc-check" data-ch="06"></span>조수사</a>
+    <a href="ch-07.html" class="toc-link"><span class="toc-num">07</span><span class="toc-check" data-ch="07"></span>조사</a>
+    <a href="ch-08.html" class="toc-link"><span class="toc-num">08</span><span class="toc-check" data-ch="08"></span>동사 활용</a>
+    <a href="ch-09.html" class="toc-link"><span class="toc-num">09</span><span class="toc-check" data-ch="09"></span>일상 회화</a>
+    <a href="ch-10.html" class="toc-link"><span class="toc-num">10</span><span class="toc-check" data-ch="10"></span>문형</a>
+    <a href="ch-11.html" class="toc-link"><span class="toc-num">11</span><span class="toc-check" data-ch="11"></span>한자</a>
+    <a href="ch-12.html" class="toc-link"><span class="toc-num">12</span><span class="toc-check" data-ch="12"></span>한자어</a>
+    <a href="ch-13.html" class="toc-link"><span class="toc-num">13</span><span class="toc-check" data-ch="13"></span>고유어</a>
+    <a href="ch-14.html" class="toc-link"><span class="toc-num">14</span><span class="toc-check" data-ch="14"></span>경어</a>
+    <a href="ch-15.html" class="toc-link active"><span class="toc-num">15</span><span class="toc-check" data-ch="15"></span>독해</a>
+    <a href="ch-16.html" class="toc-link"><span class="toc-num">16</span><span class="toc-check" data-ch="16"></span>작문</a>
+    <a href="ch-17.html" class="toc-link"><span class="toc-num">17</span><span class="toc-check" data-ch="17"></span>청해</a>
+    <a href="ch-18.html" class="toc-link"><span class="toc-num">18</span><span class="toc-check" data-ch="18"></span>문화 화용론</a>
+    <a href="ch-19.html" class="toc-link"><span class="toc-num">19</span><span class="toc-check" data-ch="19"></span>JLPT와 그 너머</a>
+    <a href="ch-20.html" class="toc-link"><span class="toc-num">20</span><span class="toc-check" data-ch="20"></span>기억의 궁전</a>
+    <a href="ch-21.html" class="toc-link"><span class="toc-num">21</span><span class="toc-check" data-ch="21"></span>90일 스프린트</a>
+    <a href="appendices.html" class="toc-link" style="margin-top:.5rem;border-top:1px solid var(--border);padding-top:.8rem"><span class="toc-num">+</span>부록</a>
+  </nav>
+</aside>
+
+<div class="main">
+<div class="content-wrap">
+
+<section id="ch15" data-ch="15" style="padding-top:3rem">
+<h2><span class="ch-label">제15장</span>실전 일본어 독해 &mdash; 혼합 문자 독해 전략</h2>
+
+<div class="callout memory"><div class="callout-title">기억 기법 스포트라이트: 인터리빙</div><p>다양한 텍스트 유형을 섞어 읽으면 더 유연한 독해력이 형성됩니다.</p></div>
+
+<p>히라가나, 가타카나, 그리고 한자의 기초를 익혔습니다. 이제 실제 일본어를 읽을 시간입니다 &mdash; 웹사이트, 신문, 간판, 만화에 등장하는 일본어입니다. 실제 일본어는 세 가지 문자를 한 문장에서 혼합하며, 그 혼합을 해석하는 것은 별도의 기술입니다.</p>
+
+<div class="pq">
+  "일본어 독해는 하나의 문자를 해독하는 것이 아닙니다. 세 가지 문자를 동시에 탐색하는 것이며, 각각이 다른 신호를 전달합니다. 여러분의 한자 직감이 나침반입니다."
+</div>
+
+<!-- ─── RECALL CHECK (top of chapter, from Ch10-12) ─── -->
+<nav class="chapter-toc">
+  <details open>
+    <summary class="chapter-toc-title">이 장의 내용</summary>
+  <ol>
+    <li><a href="#복습-확인-제10-12장">복습 확인 — 제10-12장</a></li>
+    <li><a href="#제1절-세-가지-문자가-작동하는-모습">세 가지 문자가 작동하는 모습</a></li>
+    <li><a href="#제2절-매체-유형별-독해-전략">매체 유형별 독해 전략</a></li>
+    <li><a href="#제3절-한국어-화자의-의미-우선-전략">한국어 화자의 "의미 우선" 전략</a></li>
+    <li><a href="#제4절-유용한-독해-도구">유용한 독해 도구</a></li>
+    <li><a href="#제5절-실습-nhk-easy-news-가이드-분석">실습 — NHK Easy News 가이드 분석</a></li>
+    <li><a href="#인터랙티브-연습문제">인터랙티브 연습문제</a></li>
+    <li><a href="#복습-확인-제10-12장-복습">복습 확인 — 제10-12장 복습</a></li>
+  </ol>
+  </details>
+</nav>
+
+<h3 id="복습-확인-제10-12장">복습 확인 &mdash; 제10-12장</h3>
+<p>실전 독해에 들어가기 전에, 한자, 한자어, 고유어의 기초가 탄탄한지 확인합니다.</p>
+
+<div id="recall-check-top"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 1: COLOR-CODED SCRIPT DEMO
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="제1절-세-가지-문자가-작동하는-모습">세 가지 문자가 작동하는 모습</h3>
+
+<p>모든 일본어 문장은 세 가지 문자의 직물입니다. 각 문자는 특정한 역할을 합니다. 실제 문장을 색으로 구분하여 패턴을 살펴봅시다:</p>
+
+<div class="card" style="padding:1.5rem">
+  <p style="font-size:1.6rem;line-height:2.2;letter-spacing:.05em;margin-bottom:1rem">
+    <span style="color:#e74c3c;font-weight:600">東京</span><span style="color:#3498db">の</span><span style="color:#e74c3c">天気</span><span style="color:#3498db">は</span><span style="color:#e74c3c">今日</span><span style="color:#3498db">も</span><span style="color:#3498db">とても</span><span style="color:#e74c3c">暑</span><span style="color:#3498db">くて、</span><span style="color:#27ae60">アイスコーヒー</span><span style="color:#3498db">を</span><span style="color:#e74c3c">三</span><span style="color:#3498db">つも</span><span style="color:#e74c3c">飲</span><span style="color:#3498db">んでしまいました。</span>
+  </p>
+  <div style="display:flex;gap:1.5rem;flex-wrap:wrap;font-size:.85rem;margin-bottom:1rem">
+    <span><span style="display:inline-block;width:12px;height:12px;background:#e74c3c;border-radius:2px;vertical-align:middle;margin-right:.3rem"></span> <strong>한자</strong> &mdash; 의미를 담은 내용어</span>
+    <span><span style="display:inline-block;width:12px;height:12px;background:#3498db;border-radius:2px;vertical-align:middle;margin-right:.3rem"></span> <strong>히라가나</strong> &mdash; 문법, 조사, 활용 어미</span>
+    <span><span style="display:inline-block;width:12px;height:12px;background:#27ae60;border-radius:2px;vertical-align:middle;margin-right:.3rem"></span> <strong>가타카나</strong> &mdash; 외래어, 외국 이름, 강조</span>
+  </div>
+  <p style="font-size:.9rem;color:var(--text-muted);margin-bottom:.3rem"><strong>번역:</strong> 도쿄의 날씨는 오늘도 매우 더워서, 아이스커피를 세 잔이나 마셔버렸습니다.</p>
+  <p style="font-size:.85rem;color:var(--text-muted);margin-bottom:0"><strong>한국어 대응:</strong> <span class="kr">도쿄의 날씨는 오늘도 매우 더워서, 아이스커피를 세 잔이나 마셔버렸습니다.</span></p>
+</div>
+
+<div class="callout info">
+  <div class="callout-title">문자-기능 규칙</div>
+  <p><strong>한자</strong> = 내용(명사, 동사/형용사 어근). <strong>히라가나</strong> = 문법 접착제(조사, 어미, 기능어). <strong>가타카나</strong> = 외래어와 특수 강조. 이 구분은 거의 모든 일본어 텍스트에서 일관됩니다. 이것을 내재화하면, 눈이 한자에서 먼저 의미를 추출하고, 히라가나로 문법을 채우는 법을 배우게 됩니다 &mdash; 여러분의 한자 직감이 이미 작동하는 방식과 정확히 같습니다.</p>
+</div>
+
+<h4>문자별 기능 일람</h4>
+<table>
+  <thead>
+    <tr><th>문자</th><th>주요 역할</th><th>예시</th><th>한국어 대응</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong style="color:#e74c3c">漢字</strong></td>
+      <td>내용어: 명사, 동사/형용사 어근</td>
+      <td class="jp">食べる、学校、美しい</td>
+      <td class="kr">한자어 내용어 (학교, 경제)</td>
+    </tr>
+    <tr>
+      <td><strong style="color:#3498db">ひらがな</strong></td>
+      <td>조사, 활용, 기능어, 후리가나</td>
+      <td class="jp">は、を、の、ている、から</td>
+      <td class="kr">조사와 어미 (은/는, 을/를, -고)</td>
+    </tr>
+    <tr>
+      <td><strong style="color:#27ae60">カタカナ</strong></td>
+      <td>외래어, 외국 이름, 의성어/의태어, 강조</td>
+      <td class="jp">コンピューター、パリ、ガタガタ</td>
+      <td class="kr">외래어 (컴퓨터, 파리)</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Mnemonic SVG: Three-script reading flow -->
+<div class="diagram">
+  <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg">
+    <!-- Kanji box -->
+    <rect x="30" y="50" width="170" height="120" rx="12" fill="none" stroke="#e74c3c" stroke-width="2"/>
+    <text x="115" y="85" text-anchor="middle" font-size="14" font-weight="600" fill="#e74c3c">漢字 (한자)</text>
+    <text x="115" y="108" text-anchor="middle" font-size="10" fill="var(--text-muted)">무엇을 말하는가</text>
+    <text x="115" y="125" text-anchor="middle" font-size="10" fill="var(--text-muted)">의미 전달자</text>
+    <text x="115" y="148" text-anchor="middle" font-size="10" fill="var(--text-muted)">= 한국어 한자어 어근</text>
+
+    <!-- Arrow 1 -->
+    <line x1="200" y1="110" x2="250" y2="110" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+    <!-- Hiragana box -->
+    <rect x="260" y="50" width="170" height="120" rx="12" fill="none" stroke="#3498db" stroke-width="2"/>
+    <text x="345" y="85" text-anchor="middle" font-size="14" font-weight="600" fill="#3498db">ひらがな</text>
+    <text x="345" y="108" text-anchor="middle" font-size="10" fill="var(--text-muted)">어떻게 연결되는가</text>
+    <text x="345" y="125" text-anchor="middle" font-size="10" fill="var(--text-muted)">문법 접착제</text>
+    <text x="345" y="148" text-anchor="middle" font-size="10" fill="var(--text-muted)">= 한국어 조사 + 어미</text>
+
+    <!-- Arrow 2 -->
+    <line x1="430" y1="110" x2="480" y2="110" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+    <!-- Katakana box -->
+    <rect x="490" y="50" width="180" height="120" rx="12" fill="none" stroke="#27ae60" stroke-width="2"/>
+    <text x="580" y="85" text-anchor="middle" font-size="14" font-weight="600" fill="#27ae60">カタカナ</text>
+    <text x="580" y="108" text-anchor="middle" font-size="10" fill="var(--text-muted)">무엇이 차용되었는가</text>
+    <text x="580" y="125" text-anchor="middle" font-size="10" fill="var(--text-muted)">외래어</text>
+    <text x="580" y="148" text-anchor="middle" font-size="10" fill="var(--text-muted)">= 한국어 외래어</text>
+
+    <!-- Bottom label -->
+    <text x="350" y="200" text-anchor="middle" font-size="11" fill="var(--text-muted)">독해 전략: 한자 먼저 (의미 파악) &rarr; 히라가나 (문법 해석) &rarr; 가타카나 (외래어 해독)</text>
+  </svg>
+  <div class="diagram-caption">세 문자 독해 흐름. 한자로 의미를 파악하고, 히라가나로 문법을 해석하고, 가타카나로 외래어를 해독합니다.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 2: READING BY MEDIA TYPE
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="제2절-매체-유형별-독해-전략">매체 유형별 독해 전략</h3>
+
+<p>매체 유형에 따라 일본어가 다른 방식으로 제시됩니다. 각각 고유한 관습, 난이도, 독해 전략이 있습니다.</p>
+
+<!-- ── 2A: Newspapers (NHK Easy News) ── -->
+<h4>A. 신문 &mdash; NHK Easy News (NHKやさしいにほんのニュース)</h4>
+
+<div class="card">
+  <h4 style="color:var(--accent)">여기서 시작하는 이유</h4>
+  <p><strong>NHK Easy News</strong> (NHK NEWS WEB EASY)는 실제 뉴스 기사를 간소화된 문법, 제한된 한자, 모든 한자 위에 후리가나를 붙여 다시 씁니다. 교과서 일본어와 실전 독해 사이의 간극을 메우는 데 가장 좋은 무료 자원입니다.</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem">
+    <div>
+      <p style="font-size:.85rem;font-weight:600;color:var(--a3)">특징:</p>
+      <ul style="font-size:.85rem;margin:0">
+        <li>모든 한자에 후리가나</li>
+        <li>간소화된 문법 (N4-N3 수준)</li>
+        <li>짧은 단락 (3-5문장)</li>
+        <li>음성 읽기 제공</li>
+        <li>호버 시 어휘 정의 표시</li>
+      </ul>
+    </div>
+    <div>
+      <p style="font-size:.85rem;font-weight:600;color:var(--a2)">한국어 화자의 이점:</p>
+      <ul style="font-size:.85rem;margin:0">
+        <li>뉴스 어휘는 한자어 비중이 높음 &mdash; 여러분의 한자어 지식이 빛납니다</li>
+        <li>격식체 문장 종결(ました、ています)이 예측 가능</li>
+        <li>주제 구조가 한국어 뉴스 기사와 유사</li>
+        <li><span class="kr">경제</span> = <span class="jp">経済</span>, <span class="kr">정부</span> = <span class="jp">政府</span>, <span class="kr">대통령</span> = <span class="jp">大統領</span></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="callout ok">
+  <div class="callout-title">신문 독해 전략</div>
+  <p><strong>1단계:</strong> 헤드라인을 읽습니다 &mdash; 대부분 한자입니다. 한자 지식으로 주제를 예측합니다.<br>
+  <strong>2단계:</strong> 한자 덩어리를 훑어봅니다 &mdash; 핵심 명사와 동사입니다. 대략적인 내용을 추측합니다.<br>
+  <strong>3단계:</strong> 히라가나를 읽어 문법을 채웁니다. 조사와 동사 어미에 주의합니다.<br>
+  <strong>4단계:</strong> 가타카나 단어를 확인합니다 &mdash; 대개 이미 알고 있는 영어 외래어입니다.</p>
+</div>
+
+<!-- ── 2B: Manga ── -->
+<h4>B. 만화 &mdash; 말투와 효과음</h4>
+
+<div class="card">
+  <h4 style="color:var(--accent)">만화가 독특하게 유용한 이유</h4>
+  <p>만화는 자연스러운 구어체 일본어를 제공합니다 &mdash; 반말, 축약형, 속어, 성별에 따른 말투, 감정 표현 &mdash; 그림이 이해를 도와주는 맥락 속에서 말입니다. 한국어 화자에게는, 만화가 한국 웹툰(<span class="kr">웹툰</span>)에서 반말을 사용하는 방식과 유사합니다.</p>
+
+  <table style="margin-top:1rem">
+    <thead>
+      <tr><th>만화 특징</th><th>만나게 되는 표현</th><th>한국어 대응</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>반말 축약형</td>
+        <td class="jp">～ている → ～てる<br>～てしまう → ～ちゃう</td>
+        <td class="kr">-하고 있어 → -하고 있어<br>(한국어는 축약이 적음)</td>
+      </tr>
+      <tr>
+        <td>문말 조사</td>
+        <td class="jp">よ、ね、ぞ、ぜ、わ、な</td>
+        <td class="kr">-요, -네, -지, -잖아</td>
+      </tr>
+      <tr>
+        <td>효과음 (擬音語)</td>
+        <td class="jp">ドキドキ (심장 박동)<br>ゴロゴロ (구르는/천둥)<br>シーン (침묵)</td>
+        <td class="kr">두근두근<br>우르르<br>쥐 죽은 듯</td>
+      </tr>
+      <tr>
+        <td>성별에 따른 말투</td>
+        <td class="jp">俺 vs 私 vs あたし<br>～だぜ vs ～だわ</td>
+        <td class="kr">성별 차이가 적지만 나 vs 저 같은 격식 차이 존재</td>
+      </tr>
+      <tr>
+        <td>강조를 위한 전체 가타카나 표기</td>
+        <td class="jp">ダメ！ (駄目 대신)</td>
+        <td class="kr">대문자 느낌</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="callout warn">
+  <div class="callout-title">정교화 질문</div>
+  <p><strong>왜 만화의 효과음은 히라가나가 아닌 가타카나로 쓸까요?</strong></p>
+  <p>생각해 보십시오: 가타카나는 각지고 날카로운 획을 가져 시각적으로 충격감을 전달합니다. 히라가나는 둥글고 부드럽습니다. 가타카나의 시각적 형태 자체가 날카로움, 돌발성, 이질감을 전달합니다 &mdash; 장면에 끼어드는 소리를 표현하는 의성어/의태어에 안성맞춤입니다. 이것은 문법 규칙이 아닌 디자인 선택입니다. 같은 단어가 산문에서는 히라가나로 나타나지만, 만화에서는 시각적 임팩트를 위해 가타카나로 바뀝니다.</p>
+</div>
+
+<!-- ── 2C: Web/Social Media ── -->
+<h4>C. 웹과 소셜 미디어 &mdash; 줄임말, 이모지, 인터넷 일본어</h4>
+
+<div class="card">
+  <h4 style="color:var(--accent)">디지털 일본어</h4>
+  <p>온라인 일본어는 격식을 낮추고 줄임말을 적극적으로 사용합니다. 한국 인터넷을 사용해 보셨다면, 이 패턴이 익숙하게 느껴질 것입니다.</p>
+
+  <table style="margin-top:1rem">
+    <thead>
+      <tr><th>패턴</th><th>일본어</th><th>한국어 대응</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>웃음</td>
+        <td class="jp">www / 笑 / 草</td>
+        <td class="kr">ㅋㅋㅋ</td>
+      </tr>
+      <tr>
+        <td>줄임말</td>
+        <td class="jp">おつ (お疲れ様에서)</td>
+        <td class="kr">ㅇㅋ (오케이에서)</td>
+      </tr>
+      <tr>
+        <td>이모티콘 (카오모지)</td>
+        <td class="jp">(^_^) (T_T) (・∀・)</td>
+        <td class="kr">ㅠㅠ ^^</td>
+      </tr>
+      <tr>
+        <td>문말 완화 표현</td>
+        <td class="jp">～かな / ～かも</td>
+        <td class="kr">～인 듯 / ～일지도</td>
+      </tr>
+      <tr>
+        <td>의도적 오기</td>
+        <td class="jp">すごい → すげー<br>やばい → やべー</td>
+        <td class="kr">대박 → ㄷㅂ</td>
+      </tr>
+      <tr>
+        <td>조사 생략</td>
+        <td class="jp">これ美味しい！(は 생략)</td>
+        <td class="kr">이거 맛있어! (는 생략)</td>
+      </tr>
+      <tr>
+        <td>해시태그 스타일</td>
+        <td class="jp">#今日のコーデ #カフェ巡り</td>
+        <td class="kr">#오늘의코디 #카페투어</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="callout info">
+  <div class="callout-title">www = ㅋㅋㅋ 설명</div>
+  <p><span class="jp">笑う</span> (웃다) &rarr; <span class="jp">笑</span>로 축약 &rarr; <span class="jp">w</span>로 (warai에서) &rarr; 강도에 따라 <span class="jp">www</span> 또는 <span class="jp">wwwww</span>로 연속. w가 쌓이면 풀처럼 보이기 때문에, 인터넷 사용자들은 큰 웃음을 <span class="jp">草</span>(풀) 또는 <span class="jp">草生える</span>(풀이 자란다)라고 합니다. 한국어에서 <span class="kr">ㅋ</span>이 <span class="kr">ㅋㅋㅋㅋ</span>으로 겹치는 것과 정확히 같습니다.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 3: KOREAN "MEANING-FIRST" STRATEGY
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="제3절-한국어-화자의-의미-우선-전략">한국어 화자의 "의미 우선" 전략</h3>
+
+<p>한자 지식을 가진 한국어 화자로서, 여러분에게는 영어 화자에게는 없는 독해 초능력이 있습니다: 문법을 하나도 모르는 상태에서도 한자 덩어리에서 의미를 추출할 수 있다는 것입니다. 이것이 여러분의 <strong>의미 우선 전략</strong>입니다.</p>
+
+<div class="card" style="padding:1.5rem">
+  <h4 style="color:var(--accent)">데모: 한 번도 공부한 적 없는 문장 읽기</h4>
+  <p style="font-size:1.3rem;line-height:2;margin-bottom:1rem" class="jp">日本政府は新しい経済政策を発表しました。</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+    <div>
+      <p style="font-size:.85rem;font-weight:600;color:var(--a3)">1단계: 한자 덩어리 추출</p>
+      <ul style="font-size:.85rem;margin:0">
+        <li><span class="jp">日本</span> &rarr; <span class="kr">일본</span> = 일본</li>
+        <li><span class="jp">政府</span> &rarr; <span class="kr">정부</span> = 정부</li>
+        <li><span class="jp">経済</span> &rarr; <span class="kr">경제</span> = 경제</li>
+        <li><span class="jp">政策</span> &rarr; <span class="kr">정책</span> = 정책</li>
+        <li><span class="jp">発表</span> &rarr; <span class="kr">발표</span> = 발표</li>
+      </ul>
+    </div>
+    <div>
+      <p style="font-size:.85rem;font-weight:600;color:var(--a2)">2단계: 대략적 의미 파악</p>
+      <p style="font-size:.85rem">일본 + 정부 + 경제 + 정책 + 발표<br>
+      &rarr; "일본 정부가 경제 정책을 발표했다."</p>
+      <p style="font-size:.85rem;font-weight:600;color:var(--accent);margin-top:.5rem">3단계: 문법 채우기</p>
+      <p style="font-size:.85rem"><span class="jp">は</span> = 주제 조사, <span class="jp">新しい</span> = 새로운, <span class="jp">を</span> = 목적격 조사, <span class="jp">しました</span> = 했습니다 (과거 정중형)</p>
+    </div>
+  </div>
+  <p style="font-size:.88rem;color:var(--a3);margin-top:1rem;margin-bottom:0"><strong>전체 의미:</strong> 일본 정부가 새로운 경제 정책을 발표했습니다. &mdash; 한자/한자어 지식만으로 80%를 파악했습니다.</p>
+</div>
+
+<div class="callout warn">
+  <div class="callout-title">정교화 질문</div>
+  <p><strong>왜 이 "의미 우선" 전략이 중국어 화자보다 한국어 화자에게 더 잘 작동할까요?</strong></p>
+  <p>중국어 화자도 한자를 읽을 수 있지만, 그들의 문법은 SVO로 &mdash; 일본어 SOV와 완전히 다릅니다. 한국어 화자는 이중 이점을 얻습니다: 한자 의미 추출에 <em>더하여</em> 일본어와 1:1로 대응하는 문법 구조. <span class="jp">政府は…を発表しました</span>를 볼 때, は/を/しました 패턴은 <span class="kr">정부는…을/를 발표했습니다</span>와 동일합니다. 중국어 화자는 이 문법 전이를 할 수 없습니다.</p>
+</div>
+
+<h4>추가 "의미 우선" 예문</h4>
+<table>
+  <thead>
+    <tr><th>일본어 문장</th><th>한자 &rarr; 한국 한자어</th><th>즉각적 의미 파악</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="jp">国際会議が来月開催される</td>
+      <td class="kr">국제(国際) 회의(会議) 내월(来月) 개최(開催)</td>
+      <td>국제 회의가 다음 달 개최</td>
+    </tr>
+    <tr>
+      <td class="jp">環境問題について議論した</td>
+      <td class="kr">환경(環境) 문제(問題) 의론(議論)</td>
+      <td>환경 문제에 대해 논의했다</td>
+    </tr>
+    <tr>
+      <td class="jp">大学の入学試験が始まった</td>
+      <td class="kr">대학(大学) 입학(入学) 시험(試験)</td>
+      <td>대학 입학 시험이 시작되었다</td>
+    </tr>
+    <tr>
+      <td class="jp">新幹線の運行が再開された</td>
+      <td class="kr">신간선(新幹線) 운행(運行) 재개(再開)</td>
+      <td>신칸센 운행이 재개되었다</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 4: USEFUL READING TOOLS
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="제4절-유용한-독해-도구">유용한 독해 도구</h3>
+
+<p>적절한 도구는 독해 실력 향상을 크게 가속화합니다. 다음은 필수 도구들입니다:</p>
+
+<div class="card-grid">
+  <div class="card">
+    <h4><span class="transfer-tag full" style="font-size:.75rem">무료</span> 사전</h4>
+    <ul style="font-size:.85rem">
+      <li><strong>Jisho.org</strong> &mdash; 영일 사전, 부수/획수/필기로 한자 검색 가능</li>
+      <li><strong>Weblio</strong> &mdash; 일일 사전(단일 언어, 중급 이상용)</li>
+      <li><strong>Naver 일본어 사전</strong> &mdash; 일한 사전, 한국어 화자에게 최적</li>
+      <li><strong>NAVER Papago</strong> &mdash; 일본어-한국어 기계번역 (영어보다 더 적합)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4><span class="transfer-tag full" style="font-size:.75rem">무료</span> 브라우저 확장</h4>
+    <ul style="font-size:.85rem">
+      <li><strong>Yomitan</strong> (구 Yomichan) &mdash; 일본어 텍스트 위에 마우스를 올리면 읽기, 의미, 악센트 표시</li>
+      <li><strong>10ten Japanese Reader</strong> &mdash; 유사한 호버 읽기 기능</li>
+      <li><strong>rikaikun</strong> &mdash; 크롬용 경량 대안</li>
+    </ul>
+    <p style="font-size:.82rem;color:var(--text-muted);margin-bottom:0">이 중 하나를 설치하면 모든 일본어 웹페이지가 학습 환경이 됩니다.</p>
+  </div>
+  <div class="card">
+    <h4><span class="transfer-tag partial" style="font-size:.75rem">다양</span> 독해 앱</h4>
+    <ul style="font-size:.85rem">
+      <li><strong>NHK NEWS WEB EASY</strong> &mdash; 후리가나가 있는 간소화 뉴스 (무료)</li>
+      <li><strong>Satori Reader</strong> &mdash; 문법 주석이 있는 단계별 읽기 (유료)</li>
+      <li><strong>Tadoku</strong> &mdash; 무료 단계별 읽기 자료 (레벨 0-5)</li>
+      <li><strong>BookLive / Amazon.co.jp</strong> &mdash; 일본어 전자책과 만화</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4><span class="transfer-tag partial" style="font-size:.75rem">팁</span> 한국어 화자 전용 전략</h4>
+    <ul style="font-size:.85rem">
+      <li>영어 사전보다 <strong>네이버 사전</strong>을 사용하십시오 &mdash; 일한 정의가 더 정확합니다</li>
+      <li>모르는 한자는 먼저 <strong>한자음</strong>으로 검색해 보십시오</li>
+      <li>같은 주제의 <strong>KBS/MBC 한국어 뉴스</strong>와 일본어 뉴스를 나란히 읽으며 병행 학습하십시오</li>
+      <li>스마트폰 언어를 일본어로 설정하십시오 &mdash; 익숙한 인터페이스를 통한 일상 노출</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 5: NHK EASY NEWS GUIDED ANALYSIS
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="제5절-실습-nhk-easy-news-가이드-분석">실습 &mdash; NHK Easy News 가이드 분석</h3>
+
+<p>NHK Easy News 스타일의 실전 단락을 함께 분석해 봅시다. 읽은 다음, 아래의 가이드 분석을 따라가십시오.</p>
+
+<div class="card" style="padding:1.5rem;border-left:4px solid var(--accent)">
+  <p style="font-size:.82rem;color:var(--text-muted);margin-bottom:.5rem">NHK Easy News 스타일 지문 (간소화)</p>
+  <p style="font-size:1.15rem;line-height:2.2" class="jp">
+    日本で外国人の観光客がとても増えています。去年は約三千万人が日本に来ました。政府は二〇三〇年までに六千万人にしたいと言っています。しかし、観光客が増えると、ホテルが足りなくなったり、電車が混んだりする問題もあります。
+  </p>
+</div>
+
+<h4>가이드 분석</h4>
+
+<div class="card" style="padding:1.5rem">
+  <p style="font-size:.85rem;font-weight:600;color:var(--a3)">1단계: 한자 덩어리 추출 (의미 우선)</p>
+  <table style="font-size:.88rem">
+    <thead><tr><th>한자</th><th>한국 한자어</th><th>의미</th></tr></thead>
+    <tbody>
+      <tr><td class="jp">外国人</td><td class="kr">외국인 (外國人)</td><td>외국인</td></tr>
+      <tr><td class="jp">観光客</td><td class="kr">관광객 (觀光客)</td><td>관광객</td></tr>
+      <tr><td class="jp">増える</td><td class="kr">증(增) = 증가</td><td>증가하다</td></tr>
+      <tr><td class="jp">去年</td><td class="kr">거년/작년 (去年)</td><td>작년</td></tr>
+      <tr><td class="jp">約</td><td class="kr">약 (約)</td><td>약, 대략</td></tr>
+      <tr><td class="jp">三千万人</td><td class="kr">삼천만 명</td><td>3천만 명</td></tr>
+      <tr><td class="jp">政府</td><td class="kr">정부 (政府)</td><td>정부</td></tr>
+      <tr><td class="jp">問題</td><td class="kr">문제 (問題)</td><td>문제</td></tr>
+    </tbody>
+  </table>
+
+  <p style="font-size:.85rem;font-weight:600;color:var(--a2);margin-top:1rem">2단계: 문법 주석</p>
+  <ul style="font-size:.85rem">
+    <li><span class="jp">増えています</span> &mdash; <span class="jp">ている</span>형 = 진행/상태. <span class="kr">"증가하고 있습니다"</span></li>
+    <li><span class="jp">約三千万人が…来ました</span> &mdash; 과거 정중형. <span class="kr">"약 3천만 명이 왔습니다"</span></li>
+    <li><span class="jp">～にしたいと言っています</span> &mdash; ~으로 하고 싶다고 말하고 있다. <span class="kr">"~으로 하고 싶다고 말하고 있습니다"</span></li>
+    <li><span class="jp">しかし</span> &mdash; 그러나. <span class="kr">"그러나"</span></li>
+    <li><span class="jp">～たり…たりする</span> &mdash; 동작 나열(~하기도 하고). <span class="kr">"~하기도 하고 ~하기도 하다"</span></li>
+  </ul>
+
+  <p style="font-size:.85rem;font-weight:600;color:var(--accent);margin-top:1rem">3단계: 전체 번역</p>
+  <p style="font-size:.88rem;color:var(--text-muted);margin-bottom:0">일본에서 외국인 관광객이 크게 증가하고 있습니다. 작년에는 약 3천만 명이 일본을 방문했습니다. 정부는 2030년까지 6천만 명으로 늘리고 싶다고 말하고 있습니다. 그러나 관광객이 늘어나면, 호텔이 부족해지거나 전철이 붐비는 등의 문제도 있습니다.</p>
+</div>
+
+<div class="callout info">
+  <div class="callout-title">독해 난이도 단계</div>
+  <p><strong>레벨 1:</strong> NHK Easy News, 아동 도서, 단계별 읽기 자료 (N5-N4)<br>
+  <strong>레벨 2:</strong> 일반 NHK 뉴스, 간단한 만화, 블로그 글 (N3)<br>
+  <strong>레벨 3:</strong> 신문 기사, 라이트 노벨, 비즈니스 이메일 (N2)<br>
+  <strong>레벨 4:</strong> 학술 논문, 문학 소설, 법률 문서 (N1)<br>
+  쉽게 느껴지더라도 레벨 1부터 시작하십시오. 목표는 난이도가 아닌 독해량입니다.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     INTERACTIVE EXERCISES
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="인터랙티브-연습문제">인터랙티브 연습문제</h3>
+
+<!-- Quiz 1: FillBlank -- reading comprehension from passage -->
+<div id="quiz-reading-comprehension"></div>
+
+<!-- Quiz 2: MultipleChoice -- identify script types and functions -->
+<div id="quiz-script-functions"></div>
+
+<!-- Quiz 3: MultipleChoice -- media type reading strategies -->
+<div id="quiz-media-strategies"></div>
+
+<!-- Quiz 4: Drag Match -- kanji to Korean hanja meaning -->
+<div id="quiz-kanji-hanja"></div>
+
+<!-- Quiz 5: Recall Check from Ch10-12 (bottom) -->
+<h3 id="복습-확인-제10-12장-복습">복습 확인 &mdash; 제10-12장 복습</h3>
+<p>이전 장의 한자, 한자어, 고유어 종합 복습입니다.</p>
+
+<div id="quiz-recall-bottom"></div>
+
+<!-- Mark as Complete -->
+<button class="chapter-complete" data-ch="15">완료 표시 &#10003;</button>
+
+<div style="display:flex;justify-content:space-between;margin:2rem 0">
+  <a href="ch-14.html" class="quiz-btn secondary">&larr; 제15장: 경어</a>
+  <a href="ch-16.html" class="quiz-btn">다음: 제17장 -- 작문 &rarr;</a>
+</div>
+
+</section>
+
+</div>
+
+
+</div>
+
+<footer>
+  <p>Zero to Hero: 日本語 for Korean Speakers &middot; 제15장</p>
+</footer>
+
+<script src="js/shared.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/quiz-engine.js"></script>
+<script src="js/spaced-repetition.js"></script>
+<script src="js/memory-palace.js"></script>
+<script>
+// ─── 복습 확인 (장 시작, 제10-12장에서) ───
+QuizEngine.RecallCheck(
+  document.getElementById('recall-check-top'),
+  {
+    fromChapters: 'Ch10-12',
+    items: [
+      { question: '제11장: 한자의 두 가지 읽기 유형은 무엇입니까?', answer: '音読み (한자어/음독) 과 訓読み (고유 일본어/훈독)' },
+      { question: '제11장: 한국어 ㅎ은 일본어 음독에서 주로 어떤 자음에 대응합니까?', answer: '한국어 ㅎ은 주로 일본어 k에 대응. 예: 학 (hak) → 学 (gaku)' },
+      { question: '제12장: 경제(경제)에 해당하는 일본어 한자어는 무엇입니까?', answer: '経済 (けいざい)' },
+      { question: '제12장: 약속은 일본어로 무엇입니까?', answer: '約束 (やくそく) — 약속' },
+      { question: '제13장: "물"의 일본어 고유어는 무엇입니까?', answer: '水 (みず)' },
+      { question: '제13장: 일본어 고유어 신체 부위 단어를 두 개 말하십시오.', answer: '예: 目 (め, 눈), 手 (て, 손), 口 (くち, 입), 耳 (みみ, 귀)' }
+    ]
+  }
+);
+
+// ─── 퀴즈 1: 빈칸 채우기 -- 지문 독해 ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-reading-comprehension'),
+  {
+    title: '독해 문제',
+    questions: [
+      {
+        prompt: 'NHK 지문에서: 작년에 일본을 방문한 관광객 수는? 일본어 한자로 쓰십시오.',
+        answer: '約三千万人',
+        acceptAlso: ['三千万人', '約三千万'],
+        explanation: '約三千万人が日本に来ました — 약 3천만 명.',
+        korean: '약 삼천만 명'
+      },
+      {
+        prompt: 'NHK 지문에서: 정부가 6천만 명을 달성하려는 목표 연도는 언제입니까?',
+        answer: '二〇三〇年',
+        acceptAlso: ['2030年', '2030', '二〇三〇'],
+        explanation: '政府は二〇三〇年までに六千万人にしたいと言っています。',
+        korean: '2030년'
+      },
+      {
+        prompt: 'NHK 지문에서: 언급된 두 가지 문제는 무엇입니까? 하나를 일본어로 쓰십시오.',
+        answer: 'ホテルが足りない',
+        acceptAlso: ['電車が混む', 'ホテルが足りなくなる', '電車が混んだりする', 'ホテル', '電車'],
+        explanation: 'ホテルが足りなくなったり、電車が混んだりする — 호텔 부족, 전철 혼잡.',
+        korean: '호텔이 부족하다 / 전철이 붐비다'
+      }
+    ]
+  }
+);
+
+// ─── 퀴즈 2: 객관식 -- 문자 유형과 기능 식별 ───
+QuizEngine.MultipleChoice(
+  document.getElementById('quiz-script-functions'),
+  {
+    title: '문자 유형과 기능',
+    questions: [
+      {
+        prompt: '東京でコンサートがありました 문장에서, 가타카나로 쓰인 단어는 무엇이며 어떤 신호를 전달합니까?',
+        options: [
+          '東京 — 한자로 쓰인 지명',
+          'コンサート — 외래어 (concert)',
+          'ありました — 히라가나로 쓰인 과거형',
+          'が — 주격 조사'
+        ],
+        correctIndex: 1,
+        explanation: 'コンサート는 영어에서 온 외래어 "concert"를 가타카나로 표기한 것입니다.'
+      },
+      {
+        prompt: '혼합 문자 문장에서 히라가나의 주된 기능은 무엇입니까?',
+        options: [
+          '의미를 담은 내용어 표현',
+          '외래어 표기',
+          '문법 제공: 조사, 동사 어미, 기능어',
+          '중요한 단어 강조'
+        ],
+        correctIndex: 2,
+        explanation: '히라가나는 문법 접착제를 담당합니다 — 조사(は、を、の), 동사 활용 어미, ている 같은 기능어.'
+      },
+      {
+        prompt: '만화 칸에서 ドキドキ를 봤습니다. 이것은 무엇입니까?',
+        options: [
+          '등장인물 이름',
+          '영어에서 온 외래어',
+          '심장 박동을 나타내는 의성어(효과음)',
+          '속어 줄임말'
+        ],
+        correctIndex: 2,
+        explanation: 'ドキドキ는 심장 박동/긴장감을 나타내는 기음어(擬音語)입니다. 한국어 대응: 두근두근.'
+      },
+      {
+        prompt: '일본 소셜 미디어에서 www는 무슨 뜻입니까?',
+        options: [
+          'World Wide Web',
+          '웃음 (笑う → わらう → w에서)',
+          'ん의 오타',
+          'わかりません의 줄임말'
+        ],
+        correctIndex: 1,
+        explanation: '笑う (웃다) → warai → w → 반복 웃음을 위해 www. 한국어 ㅋㅋㅋ에 해당합니다.'
+      }
+    ]
+  }
+);
+
+// ─── 퀴즈 3: 객관식 -- 매체 유형별 독해 전략 ───
+QuizEngine.MultipleChoice(
+  document.getElementById('quiz-media-strategies'),
+  {
+    title: '매체 유형별 독해 전략',
+    questions: [
+      {
+        prompt: '이 과정의 제14장을 마친 학습자에게 가장 적합한 읽기 자료는 무엇입니까?',
+        options: [
+          '朝日新聞의 사설',
+          'NHK NEWS WEB EASY (후리가나가 있는 간소화 뉴스)',
+          '무라카미 하루키의 문학 소설',
+          '대학 수준의 학술 논문'
+        ],
+        correctIndex: 1,
+        explanation: 'NHK Easy News는 간소화된 문법, 후리가나가 있는 제한된 한자, 짧은 단락을 사용하여 중급 학습자에게 이상적입니다.'
+      },
+      {
+        prompt: '한자가 많은 일본어 뉴스 헤드라인을 읽을 때, 한국어 화자가 먼저 해야 할 일은 무엇입니까?',
+        options: [
+          '모든 단어를 사전에서 찾는다',
+          '히라가나 조사를 식별하려고 한다',
+          '한자 덩어리를 추출하고 한자어 지식과 대조하여 즉각적 의미를 파악한다',
+          '건너뛰고 영어 번역을 찾는다'
+        ],
+        correctIndex: 2,
+        explanation: '의미 우선 전략: 한자 덩어리를 추출하고, 한국어 한자어(정부, 경제, 발표...)와 대조하여, 문법을 해석하기 전에 대략적 의미를 파악합니다.'
+      },
+      {
+        prompt: '만화가 자연스러운 구어 일본어 학습에 유용한 이유는 무엇입니까?',
+        options: [
+          '만화는 격식체 경어만 사용한다',
+          '만화는 모든 한자에 후리가나가 있다',
+          '만화는 반말 축약형, 속어, 성별별 말투를 시각적 맥락과 함께 제공한다',
+          '만화는 가타카나만 사용한다'
+        ],
+        correctIndex: 2,
+        explanation: '만화는 반말 구어체(てる、ちゃう、문말 조사)가 풍부하며, 이해를 돕는 그림이 함께 있습니다.'
+      }
+    ]
+  }
+);
+
+// ─── 퀴즈 4: 드래그 매치 -- 한자 복합어와 한국 한자어 매칭 ───
+QuizEngine.DragMatch(
+  document.getElementById('quiz-kanji-hanja'),
+  {
+    title: '한자-한자어 의미 매칭',
+    instruction: '각 일본어 한자 복합어와 한국어 한자어 대응을 연결하십시오:',
+    pairs: [
+      { left: '観光客', right: '관광객 (관광객)' },
+      { left: '政府', right: '정부 (정부)' },
+      { left: '環境', right: '환경 (환경)' },
+      { left: '問題', right: '문제 (문제)' },
+      { left: '発表', right: '발표 (발표)' },
+      { left: '国際', right: '국제 (국제)' }
+    ]
+  }
+);
+
+// ─── 퀴즈 5: 제10-12장 복습 확인 (하단) ───
+QuizEngine.RecallCheck(
+  document.getElementById('quiz-recall-bottom'),
+  {
+    fromChapters: 'Ch10-12',
+    items: [
+      { question: '제11장: "산"의 한자를 쓰고 두 가지 읽기를 말하십시오.', answer: '山 — 音読み: サン, 訓読み: やま' },
+      { question: '제12장: 도서관(도서관)에 해당하는 일본어 단어는?', answer: '図書館 (としょかん)' },
+      { question: '제12장: 전화(전화)에 해당하는 일본어 단어는?', answer: '電話 (でんわ)' },
+      { question: '제13장: 飲む (마시다)의 て형을 쓰십시오.', answer: '飲んで (む→んで 패턴)' },
+      { question: '제13장: "꽃"의 일본어 고유어는 무엇입니까?', answer: '花 (はな)' },
+      { question: '제11장: 学生은 어떤 읽기를 사용합니까 — 音読み 아니면 訓読み?', answer: '音読み — がくせい (두 글자 모두 음독 사용)' }
+    ]
+  }
+);
+</script>
+</body>
+</html>

@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ch19: JLPT와 그 너머 — Zero to Hero 日本語</title>
+<link rel="stylesheet" href="css/design-system.css">
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="테마 전환">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <span class="logo-badge">Zero to Hero — 기억 설계 에디션</span>
+    <div class="logo-title">한국어 화자를 위한 日本語</div>
+    <div class="logo-sub">한국어에서 日本語로 — 기억 설계자의 안내서</div>
+  </a>
+  <div class="sidebar-progress">
+    <div class="sidebar-progress-label">진행률</div>
+    <div class="sidebar-progress-bar">
+      <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+    </div>
+    <div class="sidebar-progress-count">0/22 완료</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="ch-00.html" class="toc-link"><span class="toc-num">00</span><span class="toc-check" data-ch="00"></span>기억 과학</a>
+    <a href="ch-01.html" class="toc-link"><span class="toc-num">01</span><span class="toc-check" data-ch="01"></span>한국어의 이점</a>
+    <a href="ch-02.html" class="toc-link"><span class="toc-num">02</span><span class="toc-check" data-ch="02"></span>히라가나</a>
+    <a href="ch-03.html" class="toc-link"><span class="toc-num">03</span><span class="toc-check" data-ch="03"></span>가타카나</a>
+    <a href="ch-04.html" class="toc-link"><span class="toc-num">04</span><span class="toc-check" data-ch="04"></span>발음</a>
+    <a href="ch-05.html" class="toc-link"><span class="toc-num">05</span><span class="toc-check" data-ch="05"></span>서바이벌 일본어</a>
+    <a href="ch-06.html" class="toc-link"><span class="toc-num">06</span><span class="toc-check" data-ch="06"></span>조수사</a>
+    <a href="ch-07.html" class="toc-link"><span class="toc-num">07</span><span class="toc-check" data-ch="07"></span>조사</a>
+    <a href="ch-08.html" class="toc-link"><span class="toc-num">08</span><span class="toc-check" data-ch="08"></span>동사 활용</a>
+    <a href="ch-09.html" class="toc-link"><span class="toc-num">09</span><span class="toc-check" data-ch="09"></span>일상 회화</a>
+    <a href="ch-10.html" class="toc-link"><span class="toc-num">10</span><span class="toc-check" data-ch="10"></span>문형</a>
+    <a href="ch-11.html" class="toc-link"><span class="toc-num">11</span><span class="toc-check" data-ch="11"></span>한자</a>
+    <a href="ch-12.html" class="toc-link"><span class="toc-num">12</span><span class="toc-check" data-ch="12"></span>한자어</a>
+    <a href="ch-13.html" class="toc-link"><span class="toc-num">13</span><span class="toc-check" data-ch="13"></span>고유어</a>
+    <a href="ch-14.html" class="toc-link"><span class="toc-num">14</span><span class="toc-check" data-ch="14"></span>경어</a>
+    <a href="ch-15.html" class="toc-link"><span class="toc-num">15</span><span class="toc-check" data-ch="15"></span>독해</a>
+    <a href="ch-16.html" class="toc-link"><span class="toc-num">16</span><span class="toc-check" data-ch="16"></span>작문</a>
+    <a href="ch-17.html" class="toc-link"><span class="toc-num">17</span><span class="toc-check" data-ch="17"></span>청해</a>
+    <a href="ch-18.html" class="toc-link"><span class="toc-num">18</span><span class="toc-check" data-ch="18"></span>문화 화용론</a>
+    <a href="ch-19.html" class="toc-link active"><span class="toc-num">19</span><span class="toc-check" data-ch="19"></span>JLPT와 그 너머</a>
+    <a href="ch-20.html" class="toc-link"><span class="toc-num">20</span><span class="toc-check" data-ch="20"></span>기억의 궁전</a>
+    <a href="ch-21.html" class="toc-link"><span class="toc-num">21</span><span class="toc-check" data-ch="21"></span>90일 스프린트</a>
+    <a href="appendices.html" class="toc-link" style="margin-top:.5rem;border-top:1px solid var(--border);padding-top:.8rem"><span class="toc-num">+</span>부록</a>
+  </nav>
+</aside>
+
+<div class="main">
+<div class="content-wrap">
+
+<section id="ch19" data-ch="19" style="padding-top:3rem">
+<h2><span class="ch-label">제19장</span>JLPT와 그 너머 &mdash; 진정한 유창함으로의 길</h2>
+<div class="callout memory"><div class="callout-title">기억 기법 스포트라이트: 적정 난이도</div><p>JLPT 대비는 약간 어려운 수준에서 연습해야 효과적입니다.</p></div>
+
+<p>이 장은 여정의 끝이 아닙니다 -- <strong>시작점</strong>입니다. 앞선 17개 장에 걸쳐 문법 구조, 한자 전략, 경어, 독해, 작문, 청해, 문화 화용론을 학습했습니다. 이제 그 지식을 <span class="jp">日本語能力試験</span> (JLPT)이라는 구체적 목표를 향해 통합하고, 시험을 넘어선 진정한 유창함으로의 길을 열어보겠습니다.</p>
+
+<div class="pq">
+  "한국어 화자인 여러분은 일본어를 배울 때 가장 유리한 위치에 있습니다. 영어 화자가 2,200시간 걸리는 것을, 그 절반도 안 되는 시간에 달성할 수 있습니다. 이미 절반을 알고 있기 때문입니다."
+</div>
+
+<!-- ─── RECALL CHECK ─── -->
+<div id="quiz-recall-top"></div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SECTION 1: JLPT STRUCTURE -->
+<!-- ══════════════════════════════════════════════════════ -->
+<nav class="chapter-toc">
+  <details open>
+    <summary class="chapter-toc-title">이 장의 내용</summary>
+  <ol>
+    <li><a href="#1-jlpt-구조----日本語能力試験의-전체-지도">JLPT 구조 -- 日本語能力試験의 전체 지도</a></li>
+    <li><a href="#2-n3-합격-계획-69개월">N3 합격 계획 (6~9개월)</a></li>
+    <li><a href="#3-n2-합격-계획-1218개월">N2 합격 계획 (12~18개월)</a></li>
+    <li><a href="#4-jlpt-영역별-한국어-화자-전략">JLPT 영역별 한국어 화자 전략</a></li>
+    <li><a href="#5-jlpt를-넘어서----진정한-유창함을-향해">JLPT를 넘어서 -- 진정한 유창함을 향해</a></li>
+    <li><a href="#대화형-연습-문제">대화형 연습 문제</a></li>
+  </ol>
+  </details>
+</nav>
+
+<h3 id="1-jlpt-구조----日本語能力試験의-전체-지도">JLPT 구조 -- <span class="jp">日本語能力試験</span>의 전체 지도</h3>
+
+<p>JLPT는 N5 (초급)부터 N1 (최상급)까지 5개 레벨로 구성됩니다. 각 레벨은 세 개의 시험 영역으로 나뉩니다: <span class="jp">言語知識</span> (어휘/문법), <span class="jp">読解</span> (독해), <span class="jp">聴解</span> (청해).</p>
+
+<table>
+  <thead>
+    <tr><th>레벨</th><th>한자</th><th>어휘</th><th>문법</th><th>시험 시간</th><th>합격률 (전체)</th><th>한국어 화자 이점</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>N5</strong></td>
+      <td>~100</td>
+      <td>~800</td>
+      <td>~50개 항목</td>
+      <td>105분</td>
+      <td>~45%</td>
+      <td><span class="transfer-tag full">매우 유리</span></td>
+    </tr>
+    <tr>
+      <td><strong>N4</strong></td>
+      <td>~300</td>
+      <td>~1,500</td>
+      <td>~120개 항목</td>
+      <td>125분</td>
+      <td>~35%</td>
+      <td><span class="transfer-tag full">매우 유리</span></td>
+    </tr>
+    <tr>
+      <td><strong>N3</strong></td>
+      <td>~650</td>
+      <td>~3,500</td>
+      <td>~200개 항목</td>
+      <td>140분</td>
+      <td>~35%</td>
+      <td><span class="transfer-tag partial">유리</span></td>
+    </tr>
+    <tr>
+      <td><strong>N2</strong></td>
+      <td>~1,000</td>
+      <td>~6,000</td>
+      <td>~300개 항목</td>
+      <td>155분</td>
+      <td>~35%</td>
+      <td><span class="transfer-tag partial">유리</span></td>
+    </tr>
+    <tr>
+      <td><strong>N1</strong></td>
+      <td>~2,000</td>
+      <td>~10,000</td>
+      <td>~400+개 항목</td>
+      <td>170분</td>
+      <td>~30%</td>
+      <td><span class="transfer-tag partial">부분적으로 유리</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">시험 구조 상세</div>
+  <p><strong>N5-N4:</strong> <span class="jp">言語知識</span> (<span class="jp">文字・語彙</span>) + <span class="jp">言語知識</span> (<span class="jp">文法</span>) / <span class="jp">読解</span> + <span class="jp">聴解</span> = 3개 영역</p>
+  <p><strong>N3-N1:</strong> <span class="jp">言語知識</span> (<span class="jp">文字・語彙・文法</span>) / <span class="jp">読解</span> + <span class="jp">聴解</span> = 2개 영역 (실제 내용은 같지만 채점 구조가 다릅니다)</p>
+  <p style="margin-bottom:0">모든 영역에서 <strong>영역별 기준점</strong>(19점/60점)을 넘어야 하며, <strong>총점 기준</strong>도 충족해야 합니다. 한 영역이라도 미달하면 전체 불합격입니다.</p>
+</div>
+
+<!-- Korean speaker advantage map per level -->
+<h4>레벨별 한국어 화자 이점 맵</h4>
+
+<div class="diagram">
+  <svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg">
+    <!-- Background bars -->
+    <text x="50" y="30" font-size="13" font-weight="600" fill="var(--heading)">한국어 화자 이점 (영어 화자 대비)</text>
+
+    <!-- N5 -->
+    <text x="50" y="65" font-size="12" fill="var(--heading)" font-weight="600">N5</text>
+    <rect x="100" y="50" width="520" height="22" rx="4" fill="var(--a3)" opacity=".7"/>
+    <text x="630" y="66" font-size="11" fill="var(--a3)">~85%</text>
+
+    <!-- N4 -->
+    <text x="50" y="105" font-size="12" fill="var(--heading)" font-weight="600">N4</text>
+    <rect x="100" y="90" width="468" height="22" rx="4" fill="var(--a3)" opacity=".65"/>
+    <text x="578" y="106" font-size="11" fill="var(--a3)">~75%</text>
+
+    <!-- N3 -->
+    <text x="50" y="145" font-size="12" fill="var(--heading)" font-weight="600">N3</text>
+    <rect x="100" y="130" width="390" height="22" rx="4" fill="var(--accent)" opacity=".6"/>
+    <text x="500" y="146" font-size="11" fill="var(--accent)">~65%</text>
+
+    <!-- N2 -->
+    <text x="50" y="185" font-size="12" fill="var(--heading)" font-weight="600">N2</text>
+    <rect x="100" y="170" width="312" height="22" rx="4" fill="var(--accent)" opacity=".5"/>
+    <text x="422" y="186" font-size="11" fill="var(--accent)">~55%</text>
+
+    <!-- N1 -->
+    <text x="50" y="225" font-size="12" fill="var(--heading)" font-weight="600">N1</text>
+    <rect x="100" y="210" width="234" height="22" rx="4" fill="var(--a2)" opacity=".5"/>
+    <text x="344" y="226" font-size="11" fill="var(--a2)">~45%</text>
+
+    <!-- Legend -->
+    <text x="50" y="270" font-size="10" fill="var(--text-muted)">= 한자어/문법 구조 전이에 의한 추정 학습 시간 절감</text>
+    <text x="50" y="290" font-size="10" fill="var(--text-muted)">N5-N4: 한자어 + SOV 구조로 대부분 커버 가능</text>
+    <text x="50" y="305" font-size="10" fill="var(--text-muted)">N1: 고유 일본어 표현/문어체는 전이 불가 -- 별도 학습 필요</text>
+  </svg>
+  <div class="diagram-caption">JLPT 레벨별 한국어 화자 전이 이점. 초급에서 이점이 가장 크고, 일본어 고유 영역이 커지는 상급에서는 줄어듭니다.</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SECTION 2: N3 PLAN -->
+<!-- ══════════════════════════════════════════════════════ -->
+<h3 id="2-n3-합격-계획-69개월">N3 합격 계획 (6~9개월)</h3>
+
+<p>N3는 <strong>일상 회화 + 간단한 독해</strong>를 테스트하는 레벨입니다. 한자어와 문법 구조 전이 덕분에, 한국어 화자는 영어 화자보다 훨씬 빠르게 이 레벨에 도달할 수 있습니다.</p>
+
+<h4>핵심 문법 항목</h4>
+<table>
+  <thead><tr><th>문법 패턴</th><th>의미</th><th>한국어 대응</th><th>예문</th></tr></thead>
+  <tbody>
+    <tr><td class="jp">～ようにする</td><td>~하도록 노력하다</td><td class="kr">~하도록 하다</td><td class="jp">毎日運動するようにしている</td></tr>
+    <tr><td class="jp">～ことにする</td><td>~하기로 결정하다</td><td class="kr">~하기로 하다</td><td class="jp">来月から日本語を勉強することにした</td></tr>
+    <tr><td class="jp">～ために</td><td>~하기 위해</td><td class="kr">~하기 위해</td><td class="jp">試験に受かるために毎日勉強する</td></tr>
+    <tr><td class="jp">～はずだ</td><td>~일 것이다 (예상)</td><td class="kr">~할 텐데 / ~일 것이다</td><td class="jp">彼は来るはずだ</td></tr>
+    <tr><td class="jp">～ようになる</td><td>~하게 되다</td><td class="kr">~하게 되다</td><td class="jp">日本語が話せるようになった</td></tr>
+    <tr><td class="jp">～ことがある</td><td>~한 적이 있다</td><td class="kr">~한 적이 있다</td><td class="jp">日本に行ったことがある</td></tr>
+    <tr><td class="jp">～てしまう</td><td>~해 버리다 (완료/후회)</td><td class="kr">~해 버리다</td><td class="jp">全部食べてしまった</td></tr>
+    <tr><td class="jp">～ばいい</td><td>~하면 된다</td><td class="kr">~하면 된다</td><td class="jp">先生に聞けばいい</td></tr>
+    <tr><td class="jp">～かどうか</td><td>~인지 아닌지</td><td class="kr">~인지 아닌지</td><td class="jp">正しいかどうか分からない</td></tr>
+    <tr><td class="jp">～ところだ</td><td>~하려는 참이다 / 막 ~했다</td><td class="kr">~하는 참이다 / 막 ~했다</td><td class="jp">今出かけるところだ</td></tr>
+  </tbody>
+</table>
+
+<div class="callout ok">
+  <div class="callout-title">한국어 화자의 N3 문법 이점</div>
+  <p>위 문법 항목의 약 <strong>70%</strong>에 직접적인 한국어 대응이 있습니다. <span class="jp">～ことにする</span> = <span class="kr">~하기로 하다</span>, <span class="jp">～ために</span> = <span class="kr">~하기 위해</span> 등입니다. 형태는 다르지만, <strong>개념은 이미 알고 있습니다</strong>.</p>
+</div>
+
+<h4>어휘 / 한자 목표</h4>
+<div class="card-grid">
+  <div class="card">
+    <h4>한자 목표: ~650자</h4>
+    <p>N4의 ~300자 + 추가 ~350자. 한자어 전이를 활용하면 <strong>실제로 새로 외워야 할 한자는 약 200자</strong>입니다.</p>
+    <p>핵심 한자 예시:</p>
+    <ul>
+      <li><span class="jp">届</span> (<span class="jp">届ける</span>) = 전달하다 / <span class="kr">届 = 届출 (신고/통지)</span></li>
+      <li><span class="jp">現</span> (<span class="jp">現在</span>) = 현재 / <span class="kr">현(現)</span></li>
+      <li><span class="jp">届</span> (<span class="jp">届ける</span>), <span class="jp">預</span> (<span class="jp">預ける</span>), <span class="jp">比</span> (<span class="jp">比べる</span>)</li>
+      <li><span class="jp">関</span> (<span class="jp">関係</span>) = 관계 / <span class="kr">관(關)</span></li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>어휘 목표: ~3,500 단어</h4>
+    <p>한자어 동족어를 통해 이미 약 <strong>~1,500 단어</strong>를 추측할 수 있습니다. 실질적으로 새로 배워야 할 단어는 약 ~2,000개입니다.</p>
+    <p>집중 영역:</p>
+    <ul>
+      <li><span class="jp">日常生活</span> (일상생활): 가사, 요리, 건강</li>
+      <li><span class="jp">社会</span> (사회): 뉴스, 직장, 교통</li>
+      <li><span class="jp">感情・性格</span> (감정/성격): 형용사 확장</li>
+      <li><span class="jp">自然</span> (자연): 날씨, 지리, 계절</li>
+    </ul>
+  </div>
+</div>
+
+<h4>주간 학습 계획 (N3 준비)</h4>
+<table>
+  <thead><tr><th>요일</th><th>학습 내용</th><th>시간</th></tr></thead>
+  <tbody>
+    <tr><td>월</td><td><span class="jp">漢字</span> 신규 10자 + 복습 20자 / <span class="jp">文法</span> 신규 문법 2개</td><td>60분</td></tr>
+    <tr><td>화</td><td><span class="jp">語彙</span> 신규 30단어 + 복습 / <span class="jp">読解</span> 단문 1편</td><td>60분</td></tr>
+    <tr><td>수</td><td><span class="jp">聴解</span> 연습 문제 + 쉐도잉 / <span class="jp">漢字</span> 복습</td><td>60분</td></tr>
+    <tr><td>목</td><td><span class="jp">文法</span> 복습 + 연습 문제 / <span class="jp">語彙</span> 신규 30단어</td><td>60분</td></tr>
+    <tr><td>금</td><td><span class="jp">読解</span> 중문 1편 / <span class="jp">聴解</span> 연습</td><td>60분</td></tr>
+    <tr><td>토</td><td>모의시험 1회 (시간 제한) / 취약 영역 복습</td><td>90~120분</td></tr>
+    <tr><td>일</td><td>일본어 콘텐츠 몰입 (드라마, YouTube, 만화) / 가벼운 복습</td><td>60분+</td></tr>
+  </tbody>
+</table>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SECTION 3: N2 PLAN -->
+<!-- ══════════════════════════════════════════════════════ -->
+<h3 id="3-n2-합격-계획-1218개월">N2 합격 계획 (12~18개월)</h3>
+
+<p>N2는 <strong>취업과 유학의 실질적 관문</strong>입니다. 대부분의 일본 기업과 대학이 N2 이상을 요구합니다. 한국어 화자에게 이 레벨은 <strong>투자 대비 효과가 가장 높은</strong> 단계입니다.</p>
+
+<h4>핵심 문법 항목</h4>
+<table>
+  <thead><tr><th>문법 패턴</th><th>의미</th><th>한국어 대응</th><th>예문</th></tr></thead>
+  <tbody>
+    <tr><td class="jp">～にもかかわらず</td><td>~에도 불구하고</td><td class="kr">~에도 불구하고</td><td class="jp">雨にもかかわらず試合は行われた</td></tr>
+    <tr><td class="jp">～に対して</td><td>~에 대하여</td><td class="kr">~에 대해서</td><td class="jp">この問題に対して意見を述べる</td></tr>
+    <tr><td class="jp">～一方（で）</td><td>~하는 한편 / ~하는 반면</td><td class="kr">~하는 한편 / ~하는 반면</td><td class="jp">人口が増える一方、食料が不足している</td></tr>
+    <tr><td class="jp">～に基づいて</td><td>~에 기반하여</td><td class="kr">~에 기반하여 / ~에 근거하여</td><td class="jp">データに基づいて判断する</td></tr>
+    <tr><td class="jp">～にとって</td><td>~에게 있어서</td><td class="kr">~에게 있어서</td><td class="jp">学生にとって大切なことだ</td></tr>
+    <tr><td class="jp">～わけにはいかない</td><td>~할 수 없다 (도의적/사회적 이유)</td><td class="kr">~할 수 없다 / ~하면 안 된다</td><td class="jp">約束した以上、断るわけにはいかない</td></tr>
+    <tr><td class="jp">～ざるを得ない</td><td>~하지 않을 수 없다</td><td class="kr">~하지 않을 수 없다</td><td class="jp">状況を考えると賛成せざるを得ない</td></tr>
+    <tr><td class="jp">～につれて</td><td>~함에 따라</td><td class="kr">~함에 따라</td><td class="jp">年を取るにつれて体力が落ちる</td></tr>
+    <tr><td class="jp">～さえ～ば</td><td>~만 하면</td><td class="kr">~만 하면</td><td class="jp">練習さえすれば上手になる</td></tr>
+    <tr><td class="jp">～っぽい</td><td>~스럽다 / ~한 경향이 있다</td><td class="kr">~스럽다 / ~답다</td><td class="jp">子供っぽい / 忘れっぽい</td></tr>
+  </tbody>
+</table>
+
+<h4>어휘 / 한자 목표</h4>
+<div class="card-grid">
+  <div class="card">
+    <h4>한자 목표: ~1,000자</h4>
+    <p>N3의 ~650자 + 추가 ~350자. 이 단계에서 핵심 한자어 전이 예시:</p>
+    <ul>
+      <li><span class="jp">提</span> (<span class="jp">提出</span> = 제출, <span class="jp">提案</span> = 제안)</li>
+      <li><span class="jp">制</span> (<span class="jp">制度</span> = 제도, <span class="jp">規制</span> = 규제)</li>
+      <li><span class="jp">政</span> (<span class="jp">政治</span> = 정치, <span class="jp">政策</span> = 정책)</li>
+      <li><span class="jp">論</span> (<span class="jp">理論</span> = 이론, <span class="jp">論文</span> = 논문)</li>
+      <li><span class="jp">構</span> (<span class="jp">構造</span> = 구조, <span class="jp">構成</span> = 구성)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>어휘 목표: ~6,000 단어</h4>
+    <p>한자어 동족어 ~2,500 + 고유 일본어 단어 ~1,500 + 관용 표현 ~500. 분야별:</p>
+    <ul>
+      <li><span class="jp">ビジネス</span>: 비즈니스/업무 관련 어휘</li>
+      <li><span class="jp">ニュース</span>: 시사 용어</li>
+      <li><span class="jp">学術</span>: 기초 학술 용어</li>
+      <li><span class="jp">慣用句</span>: 관용구 / 정형 표현</li>
+    </ul>
+  </div>
+</div>
+
+<h4>주간 학습 계획 (N2 준비)</h4>
+<table>
+  <thead><tr><th>요일</th><th>학습 내용</th><th>시간</th></tr></thead>
+  <tbody>
+    <tr><td>월</td><td><span class="jp">漢字</span> 신규 8자 + 복습 30자 / <span class="jp">文法</span> 신규 2개 + 예문 작성</td><td>75분</td></tr>
+    <tr><td>화</td><td><span class="jp">読解</span> 중급 지문 2편 (시간 제한) / <span class="jp">語彙</span> 신규 25단어</td><td>75분</td></tr>
+    <tr><td>수</td><td><span class="jp">聴解</span> N2 형식 연습 + 쉐도잉 / <span class="jp">漢字</span> 복습</td><td>75분</td></tr>
+    <tr><td>목</td><td><span class="jp">文法</span> 복습 + 연습 문제 15개 / <span class="jp">語彙</span> 신규 25단어</td><td>75분</td></tr>
+    <tr><td>금</td><td><span class="jp">読解</span> 장문 1편 + 정보 검색 문제 / <span class="jp">聴解</span> 포인트 이해</td><td>75분</td></tr>
+    <tr><td>토</td><td>모의시험 1회 (155분 시간 제한) + 오답 분석</td><td>180분</td></tr>
+    <tr><td>일</td><td>일본어 몰입 (자막 없이 드라마/영화, NHK 뉴스, 소설) / 작문 연습</td><td>90분+</td></tr>
+  </tbody>
+</table>
+
+<div class="callout warn">
+  <div class="callout-title">N2 시간 관리 전략</div>
+  <p><span class="jp">読解</span> 영역이 시간 부족이 발생하기 가장 쉬운 영역입니다. 한국어 화자의 한자 독해 이점을 최대한 활용하세요:</p>
+  <ul style="margin-bottom:0">
+    <li>한자어 덩어리로 먼저 의미를 파악하세요 (<span class="jp">経済的影響</span> = 경제적 영향 -- 즉시 이해 가능)</li>
+    <li>문제를 먼저 읽고, 지문의 관련 부분에만 집중하세요</li>
+    <li><span class="jp">情報検索</span> (정보 검색) 문제: 5분 이내 풀기를 목표로 하세요</li>
+  </ul>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SECTION 4: KOREAN ADVANTAGE PER JLPT SECTION -->
+<!-- ══════════════════════════════════════════════════════ -->
+<h3 id="4-jlpt-영역별-한국어-화자-전략">JLPT 영역별 한국어 화자 전략</h3>
+
+<div class="card-grid">
+  <div class="card">
+    <h4><span class="jp">文字・語彙</span> -- 문자/어휘 <span class="transfer-tag full">최대 이점</span></h4>
+    <p>한자어 동족어의 위력이 <strong>가장 직접적으로</strong> 발휘되는 영역입니다.</p>
+    <ul>
+      <li><span class="jp">経済</span> = 경제, <span class="jp">政治</span> = 정치, <span class="jp">教育</span> = 교육</li>
+      <li><span class="jp">環境</span> = 환경, <span class="jp">技術</span> = 기술, <span class="jp">伝統</span> = 전통</li>
+      <li>음독 규칙을 활용하면 처음 보는 단어도 추측 가능 (10~11장 참조)</li>
+    </ul>
+    <p><strong>전략:</strong> 한자어 동족어는 확인 수준으로 빠르게 넘기고, <strong>고유 일본어 단어</strong>와 <strong>거짓 동족어</strong>(<a href="appendices.html#false-friends">부록 참조</a>)에 시간을 집중하세요.</p>
+  </div>
+  <div class="card">
+    <h4><span class="jp">文法</span> -- 문법 <span class="transfer-tag partial">큰 이점</span></h4>
+    <p>SOV 어순, 조사 체계, 접미사 기반 활용이 모두 공유됩니다. 한국어 화자가 문법 문제에서 유리한 이유:</p>
+    <ul>
+      <li><span class="jp">～にもかかわらず</span> = ~에도 불구하고 -- 개념을 이미 알고 있습니다</li>
+      <li><span class="jp">～ざるを得ない</span> = ~하지 않을 수 없다 -- 동일한 이중 부정 구조</li>
+      <li>조사 선택 문제: <span class="jp">に/で/を/が</span> 선택은 한국어 조사 감각으로 풀 수 있습니다</li>
+    </ul>
+    <p><strong>전략:</strong> 한국어에 대응이 없는 문법 형태에 집중하세요 (<span class="jp">～っぽい</span>, <span class="jp">～がち</span> 등). 대응이 있는 것은 형태만 외우면 됩니다.</p>
+  </div>
+  <div class="card">
+    <h4><span class="jp">読解</span> -- 독해 <span class="transfer-tag partial">큰 이점</span></h4>
+    <p>한자/한자어 독해 능력이 결정적인 속도 이점을 만들어줍니다.</p>
+    <ul>
+      <li>한자 덩어리로 의미 파악: <span class="jp">国際社会における環境問題</span> = 국제사회에서의 환경 문제</li>
+      <li>접속사 패턴 전이: <span class="jp">しかし</span> (그러나), <span class="jp">したがって</span> (따라서), <span class="jp">一方</span> (한편)</li>
+      <li>지문의 논리 구조가 한국어 학술 텍스트와 유사합니다</li>
+    </ul>
+    <p><strong>전략:</strong> 속독 능력을 키우세요. 모든 글자를 읽지 말고 -- 한자 키워드 + 접속사로 논지를 빠르게 파악하는 훈련을 하세요.</p>
+  </div>
+  <div class="card">
+    <h4><span class="jp">聴解</span> -- 청해 <span class="transfer-tag partial">구조적 이점</span></h4>
+    <p>공유된 SOV 구조 덕분에 문장에서 <strong>결론이 어디에 올지 예측</strong>할 수 있습니다.</p>
+    <ul>
+      <li>동사가 끝에 오므로 긍정/부정을 판단하려면 끝까지 들어야 합니다 -- 한국어와 동일</li>
+      <li>조사 소리로 문장 구조 식별: <span class="jp">は</span>, <span class="jp">が</span>, <span class="jp">を</span>, <span class="jp">に</span></li>
+      <li>경어 청해: 한국어 경어 구조에 대한 감각이 도움됩니다</li>
+    </ul>
+    <p><strong>전략:</strong> <span class="jp">聴解</span>는 이점이 가장 적은 영역입니다. 일본어 특유의 음운, 축약형(<span class="jp">～ちゃう</span> = <span class="jp">～てしまう</span>), 자연스러운 속도에 익숙해지려면 <strong>쉐도잉 연습</strong>이 필수입니다.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SECTION 5: BEYOND JLPT -->
+<!-- ══════════════════════════════════════════════════════ -->
+<h3 id="5-jlpt를-넘어서----진정한-유창함을-향해">JLPT를 넘어서 -- 진정한 유창함을 향해</h3>
+
+<p>JLPT는 <strong>수동적 기능</strong>(독해와 청해)만 측정합니다. 진정한 유창함에는 말하기와 쓰기를 포함한 <strong>능동적 생산 능력</strong>이 필요합니다. N2나 N1을 합격한 후에도 여정은 계속됩니다.</p>
+
+<div class="card-grid">
+  <div class="card">
+    <h4><span class="jp">没入環境</span> -- 몰입 환경 만들기</h4>
+    <ul>
+      <li>스마트폰/컴퓨터 언어를 <span class="jp">日本語</span>로 변경하세요</li>
+      <li>출퇴근 시 일본어 팟캐스트/YouTube를 들으세요</li>
+      <li>SNS에서 일본어 계정을 팔로우하세요 (<span class="jp">NHK</span>, 관심 분야 전문가)</li>
+      <li>일본어 일기를 쓰세요 -- 하루 5문장부터 시작</li>
+      <li>일본어 회화 파트너/그룹에 참여하세요 (온라인: <span class="jp">HelloTalk</span>, <span class="jp">italki</span>)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4><span class="jp">漢字</span> -- 한자와의 긴 싸움</h4>
+    <ul>
+      <li><strong>Anki</strong>로 간격 반복 학습 -- 매일 15분</li>
+      <li>새로운 한자를 만나면 한국어 한자어 대응과 연결하여 기억하세요</li>
+      <li>목표: <span class="jp">常用漢字</span> (조요 한자) 2,136자 완전 마스터</li>
+      <li>읽기를 통한 자연스러운 한자 노출 -- 소설, 뉴스, 만화</li>
+      <li><span class="jp">漢字検定</span> (한자 검정)에 도전하여 체계적으로 학습하세요</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4><span class="jp">会話力</span> -- 회화력 유지 및 향상</h4>
+    <ul>
+      <li>주 2~3회 일본어 회화 연습 (30분+)</li>
+      <li>쉐도잉: 드라마/뉴스 대사를 따라 말하기</li>
+      <li>고저 악센트 훈련 -- 자연스러운 억양 습득</li>
+      <li>상황별 역할극: 면접, 프레젠테이션, 전화 통화</li>
+      <li>독백 연습: 관심 주제에 대해 일본어로 3분간 말하기</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4><span class="jp">キャリア・学術</span> -- 커리어/학술 일본어</h4>
+    <ul>
+      <li><strong>BJT</strong> (비즈니스 일본어 능력 시험)에 도전하세요</li>
+      <li>일본 취업: <span class="jp">履歴書</span> (이력서)와 <span class="jp">面接</span> (면접) 준비</li>
+      <li>대학원: <span class="jp">EJU</span> (일본유학시험), <span class="jp">論文</span> 작성</li>
+      <li>통번역 역량 개발 -- 한일 언어 쌍은 수요가 높습니다</li>
+      <li>전공 분야 전문 용어 학습 (IT, 의료, 법률 등)</li>
+    </ul>
+  </div>
+</div>
+
+<div class="callout info">
+  <div class="callout-title">유창함의 단계</div>
+  <div style="display:grid;grid-template-columns:auto 1fr;gap:.5rem 1rem;font-size:.9rem">
+    <strong>N3 합격</strong><span>일상 회화 가능, 간단한 텍스트 읽기 가능</span>
+    <strong>N2 합격</strong><span>뉴스 이해, 직장 내 소통, 일본 취업/유학 자격 취득</span>
+    <strong>N1 합격</strong><span>복잡한 텍스트 이해, 학술/전문 환경에서 활동 가능</span>
+    <strong>N1을 넘어서</strong><span>뉘앙스 파악, 유머/비유 이해, 문화적 맥락 읽기 -- <strong>진정한 유창함</strong></span>
+  </div>
+</div>
+
+<!-- ─── ROADMAP DIAGRAM ─── -->
+<div class="diagram">
+  <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg">
+    <text x="350" y="20" text-anchor="middle" font-size="13" font-weight="600" fill="var(--heading)">한국어 화자 일본어 학습 로드맵</text>
+
+    <!-- Timeline -->
+    <line x1="50" y1="100" x2="650" y2="100" stroke="var(--border)" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+    <!-- Milestones -->
+    <circle cx="100" cy="100" r="8" fill="var(--a3)"/>
+    <text x="100" y="80" text-anchor="middle" font-size="10" fill="var(--a3)" font-weight="600">N5</text>
+    <text x="100" y="130" text-anchor="middle" font-size="9" fill="var(--text-muted)">1~2개월</text>
+
+    <circle cx="200" cy="100" r="8" fill="var(--a3)"/>
+    <text x="200" y="80" text-anchor="middle" font-size="10" fill="var(--a3)" font-weight="600">N4</text>
+    <text x="200" y="130" text-anchor="middle" font-size="9" fill="var(--text-muted)">3~4개월</text>
+
+    <circle cx="320" cy="100" r="10" fill="var(--accent)"/>
+    <text x="320" y="75" text-anchor="middle" font-size="11" fill="var(--accent)" font-weight="600">N3</text>
+    <text x="320" y="130" text-anchor="middle" font-size="9" fill="var(--text-muted)">6~9개월</text>
+
+    <circle cx="460" cy="100" r="12" fill="var(--accent)"/>
+    <text x="460" y="72" text-anchor="middle" font-size="12" fill="var(--accent)" font-weight="700">N2</text>
+    <text x="460" y="130" text-anchor="middle" font-size="9" fill="var(--text-muted)">12~18개월</text>
+    <text x="460" y="145" text-anchor="middle" font-size="8" fill="var(--a2)">취업/유학 기준선</text>
+
+    <circle cx="570" cy="100" r="10" fill="var(--a2)"/>
+    <text x="570" y="75" text-anchor="middle" font-size="11" fill="var(--a2)" font-weight="600">N1</text>
+    <text x="570" y="130" text-anchor="middle" font-size="9" fill="var(--text-muted)">24~30개월</text>
+
+    <text x="650" y="80" text-anchor="end" font-size="10" fill="var(--heading)" font-weight="600">유창함</text>
+    <text x="650" y="130" text-anchor="end" font-size="9" fill="var(--text-muted)">지속적</text>
+
+    <!-- Annotation -->
+    <text x="350" y="175" text-anchor="middle" font-size="10" fill="var(--text-muted)">* 주 7~10시간 학습 기준. 영어 화자 대비 약 50% 단축.</text>
+  </svg>
+  <div class="diagram-caption">한국어 화자의 예상 일본어 학습 타임라인. 개인차가 있으며 몰입 환경 유무에 따라 크게 달라집니다.</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- INTERACTIVE EXERCISES -->
+<!-- ══════════════════════════════════════════════════════ -->
+<h3 id="대화형-연습-문제">대화형 연습 문제</h3>
+
+<!-- Quiz 1: JLPT Level Identification -->
+<div id="quiz-jlpt-level"></div>
+
+<!-- Quiz 2: Study Plan Fill-in-the-Blank -->
+<div id="quiz-study-plan"></div>
+
+<!-- Quiz 3: Comprehensive Recall Check from all chapters -->
+<div id="quiz-recall-comprehensive"></div>
+
+<!-- Mark as Complete -->
+<button class="chapter-complete" data-ch="19">학습 완료 표시 &#10003;</button>
+
+<div style="display:flex;justify-content:space-between;margin:2rem 0">
+  <a href="ch-18.html" class="quiz-btn secondary">&larr; 제19장: 문화 화용론</a>
+  <a href="ch-20.html" class="quiz-btn">다음: 제21장 -- 기억의 궁전 &rarr;</a>
+</div>
+
+</section>
+
+</div>
+
+
+</div>
+
+<footer>
+  <p>Zero to Hero: 한국어 화자를 위한 日本語 &middot; 제19장</p>
+</footer>
+
+<script src="js/shared.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/quiz-engine.js"></script>
+<script src="js/spaced-repetition.js"></script>
+<script src="js/memory-palace.js"></script>
+<script>
+// ─── 제14-17장 복습 확인 (상단) ───
+QuizEngine.RecallCheck(
+  document.getElementById('quiz-recall-top'),
+  {
+    fromChapters: '제14-17장',
+    items: [
+      { question: '제15장: 일본어 독해에서 "한자 덩어리 읽기"란 무엇입니까?', answer: '한자 복합어를 개별 문자가 아닌 의미 단위로 파악하는 것입니다. 예: 国際社会 = 국제사회 -- 한국어 한자어 지식을 통해 즉시 추론 가능합니다.' },
+      { question: '제16장: 일본어 작문에서 です/ます체와 だ/である체의 차이는 무엇입니까?', answer: 'です/ます = 정중체 (편지, 일상 글). だ/である = 보통체/학술체 (논문, 보고서). 하나의 글에서 두 문체를 절대 섞지 않는 것이 규칙입니다.' },
+      { question: '제17장: 쉐도잉(シャドーイング)이란 무엇입니까?', answer: '일본어 음성을 들으면서 거의 동시에 따라 말하는 훈련법입니다. 청해력, 발음, 자연스러운 리듬 습득에 효과적입니다.' },
+      { question: '제18장: 일본의 建前 (다테마에)와 本音 (혼네)의 차이는 무엇입니까?', answer: '建前 = 공적 입장/표면적 의견. 本音 = 진심/실제 생각. 한국어의 공/사 구별과 유사하지만, 일본에서는 더 뚜렷하게 구분됩니다.' }
+    ]
+  }
+);
+
+// ─── 퀴즈 1: JLPT 레벨 식별 ───
+QuizEngine.MultipleChoice(
+  document.getElementById('quiz-jlpt-level'),
+  {
+    title: 'JLPT 레벨 식별',
+    questions: [
+      {
+        prompt: '다음 문법 항목은 어떤 JLPT 레벨에 해당합니까? <br><span class="jp">～にもかかわらず</span> (~에도 불구하고)',
+        options: ['N5', 'N4', 'N3', 'N2'],
+        correctIndex: 3,
+        explanation: '～にもかかわらず는 N2 문법입니다. 격식 있는 글에서 자주 사용되며, 한국어 <span class="kr">~에도 불구하고</span>와 정확히 대응합니다.'
+      },
+      {
+        prompt: '일본 기업 취업이나 일본 대학 입학에 일반적으로 요구되는 최소 JLPT 레벨은 무엇입니까?',
+        options: ['N5', 'N4', 'N3', 'N2'],
+        correctIndex: 3,
+        explanation: 'N2는 대부분의 일본 기업과 대학이 요구하는 최소 레벨입니다. 통역, 법률 등 일부 분야는 N1이 필요합니다.'
+      },
+      {
+        prompt: '한국어 화자가 가장 큰 이점을 갖는 JLPT 영역은 무엇입니까?',
+        options: [
+          '聴解 (청해)',
+          '文字・語彙 (문자/어휘)',
+          '読解 (독해)',
+          '文法 (문법)'
+        ],
+        correctIndex: 1,
+        explanation: '한자어 동족어의 이점은 文字・語彙 영역에서 가장 직접적으로 실현됩니다. 수천 개의 한자 기반 단어가 한국어와 공유되어 어휘 학습 부담을 크게 줄여줍니다.'
+      },
+      {
+        prompt: 'N3에 필요한 한자는 대략 몇 자입니까?',
+        options: ['~100', '~300', '~650', '~2,000'],
+        correctIndex: 2,
+        explanation: 'N3에는 약 650자의 한자가 필요합니다. N5: ~100, N4: ~300, N2: ~1,000, N1: ~2,000.'
+      },
+      {
+        prompt: 'JLPT 합격 요건을 올바르게 설명한 것은 무엇입니까?',
+        options: [
+          '총점이 기준 이상이면 합격',
+          '모든 영역의 영역별 기준점과 총점 기준을 모두 충족해야 합격',
+          '가장 높은 영역 점수가 기준 이상이면 합격',
+          '3개 영역 중 2개 이상에서 기준점을 넘으면 합격'
+        ],
+        correctIndex: 1,
+        explanation: 'JLPT는 모든 영역의 영역별 기준점(19/60점)과 총점 기준을 모두 충족해야 합니다. 한 영역이라도 미달하면 전체 불합격입니다.'
+      }
+    ]
+  }
+);
+
+// ─── 퀴즈 2: 학습 계획 빈칸 채우기 ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-study-plan'),
+  {
+    title: '학습 계획을 완성하세요',
+    questions: [
+      {
+        prompt: 'N3 합격에 필요한 한자는 약 ___자입니다.',
+        answer: '650',
+        acceptAlso: ['650자', '~650'],
+        explanation: 'N3에는 약 650자의 한자 지식이 필요합니다.'
+      },
+      {
+        prompt: 'N2에 필요한 어휘는 약 ___단어입니다.',
+        answer: '6000',
+        acceptAlso: ['6,000', '6000단어', '~6000', '~6,000'],
+        explanation: 'N2에는 약 6,000개의 어휘가 필요합니다. 한국어 화자는 한자어 동족어를 통해 이 중 약 2,500개를 이미 추측할 수 있습니다.'
+      },
+      {
+        prompt: 'JLPT 각 영역의 영역별 기준점은 60점 만점에 ___점입니다.',
+        answer: '19',
+        acceptAlso: ['19점'],
+        explanation: '각 영역에서 최소 60점 만점에 19점 이상을 받아야 합니다.'
+      },
+      {
+        prompt: 'N2의 총 시험 시간은 ___분입니다.',
+        answer: '155',
+        acceptAlso: ['155분', '155 min'],
+        explanation: 'N2 시험은 총 155분(2시간 35분)입니다.'
+      },
+      {
+        prompt: '한국어 화자가 N2에 도달하는 데 걸리는 예상 기간은 약 ___개월입니다. (범위의 시작 숫자를 입력하세요)',
+        answer: '12',
+        acceptAlso: ['12개월', '12-18', '12-18개월'],
+        explanation: '한국어 화자는 약 12~18개월 만에 N2에 도달할 수 있습니다 (주 7~10시간 학습 기준).'
+      }
+    ]
+  }
+);
+
+// ─── 퀴즈 3: 전 장 종합 복습 ───
+QuizEngine.RecallCheck(
+  document.getElementById('quiz-recall-comprehensive'),
+  {
+    fromChapters: '제1-17장 종합 복습',
+    items: [
+      { question: '제1장: 한국어 화자가 일본어를 배울 때 전이 이점은 대략 몇 퍼센트입니까?', answer: '약 40%입니다. 문법 구조, 조사 체계, 경어 개념, 한자어가 모두 전이됩니다.' },
+      { question: '제2-3장: ひらがな와 カタカナ의 사용법 차이는 무엇입니까?', answer: 'ひらがな = 고유 일본어 단어, 활용 어미, 조사. カタカナ = 외래어, 의성어/의태어, 강조.' },
+      { question: '제4장: 일본어 모음은 몇 개이며, 한국어와 비교하면 어떻습니까?', answer: '5개 (あいうえお)입니다. 한국어의 21개 모음과 비교하면 훨씬 단순합니다.' },
+      { question: '제5장: "すみません"의 세 가지 용법은 무엇입니까?', answer: '1) 사과 (죄송합니다), 2) 감사 (감사합니다), 3) 호출 (저기요).' },
+      { question: '제7장: 일본어의 は와 が의 차이는 한국어의 어떤 조사 구별에 대응합니까?', answer: 'は = 은/는 (주제 표시), が = 이/가 (주어 표시). 기능이 거의 100% 대응합니다.' },
+      { question: '제8장: 일본어 동사 3그룹의 이름을 말하세요.', answer: '1그룹 (五段/u동사): 書く, 読む 등. 2그룹 (一段/ru동사): 食べる, 見る 등. 3그룹 (불규칙): する, 来る.' },
+      { question: '제9장: "제 이름은 ~입니다"를 겸양어로 일본어로 어떻게 말합니까?', answer: '～と申します (겸양) / ～と言います (일반).' },
+      { question: '제10장: ～たい는 무슨 뜻이며, 핵심 특징은 무엇입니까?', answer: '"~하고 싶다"는 뜻입니다. い형용사처럼 활용합니다. 주어는 보통 1인칭에 한정됩니다 (다른 사람에게는 ～たがっている 사용).' },
+      { question: '제11장: 音読み와 訓読み의 차이는 무엇입니까?', answer: '音読み = 중국어에서 유래한 한자 읽기 (한국어 한자 읽기와 대응). 訓読み = 고유 일본어 읽기.' },
+      { question: '제12장: 한국어 읽기 "학" (學/학)은 일본어에서 어떻게 발음됩니까?', answer: 'がく. 한국어 h → 일본어 g (が), 한국어 종성 ㄱ → く. 학생 = 学生 (がくせい).' },
+      { question: '제13장: 和語 (와고)란 무엇이며, 한국어 화자에게 왜 어렵습니까?', answer: '고유 일본어 단어입니다. 한자어와 달리 한국어 대응이 없어 처음부터 배워야 합니다. 예: 水 (みず) = 물, 食べる (たべる) = 먹다.' },
+      { question: '제14장: 尊敬語, 謙譲語, 丁寧語의 차이를 설명하세요.', answer: '尊敬語 = 존경어 (상대방의 행동을 높임). 謙譲語 = 겸양어 (자신의 행동을 낮춤). 丁寧語 = 정중어 (です/ます 등).' },
+      { question: '제14-17장 종합: 한국어 화자에게 가장 유리한 JLPT 영역과 가장 불리한 영역은 무엇입니까?', answer: '가장 유리: 文字・語彙 (문자/어휘) -- 한자어 동족어 덕분. 가장 불리: 聴解 (청해) -- 음운 차이, 축약형, 속도 때문.' }
+    ]
+  }
+);
+</script>
+</body>
+</html>

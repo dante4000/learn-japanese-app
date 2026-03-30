@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ch05: Survival Japanese — Zero to Hero 日本語</title>
+<link rel="stylesheet" href="css/design-system.css">
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <span class="logo-badge">Zero to Hero — Memory Architecture Edition</span>
+    <div class="logo-title">日本語 for Korean Speakers</div>
+    <div class="logo-sub">From 한국어 to 日本語 — The Memory Architect's Guide</div>
+  </a>
+  <div class="sidebar-progress">
+    <div class="sidebar-progress-label">Progress</div>
+    <div class="sidebar-progress-bar">
+      <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+    </div>
+    <div class="sidebar-progress-count">0/22 complete</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="ch-00.html" class="toc-link"><span class="toc-num">00</span><span class="toc-check" data-ch="00"></span>Memory Science</a>
+    <a href="ch-01.html" class="toc-link"><span class="toc-num">01</span><span class="toc-check" data-ch="01"></span>Your Korean Advantage</a>
+    <a href="ch-02.html" class="toc-link"><span class="toc-num">02</span><span class="toc-check" data-ch="02"></span>Hiragana</a>
+    <a href="ch-03.html" class="toc-link"><span class="toc-num">03</span><span class="toc-check" data-ch="03"></span>Katakana</a>
+    <a href="ch-04.html" class="toc-link"><span class="toc-num">04</span><span class="toc-check" data-ch="04"></span>Pronunciation</a>
+    <a href="ch-05.html" class="toc-link active"><span class="toc-num">05</span><span class="toc-check" data-ch="05"></span>Survival Japanese</a>
+    <a href="ch-06.html" class="toc-link"><span class="toc-num">06</span><span class="toc-check" data-ch="06"></span>Counters</a>
+    <a href="ch-07.html" class="toc-link"><span class="toc-num">07</span><span class="toc-check" data-ch="07"></span>Particles</a>
+    <a href="ch-08.html" class="toc-link"><span class="toc-num">08</span><span class="toc-check" data-ch="08"></span>Verb Conjugation</a>
+    <a href="ch-09.html" class="toc-link"><span class="toc-num">09</span><span class="toc-check" data-ch="09"></span>Daily Conversations</a>
+    <a href="ch-10.html" class="toc-link"><span class="toc-num">10</span><span class="toc-check" data-ch="10"></span>Sentence Patterns</a>
+    <a href="ch-11.html" class="toc-link"><span class="toc-num">11</span><span class="toc-check" data-ch="11"></span>Kanji</a>
+    <a href="ch-12.html" class="toc-link"><span class="toc-num">12</span><span class="toc-check" data-ch="12"></span>Sino-Vocabulary</a>
+    <a href="ch-13.html" class="toc-link"><span class="toc-num">13</span><span class="toc-check" data-ch="13"></span>Native Vocabulary</a>
+    <a href="ch-14.html" class="toc-link"><span class="toc-num">14</span><span class="toc-check" data-ch="14"></span>Honorifics</a>
+    <a href="ch-15.html" class="toc-link"><span class="toc-num">15</span><span class="toc-check" data-ch="15"></span>Reading</a>
+    <a href="ch-16.html" class="toc-link"><span class="toc-num">16</span><span class="toc-check" data-ch="16"></span>Writing</a>
+    <a href="ch-17.html" class="toc-link"><span class="toc-num">17</span><span class="toc-check" data-ch="17"></span>Listening</a>
+    <a href="ch-18.html" class="toc-link"><span class="toc-num">18</span><span class="toc-check" data-ch="18"></span>Cultural Pragmatics</a>
+    <a href="ch-19.html" class="toc-link"><span class="toc-num">19</span><span class="toc-check" data-ch="19"></span>JLPT and Beyond</a>
+    <a href="ch-20.html" class="toc-link"><span class="toc-num">20</span><span class="toc-check" data-ch="20"></span>Memory Palace</a>
+    <a href="ch-21.html" class="toc-link"><span class="toc-num">21</span><span class="toc-check" data-ch="21"></span>The 90-Day Sprint</a>
+    <a href="appendices.html" class="toc-link" style="margin-top:.5rem;border-top:1px solid var(--border);padding-top:.8rem"><span class="toc-num">+</span>Appendices</a>
+  </nav>
+</aside>
+
+<div class="main">
+<div class="content-wrap">
+
+<section id="ch05" data-ch="05" style="padding-top:3rem">
+<h2><span class="ch-label">Chapter 05</span>Survival Japanese -- Phrases You Can Use Today</h2>
+
+<div class="callout memory">
+  <div class="callout-title">Memory Technique Spotlight: Context-Dependent Memory</div>
+  <p>You remember things best in the context where you learned them (Godden & Baddeley, 1975). Each survival phrase is taught within a vivid scene — imagine yourself IN the restaurant, AT the station, INSIDE the shop. When you're actually there, the phrases will come flooding back.</p>
+</div>
+<div class="callout info">
+  <div class="callout-title">Palace Assignment: The Street (집에서 역까지)</div>
+  <p>Build a memory palace along your route from home to the nearest station. Restaurant phrases at the restaurant you pass, shopping phrases at the convenience store, direction phrases at the intersection, transportation phrases at the station entrance.</p>
+</div>
+
+<p>You can now read hiragana, katakana, and pronounce Japanese correctly. This chapter puts those skills to work <strong>immediately</strong>. No grammar theory yet -- just learn complete phrases as functional units, with Korean parallels showing why they make structural sense.</p>
+
+<div class="pq">
+  "You don't need to understand WHY a sentence works to USE it. You say 'sumimasen' the same way you started saying '실례합니다' as a child -- you learn the whole phrase, use it, and the grammar understanding comes later. This chapter gives you 100+ phrases you can use TODAY."
+</div>
+
+<div class="callout info">
+  <div class="callout-title">How to Use This Chapter</div>
+  <p>Every phrase includes: <strong>Japanese</strong> (kana + kanji), <strong>Romaji</strong>, <strong>literal breakdown</strong>, <strong>Korean equivalent</strong>, a <strong>mnemonic</strong>, and a <strong>context note</strong>. Treat each phrase as a complete unit. Memorize the sound, use it, and grammar understanding will come in later chapters.</p>
+</div>
+
+<!-- ─── RECALL CHECK ─── -->
+<div id="recall-check-top"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     5A: RESTAURANT JAPANESE (レストラン)
+     ═══════════════════════════════════════════════════════════════ -->
+<nav class="chapter-toc">
+  <details open>
+    <summary class="chapter-toc-title">In This Chapter</summary>
+  <ol>
+    <li><a href="#5a-restaurant-japanese-レストラン">Restaurant Japanese (レストラン)</a></li>
+    <li><a href="#5b-shopping-japanese-買い物">Shopping Japanese (買い物)</a></li>
+    <li><a href="#5c-getting-around-道案内">Getting Around (道案内)</a></li>
+    <li><a href="#5d-transportation-交通">Transportation (交通)</a></li>
+    <li><a href="#5e-essential-polite-phrases-基本フレーズ">Essential Polite Phrases (基本フレーズ)</a></li>
+    <li><a href="#5f-emergency-and-help-phrases">Emergency and Help Phrases</a></li>
+    <li><a href="#5g-numbers-and-counting-for-daily-use">Numbers and Counting for Daily Use</a></li>
+    <li><a href="#tokyo-day-simulation">Tokyo Day Simulation</a></li>
+    <li><a href="#recall-check----chapters-02-04">Recall Check -- Chapters 02-04</a></li>
+  </ol>
+  </details>
+</nav>
+
+<h3 id="5a-restaurant-japanese-レストラン">Restaurant Japanese (レストラン)</h3>
+<p>The complete restaurant flow -- from walking in to paying the bill. This is the single most useful scenario for any traveler to Japan.</p>
+
+<!-- Entering -->
+<h4>Entering the Restaurant</h4>
+<table>
+  <thead>
+    <tr><th>Situation</th><th>Japanese</th><th>Romaji</th><th>Literal Breakdown</th><th>Korean Equivalent</th><th>Mnemonic</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Getting attention</td>
+      <td class="jp">すみません</td>
+      <td>sumimasen</td>
+      <td>"not settled" (apology form)</td>
+      <td class="kr">저기요 / 실례합니다</td>
+      <td>"Sue me, Ma'am, SEN(d) help"</td>
+    </tr>
+    <tr>
+      <td>"Table for 2"</td>
+      <td class="jp">二人です</td>
+      <td>futari desu</td>
+      <td>two-people is</td>
+      <td class="kr">두 명이요</td>
+      <td>"Who's the TALL-ree? Two of us"</td>
+    </tr>
+    <tr>
+      <td>"Do you have a table?"</td>
+      <td class="jp">席はありますか？</td>
+      <td>seki wa arimasu ka?</td>
+      <td>seat-[topic] exist-[polite]-[question]</td>
+      <td class="kr">자리 있어요?</td>
+      <td>"SEEK-ee a seat -- is there one?"</td>
+    </tr>
+    <tr>
+      <td>"Non-smoking, please"</td>
+      <td class="jp">禁煙でお願いします</td>
+      <td>kin'en de onegai shimasu</td>
+      <td>no-smoking-[by] please</td>
+      <td class="kr">금연으로 부탁합니다</td>
+      <td>Korean 금연 = 禁煙 -- <span class="cognate-tag">Cognate</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout ok">
+  <div class="callout-title">Context Note</div>
+  <p>In Japan, you often don't need to flag down staff. Many restaurants have a call button (呼び出しボタン) at the table. At smaller restaurants, a polite <span class="jp">すみません</span> works perfectly. When entering, the staff will ask <span class="jp">何名様ですか？</span> (nanmeisama desu ka? = "How many guests?") -- just hold up fingers and say <span class="jp">二人です</span>.</p>
+</div>
+
+<!-- Ordering -->
+<h4>Ordering Food</h4>
+<table>
+  <thead>
+    <tr><th>Situation</th><th>Japanese</th><th>Romaji</th><th>Literal Breakdown</th><th>Korean Equivalent</th><th>Mnemonic</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>"This one, please"</td>
+      <td class="jp">これをお願いします</td>
+      <td>kore wo onegai shimasu</td>
+      <td>this-[object] please</td>
+      <td class="kr">이거 주세요</td>
+      <td>"KORE = 이거 (this). Oh-NEG-eye = please"</td>
+    </tr>
+    <tr>
+      <td>"What do you recommend?"</td>
+      <td class="jp">おすすめは何ですか？</td>
+      <td>osusume wa nan desu ka?</td>
+      <td>recommendation-[topic] what is-[question]</td>
+      <td class="kr">추천 메뉴가 뭐예요?</td>
+      <td>"Oh SUSU-may = recommend"</td>
+    </tr>
+    <tr>
+      <td>"I'll have this"</td>
+      <td class="jp">これにします</td>
+      <td>kore ni shimasu</td>
+      <td>this-[to/at] do-[polite] (= decide on this)</td>
+      <td class="kr">이걸로 할게요</td>
+      <td>"KORE NI = 이것으로 (this one, decided)"</td>
+    </tr>
+    <tr>
+      <td>"Water, please"</td>
+      <td class="jp">お水をお願いします</td>
+      <td>omizu wo onegai shimasu</td>
+      <td>[hon]-water-[object] please</td>
+      <td class="kr">물 주세요</td>
+      <td>"Oh-MIZU = water. MIZU sounds like 미즈 -- remember it"</td>
+    </tr>
+    <tr>
+      <td>"One more beer"</td>
+      <td class="jp">ビールもう一杯</td>
+      <td>biiru mou ippai</td>
+      <td>beer more one-cup</td>
+      <td class="kr">맥주 한 잔 더</td>
+      <td>"BEER + MOH-EE-PIE (one more cup)"</td>
+    </tr>
+    <tr>
+      <td>"Without [X], please"</td>
+      <td class="jp">[X]抜きでお願いします</td>
+      <td>[X] nuki de onegai shimasu</td>
+      <td>[X]-removed-[by] please</td>
+      <td class="kr">[X] 빼고 주세요</td>
+      <td>"NUKE it -- take it out!"</td>
+    </tr>
+    <tr>
+      <td>"Is this spicy?"</td>
+      <td class="jp">これは辛いですか？</td>
+      <td>kore wa karai desu ka?</td>
+      <td>this-[topic] spicy is-[question]</td>
+      <td class="kr">이거 매워요?</td>
+      <td>"KARA-ee = spicy. Not Korean 가라 -- false friend!"</td>
+    </tr>
+    <tr>
+      <td>"Delicious!"</td>
+      <td class="jp">美味しい！</td>
+      <td>oishii!</td>
+      <td>delicious (adjective)</td>
+      <td class="kr">맛있다!</td>
+      <td>"Oh-ISH-ee! She made it delicious!"</td>
+    </tr>
+    <tr>
+      <td>"I'm allergic to [X]"</td>
+      <td class="jp">[X]アレルギーがあります</td>
+      <td>[X] arerugi ga arimasu</td>
+      <td>[X]-allergy-[subject] exist-[polite]</td>
+      <td class="kr">[X] 알레르기가 있어요</td>
+      <td>Korean 알레르기 = アレルギー -- <span class="cognate-tag">Cognate</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">Context Note: Restaurant Ordering</div>
+  <p>Most Japanese restaurants have picture menus or plastic food displays outside. Point at the item and say <span class="jp">これをお願いします</span> -- this works everywhere. At izakayas, saying <span class="jp">おすすめは何ですか？</span> is a great conversation starter with the staff.</p>
+</div>
+
+<!-- Paying -->
+<h4>Paying the Bill</h4>
+<table>
+  <thead>
+    <tr><th>Situation</th><th>Japanese</th><th>Romaji</th><th>Literal Breakdown</th><th>Korean Equivalent</th><th>Mnemonic</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>"Check, please"</td>
+      <td class="jp">お会計お願いします</td>
+      <td>okaikei onegai shimasu</td>
+      <td>[hon]-accounting please</td>
+      <td class="kr">계산해 주세요</td>
+      <td>"Oh-KAI-KAY = 회계 (accounting) -- <span class="cognate-tag">Cognate</span>"</td>
+    </tr>
+    <tr>
+      <td>"Can I pay by card?"</td>
+      <td class="jp">カードで払えますか？</td>
+      <td>kaado de haraemasu ka?</td>
+      <td>card-[by] can-pay-[question]</td>
+      <td class="kr">카드로 계산돼요?</td>
+      <td>"CARD + HARA-eh = pay"</td>
+    </tr>
+    <tr>
+      <td>"Together / Separate"</td>
+      <td class="jp">一緒に / 別々に</td>
+      <td>issho ni / betsubetsu ni</td>
+      <td>together-[adv] / separate-separate-[adv]</td>
+      <td class="kr">같이 / 따로따로</td>
+      <td>"ISSHO = together. BETSU-BETSU = split-split"</td>
+    </tr>
+    <tr>
+      <td>"Thank you (after meal)"</td>
+      <td class="jp">ごちそうさまでした</td>
+      <td>gochisousama deshita</td>
+      <td>"it was a feast" (set phrase)</td>
+      <td class="kr">잘 먹었습니다</td>
+      <td>"Go-CHEE-SO-SAH-MAH -- like bowing after a feast"</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout warn">
+  <div class="callout-title">Elaborative Interrogation</div>
+  <p><strong>WHY does Japanese have a dedicated phrase for "thank you for the meal" (ごちそうさまでした) while Korean also has 잘 먹었습니다?</strong></p>
+  <p>Both cultures share the East Asian tradition of expressing gratitude for food. The Japanese phrase literally means "it was a feast (ごちそう)" while the Korean means "I ate well." Both signal respect to the cook/host. This is one of many cultural parallels where the <em>concept</em> transfers perfectly but the <em>specific words</em> differ.</p>
+</div>
+
+<!-- Quiz 1: Drag-and-Drop -->
+<div id="quiz-restaurant-match"></div>
+
+<!-- Quiz 2: Sentence Builder -->
+<div id="quiz-restaurant-builder"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     5B: SHOPPING JAPANESE (買い物)
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="5b-shopping-japanese-買い物">Shopping Japanese (買い物)</h3>
+<p>Whether at a convenience store, department store, or market -- these phrases cover every shopping situation.</p>
+
+<table>
+  <thead>
+    <tr><th>Situation</th><th>Japanese</th><th>Romaji</th><th>Literal Breakdown</th><th>Korean Equivalent</th><th>Mnemonic</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>"How much?"</td>
+      <td class="jp">いくらですか？</td>
+      <td>ikura desu ka?</td>
+      <td>how-much is-[question]</td>
+      <td class="kr">얼마예요?</td>
+      <td>"EE-KOO-RAH -- sounds like 'it'll CURE ya' to know the price"</td>
+    </tr>
+    <tr>
+      <td>"I'm just looking"</td>
+      <td class="jp">見ているだけです</td>
+      <td>mite iru dake desu</td>
+      <td>seeing-[progressive] only is</td>
+      <td class="kr">그냥 구경하고 있어요</td>
+      <td>"ME-tay (seeing) + DAKE (only)"</td>
+    </tr>
+    <tr>
+      <td>"Do you have a bigger size?"</td>
+      <td class="jp">もっと大きいサイズはありますか？</td>
+      <td>motto ookii saizu wa arimasu ka?</td>
+      <td>more big size-[topic] exist-[question]</td>
+      <td class="kr">더 큰 사이즈 있어요?</td>
+      <td>"MOTTO = more. OOKII = big"</td>
+    </tr>
+    <tr>
+      <td>"I'll take this"</td>
+      <td class="jp">これをください</td>
+      <td>kore wo kudasai</td>
+      <td>this-[object] please-give</td>
+      <td class="kr">이거 주세요</td>
+      <td>"KORE + KUDA-SIGH (please give)"</td>
+    </tr>
+    <tr>
+      <td>"Can I try it on?"</td>
+      <td class="jp">試着できますか？</td>
+      <td>shichaku dekimasu ka?</td>
+      <td>try-on can-do-[question]</td>
+      <td class="kr">시착할 수 있어요?</td>
+      <td>시착/試着 -- <span class="cognate-tag">Cognate</span> Exact same word!</td>
+    </tr>
+    <tr>
+      <td>"Too expensive"</td>
+      <td class="jp">ちょっと高いですね</td>
+      <td>chotto takai desu ne</td>
+      <td>a-little expensive is-[agreement]</td>
+      <td class="kr">좀 비싸네요</td>
+      <td>"CHOTTO = 좀 (a little). TAKAI = expensive"</td>
+    </tr>
+    <tr>
+      <td>"Tax-free?"</td>
+      <td class="jp">免税ですか？</td>
+      <td>menzei desu ka?</td>
+      <td>tax-free is-[question]</td>
+      <td class="kr">면세예요?</td>
+      <td>면세/免税 -- <span class="cognate-tag">Cognate</span> Same word!</td>
+    </tr>
+    <tr>
+      <td>"Bag, please"</td>
+      <td class="jp">袋をお願いします</td>
+      <td>fukuro wo onegai shimasu</td>
+      <td>bag-[object] please</td>
+      <td class="kr">봉투 주세요</td>
+      <td>"FUKU-ROH = bag (not a cognate -- memorize)"</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout ok">
+  <div class="callout-title">Context Note: Shopping in Japan</div>
+  <p>At convenience stores (コンビニ), the clerk may ask <span class="jp">袋はいりますか？</span> (fukuro wa irimasu ka? = "Do you need a bag?"). Bags cost a few yen. Say <span class="jp">はい、お願いします</span> (yes, please) or <span class="jp">いいえ、大丈夫です</span> (no, I'm fine). Tax-free shopping is available at many stores for tourists spending over 5,000 yen -- just show your passport!</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     5C: GETTING AROUND (道案内)
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="5c-getting-around-道案内">Getting Around (道案内)</h3>
+<p>Asking for and understanding directions -- essential for navigating Japanese cities.</p>
+
+<table>
+  <thead>
+    <tr><th>Situation</th><th>Japanese</th><th>Romaji</th><th>Literal Breakdown</th><th>Korean Equivalent</th><th>Mnemonic</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>"Where is [X]?"</td>
+      <td class="jp">[X]はどこですか？</td>
+      <td>[X] wa doko desu ka?</td>
+      <td>[X]-[topic] where is-[question]</td>
+      <td class="kr">[X]는 어디예요?</td>
+      <td>"DOKO = where (DOCKs -- where do I DOCK?)"</td>
+    </tr>
+    <tr>
+      <td>"Excuse me, the station?"</td>
+      <td class="jp">すみません、駅はどこですか？</td>
+      <td>sumimasen, eki wa doko desu ka?</td>
+      <td>excuse-me, station-[topic] where is-[question]</td>
+      <td class="kr">실례합니다, 역이 어디예요?</td>
+      <td>역/駅 = EKI -- <span class="cognate-tag">Cognate</span></td>
+    </tr>
+    <tr>
+      <td>"Straight ahead"</td>
+      <td class="jp">まっすぐ</td>
+      <td>massugu</td>
+      <td>straight</td>
+      <td class="kr">직진</td>
+      <td>"MASS-SUU-GOO -- go straight like a MASS of people"</td>
+    </tr>
+    <tr>
+      <td>"Turn right/left"</td>
+      <td class="jp">右/左に曲がってください</td>
+      <td>migi/hidari ni magatte kudasai</td>
+      <td>right/left-[to] turn-please</td>
+      <td class="kr">오른쪽/왼쪽으로 가세요</td>
+      <td>"ME-GEE = right. HE-DAH-REE = left"</td>
+    </tr>
+    <tr>
+      <td>"How far is it?"</td>
+      <td class="jp">どのくらいかかりますか？</td>
+      <td>dono kurai kakarimasu ka?</td>
+      <td>how-much takes-[question]</td>
+      <td class="kr">얼마나 걸려요?</td>
+      <td>"DONO KURAI = how much (time/distance)"</td>
+    </tr>
+    <tr>
+      <td>"I'm lost"</td>
+      <td class="jp">道に迷いました</td>
+      <td>michi ni mayoimashita</td>
+      <td>road-[to] got-lost-[past-polite]</td>
+      <td class="kr">길을 잃었어요</td>
+      <td>"ME-CHEE NI MAYO -- I'm in a MAZE on the MICHI (road)"</td>
+    </tr>
+    <tr>
+      <td>"[X] Station, please" (taxi)</td>
+      <td class="jp">[X]駅までお願いします</td>
+      <td>[X] eki made onegai shimasu</td>
+      <td>[X]-station-until please</td>
+      <td class="kr">[X]역까지 가주세요</td>
+      <td>"EKI MADE = 역까지 (station until)"</td>
+    </tr>
+    <tr>
+      <td>"Stop here, please"</td>
+      <td class="jp">ここで止めてください</td>
+      <td>koko de tomete kudasai</td>
+      <td>here-[at] stop-please</td>
+      <td class="kr">여기서 세워주세요</td>
+      <td>"KOKO DE = here-at. TOMETE = stop"</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Direction Words Mnemonic Table -->
+<h4>Direction Words with Mnemonics</h4>
+<table>
+  <thead>
+    <tr><th>Japanese</th><th>Reading</th><th>Meaning</th><th>Mnemonic</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="jp">右</td><td>migi</td><td>right</td><td>"ME-GEE -- your right hand makes a GEE shape"</td></tr>
+    <tr><td class="jp">左</td><td>hidari</td><td>left</td><td>"HE-DAH-REE -- HE DAREs to go left"</td></tr>
+    <tr><td class="jp">まっすぐ</td><td>massugu</td><td>straight</td><td>"MASS of people going straight"</td></tr>
+    <tr><td class="jp">近い</td><td>chikai</td><td>near / close</td><td>"CHEE-KAI -- it's close, cheek-to-cheek"</td></tr>
+    <tr><td class="jp">遠い</td><td>tooi</td><td>far</td><td>"TOO-EE -- it's TOO far!"</td></tr>
+    <tr><td class="jp">上</td><td>ue</td><td>up / above</td><td>"OO-EH -- going up makes you go 'WHOA'"</td></tr>
+    <tr><td class="jp">下</td><td>shita</td><td>down / below</td><td>"SHEE-TAH -- sit your SEAT-AH down below"</td></tr>
+    <tr><td class="jp">中</td><td>naka</td><td>inside</td><td>"NAH-KAH -- you're in the NOOK-AH"</td></tr>
+  </tbody>
+</table>
+
+<!-- Direction Mnemonic SVG -->
+<div class="diagram">
+  <svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
+    <!-- Center point -->
+    <circle cx="300" cy="150" r="8" fill="var(--accent)" opacity=".8"/>
+    <text x="300" y="145" text-anchor="middle" font-size="10" fill="var(--accent)" font-weight="600">YOU</text>
+
+    <!-- Up -->
+    <line x1="300" y1="130" x2="300" y2="40" stroke="var(--a3)" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <text x="300" y="30" text-anchor="middle" font-size="12" fill="var(--a3)" font-weight="600">上 ue</text>
+
+    <!-- Down -->
+    <line x1="300" y1="170" x2="300" y2="260" stroke="var(--a3)" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <text x="300" y="280" text-anchor="middle" font-size="12" fill="var(--a3)" font-weight="600">下 shita</text>
+
+    <!-- Right -->
+    <line x1="320" y1="150" x2="460" y2="150" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <text x="490" y="155" text-anchor="start" font-size="12" fill="var(--accent)" font-weight="600">右 migi</text>
+
+    <!-- Left -->
+    <line x1="280" y1="150" x2="140" y2="150" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <text x="110" y="155" text-anchor="end" font-size="12" fill="var(--accent)" font-weight="600">左 hidari</text>
+
+    <!-- Straight -->
+    <line x1="300" y1="130" x2="300" y2="65" stroke="var(--a2)" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <text x="355" y="55" text-anchor="start" font-size="10" fill="var(--a2)">まっすぐ massugu</text>
+
+    <!-- Near circle -->
+    <circle cx="300" cy="150" r="50" fill="none" stroke="var(--text-muted)" stroke-width="1" stroke-dasharray="3,3" opacity=".5"/>
+    <text x="355" y="115" font-size="9" fill="var(--text-muted)">近い chikai</text>
+
+    <!-- Far circle -->
+    <circle cx="300" cy="150" r="110" fill="none" stroke="var(--text-muted)" stroke-width="1" stroke-dasharray="3,3" opacity=".3"/>
+    <text x="420" y="80" font-size="9" fill="var(--text-muted)">遠い tooi</text>
+  </svg>
+  <div class="diagram-caption">Direction words visual map -- internalize these spatial terms with their positions.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     5D: TRANSPORTATION (交通)
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="5d-transportation-交通">Transportation (交通)</h3>
+<p>Japan's public transportation is world-class. These phrases will get you on the right train, to the right platform, and off at the right stop.</p>
+
+<table>
+  <thead>
+    <tr><th>Situation</th><th>Japanese</th><th>Romaji</th><th>Literal Breakdown</th><th>Korean Equivalent</th><th>Mnemonic</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>"One ticket to [X]"</td>
+      <td class="jp">[X]まで一枚</td>
+      <td>[X] made ichimai</td>
+      <td>[X]-until one-flat-thing</td>
+      <td class="kr">[X]까지 한 장</td>
+      <td>"MADE = 까지 (until). ICHI-MAI = one flat thing"</td>
+    </tr>
+    <tr>
+      <td>"Which platform?"</td>
+      <td class="jp">何番ホームですか？</td>
+      <td>nanban hoomu desu ka?</td>
+      <td>what-number platform is-[question]</td>
+      <td class="kr">몇 번 홈이에요?</td>
+      <td>"NAN-BAN = what number. HOOMU = home/platform"</td>
+    </tr>
+    <tr>
+      <td>"Does this go to [X]?"</td>
+      <td class="jp">これは[X]に行きますか？</td>
+      <td>kore wa [X] ni ikimasu ka?</td>
+      <td>this-[topic] [X]-[to] go-[polite]-[question]</td>
+      <td class="kr">이거 [X]에 가요?</td>
+      <td>Direct Korean structure mapping</td>
+    </tr>
+    <tr>
+      <td>"Last train"</td>
+      <td class="jp">終電</td>
+      <td>shuuden</td>
+      <td>end-electric (= last electric train)</td>
+      <td class="kr">막차</td>
+      <td>"SHUU-DEN = 종전(終電) -- <span class="cognate-tag">Cognate</span>-ish!"</td>
+    </tr>
+    <tr>
+      <td>"Transfer"</td>
+      <td class="jp">乗り換え</td>
+      <td>norikae</td>
+      <td>ride-change</td>
+      <td class="kr">환승</td>
+      <td>"NORI-KAE = ride-change"</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">Context Note: Trains in Japan</div>
+  <p>The last train (<span class="jp">終電</span>) is critically important -- it's usually around midnight, and missing it means an expensive taxi ride or waiting until 5 AM. Always check the schedule! Use IC cards (Suica/Pasmo) to avoid buying tickets. The phrase <span class="jp">乗り換え</span> (norikae = transfer) appears constantly on station signs.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     5E: ESSENTIAL POLITE PHRASES (基本フレーズ)
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="5e-essential-polite-phrases-基本フレーズ">Essential Polite Phrases (基本フレーズ)</h3>
+<p>These are the foundation of daily Japanese interaction. Master these first -- they cover greetings, thanks, apologies, and basic communication.</p>
+
+<!-- Greetings -->
+<h4>Greetings</h4>
+<table>
+  <thead>
+    <tr><th>Situation</th><th>Japanese</th><th>Romaji</th><th>Literal Breakdown</th><th>Korean Equivalent</th><th>Mnemonic</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Good morning</td>
+      <td class="jp">おはようございます</td>
+      <td>ohayou gozaimasu</td>
+      <td>"it is early" (polite)</td>
+      <td class="kr">안녕하세요 (아침)</td>
+      <td>"Oh-HI-YO -- 'Oh hi yo!' in the morning"</td>
+    </tr>
+    <tr>
+      <td>Hello (daytime)</td>
+      <td class="jp">こんにちは</td>
+      <td>konnichiwa</td>
+      <td>"this day" (today greeting)</td>
+      <td class="kr">안녕하세요 (낮)</td>
+      <td>"KON-NICHI-WA -- 'today' greeting"</td>
+    </tr>
+    <tr>
+      <td>Good evening</td>
+      <td class="jp">こんばんは</td>
+      <td>konbanwa</td>
+      <td>"this evening"</td>
+      <td class="kr">안녕하세요 (저녁)</td>
+      <td>"KON-BAN-WA -- 'this evening' greeting"</td>
+    </tr>
+    <tr>
+      <td>Goodnight</td>
+      <td class="jp">おやすみなさい</td>
+      <td>oyasumi nasai</td>
+      <td>"please rest"</td>
+      <td class="kr">안녕히 주무세요</td>
+      <td>"Oh-YAH-SOO-ME -- 'oh yes, ZOOM into sleep'"</td>
+    </tr>
+    <tr>
+      <td>Goodbye (formal)</td>
+      <td class="jp">さようなら</td>
+      <td>sayounara</td>
+      <td>"if it must be so" (farewell)</td>
+      <td class="kr">안녕히 가세요</td>
+      <td>"SAY-YOU-NAH-RAH -- formal. Use じゃあね for casual"</td>
+    </tr>
+    <tr>
+      <td>Goodbye (casual)</td>
+      <td class="jp">じゃあね</td>
+      <td>jaa ne</td>
+      <td>"well then"</td>
+      <td class="kr">잘 가 / 바이</td>
+      <td>"JAH-NEH -- see ya!"</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout warn">
+  <div class="callout-title">Elaborative Interrogation</div>
+  <p><strong>WHY does Korean use the same greeting (안녕하세요) for all times of day, while Japanese has different greetings for morning, afternoon, and evening?</strong></p>
+  <p>Korean 안녕하세요 literally asks "are you at peace?" -- a universal concept. Japanese greetings are time-stamped abbreviations of longer classical phrases: おはよう from "it is early," こんにちは from "how is today?", こんばんは from "how is this evening?" Both systems work -- Korean is simpler to learn, Japanese requires memorizing three forms but tells you the time of day!</p>
+</div>
+
+<!-- Thank you, Sorry, etc. -->
+<h4>Thank You, Sorry, and Essential Responses</h4>
+<table>
+  <thead>
+    <tr><th>Situation</th><th>Japanese</th><th>Romaji</th><th>Literal Breakdown</th><th>Korean Equivalent</th><th>Mnemonic</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Thank you (formal)</td>
+      <td class="jp">ありがとうございます</td>
+      <td>arigatou gozaimasu</td>
+      <td>"it is rare/precious" (gratitude)</td>
+      <td class="kr">감사합니다</td>
+      <td>"Ah-REE-GAH-TOE -- you're GRATEFUL"</td>
+    </tr>
+    <tr>
+      <td>Thank you (casual)</td>
+      <td class="jp">ありがとう</td>
+      <td>arigatou</td>
+      <td>"rare/precious" (casual gratitude)</td>
+      <td class="kr">고마워</td>
+      <td>Shorter = more casual, same as Korean</td>
+    </tr>
+    <tr>
+      <td>Sorry / Excuse me</td>
+      <td class="jp">すみません</td>
+      <td>sumimasen</td>
+      <td>"it is not settled" (apology)</td>
+      <td class="kr">죄송합니다 / 실례합니다</td>
+      <td>"Sue me, Ma'am, SEN"</td>
+    </tr>
+    <tr>
+      <td>Sorry (casual)</td>
+      <td class="jp">ごめん(なさい)</td>
+      <td>gomen (nasai)</td>
+      <td>"forgive (me)"</td>
+      <td class="kr">미안(해)</td>
+      <td>"GO-MEN -- I'll GO apologize, MEN"</td>
+    </tr>
+    <tr>
+      <td>Yes</td>
+      <td class="jp">はい</td>
+      <td>hai</td>
+      <td>yes</td>
+      <td class="kr">네</td>
+      <td>"HIGH = yes"</td>
+    </tr>
+    <tr>
+      <td>No</td>
+      <td class="jp">いいえ</td>
+      <td>iie</td>
+      <td>no</td>
+      <td class="kr">아니요</td>
+      <td>"EE-EH -- it's NOT"</td>
+    </tr>
+    <tr>
+      <td>I don't understand</td>
+      <td class="jp">わかりません</td>
+      <td>wakarimasen</td>
+      <td>understand-not-[polite]</td>
+      <td class="kr">모르겠어요</td>
+      <td>"WALK-A-RE-MASEN -- I can't WALK through this"</td>
+    </tr>
+    <tr>
+      <td>Please say it again</td>
+      <td class="jp">もう一度お願いします</td>
+      <td>mou ichido onegai shimasu</td>
+      <td>more one-time please</td>
+      <td class="kr">한 번 더 말씀해주세요</td>
+      <td>"MOH ICHI-DOH = one more time"</td>
+    </tr>
+    <tr>
+      <td>Do you speak English?</td>
+      <td class="jp">英語を話せますか？</td>
+      <td>eigo wo hanasemasu ka?</td>
+      <td>English-[object] can-speak-[question]</td>
+      <td class="kr">영어 하세요?</td>
+      <td>영어/英語 = EIGO -- <span class="cognate-tag">Cognate</span></td>
+    </tr>
+    <tr>
+      <td>I speak a little Japanese</td>
+      <td class="jp">日本語が少し話せます</td>
+      <td>nihongo ga sukoshi hanasemasu</td>
+      <td>Japanese-[subject] a-little can-speak</td>
+      <td class="kr">일본어 조금 해요</td>
+      <td>"SUKOSHI = a little. SU-KO-SHE, 'so cozy' amount"</td>
+    </tr>
+    <tr>
+      <td>It's okay / No problem</td>
+      <td class="jp">大丈夫です</td>
+      <td>daijoubu desu</td>
+      <td>big-strong-husband is (= "it's all right")</td>
+      <td class="kr">괜찮아요</td>
+      <td>"DIE-JOE-BOO -- FALSE FRIEND with Korean 대장부!"</td>
+    </tr>
+    <tr>
+      <td>Please (requesting)</td>
+      <td class="jp">お願いします</td>
+      <td>onegai shimasu</td>
+      <td>[hon]-wish do-[polite]</td>
+      <td class="kr">부탁합니다</td>
+      <td>"Oh-NEG-EYE -- I'm begging, NEGATING my pride"</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout ok">
+  <div class="callout-title">The すみません Multi-Tool</div>
+  <p><span class="jp">すみません</span> is the Swiss Army knife of Japanese. It means "excuse me," "sorry," "thank you" (for trouble caused), and "hey, could you help?" all at once. Just like Korean <span class="kr">저기요</span> + <span class="kr">죄송합니다</span> combined. When in doubt, <span class="jp">すみません</span> is almost never wrong.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     5F: EMERGENCY AND HELP PHRASES
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="5f-emergency-and-help-phrases">Emergency and Help Phrases</h3>
+<p>You hope to never need these, but if you do, you need them instantly. Memorize these as reflex responses.</p>
+
+<table>
+  <thead>
+    <tr><th>Situation</th><th>Japanese</th><th>Romaji</th><th>Literal Breakdown</th><th>Korean Equivalent</th><th>Notes</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Help!</td>
+      <td class="jp">助けて！</td>
+      <td>tasukete!</td>
+      <td>save-[request]!</td>
+      <td class="kr">도와주세요!</td>
+      <td>Shout this loudly if in danger</td>
+    </tr>
+    <tr>
+      <td>Call an ambulance</td>
+      <td class="jp">救急車を呼んでください</td>
+      <td>kyuukyuusha wo yonde kudasai</td>
+      <td>ambulance-[object] call-please</td>
+      <td class="kr">구급차 불러주세요</td>
+      <td>구급차/救急車 -- <span class="cognate-tag">Cognate</span></td>
+    </tr>
+    <tr>
+      <td>Where is the hospital?</td>
+      <td class="jp">病院はどこですか？</td>
+      <td>byouin wa doko desu ka?</td>
+      <td>hospital-[topic] where is-[question]</td>
+      <td class="kr">병원이 어디예요?</td>
+      <td>병원/病院 -- <span class="cognate-tag">Cognate</span></td>
+    </tr>
+    <tr>
+      <td>I'm sick</td>
+      <td class="jp">気分が悪いです</td>
+      <td>kibun ga warui desu</td>
+      <td>feeling-[subject] bad is</td>
+      <td class="kr">기분이 안 좋아요</td>
+      <td>기분/気分 -- <span class="cognate-tag">Cognate</span></td>
+    </tr>
+    <tr>
+      <td>I lost my passport</td>
+      <td class="jp">パスポートをなくしました</td>
+      <td>pasupooto wo nakushimashita</td>
+      <td>passport-[object] lost-[past-polite]</td>
+      <td class="kr">여권을 잃어버렸어요</td>
+      <td>Go to the nearest police box (交番 kouban)</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout warn">
+  <div class="callout-title">Emergency Numbers in Japan</div>
+  <p><strong>110</strong> = Police (<span class="jp">警察</span> keisatsu, Korean 경찰 -- <span class="cognate-tag">Cognate</span>)<br>
+  <strong>119</strong> = Fire and Ambulance (<span class="jp">消防</span> shoubou / <span class="jp">救急</span> kyuukyuu)<br>
+  The nearest police box (<span class="jp">交番</span> kouban) can help with lost items, directions, and emergencies.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     5G: NUMBERS AND COUNTING FOR DAILY USE
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="5g-numbers-and-counting-for-daily-use">Numbers and Counting for Daily Use</h3>
+<p>Japanese has <strong>two number systems</strong>: Sino-Japanese (<span class="jp">いち、に、さん</span>...) and Native Japanese (<span class="jp">ひとつ、ふたつ</span>...). For daily survival, focus on Sino-Japanese -- and notice how many are similar to Korean!</p>
+
+<h4>Sino-Japanese Numbers with Korean Comparison</h4>
+<table>
+  <thead>
+    <tr><th>Number</th><th>Japanese</th><th>Korean (한자 reading)</th><th>Similarity</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td class="jp">いち (ichi)</td><td class="kr">일 (il)</td><td>Different sound, same kanji 一</td></tr>
+    <tr><td>2</td><td class="jp">に (ni)</td><td class="kr">이 (i)</td><td>Different</td></tr>
+    <tr><td>3</td><td class="jp">さん (san)</td><td class="kr">삼 (sam)</td><td><span class="cognate-tag">Cognate</span> Close!</td></tr>
+    <tr><td>4</td><td class="jp">よん / し (yon / shi)</td><td class="kr">사 (sa)</td><td><span class="cognate-tag">Cognate</span> し/사 Close!</td></tr>
+    <tr><td>5</td><td class="jp">ご (go)</td><td class="kr">오 (o)</td><td>Different</td></tr>
+    <tr><td>6</td><td class="jp">ろく (roku)</td><td class="kr">육 (yuk)</td><td>Different</td></tr>
+    <tr><td>7</td><td class="jp">なな / しち (nana / shichi)</td><td class="kr">칠 (chil)</td><td><span class="cognate-tag">Cognate</span> しち/칠 Close!</td></tr>
+    <tr><td>8</td><td class="jp">はち (hachi)</td><td class="kr">팔 (pal)</td><td>Different</td></tr>
+    <tr><td>9</td><td class="jp">きゅう / く (kyuu / ku)</td><td class="kr">구 (gu)</td><td><span class="cognate-tag">Cognate</span> く/구 Close!</td></tr>
+    <tr><td>10</td><td class="jp">じゅう (juu)</td><td class="kr">십 (sip)</td><td>Different</td></tr>
+    <tr><td>100</td><td class="jp">ひゃく (hyaku)</td><td class="kr">백 (baek)</td><td><span class="cognate-tag">Cognate</span> Related</td></tr>
+    <tr><td>1,000</td><td class="jp">せん (sen)</td><td class="kr">천 (cheon)</td><td><span class="cognate-tag">Cognate</span> Related</td></tr>
+  </tbody>
+</table>
+
+<div class="callout ok">
+  <div class="callout-title">Numbers That Sound Similar</div>
+  <p>Notice the pattern: <span class="jp">さん</span>/삼, <span class="jp">し</span>/사, <span class="jp">しち</span>/칠, <span class="jp">く</span>/구, <span class="jp">せん</span>/천 -- these all come from the same Chinese source. The sound shifts follow predictable rules you'll learn in Chapter 11. For now, use these similarities as memory anchors!</p>
+</div>
+
+<h4>Practical Number Use</h4>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>Prices</h4>
+    <p><span class="jp">３８０円</span> = <span class="jp">さんびゃくはちじゅうえん</span></p>
+    <p style="font-size:.82rem;color:var(--text-muted)">sanbyaku hachijuu en (380 yen)</p>
+    <p><span class="jp">１，２５０円</span> = <span class="jp">せんにひゃくごじゅうえん</span></p>
+    <p style="font-size:.82rem;color:var(--text-muted)">sen nihyaku gojuu en (1,250 yen)</p>
+  </div>
+  <div class="card">
+    <h4>Time</h4>
+    <p><span class="jp">３時１５分</span> = <span class="jp">さんじじゅうごふん</span></p>
+    <p style="font-size:.82rem;color:var(--text-muted)">sanji juugo fun (3:15)</p>
+    <p><span class="jp">７時半</span> = <span class="jp">しちじはん</span></p>
+    <p style="font-size:.82rem;color:var(--text-muted)">shichiji han (7:30)</p>
+  </div>
+  <div class="card">
+    <h4>Counting People at Restaurants</h4>
+    <p><span class="jp">一人</span> (hitori) = 1 person</p>
+    <p><span class="jp">二人</span> (futari) = 2 people</p>
+    <p><span class="jp">三人</span> (sannin) = 3 people</p>
+    <p><span class="jp">四人</span> (yonin) = 4 people</p>
+    <p style="font-size:.82rem;color:var(--text-muted)">Note: 1 and 2 use native Japanese readings, 3+ use Sino-Japanese</p>
+  </div>
+</div>
+
+<!-- Quiz 3: Price Fill-in-the-Blank -->
+<div id="quiz-price"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     COMPREHENSIVE QUIZ: TOKYO DAY SIMULATION
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="tokyo-day-simulation">Tokyo Day Simulation</h3>
+<p>The ultimate test: walk through a full day in Tokyo using the phrases you just learned. This simulation proves you can survive a real day in Japan.</p>
+
+<div class="callout info">
+  <div class="callout-title">Your Day in Tokyo</div>
+  <p>You'll go through 8 situations from morning to night. For each one, type or build the correct Japanese phrase. Get through all 8, and you're ready for Japan.</p>
+</div>
+
+<div id="quiz-tokyo-sim"></div>
+
+<div id="quiz-tokyo-builder"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     RECALL CHECK (Ch02-04)
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="recall-check----chapters-02-04">Recall Check -- Chapters 02-04</h3>
+<p>Before moving on, verify your hiragana, katakana, and pronunciation knowledge from previous chapters.</p>
+
+<div id="quiz-recall"></div>
+
+<!-- Mark as Complete -->
+<button class="chapter-complete" data-ch="05">Mark as Complete &#10003;</button>
+
+<div style="display:flex;justify-content:space-between;margin:2rem 0">
+  <a href="ch-04.html" class="quiz-btn secondary">&larr; Chapter 04: Pronunciation</a>
+  <a href="ch-06.html" class="quiz-btn">Next: Chapter 06 -- Counters &rarr;</a>
+</div>
+
+</section>
+
+</div>
+
+
+</div>
+
+<footer>
+  <p>Zero to Hero: 日本語 for Korean Speakers &middot; Chapter 05</p>
+</footer>
+
+<script src="js/shared.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/quiz-engine.js"></script>
+<script>
+// ─── Recall Check (top of chapter, from Ch02-04) ───
+QuizEngine.RecallCheck(
+  document.getElementById('recall-check-top'),
+  {
+    fromChapters: 'Ch02-04',
+    items: [
+      { question: 'Read this hiragana: あ い う え お', answer: 'a i u e o' },
+      { question: 'Read this hiragana: か き く け こ', answer: 'ka ki ku ke ko' },
+      { question: 'Read this katakana: ア イ ウ エ オ', answer: 'a i u e o' },
+      { question: 'Read this katakana: カ キ ク ケ コ', answer: 'ka ki ku ke ko' },
+      { question: 'What is this katakana word? コーヒー', answer: 'koohii (coffee)' },
+      { question: 'Pronunciation: How many vowels does Japanese have? Name them.', answer: '5 vowels: a, i, u, e, o' },
+      { question: 'Pronunciation: Japanese は is closer to Korean ㅎ or ㅂ in sound?', answer: 'ㅎ -- Japanese h is a soft glottal fricative, not aspirated like Korean ㅂ' }
+    ]
+  }
+);
+
+// ─── Quiz 1: Restaurant Drag-and-Drop Match ───
+QuizEngine.DragMatch(
+  document.getElementById('quiz-restaurant-match'),
+  {
+    title: 'Restaurant Situations',
+    instruction: 'Match each situation to the correct Japanese phrase:',
+    pairs: [
+      { left: 'You want the check', right: 'お会計お願いします' },
+      { left: 'You want to order this item', right: 'これをお願いします' },
+      { left: 'Table for 2 people', right: '二人です' },
+      { left: 'It was delicious!', right: '美味しい！' },
+      { left: 'Thank you for the meal', right: 'ごちそうさまでした' },
+      { left: 'What do you recommend?', right: 'おすすめは何ですか？' }
+    ]
+  }
+);
+
+// ─── Quiz 2: Restaurant Sentence Builder ───
+QuizEngine.SentenceBuilder(
+  document.getElementById('quiz-restaurant-builder'),
+  {
+    title: 'Build Restaurant Orders',
+    sentences: [
+      {
+        hint: 'Order "this one, please" -- <span class="kr">이거 주세요</span>:',
+        words: ['これを', 'お願いします'],
+        correct: 'これをお願いします'
+      },
+      {
+        hint: 'Ask "What do you recommend?" -- <span class="kr">추천 메뉴가 뭐예요?</span>:',
+        words: ['おすすめは', '何ですか？'],
+        correct: 'おすすめは何ですか？'
+      },
+      {
+        hint: 'Say "I\'m allergic to eggs" -- <span class="kr">달걀 알레르기가 있어요</span>:',
+        words: ['卵', 'アレルギーが', 'あります'],
+        correct: '卵アレルギーがあります'
+      },
+      {
+        hint: 'Ask "Can I pay by card?" -- <span class="kr">카드로 계산돼요?</span>:',
+        words: ['カードで', '払えますか？'],
+        correct: 'カードで払えますか？'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 3: Price Fill-in-the-Blank ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-price'),
+  {
+    title: 'Read Prices in Japanese',
+    questions: [
+      {
+        prompt: 'You see a price tag: <strong>¥1,250</strong>. Say it in Japanese (hiragana):',
+        answer: 'せんにひゃくごじゅうえん',
+        acceptAlso: ['せんにひゃくごじゅう円', 'sen nihyaku gojuu en'],
+        explanation: '1000(せん) + 200(にひゃく) + 50(ごじゅう) + 円(えん)',
+        korean: '천이백오십 엔'
+      },
+      {
+        prompt: 'You see a price tag: <strong>¥380</strong>. Say it in Japanese (hiragana):',
+        answer: 'さんびゃくはちじゅうえん',
+        acceptAlso: ['さんびゃくはちじゅう円', 'sanbyaku hachijuu en'],
+        explanation: '300(さんびゃく) + 80(はちじゅう) + 円(えん) -- Note: ひゃく becomes びゃく after さん!',
+        korean: '삼백팔십 엔'
+      },
+      {
+        prompt: 'A coffee costs <strong>¥500</strong>. Say it in Japanese (hiragana):',
+        answer: 'ごひゃくえん',
+        acceptAlso: ['ごひゃく円', 'gohyaku en'],
+        explanation: '500(ごひゃく) + 円(えん)',
+        korean: '오백 엔'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 4: Tokyo Day Simulation (Fill-in-the-Blank) ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-tokyo-sim'),
+  {
+    title: 'Tokyo Day Simulation -- Part 1',
+    questions: [
+      {
+        prompt: '<strong>7:00 AM -- Hotel lobby.</strong> You see the hotel staff in the morning. Greet them politely:',
+        answer: 'おはようございます',
+        acceptAlso: ['ohayou gozaimasu'],
+        explanation: 'Morning greeting = おはようございます (ohayou gozaimasu)',
+        korean: '안녕하세요 (아침 인사)'
+      },
+      {
+        prompt: '<strong>8:00 AM -- Cafe.</strong> You want to order coffee and bread. Say: "Coffee and bread, please."',
+        answer: 'コーヒーとパンをお願いします',
+        acceptAlso: ['koohii to pan wo onegai shimasu', 'コーヒーとパンをおねがいします'],
+        explanation: 'コーヒー(coffee) + と(and) + パン(bread) + を(object) + お願いします(please)',
+        korean: '커피와 빵 주세요'
+      },
+      {
+        prompt: '<strong>10:00 AM -- Street.</strong> You need to find Shibuya station. Ask: "Excuse me, where is Shibuya station?"',
+        answer: 'すみません、渋谷駅はどこですか？',
+        acceptAlso: ['すみません、渋谷駅はどこですか', 'sumimasen, shibuya eki wa doko desu ka?', 'sumimasen shibuya eki wa doko desu ka'],
+        explanation: 'すみません(excuse me) + 渋谷駅(Shibuya station) + は(topic) + どこですか(where is it?)',
+        korean: '실례합니다, 시부야역이 어디예요?'
+      },
+      {
+        prompt: '<strong>11:00 AM -- Shop.</strong> You see something you like. Ask: "How much is this?"',
+        answer: 'いくらですか？',
+        acceptAlso: ['いくらですか', 'ikura desu ka?', 'ikura desu ka'],
+        explanation: 'いくら(how much) + ですか(is it?)',
+        korean: '얼마예요?'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 4b: Tokyo Day Simulation -- Part 2 (Sentence Builder) ───
+QuizEngine.SentenceBuilder(
+  document.getElementById('quiz-tokyo-builder'),
+  {
+    title: 'Tokyo Day Simulation -- Part 2',
+    sentences: [
+      {
+        hint: '<strong>11:30 AM -- Shop.</strong> You want to buy an item. Say "I\'ll take this, please" -- <span class="kr">이거 주세요</span>:',
+        words: ['これを', 'ください'],
+        correct: 'これをください'
+      },
+      {
+        hint: '<strong>12:30 PM -- Izakaya.</strong> Ask what they recommend -- <span class="kr">추천 메뉴가 뭐예요?</span>:',
+        words: ['おすすめは', '何ですか？'],
+        correct: 'おすすめは何ですか？'
+      },
+      {
+        hint: '<strong>3:00 PM -- Taxi.</strong> Tell the driver to go to Tokyo Station -- <span class="kr">도쿄역까지 가주세요</span>:',
+        words: ['東京駅まで', 'お願いします'],
+        correct: '東京駅までお願いします'
+      },
+      {
+        hint: '<strong>3:30 PM -- Taxi.</strong> Tell the driver to stop here -- <span class="kr">여기서 세워주세요</span>:',
+        words: ['ここで', '止めて', 'ください'],
+        correct: 'ここで止めてください'
+      },
+      {
+        hint: '<strong>7:00 PM -- Restaurant.</strong> Ask for the check -- <span class="kr">계산해 주세요</span>:',
+        words: ['お会計', 'お願いします'],
+        correct: 'お会計お願いします'
+      },
+      {
+        hint: '<strong>7:30 PM -- Leaving restaurant.</strong> Thank them for the meal -- <span class="kr">잘 먹었습니다</span>:',
+        words: ['ごちそうさま', 'でした'],
+        correct: 'ごちそうさまでした'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 5: Recall Check (Ch02-04) ───
+QuizEngine.RecallCheck(
+  document.getElementById('quiz-recall'),
+  {
+    fromChapters: 'Ch02-04',
+    items: [
+      { question: 'Hiragana: Read さ し す せ そ', answer: 'sa shi su se so' },
+      { question: 'Hiragana: Read た ち つ て と', answer: 'ta chi tsu te to' },
+      { question: 'Katakana: Read サ シ ス セ ソ', answer: 'sa shi su se so' },
+      { question: 'Katakana: What word is this? レストラン', answer: 'resutoran (restaurant)' },
+      { question: 'Katakana: What word is this? ビール', answer: 'biiru (beer)' },
+      { question: 'Pronunciation: Japanese し is closer to "shi" or "si"?', answer: 'shi -- the Japanese し has a "sh" sound, not a pure "s" like Korean ㅅ before ㅣ' },
+      { question: 'Pronunciation: What is special about Japanese つ?', answer: 'It is pronounced "tsu" with an affricate -- the tongue touches behind the teeth then releases with an "s" sound. Not the same as Korean ㅊ.' }
+    ]
+  }
+);
+</script>
+<script src="js/spaced-repetition.js"></script>
+<script src="js/memory-palace.js"></script>
+</body>
+</html>

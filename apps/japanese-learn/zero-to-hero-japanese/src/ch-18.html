@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ch18: Cultural Pragmatics — What the Textbook Won't Teach You — Zero to Hero 日本語</title>
+<link rel="stylesheet" href="css/design-system.css">
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <span class="logo-badge">Zero to Hero — Memory Architecture Edition</span>
+    <div class="logo-title">日本語 for Korean Speakers</div>
+    <div class="logo-sub">From 한국어 to 日本語 — The Memory Architect's Guide</div>
+  </a>
+  <div class="sidebar-progress">
+    <div class="sidebar-progress-label">Progress</div>
+    <div class="sidebar-progress-bar">
+      <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+    </div>
+    <div class="sidebar-progress-count">0/22 complete</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="ch-00.html" class="toc-link"><span class="toc-num">00</span><span class="toc-check" data-ch="00"></span>Memory Science</a>
+    <a href="ch-01.html" class="toc-link"><span class="toc-num">01</span><span class="toc-check" data-ch="01"></span>Your Korean Advantage</a>
+    <a href="ch-02.html" class="toc-link"><span class="toc-num">02</span><span class="toc-check" data-ch="02"></span>Hiragana</a>
+    <a href="ch-03.html" class="toc-link"><span class="toc-num">03</span><span class="toc-check" data-ch="03"></span>Katakana</a>
+    <a href="ch-04.html" class="toc-link"><span class="toc-num">04</span><span class="toc-check" data-ch="04"></span>Pronunciation</a>
+    <a href="ch-05.html" class="toc-link"><span class="toc-num">05</span><span class="toc-check" data-ch="05"></span>Survival Japanese</a>
+    <a href="ch-06.html" class="toc-link"><span class="toc-num">06</span><span class="toc-check" data-ch="06"></span>Counters</a>
+    <a href="ch-07.html" class="toc-link"><span class="toc-num">07</span><span class="toc-check" data-ch="07"></span>Particles</a>
+    <a href="ch-08.html" class="toc-link"><span class="toc-num">08</span><span class="toc-check" data-ch="08"></span>Verb Conjugation</a>
+    <a href="ch-09.html" class="toc-link"><span class="toc-num">09</span><span class="toc-check" data-ch="09"></span>Daily Conversations</a>
+    <a href="ch-10.html" class="toc-link"><span class="toc-num">10</span><span class="toc-check" data-ch="10"></span>Sentence Patterns</a>
+    <a href="ch-11.html" class="toc-link"><span class="toc-num">11</span><span class="toc-check" data-ch="11"></span>Kanji</a>
+    <a href="ch-12.html" class="toc-link"><span class="toc-num">12</span><span class="toc-check" data-ch="12"></span>Sino-Vocabulary</a>
+    <a href="ch-13.html" class="toc-link"><span class="toc-num">13</span><span class="toc-check" data-ch="13"></span>Native Vocabulary</a>
+    <a href="ch-14.html" class="toc-link"><span class="toc-num">14</span><span class="toc-check" data-ch="14"></span>Honorifics</a>
+    <a href="ch-15.html" class="toc-link"><span class="toc-num">15</span><span class="toc-check" data-ch="15"></span>Reading</a>
+    <a href="ch-16.html" class="toc-link"><span class="toc-num">16</span><span class="toc-check" data-ch="16"></span>Writing</a>
+    <a href="ch-17.html" class="toc-link"><span class="toc-num">17</span><span class="toc-check" data-ch="17"></span>Listening</a>
+    <a href="ch-18.html" class="toc-link active"><span class="toc-num">18</span><span class="toc-check" data-ch="18"></span>Cultural Pragmatics</a>
+    <a href="ch-19.html" class="toc-link"><span class="toc-num">19</span><span class="toc-check" data-ch="19"></span>JLPT and Beyond</a>
+    <a href="ch-20.html" class="toc-link"><span class="toc-num">20</span><span class="toc-check" data-ch="20"></span>Memory Palace</a>
+    <a href="ch-21.html" class="toc-link"><span class="toc-num">21</span><span class="toc-check" data-ch="21"></span>The 90-Day Sprint</a>
+    <a href="appendices.html" class="toc-link" style="margin-top:.5rem;border-top:1px solid var(--border);padding-top:.8rem"><span class="toc-num">+</span>Appendices</a>
+  </nav>
+</aside>
+
+<div class="main">
+<div class="content-wrap">
+
+<section id="ch18" data-ch="18" style="padding-top:3rem">
+<h2><span class="ch-label">Chapter 18</span>Cultural Pragmatics &mdash; What the Textbook Won't Teach You</h2>
+
+<div class="callout memory">
+  <div class="callout-title">Memory Technique Spotlight: Cultural Schema + Narrative Encoding</div>
+  <p>Cultural knowledge is best remembered as stories, not rules. Each cultural concept in this chapter is presented as a narrative — a scenario you can mentally inhabit. These cultural schemas then guide your behavior automatically in real Japanese social situations.</p>
+</div>
+
+<p>In Ch05, you learned to say <span class="jp">ごちそうさまでした</span> after a meal. But WHY? Why do you announce you're about to eat (<span class="jp">いただきます</span>)? Why do you apologize when someone gives you a gift? This chapter explains the cultural logic behind the language &mdash; the unwritten rules that separate "correct Japanese" from "natural Japanese."</p>
+
+<div class="pq">
+  "Grammar gets you understood. Cultural pragmatics gets you accepted. Korean and Japanese cultures are cousins &mdash; close enough to feel familiar, different enough to cause real misunderstandings."
+</div>
+
+<!-- ─── RECALL CHECK (top of chapter, from all prior chapters) ─── -->
+<nav class="chapter-toc">
+  <details open>
+    <summary class="chapter-toc-title">In This Chapter</summary>
+  <ol>
+    <li><a href="#recall-check-all-prior-chapters">Recall Check — All Prior Chapters</a></li>
+    <li><a href="#section-1-空気を読む-read-the-air-눈치-social-awareness">空気を読む (Read the Air) ↔ 눈치 (Social Awareness)</a></li>
+    <li><a href="#section-2-本音と建前-true-feelings-vs-public-face-겉과-속">本音と建前 (True Feelings vs Public Face) ↔ 겉과 속</a></li>
+    <li><a href="#section-3-迷惑-the-concept-of-not-causing-trouble">迷惑 — The Concept of Not Causing Trouble</a></li>
+    <li><a href="#section-4-business-culture-differences">Business Culture Differences</a></li>
+    <li><a href="#section-5-regional-variation-関西弁-and-beyond">Regional Variation — 関西弁 and Beyond</a></li>
+    <li><a href="#essential-cultural-vocabulary">Essential Cultural Vocabulary</a></li>
+    <li><a href="#interactive-exercises">Interactive Exercises</a></li>
+    <li><a href="#recall-check-comprehensive-review">Recall Check — Comprehensive Review</a></li>
+  </ol>
+  </details>
+</nav>
+
+<h3 id="recall-check-all-prior-chapters">Recall Check &mdash; All Prior Chapters</h3>
+<p>This is the second-to-last chapter. Make sure everything from hiragana to listening is still accessible.</p>
+
+<div id="recall-check-top"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 1: 空気を読む ↔ 눈치
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="section-1-空気を読む-read-the-air-눈치-social-awareness"><span class="jp">空気を読む</span> (Read the Air) &harr; <span class="kr">눈치</span> (Social Awareness)</h3>
+
+<p>Both Korean and Japanese cultures value the ability to perceive unspoken social cues. But they execute this skill differently.</p>
+
+<div class="card">
+  <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:1rem;align-items:start">
+    <div>
+      <h4 style="color:var(--a2)">Korean: <span class="kr">눈치</span></h4>
+      <ul style="font-size:.9rem">
+        <li>Active social intelligence</li>
+        <li>You notice and <strong>react quickly</strong></li>
+        <li>Can be direct once you've read the situation</li>
+        <li><span class="kr">눈치가 빠르다</span> = "quick to catch on" (compliment)</li>
+        <li><span class="kr">눈치가 없다</span> = "clueless" (insult)</li>
+      </ul>
+    </div>
+    <div style="font-size:1.5rem;color:var(--text-muted);padding-top:2rem">&harr;</div>
+    <div>
+      <h4 style="color:var(--accent)">Japanese: <span class="jp">空気を読む</span></h4>
+      <ul style="font-size:.9rem">
+        <li>Passive social harmony</li>
+        <li>You perceive and <strong>adjust silently</strong></li>
+        <li>Remain indirect even after reading the room</li>
+        <li><span class="jp">空気が読める</span> = "can read the air" (basic expectation)</li>
+        <li><span class="jp">KY</span> (空気読めない) = "can't read the air" (social death)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="callout warn">
+  <div class="callout-title">The Critical Difference</div>
+  <p>In Korea, once you've read the room, you can act &mdash; sometimes bluntly. In Japan, reading the room means <strong>adjusting your behavior to avoid disruption</strong>, often without ever directly addressing the issue. Korean <span class="kr">눈치</span> is a tool for action. Japanese <span class="jp">空気を読む</span> is a tool for <strong>non-action</strong>.</p>
+</div>
+
+<div class="card">
+  <h4>Practical Example: Overtime at Work</h4>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+    <div>
+      <h4 style="color:var(--a2);font-size:.9rem">Korean Workplace</h4>
+      <p style="font-size:.88rem">Boss is still working. You notice (<span class="kr">눈치</span>). You might stay, or you might say <span class="kr">"먼저 들어가겠습니다"</span> (I'll head out first) &mdash; direct acknowledgment.</p>
+    </div>
+    <div>
+      <h4 style="color:var(--accent);font-size:.9rem">Japanese Workplace</h4>
+      <p style="font-size:.88rem">Boss is still working. You read the air. You stay silently. If you must leave, you say <span class="jp">お先に失礼します</span> (Excuse me for leaving first) with apologetic tone, possibly bowing.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 2: 本音と建前 ↔ 겉과 속
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="section-2-本音と建前-true-feelings-vs-public-face-겉과-속"><span class="jp">本音と建前</span> (True Feelings vs Public Face) &harr; <span class="kr">겉과 속</span></h3>
+
+<p>Every culture has a gap between what people think and what they say. In Japan, this gap has a name and a system.</p>
+
+<div class="diagram">
+  <svg viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg">
+    <!-- Title -->
+    <text x="360" y="30" text-anchor="middle" font-size="14" font-weight="600" fill="var(--heading)">The Indirectness Spectrum</text>
+
+    <!-- Scale line -->
+    <line x1="60" y1="80" x2="660" y2="80" stroke="var(--border)" stroke-width="2"/>
+
+    <!-- Direct end -->
+    <text x="60" y="70" text-anchor="start" font-size="11" fill="var(--heading)" font-weight="600">Direct</text>
+    <circle cx="60" cy="80" r="4" fill="var(--heading)"/>
+
+    <!-- Indirect end -->
+    <text x="660" y="70" text-anchor="end" font-size="11" fill="var(--heading)" font-weight="600">Indirect</text>
+    <circle cx="660" cy="80" r="4" fill="var(--heading)"/>
+
+    <!-- Korean position -->
+    <circle cx="250" cy="80" r="8" fill="var(--a2)" opacity=".8"/>
+    <text x="250" y="105" text-anchor="middle" font-size="11" fill="var(--a2)" font-weight="600">Korean</text>
+    <text x="250" y="120" text-anchor="middle" font-size="9" fill="var(--text-muted)">Has 겉/속 distinction</text>
+    <text x="250" y="133" text-anchor="middle" font-size="9" fill="var(--text-muted)">but more willing to</text>
+    <text x="250" y="146" text-anchor="middle" font-size="9" fill="var(--text-muted)">be direct when needed</text>
+
+    <!-- Japanese position -->
+    <circle cx="530" cy="80" r="8" fill="var(--accent)" opacity=".8"/>
+    <text x="530" y="105" text-anchor="middle" font-size="11" fill="var(--accent)" font-weight="600">Japanese</text>
+    <text x="530" y="120" text-anchor="middle" font-size="9" fill="var(--text-muted)">建前 is the default</text>
+    <text x="530" y="133" text-anchor="middle" font-size="9" fill="var(--text-muted)">本音 revealed only</text>
+    <text x="530" y="146" text-anchor="middle" font-size="9" fill="var(--text-muted)">with close friends/alcohol</text>
+
+    <!-- Key phrases box -->
+    <rect x="60" y="170" width="290" height="110" rx="8" fill="none" stroke="var(--a2)" stroke-width="1.5"/>
+    <text x="205" y="192" text-anchor="middle" font-size="11" fill="var(--a2)" font-weight="600">Korean Refusal Pattern</text>
+    <text x="205" y="212" text-anchor="middle" font-size="10" fill="var(--text-muted)">Q: 내일 시간 있어? (Free tomorrow?)</text>
+    <text x="205" y="228" text-anchor="middle" font-size="10" fill="var(--text-muted)">A: 아니, 내일은 좀... (No, tomorrow is a bit...)</text>
+    <text x="205" y="244" text-anchor="middle" font-size="10" fill="var(--text-muted)">or: 미안, 안 돼. (Sorry, can't.)</text>
+    <text x="205" y="264" text-anchor="middle" font-size="9" fill="var(--a2)">Can say "no" directly</text>
+
+    <rect x="370" y="170" width="290" height="110" rx="8" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+    <text x="515" y="192" text-anchor="middle" font-size="11" fill="var(--accent)" font-weight="600">Japanese Refusal Pattern</text>
+    <text x="515" y="212" text-anchor="middle" font-size="10" fill="var(--text-muted)">Q: 明日、時間ある？ (Free tomorrow?)</text>
+    <text x="515" y="228" text-anchor="middle" font-size="10" fill="var(--text-muted)">A: 明日はちょっと... (Tomorrow is a bit...)</text>
+    <text x="515" y="244" text-anchor="middle" font-size="10" fill="var(--text-muted)">Never: いいえ、無理です。</text>
+    <text x="515" y="264" text-anchor="middle" font-size="9" fill="var(--accent)">ちょっと... = "no" (implied)</text>
+  </svg>
+  <div class="diagram-caption">Korean and Japanese both soften refusals, but Japanese takes indirectness further. When a Japanese person says <span class="jp">ちょっと...</span> (a bit...) and trails off, they are saying "no." This is 建前 in action.</div>
+</div>
+
+<h4>Decoding Indirect Japanese</h4>
+
+<table>
+  <thead>
+    <tr><th>They Say</th><th>They Mean</th><th>Korean Equivalent</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="jp">ちょっと...</td>
+      <td>No (polite refusal)</td>
+      <td class="kr">좀...</td>
+    </tr>
+    <tr>
+      <td class="jp">考えておきます</td>
+      <td>Probably no (I'll "think about it")</td>
+      <td class="kr">생각해 볼게요 (but in Korean this might actually mean they'll think about it)</td>
+    </tr>
+    <tr>
+      <td class="jp">難しいですね</td>
+      <td>No, it's impossible</td>
+      <td class="kr">어렵겠네요 (Korean: genuinely difficult; Japanese: flat refusal)</td>
+    </tr>
+    <tr>
+      <td class="jp">前向きに検討します</td>
+      <td>We will not do this (business euphemism)</td>
+      <td class="kr">긍정적으로 검토하겠습니다 (Korean might actually mean it)</td>
+    </tr>
+    <tr>
+      <td class="jp">結構です</td>
+      <td>No thank you (can also mean "fine/sufficient")</td>
+      <td class="kr">괜찮습니다 (same ambiguity exists in Korean)</td>
+    </tr>
+    <tr>
+      <td class="jp">いいです</td>
+      <td>Context-dependent: "Yes, good" or "No, I'm fine (don't need it)"</td>
+      <td class="kr">괜찮아요 (same ambiguity)</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">Elaborative Interrogation</div>
+  <p><strong>WHY is Japanese indirectness stronger than Korean?</strong></p>
+  <p>Consider the cultural concept of <span class="jp">和</span> (harmony). Japan's island geography and historical social structure created extreme emphasis on group cohesion. Direct refusal disrupts <span class="jp">和</span>. Korea shares Confucian values but has a more confrontational historical narrative (resistance to invasions, social movements) that normalized directness in certain contexts.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 3: 迷惑 (MEIWAKU)
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="section-3-迷惑-the-concept-of-not-causing-trouble"><span class="jp">迷惑</span> &mdash; The Concept of Not Causing Trouble</h3>
+
+<p><span class="jp">迷惑</span> (nuisance/trouble/inconvenience) is one of the most important cultural concepts in Japan. While Korea has <span class="kr">폐</span> (trouble, as in <span class="kr">폐를 끼치다</span>), the Japanese concept of <span class="jp">迷惑</span> operates at a much higher sensitivity level.</p>
+
+<div class="card">
+  <h4>The <span class="jp">迷惑</span> Sensitivity Spectrum</h4>
+  <table>
+    <thead>
+      <tr><th>Situation</th><th>In Korea</th><th>In Japan</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Talking on phone on train</td>
+        <td class="kr">Generally acceptable</td>
+        <td class="jp">Strongly avoided &mdash; マナーモード (manner mode) is expected</td>
+      </tr>
+      <tr>
+        <td>Eating while walking</td>
+        <td class="kr">Common and acceptable</td>
+        <td class="jp">Frowned upon except at festivals &mdash; creates crumbs, smells = 迷惑</td>
+      </tr>
+      <tr>
+        <td>Playing music from phone speaker</td>
+        <td class="kr">Somewhat common in public</td>
+        <td class="jp">Absolutely unacceptable &mdash; イヤホン (earphones) always</td>
+      </tr>
+      <tr>
+        <td>Strong perfume on train</td>
+        <td class="kr">Generally tolerated</td>
+        <td class="jp">Considered 迷惑 &mdash; imposing your scent on others</td>
+      </tr>
+      <tr>
+        <td>Being late by 5 minutes</td>
+        <td class="kr">Often acceptable socially</td>
+        <td class="jp">Requires apology: <span class="jp">遅れてすみません</span></td>
+      </tr>
+      <tr>
+        <td>Not finishing food at restaurant</td>
+        <td class="kr">Sometimes acceptable</td>
+        <td class="jp">Wastes the chef's effort = 迷惑 to the restaurant</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="callout ok">
+  <div class="callout-title">Key Phrases for Avoiding 迷惑</div>
+  <ul style="margin-bottom:0">
+    <li><span class="jp">ご迷惑をおかけして申し訳ございません</span> &mdash; I sincerely apologize for the trouble (<span class="kr">폐를 끼쳐서 죄송합니다</span>)</li>
+    <li><span class="jp">お邪魔します</span> &mdash; I'm intruding (said when entering someone's home) (<span class="kr">실례합니다</span>)</li>
+    <li><span class="jp">お手数ですが</span> &mdash; I know this is troublesome, but... (<span class="kr">번거로우시겠지만</span>)</li>
+    <li><span class="jp">すみません、ちょっとよろしいですか</span> &mdash; Excuse me, do you have a moment? (<span class="kr">죄송합니다, 잠시 괜찮으세요?</span>)</li>
+  </ul>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 4: BUSINESS CULTURE
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="section-4-business-culture-differences">Business Culture Differences</h3>
+
+<h4><span class="jp">名刺交換</span> &mdash; Business Card Exchange</h4>
+
+<div class="card">
+  <h4>The Ritual (Not Just an Exchange)</h4>
+  <ol>
+    <li>Present your card with <strong>both hands</strong>, text facing the recipient</li>
+    <li>Receive their card with <strong>both hands</strong>, saying <span class="jp">頂戴いたします</span> ("I humbly receive this")</li>
+    <li>Study their card carefully &mdash; do NOT write on it, bend it, or put it in your back pocket</li>
+    <li>Place it on the table during the meeting, positioned by where they sit</li>
+    <li>After the meeting, store it respectfully in a card case (<span class="jp">名刺入れ</span>)</li>
+  </ol>
+  <p style="font-size:.85rem;color:var(--text-muted)">Korean business card exchange is similar but less ritualized. In Korea, you might receive a card with one hand from a peer. In Japan, <strong>always both hands</strong>, even with juniors.</p>
+</div>
+
+<h4>Meeting Protocols</h4>
+
+<div class="card">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+    <div>
+      <h4 style="color:var(--a2);font-size:.9rem">Korean Meetings (<span class="kr">회의</span>)</h4>
+      <ul style="font-size:.88rem">
+        <li>Can express disagreement during meeting</li>
+        <li><span class="kr">제 생각은 좀 다른데요</span> (My thought is a bit different) is acceptable</li>
+        <li>Decisions can be made in the room</li>
+        <li>Follow-up by Kakao or email</li>
+      </ul>
+    </div>
+    <div>
+      <h4 style="color:var(--accent);font-size:.9rem">Japanese Meetings (<span class="jp">会議</span>)</h4>
+      <ul style="font-size:.88rem">
+        <li>Decisions often pre-arranged (<span class="jp">根回し</span>)</li>
+        <li>Meeting is for formal confirmation, not debate</li>
+        <li>Disagreement expressed privately, before/after</li>
+        <li>Minutes (<span class="jp">議事録</span>) are critical</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="callout warn">
+  <div class="callout-title">根回し (Nemawashi) &mdash; The Pre-Meeting</div>
+  <p>In Japan, the real meeting happens <em>before</em> the meeting. <span class="jp">根回し</span> literally means "going around the roots" (of a tree before transplanting it). You informally discuss proposals with key stakeholders individually, building consensus before the formal meeting. The meeting itself is ceremonial. Koreans do this too (<span class="kr">사전 조율</span>), but Japanese <span class="jp">根回し</span> is more systematic and expected.</p>
+</div>
+
+<h4><span class="jp">飲み会</span> vs <span class="kr">회식</span> &mdash; Drinking Culture</h4>
+
+<div class="card">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+    <div>
+      <h4 style="color:var(--a2);font-size:.9rem">Korean <span class="kr">회식</span></h4>
+      <ul style="font-size:.88rem">
+        <li>Often semi-mandatory, multiple rounds (<span class="kr">1차, 2차, 3차</span>)</li>
+        <li>Pouring for others is important</li>
+        <li>Turn away from seniors when drinking</li>
+        <li>Can get quite boisterous</li>
+        <li>Refusing alcohol increasingly accepted</li>
+      </ul>
+    </div>
+    <div>
+      <h4 style="color:var(--accent);font-size:.9rem">Japanese <span class="jp">飲み会</span></h4>
+      <ul style="font-size:.88rem">
+        <li>Important for relationship building (<span class="jp">飲みニケーション</span>)</li>
+        <li>Pouring for others: always pour for seniors first</li>
+        <li>Wait for <span class="jp">乾杯</span> (toast) before drinking</li>
+        <li>More restrained than Korean 회식</li>
+        <li><span class="jp">無礼講</span> (dropping formality) is declared but not fully real</li>
+      </ul>
+    </div>
+  </div>
+  <p style="margin-top:1rem;font-size:.85rem;color:var(--text-muted)">Key vocabulary: <span class="jp">お酌</span> (pouring for others), <span class="jp">二次会</span> (second round), <span class="jp">割り勘</span> (splitting the bill), <span class="jp">おごる</span> (treating someone)</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 5: REGIONAL VARIATION
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="section-5-regional-variation-関西弁-and-beyond">Regional Variation &mdash; <span class="jp">関西弁</span> and Beyond</h3>
+
+<p>Standard Japanese (<span class="jp">標準語</span>) is based on Tokyo speech. But Japan has rich regional dialects. The most important to know is <span class="jp">関西弁</span> (Kansai dialect), spoken in Osaka, Kyoto, and Kobe.</p>
+
+<div class="diagram">
+  <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg">
+    <!-- Title -->
+    <text x="360" y="30" text-anchor="middle" font-size="14" font-weight="600" fill="var(--heading)">Tokyo vs Osaka: Key Cultural Differences</text>
+
+    <!-- Tokyo box -->
+    <rect x="40" y="50" width="300" height="200" rx="10" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+    <text x="190" y="75" text-anchor="middle" font-size="13" font-weight="600" fill="var(--accent)">Tokyo (東京)</text>
+
+    <text x="60" y="100" font-size="10" fill="var(--text-muted)">Reserved, formal, indirect</text>
+    <text x="60" y="118" font-size="10" fill="var(--text-muted)">Standard Japanese (標準語)</text>
+    <text x="60" y="136" font-size="10" fill="var(--text-muted)">Escalator: stand left, walk right</text>
+    <text x="60" y="154" font-size="10" fill="var(--text-muted)">Humor: subtle, ironic</text>
+    <text x="60" y="172" font-size="10" fill="var(--text-muted)">Stranger interaction: minimal</text>
+    <text x="60" y="195" font-size="10" fill="var(--text-muted)">「ありがとうございます」</text>
+    <text x="60" y="213" font-size="10" fill="var(--text-muted)">「じゃないですか」</text>
+    <text x="60" y="235" font-size="9" fill="var(--accent)" font-weight="500">Closer to Korean 서울 culture</text>
+
+    <!-- Osaka box -->
+    <rect x="380" y="50" width="300" height="200" rx="10" fill="none" stroke="var(--a3)" stroke-width="1.5"/>
+    <text x="530" y="75" text-anchor="middle" font-size="13" font-weight="600" fill="var(--a3)">Osaka (大阪)</text>
+
+    <text x="400" y="100" font-size="10" fill="var(--text-muted)">Outgoing, direct, expressive</text>
+    <text x="400" y="118" font-size="10" fill="var(--text-muted)">Kansai dialect (関西弁)</text>
+    <text x="400" y="136" font-size="10" fill="var(--text-muted)">Escalator: stand right, walk left</text>
+    <text x="400" y="154" font-size="10" fill="var(--text-muted)">Humor: slapstick, ツッコミ/ボケ</text>
+    <text x="400" y="172" font-size="10" fill="var(--text-muted)">Stranger interaction: common</text>
+    <text x="400" y="195" font-size="10" fill="var(--text-muted)">「おおきに」(thank you)</text>
+    <text x="400" y="213" font-size="10" fill="var(--text-muted)">「ちゃうやん」(that's wrong)</text>
+    <text x="400" y="235" font-size="9" fill="var(--a3)" font-weight="500">Closer to Korean 부산 culture</text>
+  </svg>
+  <div class="diagram-caption">Tokyo and Osaka have distinct cultural personalities, much like Seoul and Busan. Kansai dialect is warmer, more direct, and more emotionally expressive.</div>
+</div>
+
+<h4>Essential <span class="jp">関西弁</span> Conversions</h4>
+
+<table>
+  <thead>
+    <tr><th>Standard (標準語)</th><th>Kansai (関西弁)</th><th>Meaning</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="jp">ない</td><td class="jp">あらへん / ない</td><td>Not (negative)</td></tr>
+    <tr><td class="jp">だめ</td><td class="jp">あかん</td><td>No good / can't</td></tr>
+    <tr><td class="jp">違う</td><td class="jp">ちゃう</td><td>That's wrong / different</td></tr>
+    <tr><td class="jp">本当</td><td class="jp">ほんま</td><td>Really / truly</td></tr>
+    <tr><td class="jp">すごい</td><td class="jp">めっちゃ</td><td>Very / super</td></tr>
+    <tr><td class="jp">〜ている</td><td class="jp">〜てる / 〜とる</td><td>Is doing (progressive)</td></tr>
+    <tr><td class="jp">〜ではないか</td><td class="jp">〜やんか</td><td>Isn't it?</td></tr>
+    <tr><td class="jp">面白い</td><td class="jp">おもろい</td><td>Funny / interesting</td></tr>
+    <tr><td class="jp">ありがとう</td><td class="jp">おおきに</td><td>Thank you</td></tr>
+    <tr><td class="jp">です / だ</td><td class="jp">や</td><td>Copula (is/am/are)</td></tr>
+  </tbody>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">Should You Learn 関西弁?</div>
+  <p>Not actively &mdash; learn to <strong>recognize it</strong>, not produce it. Using 関西弁 as a non-native speaker sounds odd (like a foreigner speaking in a Busan accent in Korea). However, understanding it is essential because you will encounter it in media, travel, and many Japanese friends from the Kansai region. Focus on recognition, not production.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     ADDITIONAL CULTURAL CONCEPTS
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="essential-cultural-vocabulary">Essential Cultural Vocabulary</h3>
+
+<div class="card-grid">
+  <div class="card">
+    <h4><span class="jp">義理</span> (Obligation)</h4>
+    <p style="font-size:.88rem">Social debts that must be repaid. <span class="jp">義理チョコ</span> (obligation chocolate on Valentine's Day) captures this perfectly. Similar to Korean <span class="kr">의리</span> but more formalized in Japan. Every favor creates a debt.</p>
+  </div>
+  <div class="card">
+    <h4><span class="jp">遠慮</span> (Restraint/Reserve)</h4>
+    <p style="font-size:.88rem">Holding back to avoid imposing. When offered seconds, say <span class="jp">遠慮します</span> at least once. The host will insist. You may then accept. This dance exists in Korea too (<span class="kr">사양합니다</span>) but is more ritualized in Japan.</p>
+  </div>
+  <div class="card">
+    <h4><span class="jp">もったいない</span> (Wastefulness)</h4>
+    <p style="font-size:.88rem">Deep aversion to waste &mdash; food, resources, potential. Not just environmental but spiritual: everything has value. Korean <span class="kr">아깝다</span> is close but <span class="jp">もったいない</span> carries stronger moral weight.</p>
+  </div>
+  <div class="card">
+    <h4><span class="jp">我慢</span> (Endurance)</h4>
+    <p style="font-size:.88rem">Bearing pain or hardship silently. Valued as a virtue, not just a necessity. Korean <span class="kr">참다/인내</span> is similar, but Japanese <span class="jp">我慢</span> is elevated to a social expectation &mdash; complaining is itself <span class="jp">迷惑</span>.</p>
+  </div>
+  <div class="card">
+    <h4><span class="jp">おもてなし</span> (Hospitality)</h4>
+    <p style="font-size:.88rem">Anticipating needs before they're expressed. Not just service but <strong>proactive care</strong>. Korean hospitality (<span class="kr">정</span>) is warmer and more emotional; Japanese <span class="jp">おもてなし</span> is more precise and anticipatory.</p>
+  </div>
+  <div class="card">
+    <h4><span class="jp">報連相</span> (Report-Connect-Consult)</h4>
+    <p style="font-size:.88rem"><span class="jp">報告・連絡・相談</span> = Report, inform, consult. The holy trinity of Japanese workplace communication. Not doing <span class="jp">報連相</span> is a career-ending mistake. Korean workplaces value this too but the term and system are distinctly Japanese.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     INTERACTIVE EXERCISES
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="interactive-exercises">Interactive Exercises</h3>
+
+<!-- Quiz 1: MultipleChoice -- cultural situation responses -->
+<div id="quiz-culture-situations"></div>
+
+<!-- Quiz 2: FillBlank -- complete cultural phrases -->
+<div id="quiz-culture-fill"></div>
+
+<!-- Quiz 3: DragMatch -- match Korean ↔ Japanese cultural concepts -->
+<div id="quiz-culture-match"></div>
+
+<!-- Quiz 4: MultipleChoice -- Kansai dialect recognition -->
+<div id="quiz-kansai"></div>
+
+<!-- Quiz 5: Recall Check from all prior chapters (bottom) -->
+<h3 id="recall-check-comprehensive-review">Recall Check &mdash; Comprehensive Review</h3>
+<p>Final broad review before the last chapter. Test yourself across all major skill areas.</p>
+
+<div id="quiz-recall-bottom"></div>
+
+<!-- Mark as Complete -->
+<button class="chapter-complete" data-ch="18">Mark as Complete &#10003;</button>
+
+<div style="display:flex;justify-content:space-between;margin:2rem 0">
+  <a href="ch-17.html" class="quiz-btn secondary">&larr; Chapter 18: Listening</a>
+  <a href="ch-19.html" class="quiz-btn">Next: Chapter 20 -- JLPT and Beyond &rarr;</a>
+</div>
+
+</section>
+
+</div>
+
+
+</div>
+
+<footer>
+  <p>Zero to Hero: 日本語 for Korean Speakers &middot; Chapter 18</p>
+</footer>
+
+<script src="js/shared.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/quiz-engine.js"></script>
+<script>
+// ─── Recall Check (top of chapter, from all prior chapters) ───
+QuizEngine.RecallCheck(
+  document.getElementById('recall-check-top'),
+  {
+    fromChapters: 'Ch01-16',
+    items: [
+      { question: 'Ch02: Write the five vowel hiragana characters.', answer: 'あ、い、う、え、お' },
+      { question: 'Ch08: What is the て-form of 行く?', answer: '行って (irregular: く→って)' },
+      { question: 'Ch11: What is the 音読み of 学 and its Korean cognate?', answer: '音読み: ガク. Korean: 학. 학생 → 学生' },
+      { question: 'Ch14: What is the humble (謙譲語) form of 言う?', answer: '申す (もうす)' },
+      { question: 'Ch17: What is the contracted form of ている?', answer: 'てる (e.g., 食べている → 食べてる)' }
+    ]
+  }
+);
+
+// ─── Quiz 1: MultipleChoice -- cultural situation responses ───
+QuizEngine.MultipleChoice(
+  document.getElementById('quiz-culture-situations'),
+  {
+    title: 'Cultural Situation Response',
+    questions: [
+      {
+        prompt: 'You invite a Japanese colleague to dinner. They say: <span class="jp">「ちょっと予定が...」</span> What does this mean?',
+        options: [
+          'They will check their schedule and get back to you',
+          'They are declining your invitation politely',
+          'They want you to suggest a different day',
+          'They are asking you what time'
+        ],
+        correctIndex: 1,
+        explanation: 'ちょっと... with a trailing sentence is a classic Japanese indirect refusal. The sentence is intentionally left unfinished so you can "read the air" and understand it as "no."'
+      },
+      {
+        prompt: 'You are entering a Japanese colleague\'s home for the first time. What should you say at the entrance?',
+        options: [
+          'こんにちは (Hello)',
+          'お邪魔します (I\'m intruding)',
+          'ただいま (I\'m home)',
+          'いらっしゃいませ (Welcome)'
+        ],
+        correctIndex: 1,
+        explanation: 'お邪魔します literally means "I am being a disturbance/intrusion." This acknowledges that entering someone\'s private space is an imposition -- a core 迷惑 concept.'
+      },
+      {
+        prompt: 'At a business meeting in Japan, your counterpart says <span class="jp">「前向きに検討します」</span> (We will consider it positively). What is the likely outcome?',
+        options: [
+          'They will approve your proposal soon',
+          'They need more time but are interested',
+          'They are politely rejecting your proposal',
+          'They want you to submit more documents'
+        ],
+        correctIndex: 2,
+        explanation: '前向きに検討します is a famous business euphemism for "no." It sounds positive but is actually 建前 (public face). A genuine "yes" sounds like 承知しました or 進めましょう.'
+      },
+      {
+        prompt: 'You are on a train in Japan. Your phone rings. What should you do?',
+        options: [
+          'Answer quietly and speak briefly',
+          'Let it ring and call back when you exit the train',
+          'Answer and walk to the connection area between cars',
+          'Both B and C are appropriate'
+        ],
+        correctIndex: 3,
+        explanation: 'Phone calls on Japanese trains are considered 迷惑. You should either let it go to voicemail and call back later, or if urgent, move to the area between cars. The announcements say: 携帯電話はマナーモードに設定してください.'
+      },
+      {
+        prompt: 'Your Japanese host offers you more food. You\'re full. What is the culturally appropriate first response?',
+        options: [
+          'もう食べられません (I can\'t eat anymore)',
+          'いいえ、結構です (No, I\'m fine)',
+          'もう少しいただきます (I\'ll have a little more)',
+          'お腹いっぱいです (I\'m full)'
+        ],
+        correctIndex: 1,
+        explanation: 'First refuse politely with 結構です or 遠慮します. The host may insist. You can then accept or decline again. Saying お腹いっぱい is too direct for a first response. This ritual also exists in Korean culture but is more expected in Japan.'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 2: FillBlank -- complete cultural phrases ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-culture-fill'),
+  {
+    title: 'Complete the Cultural Phrase',
+    questions: [
+      {
+        prompt: 'Before eating a meal, you say: <span class="jp">________</span> (I humbly receive)',
+        answer: 'いただきます',
+        acceptAlso: [],
+        explanation: 'いただきます is said before every meal. It expresses gratitude to everyone who made the food possible -- farmers, cooks, and the life of the ingredients.',
+        korean: '잘 먹겠습니다'
+      },
+      {
+        prompt: 'After a meal, you say: <span class="jp">________</span> (It was a feast)',
+        answer: 'ごちそうさまでした',
+        acceptAlso: ['ごちそうさま'],
+        explanation: 'ごちそうさまでした literally means "it was a feast." Said after every meal, even if it was just a convenience store onigiri.',
+        korean: '잘 먹었습니다'
+      },
+      {
+        prompt: 'Entering someone\'s home, you say: <span class="jp">________</span> (I\'m intruding)',
+        answer: 'お邪魔します',
+        acceptAlso: ['おじゃまします'],
+        explanation: 'お邪魔します acknowledges that you are imposing on their private space. When leaving, you say お邪魔しました (past tense).',
+        korean: '실례합니다'
+      },
+      {
+        prompt: 'Leaving the office before your boss, you say: <span class="jp">________</span> (Excuse me for leaving first)',
+        answer: 'お先に失礼します',
+        acceptAlso: ['おさきにしつれいします'],
+        explanation: 'お先に失礼します is essential workplace Japanese. It acknowledges that leaving before others might be seen as inconsiderate.',
+        korean: '먼저 들어가겠습니다'
+      },
+      {
+        prompt: 'You caused someone trouble. You say: <span class="jp">ご迷惑をおかけして________</span>',
+        answer: '申し訳ございません',
+        acceptAlso: ['もうしわけございません', '申し訳ありません', 'すみません'],
+        explanation: 'ご迷惑をおかけして申し訳ございません is the formal apology for causing trouble/inconvenience. This is one of the most important phrases in business Japanese.',
+        korean: '폐를 끼쳐서 죄송합니다'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 3: DragMatch -- match Korean ↔ Japanese cultural concepts ───
+QuizEngine.DragMatch(
+  document.getElementById('quiz-culture-match'),
+  {
+    title: 'Match Cultural Concepts: Korean to Japanese',
+    instruction: 'Match each Korean cultural concept to its Japanese equivalent:',
+    pairs: [
+      { left: '눈치 (social awareness)', right: '空気を読む (read the air)' },
+      { left: '겉과 속 (outside/inside)', right: '本音と建前 (true feeling/public face)' },
+      { left: '폐를 끼치다 (cause trouble)', right: '迷惑をかける (cause meiwaku)' },
+      { left: '회식 (work dinner)', right: '飲み会 (drinking gathering)' },
+      { left: '의리 (loyalty/obligation)', right: '義理 (social obligation)' },
+      { left: '정 (affection/bond)', right: 'おもてなし (hospitality)' }
+    ]
+  }
+);
+
+// ─── Quiz 4: MultipleChoice -- Kansai dialect recognition ───
+QuizEngine.MultipleChoice(
+  document.getElementById('quiz-kansai'),
+  {
+    title: 'Kansai Dialect Recognition',
+    questions: [
+      {
+        prompt: 'What does <span class="jp">あかん</span> mean in 関西弁?',
+        options: [
+          'Red',
+          'No good / can\'t',
+          'Bright / clear',
+          'Open'
+        ],
+        correctIndex: 1,
+        explanation: 'あかん = だめ (no good, can\'t). One of the most iconic Kansai expressions. あかんて！ = "No way!" / "Don\'t do that!"'
+      },
+      {
+        prompt: 'What is the standard Japanese equivalent of <span class="jp">ほんまに？</span>?',
+        options: [
+          '本当に？ (Really?)',
+          '本気で？ (Seriously?)',
+          'まさか？ (No way?)',
+          '確かに？ (Certainly?)'
+        ],
+        correctIndex: 0,
+        explanation: 'ほんま = 本当 (really/truly). ほんまに？ = 本当に？ = "Really?" This is one of the most recognizable Kansai-ben words.'
+      },
+      {
+        prompt: 'In 関西弁, the copula だ becomes:',
+        options: [
+          'じゃ',
+          'や',
+          'で',
+          'な'
+        ],
+        correctIndex: 1,
+        explanation: 'だ → や in Kansai dialect. そうだ → そうや, 何だ → 何や. This is one of the first things you\'ll notice when listening to Kansai speech.'
+      },
+      {
+        prompt: 'Which of these is a Kansai way to say <span class="jp">すごい</span> (amazing)?',
+        options: [
+          'やばい',
+          'えらい',
+          'めっちゃ',
+          'マジで'
+        ],
+        correctIndex: 2,
+        explanation: 'めっちゃ originated in Kansai and means "very/super." めっちゃおいしい = すごくおいしい. Note: めっちゃ has spread nationwide but is still considered Kansai-origin.'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 5: Recall Check from all prior chapters (bottom) ───
+QuizEngine.RecallCheck(
+  document.getElementById('quiz-recall-bottom'),
+  {
+    fromChapters: 'Ch01-16 (Comprehensive)',
+    items: [
+      { question: 'Ch01: What percentage of Japanese study is estimated to transfer from Korean?', answer: 'Roughly 40% -- grammar, particle system, Sino-vocabulary, honorific concepts' },
+      { question: 'Ch05: How do you say "Excuse me" to get someone\'s attention?', answer: 'すみません' },
+      { question: 'Ch07: What is the particle for marking the topic of a sentence?', answer: 'は (topic marker), equivalent to Korean 은/는' },
+      { question: 'Ch10: What pattern expresses desire ("want to...")?', answer: 'Verb stem + たい (e.g., 食べたい = want to eat)' },
+      { question: 'Ch12: Korean 図書館 (도서관) reads as what in Japanese?', answer: '図書館 (としょかん) -- library' },
+      { question: 'Ch14: What is sonkeigo (尊敬語) for 食べる?', answer: '召し上がる' },
+      { question: 'Ch17: What are the three stages of listening practice?', answer: 'Extensive (mass exposure) → Intensive (dictation/analysis) → Shadowing (speak along)' }
+    ]
+  }
+);
+</script>
+<script src="js/spaced-repetition.js"></script>
+<script src="js/memory-palace.js"></script>
+</body>
+</html>

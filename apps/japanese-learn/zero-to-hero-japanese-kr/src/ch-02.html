@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>제2장: 히라가나 — Zero to Hero 日本語</title>
+<link rel="stylesheet" href="css/design-system.css">
+</head>
+<body>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<button class="toggle" id="themeToggle" aria-label="테마 전환">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <span class="logo-badge">Zero to Hero — 기억 설계 에디션</span>
+    <div class="logo-title">한국어 화자를 위한 日本語</div>
+    <div class="logo-sub">한국어에서 日本語로 — 기억 설계자의 안내서</div>
+  </a>
+  <div class="sidebar-progress">
+    <div class="sidebar-progress-label">진행률</div>
+    <div class="sidebar-progress-bar">
+      <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+    </div>
+    <div class="sidebar-progress-count">0/22 완료</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="ch-00.html" class="toc-link"><span class="toc-num">00</span><span class="toc-check" data-ch="00"></span>기억 과학</a>
+    <a href="ch-01.html" class="toc-link"><span class="toc-num">01</span><span class="toc-check" data-ch="01"></span>한국어의 이점</a>
+    <a href="ch-02.html" class="toc-link active"><span class="toc-num">02</span><span class="toc-check" data-ch="02"></span>히라가나</a>
+    <a href="ch-03.html" class="toc-link"><span class="toc-num">03</span><span class="toc-check" data-ch="03"></span>가타카나</a>
+    <a href="ch-04.html" class="toc-link"><span class="toc-num">04</span><span class="toc-check" data-ch="04"></span>발음</a>
+    <a href="ch-05.html" class="toc-link"><span class="toc-num">05</span><span class="toc-check" data-ch="05"></span>서바이벌 일본어</a>
+    <a href="ch-06.html" class="toc-link"><span class="toc-num">06</span><span class="toc-check" data-ch="06"></span>조수사</a>
+    <a href="ch-07.html" class="toc-link"><span class="toc-num">07</span><span class="toc-check" data-ch="07"></span>조사</a>
+    <a href="ch-08.html" class="toc-link"><span class="toc-num">08</span><span class="toc-check" data-ch="08"></span>동사 활용</a>
+    <a href="ch-09.html" class="toc-link"><span class="toc-num">09</span><span class="toc-check" data-ch="09"></span>일상 회화</a>
+    <a href="ch-10.html" class="toc-link"><span class="toc-num">10</span><span class="toc-check" data-ch="10"></span>문형</a>
+    <a href="ch-11.html" class="toc-link"><span class="toc-num">11</span><span class="toc-check" data-ch="11"></span>한자</a>
+    <a href="ch-12.html" class="toc-link"><span class="toc-num">12</span><span class="toc-check" data-ch="12"></span>한자어</a>
+    <a href="ch-13.html" class="toc-link"><span class="toc-num">13</span><span class="toc-check" data-ch="13"></span>고유어</a>
+    <a href="ch-14.html" class="toc-link"><span class="toc-num">14</span><span class="toc-check" data-ch="14"></span>경어</a>
+    <a href="ch-15.html" class="toc-link"><span class="toc-num">15</span><span class="toc-check" data-ch="15"></span>독해</a>
+    <a href="ch-16.html" class="toc-link"><span class="toc-num">16</span><span class="toc-check" data-ch="16"></span>작문</a>
+    <a href="ch-17.html" class="toc-link"><span class="toc-num">17</span><span class="toc-check" data-ch="17"></span>청해</a>
+    <a href="ch-18.html" class="toc-link"><span class="toc-num">18</span><span class="toc-check" data-ch="18"></span>문화 화용론</a>
+    <a href="ch-19.html" class="toc-link"><span class="toc-num">19</span><span class="toc-check" data-ch="19"></span>JLPT와 그 너머</a>
+    <a href="ch-20.html" class="toc-link"><span class="toc-num">20</span><span class="toc-check" data-ch="20"></span>기억의 궁전</a>
+    <a href="ch-21.html" class="toc-link"><span class="toc-num">21</span><span class="toc-check" data-ch="21"></span>90일 스프린트</a>
+    <a href="appendices.html" class="toc-link" style="margin-top:.5rem;border-top:1px solid var(--border);padding-top:.8rem"><span class="toc-num">+</span>부록</a>
+  </nav>
+</aside>
+
+<div class="main">
+<div class="content-wrap">
+
+<section id="ch02" data-ch="02" style="padding-top:3rem">
+<h2><span class="ch-label">제2장</span>히라가나 — 첫 번째 문자 체계 (ひらがな)</h2>
+
+<div class="callout memory"><div class="callout-title">기억 기법 스포트라이트: 장소법 + 키워드 연상법</div><p>각 히라가나를 부엌의 특정 위치에 배치합니다.</p></div>
+
+<p>히라가나는 일본어 쓰기의 기초입니다. 기본 46자로 구성되며, 각 문자는 하나의 음절을 나타냅니다. 한글의 체계적 설계와 달리, 히라가나는 초서체 한자에서 발전했기 때문에 글자 모양이 <strong>임의적</strong>입니다. 기억법이 필요합니다. 목표: <strong>3~7일</strong>.</p>
+
+<div class="callout info">
+  <div class="callout-title">한국어 이점</div>
+  <p>일본어에는 <strong>5개의 모음</strong>(아, 이, 우, 에, 오)만 있고 받침이 없습니다. 모든 음절이 개음절입니다: 자음 + 모음. 한국어의 21개 모음과 복잡한 종성에서 내려가는 것입니다. 더 어려운 것이 아니라 더 쉽습니다.</p>
+</div>
+
+<!-- ─── RECALL CHECK (Ch01) ─── -->
+<div id="recall-check-01"></div>
+
+<!-- ─── VOWEL ROW ─── -->
+<nav class="chapter-toc">
+  <details open>
+    <summary class="chapter-toc-title">이 장의 내용</summary>
+  <ol>
+    <li><a href="#5개-모음-あ-い-う-え-お">5개 모음 — あ い う え お</a></li>
+    <li><a href="#k행-か-き-く-け-こ">K행 — か き く け こ</a></li>
+    <li><a href="#s행-さ-し-す-せ-そ">S행 — さ し す せ そ</a></li>
+    <li><a href="#t행-た-ち-つ-て-と">T행 — た ち つ て と</a></li>
+    <li><a href="#n행-な-に-ぬ-ね-の">N행 — な に ぬ ね の</a></li>
+    <li><a href="#h행-は-ひ-ふ-へ-ほ">H행 — は ひ ふ へ ほ</a></li>
+    <li><a href="#m행-ま-み-む-め-も">M행 — ま み む め も</a></li>
+    <li><a href="#y행-や-ゆ-よ-3개만">Y행 — や ゆ よ (3개만)</a></li>
+    <li><a href="#r행-ら-り-る-れ-ろ">R행 — ら り る れ ろ</a></li>
+    <li><a href="#w행-わ-を-특수-ん">W행 — わ を + 특수: ん</a></li>
+    <li><a href="#탁음과-반탁음-유성음-부호">탁음(゛)과 반탁음(゜) — 유성음 부호</a></li>
+    <li><a href="#요음拗音-결합-소리">요음(拗音) — 결합 소리</a></li>
+    <li><a href="#장음-길이가-중요합니다">장음 — 길이가 중요합니다!</a></li>
+    <li><a href="#연습문제">연습문제</a></li>
+  </ol>
+  </details>
+</nav>
+
+<h3 id="5개-모음-あ-い-う-え-お">5개 모음 — あ い う え お</h3>
+<p>이것부터 먼저 마스터하십시오. 다른 모든 행은 자음 + 이 5개 모음의 조합일 뿐입니다.</p>
+
+<div class="mnemonic-card">
+  <div>
+    <svg class="char-svg" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <text x="40" y="58" text-anchor="middle" font-size="52" font-family="'Shippori Mincho', serif" fill="var(--heading)">あ</text>
+    </svg>
+  </div>
+  <div class="char-info">
+    <div class="char-reading">a — 한국어의 아와 유사</div>
+    <div class="char-korean">한국어 근사음: 아</div>
+    <div class="char-story"><strong>기억법:</strong> 공중제비 도는 <strong>곡예사(a</strong>crobat) — 교차 획이 "A" 모양을 이루는 것을 보십시오. 아래쪽 곡선은 공중제비 중인 곡예사의 몸입니다.</div>
+  </div>
+  <div class="char-display">あ</div>
+</div>
+
+<div class="mnemonic-card">
+  <div>
+    <svg class="char-svg" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <text x="40" y="58" text-anchor="middle" font-size="52" font-family="'Shippori Mincho', serif" fill="var(--heading)">い</text>
+    </svg>
+  </div>
+  <div class="char-info">
+    <div class="char-reading">i — 한국어의 이와 유사</div>
+    <div class="char-korean">한국어 근사음: 이</div>
+    <div class="char-story"><strong>기억법:</strong> 나란히 헤엄치는 두 마리 <strong>장어(ee</strong>l) — 두 개의 세로 획이 한 쌍의 장어처럼 보입니다 — "이" = い.</div>
+  </div>
+  <div class="char-display">い</div>
+</div>
+
+<div class="mnemonic-card">
+  <div>
+    <svg class="char-svg" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <text x="40" y="58" text-anchor="middle" font-size="52" font-family="'Shippori Mincho', serif" fill="var(--heading)">う</text>
+    </svg>
+  </div>
+  <div class="char-info">
+    <div class="char-reading">u — 우와 유사하지만 비원순</div>
+    <div class="char-korean">한국어 근사음: 우 (단, 입술을 둥글게 하지 마세요!)</div>
+    <div class="char-story"><strong>기억법:</strong> <strong>위(u</strong>p)로 올라가는 구불구불한 길. 획이 산길처럼 위로 굽어 있습니다.</div>
+  </div>
+  <div class="char-display">う</div>
+</div>
+
+<div class="callout warn">
+  <div class="callout-title">함정: 한국어식 う</div>
+  <p>한국어 우는 <strong>입술을 둥글게</strong> 발음합니다. 일본어 う는 <strong>비원순</strong>입니다 — 입술을 편하게 유지하고 약간 옆으로 벌리십시오. 이것은 제4장의 함정 #2입니다. 지금 연습해 보세요: "우"를 발음하되 입을 오므리지 마십시오.</p>
+</div>
+
+<div class="mnemonic-card">
+  <div>
+    <svg class="char-svg" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <text x="40" y="58" text-anchor="middle" font-size="52" font-family="'Shippori Mincho', serif" fill="var(--heading)">え</text>
+    </svg>
+  </div>
+  <div class="char-info">
+    <div class="char-reading">e — 한국어의 에와 유사</div>
+    <div class="char-korean">한국어 근사음: 에</div>
+    <div class="char-story"><strong>기억법:</strong> 팔을 벌리고 손을 흔드는 <strong>활기찬(e</strong>nergetic) 사람 — 막대 인간이 팔을 벌리고 "어이!"라고 말하는 것처럼 보입니다.</div>
+  </div>
+  <div class="char-display">え</div>
+</div>
+
+<div class="mnemonic-card">
+  <div>
+    <svg class="char-svg" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <text x="40" y="58" text-anchor="middle" font-size="52" font-family="'Shippori Mincho', serif" fill="var(--heading)">お</text>
+    </svg>
+  </div>
+  <div class="char-info">
+    <div class="char-reading">o — 한국어의 오와 유사</div>
+    <div class="char-korean">한국어 근사음: 오</div>
+    <div class="char-story"><strong>기억법:</strong> "<strong>오!</strong>"하고 놀라는 사람 — 입을 벌린 얼굴이 보입니다. あ와 혼동하지 마세요!</div>
+  </div>
+  <div class="char-display">お</div>
+</div>
+
+<!-- Vowel quiz -->
+<div id="quiz-vowels"></div>
+
+<!-- ─── K ROW ─── -->
+<h3 id="k행-か-き-く-け-こ">K행 — か き く け こ</h3>
+<p>각 모음에 "k" 자음을 추가합니다. 한국어 대응: ㄱ 소리 (단, 더 가볍게 — 유기음 없이).</p>
+
+<div class="mnemonic-card">
+  <div class="char-display">か</div>
+  <div class="char-info">
+    <div class="char-reading">ka</div>
+    <div class="char-korean">한국어: 가 (단, 기식이 적음)</div>
+    <div class="char-story"><strong>기억법:</strong> 베어 가르는 <strong>카</strong>타나(ka<strong>ta</strong>na, 일본도) — 세로 획이 칼날, 가로 획이 코등이입니다. 연습 단어: <span class="jp">かさ</span> (kasa) = 우산.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">き</div>
+  <div class="char-info">
+    <div class="char-reading">ki</div>
+    <div class="char-korean">한국어: 기</div>
+    <div class="char-story"><strong>기억법:</strong> <strong>열쇠(key)</strong> — 위쪽 획이 열쇠의 톱니를 이룹니다. 연습 단어: <span class="jp">きく</span> (kiku) = 국화 / 듣다.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">く</div>
+  <div class="char-info">
+    <div class="char-reading">ku</div>
+    <div class="char-korean">한국어: 구</div>
+    <div class="char-story"><strong>기억법:</strong> <strong>뻐꾸기(coo</strong>koo)의 부리 — 각진 하나의 획이 부리가 벌어지는 모양입니다. 연습 단어: <span class="jp">くち</span> (kuchi) = 입.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">け</div>
+  <div class="char-info">
+    <div class="char-reading">ke</div>
+    <div class="char-korean">한국어: 게/케</div>
+    <div class="char-story"><strong>기억법:</strong> 옆으로 누운 맥주 <strong>통(keg)</strong>. 세로선이 꼭지입니다. 연습 단어: <span class="jp">けさ</span> (kesa) = 오늘 아침.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">こ</div>
+  <div class="char-info">
+    <div class="char-reading">ko</div>
+    <div class="char-korean">한국어: 고/코</div>
+    <div class="char-story"><strong>기억법:</strong> <strong>모서리(co</strong>rner) 두 개 — 등호를 구부린 모양입니다. 연습 단어: <span class="jp">ここ</span> (koko) = 여기.</div>
+  </div>
+</div>
+
+<!-- ─── S ROW ─── -->
+<h3 id="s행-さ-し-す-せ-そ">S행 — さ し す せ そ</h3>
+
+<div class="mnemonic-card">
+  <div class="char-display">さ</div>
+  <div class="char-info">
+    <div class="char-reading">sa</div>
+    <div class="char-korean">한국어: 사</div>
+    <div class="char-story"><strong>기억법:</strong> 칼로 베는 <strong>사무라이(sa</strong>murai). 연습 단어: <span class="jp">さくら</span> (sakura) = 벚꽃.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">し</div>
+  <div class="char-info">
+    <div class="char-reading">shi</div>
+    <div class="char-korean">한국어: 시</div>
+    <div class="char-story"><strong>기억법:</strong> 낚싯바늘 — <strong>바다(sea)</strong>에서 낚시를 하고 있습니다 (shi는 "시"와 발음이 유사합니다). 연습 단어: <span class="jp">しお</span> (shio) = 소금.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">す</div>
+  <div class="char-info">
+    <div class="char-reading">su</div>
+    <div class="char-korean">한국어: 수</div>
+    <div class="char-story"><strong>기억법:</strong> 고리로 집어 올리는 <strong>스시(su</strong>shi) 한 점. 연습 단어: <span class="jp">すし</span> (sushi) = 스시.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">せ</div>
+  <div class="char-info">
+    <div class="char-reading">se</div>
+    <div class="char-korean">한국어: 세</div>
+    <div class="char-story"><strong>기억법:</strong> <strong>선반(se</strong>t of shelves) — 가로 획이 겹겹이 쌓여 있습니다. 연습 단어: <span class="jp">せかい</span> (sekai) = 세계.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">そ</div>
+  <div class="char-info">
+    <div class="char-reading">so</div>
+    <div class="char-korean">한국어: 소</div>
+    <div class="char-story"><strong>기억법:</strong> 지그재그 — 굽이가 <strong>너무 많이(so</strong> many)! 실을 <strong>꿰매는(so</strong>wn) 것처럼. 연습 단어: <span class="jp">そら</span> (sora) = 하늘.</div>
+  </div>
+</div>
+
+<!-- ─── T ROW ─── -->
+<h3 id="t행-た-ち-つ-て-と">T행 — た ち つ て と</h3>
+
+<div class="mnemonic-card">
+  <div class="char-display">た</div>
+  <div class="char-info">
+    <div class="char-reading">ta</div>
+    <div class="char-korean">한국어: 다/타</div>
+    <div class="char-story"><strong>기억법:</strong> "た"에는 "t"+"a"를 합친 것 같은 십자 모양이 있습니다. 연습 단어: <span class="jp">たべる</span> (taberu) = 먹다.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">ち</div>
+  <div class="char-info">
+    <div class="char-reading">chi</div>
+    <div class="char-korean">한국어: 치</div>
+    <div class="char-story"><strong>기억법:</strong> 포즈를 취하는 <strong>치어리더(chee</strong>rleader) — 팔을 올리고 다리를 차고 있습니다. 연습 단어: <span class="jp">ちかい</span> (chikai) = 가까운.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">つ</div>
+  <div class="char-info">
+    <div class="char-reading">tsu</div>
+    <div class="char-korean">한국어: 쓰 (가장 유사하지만 다름)</div>
+    <div class="char-story"><strong>기억법:</strong> <strong>쓰나미(tsu</strong>nami) 파도 — 크게 굽이치는 하나의 파도. 연습 단어: <span class="jp">つき</span> (tsuki) = 달.</div>
+  </div>
+</div>
+
+<div class="callout warn">
+  <div class="callout-title">함정: つ (tsu)</div>
+  <p>이 소리는 한국어에 존재하지 않습니다. 단순히 "스"나 "추"가 아닙니다. 혀끝을 윗니 뒤(ㄷ 위치)에 놓고 "su"로 풀어내십시오. 연습: つ つ つ.</p>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">て</div>
+  <div class="char-info">
+    <div class="char-reading">te</div>
+    <div class="char-korean">한국어: 데/테</div>
+    <div class="char-story"><strong>기억법:</strong> <strong>전화기(te</strong>lephone) 수화기 — 가로 획에 곡선 갈고리가 있어 수화기를 드는 모양입니다. 연습 단어: <span class="jp">てがみ</span> (tegami) = 편지.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">と</div>
+  <div class="char-info">
+    <div class="char-reading">to</div>
+    <div class="char-korean">한국어: 도/토</div>
+    <div class="char-story"><strong>기억법:</strong> 문에 <strong>발가락(to</strong>e)이 찧이는 모양 — 세로선(문)에 발이 튀어나와 있습니다. 연습 단어: <span class="jp">とり</span> (tori) = 새.</div>
+  </div>
+</div>
+
+<!-- ─── N ROW ─── -->
+<h3 id="n행-な-に-ぬ-ね-の">N행 — な に ぬ ね の</h3>
+
+<div class="mnemonic-card">
+  <div class="char-display">な</div>
+  <div class="char-info">
+    <div class="char-reading">na</div>
+    <div class="char-korean">한국어: 나</div>
+    <div class="char-story"><strong>기억법:</strong> 짓궂은(na<strong>ugh</strong>ty) 매듭 — 교차선에 고리가 있습니다. 연습 단어: <span class="jp">なまえ</span> (namae) = 이름.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">に</div>
+  <div class="char-info">
+    <div class="char-reading">ni</div>
+    <div class="char-korean">한국어: 니</div>
+    <div class="char-story"><strong>기억법:</strong> <strong>무릎(knee)</strong> — 왼쪽 획이 다리, 오른쪽 두 획이 무릎뼈입니다. 연습 단어: <span class="jp">にほん</span> (nihon) = 일본.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">ぬ</div>
+  <div class="char-info">
+    <div class="char-reading">nu</div>
+    <div class="char-korean">한국어: 누</div>
+    <div class="char-story"><strong>기억법:</strong> 고리 속에 엉킨 <strong>국수(noo</strong>dles). 연습 단어: <span class="jp">いぬ</span> (inu) = 개.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">ね</div>
+  <div class="char-info">
+    <div class="char-reading">ne</div>
+    <div class="char-korean">한국어: 네</div>
+    <div class="char-story"><strong>기억법:</strong> 나선형 껍데기를 가진 <strong>달팽이(snail)</strong>. 연습 단어: <span class="jp">ねこ</span> (neko) = 고양이.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">の</div>
+  <div class="char-info">
+    <div class="char-reading">no</div>
+    <div class="char-korean">한국어: 노</div>
+    <div class="char-story"><strong>기억법:</strong> "<strong>금지(NO)</strong>" 표지 — 대각선이 있는 원, 금지 표지와 같습니다. 또한: の = 소유격 조사 (한국어 의와 유사). 연습 단어: <span class="jp">のむ</span> (nomu) = 마시다.</div>
+  </div>
+</div>
+
+<!-- ─── H ROW ─── -->
+<h3 id="h행-は-ひ-ふ-へ-ほ">H행 — は ひ ふ へ ほ</h3>
+
+<div class="mnemonic-card">
+  <div class="char-display">は</div>
+  <div class="char-info">
+    <div class="char-reading">ha (조사로는 "wa")</div>
+    <div class="char-korean">한국어: 하</div>
+    <div class="char-story"><strong>기억법:</strong> "<strong>하!</strong>"하고 웃는 사람 — 너무 웃겨서 몸을 구부리고 있습니다. 핵심 사실: 조사로 쓰일 때 は는 "wa"로 발음합니다 (한국어 는과 유사). 연습 단어: <span class="jp">はな</span> (hana) = 꽃 / 코.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">ひ</div>
+  <div class="char-info">
+    <div class="char-reading">hi</div>
+    <div class="char-korean">한국어: 히</div>
+    <div class="char-story"><strong>기억법:</strong> "히히" 웃는 사람 — 곡선이 미소 모양입니다. 연습 단어: <span class="jp">ひと</span> (hito) = 사람.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">ふ</div>
+  <div class="char-info">
+    <div class="char-reading">fu ("fu"와 "hu" 사이)</div>
+    <div class="char-korean">한국어: 후와 가장 유사하지만 입술이 닿지 않음</div>
+    <div class="char-story"><strong>기억법:</strong> <strong>후지(Fu</strong>ji)산 — 획이 산봉우리를 이루고 있습니다. 연습 단어: <span class="jp">ふね</span> (fune) = 배.</div>
+  </div>
+</div>
+
+<div class="callout warn">
+  <div class="callout-title">함정: ふ (fu)</div>
+  <p>일본어 ふ는 영어의 "f"도 한국어의 "후"도 아닙니다. <strong>양순 마찰음</strong>입니다 — 양쪽 입술이 닿지 않게 하면서 부드럽게 공기를 내보내십시오. 촛불을 아주 살살 부는 것과 같습니다. 치아는 관여하지 않습니다!</p>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">へ</div>
+  <div class="char-info">
+    <div class="char-reading">he (조사로는 "e")</div>
+    <div class="char-korean">한국어: 헤</div>
+    <div class="char-story"><strong>기억법:</strong> 언덕 — 목적지를 <strong>향해(he</strong>ading) 가는 모양입니다. 방향 조사로 쓰일 때는 "e"로 발음합니다. 연습 단어: <span class="jp">へや</span> (heya) = 방.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">ほ</div>
+  <div class="char-info">
+    <div class="char-reading">ho</div>
+    <div class="char-korean">한국어: 호</div>
+    <div class="char-story"><strong>기억법:</strong> 곡선이 있는 <strong>거룩한(ho</strong>ly) 십자가 — 기도하는 사람 모양입니다. 연습 단어: <span class="jp">ほん</span> (hon) = 책.</div>
+  </div>
+</div>
+
+<!-- ─── M ROW ─── -->
+<h3 id="m행-ま-み-む-め-も">M행 — ま み む め も</h3>
+
+<div class="mnemonic-card"><div class="char-display">ま</div><div class="char-info"><div class="char-reading">ma</div><div class="char-korean">한국어: 마</div><div class="char-story"><strong>기억법:</strong> 쪽머리를 한 <strong>엄마(Ma</strong>ma) — 교차 획에 고리가 있습니다. 연습: <span class="jp">まち</span> (machi) = 마을.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">み</div><div class="char-info"><div class="char-reading">mi</div><div class="char-korean">한국어: 미</div><div class="char-story"><strong>기억법:</strong> 숫자 21 — "2"와 "1"을 합친 모양이며, 발음은 "미"와 유사합니다. 연습: <span class="jp">みみ</span> (mimi) = 귀.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">む</div><div class="char-info"><div class="char-reading">mu</div><div class="char-korean">한국어: 무</div><div class="char-story"><strong>기억법:</strong> <strong>음메(moo)</strong> 하고 우는 소의 얼굴 — 고리가 코 고리입니다. 연습: <span class="jp">むし</span> (mushi) = 벌레.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">め</div><div class="char-info"><div class="char-reading">me</div><div class="char-korean">한국어: 메</div><div class="char-story"><strong>기억법:</strong> 눈 (<strong>め</strong> = 일본어로 눈!) — 고리가 눈 모양을 이룹니다. 연습: <span class="jp">め</span> (me) = 눈.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">も</div><div class="char-info"><div class="char-reading">mo</div><div class="char-korean">한국어: 모</div><div class="char-story"><strong>기억법:</strong> <strong>더 많은(mo</strong>re) 물고기를 잡는 낚싯바늘. 연습: <span class="jp">もの</span> (mono) = 물건.</div></div></div>
+
+<!-- ─── Y ROW ─── -->
+<h3 id="y행-や-ゆ-よ-3개만">Y행 — や ゆ よ (3개만)</h3>
+
+<div class="mnemonic-card"><div class="char-display">や</div><div class="char-info"><div class="char-reading">ya</div><div class="char-korean">한국어: 야</div><div class="char-story"><strong>기억법:</strong> <strong>야크(ya</strong>k)의 뿔. 연습: <span class="jp">やま</span> (yama) = 산.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">ゆ</div><div class="char-info"><div class="char-reading">yu</div><div class="char-korean">한국어: 유</div><div class="char-story"><strong>기억법:</strong> 물고기 — 잡았다! 꼬리가 말려 있습니다. 연습: <span class="jp">ゆき</span> (yuki) = 눈(snow).</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">よ</div><div class="char-info"><div class="char-reading">yo</div><div class="char-korean">한국어: 요</div><div class="char-story"><strong>기억법:</strong> 줄에 매달린 <strong>요요(yo</strong>-yo). 연습: <span class="jp">よる</span> (yoru) = 밤.</div></div></div>
+
+<!-- ─── R ROW ─── -->
+<h3 id="r행-ら-り-る-れ-ろ">R행 — ら り る れ ろ</h3>
+<p>일본어 "r"은 탄음으로, 모음 사이의 한국어 ㄹ과 같습니다. 이미 자연스럽게 내는 소리입니다!</p>
+
+<div class="mnemonic-card"><div class="char-display">ら</div><div class="char-info"><div class="char-reading">ra</div><div class="char-korean">한국어: 라</div><div class="char-story"><strong>기억법:</strong> 빠르게 쓴 숫자 5와 유사합니다. 연습: <span class="jp">さくら</span> (sakura) = 벚꽃.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">り</div><div class="char-info"><div class="char-reading">ri</div><div class="char-korean">한국어: 리</div><div class="char-story"><strong>기억법:</strong> 흘러내리는 두 줄기 <strong>강(ri</strong>ver). 연습: <span class="jp">とり</span> (tori) = 새.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">る</div><div class="char-info"><div class="char-reading">ru</div><div class="char-korean">한국어: 루</div><div class="char-story"><strong>기억법:</strong> 아래쪽에 <strong>고리(loo</strong>p)가 있습니다 — 자(ru<strong>le</strong>r)가 말리는 모양. 연습: <span class="jp">たべる</span> (taberu) = 먹다.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">れ</div><div class="char-info"><div class="char-reading">re</div><div class="char-korean">한국어: 레</div><div class="char-story"><strong>기억법:</strong> <strong>순록(re</strong>indeer)의 뿔 — 곡선이 가지처럼 뻗어 있습니다. 연습: <span class="jp">これ</span> (kore) = 이것.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">ろ</div><div class="char-info"><div class="char-reading">ro</div><div class="char-korean">한국어: 로</div><div class="char-story"><strong>기억법:</strong> <strong>길(ro</strong>ad) — 앞으로 나아가는 단순한 획. 연습: <span class="jp">ろく</span> (roku) = 6.</div></div></div>
+
+<!-- ─── W ROW + N ─── -->
+<h3 id="w행-わ-を-특수-ん">W행 — わ を + 특수: ん</h3>
+
+<div class="mnemonic-card"><div class="char-display">わ</div><div class="char-info"><div class="char-reading">wa</div><div class="char-korean">한국어: 와</div><div class="char-story"><strong>기억법:</strong> <strong>물(wa</strong>ter) 소용돌이. 연습: <span class="jp">わたし</span> (watashi) = 나/저.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">を</div><div class="char-info"><div class="char-reading">wo ("o"로 발음)</div><div class="char-korean">한국어: 목적격 조사 을/를</div><div class="char-story"><strong>기억법:</strong> <strong>목적격 조사</strong>로만 사용됩니다 (한국어의 을/를과 동일한 기능). お와 발음은 같지만 표기가 다릅니다. 모든 문장에서 사용하게 됩니다.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">ん</div><div class="char-info"><div class="char-reading">n (독립 자음)</div><div class="char-korean">한국어: ㄴ받침</div><div class="char-story"><strong>기억법:</strong> 유일하게 자음만으로 된 히라가나 — 모음이 붙지 않습니다. 한국어 음절 끝의 ㄴ과 같습니다. 연습: <span class="jp">にほん</span> (nihon) = 일본.</div></div></div>
+
+<!-- ─── DAKUTEN & HANDAKUTEN ─── -->
+<h3 id="탁음과-반탁음-유성음-부호">탁음(゛)과 반탁음(゜) — 유성음 부호</h3>
+
+<p>゛를 붙이면 소리가 "무거워"집니다(유성음화). ゜를 붙이면 "팝!" 소리가 됩니다(p음, H행에만 적용).</p>
+
+<table>
+  <thead><tr><th>기본</th><th>+ ゛ (탁음)</th><th>+ ゜ (반탁음)</th></tr></thead>
+  <tbody>
+    <tr><td>か (ka)</td><td class="jp">が (ga)</td><td>—</td></tr>
+    <tr><td>さ (sa)</td><td class="jp">ざ (za)</td><td>—</td></tr>
+    <tr><td>た (ta)</td><td class="jp">だ (da)</td><td>—</td></tr>
+    <tr><td>は (ha)</td><td class="jp">ば (ba)</td><td class="jp">ぱ (pa)</td></tr>
+  </tbody>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">한국어 대응</div>
+  <p>탁음은 ㄱ→ㄲ의 유성음화와 비슷하다고 생각하면 됩니다: 기본 소리가 "무거워"집니다. か(ka)→が(ga)는 유성음을 추가하는 것이고, は(ha)→ば(ba)→ぱ(pa)는 h/b/p의 세 소리를 완성합니다.</p>
+</div>
+
+<!-- ─── YOON ─── -->
+<h3 id="요음拗音-결합-소리">요음(拗音) — 결합 소리</h3>
+<p>い단 문자 뒤에 작은 や, ゆ, よ를 붙입니다: きゃ (kya), しゅ (shu), ちょ (cho). 한국어의 이중 모음(ㅑ, ㅠ, ㅛ)과 유사합니다.</p>
+
+<table>
+  <thead><tr><th></th><th>+ゃ (ya)</th><th>+ゅ (yu)</th><th>+ょ (yo)</th></tr></thead>
+  <tbody>
+    <tr><td>き (ki)</td><td class="jp">きゃ (kya)</td><td class="jp">きゅ (kyu)</td><td class="jp">きょ (kyo)</td></tr>
+    <tr><td>し (shi)</td><td class="jp">しゃ (sha)</td><td class="jp">しゅ (shu)</td><td class="jp">しょ (sho)</td></tr>
+    <tr><td>ち (chi)</td><td class="jp">ちゃ (cha)</td><td class="jp">ちゅ (chu)</td><td class="jp">ちょ (cho)</td></tr>
+    <tr><td>に (ni)</td><td class="jp">にゃ (nya)</td><td class="jp">にゅ (nyu)</td><td class="jp">にょ (nyo)</td></tr>
+    <tr><td>ひ (hi)</td><td class="jp">ひゃ (hya)</td><td class="jp">ひゅ (hyu)</td><td class="jp">ひょ (hyo)</td></tr>
+    <tr><td>み (mi)</td><td class="jp">みゃ (mya)</td><td class="jp">みゅ (myu)</td><td class="jp">みょ (myo)</td></tr>
+    <tr><td>り (ri)</td><td class="jp">りゃ (rya)</td><td class="jp">りゅ (ryu)</td><td class="jp">りょ (ryo)</td></tr>
+  </tbody>
+</table>
+
+<!-- ─── LONG VOWELS ─── -->
+<h3 id="장음-길이가-중요합니다">장음 — 길이가 중요합니다!</h3>
+<p>일본어는 단모음과 장모음을 구별합니다. 길이를 틀리면 다른 단어가 됩니다:</p>
+
+<table>
+  <thead><tr><th>단음</th><th>장음</th><th>차이</th></tr></thead>
+  <tbody>
+    <tr><td class="jp">おばさん (obasan)</td><td class="jp">おばあさん (obaasan)</td><td>이모/아주머니 vs. 할머니</td></tr>
+    <tr><td class="jp">おじさん (ojisan)</td><td class="jp">おじいさん (ojiisan)</td><td>삼촌/아저씨 vs. 할아버지</td></tr>
+    <tr><td class="jp">ここ (koko)</td><td class="jp">こうこう (koukou)</td><td>여기 vs. 고등학교</td></tr>
+  </tbody>
+</table>
+
+<div class="callout warn">
+  <div class="callout-title">기억법: 모음이 길면 = 어른</div>
+  <p>おば<strong>あ</strong>さん은 "a" 모음이 더 길고 <strong>할머니</strong>(더 나이 든 사람)를 의미합니다. おばさん은 짧은 "a"로 이모/아주머니(더 젊은 사람)를 의미합니다. 모음의 길이가 나이를 반영합니다!</p>
+</div>
+
+<!-- ─── QUIZZES ─── -->
+<h3 id="연습문제">연습문제</h3>
+
+<!-- Warm-Up: Flashcard -->
+<h4>워밍업: 플래시카드 복습</h4>
+<div id="quiz-flashcard"></div>
+
+<!-- Challenge: Fill-in-the-blank -->
+<h4>도전: 읽고 입력하기</h4>
+<div id="quiz-fill"></div>
+
+<!-- Challenge: Drag-and-Drop -->
+<h4>도전: 읽기 짝짓기</h4>
+<div id="quiz-match"></div>
+
+<!-- Audio Discrimination -->
+<h4>도전: 장음 vs. 단음</h4>
+<div id="quiz-audio"></div>
+
+<!-- Boss Level: Timed Sprint -->
+<h4>보스 레벨: 시간 제한 인식 스프린트 (90초)</h4>
+<div id="quiz-sprint"></div>
+
+<!-- Mark as Complete -->
+<button class="chapter-complete" data-ch="02">완료 표시 &#10003;</button>
+
+<div style="display:flex;justify-content:space-between;margin:2rem 0">
+  <a href="ch-01.html" class="quiz-btn secondary">&larr; 제1장: 한국어의 이점</a>
+  <a href="ch-03.html" class="quiz-btn">다음: 제3장 -- 가타카나 &rarr;</a>
+</div>
+
+</section>
+</div>
+
+
+</div>
+
+<footer><p>Zero to Hero: 한국어 화자를 위한 日本語 &middot; 제2장</p></footer>
+
+<script src="js/shared.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/quiz-engine.js"></script>
+<script>
+// ─── Recall Check from Ch01 ───
+QuizEngine.RecallCheck(
+  document.getElementById('recall-check-01'),
+  {
+    fromChapters: '제1장',
+    items: [
+      { question: '한국어의 주제 표지는 무엇이며, 대응하는 일본어 조사는 무엇입니까?', answer: '은/는 → は (wa)' },
+      { question: '한국어 전이가 커버하는 학습 비율은 약 몇 %입니까?', answer: '약 40% — 문법, 조사, 경어 개념, 한자어 어휘' },
+      { question: '한국어-일본어 한자어 동족어를 두 개 말해 보십시오.', answer: '학생→学生 (gakusei), 병원→病院 (byouin), 전화→電話 (denwa) 등' },
+      { question: '한국어 화자에게 가장 큰 어휘 과제는 무엇입니까?', answer: '和語 (wago) — 한국어와 대응이 없는 일본 고유 일상 단어' },
+      { question: '한국어 이것/그것/저것은 일본어의 어떤 단어에 대응됩니까?', answer: 'これ (kore) / それ (sore) / あれ (are)' }
+    ]
+  }
+);
+
+// ─── Vowel Quiz ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-vowels'),
+  {
+    title: '모음 확인',
+    questions: [
+      { prompt: '<span class="jp" style="font-size:1.8rem">あ</span>의 소리는 무엇입니까?', answer: 'a', acceptAlso: ['ah'], explanation: 'あ = a, 한국어 아와 유사' },
+      { prompt: '<span class="jp" style="font-size:1.8rem">う</span>의 소리는 무엇입니까?', answer: 'u', acceptAlso: ['oo'], explanation: 'う = u (비원순! 한국어 우와 다릅니다)', korean: '우 (비원순)' },
+      { prompt: '<span class="jp" style="font-size:1.8rem">え</span>의 소리는 무엇입니까?', answer: 'e', explanation: 'え = e, 한국어 에와 유사', korean: '에' }
+    ]
+  }
+);
+
+// ─── Flashcard ───
+QuizEngine.Flashcard(
+  document.getElementById('quiz-flashcard'),
+  {
+    cards: [
+      { front: 'あ', back: 'a', detail: '공중제비 도는 곡예사 (한국어: 아)' },
+      { front: 'い', back: 'i', detail: '두 마리 장어 (한국어: 이)' },
+      { front: 'う', back: 'u', detail: '위로 올라가는 구불길 (한국어: 우 비원순)' },
+      { front: 'え', back: 'e', detail: '활기찬 사람 (한국어: 에)' },
+      { front: 'お', back: 'o', detail: '"오!"하고 놀라는 사람 (한국어: 오)' },
+      { front: 'か', back: 'ka', detail: '카타나 일본도 (한국어: 가)' },
+      { front: 'き', back: 'ki', detail: '열쇠 (한국어: 기)' },
+      { front: 'く', back: 'ku', detail: '뻐꾸기 부리 (한국어: 구)' },
+      { front: 'さ', back: 'sa', detail: '사무라이의 칼질 (한국어: 사)' },
+      { front: 'し', back: 'shi', detail: '바다의 낚싯바늘 (한국어: 시)' },
+      { front: 'た', back: 'ta', detail: '"t"+"a" 십자 모양 (한국어: 다)' },
+      { front: 'な', back: 'na', detail: '짓궂은 매듭 (한국어: 나)' },
+      { front: 'は', back: 'ha', detail: '"하!" 웃는 사람 (한국어: 하)' },
+      { front: 'ま', back: 'ma', detail: '쪽머리 엄마 (한국어: 마)' },
+      { front: 'や', back: 'ya', detail: '야크 뿔 (한국어: 야)' },
+      { front: 'ら', back: 'ra', detail: '숫자 5 모양 (한국어: 라)' },
+      { front: 'わ', back: 'wa', detail: '물 소용돌이 (한국어: 와)' },
+      { front: 'ん', back: 'n', detail: '유일한 자음 전용 히라가나 (한국어: ㄴ)' }
+    ]
+  }
+);
+
+// ─── Fill-in-the-blank ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-fill'),
+  {
+    title: '읽고 로마자를 입력하세요',
+    questions: [
+      { prompt: '이 단어를 읽으세요: <span class="jp" style="font-size:1.5rem">さくら</span>', answer: 'sakura', explanation: 'さ(sa) く(ku) ら(ra) = sakura (벚꽃)' },
+      { prompt: '이 단어를 읽으세요: <span class="jp" style="font-size:1.5rem">ねこ</span>', answer: 'neko', explanation: 'ね(ne) こ(ko) = neko (고양이)' },
+      { prompt: '이 단어를 읽으세요: <span class="jp" style="font-size:1.5rem">にほん</span>', answer: 'nihon', explanation: 'に(ni) ほ(ho) ん(n) = nihon (일본)' },
+      { prompt: '이 단어를 읽으세요: <span class="jp" style="font-size:1.5rem">すし</span>', answer: 'sushi', explanation: 'す(su) し(shi) = sushi (스시)' },
+      { prompt: '이 단어를 읽으세요: <span class="jp" style="font-size:1.5rem">やま</span>', answer: 'yama', explanation: 'や(ya) ま(ma) = yama (산)' }
+    ]
+  }
+);
+
+// ─── Drag-and-Drop matching ───
+QuizEngine.DragMatch(
+  document.getElementById('quiz-match'),
+  {
+    title: '히라가나 짝짓기',
+    instruction: '각 히라가나를 해당 읽기와 짝지으세요:',
+    pairs: [
+      { left: 'た', right: 'ta' },
+      { left: 'の', right: 'no' },
+      { left: 'ひ', right: 'hi' },
+      { left: 'む', right: 'mu' },
+      { left: 'れ', right: 're' },
+      { left: 'を', right: 'wo' }
+    ]
+  }
+);
+
+// ─── Audio Discrimination ───
+QuizEngine.AudioDiscrimination(
+  document.getElementById('quiz-audio'),
+  {
+    title: '장음 vs. 단음',
+    pairs: [
+      { a: 'おばさん (obasan)', b: 'おばあさん (obaasan)', question: '할머니를 뜻하는 것은 어느 쪽입니까?', answer: 'b', explanation: '모음이 긴 쪽(ばあ vs ば) = 나이 든 사람 = 할머니' },
+      { a: 'ここ (koko)', b: 'こうこう (koukou)', question: '고등학교를 뜻하는 것은 어느 쪽입니까?', answer: 'b', explanation: 'こうこう (koukou = 高校) = 고등학교. ここ (koko) = 여기.' },
+      { a: 'おじさん (ojisan)', b: 'おじいさん (ojiisan)', question: '삼촌/아저씨(할아버지가 아닌)를 뜻하는 것은 어느 쪽입니까?', answer: 'a', explanation: '짧은 모음 おじさん = 삼촌/아저씨. 긴 모음 おじいさん = 할아버지.' }
+    ]
+  }
+);
+
+// ─── Timed Sprint ───
+QuizEngine.TimedSprint(
+  document.getElementById('quiz-sprint'),
+  {
+    title: '보스 레벨: 90초 스프린트',
+    timeLimit: 90,
+    items: [
+      { prompt: 'あ', answer: 'a' }, { prompt: 'い', answer: 'i' },
+      { prompt: 'う', answer: 'u' }, { prompt: 'え', answer: 'e' },
+      { prompt: 'お', answer: 'o' }, { prompt: 'か', answer: 'ka' },
+      { prompt: 'き', answer: 'ki' }, { prompt: 'く', answer: 'ku' },
+      { prompt: 'け', answer: 'ke' }, { prompt: 'こ', answer: 'ko' },
+      { prompt: 'さ', answer: 'sa' }, { prompt: 'し', answer: 'shi' },
+      { prompt: 'す', answer: 'su' }, { prompt: 'せ', answer: 'se' },
+      { prompt: 'そ', answer: 'so' }, { prompt: 'た', answer: 'ta' },
+      { prompt: 'ち', answer: 'chi' }, { prompt: 'つ', answer: 'tsu' },
+      { prompt: 'て', answer: 'te' }, { prompt: 'と', answer: 'to' },
+      { prompt: 'な', answer: 'na' }, { prompt: 'に', answer: 'ni' },
+      { prompt: 'ぬ', answer: 'nu' }, { prompt: 'ね', answer: 'ne' },
+      { prompt: 'の', answer: 'no' }, { prompt: 'は', answer: 'ha' },
+      { prompt: 'ひ', answer: 'hi' }, { prompt: 'ふ', answer: 'fu', acceptAlso: ['hu'] },
+      { prompt: 'へ', answer: 'he' }, { prompt: 'ほ', answer: 'ho' },
+      { prompt: 'ま', answer: 'ma' }, { prompt: 'み', answer: 'mi' },
+      { prompt: 'む', answer: 'mu' }, { prompt: 'め', answer: 'me' },
+      { prompt: 'も', answer: 'mo' }, { prompt: 'や', answer: 'ya' },
+      { prompt: 'ゆ', answer: 'yu' }, { prompt: 'よ', answer: 'yo' },
+      { prompt: 'ら', answer: 'ra' }, { prompt: 'り', answer: 'ri' },
+      { prompt: 'る', answer: 'ru' }, { prompt: 'れ', answer: 're' },
+      { prompt: 'ろ', answer: 'ro' }, { prompt: 'わ', answer: 'wa' },
+      { prompt: 'を', answer: 'wo', acceptAlso: ['o'] },
+      { prompt: 'ん', answer: 'n' }
+    ]
+  }
+);
+</script>
+<script src="js/spaced-repetition.js"></script>
+<script src="js/memory-palace.js"></script>
+</body>
+</html>

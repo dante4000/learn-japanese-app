@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ch14: Honorifics and Politeness — Zero to Hero 日本語</title>
+<link rel="stylesheet" href="css/design-system.css">
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <span class="logo-badge">Zero to Hero — Memory Architecture Edition</span>
+    <div class="logo-title">日本語 for Korean Speakers</div>
+    <div class="logo-sub">From 한국어 to 日本語 — The Memory Architect's Guide</div>
+  </a>
+  <div class="sidebar-progress">
+    <div class="sidebar-progress-label">Progress</div>
+    <div class="sidebar-progress-bar">
+      <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+    </div>
+    <div class="sidebar-progress-count">0/22 complete</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="ch-00.html" class="toc-link"><span class="toc-num">00</span><span class="toc-check" data-ch="00"></span>Memory Science</a>
+    <a href="ch-01.html" class="toc-link"><span class="toc-num">01</span><span class="toc-check" data-ch="01"></span>Your Korean Advantage</a>
+    <a href="ch-02.html" class="toc-link"><span class="toc-num">02</span><span class="toc-check" data-ch="02"></span>Hiragana</a>
+    <a href="ch-03.html" class="toc-link"><span class="toc-num">03</span><span class="toc-check" data-ch="03"></span>Katakana</a>
+    <a href="ch-04.html" class="toc-link"><span class="toc-num">04</span><span class="toc-check" data-ch="04"></span>Pronunciation</a>
+    <a href="ch-05.html" class="toc-link"><span class="toc-num">05</span><span class="toc-check" data-ch="05"></span>Survival Japanese</a>
+    <a href="ch-06.html" class="toc-link"><span class="toc-num">06</span><span class="toc-check" data-ch="06"></span>Counters</a>
+    <a href="ch-07.html" class="toc-link"><span class="toc-num">07</span><span class="toc-check" data-ch="07"></span>Particles</a>
+    <a href="ch-08.html" class="toc-link"><span class="toc-num">08</span><span class="toc-check" data-ch="08"></span>Verb Conjugation</a>
+    <a href="ch-09.html" class="toc-link"><span class="toc-num">09</span><span class="toc-check" data-ch="09"></span>Daily Conversations</a>
+    <a href="ch-10.html" class="toc-link"><span class="toc-num">10</span><span class="toc-check" data-ch="10"></span>Sentence Patterns</a>
+    <a href="ch-11.html" class="toc-link"><span class="toc-num">11</span><span class="toc-check" data-ch="11"></span>Kanji</a>
+    <a href="ch-12.html" class="toc-link"><span class="toc-num">12</span><span class="toc-check" data-ch="12"></span>Sino-Vocabulary</a>
+    <a href="ch-13.html" class="toc-link"><span class="toc-num">13</span><span class="toc-check" data-ch="13"></span>Native Vocabulary</a>
+    <a href="ch-14.html" class="toc-link active"><span class="toc-num">14</span><span class="toc-check" data-ch="14"></span>Honorifics</a>
+    <a href="ch-15.html" class="toc-link"><span class="toc-num">15</span><span class="toc-check" data-ch="15"></span>Reading</a>
+    <a href="ch-16.html" class="toc-link"><span class="toc-num">16</span><span class="toc-check" data-ch="16"></span>Writing</a>
+    <a href="ch-17.html" class="toc-link"><span class="toc-num">17</span><span class="toc-check" data-ch="17"></span>Listening</a>
+    <a href="ch-18.html" class="toc-link"><span class="toc-num">18</span><span class="toc-check" data-ch="18"></span>Cultural Pragmatics</a>
+    <a href="ch-19.html" class="toc-link"><span class="toc-num">19</span><span class="toc-check" data-ch="19"></span>JLPT and Beyond</a>
+    <a href="ch-20.html" class="toc-link"><span class="toc-num">20</span><span class="toc-check" data-ch="20"></span>Memory Palace</a>
+    <a href="ch-21.html" class="toc-link"><span class="toc-num">21</span><span class="toc-check" data-ch="21"></span>The 90-Day Sprint</a>
+    <a href="appendices.html" class="toc-link" style="margin-top:.5rem;border-top:1px solid var(--border);padding-top:.8rem"><span class="toc-num">+</span>Appendices</a>
+  </nav>
+</aside>
+
+<div class="main">
+<div class="content-wrap">
+
+<section id="ch14" data-ch="14" style="padding-top:3rem">
+<h2><span class="ch-label">Chapter 14</span>Honorifics and Politeness &mdash; Mapping 존댓말 to 敬語</h2>
+
+<div class="callout memory">
+  <div class="callout-title">Memory Technique Spotlight: Pragmatic Schema + Role-Play Encoding</div>
+  <p>Honorific language is deeply tied to social context. By mentally role-playing scenarios (meeting your boss's boss, answering a customer call, switching registers mid-conversation), you build pragmatic schemas that activate the right honorific level automatically — just like you already do in Korean.</p>
+</div>
+
+<p>In Ch05, you used <span class="jp">ください</span> and <span class="jp">お願いします</span> without knowing these are keigo. In Ch09, you used <span class="jp">申します</span> in your self-introduction. You've been using honorifics &mdash; now let's understand the full system.</p>
+
+<div class="pq">
+  "Korean speakers already live inside an honorific system. You know when to switch registers, who outranks whom, and how a single verb ending reshapes a social situation. Japanese keigo is a different map of the same territory."
+</div>
+
+<!-- ─── RECALL CHECK (top of chapter, from Ch09-12) ─── -->
+<nav class="chapter-toc">
+  <details open>
+    <summary class="chapter-toc-title">In This Chapter</summary>
+  <ol>
+    <li><a href="#recall-check-chapters-08-12">Recall Check — Chapters 08-12</a></li>
+    <li><a href="#section-1-the-structural-map-korean-levels-to-japanese-keigo">The Structural Map — Korean Levels to Japanese Keigo</a></li>
+    <li><a href="#section-2-special-keigo-verb-pairs-with-korean-parallels">Special Keigo Verb Pairs with Korean Parallels</a></li>
+    <li><a href="#section-3-the-おご-prefix-system">The お/ご Prefix System</a></li>
+    <li><a href="#section-4-scenario-based-practice">Scenario-Based Practice</a></li>
+    <li><a href="#section-5-common-keigo-mistakes-foreigners-make">Common Keigo Mistakes Foreigners Make</a></li>
+    <li><a href="#interactive-exercises">Interactive Exercises</a></li>
+    <li><a href="#recall-check-chapters-08-12-review">Recall Check — Chapters 08-12 Review</a></li>
+  </ol>
+  </details>
+</nav>
+
+<h3 id="recall-check-chapters-08-12">Recall Check &mdash; Chapters 08-12</h3>
+<p>Before mapping the keigo system, make sure particles, conjugation, kanji, and vocabulary from previous chapters are still sharp.</p>
+
+<div id="recall-check-top"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 1: STRUCTURAL COMPARISON
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="section-1-the-structural-map-korean-levels-to-japanese-keigo">The Structural Map &mdash; Korean Levels to Japanese Keigo</h3>
+
+<p>Korean has a rich system of speech levels. Japanese has a parallel system, but the categories map differently. Here is the core correspondence:</p>
+
+<div class="card">
+  <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:.5rem;align-items:center">
+    <div style="text-align:center">
+      <h4 style="color:var(--a2)">Korean</h4>
+      <p style="font-size:.82rem;color:var(--text-muted)">한국어 경어 체계</p>
+    </div>
+    <div style="font-size:1.5rem;color:var(--text-muted)">&harr;</div>
+    <div style="text-align:center">
+      <h4 style="color:var(--accent)">Japanese</h4>
+      <p style="font-size:.82rem;color:var(--text-muted)">日本語 敬語体系</p>
+    </div>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr><th>Korean Level</th><th>Japanese Equivalent</th><th>Function</th><th>Example</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="kr">반말 (casual)</td>
+      <td class="jp">タメ口 / 普通体</td>
+      <td>Plain/dictionary form among equals</td>
+      <td class="jp">食べる、行く、いい</td>
+    </tr>
+    <tr>
+      <td class="kr">존댓말 (polite)</td>
+      <td class="jp">丁寧語 (ていねいご)</td>
+      <td>Polite endings: <span class="jp">-です / -ます</span></td>
+      <td class="jp">食べます、行きます、いいです</td>
+    </tr>
+    <tr>
+      <td class="kr">높임말 (honorific)</td>
+      <td class="jp">尊敬語 (そんけいご)</td>
+      <td>Elevate the other person's actions</td>
+      <td class="jp">お+になる、召し上がる</td>
+    </tr>
+    <tr>
+      <td class="kr">겸양어 (humble)</td>
+      <td class="jp">謙譲語 (けんじょうご)</td>
+      <td>Lower your own actions</td>
+      <td class="jp">お+する、申す、いただく</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout ok">
+  <div class="callout-title">Your Korean Advantage</div>
+  <p>You already grasp <strong>the logic</strong>: raise others, lower yourself, adjust endings by context. In Korean, you shift between <span class="kr">해체</span>, <span class="kr">해요체</span>, <span class="kr">하십시오체</span> automatically. In Japanese, you shift between <span class="jp">普通体</span>, <span class="jp">丁寧語</span>, <span class="jp">尊敬語/謙譲語</span>. The instinct is the same &mdash; only the forms differ.</p>
+</div>
+
+<!-- Keigo Structure SVG Diagram -->
+<div class="diagram">
+  <svg viewBox="0 0 720 340" xmlns="http://www.w3.org/2000/svg">
+    <!-- Title -->
+    <text x="360" y="28" text-anchor="middle" font-size="14" font-weight="700" fill="var(--heading)">Korean &harr; Japanese Honorific System Map</text>
+
+    <!-- Korean side -->
+    <rect x="20" y="50" width="320" height="270" rx="12" fill="none" stroke="var(--a2)" stroke-width="2" opacity=".5"/>
+    <text x="180" y="75" text-anchor="middle" font-size="13" font-weight="600" fill="var(--a2)">Korean 경어 체계</text>
+
+    <!-- Korean levels (bottom to top = casual to formal) -->
+    <rect x="50" y="240" width="260" height="50" rx="8" fill="var(--quiz-neutral)" opacity=".12"/>
+    <text x="180" y="260" text-anchor="middle" font-size="12" fill="var(--text-muted)">반말 (casual)</text>
+    <text x="180" y="278" text-anchor="middle" font-size="10" fill="var(--text-muted)">먹어, 가, 뭐해</text>
+
+    <rect x="50" y="175" width="260" height="50" rx="8" fill="var(--quiz-neutral)" opacity=".12"/>
+    <text x="180" y="195" text-anchor="middle" font-size="12" fill="var(--a2)">존댓말 (polite)</text>
+    <text x="180" y="213" text-anchor="middle" font-size="10" fill="var(--text-muted)">먹어요, 가요, 뭐해요</text>
+
+    <rect x="50" y="110" width="126" height="50" rx="8" fill="var(--quiz-neutral)" opacity=".12"/>
+    <text x="113" y="130" text-anchor="middle" font-size="11" fill="var(--a3)">높임말</text>
+    <text x="113" y="148" text-anchor="middle" font-size="9" fill="var(--text-muted)">드시다, 가시다</text>
+
+    <rect x="184" y="110" width="126" height="50" rx="8" fill="var(--quiz-neutral)" opacity=".12"/>
+    <text x="247" y="130" text-anchor="middle" font-size="11" fill="var(--a4)">겸양어</text>
+    <text x="247" y="148" text-anchor="middle" font-size="9" fill="var(--text-muted)">말씀드리다, 여쭙다</text>
+
+    <!-- Japanese side -->
+    <rect x="380" y="50" width="320" height="270" rx="12" fill="none" stroke="var(--accent)" stroke-width="2" opacity=".5"/>
+    <text x="540" y="75" text-anchor="middle" font-size="13" font-weight="600" fill="var(--accent)">Japanese 敬語体系</text>
+
+    <rect x="410" y="240" width="260" height="50" rx="8" fill="var(--quiz-neutral)" opacity=".12"/>
+    <text x="540" y="260" text-anchor="middle" font-size="12" fill="var(--text-muted)">タメ口 / 普通体</text>
+    <text x="540" y="278" text-anchor="middle" font-size="10" fill="var(--text-muted)">食べる、行く、何する</text>
+
+    <rect x="410" y="175" width="260" height="50" rx="8" fill="var(--quiz-neutral)" opacity=".12"/>
+    <text x="540" y="195" text-anchor="middle" font-size="12" fill="var(--accent)">丁寧語 (ていねいご)</text>
+    <text x="540" y="213" text-anchor="middle" font-size="10" fill="var(--text-muted)">食べます、行きます、何しますか</text>
+
+    <rect x="410" y="110" width="126" height="50" rx="8" fill="var(--quiz-neutral)" opacity=".12"/>
+    <text x="473" y="130" text-anchor="middle" font-size="11" fill="var(--a3)">尊敬語</text>
+    <text x="473" y="148" text-anchor="middle" font-size="9" fill="var(--text-muted)">召し上がる、いらっしゃる</text>
+
+    <rect x="544" y="110" width="126" height="50" rx="8" fill="var(--quiz-neutral)" opacity=".12"/>
+    <text x="607" y="130" text-anchor="middle" font-size="11" fill="var(--a4)">謙譲語</text>
+    <text x="607" y="148" text-anchor="middle" font-size="9" fill="var(--text-muted)">いただく、申す</text>
+
+    <!-- Connecting arrows -->
+    <line x1="310" y1="265" x2="410" y2="265" stroke="var(--text-muted)" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowhead)"/>
+    <line x1="310" y1="200" x2="410" y2="200" stroke="var(--text-muted)" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowhead)"/>
+    <line x1="176" y1="135" x2="410" y2="135" stroke="var(--text-muted)" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowhead)"/>
+    <line x1="310" y1="135" x2="544" y2="135" stroke="var(--text-muted)" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowhead)"/>
+  </svg>
+  <div class="diagram-caption">The four-layer honorific map. Korean and Japanese share the same conceptual architecture &mdash; casual, polite, honorific (elevate others), humble (lower self).</div>
+</div>
+
+<div class="callout warn">
+  <div class="callout-title">Elaborative Interrogation</div>
+  <p><strong>WHY does Korean merge 높임말 into verb endings (시) while Japanese uses entirely different verbs (召し上がる vs 食べる)?</strong></p>
+  <p>Korean embeds honorifics agglutinatively: <span class="kr">먹다 &rarr; 드시다</span>, <span class="kr">가다 &rarr; 가시다</span> &mdash; the <span class="kr">시</span> infix is productive and predictable. Japanese does this too with the <span class="jp">お～になる</span> pattern, but it also maintains a set of completely irregular "special honorific verbs" that have no morphological relationship to the plain form. This is the area where your Korean intuition will not save you &mdash; you must simply memorize the pairs.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 2: SPECIAL VERB PAIRS
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="section-2-special-keigo-verb-pairs-with-korean-parallels">Special Keigo Verb Pairs with Korean Parallels</h3>
+
+<p>These are the irregular keigo verbs that do not follow a predictable pattern. You must memorize them as fixed pairs, just as you memorized <span class="kr">먹다 &rarr; 드시다</span> as a child. The table below maps plain &rarr; sonkeigo (respect) &rarr; kenjougo (humble) &rarr; Korean parallels.</p>
+
+<table>
+  <thead>
+    <tr><th>Plain</th><th>尊敬語 (respect)</th><th>謙譲語 (humble)</th><th>Korean Plain</th><th>Korean Honorific</th><th>Korean Humble</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="jp">食べる</td>
+      <td class="jp" style="color:var(--a3)">召し上がる</td>
+      <td class="jp" style="color:var(--a4)">いただく</td>
+      <td class="kr">먹다</td>
+      <td class="kr">드시다</td>
+      <td class="kr">먹사옵니다 / 들겠습니다</td>
+    </tr>
+    <tr>
+      <td class="jp">飲む</td>
+      <td class="jp" style="color:var(--a3)">召し上がる</td>
+      <td class="jp" style="color:var(--a4)">いただく</td>
+      <td class="kr">마시다</td>
+      <td class="kr">드시다</td>
+      <td class="kr">마시겠습니다</td>
+    </tr>
+    <tr>
+      <td class="jp">行く</td>
+      <td class="jp" style="color:var(--a3)">いらっしゃる</td>
+      <td class="jp" style="color:var(--a4)">参る (まいる)</td>
+      <td class="kr">가다</td>
+      <td class="kr">가시다</td>
+      <td class="kr">가겠습니다</td>
+    </tr>
+    <tr>
+      <td class="jp">来る</td>
+      <td class="jp" style="color:var(--a3)">いらっしゃる</td>
+      <td class="jp" style="color:var(--a4)">参る (まいる)</td>
+      <td class="kr">오다</td>
+      <td class="kr">오시다</td>
+      <td class="kr">오겠습니다</td>
+    </tr>
+    <tr>
+      <td class="jp">いる</td>
+      <td class="jp" style="color:var(--a3)">いらっしゃる</td>
+      <td class="jp" style="color:var(--a4)">おる</td>
+      <td class="kr">있다</td>
+      <td class="kr">계시다</td>
+      <td class="kr">있겠습니다</td>
+    </tr>
+    <tr>
+      <td class="jp">言う</td>
+      <td class="jp" style="color:var(--a3)">おっしゃる</td>
+      <td class="jp" style="color:var(--a4)">申す (もうす)</td>
+      <td class="kr">말하다</td>
+      <td class="kr">말씀하시다</td>
+      <td class="kr">말씀드리다</td>
+    </tr>
+    <tr>
+      <td class="jp">する</td>
+      <td class="jp" style="color:var(--a3)">なさる</td>
+      <td class="jp" style="color:var(--a4)">いたす</td>
+      <td class="kr">하다</td>
+      <td class="kr">하시다</td>
+      <td class="kr">하겠습니다</td>
+    </tr>
+    <tr>
+      <td class="jp">見る</td>
+      <td class="jp" style="color:var(--a3)">ご覧になる (ごらんになる)</td>
+      <td class="jp" style="color:var(--a4)">拝見する (はいけんする)</td>
+      <td class="kr">보다</td>
+      <td class="kr">보시다</td>
+      <td class="kr">봬다 / 뵙다</td>
+    </tr>
+    <tr>
+      <td class="jp">知る</td>
+      <td class="jp" style="color:var(--a3)">ご存じだ (ごぞんじだ)</td>
+      <td class="jp" style="color:var(--a4)">存じる (ぞんじる)</td>
+      <td class="kr">알다</td>
+      <td class="kr">아시다</td>
+      <td class="kr">알고 있습니다</td>
+    </tr>
+    <tr>
+      <td class="jp">もらう</td>
+      <td class="jp" style="color:var(--text-muted)">&mdash;</td>
+      <td class="jp" style="color:var(--a4)">いただく</td>
+      <td class="kr">받다</td>
+      <td class="kr">&mdash;</td>
+      <td class="kr">받겠습니다</td>
+    </tr>
+    <tr>
+      <td class="jp">あげる</td>
+      <td class="jp" style="color:var(--text-muted)">&mdash;</td>
+      <td class="jp" style="color:var(--a4)">差し上げる (さしあげる)</td>
+      <td class="kr">주다</td>
+      <td class="kr">&mdash;</td>
+      <td class="kr">드리다</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">Notice the Pattern</div>
+  <p><span class="jp">いらっしゃる</span> is the Swiss Army knife of sonkeigo &mdash; it covers <span class="jp">行く</span>, <span class="jp">来る</span>, and <span class="jp">いる</span>. Similarly, <span class="jp">いただく</span> covers both <span class="jp">食べる</span> and <span class="jp">もらう</span> in humble form. Context determines the meaning, just as <span class="kr">계시다</span> in Korean covers both "being" and "staying" in honorific form.</p>
+</div>
+
+<div class="callout ok">
+  <div class="callout-title">Mnemonic: The Big Five</div>
+  <p>Prioritize these five sonkeigo/kenjougo pairs first. They appear in virtually every business or formal interaction:<br>
+  <strong>1.</strong> <span class="jp">いらっしゃる / 参る</span> &mdash; being, going, coming<br>
+  <strong>2.</strong> <span class="jp">おっしゃる / 申す</span> &mdash; speaking<br>
+  <strong>3.</strong> <span class="jp">召し上がる / いただく</span> &mdash; eating, receiving<br>
+  <strong>4.</strong> <span class="jp">ご覧になる / 拝見する</span> &mdash; seeing<br>
+  <strong>5.</strong> <span class="jp">なさる / いたす</span> &mdash; doing</p>
+</div>
+
+<!-- Mnemonic SVG: Keigo Elevation/Humbling -->
+<div class="diagram">
+  <svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg">
+    <!-- Title -->
+    <text x="350" y="25" text-anchor="middle" font-size="14" font-weight="700" fill="var(--heading)">Keigo Direction: Elevate Others, Lower Yourself</text>
+
+    <!-- Center line (neutral) -->
+    <line x1="50" y1="150" x2="650" y2="150" stroke="var(--text-muted)" stroke-width="1" stroke-dasharray="4,4"/>
+    <text x="350" y="165" text-anchor="middle" font-size="10" fill="var(--text-muted)">--- 丁寧語 baseline (です/ます) ---</text>
+
+    <!-- Sonkeigo (up) -->
+    <rect x="80" y="45" width="240" height="75" rx="10" fill="none" stroke="var(--a3)" stroke-width="2" opacity=".7"/>
+    <text x="200" y="70" text-anchor="middle" font-size="13" font-weight="600" fill="var(--a3)">尊敬語 (sonkeigo)</text>
+    <text x="200" y="90" text-anchor="middle" font-size="10" fill="var(--text-muted)">Raise the OTHER person UP</text>
+    <text x="200" y="108" text-anchor="middle" font-size="10" fill="var(--a3)">召し上がる、いらっしゃる、おっしゃる</text>
+
+    <!-- Arrow up from center -->
+    <line x1="200" y1="145" x2="200" y2="125" stroke="var(--a3)" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+    <!-- Kenjougo (down) -->
+    <rect x="380" y="185" width="240" height="75" rx="10" fill="none" stroke="var(--a4)" stroke-width="2" opacity=".7"/>
+    <text x="500" y="210" text-anchor="middle" font-size="13" font-weight="600" fill="var(--a4)">謙譲語 (kenjougo)</text>
+    <text x="500" y="230" text-anchor="middle" font-size="10" fill="var(--text-muted)">Lower YOURSELF down</text>
+    <text x="500" y="248" text-anchor="middle" font-size="10" fill="var(--a4)">いただく、参る、申す、拝見する</text>
+
+    <!-- Arrow down from center -->
+    <line x1="500" y1="155" x2="500" y2="180" stroke="var(--a4)" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+    <!-- Korean parallel note -->
+    <text x="350" y="275" text-anchor="middle" font-size="10" font-weight="500" fill="var(--a2)">Korean parallel: 높임말 raises others (드시다), 겸양어 lowers self (말씀드리다)</text>
+  </svg>
+  <div class="diagram-caption">Sonkeigo elevates the listener's actions; kenjougo lowers the speaker's actions. The effect is the same: increasing the distance of respect. Korean uses the same two-axis system.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 3: THE お/ご PREFIX SYSTEM
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="section-3-the-おご-prefix-system">The お/ご Prefix System</h3>
+
+<p>Japanese has a systematic way to make nouns and adjectives more polite by adding <span class="jp">お</span> or <span class="jp">ご</span> before them. The rule is based on the <strong>origin</strong> of the word:</p>
+
+<div class="card-grid">
+  <div class="card">
+    <h4 style="color:var(--accent)"><span class="jp">お</span> + 和語 (native Japanese words)</h4>
+    <p>Words inherited from ancient Japanese (和語/やまとことば) take <span class="jp">お</span>:</p>
+    <table>
+      <tbody>
+        <tr><td class="jp">はし &rarr; おはし</td><td>chopsticks</td></tr>
+        <tr><td class="jp">水 &rarr; お水</td><td>water</td></tr>
+        <tr><td class="jp">名前 &rarr; お名前</td><td>name</td></tr>
+        <tr><td class="jp">茶 &rarr; お茶</td><td>tea</td></tr>
+        <tr><td class="jp">金 &rarr; お金</td><td>money</td></tr>
+        <tr><td class="jp">手紙 &rarr; お手紙</td><td>letter</td></tr>
+        <tr><td class="jp">体 &rarr; お体</td><td>body/health</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="card">
+    <h4 style="color:var(--a2)"><span class="jp">ご</span> + 漢語 (Sino-Japanese words)</h4>
+    <p>Words borrowed from Chinese (漢語/かんご) take <span class="jp">ご</span>:</p>
+    <table>
+      <tbody>
+        <tr><td class="jp">住所 &rarr; ご住所</td><td>address</td></tr>
+        <tr><td class="jp">連絡 &rarr; ご連絡</td><td>contact</td></tr>
+        <tr><td class="jp">家族 &rarr; ご家族</td><td>family</td></tr>
+        <tr><td class="jp">意見 &rarr; ご意見</td><td>opinion</td></tr>
+        <tr><td class="jp">案内 &rarr; ご案内</td><td>guidance</td></tr>
+        <tr><td class="jp">質問 &rarr; ご質問</td><td>question</td></tr>
+        <tr><td class="jp">注文 &rarr; ご注文</td><td>order</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="callout info">
+  <div class="callout-title">Korean Parallel: Inherently Honorific Words</div>
+  <p>Korean does not use a prefix system like <span class="jp">お/ご</span>. Instead, Korean has <strong>entirely separate honorific nouns</strong>:<br>
+  <span class="kr">밥 &rarr; 진지</span> (meal), <span class="kr">말 &rarr; 말씀</span> (words), <span class="kr">나이 &rarr; 연세</span> (age), <span class="kr">이름 &rarr; 성함</span> (name), <span class="kr">집 &rarr; 댁</span> (house).<br>
+  Japanese is more systematic: attach <span class="jp">お/ご</span> and the word is polished. Korean replaces the word entirely.</p>
+</div>
+
+<h4>The お/ご + Verb Patterns (Productive Keigo)</h4>
+<p>Beyond memorizing special verb pairs, you can generate keigo for <strong>any</strong> verb using these formulas:</p>
+
+<table>
+  <thead>
+    <tr><th>Type</th><th>Formula</th><th>Example (待つ = to wait)</th><th>Korean Parallel</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="transfer-tag full" style="font-size:.75rem">尊敬語</span></td>
+      <td class="jp">お + 連用形 + になる</td>
+      <td class="jp">お待ちになる</td>
+      <td class="kr">기다리시다</td>
+    </tr>
+    <tr>
+      <td><span class="transfer-tag partial" style="font-size:.75rem">謙譲語</span></td>
+      <td class="jp">お + 連用形 + する</td>
+      <td class="jp">お待ちする</td>
+      <td class="kr">기다리겠습니다</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="card">
+  <h4>More Examples of the Productive Pattern</h4>
+  <table>
+    <thead>
+      <tr><th>Plain</th><th>尊敬語 (お～になる)</th><th>謙譲語 (お～する)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="jp">読む</td><td class="jp">お読みになる</td><td class="jp">お読みする</td></tr>
+      <tr><td class="jp">書く</td><td class="jp">お書きになる</td><td class="jp">お書きする</td></tr>
+      <tr><td class="jp">聞く</td><td class="jp">お聞きになる</td><td class="jp">お聞きする</td></tr>
+      <tr><td class="jp">話す</td><td class="jp">お話しになる</td><td class="jp">お話しする</td></tr>
+      <tr><td class="jp">帰る</td><td class="jp">お帰りになる</td><td class="jp">&mdash;</td></tr>
+      <tr><td class="jp">伝える</td><td class="jp">お伝えになる</td><td class="jp">お伝えする</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:.85rem;color:var(--text-muted);margin-bottom:0">This productive pattern is like adding <span class="kr">-시-</span> in Korean &mdash; it works with almost any verb. The irregular special pairs from Section 2 override this pattern.</p>
+</div>
+
+<div class="callout warn">
+  <div class="callout-title">Elaborative Interrogation</div>
+  <p><strong>WHY does Japanese split honorific prefixes by word origin (お for 和語, ご for 漢語) while Korean has no such split?</strong></p>
+  <p>Japanese maintains a deep distinction between native words (和語) and Chinese-borrowed words (漢語) throughout its grammar and phonology. The <span class="jp">お/ご</span> split is a surface reflection of this etymological awareness. Korean absorbed 한자어 so thoroughly that the native/borrowed distinction does not drive grammatical rules in the same way. This is another instance of Japanese preserving historical layering that Korean has smoothed over.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 4: SCENARIO-BASED PRACTICE
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="section-4-scenario-based-practice">Scenario-Based Practice</h3>
+
+<p>Keigo only makes sense in context. Here are four real-world scenarios showing which level to use and why.</p>
+
+<!-- Scenario 1: Company -->
+<div class="card">
+  <h4>Scenario 1: At a Company &mdash; Meeting Your Boss's Boss</h4>
+  <p style="font-size:.85rem;color:var(--text-muted)">You are a new employee (<span class="jp">新入社員</span>). You meet the department head (<span class="jp">部長</span>) for the first time.</p>
+
+  <table>
+    <thead><tr><th>Situation</th><th>Japanese (keigo)</th><th>Level</th><th>Korean Equivalent</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Introduce yourself</td>
+        <td class="jp">初めまして。田中と申します。よろしくお願いいたします。</td>
+        <td><span class="transfer-tag partial" style="font-size:.7rem">謙譲語</span></td>
+        <td class="kr">처음 뵙겠습니다. 다나카라고 합니다. 잘 부탁드리겠습니다.</td>
+      </tr>
+      <tr>
+        <td>Ask if they've seen the report</td>
+        <td class="jp">報告書はご覧になりましたか。</td>
+        <td><span class="transfer-tag full" style="font-size:.7rem">尊敬語</span></td>
+        <td class="kr">보고서는 보셨습니까?</td>
+      </tr>
+      <tr>
+        <td>Say you'll check</td>
+        <td class="jp">私が確認いたします。</td>
+        <td><span class="transfer-tag partial" style="font-size:.7rem">謙譲語</span></td>
+        <td class="kr">제가 확인하겠습니다.</td>
+      </tr>
+      <tr>
+        <td>Ask what they think</td>
+        <td class="jp">部長はどのようにお考えですか。</td>
+        <td><span class="transfer-tag full" style="font-size:.7rem">尊敬語</span></td>
+        <td class="kr">부장님은 어떻게 생각하십니까?</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Scenario 2: Restaurant -->
+<div class="card">
+  <h4>Scenario 2: At a Restaurant &mdash; Staff Speaking to Customer</h4>
+  <p style="font-size:.85rem;color:var(--text-muted)">You are a server. The customer is always elevated.</p>
+
+  <table>
+    <thead><tr><th>Situation</th><th>Japanese (keigo)</th><th>Level</th><th>Korean Equivalent</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Greet customer</td>
+        <td class="jp">いらっしゃいませ。何名様でいらっしゃいますか。</td>
+        <td><span class="transfer-tag full" style="font-size:.7rem">尊敬語</span></td>
+        <td class="kr">어서 오십시오. 몇 분이십니까?</td>
+      </tr>
+      <tr>
+        <td>Take order</td>
+        <td class="jp">ご注文はお決まりでしょうか。</td>
+        <td><span class="transfer-tag full" style="font-size:.7rem">尊敬語</span></td>
+        <td class="kr">주문하시겠습니까?</td>
+      </tr>
+      <tr>
+        <td>Serve food</td>
+        <td class="jp">お待たせいたしました。どうぞ召し上がってください。</td>
+        <td><span class="transfer-tag partial" style="font-size:.7rem">謙+尊</span></td>
+        <td class="kr">오래 기다리셨습니다. 드시기 바랍니다.</td>
+      </tr>
+      <tr>
+        <td>Bring the bill</td>
+        <td class="jp">お会計はこちらでございます。</td>
+        <td><span class="transfer-tag partial" style="font-size:.7rem">丁寧+謙</span></td>
+        <td class="kr">계산은 이쪽입니다.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Scenario 3: Email to Professor -->
+<div class="card">
+  <h4>Scenario 3: Email to a Professor</h4>
+  <p style="font-size:.85rem;color:var(--text-muted)">Writing to your university professor. Written keigo is even more formal than spoken.</p>
+
+  <div style="background:var(--quiz-neutral);padding:1.2rem;border-radius:8px;font-size:.92rem;margin:.8rem 0;opacity:.15;position:absolute;width:calc(100% - 2.4rem)"></div>
+  <div style="position:relative;padding:1.2rem;font-size:.92rem;margin:.8rem 0">
+    <p class="jp" style="margin-bottom:.8rem"><strong>件名：</strong>来週のゼミについてお伺いしたいことがございます</p>
+    <p class="jp" style="margin-bottom:.5rem">山田先生</p>
+    <p class="jp" style="margin-bottom:.5rem">お忙しいところ失礼いたします。<br>来週のゼミの発表についてお伺いしたいことがございます。<br>お時間のある時に、ご連絡いただけますと幸いです。</p>
+    <p class="jp" style="margin-bottom:.5rem">何卒よろしくお願い申し上げます。</p>
+    <p class="jp" style="margin-bottom:0">田中太郎</p>
+  </div>
+
+  <p style="font-size:.85rem;color:var(--text-muted)">Korean equivalent register: <span class="kr">교수님, 바쁘신 중에 죄송합니다. 다음 주 세미나 발표에 대해 여쭈어 볼 것이 있습니다. 시간 되실 때 연락 주시면 감사하겠습니다. 잘 부탁드립니다.</span></p>
+</div>
+
+<!-- Scenario 4: Customer Service -->
+<div class="card">
+  <h4>Scenario 4: Calling Customer Service</h4>
+  <p style="font-size:.85rem;color:var(--text-muted)">You call a company. The operator uses maximum keigo to you (the customer).</p>
+
+  <table>
+    <thead><tr><th>Operator Says</th><th>Level</th><th>What They Mean (plain)</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="jp">お電話ありがとうございます。</td>
+        <td><span class="transfer-tag partial" style="font-size:.7rem">丁寧語</span></td>
+        <td class="jp">電話ありがとう。</td>
+      </tr>
+      <tr>
+        <td class="jp">少々お待ちくださいませ。</td>
+        <td><span class="transfer-tag full" style="font-size:.7rem">尊敬語</span></td>
+        <td class="jp">ちょっと待って。</td>
+      </tr>
+      <tr>
+        <td class="jp">お名前をお伺いしてもよろしいでしょうか。</td>
+        <td><span class="transfer-tag partial" style="font-size:.7rem">謙譲語</span></td>
+        <td class="jp">名前を聞いてもいい？</td>
+      </tr>
+      <tr>
+        <td class="jp">担当者にお繋ぎいたします。</td>
+        <td><span class="transfer-tag partial" style="font-size:.7rem">謙譲語</span></td>
+        <td class="jp">担当者に繋ぐ。</td>
+      </tr>
+      <tr>
+        <td class="jp">ご不明な点がございましたら、お申し付けくださいませ。</td>
+        <td><span class="transfer-tag partial" style="font-size:.7rem">謙+尊</span></td>
+        <td class="jp">分からないことがあったら、言ってね。</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 5: COMMON KEIGO MISTAKES
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="section-5-common-keigo-mistakes-foreigners-make">Common Keigo Mistakes Foreigners Make</h3>
+
+<p>Even advanced learners make these errors. Your Korean background protects you from some but not all.</p>
+
+<div class="card-grid">
+  <div class="card">
+    <h4><span class="transfer-tag none" style="font-size:.75rem">Mistake</span> Double Keigo (二重敬語)</h4>
+    <p><span class="jp" style="color:var(--a5)">&#x2717; お召し上がりになる</span></p>
+    <p><span class="jp" style="color:var(--a3)">&#x2713; 召し上がる</span></p>
+    <p style="font-size:.85rem;color:var(--text-muted)"><span class="jp">召し上がる</span> is already sonkeigo. Adding <span class="jp">お～になる</span> on top creates double honorifics. In Korean, you would never say <span class="kr" style="color:var(--a5)">*드시시다</span>.</p>
+  </div>
+  <div class="card">
+    <h4><span class="transfer-tag none" style="font-size:.75rem">Mistake</span> Sonkeigo for Your Own Actions</h4>
+    <p><span class="jp" style="color:var(--a5)">&#x2717; 私がいらっしゃいます</span></p>
+    <p><span class="jp" style="color:var(--a3)">&#x2713; 私が参ります</span></p>
+    <p style="font-size:.85rem;color:var(--text-muted)"><span class="jp">いらっしゃる</span> elevates the subject. Using it for yourself is like saying <span class="kr" style="color:var(--a5)">*제가 가시겠습니다</span> in Korean &mdash; grammatically absurd.</p>
+  </div>
+  <div class="card">
+    <h4><span class="transfer-tag none" style="font-size:.75rem">Mistake</span> Honorifying Your Own Company</h4>
+    <p><span class="jp" style="color:var(--a5)">&#x2717; 私の会社の社長がおっしゃいました</span></p>
+    <p><span class="jp" style="color:var(--a3)">&#x2713; 弊社の社長が申しました</span></p>
+    <p style="font-size:.85rem;color:var(--text-muted)">When talking to outsiders, everyone in your company &mdash; including your boss &mdash; is "your side" and gets humble language. Same as Korean: <span class="kr">저희 사장님이 말씀하셨습니다</span> becomes <span class="kr">저희 사장이 말씀드렸습니다</span> in formal external contexts.</p>
+  </div>
+  <div class="card">
+    <h4><span class="transfer-tag none" style="font-size:.75rem">Mistake</span> Using ございます Everywhere</h4>
+    <p><span class="jp" style="color:var(--a5)">&#x2717; それはすごくございます</span></p>
+    <p><span class="jp" style="color:var(--a3)">&#x2713; それは素晴らしゅうございます</span> (or simply <span class="jp">素晴らしいです</span>)</p>
+    <p style="font-size:.85rem;color:var(--text-muted)"><span class="jp">ございます</span> is the keigo form of <span class="jp">ある</span>, not a universal politeness booster. It has strict grammatical rules for what it can attach to.</p>
+  </div>
+  <div class="card">
+    <h4><span class="transfer-tag partial" style="font-size:.75rem">Mistake</span> Mixing Levels Mid-Sentence</h4>
+    <p><span class="jp" style="color:var(--a5)">&#x2717; 先生が来たんですが、もう帰りになりました</span></p>
+    <p><span class="jp" style="color:var(--a3)">&#x2713; 先生がいらっしゃったんですが、もうお帰りになりました</span></p>
+    <p style="font-size:.85rem;color:var(--text-muted)">Keep the register consistent throughout the sentence. If you use sonkeigo for one verb about the same person, use it for all.</p>
+  </div>
+  <div class="card">
+    <h4><span class="transfer-tag partial" style="font-size:.75rem">Mistake</span> Over-Polite in Casual Settings</h4>
+    <p style="font-size:.85rem;color:var(--text-muted)">Using keigo with close friends or younger family members sounds stiff and creates distance. Just as speaking <span class="kr">하십시오체</span> to your best friend in Korean would feel bizarre, using <span class="jp">召し上がりますか</span> with a close friend is equally unnatural. Read the room.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     INTERACTIVE EXERCISES
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="interactive-exercises">Interactive Exercises</h3>
+
+<!-- Quiz 1: Multiple Choice -- choose correct keigo level -->
+<div id="quiz-keigo-level"></div>
+
+<!-- Quiz 2: Fill in the Blank -- convert plain to keigo -->
+<div id="quiz-keigo-convert"></div>
+
+<!-- Quiz 3: Drag Match -- plain verbs to keigo pairs -->
+<div id="quiz-keigo-pairs"></div>
+
+<!-- Quiz 4: Sentence Builder -- construct polite sentences -->
+<div id="quiz-keigo-sentences"></div>
+
+<!-- Quiz 5: Recall Check from Ch09-12 -->
+<h3 id="recall-check-chapters-08-12-review">Recall Check &mdash; Chapters 08-12 Review</h3>
+<p>Mixed review of conversation, kanji, vocabulary, and grammar from previous chapters.</p>
+
+<div id="quiz-recall-bottom"></div>
+
+<!-- Mark as Complete -->
+<button class="chapter-complete" data-ch="14">Mark as Complete &#10003;</button>
+
+<div style="display:flex;justify-content:space-between;margin:2rem 0">
+  <a href="ch-13.html" class="quiz-btn secondary">&larr; Chapter 14: Native Vocabulary</a>
+  <a href="ch-15.html" class="quiz-btn">Next: Chapter 16 -- Reading &rarr;</a>
+</div>
+
+</section>
+
+</div>
+
+
+</div>
+
+<footer>
+  <p>Zero to Hero: 日本語 for Korean Speakers &middot; Chapter 14</p>
+</footer>
+
+<script src="js/shared.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/quiz-engine.js"></script>
+<script>
+// ─── Recall Check (top of chapter, from Ch09-12) ───
+QuizEngine.RecallCheck(
+  document.getElementById('recall-check-top'),
+  {
+    fromChapters: 'Ch09-12',
+    items: [
+      { question: 'Ch09: How do you say "Nice to meet you" formally in Japanese?', answer: '初めまして、どうぞよろしくお願いします' },
+      { question: 'Ch09: How do you introduce yourself with your name? (e.g., "I am Tanaka")', answer: '田中と申します (or 田中です in less formal situations)' },
+      { question: 'Ch10: Which verb do you use for animate existence (people, animals)?', answer: 'いる' },
+      { question: 'Ch10: Which verb do you use for inanimate existence (objects, concepts)?', answer: 'ある' },
+      { question: 'Ch11: What are the two readings of kanji called?', answer: '音読み (おんよみ, Sino-Japanese) and 訓読み (くんよみ, native Japanese)' },
+      { question: 'Ch12: What is the Japanese Sino-vocabulary word for "library" (도서관)?', answer: '図書館 (としょかん)' },
+      { question: 'Ch13: What is the native Japanese word for "water" (물)?', answer: '水 (みず)' }
+    ]
+  }
+);
+
+// ─── Quiz 1: Multiple Choice -- choose correct keigo level for situation ───
+QuizEngine.MultipleChoice(
+  document.getElementById('quiz-keigo-level'),
+  {
+    title: 'Choose the Correct Keigo Level',
+    questions: [
+      {
+        prompt: 'Your boss ate lunch. Which verb do you use to describe HIS action respectfully?',
+        options: [
+          '食べた (plain)',
+          '食べました (丁寧語)',
+          '召し上がった (尊敬語)',
+          'いただいた (謙譲語)'
+        ],
+        correctIndex: 2,
+        explanation: '召し上がる is the sonkeigo (respect) form of 食べる. Use it for someone above you. いただく would be humble -- for YOUR own eating.'
+      },
+      {
+        prompt: 'You are writing an email to a client. You want to say "I will confirm." Which form?',
+        options: [
+          '確認する (plain)',
+          '確認します (丁寧語)',
+          'ご確認になります (尊敬語)',
+          '確認いたします (謙譲語)'
+        ],
+        correctIndex: 3,
+        explanation: 'You are performing the action, so you lower yourself with kenjougo. 確認いたします uses いたす (humble form of する).'
+      },
+      {
+        prompt: 'A customer asks a question at your store. You want to say "Please wait a moment." Which is best?',
+        options: [
+          'ちょっと待って (plain)',
+          '少し待ってください (丁寧語)',
+          '少々お待ちくださいませ (尊敬語)',
+          'お待ちいたします (謙譲語)'
+        ],
+        correctIndex: 2,
+        explanation: 'In customer service, you elevate the customer. 少々お待ちくださいませ uses the sonkeigo pattern お+待ち+ください with the extra-polite ませ.'
+      },
+      {
+        prompt: 'You are talking to an outside company about your own president. Your president said something. How do you report it?',
+        options: [
+          '社長が言いました',
+          '社長がおっしゃいました',
+          '社長が申しました',
+          '社長がお話しになりました'
+        ],
+        correctIndex: 2,
+        explanation: 'When speaking to outsiders, your own boss is "your side" -- use kenjougo. 申す is the humble form of 言う. Using おっしゃる (sonkeigo) for your own boss to an outsider is a classic mistake.'
+      },
+      {
+        prompt: 'You want to ask your professor: "Have you read this paper?" Which is correct?',
+        options: [
+          'この論文を読みましたか',
+          'この論文をお読みになりましたか',
+          'この論文を拝見しましたか',
+          'この論文を読んだ？'
+        ],
+        correctIndex: 1,
+        explanation: 'お読みになる is the sonkeigo pattern for 読む. 拝見する is kenjougo -- for YOUR OWN reading. You would use 拝見する when saying "I have read your paper."'
+      },
+      {
+        prompt: 'At a restaurant, the waiter brings your food and says: "Please enjoy your meal." Which phrase?',
+        options: [
+          '食べてください',
+          '召し上がってください',
+          'いただいてください',
+          '食べなさい'
+        ],
+        correctIndex: 1,
+        explanation: '召し上がる is sonkeigo -- the waiter elevates the customer\'s eating. いただく is humble and would mean lowering the customer, which is backwards.'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 2: Fill in the Blank -- convert plain to sonkeigo/kenjougo ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-keigo-convert'),
+  {
+    title: 'Convert to Keigo',
+    questions: [
+      {
+        prompt: 'Convert 食べる to its <strong>sonkeigo (尊敬語)</strong> form:',
+        answer: '召し上がる',
+        acceptAlso: ['めしあがる'],
+        explanation: '食べる → 召し上がる (special sonkeigo pair). This is an irregular form you must memorize.',
+        korean: '먹다 → 드시다'
+      },
+      {
+        prompt: 'Convert 言う to its <strong>kenjougo (謙譲語)</strong> form:',
+        answer: '申す',
+        acceptAlso: ['もうす'],
+        explanation: '言う → 申す (humble). Used when YOU are the speaker and you want to lower your own action.',
+        korean: '말하다 → 말씀드리다'
+      },
+      {
+        prompt: 'Convert 見る to its <strong>kenjougo (謙譲語)</strong> form:',
+        answer: '拝見する',
+        acceptAlso: ['はいけんする'],
+        explanation: '見る → 拝見する (humble). "I humbly look/see." Used for your own viewing.',
+        korean: '보다 → 봬다'
+      },
+      {
+        prompt: 'Convert 行く to its <strong>sonkeigo (尊敬語)</strong> form:',
+        answer: 'いらっしゃる',
+        acceptAlso: [],
+        explanation: '行く → いらっしゃる (sonkeigo). Also covers 来る and いる in sonkeigo.',
+        korean: '가다 → 가시다'
+      },
+      {
+        prompt: 'Convert する to its <strong>kenjougo (謙譲語)</strong> form:',
+        answer: 'いたす',
+        acceptAlso: [],
+        explanation: 'する → いたす (humble). 確認する → 確認いたします (I will humbly confirm).',
+        korean: '하다 → 하겠습니다'
+      },
+      {
+        prompt: 'Convert 知る to its <strong>sonkeigo (尊敬語)</strong> form (used as "Do you know?"):',
+        answer: 'ご存じだ',
+        acceptAlso: ['ご存じです', 'ごぞんじだ', 'ごぞんじです', 'ご存知だ', 'ご存知です'],
+        explanation: '知る → ご存じだ (sonkeigo). ご存じですか = "Do you know?" (respectful).',
+        korean: '알다 → 아시다'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 3: Drag Match -- match plain verbs to their keigo pairs ───
+QuizEngine.DragMatch(
+  document.getElementById('quiz-keigo-pairs'),
+  {
+    title: 'Match Plain Verbs to Keigo Forms',
+    instruction: 'Match each plain verb to its correct sonkeigo (尊敬語) form:',
+    pairs: [
+      { left: '食べる / 飲む', right: '召し上がる' },
+      { left: '行く / 来る / いる', right: 'いらっしゃる' },
+      { left: '言う', right: 'おっしゃる' },
+      { left: 'する', right: 'なさる' },
+      { left: '見る', right: 'ご覧になる' },
+      { left: '知る', right: 'ご存じだ' }
+    ]
+  }
+);
+
+// ─── Quiz 4: Sentence Builder -- construct polite sentences for scenarios ───
+QuizEngine.SentenceBuilder(
+  document.getElementById('quiz-keigo-sentences'),
+  {
+    title: 'Build Keigo Sentences',
+    sentences: [
+      {
+        hint: 'Build: "I am called Tanaka." (humble self-introduction) -- <span class="kr">다나카라고 합니다</span>',
+        words: ['田中', 'と', '申します'],
+        correct: '田中と申します'
+      },
+      {
+        hint: 'Build: "Please eat." (respectful to customer/elder) -- <span class="kr">드세요</span>',
+        words: ['どうぞ', '召し上がって', 'ください'],
+        correct: 'どうぞ召し上がってください'
+      },
+      {
+        hint: 'Build: "I humbly received / I gratefully accept." (humble) -- <span class="kr">잘 먹겠습니다</span>',
+        words: ['いただきます'],
+        correct: 'いただきます'
+      },
+      {
+        hint: 'Build: "I will humbly confirm it." (email to client) -- <span class="kr">확인하겠습니다</span>',
+        words: ['確認', 'いたします'],
+        correct: '確認いたします'
+      },
+      {
+        hint: 'Build: "Have you seen this document?" (sonkeigo to boss) -- <span class="kr">이 서류 보셨습니까?</span>',
+        words: ['この', '書類は', 'ご覧に', 'なりましたか'],
+        correct: 'この書類はご覧になりましたか'
+      },
+      {
+        hint: 'Build: "Please wait a moment." (customer service) -- <span class="kr">잠시만 기다려 주십시오</span>',
+        words: ['少々', 'お待ち', 'ください', 'ませ'],
+        correct: '少々お待ちくださいませ'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 5: Recall Check from Ch09-12 (bottom) ───
+QuizEngine.RecallCheck(
+  document.getElementById('quiz-recall-bottom'),
+  {
+    fromChapters: 'Ch09-12',
+    items: [
+      { question: 'Ch09: How do you ask "Where are you from?" politely?', answer: 'お国はどちらですか / どちらからいらっしゃいましたか' },
+      { question: 'Ch10: Build the -たい form of 行く (to go).', answer: '行きたい' },
+      { question: 'Ch10: What are the three giving/receiving verbs?', answer: 'あげる (give away), くれる (give toward speaker), もらう (receive)' },
+      { question: 'Ch11: What is 音読み and 訓読み? Give an example with 山.', answer: '音読み = サン (Sino), 訓読み = やま (native). 山 can be read either way.' },
+      { question: 'Ch12: What is the Japanese word for 経済 (경제)?', answer: '経済 (けいざい) -- economy' },
+      { question: 'Ch12: What is the Japanese word for 約束 (약속)?', answer: '約束 (やくそく) -- promise' },
+      { question: 'Ch13: What is the て-form of 書く?', answer: '書いて (く→いて pattern)' }
+    ]
+  }
+);
+</script>
+<script src="js/spaced-repetition.js"></script>
+<script src="js/memory-palace.js"></script>
+</body>
+</html>

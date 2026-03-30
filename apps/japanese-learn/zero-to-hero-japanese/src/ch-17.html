@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ch17: Listening — Training Your Ear — Zero to Hero 日本語</title>
+<link rel="stylesheet" href="css/design-system.css">
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <span class="logo-badge">Zero to Hero — Memory Architecture Edition</span>
+    <div class="logo-title">日本語 for Korean Speakers</div>
+    <div class="logo-sub">From 한국어 to 日本語 — The Memory Architect's Guide</div>
+  </a>
+  <div class="sidebar-progress">
+    <div class="sidebar-progress-label">Progress</div>
+    <div class="sidebar-progress-bar">
+      <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+    </div>
+    <div class="sidebar-progress-count">0/22 complete</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="ch-00.html" class="toc-link"><span class="toc-num">00</span><span class="toc-check" data-ch="00"></span>Memory Science</a>
+    <a href="ch-01.html" class="toc-link"><span class="toc-num">01</span><span class="toc-check" data-ch="01"></span>Your Korean Advantage</a>
+    <a href="ch-02.html" class="toc-link"><span class="toc-num">02</span><span class="toc-check" data-ch="02"></span>Hiragana</a>
+    <a href="ch-03.html" class="toc-link"><span class="toc-num">03</span><span class="toc-check" data-ch="03"></span>Katakana</a>
+    <a href="ch-04.html" class="toc-link"><span class="toc-num">04</span><span class="toc-check" data-ch="04"></span>Pronunciation</a>
+    <a href="ch-05.html" class="toc-link"><span class="toc-num">05</span><span class="toc-check" data-ch="05"></span>Survival Japanese</a>
+    <a href="ch-06.html" class="toc-link"><span class="toc-num">06</span><span class="toc-check" data-ch="06"></span>Counters</a>
+    <a href="ch-07.html" class="toc-link"><span class="toc-num">07</span><span class="toc-check" data-ch="07"></span>Particles</a>
+    <a href="ch-08.html" class="toc-link"><span class="toc-num">08</span><span class="toc-check" data-ch="08"></span>Verb Conjugation</a>
+    <a href="ch-09.html" class="toc-link"><span class="toc-num">09</span><span class="toc-check" data-ch="09"></span>Daily Conversations</a>
+    <a href="ch-10.html" class="toc-link"><span class="toc-num">10</span><span class="toc-check" data-ch="10"></span>Sentence Patterns</a>
+    <a href="ch-11.html" class="toc-link"><span class="toc-num">11</span><span class="toc-check" data-ch="11"></span>Kanji</a>
+    <a href="ch-12.html" class="toc-link"><span class="toc-num">12</span><span class="toc-check" data-ch="12"></span>Sino-Vocabulary</a>
+    <a href="ch-13.html" class="toc-link"><span class="toc-num">13</span><span class="toc-check" data-ch="13"></span>Native Vocabulary</a>
+    <a href="ch-14.html" class="toc-link"><span class="toc-num">14</span><span class="toc-check" data-ch="14"></span>Honorifics</a>
+    <a href="ch-15.html" class="toc-link"><span class="toc-num">15</span><span class="toc-check" data-ch="15"></span>Reading</a>
+    <a href="ch-16.html" class="toc-link"><span class="toc-num">16</span><span class="toc-check" data-ch="16"></span>Writing</a>
+    <a href="ch-17.html" class="toc-link active"><span class="toc-num">17</span><span class="toc-check" data-ch="17"></span>Listening</a>
+    <a href="ch-18.html" class="toc-link"><span class="toc-num">18</span><span class="toc-check" data-ch="18"></span>Cultural Pragmatics</a>
+    <a href="ch-19.html" class="toc-link"><span class="toc-num">19</span><span class="toc-check" data-ch="19"></span>JLPT and Beyond</a>
+    <a href="ch-20.html" class="toc-link"><span class="toc-num">20</span><span class="toc-check" data-ch="20"></span>Memory Palace</a>
+    <a href="ch-21.html" class="toc-link"><span class="toc-num">21</span><span class="toc-check" data-ch="21"></span>The 90-Day Sprint</a>
+    <a href="appendices.html" class="toc-link" style="margin-top:.5rem;border-top:1px solid var(--border);padding-top:.8rem"><span class="toc-num">+</span>Appendices</a>
+  </nav>
+</aside>
+
+<div class="main">
+<div class="content-wrap">
+
+<section id="ch17" data-ch="17" style="padding-top:3rem">
+<h2><span class="ch-label">Chapter 17</span>Listening &mdash; Training Your Ear</h2>
+
+<div class="callout memory">
+  <div class="callout-title">Memory Technique Spotlight: Perceptual Learning + Shadowing Protocol</div>
+  <p>Listening comprehension requires perceptual training — your brain must learn to segment the Japanese sound stream into words. Shadowing (repeating audio immediately) creates a motor-auditory feedback loop that accelerates this perceptual learning dramatically.</p>
+</div>
+
+<p>In Ch04 you learned how Japanese sounds are produced. In Ch15 you learned to read. Now the hardest skill: understanding real Japanese at real speed. The gap between textbook audio and a native conversation is enormous &mdash; but your Korean grammar intuition is about to become your secret weapon.</p>
+
+<div class="pq">
+  "You can read it. You can write it. But when a native speaker opens their mouth, it sounds like one long, unbroken stream. This chapter teaches you to hear the seams."
+</div>
+
+<!-- ─── RECALL CHECK (top of chapter, from Ch11-14) ─── -->
+<nav class="chapter-toc">
+  <details open>
+    <summary class="chapter-toc-title">In This Chapter</summary>
+  <ol>
+    <li><a href="#recall-check-chapters-10-14">Recall Check — Chapters 10-14</a></li>
+    <li><a href="#section-1-why-listening-is-hard-natural-speed-vs-textbook-sp">Why Listening Is Hard — Natural Speed vs Textbook Speed</a></li>
+    <li><a href="#section-2-your-structural-prediction-advantage">Your Structural Prediction Advantage</a></li>
+    <li><a href="#section-3-the-three-stage-listening-method">The Three-Stage Listening Method</a></li>
+    <li><a href="#section-4-resources-by-level">Resources by Level</a></li>
+    <li><a href="#section-5-contraction-recognition-drills">Contraction Recognition Drills</a></li>
+    <li><a href="#interactive-exercises">Interactive Exercises</a></li>
+    <li><a href="#recall-check-chapters-10-14-review">Recall Check — Chapters 10-14 Review</a></li>
+  </ol>
+  </details>
+</nav>
+
+<h3 id="recall-check-chapters-10-14">Recall Check &mdash; Chapters 10-14</h3>
+<p>Before training your ear, confirm that kanji readings, vocabulary, and grammar patterns from previous chapters are still accessible.</p>
+
+<div id="recall-check-top"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 1: WHY LISTENING IS HARD
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="section-1-why-listening-is-hard-natural-speed-vs-textbook-sp">Why Listening Is Hard &mdash; Natural Speed vs Textbook Speed</h3>
+
+<p>Textbook Japanese is spoken at roughly 60-70% of natural speed, with every particle enunciated and every verb in its full form. Real Japanese is faster, slurred, contracted, and full of dropped particles. Here is the core problem:</p>
+
+<div class="card">
+  <h4>Textbook vs Reality</h4>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+    <div>
+      <h4 style="color:var(--text-muted)">Textbook</h4>
+      <p style="font-size:1.1rem"><span class="jp">何をしているのですか。</span></p>
+      <p style="font-size:.85rem;color:var(--text-muted)">Clear, slow, every syllable distinct</p>
+    </div>
+    <div>
+      <h4 style="color:var(--accent)">Real Speech</h4>
+      <p style="font-size:1.1rem"><span class="jp">何してんの？</span></p>
+      <p style="font-size:.85rem;color:var(--text-muted)">Fast, contracted, particle dropped</p>
+    </div>
+  </div>
+</div>
+
+<div class="callout warn">
+  <div class="callout-title">Elaborative Interrogation</div>
+  <p><strong>WHY do Japanese speakers contract and drop so much?</strong></p>
+  <p>Think about Korean. Do you say <span class="kr">무엇을 하고 있는 것입니까</span> in casual speech? No &mdash; you say <span class="kr">뭐 하고 있어?</span> or even <span class="kr">뭐 해?</span>. Every language contracts at natural speed. The difference is: Korean contractions are ones you already know. Japanese contractions need to be learned.</p>
+</div>
+
+<h4>The Four Major Contractions</h4>
+
+<table>
+  <thead>
+    <tr><th>Full Form</th><th>Contracted</th><th>Example (Full)</th><th>Example (Contracted)</th><th>Korean Parallel</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="jp">ている</td>
+      <td class="jp">てる</td>
+      <td class="jp">食べている</td>
+      <td class="jp">食べてる</td>
+      <td class="kr">먹고 있다 &rarr; 먹고 있어</td>
+    </tr>
+    <tr>
+      <td class="jp">ておく</td>
+      <td class="jp">とく</td>
+      <td class="jp">買っておく</td>
+      <td class="jp">買っとく</td>
+      <td class="kr">사 놓다 &rarr; 사 놔</td>
+    </tr>
+    <tr>
+      <td class="jp">ては</td>
+      <td class="jp">ちゃ</td>
+      <td class="jp">食べてはいけない</td>
+      <td class="jp">食べちゃいけない</td>
+      <td class="kr">먹어서는 안 된다 &rarr; 먹으면 안 돼</td>
+    </tr>
+    <tr>
+      <td class="jp">では</td>
+      <td class="jp">じゃ</td>
+      <td class="jp">飲んではだめ</td>
+      <td class="jp">飲んじゃだめ</td>
+      <td class="kr">마셔서는 안 돼 &rarr; 마시면 안 돼</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4>Additional Common Contractions</h4>
+
+<table>
+  <thead>
+    <tr><th>Full Form</th><th>Contracted</th><th>Example</th><th>Meaning</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="jp">てしまう</td><td class="jp">ちゃう / じゃう</td><td class="jp">忘れちゃった</td><td>Accidentally forgot</td></tr>
+    <tr><td class="jp">ている</td><td class="jp">てん (関西)</td><td class="jp">何してん？</td><td>What are you doing? (Kansai)</td></tr>
+    <tr><td class="jp">なければ</td><td class="jp">なきゃ</td><td class="jp">行かなきゃ</td><td>Gotta go</td></tr>
+    <tr><td class="jp">なくては</td><td class="jp">なくちゃ</td><td class="jp">食べなくちゃ</td><td>Gotta eat</td></tr>
+    <tr><td class="jp">のだ / のです</td><td class="jp">んだ / んです</td><td class="jp">どうしたんですか</td><td>What happened?</td></tr>
+    <tr><td class="jp">ものだ</td><td class="jp">もんだ</td><td class="jp">そんなもんだ</td><td>That's how it is</td></tr>
+  </tbody>
+</table>
+
+<h4>Dropped Particles</h4>
+
+<p>In casual speech, Japanese speakers regularly drop <span class="jp">を</span>, <span class="jp">は</span>, and sometimes <span class="jp">が</span>. This is exactly like Korean dropping <span class="kr">을/를</span> and <span class="kr">은/는</span> in casual speech.</p>
+
+<table>
+  <thead>
+    <tr><th>Full (with particle)</th><th>Casual (particle dropped)</th><th>Korean Parallel</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="jp">水<strong>を</strong>ください</td>
+      <td class="jp">水ください</td>
+      <td class="kr">물<strong>을</strong> 주세요 &rarr; 물 주세요</td>
+    </tr>
+    <tr>
+      <td class="jp">明日<strong>は</strong>いい？</td>
+      <td class="jp">明日いい？</td>
+      <td class="kr">내일<strong>은</strong> 괜찮아? &rarr; 내일 괜찮아?</td>
+    </tr>
+    <tr>
+      <td class="jp">誰<strong>が</strong>来た？</td>
+      <td class="jp">誰来た？</td>
+      <td class="kr">누<strong>가</strong> 왔어? &rarr; 누 왔어?</td>
+    </tr>
+    <tr>
+      <td class="jp">コーヒー<strong>を</strong>飲む？</td>
+      <td class="jp">コーヒー飲む？</td>
+      <td class="kr">커피<strong>를</strong> 마실래? &rarr; 커피 마실래?</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout ok">
+  <div class="callout-title">Your Korean Advantage</div>
+  <p>You already process dropped particles intuitively in Korean. When you hear <span class="jp">コーヒー飲む？</span>, your brain should recognize the same pattern as <span class="kr">커피 마실래?</span> &mdash; the <span class="jp">を</span> is absent but understood, just like <span class="kr">를</span> is absent but understood.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 2: THE KOREAN LISTENER'S STRUCTURAL PREDICTION ADVANTAGE
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="section-2-your-structural-prediction-advantage">Your Structural Prediction Advantage</h3>
+
+<p>English speakers listening to Japanese must wait until the very end of a sentence to get the verb &mdash; the most important information. You don't have this problem. Your brain already expects SOV order.</p>
+
+<!-- ─── Mnemonic SVG: Listening Flow Diagram ─── -->
+<div class="diagram">
+  <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg">
+    <!-- Title -->
+    <text x="360" y="30" text-anchor="middle" font-size="14" font-weight="600" fill="var(--heading)">How You Process a Japanese Sentence</text>
+
+    <!-- English speaker path (top) -->
+    <text x="30" y="70" font-size="11" fill="var(--text-muted)" font-weight="600">English Speaker</text>
+
+    <rect x="30" y="80" width="120" height="35" rx="6" fill="none" stroke="var(--text-muted)" stroke-width="1.5" opacity=".5"/>
+    <text x="90" y="102" text-anchor="middle" font-size="10" fill="var(--text-muted)">Hear Topic</text>
+
+    <line x1="150" y1="97" x2="190" y2="97" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#arrowhead)" opacity=".4"/>
+
+    <rect x="190" y="80" width="120" height="35" rx="6" fill="none" stroke="var(--text-muted)" stroke-width="1.5" opacity=".5"/>
+    <text x="250" y="102" text-anchor="middle" font-size="10" fill="var(--text-muted)">Hear Object</text>
+
+    <line x1="310" y1="97" x2="350" y2="97" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#arrowhead)" opacity=".4"/>
+
+    <rect x="350" y="80" width="120" height="35" rx="6" fill="none" stroke="var(--text-muted)" stroke-width="1.5" opacity=".5"/>
+    <text x="410" y="96" text-anchor="middle" font-size="10" fill="var(--text-muted)">Wait for verb...</text>
+    <text x="410" y="108" text-anchor="middle" font-size="9" fill="var(--text-muted)">(confused)</text>
+
+    <line x1="470" y1="97" x2="510" y2="97" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#arrowhead)" opacity=".4"/>
+
+    <rect x="510" y="80" width="140" height="35" rx="6" fill="none" stroke="var(--quiz-incorrect)" stroke-width="1.5" opacity=".6"/>
+    <text x="580" y="96" text-anchor="middle" font-size="10" fill="var(--quiz-incorrect)">Hear Verb (finally!)</text>
+    <text x="580" y="108" text-anchor="middle" font-size="9" fill="var(--quiz-incorrect)">Must re-parse</text>
+
+    <!-- Korean speaker path (bottom) -->
+    <text x="30" y="175" font-size="11" fill="var(--a3)" font-weight="600">Korean Speaker (You)</text>
+
+    <rect x="30" y="185" width="120" height="35" rx="6" fill="none" stroke="var(--a3)" stroke-width="1.5"/>
+    <text x="90" y="201" text-anchor="middle" font-size="10" fill="var(--a3)">Hear Topic</text>
+    <text x="90" y="213" text-anchor="middle" font-size="9" fill="var(--a3)">= 은/는</text>
+
+    <line x1="150" y1="202" x2="190" y2="202" stroke="var(--a3)" stroke-width="1" marker-end="url(#arrowhead)"/>
+
+    <rect x="190" y="185" width="120" height="35" rx="6" fill="none" stroke="var(--a3)" stroke-width="1.5"/>
+    <text x="250" y="201" text-anchor="middle" font-size="10" fill="var(--a3)">Hear Object</text>
+    <text x="250" y="213" text-anchor="middle" font-size="9" fill="var(--a3)">= 을/를</text>
+
+    <line x1="310" y1="202" x2="350" y2="202" stroke="var(--a3)" stroke-width="1" marker-end="url(#arrowhead)"/>
+
+    <rect x="350" y="185" width="120" height="35" rx="6" fill="none" stroke="var(--a3)" stroke-width="1.5"/>
+    <text x="410" y="201" text-anchor="middle" font-size="10" fill="var(--a3)">Predict verb type</text>
+    <text x="410" y="213" text-anchor="middle" font-size="9" fill="var(--a3)">(already guessing)</text>
+
+    <line x1="470" y1="202" x2="510" y2="202" stroke="var(--a3)" stroke-width="1" marker-end="url(#arrowhead)"/>
+
+    <rect x="510" y="185" width="140" height="35" rx="6" fill="none" stroke="var(--quiz-correct)" stroke-width="1.5"/>
+    <text x="580" y="201" text-anchor="middle" font-size="10" fill="var(--quiz-correct)">Hear Verb (confirm!)</text>
+    <text x="580" y="213" text-anchor="middle" font-size="9" fill="var(--quiz-correct)">Already understood</text>
+
+    <!-- Summary -->
+    <rect x="100" y="255" width="520" height="45" rx="8" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4"/>
+    <text x="360" y="275" text-anchor="middle" font-size="11" fill="var(--heading)" font-weight="500">Your Korean brain processes Japanese in real-time because the structure is identical.</text>
+    <text x="360" y="290" text-anchor="middle" font-size="10" fill="var(--text-muted)">English speakers must buffer the entire sentence, then reparse. You never do.</text>
+  </svg>
+  <div class="diagram-caption">Korean speakers process Japanese input incrementally in real-time. English speakers must wait for the verb and then re-parse the entire sentence retroactively.</div>
+</div>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>You Know the Verb Comes Last</h4>
+    <p>When you hear <span class="jp">田中さんは明日の会議に...</span>, your brain automatically waits for the verb. English speakers panic because "where's the action?!" You know it's coming &mdash; just like <span class="kr">다나카 씨는 내일 회의에...</span></p>
+  </div>
+  <div class="card">
+    <h4>You Can Predict Particles from Context</h4>
+    <p>Even when particles are dropped, your SOV brain fills them in. Hearing <span class="jp">コーヒー飲む？</span>, you mentally insert <span class="jp">を</span> &mdash; just as you would insert <span class="kr">를</span> when hearing <span class="kr">커피 마실래?</span></p>
+  </div>
+  <div class="card">
+    <h4>You Understand Topic/Subject Flow</h4>
+    <p>Japanese conversations frequently omit the subject after it's been established. <span class="jp">昨日どこ行った？映画見た。</span> &mdash; no subject stated, but you know it's "I." This is identical to Korean: <span class="kr">어제 어디 갔어? 영화 봤어.</span></p>
+  </div>
+</div>
+
+<div class="callout info">
+  <div class="callout-title">Pitch Accent &mdash; The One New Variable</div>
+  <p>Unlike Korean, Japanese uses <strong>pitch accent</strong> to distinguish meaning. <span class="jp">箸</span> (はし&#x305; &mdash; chopsticks, pitch: HIGH-low) vs <span class="jp">橋</span> (は&#x305;し &mdash; bridge, pitch: low-HIGH) vs <span class="jp">端</span> (は&#x305;し &mdash; edge, pitch: low-HIGH). Korean has no pitch accent, so this is genuinely new territory. Training your ear to notice pitch patterns requires dedicated practice &mdash; start by noticing rises and falls, not memorizing rules.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 3: METHODOLOGY
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="section-3-the-three-stage-listening-method">The Three-Stage Listening Method</h3>
+
+<p>Listening ability doesn't improve by "just listening more." You need a structured progression through three stages, each building on the last.</p>
+
+<div class="diagram">
+  <svg viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg">
+    <!-- Stage 1 -->
+    <rect x="20" y="40" width="200" height="120" rx="10" fill="none" stroke="var(--a2)" stroke-width="2"/>
+    <text x="120" y="70" text-anchor="middle" font-size="13" font-weight="600" fill="var(--a2)">Stage 1: Extensive</text>
+    <text x="120" y="90" text-anchor="middle" font-size="10" fill="var(--text-muted)">Listen to lots of content</text>
+    <text x="120" y="105" text-anchor="middle" font-size="10" fill="var(--text-muted)">Don't pause, don't look up</text>
+    <text x="120" y="120" text-anchor="middle" font-size="10" fill="var(--text-muted)">Build tolerance for speed</text>
+    <text x="120" y="140" text-anchor="middle" font-size="9" font-weight="500" fill="var(--a2)">Goal: Comfortable with flow</text>
+
+    <!-- Arrow -->
+    <line x1="225" y1="100" x2="255" y2="100" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+    <!-- Stage 2 -->
+    <rect x="260" y="40" width="200" height="120" rx="10" fill="none" stroke="var(--accent)" stroke-width="2"/>
+    <text x="360" y="70" text-anchor="middle" font-size="13" font-weight="600" fill="var(--accent)">Stage 2: Intensive</text>
+    <text x="360" y="90" text-anchor="middle" font-size="10" fill="var(--text-muted)">Short clips (30-60 sec)</text>
+    <text x="360" y="105" text-anchor="middle" font-size="10" fill="var(--text-muted)">Transcribe what you hear</text>
+    <text x="360" y="120" text-anchor="middle" font-size="10" fill="var(--text-muted)">Check against transcript</text>
+    <text x="360" y="140" text-anchor="middle" font-size="9" font-weight="500" fill="var(--accent)">Goal: Identify weak points</text>
+
+    <!-- Arrow -->
+    <line x1="465" y1="100" x2="495" y2="100" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+    <!-- Stage 3 -->
+    <rect x="500" y="40" width="200" height="120" rx="10" fill="none" stroke="var(--a3)" stroke-width="2"/>
+    <text x="600" y="70" text-anchor="middle" font-size="13" font-weight="600" fill="var(--a3)">Stage 3: Shadowing</text>
+    <text x="600" y="90" text-anchor="middle" font-size="10" fill="var(--text-muted)">Repeat immediately after</text>
+    <text x="600" y="105" text-anchor="middle" font-size="10" fill="var(--text-muted)">Match speed and rhythm</text>
+    <text x="600" y="120" text-anchor="middle" font-size="10" fill="var(--text-muted)">Builds muscle memory</text>
+    <text x="600" y="140" text-anchor="middle" font-size="9" font-weight="500" fill="var(--a3)">Goal: Natural production</text>
+  </svg>
+  <div class="diagram-caption">Progress through all three stages for balanced listening development. Most learners get stuck at Stage 1 and never do intensive or shadowing work.</div>
+</div>
+
+<h4>Stage 1: Extensive Listening</h4>
+
+<div class="card">
+  <h4>How to Do It</h4>
+  <ul>
+    <li>Watch content with <strong>Japanese subtitles</strong> (not Korean, not English)</li>
+    <li>Do NOT pause to look up words &mdash; keep the flow going</li>
+    <li>Aim for material where you understand 60-80% already</li>
+    <li>Focus on getting the <em>gist</em>, not every word</li>
+    <li>Minimum 30 minutes daily &mdash; consistency beats intensity</li>
+  </ul>
+  <p style="font-size:.85rem;color:var(--text-muted)">Korean parallel: Think of how you learned to understand fast Korean speech as a child &mdash; massive exposure, not word-by-word analysis.</p>
+</div>
+
+<h4>Stage 2: Intensive Listening</h4>
+
+<div class="card">
+  <h4>The Dictation Method</h4>
+  <ol>
+    <li>Choose a <strong>short clip</strong> (30-60 seconds) of natural Japanese</li>
+    <li>Listen once without writing &mdash; get the overall meaning</li>
+    <li>Listen again, <strong>write down everything you hear</strong> in Japanese</li>
+    <li>Listen a third time, fill in gaps</li>
+    <li>Check against the actual transcript</li>
+    <li>Analyze: What did you miss? Why? Contraction? New word? Speed?</li>
+  </ol>
+  <p style="font-size:.85rem;color:var(--text-muted)">This is the most powerful listening exercise. It forces your brain to move from "I get the gist" to "I hear every sound."</p>
+</div>
+
+<h4>Stage 3: Shadowing</h4>
+
+<div class="card">
+  <h4>How to Shadow</h4>
+  <ol>
+    <li>Play a sentence of natural Japanese speech</li>
+    <li>Immediately repeat it &mdash; not after the sentence ends, but <strong>0.5 seconds behind</strong> the speaker</li>
+    <li>Match their speed, rhythm, intonation, and pitch</li>
+    <li>Don't worry about understanding at first &mdash; focus on <strong>reproducing the sound</strong></li>
+    <li>Gradually add comprehension as the pattern becomes automatic</li>
+  </ol>
+  <p style="font-size:.85rem;color:var(--text-muted)">Shadowing bridges listening and speaking. It trains your mouth to produce natural Japanese rhythm, and your ear to process at native speed.</p>
+</div>
+
+<div class="callout warn">
+  <div class="callout-title">Common Mistake</div>
+  <p>Most learners do only extensive listening and wonder why they plateau. <strong>Extensive builds comfort. Intensive builds accuracy. Shadowing builds fluency.</strong> You need all three.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 4: RESOURCES BY LEVEL
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="section-4-resources-by-level">Resources by Level</h3>
+
+<table>
+  <thead>
+    <tr><th>Level</th><th>Resource</th><th>Type</th><th>Why It Works</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan="3"><strong>Beginner</strong><br><span style="font-size:.8rem;color:var(--text-muted)">N5-N4</span></td>
+      <td>NHK World Easy News</td>
+      <td>News (simplified)</td>
+      <td>Slow, clear, with transcript and furigana</td>
+    </tr>
+    <tr>
+      <td>Nihongo con Teppei (Beginner)</td>
+      <td>Podcast</td>
+      <td>Natural but slow, simple vocabulary, daily topics</td>
+    </tr>
+    <tr>
+      <td>Japanese Pod 101 (Beginner)</td>
+      <td>Podcast</td>
+      <td>Structured lessons with slow/fast versions</td>
+    </tr>
+    <tr>
+      <td rowspan="3"><strong>Intermediate</strong><br><span style="font-size:.8rem;color:var(--text-muted)">N3-N2</span></td>
+      <td>Anime with Japanese subtitles</td>
+      <td>Entertainment</td>
+      <td>Natural contractions, emotional speech, varied registers</td>
+    </tr>
+    <tr>
+      <td>Variety shows (バラエティ)</td>
+      <td>TV</td>
+      <td>Fast, casual, full of contractions and slang</td>
+    </tr>
+    <tr>
+      <td>Nihongo con Teppei (Intermediate)</td>
+      <td>Podcast</td>
+      <td>Natural speed, no English, real topics</td>
+    </tr>
+    <tr>
+      <td rowspan="3"><strong>Advanced</strong><br><span style="font-size:.8rem;color:var(--text-muted)">N2-N1</span></td>
+      <td>NHK News (regular)</td>
+      <td>News</td>
+      <td>Formal Japanese, complex sentence structures, fast</td>
+    </tr>
+    <tr>
+      <td>Podcasts (ゆる言語学ラジオ, etc.)</td>
+      <td>Podcast</td>
+      <td>Intellectual discussion, varied topics</td>
+    </tr>
+    <tr>
+      <td>Radio (radiko)</td>
+      <td>Live radio</td>
+      <td>No visual cues, pure listening &mdash; the ultimate test</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout ok">
+  <div class="callout-title">Korean Speaker Shortcut: Korean-Japanese Content</div>
+  <p>Look for Korean YouTubers who speak Japanese (or vice versa). They often code-switch and explain nuances that textbooks miss. Channels comparing Korean and Japanese are especially useful because they highlight the exact gaps in your listening comprehension.</p>
+</div>
+
+<h4>The Anime Listening Strategy</h4>
+
+<div class="card">
+  <h4>How to Learn from Anime (Not Just Watch)</h4>
+  <ol>
+    <li><strong>First watch:</strong> Japanese audio, Japanese subtitles &mdash; enjoy the story</li>
+    <li><strong>Second watch:</strong> Same episode, pause at contractions &mdash; identify what was shortened</li>
+    <li><strong>Third pass:</strong> Shadow key scenes &mdash; match the character's rhythm</li>
+  </ol>
+  <p style="margin-top:.5rem;font-size:.85rem;color:var(--text-muted)"><strong>Warning:</strong> Anime speech includes exaggerated styles, gendered language, and fantasy vocabulary. It's great for ear training but don't copy character speech in real life. <span class="jp">俺</span> and <span class="jp">だぜ</span> belong to anime, not to your job interview.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 5: PRACTICAL LISTENING DRILLS
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="section-5-contraction-recognition-drills">Contraction Recognition Drills</h3>
+
+<p>The single biggest barrier to listening comprehension is recognizing contracted forms in real-time. Here are the most common ones you will encounter, organized by frequency:</p>
+
+<div class="card">
+  <h4>Tier 1: You Will Hear These Every Day</h4>
+  <table>
+    <thead><tr><th>You Hear</th><th>Full Form</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td class="jp">してる</td><td class="jp">している</td><td>Is doing</td></tr>
+      <tr><td class="jp">行かなきゃ</td><td class="jp">行かなければならない</td><td>Must go</td></tr>
+      <tr><td class="jp">食べちゃった</td><td class="jp">食べてしまった</td><td>Ended up eating</td></tr>
+      <tr><td class="jp">やっとく</td><td class="jp">やっておく</td><td>Will do in advance</td></tr>
+      <tr><td class="jp">なんで？</td><td class="jp">なぜですか</td><td>Why?</td></tr>
+      <tr><td class="jp">わかんない</td><td class="jp">わからない</td><td>Don't understand</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="card">
+  <h4>Tier 2: Very Common Casual Speech</h4>
+  <table>
+    <thead><tr><th>You Hear</th><th>Full Form</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td class="jp">すげー</td><td class="jp">すごい</td><td>Amazing</td></tr>
+      <tr><td class="jp">やべー</td><td class="jp">やばい</td><td>Crazy/bad/good</td></tr>
+      <tr><td class="jp">つまんない</td><td class="jp">つまらない</td><td>Boring</td></tr>
+      <tr><td class="jp">あんまり</td><td class="jp">あまり</td><td>Not very</td></tr>
+      <tr><td class="jp">っていうか</td><td class="jp">というか</td><td>I mean / rather</td></tr>
+      <tr><td class="jp">じゃん</td><td class="jp">ではないか</td><td>Isn't it? (casual)</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     INTERACTIVE EXERCISES
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="interactive-exercises">Interactive Exercises</h3>
+
+<!-- Quiz 1: AudioDiscrimination -- contracted vs full forms -->
+<div id="quiz-contraction-audio"></div>
+
+<!-- Quiz 2: FillBlank -- identify contracted forms -->
+<div id="quiz-contraction-fill"></div>
+
+<!-- Quiz 3: MultipleChoice -- listening strategy questions -->
+<div id="quiz-listening-strategy"></div>
+
+<!-- Quiz 4: DragMatch -- match contracted to full forms -->
+<div id="quiz-contraction-match"></div>
+
+<!-- Quiz 5: Recall Check from Ch11-14 (bottom) -->
+<h3 id="recall-check-chapters-10-14-review">Recall Check &mdash; Chapters 10-14 Review</h3>
+<p>Mixed review of kanji, vocabulary, reading, and writing from previous chapters.</p>
+
+<div id="quiz-recall-bottom"></div>
+
+<!-- Mark as Complete -->
+<button class="chapter-complete" data-ch="17">Mark as Complete &#10003;</button>
+
+<div style="display:flex;justify-content:space-between;margin:2rem 0">
+  <a href="ch-16.html" class="quiz-btn secondary">&larr; Chapter 17: Writing</a>
+  <a href="ch-18.html" class="quiz-btn">Next: Chapter 19 -- Cultural Pragmatics &rarr;</a>
+</div>
+
+</section>
+
+</div>
+
+
+</div>
+
+<footer>
+  <p>Zero to Hero: 日本語 for Korean Speakers &middot; Chapter 17</p>
+</footer>
+
+<script src="js/shared.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/quiz-engine.js"></script>
+<script>
+// ─── Recall Check (top of chapter, from Ch11-14) ───
+QuizEngine.RecallCheck(
+  document.getElementById('recall-check-top'),
+  {
+    fromChapters: 'Ch11-14',
+    items: [
+      { question: 'Ch11: What are the two reading types for kanji? Give an example with 水.', answer: '音読み = スイ (Sino reading), 訓読み = みず (native reading)' },
+      { question: 'Ch12: What is the Japanese Sino-vocabulary word for 注意 (주의)?', answer: '注意 (ちゅうい) -- caution/attention' },
+      { question: 'Ch13: What is the て-form of 飲む?', answer: '飲んで (む→んで pattern)' },
+      { question: 'Ch14: Convert 食べる to its sonkeigo (尊敬語) form.', answer: '召し上がる' },
+      { question: 'Ch15: What reading strategy uses context to guess unknown kanji?', answer: 'Top-down reading / contextual inference' }
+    ]
+  }
+);
+
+// ─── Quiz 1: AudioDiscrimination -- contracted vs full forms ───
+QuizEngine.AudioDiscrimination(
+  document.getElementById('quiz-contraction-audio'),
+  {
+    title: 'Contraction Recognition',
+    pairs: [
+      {
+        a: '食べている',
+        b: '食べてる',
+        question: 'In natural casual speech, which form would you actually hear?',
+        answer: 'b',
+        explanation: 'In casual speech, ている always contracts to てる. 食べてる is what you will hear in real conversation.'
+      },
+      {
+        a: '行かなければならない',
+        b: '行かなきゃ',
+        question: 'A friend says they need to leave. Which form will they use?',
+        answer: 'b',
+        explanation: 'なければならない is textbook-only. In real speech, it contracts to なきゃ. 行かなきゃ = "Gotta go."'
+      },
+      {
+        a: '食べてしまった',
+        b: '食べちゃった',
+        question: 'Someone accidentally ate your cake. Which will they say?',
+        answer: 'b',
+        explanation: 'てしまう contracts to ちゃう (or じゃう after で). 食べちゃった = "I accidentally ate it."'
+      },
+      {
+        a: '買っておく',
+        b: '買っとく',
+        question: 'Someone will buy something in advance. Casual form?',
+        answer: 'b',
+        explanation: 'ておく contracts to とく. 買っとく = "I\'ll buy it (in advance)."'
+      },
+      {
+        a: 'わからない',
+        b: 'わかんない',
+        question: 'A student doesn\'t understand the homework. Which will they say casually?',
+        answer: 'b',
+        explanation: 'らない often contracts to んない in casual speech. わかんない is extremely common.'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 2: FillBlank -- identify contracted forms ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-contraction-fill'),
+  {
+    title: 'Expand Contractions',
+    questions: [
+      {
+        prompt: 'What is the full form of <span class="jp">食べちゃった</span>?',
+        answer: '食べてしまった',
+        acceptAlso: ['たべてしまった'],
+        explanation: 'ちゃう is the contraction of てしまう. It implies the action was accidental or regrettable.',
+        korean: '먹어 버렸다'
+      },
+      {
+        prompt: 'What is the full form of <span class="jp">やっとく</span>?',
+        answer: 'やっておく',
+        acceptAlso: ['やっておく'],
+        explanation: 'とく is the contraction of ておく, meaning "do in advance/for later."',
+        korean: '해 놓다'
+      },
+      {
+        prompt: 'What is the full form of <span class="jp">行かなきゃ</span>?',
+        answer: '行かなければならない',
+        acceptAlso: ['いかなければならない', '行かなければいけない'],
+        explanation: 'なきゃ contracts from なければ (ならない/いけない). It means "must go."',
+        korean: '가야 해'
+      },
+      {
+        prompt: 'What is the full form of <span class="jp">飲んじゃだめ</span>?',
+        answer: '飲んではだめ',
+        acceptAlso: ['のんではだめ', '飲んではだめだ'],
+        explanation: 'じゃ contracts from では. 飲んではだめ = "You must not drink."',
+        korean: '마시면 안 돼'
+      },
+      {
+        prompt: 'What is the full form of <span class="jp">何してんの？</span>?',
+        answer: '何をしているの',
+        acceptAlso: ['何をしているのですか', '何をしているの？', '何をしているのですか？'],
+        explanation: 'してん = している (てる → てん in very casual speech), with を dropped.',
+        korean: '뭐 하고 있어?'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 3: MultipleChoice -- listening strategy questions ───
+QuizEngine.MultipleChoice(
+  document.getElementById('quiz-listening-strategy'),
+  {
+    title: 'Listening Strategy Knowledge',
+    questions: [
+      {
+        prompt: 'What is the correct order of the three-stage listening method?',
+        options: [
+          'Shadowing → Intensive → Extensive',
+          'Extensive → Intensive → Shadowing',
+          'Intensive → Extensive → Shadowing',
+          'Shadowing → Extensive → Intensive'
+        ],
+        correctIndex: 1,
+        explanation: 'Extensive (build comfort with speed) → Intensive (identify weak points through dictation) → Shadowing (build production fluency).'
+      },
+      {
+        prompt: 'When doing extensive listening, what should you NOT do?',
+        options: [
+          'Watch with Japanese subtitles',
+          'Choose content at 60-80% comprehension',
+          'Pause every sentence to look up new words',
+          'Listen for at least 30 minutes daily'
+        ],
+        correctIndex: 2,
+        explanation: 'Extensive listening means maintaining the flow. Pausing to look up words defeats the purpose -- it builds tolerance for natural speed, not vocabulary.'
+      },
+      {
+        prompt: 'Why do Korean speakers have an advantage in Japanese listening?',
+        options: [
+          'Japanese and Korean share the same vowel sounds',
+          'Korean speakers predict SOV structure and fill in dropped particles automatically',
+          'Japanese contractions are identical to Korean contractions',
+          'Korean and Japanese have the same pitch accent system'
+        ],
+        correctIndex: 1,
+        explanation: 'Your SOV-trained brain processes Japanese incrementally: you predict the verb position, infer dropped particles from context, and follow topic/subject flow -- all skills transferred from Korean.'
+      },
+      {
+        prompt: 'What does shadowing involve?',
+        options: [
+          'Reading a transcript while listening',
+          'Translating what you hear into Korean',
+          'Repeating 0.5 seconds behind the speaker, matching their speed and rhythm',
+          'Listening to the same clip 10 times without speaking'
+        ],
+        correctIndex: 2,
+        explanation: 'Shadowing means speaking simultaneously with (just slightly behind) the audio, matching speed, rhythm, and intonation. It bridges listening and speaking.'
+      },
+      {
+        prompt: 'Which contraction converts てしまう into a casual form?',
+        options: [
+          'とく',
+          'てる',
+          'ちゃう',
+          'なきゃ'
+        ],
+        correctIndex: 2,
+        explanation: 'てしまう → ちゃう (after て), でしまう → じゃう (after で). 食べてしまった → 食べちゃった.'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 4: DragMatch -- match contracted to full forms ───
+QuizEngine.DragMatch(
+  document.getElementById('quiz-contraction-match'),
+  {
+    title: 'Match Contractions to Full Forms',
+    instruction: 'Match each contracted form to its original full form:',
+    pairs: [
+      { left: 'してる', right: 'している' },
+      { left: '食べちゃった', right: '食べてしまった' },
+      { left: '買っとく', right: '買っておく' },
+      { left: '行かなきゃ', right: '行かなければならない' },
+      { left: '飲んじゃだめ', right: '飲んではだめ' },
+      { left: 'わかんない', right: 'わからない' }
+    ]
+  }
+);
+
+// ─── Quiz 5: Recall Check from Ch11-14 (bottom) ───
+QuizEngine.RecallCheck(
+  document.getElementById('quiz-recall-bottom'),
+  {
+    fromChapters: 'Ch11-14',
+    items: [
+      { question: 'Ch11: How do you read 人 in 日本人 vs 一人?', answer: '日本人 = にほんじん (音読み), 一人 = ひとり (訓読み)' },
+      { question: 'Ch12: Korean 約束 (약속) corresponds to what Japanese word?', answer: '約束 (やくそく) -- promise/appointment' },
+      { question: 'Ch13: Give three body-part words in Japanese.', answer: 'Examples: 頭 (あたま/head), 手 (て/hand), 目 (め/eye), 口 (くち/mouth), 足 (あし/foot)' },
+      { question: 'Ch14: What is kenjougo (謙譲語)? Give an example.', answer: 'Humble language -- lower your own actions. Example: 言う → 申す, する → いたす' },
+      { question: 'Ch15: What is the difference between 音読み and 訓読み in compound words?', answer: '漢語 compounds usually use 音読み (e.g., 学生 = がくせい). Single kanji with okurigana use 訓読み (e.g., 食べる = たべる).' }
+    ]
+  }
+);
+</script>
+<script src="js/spaced-repetition.js"></script>
+<script src="js/memory-palace.js"></script>
+</body>
+</html>

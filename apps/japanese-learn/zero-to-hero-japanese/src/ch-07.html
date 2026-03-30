@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ch07: Particles — The 1:1 Map — Zero to Hero 日本語</title>
+<link rel="stylesheet" href="css/design-system.css">
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <span class="logo-badge">Zero to Hero — Memory Architecture Edition</span>
+    <div class="logo-title">日本語 for Korean Speakers</div>
+    <div class="logo-sub">From 한국어 to 日本語 — The Memory Architect's Guide</div>
+  </a>
+  <div class="sidebar-progress">
+    <div class="sidebar-progress-label">Progress</div>
+    <div class="sidebar-progress-bar">
+      <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+    </div>
+    <div class="sidebar-progress-count">0/22 complete</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="ch-00.html" class="toc-link"><span class="toc-num">00</span><span class="toc-check" data-ch="00"></span>Memory Science</a>
+    <a href="ch-01.html" class="toc-link"><span class="toc-num">01</span><span class="toc-check" data-ch="01"></span>Your Korean Advantage</a>
+    <a href="ch-02.html" class="toc-link"><span class="toc-num">02</span><span class="toc-check" data-ch="02"></span>Hiragana</a>
+    <a href="ch-03.html" class="toc-link"><span class="toc-num">03</span><span class="toc-check" data-ch="03"></span>Katakana</a>
+    <a href="ch-04.html" class="toc-link"><span class="toc-num">04</span><span class="toc-check" data-ch="04"></span>Pronunciation</a>
+    <a href="ch-05.html" class="toc-link"><span class="toc-num">05</span><span class="toc-check" data-ch="05"></span>Survival Japanese</a>
+    <a href="ch-06.html" class="toc-link"><span class="toc-num">06</span><span class="toc-check" data-ch="06"></span>Counters</a>
+    <a href="ch-07.html" class="toc-link active"><span class="toc-num">07</span><span class="toc-check" data-ch="07"></span>Particles</a>
+    <a href="ch-08.html" class="toc-link"><span class="toc-num">08</span><span class="toc-check" data-ch="08"></span>Verb Conjugation</a>
+    <a href="ch-09.html" class="toc-link"><span class="toc-num">09</span><span class="toc-check" data-ch="09"></span>Daily Conversations</a>
+    <a href="ch-10.html" class="toc-link"><span class="toc-num">10</span><span class="toc-check" data-ch="10"></span>Sentence Patterns</a>
+    <a href="ch-11.html" class="toc-link"><span class="toc-num">11</span><span class="toc-check" data-ch="11"></span>Kanji</a>
+    <a href="ch-12.html" class="toc-link"><span class="toc-num">12</span><span class="toc-check" data-ch="12"></span>Sino-Vocabulary</a>
+    <a href="ch-13.html" class="toc-link"><span class="toc-num">13</span><span class="toc-check" data-ch="13"></span>Native Vocabulary</a>
+    <a href="ch-14.html" class="toc-link"><span class="toc-num">14</span><span class="toc-check" data-ch="14"></span>Honorifics</a>
+    <a href="ch-15.html" class="toc-link"><span class="toc-num">15</span><span class="toc-check" data-ch="15"></span>Reading</a>
+    <a href="ch-16.html" class="toc-link"><span class="toc-num">16</span><span class="toc-check" data-ch="16"></span>Writing</a>
+    <a href="ch-17.html" class="toc-link"><span class="toc-num">17</span><span class="toc-check" data-ch="17"></span>Listening</a>
+    <a href="ch-18.html" class="toc-link"><span class="toc-num">18</span><span class="toc-check" data-ch="18"></span>Cultural Pragmatics</a>
+    <a href="ch-19.html" class="toc-link"><span class="toc-num">19</span><span class="toc-check" data-ch="19"></span>JLPT and Beyond</a>
+    <a href="ch-20.html" class="toc-link"><span class="toc-num">20</span><span class="toc-check" data-ch="20"></span>Memory Palace</a>
+    <a href="ch-21.html" class="toc-link"><span class="toc-num">21</span><span class="toc-check" data-ch="21"></span>The 90-Day Sprint</a>
+    <a href="appendices.html" class="toc-link" style="margin-top:.5rem;border-top:1px solid var(--border);padding-top:.8rem"><span class="toc-num">+</span>Appendices</a>
+  </nav>
+</aside>
+
+<div class="main">
+<div class="content-wrap">
+
+<section id="ch07" data-ch="07" style="padding-top:3rem">
+<h2><span class="ch-label">Chapter 07</span>Particles -- The 1:1 Map</h2>
+
+<div class="callout memory">
+  <div class="callout-title">Memory Technique Spotlight: Analogical Transfer + Elaborative Interrogation</div>
+  <p>Particles transfer almost directly from Korean (은/는→は, 이/가→が, 을/를→を). By asking "WHY does this particle work the same way?" for each mapping, you create deep elaborative connections that make forgetting structurally difficult.</p>
+</div>
+<div class="callout info">
+  <div class="callout-title">Palace Assignment: The Bathroom (화장실)</div>
+  <p>11 particles, 11 bathroom fixtures. は on the mirror (you look at yourself — YOU are the topic), が on the towel hook (it GRABS), を on the toilet paper (WRAPPED around), に on the tile grout (NEEDLE-thin), で at the shower (where you DO things), へ at the door (going TOWARD), の at the drain (spiral connecting), から at the faucet (comes FROM), まで at the bathtub (fill UNTIL the line), も at the toothbrush holder (MOre!), と at the double sink (TIED together).</p>
+</div>
+
+<p>In Chapter 05, you said <span class="jp">これをお願いします</span> -- "this-<strong>を</strong>, please." You said <span class="jp">駅はどこですか</span> -- "station-<strong>は</strong>, where?" You were already using particles. Now let's understand what they are and how perfectly they map to Korean.</p>
+
+<div class="pq">
+  "Korean speakers don't need to learn what particles ARE -- you already use them every sentence. You just need to learn the Japanese equivalents. And the mapping is almost 1:1."
+</div>
+
+<!-- ─── RECALL CHECK ─── -->
+<div id="recall-check-top"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     THE CORE PARTICLE MAP
+     ═══════════════════════════════════════════════════════════════ -->
+<nav class="chapter-toc">
+  <details open>
+    <summary class="chapter-toc-title">In This Chapter</summary>
+  <ol>
+    <li><a href="#the-core-particle-map">The Core Particle Map</a></li>
+    <li><a href="#particles-in-action----with-korean-parallels">Particles in Action -- With Korean Parallels</a></li>
+    <li><a href="#retroactive-understanding----go-back-to-ch05">Retroactive Understanding -- Go Back to Ch05</a></li>
+    <li><a href="#confusion-zones----where-korean-and-japanese-diverge">Confusion Zones -- Where Korean and Japanese Diverge</a></li>
+    <li><a href="#the-は-vs-が-distinction----your-korean-advantage">The は vs が Distinction -- Your Korean Advantage</a></li>
+    <li><a href="#compound-particles----stacking-for-precision">Compound Particles -- Stacking for Precision</a></li>
+    <li><a href="#interactive-exercises">Interactive Exercises</a></li>
+  </ol>
+  </details>
+</nav>
+
+<h3 id="the-core-particle-map">The Core Particle Map</h3>
+<p>Here is the complete Korean-to-Japanese particle map. Every Korean particle you know has a Japanese counterpart. The mnemonic column gives you a memory hook for each one.</p>
+
+<table>
+  <thead>
+    <tr><th>Function</th><th>Korean</th><th>Japanese</th><th>Mnemonic</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Topic</td>
+      <td class="kr">은/는</td>
+      <td class="jp">は (wa)</td>
+      <td><strong>"HA!" -- THIS is the topic!</strong></td>
+    </tr>
+    <tr>
+      <td>Subject</td>
+      <td class="kr">이/가</td>
+      <td class="jp">が (ga)</td>
+      <td><strong>が GRABS the subject</strong></td>
+    </tr>
+    <tr>
+      <td>Object</td>
+      <td class="kr">을/를</td>
+      <td class="jp">を (wo)</td>
+      <td><strong>を WRAPS the object</strong></td>
+    </tr>
+    <tr>
+      <td>Location (exist)</td>
+      <td class="kr">에</td>
+      <td class="jp">に (ni)</td>
+      <td><strong>に NEEDLES into a point</strong></td>
+    </tr>
+    <tr>
+      <td>Location (action)</td>
+      <td class="kr">에서</td>
+      <td class="jp">で (de)</td>
+      <td><strong>で = DOING particle</strong></td>
+    </tr>
+    <tr>
+      <td>Direction</td>
+      <td class="kr">으로/로</td>
+      <td class="jp">へ (e)</td>
+      <td><strong>へ = hill going toward</strong></td>
+    </tr>
+    <tr>
+      <td>Possessive</td>
+      <td class="kr">의</td>
+      <td class="jp">の (no)</td>
+      <td><strong>の spirals connecting</strong></td>
+    </tr>
+    <tr>
+      <td>From</td>
+      <td class="kr">에서</td>
+      <td class="jp">から (kara)</td>
+      <td><strong>から CUTS away</strong></td>
+    </tr>
+    <tr>
+      <td>Until</td>
+      <td class="kr">까지</td>
+      <td class="jp">まで (made)</td>
+      <td><strong>MAkes the DEadline</strong></td>
+    </tr>
+    <tr>
+      <td>Also</td>
+      <td class="kr">도</td>
+      <td class="jp">も (mo)</td>
+      <td><strong>MOre -- me too!</strong></td>
+    </tr>
+    <tr>
+      <td>And (nouns)</td>
+      <td class="kr">와/과</td>
+      <td class="jp">と (to)</td>
+      <td><strong>と TIES together</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ─── MNEMONIC SVG ─── -->
+<div class="diagram">
+  <svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg">
+    <!-- Title -->
+    <text x="350" y="30" text-anchor="middle" font-size="16" font-weight="700" fill="var(--heading)">Particle Map: Korean to Japanese</text>
+    <text x="350" y="50" text-anchor="middle" font-size="11" fill="var(--text-muted)">Lines connect equivalent particles. Green = direct 1:1 match.</text>
+
+    <!-- Korean column (left) -->
+    <text x="120" y="80" text-anchor="middle" font-size="13" font-weight="600" fill="var(--a2)">Korean</text>
+
+    <rect x="50" y="95" width="140" height="28" rx="6" fill="none" stroke="var(--a2)" stroke-width="1.5"/>
+    <text x="120" y="114" text-anchor="middle" font-size="12" fill="var(--a2)">은/는 (topic)</text>
+
+    <rect x="50" y="130" width="140" height="28" rx="6" fill="none" stroke="var(--a2)" stroke-width="1.5"/>
+    <text x="120" y="149" text-anchor="middle" font-size="12" fill="var(--a2)">이/가 (subject)</text>
+
+    <rect x="50" y="165" width="140" height="28" rx="6" fill="none" stroke="var(--a2)" stroke-width="1.5"/>
+    <text x="120" y="184" text-anchor="middle" font-size="12" fill="var(--a2)">을/를 (object)</text>
+
+    <rect x="50" y="200" width="140" height="28" rx="6" fill="none" stroke="var(--a2)" stroke-width="1.5"/>
+    <text x="120" y="219" text-anchor="middle" font-size="12" fill="var(--a2)">에 (location)</text>
+
+    <rect x="50" y="235" width="140" height="28" rx="6" fill="none" stroke="var(--a2)" stroke-width="1.5"/>
+    <text x="120" y="254" text-anchor="middle" font-size="12" fill="var(--a2)">에서 (action loc.)</text>
+
+    <rect x="50" y="270" width="140" height="28" rx="6" fill="none" stroke="var(--a2)" stroke-width="1.5"/>
+    <text x="120" y="289" text-anchor="middle" font-size="12" fill="var(--a2)">의 (possessive)</text>
+
+    <rect x="50" y="305" width="140" height="28" rx="6" fill="none" stroke="var(--a2)" stroke-width="1.5"/>
+    <text x="120" y="324" text-anchor="middle" font-size="12" fill="var(--a2)">까지 (until)</text>
+
+    <rect x="50" y="340" width="140" height="28" rx="6" fill="none" stroke="var(--a2)" stroke-width="1.5"/>
+    <text x="120" y="359" text-anchor="middle" font-size="12" fill="var(--a2)">도 (also)</text>
+
+    <rect x="50" y="375" width="140" height="28" rx="6" fill="none" stroke="var(--a2)" stroke-width="1.5"/>
+    <text x="120" y="394" text-anchor="middle" font-size="12" fill="var(--a2)">와/과 (and)</text>
+
+    <!-- Japanese column (right) -->
+    <text x="580" y="80" text-anchor="middle" font-size="13" font-weight="600" fill="var(--accent)">Japanese</text>
+
+    <rect x="510" y="95" width="140" height="28" rx="6" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+    <text x="580" y="114" text-anchor="middle" font-size="12" fill="var(--accent)">は wa (topic)</text>
+
+    <rect x="510" y="130" width="140" height="28" rx="6" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+    <text x="580" y="149" text-anchor="middle" font-size="12" fill="var(--accent)">が ga (subject)</text>
+
+    <rect x="510" y="165" width="140" height="28" rx="6" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+    <text x="580" y="184" text-anchor="middle" font-size="12" fill="var(--accent)">を wo (object)</text>
+
+    <rect x="510" y="200" width="140" height="28" rx="6" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+    <text x="580" y="219" text-anchor="middle" font-size="12" fill="var(--accent)">に ni (point)</text>
+
+    <rect x="510" y="235" width="140" height="28" rx="6" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+    <text x="580" y="254" text-anchor="middle" font-size="12" fill="var(--accent)">で de (doing)</text>
+
+    <rect x="510" y="270" width="140" height="28" rx="6" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+    <text x="580" y="289" text-anchor="middle" font-size="12" fill="var(--accent)">の no (possessive)</text>
+
+    <rect x="510" y="305" width="140" height="28" rx="6" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+    <text x="580" y="324" text-anchor="middle" font-size="12" fill="var(--accent)">まで made (until)</text>
+
+    <rect x="510" y="340" width="140" height="28" rx="6" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+    <text x="580" y="359" text-anchor="middle" font-size="12" fill="var(--accent)">も mo (also)</text>
+
+    <rect x="510" y="375" width="140" height="28" rx="6" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+    <text x="580" y="394" text-anchor="middle" font-size="12" fill="var(--accent)">と to (and)</text>
+
+    <!-- Connecting lines -->
+    <line x1="190" y1="109" x2="510" y2="109" stroke="var(--a3)" stroke-width="1.5" stroke-dasharray="4,3" opacity=".7"/>
+    <line x1="190" y1="144" x2="510" y2="144" stroke="var(--a3)" stroke-width="1.5" stroke-dasharray="4,3" opacity=".7"/>
+    <line x1="190" y1="179" x2="510" y2="179" stroke="var(--a3)" stroke-width="1.5" stroke-dasharray="4,3" opacity=".7"/>
+    <line x1="190" y1="214" x2="510" y2="214" stroke="var(--a3)" stroke-width="1.5" stroke-dasharray="4,3" opacity=".7"/>
+    <line x1="190" y1="249" x2="510" y2="249" stroke="var(--a3)" stroke-width="1.5" stroke-dasharray="4,3" opacity=".7"/>
+    <line x1="190" y1="284" x2="510" y2="284" stroke="var(--a3)" stroke-width="1.5" stroke-dasharray="4,3" opacity=".7"/>
+    <line x1="190" y1="319" x2="510" y2="319" stroke="var(--a3)" stroke-width="1.5" stroke-dasharray="4,3" opacity=".7"/>
+    <line x1="190" y1="354" x2="510" y2="354" stroke="var(--a3)" stroke-width="1.5" stroke-dasharray="4,3" opacity=".7"/>
+    <line x1="190" y1="389" x2="510" y2="389" stroke="var(--a3)" stroke-width="1.5" stroke-dasharray="4,3" opacity=".7"/>
+  </svg>
+  <div class="diagram-caption">Korean and Japanese particles map nearly 1:1. Each line connects equivalent functions. Where you know one, you already know the other.</div>
+</div>
+
+<!-- ─── ELABORATIVE INTERROGATION ─── -->
+<div class="callout warn">
+  <div class="callout-title">Elaborative Interrogation</div>
+  <p><strong>WHY do Korean and Japanese share an almost identical particle system when their core vocabularies are so different?</strong></p>
+  <p>Think about this before reading on. Particles mark <em>grammatical relationships</em> -- topic, subject, object, location, direction. Both languages evolved as SOV (Subject-Object-Verb) agglutinative languages, likely through centuries of structural convergence in the same geographic sphere. The particle system is the <em>grammatical skeleton</em>, and both languages built the same skeleton independently (or through deep contact). Vocabulary is the "flesh" on that skeleton -- and each language grew its own flesh from different roots. This is why your grammar intuition transfers perfectly even when you need entirely new words.</p>
+</div>
+
+<!-- ─── EACH PARTICLE WITH EXAMPLES ─── -->
+<h3 id="particles-in-action----with-korean-parallels">Particles in Action -- With Korean Parallels</h3>
+<p>Let's see each particle at work. For every example, notice how the particle occupies the <strong>exact same structural position</strong> in both languages.</p>
+
+<h4>は (wa) -- Topic Marker = 은/는</h4>
+<div class="card">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+    <div>
+      <h4 style="color:var(--a2)">Korean</h4>
+      <p style="font-size:1.2rem"><span class="kr">나<strong>는</strong> 학생이다</span></p>
+      <p style="font-size:.82rem;color:var(--text-muted)">na-<strong>neun</strong> haksaeng-ida</p>
+    </div>
+    <div>
+      <h4 style="color:var(--accent)">Japanese</h4>
+      <p style="font-size:1.2rem"><span class="jp">私<strong>は</strong>学生だ</span></p>
+      <p style="font-size:.82rem;color:var(--text-muted)">watashi <strong>wa</strong> gakusei da</p>
+    </div>
+  </div>
+  <p style="margin-top:.8rem;font-size:.88rem;color:var(--a3)"><strong>Function:</strong> Marks what we're talking ABOUT. "As for me... (I'm a student)." Identical logic in both languages.</p>
+</div>
+
+<h4>が (ga) -- Subject Marker = 이/가</h4>
+<div class="card">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+    <div>
+      <h4 style="color:var(--a2)">Korean</h4>
+      <p style="font-size:1.2rem"><span class="kr">비<strong>가</strong> 온다</span></p>
+      <p style="font-size:.82rem;color:var(--text-muted)">bi-<strong>ga</strong> onda</p>
+    </div>
+    <div>
+      <h4 style="color:var(--accent)">Japanese</h4>
+      <p style="font-size:1.2rem"><span class="jp">雨<strong>が</strong>降る</span></p>
+      <p style="font-size:.82rem;color:var(--text-muted)">ame <strong>ga</strong> furu</p>
+    </div>
+  </div>
+  <p style="margin-top:.8rem;font-size:.88rem;color:var(--a3)"><strong>Function:</strong> Identifies the doer/subject. "Rain (subject) falls." Both languages even use the same particle sound: 가/が!</p>
+</div>
+
+<h4>を (wo) -- Object Marker = 을/를</h4>
+<div class="card">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+    <div>
+      <h4 style="color:var(--a2)">Korean</h4>
+      <p style="font-size:1.2rem"><span class="kr">커피<strong>를</strong> 마신다</span></p>
+      <p style="font-size:.82rem;color:var(--text-muted)">keopi-<strong>reul</strong> masinda</p>
+    </div>
+    <div>
+      <h4 style="color:var(--accent)">Japanese</h4>
+      <p style="font-size:1.2rem"><span class="jp">コーヒー<strong>を</strong>飲む</span></p>
+      <p style="font-size:.82rem;color:var(--text-muted)">koohii <strong>wo</strong> nomu</p>
+    </div>
+  </div>
+  <p style="margin-top:.8rem;font-size:.88rem;color:var(--a3)"><strong>Function:</strong> Marks the object receiving the action. "Coffee (object) drink." Same slot, same purpose.</p>
+</div>
+
+<h4>に (ni) -- Location/Target = 에</h4>
+<div class="card">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+    <div>
+      <h4 style="color:var(--a2)">Korean</h4>
+      <p style="font-size:1.2rem"><span class="kr">학교<strong>에</strong> 간다</span></p>
+      <p style="font-size:.82rem;color:var(--text-muted)">hakgyo-<strong>e</strong> ganda</p>
+    </div>
+    <div>
+      <h4 style="color:var(--accent)">Japanese</h4>
+      <p style="font-size:1.2rem"><span class="jp">学校<strong>に</strong>行く</span></p>
+      <p style="font-size:.82rem;color:var(--text-muted)">gakkou <strong>ni</strong> iku</p>
+    </div>
+  </div>
+  <p style="margin-top:.8rem;font-size:.88rem;color:var(--a3)"><strong>Function:</strong> Points to a destination or location where something exists. "School (to/at) go."</p>
+</div>
+
+<h4>で (de) -- Action Location = 에서</h4>
+<div class="card">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+    <div>
+      <h4 style="color:var(--a2)">Korean</h4>
+      <p style="font-size:1.2rem"><span class="kr">도서관<strong>에서</strong> 공부한다</span></p>
+      <p style="font-size:.82rem;color:var(--text-muted)">doseogwan-<strong>eseo</strong> gongbuhanda</p>
+    </div>
+    <div>
+      <h4 style="color:var(--accent)">Japanese</h4>
+      <p style="font-size:1.2rem"><span class="jp">図書館<strong>で</strong>勉強する</span></p>
+      <p style="font-size:.82rem;color:var(--text-muted)">toshokan <strong>de</strong> benkyou suru</p>
+    </div>
+  </div>
+  <p style="margin-top:.8rem;font-size:.88rem;color:var(--a3)"><strong>Function:</strong> Marks where an action HAPPENS. "Library (at) study." Remember: で = DOING things there.</p>
+</div>
+
+<h4>の (no) -- Possessive = 의</h4>
+<div class="card">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+    <div>
+      <h4 style="color:var(--a2)">Korean</h4>
+      <p style="font-size:1.2rem"><span class="kr">나<strong>의</strong> 책</span></p>
+      <p style="font-size:.82rem;color:var(--text-muted)">na-<strong>ui</strong> chaek</p>
+    </div>
+    <div>
+      <h4 style="color:var(--accent)">Japanese</h4>
+      <p style="font-size:1.2rem"><span class="jp">私<strong>の</strong>本</span></p>
+      <p style="font-size:.82rem;color:var(--text-muted)">watashi <strong>no</strong> hon</p>
+    </div>
+  </div>
+  <p style="margin-top:.8rem;font-size:.88rem;color:var(--a3)"><strong>Function:</strong> Connects possessor to possessed. "My book." Think of の as a spiral that ties two things together.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     RETROACTIVE UNDERSTANDING EXERCISE
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="retroactive-understanding----go-back-to-ch05">Retroactive Understanding -- Go Back to Ch05</h3>
+<p>Now that you understand particles, go back to the phrases you learned in Chapter 05 and <strong>identify every particle</strong>. You were using them all along without even realizing it.</p>
+
+<div class="card">
+  <h4>Ch05 Phrase Breakdown</h4>
+  <table>
+    <thead>
+      <tr><th>Ch05 Phrase</th><th>Particles Used</th><th>Korean Parallel</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="jp">これ<strong>を</strong>お願いします</td>
+        <td><strong>を</strong> (object) -- "this" is the object of the request</td>
+        <td class="kr">이거<strong>를</strong> 주세요</td>
+      </tr>
+      <tr>
+        <td class="jp">駅<strong>は</strong>どこですか</td>
+        <td><strong>は</strong> (topic) -- "the station" is the topic</td>
+        <td class="kr">역<strong>은</strong> 어디예요?</td>
+      </tr>
+      <tr>
+        <td class="jp">カード<strong>で</strong>払えますか</td>
+        <td><strong>で</strong> (means/tool) -- "by card" (method of payment)</td>
+        <td class="kr">카드<strong>로</strong> 계산돼요?</td>
+      </tr>
+      <tr>
+        <td class="jp">学校<strong>に</strong>行きたいです</td>
+        <td><strong>に</strong> (direction/destination) -- "to school"</td>
+        <td class="kr">학교<strong>에</strong> 가고 싶어요</td>
+      </tr>
+      <tr>
+        <td class="jp">おすすめ<strong>は</strong>何ですか</td>
+        <td><strong>は</strong> (topic) -- "recommendation" is the topic</td>
+        <td class="kr">추천 메뉴<strong>가</strong> 뭐예요?</td>
+      </tr>
+      <tr>
+        <td class="jp">右<strong>に</strong>曲がってください</td>
+        <td><strong>に</strong> (direction) -- "to the right"</td>
+        <td class="kr">오른쪽<strong>으로</strong> 가세요</td>
+      </tr>
+    </tbody>
+  </table>
+  <p style="font-size:.88rem;color:var(--text-muted);margin-top:.8rem">Every phrase you memorized in Ch05 already contained particles. You were building correct Japanese sentences from day one -- now you understand <em>why</em> they work.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CONFUSION ZONES
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="confusion-zones----where-korean-and-japanese-diverge">Confusion Zones -- Where Korean and Japanese Diverge</h3>
+<p>The particle map is almost 1:1 -- but not quite. Here are the three areas where one Japanese particle covers <strong>multiple Korean particles</strong>, and vice versa. These are your real danger zones.</p>
+
+<div class="callout warn">
+  <div class="callout-title">Confusion Zone 1: に covers 에 + 에게 + 한테</div>
+  <p>In Korean, you use different particles for location (<span class="kr">에</span>), giving to a person (<span class="kr">에게</span>), and informal "to someone" (<span class="kr">한테</span>). In Japanese, <strong>に does all three</strong>.</p>
+</div>
+
+<table>
+  <thead><tr><th>Korean</th><th>Japanese</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr>
+      <td class="kr">학교<strong>에</strong> 간다</td>
+      <td class="jp">学校<strong>に</strong>行く</td>
+      <td>Go to school (location)</td>
+    </tr>
+    <tr>
+      <td class="kr">친구<strong>에게</strong> 준다</td>
+      <td class="jp">友達<strong>に</strong>あげる</td>
+      <td>Give to a friend (recipient)</td>
+    </tr>
+    <tr>
+      <td class="kr">선생님<strong>한테</strong> 말한다</td>
+      <td class="jp">先生<strong>に</strong>話す</td>
+      <td>Talk to the teacher (target person)</td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-size:.88rem;color:var(--a3);margin-top:.5rem"><strong>Rule:</strong> When pointing at a location, a time, a recipient, or a target -- use に. It's simpler than Korean here.</p>
+
+<div class="callout warn">
+  <div class="callout-title">Confusion Zone 2: で covers 에서 + (으)로</div>
+  <p>Japanese で handles both the "place where action happens" (<span class="kr">에서</span>) AND "by means of" (<span class="kr">(으)로</span>). Two Korean particles, one Japanese particle.</p>
+</div>
+
+<table>
+  <thead><tr><th>Korean</th><th>Japanese</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr>
+      <td class="kr">도서관<strong>에서</strong> 공부한다</td>
+      <td class="jp">図書館<strong>で</strong>勉強する</td>
+      <td>Study at the library (action location)</td>
+    </tr>
+    <tr>
+      <td class="kr">버스<strong>로</strong> 간다</td>
+      <td class="jp">バス<strong>で</strong>行く</td>
+      <td>Go by bus (means/tool)</td>
+    </tr>
+    <tr>
+      <td class="kr">일본어<strong>로</strong> 말한다</td>
+      <td class="jp">日本語<strong>で</strong>話す</td>
+      <td>Speak in Japanese (medium)</td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-size:.88rem;color:var(--a3);margin-top:.5rem"><strong>Rule:</strong> で = "DOING" particle. Where you're DOING something, or the tool you're DOING it with. Both concepts involve action.</p>
+
+<div class="callout warn">
+  <div class="callout-title">Confusion Zone 3: から covers 에서 + 부터</div>
+  <p>Korean distinguishes between "from a place" (<span class="kr">에서</span>) and "from a time/starting point" (<span class="kr">부터</span>). Japanese uses <strong>から for both</strong>.</p>
+</div>
+
+<table>
+  <thead><tr><th>Korean</th><th>Japanese</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr>
+      <td class="kr">서울<strong>에서</strong> 왔다</td>
+      <td class="jp">ソウル<strong>から</strong>来た</td>
+      <td>Came from Seoul (place origin)</td>
+    </tr>
+    <tr>
+      <td class="kr">3시<strong>부터</strong> 시작</td>
+      <td class="jp">3時<strong>から</strong>始まる</td>
+      <td>Starts from 3 o'clock (time origin)</td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-size:.88rem;color:var(--a3);margin-top:.5rem"><strong>Rule:</strong> から = "CUTS away from the starting point." Whether that starting point is a place or a time, it's always から.</p>
+
+<div class="callout info">
+  <div class="callout-title">Summary of Confusion Zones</div>
+  <p>Japanese is actually <strong>simpler</strong> than Korean here. Where Korean has multiple particles for fine distinctions, Japanese uses fewer particles that cover broader ranges. This is good news: fewer particles to learn, and when in doubt, the broader Japanese particle is more likely to be correct.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     は vs が DISTINCTION
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="the-は-vs-が-distinction----your-korean-advantage">The は vs が Distinction -- Your Korean Advantage</h3>
+<p>This is THE most famous puzzle in Japanese grammar. Textbooks for English speakers devote entire chapters to explaining this distinction -- but <strong>you already understand it</strong> because Korean has the exact same split: <span class="kr">은/는</span> vs <span class="kr">이/가</span>.</p>
+
+<div class="card">
+  <h4>は = "As for..." (Topic -- old/known information)</h4>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+    <div>
+      <p style="font-size:1.1rem"><span class="jp">田中さん<strong>は</strong>先生です</span></p>
+      <p style="font-size:.82rem;color:var(--text-muted)">"As for Tanaka, (he) is a teacher."</p>
+    </div>
+    <div>
+      <p style="font-size:1.1rem"><span class="kr">다나카 씨<strong>는</strong> 선생님이에요</span></p>
+      <p style="font-size:.82rem;color:var(--text-muted)">Same logic: "As for Tanaka..."</p>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h4>が = "It is... that..." (Subject -- new/important information)</h4>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+    <div>
+      <p style="font-size:1.1rem"><span class="jp">田中さん<strong>が</strong>先生です</span></p>
+      <p style="font-size:.82rem;color:var(--text-muted)">"Tanaka is the one who is the teacher." (Not someone else!)</p>
+    </div>
+    <div>
+      <p style="font-size:1.1rem"><span class="kr">다나카 씨<strong>가</strong> 선생님이에요</span></p>
+      <p style="font-size:.82rem;color:var(--text-muted)">Same logic: "It's Tanaka who..."</p>
+    </div>
+  </div>
+</div>
+
+<div class="card" style="background:var(--surface-alt,var(--surface))">
+  <h4>The Quick Test (Works in Both Languages)</h4>
+  <table>
+    <thead><tr><th>Situation</th><th>Use...</th><th>Korean</th><th>Japanese</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Introducing a topic ("speaking of X...")</td>
+        <td><strong>は / 는</strong></td>
+        <td class="kr">날씨<strong>는</strong> 좋다</td>
+        <td class="jp">天気<strong>は</strong>いい</td>
+      </tr>
+      <tr>
+        <td>Answering "who/what?" (identifying)</td>
+        <td><strong>が / 가</strong></td>
+        <td class="kr">누구<strong>가</strong> 왔어?</td>
+        <td class="jp">誰<strong>が</strong>来た？</td>
+      </tr>
+      <tr>
+        <td>Contrast ("X, on the other hand...")</td>
+        <td><strong>は / 는</strong></td>
+        <td class="kr">이것<strong>은</strong> 좋지만...</td>
+        <td class="jp">これ<strong>は</strong>いいけど...</td>
+      </tr>
+      <tr>
+        <td>Existence/natural phenomena</td>
+        <td><strong>が / 가</strong></td>
+        <td class="kr">비<strong>가</strong> 온다</td>
+        <td class="jp">雨<strong>が</strong>降る</td>
+      </tr>
+      <tr>
+        <td>Expressing ability/desire (after が)</td>
+        <td><strong>が / 가</strong></td>
+        <td class="kr">일본어<strong>가</strong> 하고 싶다</td>
+        <td class="jp">日本語<strong>が</strong>話したい</td>
+      </tr>
+    </tbody>
+  </table>
+  <p style="margin-top:1rem;font-size:.88rem;color:var(--a3)"><strong>Bottom line:</strong> If your Korean instinct says 는, use は. If it says 가, use が. Your instinct is right ~95% of the time.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     COMPOUND PARTICLES
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="compound-particles----stacking-for-precision">Compound Particles -- Stacking for Precision</h3>
+<p>Just like Korean stacks particles (<span class="kr">에는, 에서는, 에서의</span>), Japanese stacks particles too. The logic is identical.</p>
+
+<table>
+  <thead><tr><th>Compound</th><th>Components</th><th>Korean Parallel</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr>
+      <td class="jp"><strong>には</strong></td>
+      <td>に (location) + は (topic)</td>
+      <td class="kr">에는</td>
+      <td><span class="jp">日本<strong>には</strong>四季がある</span> = In Japan (as for), there are four seasons</td>
+    </tr>
+    <tr>
+      <td class="jp"><strong>では</strong></td>
+      <td>で (action location) + は (topic)</td>
+      <td class="kr">에서는</td>
+      <td><span class="jp">学校<strong>では</strong>英語を話す</span> = At school (as for), we speak English</td>
+    </tr>
+    <tr>
+      <td class="jp"><strong>からの</strong></td>
+      <td>から (from) + の (possessive)</td>
+      <td class="kr">에서의 / 로부터의</td>
+      <td><span class="jp">友達<strong>からの</strong>手紙</span> = A letter from a friend</td>
+    </tr>
+    <tr>
+      <td class="jp"><strong>までに</strong></td>
+      <td>まで (until) + に (time point)</td>
+      <td class="kr">까지에</td>
+      <td><span class="jp">5時<strong>までに</strong>来てください</span> = Please come by 5 o'clock</td>
+    </tr>
+    <tr>
+      <td class="jp"><strong>にも</strong></td>
+      <td>に (location) + も (also)</td>
+      <td class="kr">에도</td>
+      <td><span class="jp">東京<strong>にも</strong>行った</span> = I went to Tokyo, too</td>
+    </tr>
+    <tr>
+      <td class="jp"><strong>でも</strong></td>
+      <td>で (means) + も (also)</td>
+      <td class="kr">에서도 / (이)라도</td>
+      <td><span class="jp">コーヒー<strong>でも</strong>飲もうか</span> = Shall we have coffee or something?</td>
+    </tr>
+    <tr>
+      <td class="jp"><strong>との</strong></td>
+      <td>と (with) + の (possessive)</td>
+      <td class="kr">와의 / 과의</td>
+      <td><span class="jp">友達<strong>との</strong>約束</span> = A promise with a friend</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout ok">
+  <div class="callout-title">The Stacking Rule</div>
+  <p>Compound particles follow the same logic in both languages: <strong>specific particle first, then は/も/の for additional nuance</strong>. If you can stack <span class="kr">에서는</span> in Korean, you can stack <span class="jp">では</span> in Japanese. The order and logic are identical.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     INTERACTIVE EXERCISES
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="interactive-exercises">Interactive Exercises</h3>
+
+<!-- Quiz 1: DragMatch — particle matching Korean→Japanese -->
+<div id="quiz-particle-match"></div>
+
+<!-- Quiz 2: SentenceBuilder — build sentences choosing correct particles -->
+<div id="quiz-sentence-builder"></div>
+
+<!-- Quiz 3: FillBlank — fill correct particle with Korean hints -->
+<div id="quiz-fill-particle"></div>
+
+<!-- Quiz 4: RecallCheck from Ch05 — 5 survival phrase recall tasks -->
+<div id="quiz-recall-ch05"></div>
+
+<!-- ─── Mark as Complete ─── -->
+<button class="chapter-complete" data-ch="07">Mark as Complete &#10003;</button>
+
+<div style="display:flex;justify-content:space-between;margin:2rem 0">
+  <a href="ch-06.html" class="quiz-btn secondary">&larr; Chapter 07: Counters</a>
+  <a href="ch-08.html" class="quiz-btn">Next: Chapter 09 -- Verb Conjugation &rarr;</a>
+</div>
+
+</section>
+
+</div>
+
+
+</div>
+
+<footer>
+  <p>Zero to Hero: 日本語 for Korean Speakers &middot; Chapter 07</p>
+</footer>
+
+<script src="js/shared.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/quiz-engine.js"></script>
+<script>
+// ─── Recall Check (top of chapter) ───
+QuizEngine.RecallCheck(
+  document.getElementById('recall-check-top'),
+  {
+    fromChapters: 'Ch01-05',
+    items: [
+      { question: 'What are the 5 Japanese vowels? (Ch04)', answer: 'あ (a), い (i), う (u), え (e), お (o)' },
+      { question: 'How do you say "Excuse me" in Japanese? (Ch05)', answer: 'すみません (sumimasen)' },
+      { question: 'What is the three-way demonstrative system? (Ch01)', answer: 'これ/それ/あれ (this/that near you/that over there) = 이것/그것/저것' },
+      { question: 'How do you say "How much is this?" in Japanese? (Ch05)', answer: 'これはいくらですか？ (kore wa ikura desu ka?)' },
+      { question: 'Write the katakana for "コーヒー" in romaji. (Ch03)', answer: 'koohii (coffee)' }
+    ]
+  }
+);
+
+// ─── Quiz 1: DragMatch — particle matching Korean→Japanese ───
+QuizEngine.DragMatch(
+  document.getElementById('quiz-particle-match'),
+  {
+    title: 'Particle Matching: Korean to Japanese',
+    instruction: 'Drag each Japanese particle to its Korean equivalent:',
+    pairs: [
+      { left: '은/는 (topic)', right: 'は (wa)' },
+      { left: '이/가 (subject)', right: 'が (ga)' },
+      { left: '을/를 (object)', right: 'を (wo)' },
+      { left: '에 (location/exist)', right: 'に (ni)' },
+      { left: '에서 (action location)', right: 'で (de)' },
+      { left: '의 (possessive)', right: 'の (no)' },
+      { left: '까지 (until)', right: 'まで (made)' },
+      { left: '도 (also)', right: 'も (mo)' },
+      { left: '와/과 (and)', right: 'と (to)' },
+      { left: '으로/로 (direction)', right: 'へ (e)' },
+      { left: '에서/부터 (from)', right: 'から (kara)' }
+    ]
+  }
+);
+
+// ─── Quiz 2: SentenceBuilder — build sentences choosing correct particles ───
+QuizEngine.SentenceBuilder(
+  document.getElementById('quiz-sentence-builder'),
+  {
+    title: 'Build the Sentence -- Choose the Right Particles',
+    sentences: [
+      {
+        hint: 'Korean: <span class="kr">나는 도서관에서 책을 읽는다</span> (I read a book at the library)',
+        words: ['私は', '図書館で', '本を', '読む'],
+        correct: '私は図書館で本を読む'
+      },
+      {
+        hint: 'Korean: <span class="kr">서울에서 도쿄까지 비행기로 간다</span> (I go from Seoul to Tokyo by plane)',
+        words: ['ソウルから', '東京まで', '飛行機で', '行く'],
+        correct: 'ソウルから東京まで飛行機で行く'
+      },
+      {
+        hint: 'Korean: <span class="kr">친구의 집에 간다</span> (I go to my friend\'s house)',
+        words: ['友達の', '家に', '行く'],
+        correct: '友達の家に行く'
+      },
+      {
+        hint: 'Korean: <span class="kr">나도 커피를 마신다</span> (I also drink coffee)',
+        words: ['私も', 'コーヒーを', '飲む'],
+        correct: '私もコーヒーを飲む'
+      },
+      {
+        hint: 'Korean: <span class="kr">일본에는 사계절이 있다</span> (In Japan, there are four seasons)',
+        words: ['日本には', '四季が', 'ある'],
+        correct: '日本には四季がある'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 3: FillBlank — fill correct particle with Korean hints ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-fill-particle'),
+  {
+    title: 'Fill in the Particle',
+    questions: [
+      {
+        prompt: '<span class="jp">私___学生です</span> (I am a student) <br>Korean hint: <span class="kr">나<strong>는</strong> 학생이다</span>',
+        answer: 'は',
+        acceptAlso: ['wa'],
+        korean: '는 → は',
+        explanation: 'は marks the topic, just like 는 in Korean.'
+      },
+      {
+        prompt: '<span class="jp">コーヒー___飲む</span> (drink coffee) <br>Korean hint: <span class="kr">커피<strong>를</strong> 마신다</span>',
+        answer: 'を',
+        acceptAlso: ['wo', 'o'],
+        korean: '를 → を',
+        explanation: 'を marks the object, just like 를 in Korean.'
+      },
+      {
+        prompt: '<span class="jp">学校___行く</span> (go to school) <br>Korean hint: <span class="kr">학교<strong>에</strong> 간다</span>',
+        answer: 'に',
+        acceptAlso: ['ni'],
+        korean: '에 → に',
+        explanation: 'に marks the destination/target, just like 에 in Korean.'
+      },
+      {
+        prompt: '<span class="jp">図書館___勉強する</span> (study at the library) <br>Korean hint: <span class="kr">도서관<strong>에서</strong> 공부한다</span>',
+        answer: 'で',
+        acceptAlso: ['de'],
+        korean: '에서 → で',
+        explanation: 'で marks where an action happens, just like 에서 in Korean.'
+      },
+      {
+        prompt: '<span class="jp">雨___降る</span> (rain falls) <br>Korean hint: <span class="kr">비<strong>가</strong> 온다</span>',
+        answer: 'が',
+        acceptAlso: ['ga'],
+        korean: '가 → が',
+        explanation: 'が marks the subject (the thing doing the action), just like 가 in Korean.'
+      },
+      {
+        prompt: '<span class="jp">友達___手紙</span> (a friend\'s letter) <br>Korean hint: <span class="kr">친구<strong>의</strong> 편지</span>',
+        answer: 'の',
+        acceptAlso: ['no'],
+        korean: '의 → の',
+        explanation: 'の marks possession, just like 의 in Korean.'
+      },
+      {
+        prompt: '<span class="jp">3時___始まる</span> (starts from 3 o\'clock) <br>Korean hint: <span class="kr">3시<strong>부터</strong> 시작</span>',
+        answer: 'から',
+        acceptAlso: ['kara'],
+        korean: '부터 → から',
+        explanation: 'から marks a starting point (time or place), covering both 에서 and 부터 in Korean.'
+      },
+      {
+        prompt: '<span class="jp">私___行きたい</span> (I also want to go) <br>Korean hint: <span class="kr">나<strong>도</strong> 가고 싶다</span>',
+        answer: 'も',
+        acceptAlso: ['mo'],
+        korean: '도 → も',
+        explanation: 'も means "also/too", just like 도 in Korean.'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 4: RecallCheck from Ch05 — 5 survival phrase recall tasks ───
+QuizEngine.RecallCheck(
+  document.getElementById('quiz-recall-ch05'),
+  {
+    fromChapters: 'Ch05 Survival Phrases',
+    items: [
+      { question: 'How do you say "This one, please" in Japanese? (Restaurant ordering)', answer: 'これをお願いします (kore wo onegai shimasu) -- を marks "this" as the object' },
+      { question: 'How do you ask "Where is the station?" in Japanese?', answer: 'すみません、駅はどこですか？ (sumimasen, eki wa doko desu ka?) -- は marks "station" as the topic' },
+      { question: 'How do you say "Can I pay by card?" in Japanese?', answer: 'カードで払えますか？ (kaado de haraemasu ka?) -- で marks "card" as the means/tool' },
+      { question: 'How do you say "I\'ll have this" (deciding on something) in Japanese?', answer: 'これにします (kore ni shimasu) -- に marks the chosen item as the target of the decision' },
+      { question: 'How do you say "I\'m allergic to [X]" in Japanese?', answer: '[X]アレルギーがあります ([X] arerugi ga arimasu) -- が marks "allergy" as the subject that exists' }
+    ]
+  }
+);
+</script>
+<script src="js/spaced-repetition.js"></script>
+<script src="js/memory-palace.js"></script>
+</body>
+</html>

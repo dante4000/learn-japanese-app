@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zero to Hero — 日本語</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;600;700&family=Shippori+Mincho:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0c12; --bg-card: #10131c; --border: #1a1f30;
+  --border-accent: #252d45; --text: #b8bfce; --text-muted: #5e6880;
+  --text-bright: #dce1ec; --heading: #eef1f8; --accent: #c0392b;
+  --accent-glow: rgba(192,57,43,.08); --a2: #7c6dd8; --a3: #2ebd80;
+  --serif: 'Shippori Mincho', Georgia, serif;
+  --sans: 'Noto Sans JP', 'Noto Sans KR', -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+[data-theme="light"] {
+  --bg: #f5f3f0; --bg-card: #fff; --border: #d8dce6;
+  --border-accent: #bfc5d4; --text: #3a4055; --text-muted: #6e7590;
+  --text-bright: #1a1e30; --heading: #0d1020; --accent: #a93226;
+  --accent-glow: rgba(169,50,38,.06); --a2: #6550b0; --a3: #1a8c5e;
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { overflow-x: hidden; }
+body {
+  font-family: var(--sans); background: var(--bg); color: var(--text);
+  line-height: 1.78; font-size: 17px; -webkit-font-smoothing: antialiased;
+  overflow-x: hidden; min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.toggle {
+  position: fixed; top: 1.2rem; right: 1.2rem; z-index: 1000;
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 1px solid var(--border-accent); background: var(--bg-card);
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: all .3s; box-shadow: 0 2px 10px rgba(0,0,0,.15);
+}
+.toggle:hover { transform: scale(1.08); border-color: var(--accent); }
+.toggle .is, .toggle .im {
+  position: absolute; transition: transform .4s, opacity .3s;
+  width: 18px; height: 18px;
+}
+.toggle .is { opacity: 1; transform: rotate(0) scale(1); }
+.toggle .im { opacity: 0; transform: rotate(-90deg) scale(.5); }
+[data-theme="light"] .toggle .is { opacity: 0; transform: rotate(90deg) scale(.5); }
+[data-theme="light"] .toggle .im { opacity: 1; transform: rotate(0) scale(1); }
+
+.hero {
+  text-align: center; padding: 4rem 2rem; max-width: 700px;
+  position: relative;
+}
+.hero::before {
+  content: ''; position: absolute; top: -40%; left: 50%;
+  transform: translateX(-50%); width: 600px; height: 600px;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-badge {
+  display: inline-block; padding: .35rem 1rem;
+  border: 1px solid var(--border-accent); border-radius: 999px;
+  font-size: .78rem; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 1.5rem; font-weight: 600;
+}
+h1 {
+  font-family: var(--serif); font-size: clamp(2.2rem, 5vw, 3.2rem);
+  color: var(--heading); line-height: 1.15; font-weight: 500;
+  margin-bottom: 1rem;
+}
+h1 em { font-style: italic; color: var(--accent); }
+.subtitle {
+  font-size: 1.02rem; color: var(--text-muted);
+  max-width: 540px; margin: 0 auto 3rem; line-height: 1.7;
+}
+.cards {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+  width: 100%; max-width: 600px; margin: 0 auto;
+}
+.card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 2rem 1.5rem; text-align: center;
+  text-decoration: none; color: inherit; transition: all .3s;
+  display: flex; flex-direction: column; align-items: center; gap: .8rem;
+}
+.card:hover {
+  border-color: var(--accent); background: var(--accent-glow);
+  transform: translateY(-4px); text-decoration: none;
+  box-shadow: 0 8px 30px rgba(0,0,0,.2);
+}
+.card-flag { font-size: 3rem; line-height: 1; }
+.card-lang {
+  font-family: var(--serif); font-size: 1.3rem;
+  color: var(--heading); font-weight: 500;
+}
+.card-desc { font-size: .85rem; color: var(--text-muted); line-height: 1.5; }
+.card-badge {
+  display: inline-block; padding: .2rem .6rem; border-radius: 4px;
+  font-size: .7rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .06em;
+}
+.card-badge.en { background: rgba(46,189,128,.12); color: var(--a3); }
+.card-badge.ko { background: rgba(124,109,216,.12); color: var(--a2); }
+footer {
+  margin-top: 3rem; font-size: .8rem; color: var(--text-muted);
+  text-align: center; padding: 2rem;
+}
+@media (max-width: 500px) {
+  .cards { grid-template-columns: 1fr; }
+  .hero { padding: 2rem 1.2rem; }
+}
+</style>
+</head>
+<body>
+
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<div class="hero">
+  <div class="hero-badge">Zero to Hero</div>
+  <h1>Learn <em>日本語</em></h1>
+  <p class="subtitle">An interactive 18-chapter course for Korean speakers. Choose your language below.</p>
+
+  <div class="cards">
+    <a href="zero-to-hero-japanese/src/index.html" class="card">
+      <div class="card-flag">🇬🇧</div>
+      <div class="card-lang">English Edition</div>
+      <div class="card-desc">Instructions in English with Korean &amp; Japanese examples</div>
+      <span class="card-badge en">EN</span>
+    </a>
+    <a href="zero-to-hero-japanese-kr/src/index.html" class="card">
+      <div class="card-flag">🇰🇷</div>
+      <div class="card-lang">한국어판</div>
+      <div class="card-desc">한국어로 설명, 일본어 예문과 함께</div>
+      <span class="card-badge ko">KO</span>
+    </a>
+  </div>
+</div>
+
+<footer>Zero to Hero: 日本語 for Korean Speakers</footer>
+
+<script>
+(function(){
+  const t = localStorage.getItem('theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', t);
+  document.getElementById('themeToggle').addEventListener('click', function(){
+    const cur = document.documentElement.getAttribute('data-theme');
+    const next = cur === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+  });
+})();
+</script>
+</body>
+</html>

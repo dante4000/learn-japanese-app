@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLM-Powered HMI Design for Mitsubishi Fuso — Expert Reference</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ===== THEME VARS ===== */
+:root{--bg:#090b10;--bg-card:#0e1119;--bg-card-hover:#131724;--border:#171c2a;--border-accent:#1f2740;--text:#b0b8cc;--text-muted:#556080;--text-bright:#d8dfe8;--heading:#eef1f8;--accent:#3d7de5;--accent-glow:rgba(61,125,229,.08);--a2:#6a5cc8;--a3:#28b070;--a4:#d88a30;--a5:#d04a6a;--code-bg:#121622;--serif:'Instrument Serif',Georgia,serif;--sans:'DM Sans',-apple-system,sans-serif;--mono:'JetBrains Mono',monospace;--sidebar-bg:#0c0e15;--sidebar-w:260px;--toc-section:rgba(61,125,229,.06)}
+html.light{--bg:#f0f2f6;--bg-card:#fff;--bg-card-hover:#f4f5f9;--border:#d4d8e4;--border-accent:#b8bfd0;--text:#38405a;--text-muted:#6a7290;--text-bright:#181e34;--heading:#0a0e1e;--accent:#2260c8;--accent-glow:rgba(34,96,200,.06);--a2:#5540a8;--a3:#168850;--a4:#b87018;--a5:#a83458;--code-bg:#e4e6ee;--sidebar-bg:#e8eaf0;--toc-section:rgba(34,96,200,.04)}
+
+/* ===== RESET ===== */
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:2rem}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.78;font-size:17px;-webkit-font-smoothing:antialiased;transition:background .35s,color .35s}
+
+/* ===== THEME TOGGLE (desktop: fixed top-right, mobile: inside hamburger) ===== */
+.settings-btn{position:fixed;top:1rem;right:1rem;z-index:200;width:40px;height:40px;border-radius:10px;background:var(--bg-card);border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:1.1rem;transition:background .3s,border-color .3s,color .3s}
+.settings-btn:hover{background:var(--bg-card-hover);color:var(--heading)}
+.settings-popup{position:fixed;top:56px;right:1rem;z-index:200;background:var(--bg-card);border:1px solid var(--border-accent);border-radius:12px;padding:1rem;min-width:180px;display:none;box-shadow:0 12px 40px rgba(0,0,0,.35);transition:background .3s,border-color .3s}
+.settings-popup.open{display:block}
+.settings-popup label{display:flex;align-items:center;gap:.6rem;padding:.5rem 0;cursor:pointer;font-size:.88rem;color:var(--text);transition:color .3s}
+.settings-popup label:hover{color:var(--heading)}
+.theme-sw{width:40px;height:22px;border-radius:11px;background:var(--border-accent);position:relative;border:none;cursor:pointer;transition:background .3s}
+.theme-sw::after{content:'';position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:var(--text-muted);transition:transform .3s,background .3s}
+html.light .theme-sw{background:var(--accent)}
+html.light .theme-sw::after{transform:translateX(18px);background:#fff}
+
+/* ===== SIDEBAR TOC (desktop) ===== */
+.sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--sidebar-bg);border-right:1px solid var(--border);overflow-y:auto;z-index:150;padding:1.5rem 0 2rem;transition:background .35s,border-color .35s,transform .35s}
+.sidebar-logo{padding:0 1.2rem .8rem;font-family:var(--serif);font-size:1rem;color:var(--heading);line-height:1.3;border-bottom:1px solid var(--border);margin-bottom:.6rem;transition:color .35s,border-color .35s}
+.sidebar-logo span{font-size:.7rem;color:var(--accent);font-family:var(--mono);display:block;margin-bottom:.15rem;letter-spacing:.05em;text-transform:uppercase}
+.toc-group{margin-bottom:.2rem}
+.toc-group-title{padding:.55rem 1.2rem .3rem;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);background:var(--toc-section);transition:color .35s,background .35s}
+.toc-link{display:flex;align-items:baseline;gap:.5rem;padding:.35rem 1.2rem;font-size:.82rem;color:var(--text-muted);text-decoration:none;border-left:2px solid transparent;transition:all .2s}
+.toc-link:hover,.toc-link.active{color:var(--heading);background:var(--accent-glow);border-left-color:var(--accent)}
+.toc-link .toc-num{font-family:var(--mono);font-size:.72rem;color:var(--accent);min-width:2.2ch}
+.main{margin-left:var(--sidebar-w);transition:margin .35s}
+
+/* Mobile hamburger */
+.hamburger{display:none;position:fixed;top:1rem;left:1rem;z-index:250;width:40px;height:40px;border-radius:10px;background:var(--bg-card);border:1px solid var(--border);cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:4px;transition:background .3s,border-color .3s}
+.hamburger span{display:block;width:18px;height:2px;background:var(--text-muted);border-radius:1px;transition:transform .3s,opacity .3s,background .3s}
+.hamburger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:140}
+
+@media(max-width:900px){
+  .sidebar{transform:translateX(-100%);width:280px}
+  .sidebar.open{transform:translateX(0)}
+  .sidebar-overlay.open{display:block}
+  .hamburger{display:flex}
+  .main{margin-left:0}
+  .settings-btn{right:.6rem;top:.6rem}
+  .settings-popup{right:.6rem;top:52px}
+}
+
+/* ===== HERO ===== */
+.hero{min-height:82vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:4rem 2rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-28%;left:50%;transform:translateX(-50%);width:750px;height:750px;background:radial-gradient(circle,var(--accent-glow) 0%,transparent 70%);pointer-events:none}
+.hero-badge{display:inline-block;padding:.35rem 1rem;border:1px solid var(--border-accent);border-radius:999px;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:1.5rem;font-weight:600;transition:color .35s,border-color .35s}
+.hero h1{font-family:var(--serif);font-size:clamp(2.2rem,5vw,3.4rem);color:var(--heading);line-height:1.15;max-width:740px;font-weight:400;margin-bottom:1rem;transition:color .35s}
+.hero h1 em{font-style:italic;color:var(--accent)}
+.hero-sub{font-size:1.02rem;color:var(--text-muted);max-width:600px;line-height:1.7;margin-bottom:2rem;transition:color .35s}
+.hero-meta{display:flex;gap:2rem;font-size:.82rem;color:var(--text-muted);transition:color .35s}
+
+/* ===== CONTENT ===== */
+.content-wrap{max-width:820px;margin:0 auto;padding:0 2rem}
+section{padding:3rem 0}
+section h2{font-family:var(--serif);font-size:1.9rem;color:var(--heading);margin-bottom:.3rem;font-weight:400;line-height:1.25;transition:color .35s}
+section h2 .ch{font-family:var(--mono);font-size:.8rem;color:var(--accent);display:block;margin-bottom:.4rem;letter-spacing:.06em}
+section h3{font-size:1.15rem;color:var(--heading);margin:2rem 0 .6rem;font-weight:600;transition:color .35s}
+section h4{font-size:1rem;color:var(--text-bright);margin:1.5rem 0 .4rem;font-weight:600;transition:color .35s}
+section p{margin-bottom:1rem}
+section ul,section ol{margin:0 0 1.2rem 1.4rem}
+section li{margin-bottom:.4rem;font-size:.95rem}
+
+/* ===== CARDS ===== */
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:1.5rem;margin:1.2rem 0;transition:background .35s,border-color .35s}
+.card h4{margin-top:0}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin:1.2rem 0}
+/* Equal-height stake cards */
+.stakes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:1.2rem 0}
+.stakes-grid .card{display:flex;flex-direction:column}
+.stakes-grid .card p:last-child{margin-top:auto}
+@media(max-width:700px){.stakes-grid{grid-template-columns:1fr}}
+
+/* ===== TABLES ===== */
+table{width:100%;border-collapse:collapse;margin:1.2rem 0;font-size:.9rem}
+th{text-align:left;padding:.6rem .8rem;border-bottom:2px solid var(--border-accent);color:var(--heading);font-weight:600;font-size:.82rem;text-transform:uppercase;letter-spacing:.04em;transition:color .35s,border-color .35s}
+td{padding:.55rem .8rem;border-bottom:1px solid var(--border);vertical-align:top;transition:border-color .35s}
+tr:hover td{background:var(--accent-glow)}
+
+/* ===== PROMPTS ===== */
+.prompt-block{background:var(--code-bg);border:1px solid var(--border);border-radius:8px;padding:1.3rem 1.5rem;margin:1.2rem 0;font-size:.88rem;line-height:1.7;transition:background .35s,border-color .35s}
+.prompt-block .label{font-family:var(--mono);font-size:.72rem;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.6rem;display:block;font-weight:500}
+.prompt-block .weak{color:var(--a5);font-weight:600;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.4rem;display:block}
+.prompt-block .strong{color:var(--a3);font-weight:600;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.4rem;display:block}
+code{font-family:var(--mono);font-size:.88em;background:var(--code-bg);padding:.15rem .4rem;border-radius:4px;color:var(--accent);transition:background .35s}
+pre{background:var(--code-bg);border:1px solid var(--border);border-radius:8px;padding:1.2rem;overflow-x:auto;font-size:.85rem;line-height:1.6;margin:1rem 0;transition:background .35s,border-color .35s}
+pre code{background:none;padding:0}
+
+/* ===== BLOCKQUOTES ===== */
+blockquote{border-left:3px solid var(--accent);padding:.8rem 1.2rem;margin:1.2rem 0;background:var(--accent-glow);border-radius:0 8px 8px 0;font-size:.94rem;color:var(--text-bright);transition:all .35s}
+blockquote cite{display:block;margin-top:.5rem;font-size:.82rem;color:var(--text-muted);font-style:normal}
+
+/* ===== CALLOUTS ===== */
+.callout{border:1px solid var(--border-accent);border-radius:8px;padding:1.2rem 1.4rem;margin:1.2rem 0;background:var(--bg-card);transition:all .35s}
+.callout.warn{border-left:4px solid var(--a4)}
+.callout.critical{border-left:4px solid var(--a5)}
+.callout.info{border-left:4px solid var(--accent)}
+.callout.ok{border-left:4px solid var(--a3)}
+.callout .callout-title{font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.04em;margin-bottom:.4rem}
+.callout.warn .callout-title{color:var(--a4)}
+.callout.critical .callout-title{color:var(--a5)}
+.callout.info .callout-title{color:var(--accent)}
+.callout.ok .callout-title{color:var(--a3)}
+
+/* ===== SOURCES ===== */
+.sources{font-size:.82rem;color:var(--text-muted);margin-top:1rem;padding-top:.8rem;border-top:1px solid var(--border);transition:border-color .35s}
+.sources a{color:var(--accent);text-decoration:none}
+.sources a:hover{text-decoration:underline}
+
+/* ===== SVG DIAGRAMS ===== */
+.diagram{margin:1.5rem 0;padding:1.5rem;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;overflow-x:auto;transition:background .35s,border-color .35s}
+.diagram svg{display:block;margin:0 auto;max-width:100%;height:auto}
+.diagram svg text{font-family:var(--sans);fill:var(--text)}
+.diagram svg .node-fill{fill:var(--bg-card);stroke:var(--border-accent);transition:fill .35s,stroke .35s}
+.diagram svg .node-accent{fill:var(--accent-glow);stroke:var(--accent);transition:fill .35s,stroke .35s}
+.diagram svg .label-text{fill:var(--heading);font-size:11px;font-weight:600;transition:fill .35s}
+.diagram svg .sub-text{fill:var(--text-muted);font-size:9px;transition:fill .35s}
+.diagram svg .arrow{stroke:var(--accent);fill:none;stroke-width:1.5;marker-end:url(#arrowhead);transition:stroke .35s}
+.diagram svg .line-muted{stroke:var(--border-accent);fill:none;stroke-width:1;transition:stroke .35s}
+.diagram-caption{text-align:center;font-size:.78rem;color:var(--text-muted);margin-top:.6rem;transition:color .35s}
+
+/* ===== ANIMATIONS ===== */
+@keyframes pulse-amber{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes pulse-red{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes flow-right{0%{transform:translateX(-8px);opacity:0}50%{opacity:1}100%{transform:translateX(8px);opacity:0}}
+@keyframes dash-flow{to{stroke-dashoffset:-20}}
+.anim-pulse-amber{animation:pulse-amber 1.5s ease-in-out infinite}
+.anim-pulse-red{animation:pulse-red .6s ease-in-out infinite}
+.anim-flow{animation:flow-right 2s ease-in-out infinite}
+.anim-dash{stroke-dasharray:10 5;animation:dash-flow 1s linear infinite}
+
+/* ===== SEPARATOR & FOOTER ===== */
+hr{border:none;border-top:1px solid var(--border);margin:3rem 0;transition:border-color .35s}
+footer{padding:3rem 0;text-align:center;font-size:.82rem;color:var(--text-muted);border-top:1px solid var(--border);transition:color .35s,border-color .35s}
+footer a{color:var(--accent);text-decoration:none}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:700px){
+  .hero h1{font-size:2rem}
+  .content-wrap{padding:0 1.2rem}
+  section{padding:2rem 0}
+  .card-grid{grid-template-columns:1fr}
+  .hero-meta{flex-direction:column;gap:.5rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== SVG DEFS (shared arrowhead markers) ===== -->
+<svg style="position:absolute;width:0;height:0">
+  <defs>
+    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+    <marker id="arrowhead-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--border-accent)"/></marker>
+  </defs>
+</svg>
+
+<!-- ===== HAMBURGER (mobile) ===== -->
+<button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+  <span></span><span></span><span></span>
+</button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<!-- ===== SETTINGS BUTTON ===== -->
+<button class="settings-btn" id="settings-btn" aria-label="Settings">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+</button>
+<div class="settings-popup" id="settings-popup">
+  <label>
+    <button class="theme-sw" id="theme-sw" aria-label="Toggle theme"></button>
+    <span id="theme-label">Light Mode</span>
+  </label>
+</div>
+
+<!-- ===== SIDEBAR TOC ===== -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <span>Expert Reference</span>
+    FUSO HMI &times; LLMs
+  </div>
+
+  <div class="toc-group">
+    <div class="toc-group-title">The Vehicle</div>
+    <a class="toc-link" href="#ch01"><span class="toc-num">01</span>FUSO Product & Platform Landscape</a>
+    <a class="toc-link" href="#ch02"><span class="toc-num">02</span>Regulatory & Standards Framework</a>
+    <a class="toc-link" href="#ch03"><span class="toc-num">03</span>Display Hardware & CAN Architecture</a>
+  </div>
+
+  <div class="toc-group">
+    <div class="toc-group-title">The Design</div>
+    <a class="toc-link" href="#ch04"><span class="toc-num">04</span>ADAS & Safety-Critical Telltales</a>
+    <a class="toc-link" href="#ch05"><span class="toc-num">05</span>Powertrain HMI: Diesel, EV & H2</a>
+    <a class="toc-link" href="#ch06"><span class="toc-num">06</span>Functional Safety &mdash; ASIL B</a>
+    <a class="toc-link" href="#ch07"><span class="toc-num">07</span>Glance-Time & Cognitive Load</a>
+    <a class="toc-link" href="#ch08"><span class="toc-num">08</span>Competitive Intelligence</a>
+  </div>
+
+  <div class="toc-group">
+    <div class="toc-group-title">The Tools</div>
+    <a class="toc-link" href="#ch09"><span class="toc-num">09</span>LLM Fundamentals for HMI</a>
+    <a class="toc-link" href="#ch10"><span class="toc-num">10</span>Expert Prompting for FUSO</a>
+    <a class="toc-link" href="#ch11"><span class="toc-num">11</span>Advanced Techniques</a>
+    <a class="toc-link" href="#ch12"><span class="toc-num">12</span>Claude Cowork for HMI Design</a>
+    <a class="toc-link" href="#ch13"><span class="toc-num">13</span>Verification & Safety Protocols</a>
+  </div>
+
+  <div class="toc-group">
+    <div class="toc-group-title">The Future</div>
+    <a class="toc-link" href="#ch14"><span class="toc-num">14</span>ARCHION, Coretura & SDV-Era</a>
+    <a class="toc-link" href="#ch15"><span class="toc-num">15</span>Expert Workflow Checklist</a>
+  </div>
+</aside>
+
+<!-- ===== MAIN CONTENT ===== -->
+<div class="main">
+
+<!-- ===== HERO ===== -->
+<header class="hero">
+  <span class="hero-badge">Expert Reference &mdash; Mitsubishi Fuso</span>
+  <h1>LLM-Powered HMI Design for <em>FUSO Heavy-Duty Trucks</em></h1>
+  <p class="hero-sub">An expert-level reference for UI/UX designers working on digital instrument clusters and display systems for the Mitsubishi Fuso Super Great, eCanter, and the incoming ARCHION product family. Grounded in verified specifications, current regulations, and production-tested LLM workflows.</p>
+  <div class="hero-meta">
+    <span>~28 min read</span>
+    <span>15 chapters</span>
+    <span>March 2026</span>
+  </div>
+</header>
+
+<div class="content-wrap">
+
+<!-- ============ CH 01 ============ -->
+<section id="ch01">
+  <h2><span class="ch">Chapter 01</span>The FUSO Product & Platform Landscape (2026)</h2>
+  <p>Mitsubishi Fuso Truck and Bus Corporation (MFTBC), a subsidiary of Daimler Truck AG, manufactures commercial vehicles across light-, medium-, and heavy-duty segments primarily for the Japanese and Asian markets. As of March 2026, the HMI designer's product scope spans three distinct vehicle families, each with fundamentally different powertrain architectures and, consequently, different display requirements.</p>
+
+  <h3>Super Great &mdash; Heavy-Duty Diesel</h3>
+  <p>The flagship heavy-duty truck was fully remodeled in October 2023 for the 2024 model year &mdash; its first major redesign since 2017. The cab was aerodynamically optimized, and the interior received a comprehensive refresh centered on driver comfort and a new cockpit architecture.</p>
+  <table>
+    <tr><th>Attribute</th><th>Specification</th></tr>
+    <tr><td>Engine</td><td>6R30 &mdash; 12.8L inline-6 diesel. T1: 290 kW / 2,000 Nm. T2: 310 kW / 2,100 Nm. BlueTec exhaust aftertreatment (urea SCR + DPF).</td></tr>
+    <tr><td>Transmission</td><td>SHIFTPILOT &mdash; 12-speed AMT with hill-start assist and eco-mode. Fuel efficiency up to 15% vs. previous model.</td></tr>
+    <tr><td>Instrument Cluster</td><td>Multi-function digital instrument cluster (full LCD). Integrated meter cluster with multi-function monitor for ADAS warnings. Exact display diagonal and resolution are not publicly disclosed by MFTBC.</td></tr>
+    <tr><td>ADAS Suite</td><td>Active Brake Assist 6 (ABA6), Active Sideguard Assist 2.0, Front Blind Spot Information System, Lane Departure Warning, Active Attention Assist, rearview camera.</td></tr>
+    <tr><td>Telematics</td><td>Truckonnect standard. Real-time location, fuel efficiency, driver safety scoring, remote diagnostics, digital tachograph.</td></tr>
+  </table>
+  <div class="sources">Sources: <a href="https://www.mitsubishi-fuso.com/en/product/new-super-great/">FUSO Super Great Product Page</a> &bull; <a href="https://www.mitsubishi-fuso.com/en/news-main/press-release/2023/10/25/mitsubishi-fuso-unveils-the-fully-remodeled-heavy-duty-super-great-truck/">MFTBC Press Release (Oct 2023)</a></div>
+
+  <h3>eCanter &mdash; All-Electric Light-Duty</h3>
+  <p>The next-generation eCanter, unveiled September 2022, is the world's first series-produced all-electric light-duty truck. 28 Japanese-market variants across 4 weight classes (4.25t&ndash;8.55t GVW), 6 wheelbases, 2 cab widths, and 3 battery packages.</p>
+  <table>
+    <tr><th>Attribute</th><th>Specification</th></tr>
+    <tr><td>Drivetrain</td><td>eAxle &mdash; motor integrated with rear axle. 110 kW or 129 kW. Max speed 89 km/h.</td></tr>
+    <tr><td>Battery</td><td>Modular: S (1&times;41 kWh, ~80 km), M (2&times;41 kWh, ~140 km), L (3&times;41 kWh, ~200 km).</td></tr>
+    <tr><td>Cluster</td><td>Fully digital IPS instrument cluster. <strong>10-inch LCD display</strong>. Dedicated EV info: SOC, recuperation, eRange, Charge Manager.</td></tr>
+    <tr><td>Charging</td><td>AC (11 kW S / 22 kW M&amp;L) + DC fast charging. V2X power export (~10 kW).</td></tr>
+  </table>
+  <div class="sources">Sources: <a href="https://www.mitsubishi-fuso.com/en/product/new-ecanter/">FUSO eCanter</a> &bull; <a href="https://www.daimlertruck.com/en/newsroom/pressrelease/mitsubishi-fuso-unveils-next-generation-of-all-electric-ldt-ecanter-52027372">Daimler Truck Press Release</a></div>
+
+  <!-- DIAGRAM: FUSO Product Family -->
+  <div class="diagram">
+    <svg viewBox="0 0 700 180" xmlns="http://www.w3.org/2000/svg">
+      <!-- FUSO Hub -->
+      <rect class="node-accent" x="270" y="10" width="160" height="44" rx="8"/>
+      <text class="label-text" x="350" y="37" text-anchor="middle">FUSO Design System</text>
+      <!-- Super Great -->
+      <rect class="node-fill" x="20" y="100" width="140" height="60" rx="8"/>
+      <text class="label-text" x="90" y="124" text-anchor="middle">Super Great</text>
+      <text class="sub-text" x="90" y="140" text-anchor="middle">Heavy &bull; Diesel &bull; 6R30</text>
+      <line class="arrow" x1="300" y1="54" x2="130" y2="100"/>
+      <!-- Fighter -->
+      <rect class="node-fill" x="190" y="100" width="140" height="60" rx="8"/>
+      <text class="label-text" x="260" y="124" text-anchor="middle">Fighter</text>
+      <text class="sub-text" x="260" y="140" text-anchor="middle">Medium &bull; Diesel</text>
+      <line class="arrow" x1="340" y1="54" x2="270" y2="100"/>
+      <!-- Canter -->
+      <rect class="node-fill" x="370" y="100" width="140" height="60" rx="8"/>
+      <text class="label-text" x="440" y="124" text-anchor="middle">Canter</text>
+      <text class="sub-text" x="440" y="140" text-anchor="middle">Light &bull; Diesel/Hybrid</text>
+      <line class="arrow" x1="370" y1="54" x2="430" y2="100"/>
+      <!-- eCanter -->
+      <rect class="node-accent" x="540" y="100" width="140" height="60" rx="8"/>
+      <text class="label-text" x="610" y="124" text-anchor="middle">eCanter</text>
+      <text class="sub-text" x="610" y="140" text-anchor="middle">Light &bull; All-Electric</text>
+      <line class="arrow" x1="400" y1="54" x2="580" y2="100"/>
+    </svg>
+    <div class="diagram-caption">Shared design system spans all models. The eCanter introduces EV-specific display states with no diesel equivalent.</div>
+  </div>
+
+  <div class="callout info">
+    <div class="callout-title">Design System Implication</div>
+    <p>Your telltale icons, color semantics, typography, and warning escalation patterns must be consistent across all four vehicle lines. The eCanter adds EV-specific states (SOC, recuperation, V2X). Your design system must accommodate powertrain-specific and shared elements through a modular architecture.</p>
+  </div>
+</section>
+
+<!-- ============ CH 02 ============ -->
+<section id="ch02">
+  <h2><span class="ch">Chapter 02</span>Regulatory & Standards Framework</h2>
+  <p>HMI design for Japanese heavy-duty trucks operates within a layered regulatory environment. Understanding which standards are advisory vs. mandatory, and which are Japan-specific vs. international, is essential.</p>
+  <h3>Key ISO Standards for HMI Design</h3>
+  <table>
+    <tr><th>Standard</th><th>Version</th><th>What It Governs</th><th>Critical Thresholds</th></tr>
+    <tr><td><strong>ISO 15005</strong></td><td>2017</td><td>Dialogue management principles for in-vehicle systems.</td><td><strong>1.5-second max single glance time.</strong></td></tr>
+    <tr><td><strong>ISO 26262</strong></td><td>2018 (2nd Ed)</td><td>Functional safety. 2nd edition expanded to trucks, buses, motorcycles.</td><td>ASIL B for instrument cluster telltales.</td></tr>
+    <tr><td><strong>ISO 2575</strong></td><td>2021</td><td>Symbols for controls, indicators and tell-tales.</td><td>Color coding: amber = caution, green = normal, red = danger.</td></tr>
+    <tr><td><strong>ISO 15008</strong></td><td>2017</td><td>Character height, contrast, luminance for in-vehicle displays.</td><td>Minimum character heights based on viewing distance.</td></tr>
+    <tr><td><strong>UNECE R121</strong></td><td>Rev.1 + Amds</td><td>Identification of controls, tell-tales and indicators for all motor vehicles.</td><td>Mandatory symbol identification, colors, illumination.</td></tr>
+  </table>
+
+  <h3>Euro NCAP 2026: Physical Controls Mandate</h3>
+  <!-- DIAGRAM: Regulatory Layers -->
+  <div class="diagram">
+    <svg viewBox="0 0 700 160" xmlns="http://www.w3.org/2000/svg">
+      <rect class="node-accent" x="10" y="10" width="200" height="50" rx="8"/>
+      <text class="label-text" x="110" y="30" text-anchor="middle">Mandatory</text>
+      <text class="sub-text" x="110" y="46" text-anchor="middle">UNECE R121 &bull; MLIT &bull; FMVSS</text>
+      <rect class="node-accent" x="250" y="10" width="200" height="50" rx="8"/>
+      <text class="label-text" x="350" y="30" text-anchor="middle">Standards</text>
+      <text class="sub-text" x="350" y="46" text-anchor="middle">ISO 15005 &bull; 26262 &bull; 2575</text>
+      <rect class="node-fill" x="490" y="10" width="200" height="50" rx="8"/>
+      <text class="label-text" x="590" y="30" text-anchor="middle">Advisory / Rating</text>
+      <text class="sub-text" x="590" y="46" text-anchor="middle">Euro NCAP 2026</text>
+      <!-- Impact arrows -->
+      <text class="sub-text" x="350" y="90" text-anchor="middle">All three layers affect your instrument cluster design decisions</text>
+      <line class="arrow" x1="110" y1="60" x2="110" y2="100"/>
+      <line class="arrow" x1="350" y1="60" x2="350" y2="100"/>
+      <line class="arrow" x1="590" y1="60" x2="590" y2="100"/>
+      <rect class="node-fill" x="150" y="102" width="400" height="44" rx="8"/>
+      <text class="label-text" x="350" y="128" text-anchor="middle">Your Instrument Cluster Design</text>
+    </svg>
+  </div>
+  <ul>
+    <li><strong>Physical button requirement:</strong> Vehicles lose points if essential functions are buried in touchscreen menus.</li>
+    <li><strong>2-second gaze rule:</strong> Drivers must not avert gaze from road for more than 2 seconds.</li>
+    <li><strong>Haptic controls rewarded:</strong> Tactile controls score higher than nested touchscreen interfaces.</li>
+  </ul>
+  <div class="sources">Sources: <a href="https://www.euroncap.com/en/press-media/press-releases/euro-ncap-announces-2026-protocol-changes-to-tackle-modern-driving-risks/">Euro NCAP 2026 Protocols</a> &bull; <a href="https://unece.org/fileadmin/DAM/trans/main/wp29/wp29regs/R121r1e.pdf">UNECE R121 (PDF)</a> &bull; <a href="https://www.iso.org/standard/68409.html">ISO 2575:2021</a></div>
+</section>
+
+<!-- ============ CH 03 ============ -->
+<section id="ch03">
+  <h2><span class="ch">Chapter 03</span>Display Hardware & CAN Signal Architecture</h2>
+
+  <div class="callout critical">
+    <div class="callout-title">Accuracy Warning for LLM Users</div>
+    <p>MFTBC does not publicly disclose display specifications (resolution, diagonal, panel type). If an LLM states "1920&times;720 12.3-inch TFT-LCD," these are unverified industry-typical values. Always verify against internal documentation.</p>
+  </div>
+
+  <h3>CAN FD Migration (2025&ndash;Late 2020s)</h3>
+  <!-- DIAGRAM: CAN Architecture Flow -->
+  <div class="diagram">
+    <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg">
+      <!-- ECUs -->
+      <rect class="node-fill" x="10" y="20" width="110" height="50" rx="6"/>
+      <text class="label-text" x="65" y="42" text-anchor="middle">Engine ECU</text>
+      <text class="sub-text" x="65" y="56" text-anchor="middle">6R30 / BMS</text>
+      <rect class="node-fill" x="10" y="90" width="110" height="50" rx="6"/>
+      <text class="label-text" x="65" y="112" text-anchor="middle">ADAS ECU</text>
+      <text class="sub-text" x="65" y="126" text-anchor="middle">ABA6 / ASA 2.0</text>
+      <rect class="node-fill" x="10" y="140" width="110" height="50" rx="6"/>
+      <text class="label-text" x="65" y="162" text-anchor="middle">Body ECU</text>
+      <text class="sub-text" x="65" y="176" text-anchor="middle">Lights / Doors</text>
+      <!-- CAN Bus Lines -->
+      <line x1="120" y1="45" x2="280" y2="90" class="arrow" stroke-dasharray="6 3"/>
+      <line x1="120" y1="115" x2="280" y2="100" class="arrow"/>
+      <line x1="120" y1="165" x2="280" y2="110" class="arrow" stroke-dasharray="6 3"/>
+      <!-- Bus box -->
+      <rect class="node-accent" x="280" y="70" width="140" height="60" rx="8"/>
+      <text class="label-text" x="350" y="95" text-anchor="middle">CAN / CAN FD</text>
+      <text class="sub-text" x="350" y="112" text-anchor="middle">J1939 250-500 kbps</text>
+      <!-- Cluster -->
+      <line class="arrow" x1="420" y1="100" x2="510" y2="100"/>
+      <rect class="node-accent" x="510" y="65" width="170" height="70" rx="8"/>
+      <text class="label-text" x="595" y="92" text-anchor="middle">Instrument Cluster</text>
+      <text class="sub-text" x="595" y="108" text-anchor="middle">200 ms display budget</text>
+      <text class="sub-text" x="595" y="122" text-anchor="middle">CRC + counter check</text>
+      <!-- Legend -->
+      <line x1="30" y1="198" x2="60" y2="198" stroke="var(--accent)" stroke-width="1.5"/>
+      <text class="sub-text" x="65" y="201">CAN FD (future)</text>
+      <line x1="180" y1="198" x2="210" y2="198" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="6 3"/>
+      <text class="sub-text" x="215" y="201">Classical CAN (current)</text>
+    </svg>
+    <div class="diagram-caption">Every cluster element is driven by CAN messages. ASIL B mandates 200 ms display latency and message integrity verification.</div>
+  </div>
+
+  <p>Key principles for CAN signal-to-UI mapping:</p>
+  <ul>
+    <li><strong>Signal latency budget:</strong> ASIL B requires telltale display within 200 ms of CAN message arrival.</li>
+    <li><strong>Message integrity:</strong> Cluster must verify CRC and message counter. Corrupted/late messages trigger safe state.</li>
+    <li><strong>DBC file as source of truth:</strong> Never trust LLM-generated CAN signal names. Verify against actual .dbc file.</li>
+  </ul>
+  <div class="sources">Sources: <a href="https://jcom1939.com/can-fd-in-sae-j1939-for-heavy-duty-vehicles-market-adoption-report/">CAN FD in J1939</a> &bull; <a href="https://github.com/elisa-tech/wg-automotive/blob/master/Initialy_discussed_system_scope/telltale.md">ELISA Telltale Safety</a></div>
+</section>
+
+<!-- ============ CH 04 ============ -->
+<section id="ch04">
+  <h2><span class="ch">Chapter 04</span>ADAS & Safety-Critical Telltale Design</h2>
+  <p>The 2024+ Super Great carries one of the most comprehensive ADAS suites in the Japanese heavy-duty segment.</p>
+
+  <h3>ABA6 Warning Escalation</h3>
+  <!-- DIAGRAM: Warning Escalation with animated colors -->
+  <div class="diagram">
+    <svg viewBox="0 0 700 90" xmlns="http://www.w3.org/2000/svg">
+      <!-- Stage 1 -->
+      <rect class="node-fill" x="10" y="20" width="120" height="50" rx="6"/>
+      <circle cx="30" cy="45" r="8" fill="#28b070"/>
+      <text class="label-text" x="80" y="42" text-anchor="middle">Standby</text>
+      <text class="sub-text" x="80" y="56" text-anchor="middle">Static &bull; Green</text>
+      <!-- Arrow -->
+      <line class="arrow" x1="130" y1="45" x2="160" y2="45"/>
+      <!-- Stage 2 -->
+      <rect class="node-fill" x="160" y="20" width="120" height="50" rx="6"/>
+      <circle cx="180" cy="45" r="8" fill="#d88a30" class="anim-pulse-amber"/>
+      <text class="label-text" x="230" y="42" text-anchor="middle">Warning</text>
+      <text class="sub-text" x="230" y="56" text-anchor="middle">Pulse &bull; Amber</text>
+      <line class="arrow" x1="280" y1="45" x2="310" y2="45"/>
+      <!-- Stage 3 -->
+      <rect class="node-fill" x="310" y="20" width="130" height="50" rx="6"/>
+      <circle cx="330" cy="45" r="8" fill="#d04a6a" class="anim-pulse-red"/>
+      <text class="label-text" x="385" y="42" text-anchor="middle">Brake Rec.</text>
+      <text class="sub-text" x="385" y="56" text-anchor="middle">Rapid &bull; Amber&rarr;Red</text>
+      <line class="arrow" x1="440" y1="45" x2="470" y2="45"/>
+      <!-- Stage 4 -->
+      <rect x="470" y="20" width="130" height="50" rx="6" fill="rgba(208,74,106,.15)" stroke="#d04a6a" stroke-width="2"/>
+      <circle cx="490" cy="45" r="8" fill="#d04a6a" class="anim-pulse-red"/>
+      <text class="label-text" x="545" y="42" text-anchor="middle">E-Brake</text>
+      <text class="sub-text" x="545" y="56" text-anchor="middle">Full takeover &bull; Red</text>
+      <line class="arrow" x1="600" y1="45" x2="630" y2="45"/>
+      <!-- Stage 5 -->
+      <rect class="node-fill" x="630" y="20" width="60" height="50" rx="6"/>
+      <text class="label-text" x="660" y="42" text-anchor="middle">Fault</text>
+      <text class="sub-text" x="660" y="56" text-anchor="middle">Amber</text>
+    </svg>
+    <div class="diagram-caption">ABA6 warning escalation: each stage increases visual urgency through color, animation rate, and screen real estate. Emergency brake commands full-screen takeover.</div>
+  </div>
+
+  <h3>Active Sideguard Assist 2.0</h3>
+  <p>ASA 2.0 monitors blind spots on <strong>both sides</strong> during turns and lane changes. Three-stage escalation at &le;20 km/h: visual alert &rarr; audible alarm + A-pillar lamp &rarr; damage mitigation brake.</p>
+
+  <div class="callout info">
+    <div class="callout-title">Telltale Hierarchy Principle</div>
+    <p>When multiple ADAS systems trigger simultaneously, prioritize by criticality. Emergency interventions (ABA full brake, ASA emergency stop) take absolute priority. Lower-priority warnings queue and display once the critical event resolves.</p>
+  </div>
+  <div class="sources">Sources: <a href="https://www.mitsubishi-fuso.com/en/product/new-super-great/">FUSO Super Great</a> &bull; <a href="https://www-cft.mitsubishi.com/en/csr/mpac/monitor/worldscope/202408/1.html">Mitsubishi Monitor</a></div>
+</section>
+
+<!-- ============ CH 05 ============ -->
+<section id="ch05">
+  <h2><span class="ch">Chapter 05</span>Powertrain-Specific HMI: Diesel, Electric & Hydrogen</h2>
+
+  <!-- DIAGRAM: Cross-Powertrain Modular Cluster -->
+  <div class="diagram">
+    <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg">
+      <!-- Shared zone -->
+      <rect class="node-accent" x="200" y="10" width="300" height="40" rx="6"/>
+      <text class="label-text" x="350" y="35" text-anchor="middle">Shared Zone: Speed &bull; ADAS Telltales &bull; Warnings</text>
+      <!-- Three powertrain modules -->
+      <rect class="node-fill" x="30" y="80" width="180" height="100" rx="8"/>
+      <text class="label-text" x="120" y="105" text-anchor="middle">Diesel Module</text>
+      <text class="sub-text" x="120" y="122" text-anchor="middle">Tachometer &bull; Fuel</text>
+      <text class="sub-text" x="120" y="136" text-anchor="middle">DPF Status &bull; AdBlue</text>
+      <text class="sub-text" x="120" y="150" text-anchor="middle">Coolant &bull; Turbo Boost</text>
+      <line class="arrow" x1="260" y1="50" x2="120" y2="80"/>
+      <rect class="node-accent" x="260" y="80" width="180" height="100" rx="8"/>
+      <text class="label-text" x="350" y="105" text-anchor="middle">EV Module</text>
+      <text class="sub-text" x="350" y="122" text-anchor="middle">SOC &bull; eRange</text>
+      <text class="sub-text" x="350" y="136" text-anchor="middle">Recuperation &bull; Charging</text>
+      <text class="sub-text" x="350" y="150" text-anchor="middle">Battery Temp &bull; V2X</text>
+      <line class="arrow" x1="350" y1="50" x2="350" y2="80"/>
+      <rect class="node-fill" x="490" y="80" width="180" height="100" rx="8"/>
+      <text class="label-text" x="580" y="105" text-anchor="middle">Hydrogen Module</text>
+      <text class="sub-text" x="580" y="122" text-anchor="middle">H2 Pressure &bull; Range</text>
+      <text class="sub-text" x="580" y="136" text-anchor="middle">FC Stack Status</text>
+      <text class="sub-text" x="580" y="150" text-anchor="middle">Refuel Progress</text>
+      <line class="arrow" x1="440" y1="50" x2="580" y2="80"/>
+    </svg>
+    <div class="diagram-caption">Modular cluster architecture: shared elements stay identical across powertrains. The powertrain-specific zone swaps based on vehicle type.</div>
+  </div>
+
+  <h3>DPF Regeneration Status (Diesel)</h3>
+  <ul>
+    <li><strong>Passive regen:</strong> No driver action. Subtle white/green DPF icon.</li>
+    <li><strong>Active regen required:</strong> Maintain speed. Amber icon + progress bar.</li>
+    <li><strong>Stationary regen required:</strong> Stop and activate manual regen. Red icon + text.</li>
+    <li><strong>DPF fault:</strong> Dealer service needed. Red icon + MIL.</li>
+  </ul>
+
+  <h3>eCanter EV Display Elements</h3>
+  <table>
+    <tr><th>Element</th><th>Visual Treatment</th></tr>
+    <tr><td>SOC (0&ndash;100%)</td><td>Battery bar. Green &gt;30%, amber 10&ndash;30%, red &lt;10%.</td></tr>
+    <tr><td>eRange (km)</td><td>Numeric + range ring. Dynamic based on behavior/terrain.</td></tr>
+    <tr><td>Recuperation</td><td>Power flow indicator: consuming vs. regenerating.</td></tr>
+    <tr><td>Charging Status</td><td>Not charging / AC / DC fast. Show kW rate + ETA.</td></tr>
+    <tr><td>V2X Export</td><td>Bidirectional flow indicator. ~10 kW max.</td></tr>
+  </table>
+
+  <h3>Hydrogen Fuel Cell (Hino Profia Z FCV)</h3>
+  <p>With ARCHION launching April 1, 2026, FUSO designers may design for hydrogen. The Profia Z FCV (Japan's first mass-produced FC heavy-duty truck, Oct 2025) features six 70 MPa hydrogen tanks, two Toyota MIRAI fuel cell stacks, and ~650 km loaded range.</p>
+  <div class="sources">Sources: <a href="https://www.electrive.com/2025/09/23/hino-unveils-japans-first-mass-produced-fuel-cell-heavy-duty-truck/">Electrive: Profia Z FCV</a> &bull; <a href="https://www.mitsubishi-fuso.com/en/product/new-ecanter/">FUSO eCanter</a></div>
+</section>
+
+<!-- ============ CH 06 ============ -->
+<section id="ch06">
+  <h2><span class="ch">Chapter 06</span>Functional Safety &mdash; ISO 26262 ASIL B</h2>
+
+  <!-- DIAGRAM: ASIL B Safety Pipeline -->
+  <div class="diagram">
+    <svg viewBox="0 0 700 130" xmlns="http://www.w3.org/2000/svg">
+      <rect class="node-fill" x="10" y="40" width="110" height="50" rx="6"/>
+      <text class="label-text" x="65" y="60" text-anchor="middle">CAN Message</text>
+      <text class="sub-text" x="65" y="76" text-anchor="middle">CRC + Counter</text>
+      <line class="arrow" x1="120" y1="65" x2="160" y2="65"/>
+      <rect class="node-fill" x="160" y="40" width="110" height="50" rx="6"/>
+      <text class="label-text" x="215" y="60" text-anchor="middle">Integrity Check</text>
+      <text class="sub-text" x="215" y="76" text-anchor="middle">Pass / Fail</text>
+      <line class="arrow" x1="270" y1="65" x2="310" y2="65"/>
+      <rect class="node-accent" x="310" y="40" width="110" height="50" rx="6"/>
+      <text class="label-text" x="365" y="60" text-anchor="middle">Render</text>
+      <text class="sub-text" x="365" y="76" text-anchor="middle">&le; 200 ms</text>
+      <line class="arrow" x1="420" y1="65" x2="460" y2="65"/>
+      <rect class="node-fill" x="460" y="40" width="110" height="50" rx="6"/>
+      <text class="label-text" x="515" y="60" text-anchor="middle">Readback</text>
+      <text class="sub-text" x="515" y="76" text-anchor="middle">Frame verify</text>
+      <line class="arrow" x1="570" y1="65" x2="610" y2="65"/>
+      <rect class="node-fill" x="610" y="40" width="80" height="50" rx="6"/>
+      <text class="label-text" x="650" y="60" text-anchor="middle">Display</text>
+      <text class="sub-text" x="650" y="76" text-anchor="middle">Driver sees</text>
+      <!-- Fail path -->
+      <line x1="215" y1="90" x2="215" y2="118" stroke="var(--a5)" stroke-width="1.5" marker-end="url(#arrowhead-muted)"/>
+      <line x1="515" y1="90" x2="515" y2="118" stroke="var(--a5)" stroke-width="1.5" marker-end="url(#arrowhead-muted)"/>
+      <rect x="170" y="108" width="400" height="22" rx="4" fill="rgba(208,74,106,.1)" stroke="var(--a5)"/>
+      <text x="370" y="123" text-anchor="middle" fill="var(--a5)" style="font-size:10px;font-weight:600">SAFE STATE: Screen off (kill pin) &mdash; within 100&ndash;200 ms</text>
+    </svg>
+    <div class="diagram-caption">ASIL B telltale pipeline. Any integrity or readback failure triggers kill pin, forcing the display to black.</div>
+  </div>
+
+  <table>
+    <tr><th>Requirement</th><th>ASIL</th><th>Detail</th></tr>
+    <tr><td><strong>Timely display</strong></td><td>B</td><td>Display warning within <strong>200 ms</strong> or transition to safe state.</td></tr>
+    <tr><td><strong>Unmotivated telltale</strong></td><td>B</td><td>Safe state within <strong>100 ms</strong> if false telltale shown.</td></tr>
+    <tr><td><strong>CAN integrity</strong></td><td>B</td><td>Check CRC + message counter. Fail = kill pin.</td></tr>
+    <tr><td><strong>Watchdog</strong></td><td>B</td><td>Independent watchdog pulls kill pin if controller fails.</td></tr>
+    <tr><td><strong>Image readback</strong></td><td>B</td><td>Verify rendered image matches requested telltale every frame.</td></tr>
+  </table>
+  <div class="sources">Sources: <a href="https://www.embitel.com/blog/embedded-blog/how-does-functional-safety-apply-to-digital-instrument-cluster">Embitel: Functional Safety</a> &bull; <a href="https://embeddedcomputing.com/technology/security/iec-iso-other-standards/designing-iso-26262-compliant-hmi-graphics-and-storage-for-automotive-clusters">ISO 26262 HMI Graphics</a></div>
+</section>
+
+<!-- ============ CH 07 ============ -->
+<section id="ch07">
+  <h2><span class="ch">Chapter 07</span>Glance-Time Budgets, Ergonomics & Cognitive Load</h2>
+
+  <!-- DIAGRAM: Glance Time Budget -->
+  <div class="diagram">
+    <svg viewBox="0 0 700 80" xmlns="http://www.w3.org/2000/svg">
+      <rect x="10" y="20" width="680" height="14" rx="7" fill="var(--border)"/>
+      <!-- 1.5 second zone -->
+      <rect x="10" y="20" width="145" height="14" rx="7" fill="var(--a3)"/>
+      <text class="sub-text" x="82" y="16" text-anchor="middle" fill="var(--a3)" style="font-weight:700">1.5s SAFE</text>
+      <!-- 2.0 second caution zone -->
+      <rect x="155" y="20" width="50" height="14" rx="0" fill="var(--a4)"/>
+      <text class="sub-text" x="180" y="50" text-anchor="middle">2.0s Euro NCAP limit</text>
+      <!-- Danger zone -->
+      <rect x="205" y="20" width="485" height="14" rx="7" fill="rgba(208,74,106,.3)"/>
+      <text class="sub-text" x="450" y="16" text-anchor="middle" fill="var(--a5)" style="font-weight:700">DANGER: Driver has no forward awareness</text>
+      <!-- Distance markers -->
+      <text class="sub-text" x="10" y="62" text-anchor="start">0 m</text>
+      <text class="sub-text" x="145" y="62" text-anchor="middle">~35 m @ 85 km/h</text>
+      <text class="sub-text" x="690" y="62" text-anchor="end">Increasing distance traveled blind</text>
+    </svg>
+    <div class="diagram-caption">At 85 km/h, a 1.5-second glance covers ~35 m of blind travel. Every display element must be readable within this budget.</div>
+  </div>
+
+  <h3>SAE J941 Limitation</h3>
+  <p>SAE J941's Class B (heavy truck) eye ellipses have <strong>not been updated since 2010</strong> and don't account for height-adjustable seats. Treat J941-based cluster placement as approximate for trucks.</p>
+
+  <h3>Long-Haul Cognitive Load</h3>
+  <ul>
+    <li><strong>Monotony fatigue:</strong> After hours on expressways, alerts must break through attentional fatigue.</li>
+    <li><strong>Exception-based info:</strong> Show only what has changed, not static dashboards.</li>
+    <li><strong>Glove-compatible:</strong> Japanese truck drivers wear work gloves. Physical buttons are essential.</li>
+  </ul>
+  <div class="sources">Sources: <a href="https://www.sae.org/standards/content/j941/">SAE J941</a> &bull; <a href="https://www.fleetequipmentmag.com/hmi-safer-driving/">Fleet Equipment: HMI Safety</a></div>
+</section>
+
+<!-- ============ CH 08 ============ -->
+<section id="ch08">
+  <h2><span class="ch">Chapter 08</span>Competitive Intelligence: Japanese Heavy-Duty OEMs</h2>
+  <table>
+    <tr><th>OEM</th><th>Model</th><th>HMI Status</th><th>Key Differentiator</th></tr>
+    <tr><td><strong>FUSO</strong></td><td>Super Great</td><td>Full LCD cluster, most comprehensive ADAS suite</td><td>ABA6 + ASA 2.0 + FBIS. Daimler Truck tech sharing.</td></tr>
+    <tr><td><strong>Hino</strong></td><td>Profia / Z FCV</td><td>LCD multi-display, steering controls</td><td>Japan's first mass-produced hydrogen FC truck. Level 4 concept.</td></tr>
+    <tr><td><strong>Isuzu</strong></td><td>Giga</td><td>LCD cluster, button-heavy cockpit</td><td>First Japan heavy-duty with wheel detachment warning.</td></tr>
+    <tr><td><strong>UD Trucks</strong></td><td>Quon</td><td>Color LCD multi-display, Good Design Award 2017</td><td>Volvo Group tech pipeline. ESCOT-VII AMT.</td></tr>
+  </table>
+  <div class="sources">Sources: <a href="https://www.isuzu.co.jp/world/newsroom/details/20251029_1.html">Isuzu Giga 2025</a> &bull; <a href="https://www.hino-global.com/corp/news/2025/20250919-003985.html">Hino Mobility Show 2025</a></div>
+</section>
+
+<!-- ============ CH 09 ============ -->
+<section id="ch09">
+  <h2><span class="ch">Chapter 09</span>LLM Fundamentals for the HMI Designer</h2>
+  <p>A Large Language Model predicts the next token in a sequence. Everything you send &mdash; prompt, pasted spec documents, and the model's response &mdash; must fit in its <strong>context window</strong>. Claude: ~200K tokens (~500 pages). GPT-5: ~128K. Gemini 2.5: up to 2M.</p>
+
+  <div class="card-grid">
+    <div class="card"><h4>Claude (Anthropic)</h4><p>200K context. Strong analysis, structured output, long document processing. Best for processing specs and generating tables.</p></div>
+    <div class="card"><h4>GPT-5 / o3 (OpenAI)</h4><p>Multimodal image input. Use for analyzing competitor dashboard photos and mockups. o3 for complex reasoning.</p></div>
+    <div class="card"><h4>Gemini 2.5 (Google)</h4><p>Up to 2M token context. Batch processing large spec sets. Prefers short prompts with examples.</p></div>
+    <div class="card"><h4>Open Source</h4><p>DeepSeek R1, Qwen 3, LLaMA 4. Run locally for proprietary CAN data that can't leave company infrastructure.</p></div>
+  </div>
+</section>
+
+<!-- ============ CH 10 ============ -->
+<section id="ch10">
+  <h2><span class="ch">Chapter 10</span>Expert Prompting for FUSO HMI Work</h2>
+  <p>Every prompt follows: <strong>Role &rarr; Context &rarr; Task &rarr; Format &rarr; Constraints</strong>.</p>
+
+  <h3>Pattern 1: Cluster Layout Spec</h3>
+  <div class="prompt-block">
+    <span class="strong">Expert Prompt</span>
+    <p><strong>Role:</strong> Senior automotive HMI designer, 15+ years heavy-duty commercial vehicle clusters, Japanese market. Familiar with ISO 26262 ASIL B, ISO 15005:2017, ISO 2575:2021, UNECE R121.</p>
+    <p><strong>Context:</strong> Designing digital cluster for FUSO Super Great MY2025+. 6R30 12.8L diesel, SHIFTPILOT 12-speed AMT. ADAS: ABA6, ASA 2.0, FBIS, Active Attention Assist, LDW. Exhaust: BlueTec SCR + DPF. Telematics: Truckonnect. <strong>Right-hand drive (Japan market).</strong></p>
+    <p><strong>Task:</strong> Propose 3-tier visual hierarchy. Tier 1 always visible, Tier 2 contextual, Tier 3 on-demand. For each element: tier, screen zone (left/center/right/top/bottom), size allocation, display type (gauge/numeric/icon/bar/text), ASIL classification.</p>
+    <p><strong>Format:</strong> Table grouped by tier. <strong>Constraints:</strong> ISO 15005 1.5s glance time. 10+ hour driver shifts. Night legibility. ASIL B telltales must support frame readback.</p>
+  </div>
+
+  <div class="callout warn">
+    <div class="callout-title">Always Specify RHD or LHD</div>
+    <p>The Super Great for Japan is <strong>right-hand drive</strong>. LLMs default to LHD assumptions. In RHD, "lower-right corner" is close to the driver &mdash; the opposite of LHD. Always state cab configuration explicitly.</p>
+  </div>
+
+  <h3>Pattern 2: CAN Signal-to-UI State Matrix</h3>
+  <div class="prompt-block">
+    <span class="strong">Expert Prompt</span>
+    <p><strong>Role:</strong> Automotive HMI systems engineer, CAN-to-display mapping, ISO 26262 ASIL B expertise.</p>
+    <p><strong>Context:</strong> eCanter next-gen cluster. BMS signals (illustrative &mdash; verify against DBC):</p>
+    <pre><code>BMS_StateOfCharge     (0-100%, 0.5% resolution)
+BMS_ChargingStatus    (0=None, 1=AC L1, 2=AC L2, 3=DC)
+BMS_CellTempWarning   (0=Normal, 1=High, 2=Critical)
+BMS_IsolationFault    (0=OK, 1=Warning, 2=Fault)</code></pre>
+    <p><strong>Task:</strong> Define complete UI state matrix per signal: element type, color (ISO 2575), animation, audio, ASIL, priority. <strong>Format:</strong> One table per signal.</p>
+  </div>
+</section>
+
+<!-- ============ CH 11 ============ -->
+<section id="ch11">
+  <h2><span class="ch">Chapter 11</span>Advanced Techniques & Context Engineering</h2>
+
+  <blockquote>"The LLM is the CPU, and its context window is the RAM. Context engineering is the art of filling the context window with just the right information."<cite>&mdash; Andrej Karpathy</cite></blockquote>
+
+  <h3>Four Context Strategies</h3>
+  <table>
+    <tr><th>Strategy</th><th>HMI Application</th></tr>
+    <tr><td><strong>Write</strong> &mdash; Save for later</td><td>Save generated state matrices to a project knowledge base. Reference in future prompts.</td></tr>
+    <tr><td><strong>Select</strong> &mdash; Pull relevant context</td><td>Paste only the ISO section or DBC signals relevant to the current task.</td></tr>
+    <tr><td><strong>Compress</strong> &mdash; Summarize</td><td>Summarize key decisions before continuing long design conversations.</td></tr>
+    <tr><td><strong>Isolate</strong> &mdash; Separate concerns</td><td>Use separate prompts for layout, color, icons, animation, and alert text.</td></tr>
+  </table>
+
+  <h3>Prompt Chaining for Specification Work</h3>
+  <!-- DIAGRAM: Prompt Chain -->
+  <div class="diagram">
+    <svg viewBox="0 0 700 70" xmlns="http://www.w3.org/2000/svg">
+      <rect class="node-fill" x="10" y="15" width="130" height="40" rx="6"/>
+      <text class="label-text" x="75" y="40" text-anchor="middle">1. Extract</text>
+      <line class="arrow" x1="140" y1="35" x2="175" y2="35"/>
+      <rect class="node-fill" x="175" y="15" width="130" height="40" rx="6"/>
+      <text class="label-text" x="240" y="40" text-anchor="middle">2. Classify</text>
+      <line class="arrow" x1="305" y1="35" x2="340" y2="35"/>
+      <rect class="node-accent" x="340" y="15" width="130" height="40" rx="6"/>
+      <text class="label-text" x="405" y="40" text-anchor="middle">3. Design</text>
+      <line class="arrow" x1="470" y1="35" x2="505" y2="35"/>
+      <rect class="node-fill" x="505" y="15" width="130" height="40" rx="6"/>
+      <text class="label-text" x="570" y="40" text-anchor="middle">4. Validate</text>
+    </svg>
+    <div class="diagram-caption">Break complex specs into sequential prompts. Each step's output feeds the next, giving the model focused context.</div>
+  </div>
+</section>
+
+<!-- ============ CH 12 — CLAUDE COWORK ============ -->
+<section id="ch12">
+  <h2><span class="ch">Chapter 12</span>Claude Cowork for HMI Design Workflows</h2>
+
+  <p>Claude Cowork, released in January 2026, extends Claude's agentic capabilities beyond coding into general knowledge work. Where a standard Claude conversation is reactive (you ask, it answers), Cowork is <strong>autonomous</strong>: you assign a task, grant folder or browser access, and Claude plans, executes, and delivers finished work &mdash; files created, data organized, research compiled.</p>
+
+  <p>For HMI designers at MFTBC, Cowork opens workflows that were previously impossible or prohibitively tedious with a chat interface.</p>
+
+  <!-- DIAGRAM: Cowork Architecture -->
+  <div class="diagram">
+    <svg viewBox="0 0 700 170" xmlns="http://www.w3.org/2000/svg">
+      <!-- You -->
+      <rect class="node-accent" x="10" y="60" width="100" height="50" rx="8"/>
+      <text class="label-text" x="60" y="82" text-anchor="middle">You</text>
+      <text class="sub-text" x="60" y="96" text-anchor="middle">Task + Folder</text>
+      <line class="arrow" x1="110" y1="85" x2="160" y2="85"/>
+      <!-- Cowork -->
+      <rect class="node-accent" x="160" y="40" width="180" height="90" rx="10"/>
+      <text class="label-text" x="250" y="65" text-anchor="middle">Claude Cowork</text>
+      <text class="sub-text" x="250" y="82" text-anchor="middle">Plans &rarr; Executes &rarr; Delivers</text>
+      <text class="sub-text" x="250" y="96" text-anchor="middle">Reads/writes your files</text>
+      <text class="sub-text" x="250" y="110" text-anchor="middle">Controls browser (Chrome)</text>
+      <!-- File System -->
+      <line class="arrow" x1="340" y1="65" x2="400" y2="45"/>
+      <rect class="node-fill" x="400" y="20" width="130" height="50" rx="6"/>
+      <text class="label-text" x="465" y="42" text-anchor="middle">Your Files</text>
+      <text class="sub-text" x="465" y="56" text-anchor="middle">Specs &bull; DBC &bull; Figma exports</text>
+      <!-- Browser -->
+      <line class="arrow" x1="340" y1="100" x2="400" y2="115"/>
+      <rect class="node-fill" x="400" y="95" width="130" height="50" rx="6"/>
+      <text class="label-text" x="465" y="117" text-anchor="middle">Browser</text>
+      <text class="sub-text" x="465" y="131" text-anchor="middle">Competitor sites &bull; ISO</text>
+      <!-- Output -->
+      <line class="arrow" x1="530" y1="45" x2="580" y2="80"/>
+      <line class="arrow" x1="530" y1="120" x2="580" y2="90"/>
+      <rect class="node-accent" x="580" y="60" width="110" height="50" rx="8"/>
+      <text class="label-text" x="635" y="82" text-anchor="middle">Deliverables</text>
+      <text class="sub-text" x="635" y="96" text-anchor="middle">Reports &bull; Specs &bull; Data</text>
+    </svg>
+    <div class="diagram-caption">Cowork operates autonomously: you provide a task and folder access, it plans and executes across files and browser, delivering finished work.</div>
+  </div>
+
+  <h3>Use Case 1: Competitor Dashboard Scraping & Analysis</h3>
+  <p>Services with slow-loading image galleries (dealer configurator sites, press image databases, internal asset management systems) can bottleneck your competitive analysis workflow. With Cowork + Claude in Chrome, you can instruct Claude to navigate to each competitor's press or product page, scroll through image galleries, capture screenshots of instrument cluster details, and compile them into an organized folder with filenames tagged by OEM, model, and feature. You review the compiled output in minutes instead of spending an afternoon clicking through slow-loading pages one by one.</p>
+  <div class="prompt-block">
+    <span class="label">Cowork: Competitor Cluster Image Collection</span>
+    <p>"Go to each of these URLs [list of Hino, Isuzu, UD Trucks press pages]. For each page, scroll through the image gallery, identify any images showing the instrument cluster or dashboard interior, and save screenshots to /HMI-Research/Competitors/[OEM-Name]/. Name each file [OEM]_[Model]_[Feature].png. After collecting all images, create a summary markdown file listing each image with the OEM, model year, and a one-line description of what the image shows."</p>
+  </div>
+
+  <h3>Use Case 2: ISO Standards Research & Extraction</h3>
+  <p>When you need to cross-reference multiple ISO standards for a design decision (e.g., "Does my DPF icon sizing comply with ISO 15008 at 750mm viewing distance, and does its color comply with ISO 2575?"), Cowork can browse publicly available ISO previews, extract relevant clauses, and compile a focused compliance brief &mdash; with each claim linked to its source page.</p>
+
+  <h3>Use Case 3: Batch Telltale Specification Generation</h3>
+  <p>If your design system has 40+ telltale icons that all need state definitions (normal, warning, critical, fault), writing each spec individually is hours of repetitive work. With Cowork:</p>
+  <div class="prompt-block">
+    <span class="label">Cowork: Batch Telltale Specs</span>
+    <p>"In /Design-System/Telltales/ you'll find a CSV file listing all 42 telltale icons with their names, ISO 2575 reference numbers, and ASIL classifications. For each telltale, generate a markdown specification file following the template in /Design-System/Templates/telltale-spec-template.md. Save each file as [icon-name]-spec.md. Apply ISO 2575 color conventions. For ASIL B items, include the 200ms display timing requirement and frame readback verification note."</p>
+  </div>
+
+  <h3>Use Case 4: Multi-Language Alert Copy at Scale</h3>
+  <p>The Super Great is sold in Japan, Southeast Asia, Australia, and parts of Europe. Alert text must work across Japanese, English, Thai, and potentially German. Instead of managing translations one-by-one in a chat, Cowork can process an entire alert library:</p>
+  <div class="prompt-block">
+    <span class="label">Cowork: Alert Copy Library</span>
+    <p>"In /Alerts/source-en.csv you'll find 28 driver alert messages with columns: ID, Level (advisory/warning/critical), English headline, English body, max character count. For each alert, generate translations in Japanese, Thai, and German. Verify each translation fits within the character limits. Save to /Alerts/translations.xlsx with columns: ID, Level, EN_headline, EN_body, JP_headline, JP_body, TH_headline, TH_body, DE_headline, DE_body, chars_ok (boolean per language)."</p>
+  </div>
+
+  <h3>Use Case 5: Scheduled Regulatory Monitoring</h3>
+  <p>Cowork supports <strong>scheduled recurring tasks</strong>. Set up a weekly task that monitors UNECE WP.29 working group pages, Euro NCAP protocol updates, and MLIT regulatory announcements for any changes that affect HMI requirements. Claude compiles a brief each Monday morning with links to new documents and a summary of implications for your instrument cluster design.</p>
+  <div class="prompt-block">
+    <span class="label">Cowork: Weekly Regulatory Scan</span>
+    <p>"Every Monday at 8:00 AM, check these URLs for new publications since last week: [UNECE WP.29 page], [Euro NCAP protocols page], [MLIT vehicle standards page]. If new documents are found, summarize each in 2&ndash;3 sentences and flag whether it affects instrument cluster telltale requirements, display specifications, or ADAS HMI guidelines. Save the report to /Regulatory/weekly-scan-[date].md."</p>
+  </div>
+
+  <h3>Use Case 6: Design Review Preparation</h3>
+  <p>Before presenting a cluster layout to stakeholders, have Cowork compile a review package: it reads your Figma export images, cross-references them against the telltale spec files in your folder, flags any missing states or ISO compliance gaps, and generates a presentation-ready summary document with screenshots annotated against requirements.</p>
+
+  <h3>Use Case 7: CAN DBC File Processing</h3>
+  <p>Given access to a folder containing .dbc files, Cowork can parse them, extract all signals relevant to the instrument cluster, generate a human-readable signal dictionary, and produce a draft UI state matrix for each signal &mdash; all saved as structured files ready for design review.</p>
+
+  <div class="callout info">
+    <div class="callout-title">Cowork vs. Chat: When to Use Which</div>
+    <p><strong>Use Cowork when:</strong> The task involves many files, requires browser access, is repetitive across items, or benefits from autonomous execution while you do other work.<br>
+    <strong>Use regular Claude chat when:</strong> You need interactive back-and-forth reasoning, are exploring a single design decision, or want fine-grained control over each step.</p>
+  </div>
+
+  <div class="callout warn">
+    <div class="callout-title">Cowork Safety for ASIL-Rated Work</div>
+    <p>Cowork operates autonomously, which means it can create and modify files without step-by-step approval. For ASIL B-rated specifications, <strong>never grant Cowork write access to production spec directories.</strong> Use a separate working folder, and manually review + transfer files after verification. Anthropic explicitly warns about the risk of deleted files or prompt injection &mdash; keep production artifacts outside Cowork's sandbox.</p>
+  </div>
+
+  <div class="sources">Sources: <a href="https://claude.com/blog/cowork-research-preview">Anthropic: Introducing Cowork</a> &bull; <a href="https://techcrunch.com/2026/01/12/anthropics-new-cowork-tool-offers-claude-code-without-the-code/">TechCrunch: Cowork Launch</a> &bull; <a href="https://www.cnbc.com/2026/02/24/anthropic-claude-cowork-office-worker.html">CNBC: Cowork Enterprise</a> &bull; <a href="https://simonwillison.net/2026/Jan/12/claude-cowork/">Simon Willison: Cowork First Impressions</a></div>
+</section>
+
+<!-- ============ CH 13 ============ -->
+<section id="ch13">
+  <h2><span class="ch">Chapter 13</span>Verification, Hallucination Risk & Safety Protocols</h2>
+
+  <h3>Known Hallucination Patterns</h3>
+  <table>
+    <tr><th>LLM Behavior</th><th>Risk</th><th>Mitigation</th></tr>
+    <tr><td>Fabricates ISO clause numbers</td><td>Cited in spec, loses credibility</td><td>Verify every clause against source document.</td></tr>
+    <tr><td>Invents CAN signal names</td><td>Spec references nonexistent signals</td><td>All signal names are placeholders until DBC-verified.</td></tr>
+    <tr><td>States display specs as fact</td><td>"12.3-inch 1920&times;720" is unverified</td><td>Check internal documentation.</td></tr>
+    <tr><td>Generates ASIL classifications</td><td>Over/under-classifying</td><td>ASIL comes from hazard analysis, not LLM.</td></tr>
+    <tr><td>Assumes left-hand drive</td><td>Zone placement inverted for Japan</td><td>Always specify RHD in prompt.</td></tr>
+  </table>
+
+  <h3>Verification by Stakes Level</h3>
+  <div class="stakes-grid">
+    <div class="card" style="border-top:3px solid var(--a3)">
+      <h4 style="color:var(--a3)">Low Stakes</h4>
+      <p>Brainstorming, icon ideation, early concepts, comparative research.</p>
+      <p><strong>Verification:</strong> Quick sanity check. If surprising, investigate. Creative value outweighs minor inaccuracy risk.</p>
+    </div>
+    <div class="card" style="border-top:3px solid var(--a4)">
+      <h4 style="color:var(--a4)">Medium Stakes</h4>
+      <p>Internal design specs, layout proposals, style guides, competitor analysis.</p>
+      <p><strong>Verification:</strong> Spot-check key claims. Verify standards references. Cross-reference CAN signals against DBC. Colleague review.</p>
+    </div>
+    <div class="card" style="border-top:3px solid var(--a5)">
+      <h4 style="color:var(--a5)">High Stakes</h4>
+      <p>ASIL-rated elements, standards compliance, production specs, regulatory submissions.</p>
+      <p><strong>Verification:</strong> Verify <strong>every</strong> claim. All ISO references checked. All ASIL confirmed by safety team. Never submit without qualified engineer review.</p>
+    </div>
+  </div>
+
+  <div class="callout critical">
+    <div class="callout-title">Non-Negotiable Rule</div>
+    <p>Never submit an ASIL B specification generated by an LLM without independent verification by a qualified functional safety engineer. The LLM is a drafting tool, not a safety authority.</p>
+  </div>
+</section>
+
+<!-- ============ CH 14 ============ -->
+<section id="ch14">
+  <h2><span class="ch">Chapter 14</span>The Road Ahead: ARCHION, Coretura & SDV-Era HMI</h2>
+
+  <!-- DIAGRAM: ARCHION vs Coretura -->
+  <div class="diagram">
+    <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg">
+      <!-- Daimler Truck -->
+      <rect class="node-accent" x="240" y="10" width="220" height="40" rx="8"/>
+      <text class="label-text" x="350" y="35" text-anchor="middle">Daimler Truck AG</text>
+      <!-- ARCHION branch -->
+      <line class="arrow" x1="290" y1="50" x2="140" y2="90"/>
+      <rect class="node-fill" x="40" y="90" width="200" height="60" rx="8"/>
+      <text class="label-text" x="140" y="115" text-anchor="middle">ARCHION (Apr 2026)</text>
+      <text class="sub-text" x="140" y="132" text-anchor="middle">Daimler Truck 25% + Toyota 25%</text>
+      <!-- ARCHION children -->
+      <line x1="90" y1="150" x2="70" y2="175" class="arrow"/>
+      <line x1="190" y1="150" x2="210" y2="175" class="arrow"/>
+      <rect class="node-fill" x="10" y="175" width="120" height="35" rx="6"/>
+      <text class="label-text" x="70" y="197" text-anchor="middle">FUSO</text>
+      <rect class="node-fill" x="150" y="175" width="120" height="35" rx="6"/>
+      <text class="label-text" x="210" y="197" text-anchor="middle">Hino</text>
+      <!-- Toyota -->
+      <rect class="node-fill" x="290" y="90" width="120" height="40" rx="6"/>
+      <text class="label-text" x="350" y="115" text-anchor="middle">Toyota Motor</text>
+      <line x1="350" y1="50" x2="350" y2="90" stroke="var(--border-accent)" stroke-width="1"/>
+      <line x1="350" y1="130" x2="230" y2="130" stroke="var(--border-accent)" stroke-width="1" stroke-dasharray="4 3"/>
+      <!-- Coretura branch -->
+      <line class="arrow" x1="410" y1="50" x2="560" y2="90"/>
+      <rect class="node-accent" x="460" y="90" width="200" height="60" rx="8"/>
+      <text class="label-text" x="560" y="115" text-anchor="middle">Coretura AB (Jun 2025)</text>
+      <text class="sub-text" x="560" y="132" text-anchor="middle">Daimler 50% + Volvo 50%</text>
+      <!-- Volvo -->
+      <rect class="node-fill" x="490" y="175" width="120" height="35" rx="6"/>
+      <text class="label-text" x="550" y="197" text-anchor="middle">Volvo Group</text>
+      <line x1="560" y1="150" x2="550" y2="175" class="arrow"/>
+      <line x1="620" y1="60" x2="620" y2="90" stroke="var(--border-accent)" stroke-width="1"/>
+      <rect class="node-fill" x="560" y="40" width="120" height="40" rx="6"/>
+      <text class="label-text" x="620" y="65" text-anchor="middle">Volvo Group</text>
+      <!-- Labels -->
+      <text class="sub-text" x="140" y="82" text-anchor="middle" fill="var(--a4)">Product Integration</text>
+      <text class="sub-text" x="560" y="82" text-anchor="middle" fill="var(--accent)">SDV Software Platform</text>
+    </svg>
+    <div class="diagram-caption">ARCHION (product integration: FUSO + Hino) and Coretura (software platform: Daimler + Volvo) are separate entities. FUSO sits at the intersection.</div>
+  </div>
+
+  <h3>ARCHION (April 1, 2026)</h3>
+  <p>Holding company owning 100% of FUSO and Hino. CEO: Karl Deppen. CTO: Satoshi Ogiso. 40,000+ employees. Plants consolidating to 3 sites by 2028. Targeting Tokyo Stock Exchange listing.</p>
+
+  <h3>Coretura AB (June 2025)</h3>
+  <p>SDV platform JV between Daimler Truck and Volvo Group. CEO: Johan Lund&eacute;n. ~50 employees, growing. First products in vehicles by ~2029&ndash;2030. Standardized, open OS. Decoupled software/hardware cycles enable OTA UI updates.</p>
+
+  <h3>Industry Trends</h3>
+  <ul>
+    <li><strong>Digital cockpit market:</strong> USD 26.61B (2025) &rarr; USD 47.34B (2030), 12.21% CAGR.</li>
+    <li><strong>Unreal Engine:</strong> Shipping in 35+ car models, 2M+ vehicles. Becoming de facto HMI rendering standard.</li>
+    <li><strong>AR HUDs:</strong> Continental AUMOVIO compact 3D HUD (Sep 2025), 50% smaller installation.</li>
+    <li><strong>Physical controls comeback:</strong> Euro NCAP 2026 + consumer surveys confirm preference for hybrid HMI.</li>
+  </ul>
+  <div class="sources">Sources: <a href="https://www.ccjdigital.com/business/article/15769483/merger-of-hino-fuso-officially-launching-in-april-2026">CCJ: ARCHION</a> &bull; <a href="https://www.fleetequipmentmag.com/coretura-software-defined-truck-platform-volvo-daimler/">Fleet Equipment: Coretura</a> &bull; <a href="https://star.global/posts/automotive-hmi-trends/">Star: HMI Trends 2026</a></div>
+</section>
+
+<!-- ============ CH 15 ============ -->
+<section id="ch15">
+  <h2><span class="ch">Chapter 15</span>Expert Workflow & Verification Checklist</h2>
+
+  <h3>Pre-Prompt Checklist</h3>
+  <ol>
+    <li>What exactly do I need? (Layout spec? State matrix? Alert copy? Standards review?)</li>
+    <li>What vehicle? (Super Great / eCanter / Canter / Fighter. Model year. <strong>RHD or LHD?</strong>)</li>
+    <li>What context does the model need? (Display dimensions, CAN signals, ISO sections.)</li>
+    <li>What output format? (Table, JSON, Figma component spec, prose.)</li>
+    <li>Is this safety-critical? (If yes: plan full verification. No ASIL specs without engineer review.)</li>
+  </ol>
+
+  <h3>Post-Output Verification</h3>
+  <ol>
+    <li>Does output match my request? (Format, scope, detail level.)</li>
+    <li>Are ISO/SAE/UNECE references accurate? (Check every clause number.)</li>
+    <li>Are CAN signal names real? (Verify against DBC. Assume fictitious until confirmed.)</li>
+    <li>Are ASIL classifications correct? (Confirm with safety team.)</li>
+    <li>Does placement analysis account for RHD? (Driver on right for Japan.)</li>
+    <li>For safety-critical items: has a qualified engineer verified?</li>
+  </ol>
+
+  <blockquote>AI doesn't replace the judgment that makes a good HMI designer. It amplifies the throughput. You decide what the driver needs, when, and how. The LLM handles drafting, cross-referencing, and systematic enumeration. That division is where the productivity gain lives.</blockquote>
+</section>
+
+<hr>
+<footer>
+  <p>Compiled March 2026. Contextualized for Mitsubishi Fuso / ARCHION / Japanese heavy-duty truck HMI design.</p>
+  <p>Based on research from <a href="https://www.mitsubishi-fuso.com/en/">MFTBC</a>, <a href="https://www.daimlertruck.com/en/">Daimler Truck</a>, <a href="https://www.iso.org">ISO</a>, <a href="https://unece.org">UNECE</a>, <a href="https://www.sae.org">SAE</a>, <a href="https://www.euroncap.com">Euro NCAP</a>, <a href="https://www.coretura.com">Coretura</a>, <a href="https://claude.com/blog/cowork-research-preview">Anthropic</a>, and practitioner sources.</p>
+  <p><strong>All standards references, CAN signal names, and hardware specs must be independently verified before production use.</strong></p>
+</footer>
+
+</div><!-- /content-wrap -->
+</div><!-- /main -->
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+(function(){
+  // --- Theme Toggle ---
+  const html = document.documentElement;
+  const sw = document.getElementById('theme-sw');
+  const label = document.getElementById('theme-label');
+  const settingsBtn = document.getElementById('settings-btn');
+  const settingsPopup = document.getElementById('settings-popup');
+
+  function applyTheme(light) {
+    if (light) { html.classList.add('light'); } else { html.classList.remove('light'); }
+    label.textContent = light ? 'Dark Mode' : 'Light Mode';
+    localStorage.setItem('fuso-hmi-theme', light ? 'light' : 'dark');
+  }
+
+  // Load saved theme
+  const saved = localStorage.getItem('fuso-hmi-theme');
+  if (saved === 'light') applyTheme(true);
+
+  sw.addEventListener('click', function() {
+    applyTheme(!html.classList.contains('light'));
+  });
+
+  // Settings popup toggle
+  settingsBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    settingsPopup.classList.toggle('open');
+  });
+  document.addEventListener('click', function(e) {
+    if (!settingsPopup.contains(e.target) && e.target !== settingsBtn) {
+      settingsPopup.classList.remove('open');
+    }
+  });
+
+  // --- Hamburger / Sidebar ---
+  const hamburger = document.getElementById('hamburger');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+
+  hamburger.addEventListener('click', function() {
+    hamburger.classList.toggle('open');
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('open');
+  });
+  overlay.addEventListener('click', function() {
+    hamburger.classList.remove('open');
+    sidebar.classList.remove('open');
+    overlay.classList.remove('open');
+  });
+
+  // Close sidebar on link click (mobile)
+  sidebar.querySelectorAll('.toc-link').forEach(function(link) {
+    link.addEventListener('click', function() {
+      if (window.innerWidth <= 900) {
+        hamburger.classList.remove('open');
+        sidebar.classList.remove('open');
+        overlay.classList.remove('open');
+      }
+    });
+  });
+
+  // --- Active TOC link on scroll ---
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-link');
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        tocLinks.forEach(function(l) { l.classList.remove('active'); });
+        const active = sidebar.querySelector('a[href="#' + entry.target.id + '"]');
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  sections.forEach(function(s) { observer.observe(s); });
+})();
+</script>
+</body>
+</html>

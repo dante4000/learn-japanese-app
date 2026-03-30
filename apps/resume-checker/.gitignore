@@ -1,0 +1,8 @@
+node_modules/
+bug-testing/screenshots/
+bug-testing/logs/
+bug-testing/reports/
+.DS_Store
+.vercel
+.env
+!.env.example

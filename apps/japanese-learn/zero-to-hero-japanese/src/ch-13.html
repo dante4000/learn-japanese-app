@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ch13: Native Japanese Vocabulary — Zero to Hero 日本語</title>
+<link rel="stylesheet" href="css/design-system.css">
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <span class="logo-badge">Zero to Hero — Memory Architecture Edition</span>
+    <div class="logo-title">日本語 for Korean Speakers</div>
+    <div class="logo-sub">From 한국어 to 日本語 — The Memory Architect's Guide</div>
+  </a>
+  <div class="sidebar-progress">
+    <div class="sidebar-progress-label">Progress</div>
+    <div class="sidebar-progress-bar">
+      <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+    </div>
+    <div class="sidebar-progress-count">0/22 complete</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="ch-00.html" class="toc-link"><span class="toc-num">00</span><span class="toc-check" data-ch="00"></span>Memory Science</a>
+    <a href="ch-01.html" class="toc-link"><span class="toc-num">01</span><span class="toc-check" data-ch="01"></span>Your Korean Advantage</a>
+    <a href="ch-02.html" class="toc-link"><span class="toc-num">02</span><span class="toc-check" data-ch="02"></span>Hiragana</a>
+    <a href="ch-03.html" class="toc-link"><span class="toc-num">03</span><span class="toc-check" data-ch="03"></span>Katakana</a>
+    <a href="ch-04.html" class="toc-link"><span class="toc-num">04</span><span class="toc-check" data-ch="04"></span>Pronunciation</a>
+    <a href="ch-05.html" class="toc-link"><span class="toc-num">05</span><span class="toc-check" data-ch="05"></span>Survival Japanese</a>
+    <a href="ch-06.html" class="toc-link"><span class="toc-num">06</span><span class="toc-check" data-ch="06"></span>Counters</a>
+    <a href="ch-07.html" class="toc-link"><span class="toc-num">07</span><span class="toc-check" data-ch="07"></span>Particles</a>
+    <a href="ch-08.html" class="toc-link"><span class="toc-num">08</span><span class="toc-check" data-ch="08"></span>Verb Conjugation</a>
+    <a href="ch-09.html" class="toc-link"><span class="toc-num">09</span><span class="toc-check" data-ch="09"></span>Daily Conversations</a>
+    <a href="ch-10.html" class="toc-link"><span class="toc-num">10</span><span class="toc-check" data-ch="10"></span>Sentence Patterns</a>
+    <a href="ch-11.html" class="toc-link"><span class="toc-num">11</span><span class="toc-check" data-ch="11"></span>Kanji</a>
+    <a href="ch-12.html" class="toc-link"><span class="toc-num">12</span><span class="toc-check" data-ch="12"></span>Sino-Vocabulary</a>
+    <a href="ch-13.html" class="toc-link active"><span class="toc-num">13</span><span class="toc-check" data-ch="13"></span>Native Vocabulary</a>
+    <a href="ch-14.html" class="toc-link"><span class="toc-num">14</span><span class="toc-check" data-ch="14"></span>Honorifics</a>
+    <a href="ch-15.html" class="toc-link"><span class="toc-num">15</span><span class="toc-check" data-ch="15"></span>Reading</a>
+    <a href="ch-16.html" class="toc-link"><span class="toc-num">16</span><span class="toc-check" data-ch="16"></span>Writing</a>
+    <a href="ch-17.html" class="toc-link"><span class="toc-num">17</span><span class="toc-check" data-ch="17"></span>Listening</a>
+    <a href="ch-18.html" class="toc-link"><span class="toc-num">18</span><span class="toc-check" data-ch="18"></span>Cultural Pragmatics</a>
+    <a href="ch-19.html" class="toc-link"><span class="toc-num">19</span><span class="toc-check" data-ch="19"></span>JLPT and Beyond</a>
+    <a href="ch-20.html" class="toc-link"><span class="toc-num">20</span><span class="toc-check" data-ch="20"></span>Memory Palace</a>
+    <a href="ch-21.html" class="toc-link"><span class="toc-num">21</span><span class="toc-check" data-ch="21"></span>The 90-Day Sprint</a>
+    <a href="appendices.html" class="toc-link" style="margin-top:.5rem;border-top:1px solid var(--border);padding-top:.8rem"><span class="toc-num">+</span>Appendices</a>
+  </nav>
+</aside>
+
+<div class="main">
+<div class="content-wrap">
+
+<section id="ch13" data-ch="13" style="padding-top:3rem">
+<h2><span class="ch-label">Chapter 13</span>Native Japanese Vocabulary -- Words Korean Can't Help With</h2>
+
+<div class="callout memory">
+  <div class="callout-title">Memory Technique Spotlight: Keyword Method + Vivid Imagery</div>
+  <p>Native Japanese vocabulary (和語) doesn't transfer from Korean, so you need powerful mnemonics. For each word: find a keyword that sounds like the Japanese, create a bizarre/vivid/emotional image linking it to the meaning, then place it in your Park memory palace. The more outrageous the image, the better you'll remember.</p>
+</div>
+<div class="callout info">
+  <div class="callout-title">Palace Assignment: A Familiar Park (공원)</div>
+  <p>Choose a park you know well. The entrance gate, bench, fountain, playground, trees, path, bridge, pond, flower bed, statue — each becomes a station for native vocabulary words, anchored with vivid keyword images.</p>
+</div>
+
+<p>In Ch05, you learned <span class="jp">水</span> (<span class="jp">みず</span>, water) and <span class="jp">美味しい</span> (<span class="jp">おいしい</span>, delicious) as survival phrases. Now let's systematically build your <strong>和語</strong> (wago) vocabulary across all categories.</p>
+
+<div class="pq">
+  "Sino-vocabulary (漢語) is your shortcut. 和語 is where shortcuts end and memorization begins. Every word in this chapter must be drilled, mnemonicked, and made automatic."
+</div>
+
+<div class="callout warn">
+  <div class="callout-title">No Romaji From Here</div>
+  <p>Starting from Chapter 11, <strong>romaji is gone</strong>. All readings are in hiragana. By now you should be reading kana fluently. If you are still reaching for romaji, go back to Chapters 02-03 for a refresher before continuing.</p>
+</div>
+
+<div class="callout info">
+  <div class="callout-title">Why 和語 is Hard for Korean Speakers</div>
+  <p>Your Korean advantage with 한자어 (Sino-vocabulary) is enormous -- but it covers formal, academic, and compound words. The everyday, emotional, concrete vocabulary of Japanese comes from <strong>和語</strong> -- native Japanese words that share <em>zero</em> overlap with Korean. <span class="kr">물</span> (water) has nothing to do with <span class="jp">みず</span>. <span class="kr">먹다</span> (eat) is unrelated to <span class="jp">たべる</span>. This chapter gives you keyword mnemonics for every single word so brute memorization becomes structured recall.</p>
+</div>
+
+<!-- ─── RECALL CHECK (top of chapter, from Ch11-11) ─── -->
+<nav class="chapter-toc">
+  <details open>
+    <summary class="chapter-toc-title">In This Chapter</summary>
+  <ol>
+    <li><a href="#recall-check----chapters-10-11">Recall Check -- Chapters 10-11</a></li>
+    <li><a href="#1-body----体のことば">Body -- 体のことば</a></li>
+    <li><a href="#2-food-and-drink----食べ物と飲み物">Food and Drink -- 食べ物と飲み物</a></li>
+    <li><a href="#3-nature----自然のことば">Nature -- 自然のことば</a></li>
+    <li><a href="#4-time----時のことば">Time -- 時のことば</a></li>
+    <li><a href="#5-actions----動きのことば">Actions -- 動きのことば</a></li>
+    <li><a href="#6-adjectives----形容詞">Adjectives -- 形容詞</a></li>
+    <li><a href="#7-people-and-relations----人と関係">People and Relations -- 人と関係</a></li>
+    <li><a href="#8-onomatopoeia----オノマトペ">Onomatopoeia -- オノマトペ</a></li>
+    <li><a href="#bonus-places-and-home----場所と家">Bonus: Places and Home -- 場所と家</a></li>
+    <li><a href="#interactive-exercises">Interactive Exercises</a></li>
+    <li><a href="#recall-check----chapters-10-11-review">Recall Check -- Chapters 10-11 Review</a></li>
+  </ol>
+  </details>
+</nav>
+
+<h3 id="recall-check----chapters-10-11">Recall Check -- Chapters 10-11</h3>
+<p>Before building new vocabulary, verify your kanji and sino-vocabulary foundations are solid.</p>
+
+<div id="recall-check-top"></div>
+
+<!-- ─── MNEMONIC SVG: 和語 vs 漢語 ─── -->
+<div class="diagram">
+  <svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg">
+    <!-- 漢語 region -->
+    <rect x="30" y="30" width="300" height="220" rx="12" fill="none" stroke="var(--a2)" stroke-width="2" opacity=".6"/>
+    <text x="180" y="58" text-anchor="middle" font-size="16" font-weight="600" fill="var(--a2)">漢語 (Sino-vocab)</text>
+    <text x="180" y="82" text-anchor="middle" font-size="11" fill="var(--text-muted)">Korean 한자어 helps here</text>
+    <text x="180" y="110" text-anchor="middle" font-size="10" fill="var(--text-muted)">学生 (がくせい) = 학생</text>
+    <text x="180" y="128" text-anchor="middle" font-size="10" fill="var(--text-muted)">図書館 (としょかん) = 도서관</text>
+    <text x="180" y="146" text-anchor="middle" font-size="10" fill="var(--text-muted)">経済 (けいざい) = 경제</text>
+    <text x="180" y="164" text-anchor="middle" font-size="10" fill="var(--text-muted)">病院 (びょういん) = 병원</text>
+    <text x="180" y="190" text-anchor="middle" font-size="12" font-weight="600" fill="var(--a2)">Formal / Academic / Compounds</text>
+    <text x="180" y="210" text-anchor="middle" font-size="10" fill="var(--a3)">Transfer rate: ~40-60%</text>
+    <text x="180" y="230" text-anchor="middle" font-size="22" fill="var(--a2)">Your shortcut zone</text>
+
+    <!-- 和語 region -->
+    <rect x="370" y="30" width="300" height="220" rx="12" fill="none" stroke="var(--accent)" stroke-width="2" opacity=".6"/>
+    <text x="520" y="58" text-anchor="middle" font-size="16" font-weight="600" fill="var(--accent)">和語 (Native vocab)</text>
+    <text x="520" y="82" text-anchor="middle" font-size="11" fill="var(--text-muted)">Korean does NOT help here</text>
+    <text x="520" y="110" text-anchor="middle" font-size="10" fill="var(--text-muted)">食べる (たべる) = eat</text>
+    <text x="520" y="128" text-anchor="middle" font-size="10" fill="var(--text-muted)">水 (みず) = water</text>
+    <text x="520" y="146" text-anchor="middle" font-size="10" fill="var(--text-muted)">嬉しい (うれしい) = happy</text>
+    <text x="520" y="164" text-anchor="middle" font-size="10" fill="var(--text-muted)">走る (はしる) = run</text>
+    <text x="520" y="190" text-anchor="middle" font-size="12" font-weight="600" fill="var(--accent)">Everyday / Emotional / Concrete</text>
+    <text x="520" y="210" text-anchor="middle" font-size="10" fill="var(--a3)">Transfer rate: ~0%</text>
+    <text x="520" y="230" text-anchor="middle" font-size="22" fill="var(--accent)">Mnemonic zone</text>
+  </svg>
+  <div class="diagram-caption">漢語 = your Korean advantage. 和語 = pure memorization territory. This chapter conquers the right side.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 1: BODY
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="1-body----体のことば">Body -- <span class="jp">体のことば</span></h3>
+
+<p>Body parts are among the most fundamental 和語. None of these come from Chinese, so your Korean gives you zero help. Every word needs its own mnemonic anchor.</p>
+
+<table>
+  <thead>
+    <tr><th>Japanese</th><th>Reading</th><th>Meaning</th><th>Mnemonic</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="jp">体</td><td class="jp">からだ</td><td>body</td><td>"KARATE uses the whole body"</td></tr>
+    <tr><td class="jp">頭</td><td class="jp">あたま</td><td>head</td><td>"A LLAMA has a big head"</td></tr>
+    <tr><td class="jp">顔</td><td class="jp">かお</td><td>face</td><td>"COW face -- imagine a cow's face"</td></tr>
+    <tr><td class="jp">目</td><td class="jp">め</td><td>eye</td><td>"ME! Look at ME!" -- point to your eye"</td></tr>
+    <tr><td class="jp">耳</td><td class="jp">みみ</td><td>ear</td><td>"ME-ME! I hear MYSELF echo"</td></tr>
+    <tr><td class="jp">鼻</td><td class="jp">はな</td><td>nose</td><td>"HANNAH has a big nose"</td></tr>
+    <tr><td class="jp">口</td><td class="jp">くち</td><td>mouth</td><td>"COOCHIE-coo baby mouth"</td></tr>
+    <tr><td class="jp">歯</td><td class="jp">は</td><td>tooth/teeth</td><td>"HA! Show your teeth when laughing"</td></tr>
+    <tr><td class="jp">舌</td><td class="jp">した</td><td>tongue</td><td>"SHEETAH -- tongue sticks out like a cheetah panting"</td></tr>
+    <tr><td class="jp">首</td><td class="jp">くび</td><td>neck</td><td>"CUBIC neck -- a blocky neck"</td></tr>
+    <tr><td class="jp">肩</td><td class="jp">かた</td><td>shoulder</td><td>"KATA (karate form) -- square your shoulders"</td></tr>
+    <tr><td class="jp">胸</td><td class="jp">むね</td><td>chest</td><td>"MOON-AY -- moonlight on the chest"</td></tr>
+    <tr><td class="jp">背中</td><td class="jp">せなか</td><td>back</td><td>"SENAKA -- Say NAKA (middle) of your backside"</td></tr>
+    <tr><td class="jp">腕</td><td class="jp">うで</td><td>arm</td><td>"OOH-DAY strong arms!"</td></tr>
+    <tr><td class="jp">手</td><td class="jp">て</td><td>hand</td><td>"TAY -- a hand deals cards on the TABLE"</td></tr>
+    <tr><td class="jp">指</td><td class="jp">ゆび</td><td>finger</td><td>"YOU-BEE -- a bee stung YOUR finger"</td></tr>
+    <tr><td class="jp">爪</td><td class="jp">つめ</td><td>nail/claw</td><td>"ZOOM-AY -- nails zoom out when they grow"</td></tr>
+    <tr><td class="jp">腹</td><td class="jp">はら</td><td>stomach/belly</td><td>"HARA-kiri -- cutting the belly"</td></tr>
+    <tr><td class="jp">腰</td><td class="jp">こし</td><td>waist/hip</td><td>"KOSHI -- lean COZY on your hips"</td></tr>
+    <tr><td class="jp">足</td><td class="jp">あし</td><td>foot/leg</td><td>"ASHY legs need lotion"</td></tr>
+    <tr><td class="jp">膝</td><td class="jp">ひざ</td><td>knee</td><td>"HE'S-A kneeling down"</td></tr>
+    <tr><td class="jp">心</td><td class="jp">こころ</td><td>heart (emotional)</td><td>"COCOA-ROW -- warm cocoa warms your heart"</td></tr>
+    <tr><td class="jp">血</td><td class="jp">ち</td><td>blood</td><td>"CHI -- life force energy is blood"</td></tr>
+    <tr><td class="jp">骨</td><td class="jp">ほね</td><td>bone</td><td>"HONEY on the bone -- BBQ ribs"</td></tr>
+    <tr><td class="jp">皮</td><td class="jp">かわ</td><td>skin/leather</td><td>"COWHIDE -- cow skin = leather"</td></tr>
+    <tr><td class="jp">髪</td><td class="jp">かみ</td><td>hair</td><td>"COMB-ME -- comb my hair"</td></tr>
+    <tr><td class="jp">涙</td><td class="jp">なみだ</td><td>tear (crying)</td><td>"NAMI-DA -- a WAVE (nami) of tears"</td></tr>
+    <tr><td class="jp">汗</td><td class="jp">あせ</td><td>sweat</td><td>"ACE player dripping sweat"</td></tr>
+    <tr><td class="jp">息</td><td class="jp">いき</td><td>breath</td><td>"EEKY breath -- bad breath is eeky"</td></tr>
+    <tr><td class="jp">声</td><td class="jp">こえ</td><td>voice</td><td>"CO-AY -- a CO-worker's voice"</td></tr>
+  </tbody>
+</table>
+
+<div class="callout warn">
+  <div class="callout-title">Elaborative Interrogation</div>
+  <p><strong>WHY are body part words almost always 和語 rather than 漢語?</strong></p>
+  <p>Body parts are among the oldest, most basic vocabulary in any language. They were named long before Chinese influence reached Japan (6th century). These words predate kanji itself. The kanji characters were later assigned to existing native words (訓読み/くんよみ), not the other way around. This is why body vocabulary resists Sino-replacement -- it is too deeply embedded in daily speech.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 2: FOOD & DRINK
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="2-food-and-drink----食べ物と飲み物">Food and Drink -- <span class="jp">食べ物と飲み物</span></h3>
+
+<p>You eat and drink every day. These words appear constantly in conversation, menus, and daily life. Master them early.</p>
+
+<table>
+  <thead>
+    <tr><th>Japanese</th><th>Reading</th><th>Meaning</th><th>Mnemonic</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="jp">食べる</td><td class="jp">たべる</td><td>eat</td><td>"TABLE -- you eat at a TABLE"</td></tr>
+    <tr><td class="jp">飲む</td><td class="jp">のむ</td><td>drink</td><td>"NOM-NOM -- nom nom drinking sounds"</td></tr>
+    <tr><td class="jp">水</td><td class="jp">みず</td><td>water</td><td>"MIZU -- MIST of water"</td></tr>
+    <tr><td class="jp">湯</td><td class="jp">ゆ</td><td>hot water</td><td>"YOU -- hot water for YOU to bathe"</td></tr>
+    <tr><td class="jp">氷</td><td class="jp">こおり</td><td>ice</td><td>"COOL-REE -- ice is COOL, really"</td></tr>
+    <tr><td class="jp">米</td><td class="jp">こめ</td><td>rice (uncooked)</td><td>"COME-AY -- come get your rice"</td></tr>
+    <tr><td class="jp">ご飯</td><td class="jp">ごはん</td><td>cooked rice / meal</td><td>"GO-HAN -- go eat HAN (Korean for one portion)"</td></tr>
+    <tr><td class="jp">魚</td><td class="jp">さかな</td><td>fish</td><td>"SAKANAH -- fish at the DOCK-ANA"</td></tr>
+    <tr><td class="jp">肉</td><td class="jp">にく</td><td>meat</td><td>"NICK a piece of meat with a knife"</td></tr>
+    <tr><td class="jp">野菜</td><td class="jp">やさい</td><td>vegetable</td><td>"YEAH-SIGH -- yeah, sigh, eat your veggies"</td></tr>
+    <tr><td class="jp">卵</td><td class="jp">たまご</td><td>egg</td><td>"TOMATO-GO -- egg and tomato go together"</td></tr>
+    <tr><td class="jp">塩</td><td class="jp">しお</td><td>salt</td><td>"SHE-OH! Too much salt!"</td></tr>
+    <tr><td class="jp">砂糖</td><td class="jp">さとう</td><td>sugar</td><td>"SATO -- Mr. SATO loves sugar"</td></tr>
+    <tr><td class="jp">醤油</td><td class="jp">しょうゆ</td><td>soy sauce</td><td>"SHOW-YOU -- show you the soy sauce"</td></tr>
+    <tr><td class="jp">味</td><td class="jp">あじ</td><td>taste/flavor</td><td>"AJINOMOTO -- AJI = flavor"</td></tr>
+    <tr><td class="jp">美味しい</td><td class="jp">おいしい</td><td>delicious</td><td>"OH-ISH-EE -- oh, this is delish!"</td></tr>
+    <tr><td class="jp">不味い</td><td class="jp">まずい</td><td>bad-tasting</td><td>"MAZUI -- sounds like MUSHY -- mushy food is bad"</td></tr>
+    <tr><td class="jp">甘い</td><td class="jp">あまい</td><td>sweet</td><td>"AMAI -- AMAZE how sweet"</td></tr>
+    <tr><td class="jp">辛い</td><td class="jp">からい</td><td>spicy</td><td>"KARAI -- Korean CURRY is spicy"</td></tr>
+    <tr><td class="jp">苦い</td><td class="jp">にがい</td><td>bitter</td><td>"NIGAI -- KNEE-GUY kneed by a bitter rival"</td></tr>
+    <tr><td class="jp">酸っぱい</td><td class="jp">すっぱい</td><td>sour</td><td>"SOUPA -- sour SOUP face"</td></tr>
+    <tr><td class="jp">焼く</td><td class="jp">やく</td><td>grill/bake</td><td>"YAKI -- yakiniku, yakitori"</td></tr>
+    <tr><td class="jp">煮る</td><td class="jp">にる</td><td>boil/simmer</td><td>"KNEE-RU -- a pot boiling at KNEE height"</td></tr>
+    <tr><td class="jp">切る</td><td class="jp">きる</td><td>cut</td><td>"KILL -- samurai CUTS with a sword"</td></tr>
+    <tr><td class="jp">混ぜる</td><td class="jp">まぜる</td><td>mix/stir</td><td>"MAZE-RU -- stir a MAZE pattern"</td></tr>
+    <tr><td class="jp">茶</td><td class="jp">ちゃ</td><td>tea</td><td>"CHA -- same as Korean 차!"</td></tr>
+    <tr><td class="jp">酒</td><td class="jp">さけ</td><td>alcohol / sake</td><td>"SAKE -- already English!"</td></tr>
+  </tbody>
+</table>
+
+<div class="callout ok">
+  <div class="callout-title">Korean Bridge: 茶 (ちゃ)</div>
+  <p>One rare bridge exists: <span class="jp">茶</span> (<span class="jp">ちゃ</span>) = <span class="kr">차</span> (tea). Both come from Chinese, but the reading is close enough to help. Watch for other shared food loanwords like <span class="jp">豆腐</span> (<span class="jp">とうふ</span>) = <span class="kr">두부</span>.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 3: NATURE
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="3-nature----自然のことば">Nature -- <span class="jp">自然のことば</span></h3>
+
+<p>The Japanese relationship with nature runs deep, and so does its native vocabulary for the natural world.</p>
+
+<table>
+  <thead>
+    <tr><th>Japanese</th><th>Reading</th><th>Meaning</th><th>Mnemonic</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="jp">山</td><td class="jp">やま</td><td>mountain</td><td>"YAMA -- sounds like LLAMA on a mountain"</td></tr>
+    <tr><td class="jp">川</td><td class="jp">かわ</td><td>river</td><td>"KAWA -- river flowing like a CURVE"</td></tr>
+    <tr><td class="jp">海</td><td class="jp">うみ</td><td>sea</td><td>"OO-ME! The sea is huge!"</td></tr>
+    <tr><td class="jp">空</td><td class="jp">そら</td><td>sky</td><td>"SOAR-AH -- birds SOAR in the sky"</td></tr>
+    <tr><td class="jp">雲</td><td class="jp">くも</td><td>cloud</td><td>"KUMO -- CUMULUS cloud"</td></tr>
+    <tr><td class="jp">雨</td><td class="jp">あめ</td><td>rain</td><td>"AH-MAY -- ah, it may rain"</td></tr>
+    <tr><td class="jp">雪</td><td class="jp">ゆき</td><td>snow</td><td>"YUCKY -- snow gets YUCKY when it melts"</td></tr>
+    <tr><td class="jp">風</td><td class="jp">かぜ</td><td>wind</td><td>"KAZOO -- wind through a KAZOO"</td></tr>
+    <tr><td class="jp">雷</td><td class="jp">かみなり</td><td>thunder/lightning</td><td>"KAMI-NARI -- god (KAMI) roaring (NARI)"</td></tr>
+    <tr><td class="jp">星</td><td class="jp">ほし</td><td>star</td><td>"HOSHI -- HOT SHIMMER of a star"</td></tr>
+    <tr><td class="jp">月</td><td class="jp">つき</td><td>moon</td><td>"TSUKI -- SPOOKY moon at night"</td></tr>
+    <tr><td class="jp">日</td><td class="jp">ひ</td><td>sun / day</td><td>"HE -- HE (the sun) rises every day"</td></tr>
+    <tr><td class="jp">火</td><td class="jp">ひ</td><td>fire</td><td>"HE -- fire is also HE (HEAT)"</td></tr>
+    <tr><td class="jp">土</td><td class="jp">つち</td><td>earth/soil</td><td>"TOUCH-EE -- TOUCH the soil"</td></tr>
+    <tr><td class="jp">石</td><td class="jp">いし</td><td>stone/rock</td><td>"ISHII -- a STONE-cold name"</td></tr>
+    <tr><td class="jp">木</td><td class="jp">き</td><td>tree</td><td>"KEY -- a tree shaped like a KEY"</td></tr>
+    <tr><td class="jp">花</td><td class="jp">はな</td><td>flower</td><td>"HANA -- same reading as nose! A flower near the nose"</td></tr>
+    <tr><td class="jp">草</td><td class="jp">くさ</td><td>grass</td><td>"KUSA -- COZY in the grass"</td></tr>
+    <tr><td class="jp">葉</td><td class="jp">は</td><td>leaf</td><td>"HA! A leaf fell -- HA!"</td></tr>
+    <tr><td class="jp">森</td><td class="jp">もり</td><td>forest</td><td>"MOREE -- I want MORE trees = forest"</td></tr>
+    <tr><td class="jp">林</td><td class="jp">はやし</td><td>grove/woods</td><td>"HAYASHI -- a small woods named HAYASHI"</td></tr>
+    <tr><td class="jp">島</td><td class="jp">しま</td><td>island</td><td>"SHIMMER -- an island SHIMMERS in the heat"</td></tr>
+    <tr><td class="jp">波</td><td class="jp">なみ</td><td>wave</td><td>"NAMI -- TSUNAMI wave"</td></tr>
+    <tr><td class="jp">滝</td><td class="jp">たき</td><td>waterfall</td><td>"TACKY -- a tacky tourist waterfall photo"</td></tr>
+    <tr><td class="jp">池</td><td class="jp">いけ</td><td>pond</td><td>"EEK-AY! A frog in the pond!"</td></tr>
+    <tr><td class="jp">畑</td><td class="jp">はたけ</td><td>field (farm)</td><td>"HOTCAKE -- grow HOTCAKES in the field"</td></tr>
+  </tbody>
+</table>
+
+<div class="callout warn">
+  <div class="callout-title">Elaborative Interrogation</div>
+  <p><strong>WHY do 日 (day/sun) and 火 (fire) share the same native reading ひ?</strong></p>
+  <p>In ancient Japanese, the sun and fire were conceptually linked as sources of light and heat. The word <span class="jp">ひ</span> originally referred to the fundamental concept of luminous heat. The kanji were assigned later from Chinese to distinguish the written forms, but the spoken word retained its unified origin. Context always makes the meaning clear.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 4: TIME
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="4-time----時のことば">Time -- <span class="jp">時のことば</span></h3>
+
+<p>Time words are used in virtually every conversation. Many of these are native Japanese words that have no Korean cognate.</p>
+
+<table>
+  <thead>
+    <tr><th>Japanese</th><th>Reading</th><th>Meaning</th><th>Mnemonic</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="jp">朝</td><td class="jp">あさ</td><td>morning</td><td>"ASAHI -- ASAHI beer, sunrise brew = morning"</td></tr>
+    <tr><td class="jp">昼</td><td class="jp">ひる</td><td>noon / daytime</td><td>"HEEL -- the sun is at its HEEL (peak) at noon"</td></tr>
+    <tr><td class="jp">夕</td><td class="jp">ゆう</td><td>evening</td><td>"YOU -- see YOU in the evening"</td></tr>
+    <tr><td class="jp">夜</td><td class="jp">よる</td><td>night</td><td>"YOUR -- YOUR night, YOUR time to rest"</td></tr>
+    <tr><td class="jp">今</td><td class="jp">いま</td><td>now</td><td>"EEMA -- I'MA do it NOW"</td></tr>
+    <tr><td class="jp">今日</td><td class="jp">きょう</td><td>today</td><td>"KYOU -- Q (today's question)"</td></tr>
+    <tr><td class="jp">昨日</td><td class="jp">きのう</td><td>yesterday</td><td>"KINOU -- I KNEW it yesterday"</td></tr>
+    <tr><td class="jp">明日</td><td class="jp">あした</td><td>tomorrow</td><td>"A-SHEE-TAH -- I'll see ya AFTER tomorrow"</td></tr>
+    <tr><td class="jp">今朝</td><td class="jp">けさ</td><td>this morning</td><td>"KESA -- like QUESO -- had cheese this morning"</td></tr>
+    <tr><td class="jp">今晩</td><td class="jp">こんばん</td><td>this evening</td><td>"KONBAN -- KONBANWA -- tonight"</td></tr>
+    <tr><td class="jp">毎日</td><td class="jp">まいにち</td><td>every day</td><td>"MY-NICHI -- MY daily NICHE"</td></tr>
+    <tr><td class="jp">毎朝</td><td class="jp">まいあさ</td><td>every morning</td><td>"MY-ASA -- MY morning routine"</td></tr>
+    <tr><td class="jp">前</td><td class="jp">まえ</td><td>before / front</td><td>"MAY -- MAY comes BEFORE June"</td></tr>
+    <tr><td class="jp">後</td><td class="jp">あと</td><td>after / behind</td><td>"OTTO -- AFTER the OTTO-man empire"</td></tr>
+    <tr><td class="jp">去年</td><td class="jp">きょねん</td><td>last year</td><td>"KYONEN -- last year is GONE-EN"</td></tr>
+    <tr><td class="jp">来年</td><td class="jp">らいねん</td><td>next year</td><td>"RAI-NEN -- RAINING again next year"</td></tr>
+    <tr><td class="jp">春</td><td class="jp">はる</td><td>spring</td><td>"HARU -- HAR-vest starts in spring"</td></tr>
+    <tr><td class="jp">夏</td><td class="jp">なつ</td><td>summer</td><td>"NUTS -- it's NUTS how hot summer is"</td></tr>
+    <tr><td class="jp">秋</td><td class="jp">あき</td><td>autumn</td><td>"AKITA -- AKITA dogs love autumn leaves"</td></tr>
+    <tr><td class="jp">冬</td><td class="jp">ふゆ</td><td>winter</td><td>"PHEW -- PHEW, winter is cold!"</td></tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 5: ACTIONS (VERBS)
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="5-actions----動きのことば">Actions -- <span class="jp">動きのことば</span></h3>
+
+<p>和語 verbs are the backbone of everyday Japanese. These are the verbs you will use in every single conversation -- and not one of them resembles its Korean equivalent.</p>
+
+<h4>Movement and Direction</h4>
+<table>
+  <thead>
+    <tr><th>Japanese</th><th>Reading</th><th>Meaning</th><th>Mnemonic</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="jp">行く</td><td class="jp">いく</td><td>go</td><td>"EEKU -- each week I GO somewhere"</td></tr>
+    <tr><td class="jp">来る</td><td class="jp">くる</td><td>come</td><td>"COOL -- COME here, it's COOL"</td></tr>
+    <tr><td class="jp">帰る</td><td class="jp">かえる</td><td>return home</td><td>"KAERU -- like a frog (KAERU) returns to its pond"</td></tr>
+    <tr><td class="jp">走る</td><td class="jp">はしる</td><td>run</td><td>"HASH-IRU -- RUN a HASH (race)"</td></tr>
+    <tr><td class="jp">歩く</td><td class="jp">あるく</td><td>walk</td><td>"A-ROOK -- WALK a rook across the chessboard"</td></tr>
+    <tr><td class="jp">止まる</td><td class="jp">とまる</td><td>stop</td><td>"TOMATO -- STOP at the TOMATO red light"</td></tr>
+    <tr><td class="jp">登る</td><td class="jp">のぼる</td><td>climb</td><td>"NOBLE -- CLIMB to NOBLE heights"</td></tr>
+    <tr><td class="jp">降りる</td><td class="jp">おりる</td><td>get off / descend</td><td>"ORI-RU -- OAR down the river, descend"</td></tr>
+    <tr><td class="jp">乗る</td><td class="jp">のる</td><td>ride / get on</td><td>"NOR -- get on the bus, NOR the train"</td></tr>
+    <tr><td class="jp">渡る</td><td class="jp">わたる</td><td>cross</td><td>"WATER -- CROSS the WATER"</td></tr>
+    <tr><td class="jp">入る</td><td class="jp">はいる</td><td>enter</td><td>"HIGH-RU -- go HIGH and ENTER the building"</td></tr>
+    <tr><td class="jp">出る</td><td class="jp">でる</td><td>exit / leave</td><td>"DARE -- I DARE you to EXIT"</td></tr>
+    <tr><td class="jp">立つ</td><td class="jp">たつ</td><td>stand</td><td>"TATSU -- TATTOO artist STANDS all day"</td></tr>
+    <tr><td class="jp">座る</td><td class="jp">すわる</td><td>sit</td><td>"SIT on a SWEAR word cushion"</td></tr>
+    <tr><td class="jp">飛ぶ</td><td class="jp">とぶ</td><td>fly / jump</td><td>"TOBU -- TUBE -- FLY through a tube"</td></tr>
+    <tr><td class="jp">泳ぐ</td><td class="jp">およぐ</td><td>swim</td><td>"OH-YO-GU -- oh yo, GO swim!"</td></tr>
+    <tr><td class="jp">落ちる</td><td class="jp">おちる</td><td>fall / drop</td><td>"OH-CHEER -- the cheerleader FELL"</td></tr>
+    <tr><td class="jp">転ぶ</td><td class="jp">ころぶ</td><td>tumble / trip</td><td>"KOLOBU -- COLLAPSE and tumble"</td></tr>
+  </tbody>
+</table>
+
+<h4>Perception and Communication</h4>
+<table>
+  <thead>
+    <tr><th>Japanese</th><th>Reading</th><th>Meaning</th><th>Mnemonic</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="jp">見る</td><td class="jp">みる</td><td>see / look / watch</td><td>"MIRROR -- you SEE yourself in a MIRROR"</td></tr>
+    <tr><td class="jp">聞く</td><td class="jp">きく</td><td>hear / listen / ask</td><td>"KICK drum -- HEAR the kick drum"</td></tr>
+    <tr><td class="jp">話す</td><td class="jp">はなす</td><td>speak / talk</td><td>"HONEST -- SPEAK HONESTLY"</td></tr>
+    <tr><td class="jp">言う</td><td class="jp">いう</td><td>say</td><td>"EEU -- EWW, what did you SAY?"</td></tr>
+    <tr><td class="jp">読む</td><td class="jp">よむ</td><td>read</td><td>"YO-MU -- YO! READ this, MU-ther!"</td></tr>
+    <tr><td class="jp">書く</td><td class="jp">かく</td><td>write / draw</td><td>"COCKATOO -- a cockatoo WRITING with its beak"</td></tr>
+    <tr><td class="jp">教える</td><td class="jp">おしえる</td><td>teach / tell</td><td>"OH-SHE-ERU -- OH, SHE teaches well"</td></tr>
+    <tr><td class="jp">習う</td><td class="jp">ならう</td><td>learn (from someone)</td><td>"NARROW -- NARROW your focus to LEARN"</td></tr>
+    <tr><td class="jp">覚える</td><td class="jp">おぼえる</td><td>memorize / remember</td><td>"OH-BOE -- play the OBOE from MEMORY"</td></tr>
+    <tr><td class="jp">忘れる</td><td class="jp">わすれる</td><td>forget</td><td>"WASHER -- your brain went through the WASHER and FORGOT"</td></tr>
+    <tr><td class="jp">考える</td><td class="jp">かんがえる</td><td>think</td><td>"KANGAROO -- a KANGAROO THINKING hard"</td></tr>
+    <tr><td class="jp">知る</td><td class="jp">しる</td><td>know (a fact)</td><td>"SHE-RU -- SHE KNOWS the answer"</td></tr>
+    <tr><td class="jp">分かる</td><td class="jp">わかる</td><td>understand</td><td>"WALK-ARU -- WALK through it until you UNDERSTAND"</td></tr>
+    <tr><td class="jp">笑う</td><td class="jp">わらう</td><td>laugh</td><td>"WAR-AOU -- WAR is nothing to LAUGH about"</td></tr>
+    <tr><td class="jp">泣く</td><td class="jp">なく</td><td>cry</td><td>"KNOCK -- a KNOCK on the door made the baby CRY"</td></tr>
+    <tr><td class="jp">叫ぶ</td><td class="jp">さけぶ</td><td>shout / scream</td><td>"SAKE-BU -- SHOUT for more SAKE!"</td></tr>
+    <tr><td class="jp">呼ぶ</td><td class="jp">よぶ</td><td>call (someone)</td><td>"YO-BU -- YO! I'm CALLING you!"</td></tr>
+  </tbody>
+</table>
+
+<h4>Daily Actions</h4>
+<table>
+  <thead>
+    <tr><th>Japanese</th><th>Reading</th><th>Meaning</th><th>Mnemonic</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="jp">買う</td><td class="jp">かう</td><td>buy</td><td>"Buy a COW -- かう sounds like COW"</td></tr>
+    <tr><td class="jp">売る</td><td class="jp">うる</td><td>sell</td><td>"OORU -- SELL everything on the FLOOR"</td></tr>
+    <tr><td class="jp">使う</td><td class="jp">つかう</td><td>use</td><td>"TSUKAU -- USE a SKUNK spray (tsu-KA)"</td></tr>
+    <tr><td class="jp">持つ</td><td class="jp">もつ</td><td>hold / have</td><td>"MOTS -- HOLD a MOT (word) in your hand"</td></tr>
+    <tr><td class="jp">取る</td><td class="jp">とる</td><td>take</td><td>"TORU -- TORE it away, TOOK it"</td></tr>
+    <tr><td class="jp">置く</td><td class="jp">おく</td><td>put / place</td><td>"OAK -- PLACE it on the OAK table"</td></tr>
+    <tr><td class="jp">送る</td><td class="jp">おくる</td><td>send</td><td>"OAK-URU -- SEND an OAK package"</td></tr>
+    <tr><td class="jp">届く</td><td class="jp">とどく</td><td>arrive / reach</td><td>"TO-DOCK -- the package ARRIVES at the DOCK"</td></tr>
+    <tr><td class="jp">開ける</td><td class="jp">あける</td><td>open</td><td>"ACRE -- OPEN up an ACRE of land"</td></tr>
+    <tr><td class="jp">閉める</td><td class="jp">しめる</td><td>close</td><td>"SHIMMER -- CLOSE the door, no more SHIMMER"</td></tr>
+    <tr><td class="jp">作る</td><td class="jp">つくる</td><td>make / create</td><td>"TSUKURU -- a COOK-URU MAKES dinner"</td></tr>
+    <tr><td class="jp">壊す</td><td class="jp">こわす</td><td>break / destroy</td><td>"KOWASU -- COW-ASS -- a cow sat on it and BROKE it"</td></tr>
+    <tr><td class="jp">直す</td><td class="jp">なおす</td><td>fix / repair</td><td>"NOW-SU -- FIX it NOW!"</td></tr>
+    <tr><td class="jp">洗う</td><td class="jp">あらう</td><td>wash</td><td>"A-RAW -- WASH the RAW meat"</td></tr>
+    <tr><td class="jp">着る</td><td class="jp">きる</td><td>wear (top)</td><td>"KIMONO -- WEAR a kimono (きる)"</td></tr>
+    <tr><td class="jp">脱ぐ</td><td class="jp">ぬぐ</td><td>take off (clothes)</td><td>"NEW-GU -- TAKE OFF old, put on NEW"</td></tr>
+    <tr><td class="jp">住む</td><td class="jp">すむ</td><td>live (reside)</td><td>"SUMO -- a SUMO wrestler LIVES in a stable"</td></tr>
+    <tr><td class="jp">寝る</td><td class="jp">ねる</td><td>sleep</td><td>"NERU -- SNARE drum lullaby to SLEEP"</td></tr>
+    <tr><td class="jp">起きる</td><td class="jp">おきる</td><td>wake up</td><td>"OAK-EERU -- WAKE UP, the OAK tree is blooming"</td></tr>
+    <tr><td class="jp">遊ぶ</td><td class="jp">あそぶ</td><td>play / hang out</td><td>"A-SOBU -- Let's go out and PLAY, A-SO-BU-ddy"</td></tr>
+    <tr><td class="jp">休む</td><td class="jp">やすむ</td><td>rest</td><td>"YASUMU -- YAWN and ZOOM to bed to REST"</td></tr>
+    <tr><td class="jp">働く</td><td class="jp">はたらく</td><td>work</td><td>"HATA-RAKU -- HOTTER it gets, harder you WORK"</td></tr>
+    <tr><td class="jp">待つ</td><td class="jp">まつ</td><td>wait</td><td>"MATSU -- sit on a MAT and WAIT"</td></tr>
+    <tr><td class="jp">探す</td><td class="jp">さがす</td><td>search / look for</td><td>"SAGA -- a long SAGA of SEARCHING"</td></tr>
+    <tr><td class="jp">見つける</td><td class="jp">みつける</td><td>find / discover</td><td>"MITS-KERU -- found the MITTS! DISCOVERED them!"</td></tr>
+    <tr><td class="jp">始める</td><td class="jp">はじめる</td><td>begin / start</td><td>"HAJIMEMASHITE -- nice to START meeting you"</td></tr>
+    <tr><td class="jp">終わる</td><td class="jp">おわる</td><td>end / finish</td><td>"OH-WAR -- the war is OVER, it ENDED"</td></tr>
+    <tr><td class="jp">変わる</td><td class="jp">かわる</td><td>change</td><td>"KAWARU -- KAWA (river) always CHANGES course"</td></tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 6: ADJECTIVES
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="6-adjectives----形容詞">Adjectives -- <span class="jp">形容詞</span></h3>
+
+<p>い-adjectives are almost entirely 和語. These describe the everyday world -- size, temperature, emotion, quality. Every single one must be memorized fresh.</p>
+
+<h4>Size, Shape, and Degree</h4>
+<table>
+  <thead>
+    <tr><th>Japanese</th><th>Reading</th><th>Meaning</th><th>Mnemonic</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="jp">大きい</td><td class="jp">おおきい</td><td>big / large</td><td>"OH-OH-KEY -- OH OH! That KEY is BIG"</td></tr>
+    <tr><td class="jp">小さい</td><td class="jp">ちいさい</td><td>small / little</td><td>"CHEESE-EYE -- a SMALL CHEESY eye"</td></tr>
+    <tr><td class="jp">長い</td><td class="jp">ながい</td><td>long</td><td>"NAG-EYE -- LONG nagging from an eye-roller"</td></tr>
+    <tr><td class="jp">短い</td><td class="jp">みじかい</td><td>short (length)</td><td>"MIDGE-A-KAI -- a MIDGE is a SHORT fly"</td></tr>
+    <tr><td class="jp">高い</td><td class="jp">たかい</td><td>tall / expensive</td><td>"TACKY -- TALL tacky buildings / EXPENSIVE tacky items"</td></tr>
+    <tr><td class="jp">低い</td><td class="jp">ひくい</td><td>low / short (height)</td><td>"HIKU-EE -- HIKE down to LOW ground"</td></tr>
+    <tr><td class="jp">太い</td><td class="jp">ふとい</td><td>thick / fat</td><td>"FUTON -- a THICK FUTON"</td></tr>
+    <tr><td class="jp">細い</td><td class="jp">ほそい</td><td>thin / slender</td><td>"HOSE-OI -- a garden HOSE is THIN"</td></tr>
+    <tr><td class="jp">広い</td><td class="jp">ひろい</td><td>wide / spacious</td><td>"HERO-EE -- a HERO needs WIDE open space"</td></tr>
+    <tr><td class="jp">狭い</td><td class="jp">せまい</td><td>narrow / cramped</td><td>"SAY-MY -- say my name in this NARROW space"</td></tr>
+    <tr><td class="jp">多い</td><td class="jp">おおい</td><td>many / much</td><td>"OOH-EE -- OOH, so MANY!"</td></tr>
+    <tr><td class="jp">少ない</td><td class="jp">すくない</td><td>few / little</td><td>"SCHOOL-NIGH -- FEW students at school tonight"</td></tr>
+    <tr><td class="jp">安い</td><td class="jp">やすい</td><td>cheap / inexpensive</td><td>"YASU-EE -- EASY on the wallet = CHEAP"</td></tr>
+    <tr><td class="jp">重い</td><td class="jp">おもい</td><td>heavy</td><td>"OH-MOY -- OH MY it's HEAVY"</td></tr>
+    <tr><td class="jp">軽い</td><td class="jp">かるい</td><td>light (weight)</td><td>"COOL-WE -- LIGHT and COOL"</td></tr>
+  </tbody>
+</table>
+
+<h4>Temperature and Sensation</h4>
+<table>
+  <thead>
+    <tr><th>Japanese</th><th>Reading</th><th>Meaning</th><th>Mnemonic</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="jp">暑い</td><td class="jp">あつい</td><td>hot (weather)</td><td>"A-TSUI -- I'm HOT, ACHOO!"</td></tr>
+    <tr><td class="jp">寒い</td><td class="jp">さむい</td><td>cold (weather)</td><td>"SAMUI -- SAMURAI in the COLD"</td></tr>
+    <tr><td class="jp">熱い</td><td class="jp">あつい</td><td>hot (object/touch)</td><td>"A-TSUI -- same sound, HOT to touch!"</td></tr>
+    <tr><td class="jp">冷たい</td><td class="jp">つめたい</td><td>cold (object/touch)</td><td>"TOO-MAY-TIE -- a COLD tomato tie"</td></tr>
+    <tr><td class="jp">暖かい</td><td class="jp">あたたかい</td><td>warm</td><td>"ATATAKAI -- A-TOT-A-KAI -- a tot (baby) is WARM"</td></tr>
+    <tr><td class="jp">涼しい</td><td class="jp">すずしい</td><td>cool / refreshing</td><td>"SUZU-SHII -- a SUSHI roll, COOL and refreshing"</td></tr>
+    <tr><td class="jp">痛い</td><td class="jp">いたい</td><td>painful / ouch</td><td>"ITAI -- IT HURTS! (I-TIE a knot too tight)"</td></tr>
+    <tr><td class="jp">眠い</td><td class="jp">ねむい</td><td>sleepy</td><td>"NEMU-EE -- SLEEPY Nemo fish"</td></tr>
+    <tr><td class="jp">うるさい</td><td class="jp">うるさい</td><td>noisy / annoying</td><td>"URUSEI -- YOU-RU-SIGH -- so NOISY you sigh"</td></tr>
+  </tbody>
+</table>
+
+<h4>Emotion and Quality</h4>
+<table>
+  <thead>
+    <tr><th>Japanese</th><th>Reading</th><th>Meaning</th><th>Mnemonic</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="jp">嬉しい</td><td class="jp">うれしい</td><td>happy / glad</td><td>"OOH-RAY-SHEE -- HOORAY! I'm HAPPY!"</td></tr>
+    <tr><td class="jp">悲しい</td><td class="jp">かなしい</td><td>sad</td><td>"CAN-A-SHE -- can a she cry? So SAD"</td></tr>
+    <tr><td class="jp">楽しい</td><td class="jp">たのしい</td><td>fun / enjoyable</td><td>"TANO-SHEE -- TONNEAU of SHE-nanigans = FUN"</td></tr>
+    <tr><td class="jp">怖い</td><td class="jp">こわい</td><td>scary</td><td>"KOWAI -- COW-EYE -- a cow staring at you is SCARY"</td></tr>
+    <tr><td class="jp">寂しい</td><td class="jp">さびしい</td><td>lonely</td><td>"SABI-SHEE -- WASABI alone is LONELY"</td></tr>
+    <tr><td class="jp">恥ずかしい</td><td class="jp">はずかしい</td><td>embarrassing</td><td>"HAZUKASHII -- HAS-A-CASHIER seen you? EMBARRASSING!"</td></tr>
+    <tr><td class="jp">優しい</td><td class="jp">やさしい</td><td>kind / gentle</td><td>"YASASHI -- YEAH-SAH-SHE is so KIND"</td></tr>
+    <tr><td class="jp">厳しい</td><td class="jp">きびしい</td><td>strict / harsh</td><td>"KIBISHI -- the KIBBUTZ is STRICT"</td></tr>
+    <tr><td class="jp">強い</td><td class="jp">つよい</td><td>strong</td><td>"TSUYO-EE -- TOY soldiers are STRONG"</td></tr>
+    <tr><td class="jp">弱い</td><td class="jp">よわい</td><td>weak</td><td>"YOWAI -- YOWL like a WEAK kitten"</td></tr>
+    <tr><td class="jp">新しい</td><td class="jp">あたらしい</td><td>new</td><td>"A-TARRASHI -- a TIARA-SHE has is brand NEW"</td></tr>
+    <tr><td class="jp">古い</td><td class="jp">ふるい</td><td>old (things)</td><td>"FOOL-EE -- only a FOOL keeps OLD things"</td></tr>
+    <tr><td class="jp">若い</td><td class="jp">わかい</td><td>young</td><td>"WAKAI -- WACKY YOUNG people"</td></tr>
+    <tr><td class="jp">早い</td><td class="jp">はやい</td><td>early / fast</td><td>"HAYAI -- HI-YAH! Karate chop FAST!"</td></tr>
+    <tr><td class="jp">遅い</td><td class="jp">おそい</td><td>late / slow</td><td>"OH-SO-EE -- OH SO SLOW"</td></tr>
+    <tr><td class="jp">近い</td><td class="jp">ちかい</td><td>near / close</td><td>"CHICK-EYE -- the CHICK is NEAR my eye"</td></tr>
+    <tr><td class="jp">遠い</td><td class="jp">とおい</td><td>far / distant</td><td>"TOE-OI -- my TOES are FAR from my head"</td></tr>
+    <tr><td class="jp">明るい</td><td class="jp">あかるい</td><td>bright</td><td>"AKA-RUI -- AKARI (lantern) is BRIGHT"</td></tr>
+    <tr><td class="jp">暗い</td><td class="jp">くらい</td><td>dark</td><td>"KURAI -- CRAWLY things in the DARK"</td></tr>
+    <tr><td class="jp">正しい</td><td class="jp">ただしい</td><td>correct / right</td><td>"TADA-SHE -- TADA! SHE got it CORRECT!"</td></tr>
+    <tr><td class="jp">難しい</td><td class="jp">むずかしい</td><td>difficult</td><td>"MUZU-KASHI -- MUSIC-ASHY fingers make it DIFFICULT"</td></tr>
+    <tr><td class="jp">易しい</td><td class="jp">やさしい</td><td>easy (simple)</td><td>"YASASHII -- same sound as kind! Context tells: EASY or KIND"</td></tr>
+    <tr><td class="jp">汚い</td><td class="jp">きたない</td><td>dirty</td><td>"KITTEN-EYE -- a DIRTY kitten"</td></tr>
+    <tr><td class="jp">綺麗</td><td class="jp">きれい</td><td>clean / beautiful (な-adj)</td><td>"KIREI -- CLEAN and PRETTY like a TIARA (きれい)"</td></tr>
+    <tr><td class="jp">丸い</td><td class="jp">まるい</td><td>round</td><td>"MARU -- MARBLE is ROUND"</td></tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 7: PEOPLE & RELATIONS
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="7-people-and-relations----人と関係">People and Relations -- <span class="jp">人と関係</span></h3>
+
+<p>Family terms in Japanese are split between humble forms (for your own family) and honorific forms (for others' families). This section covers the basic words. Honorific variations are detailed in Chapter 14.</p>
+
+<table>
+  <thead>
+    <tr><th>Japanese</th><th>Reading</th><th>Meaning</th><th>Mnemonic</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="jp">人</td><td class="jp">ひと</td><td>person</td><td>"HE-TOE -- every PERSON has a HE and a TOE"</td></tr>
+    <tr><td class="jp">男</td><td class="jp">おとこ</td><td>man</td><td>"OTOKO -- OH-TACO -- a MAN eating a taco"</td></tr>
+    <tr><td class="jp">女</td><td class="jp">おんな</td><td>woman</td><td>"ON-NA -- ON-A stage, a WOMAN performs"</td></tr>
+    <tr><td class="jp">子供</td><td class="jp">こども</td><td>child</td><td>"KODOMO -- CONDO-MO -- kids running in a CONDO"</td></tr>
+    <tr><td class="jp">赤ちゃん</td><td class="jp">あかちゃん</td><td>baby</td><td>"AKA-CHAN -- red (AKA) cheeks, cute BABY"</td></tr>
+    <tr><td class="jp">友達</td><td class="jp">ともだち</td><td>friend</td><td>"TOMATO-CHI -- share a TOMATO with a FRIEND"</td></tr>
+    <tr><td class="jp">家族</td><td class="jp">かぞく</td><td>family</td><td>"KAZOKU -- KA-ZO-KU -- a COZY family"</td></tr>
+    <tr><td class="jp">父</td><td class="jp">ちち</td><td>father (humble)</td><td>"CHI-CHI -- cheesy dad jokes"</td></tr>
+    <tr><td class="jp">お父さん</td><td class="jp">おとうさん</td><td>father (polite)</td><td>"OH-TOE-SAN -- SAN (Mr.) with big TOES = Dad"</td></tr>
+    <tr><td class="jp">母</td><td class="jp">はは</td><td>mother (humble)</td><td>"HA-HA -- mom laughing HA-HA"</td></tr>
+    <tr><td class="jp">お母さん</td><td class="jp">おかあさん</td><td>mother (polite)</td><td>"OKA-SAN -- OK-SAN, yes Mom!"</td></tr>
+    <tr><td class="jp">兄</td><td class="jp">あに</td><td>older brother (humble)</td><td>"AHNI -- like ANIME -- big bro watches anime"</td></tr>
+    <tr><td class="jp">お兄さん</td><td class="jp">おにいさん</td><td>older brother (polite)</td><td>"ONI-SAN -- big bro is an ONI (demon) sometimes"</td></tr>
+    <tr><td class="jp">姉</td><td class="jp">あね</td><td>older sister (humble)</td><td>"AH-NAY -- she says NAY to everything"</td></tr>
+    <tr><td class="jp">お姉さん</td><td class="jp">おねえさん</td><td>older sister (polite)</td><td>"ONEE-SAN -- Oh NEE-SAN, older sister"</td></tr>
+    <tr><td class="jp">弟</td><td class="jp">おとうと</td><td>younger brother</td><td>"OH-TOUTO -- little brother is a TOTAL copycat"</td></tr>
+    <tr><td class="jp">妹</td><td class="jp">いもうと</td><td>younger sister</td><td>"EMO-UTO -- little sis goes through an EMO phase"</td></tr>
+    <tr><td class="jp">夫</td><td class="jp">おっと</td><td>husband</td><td>"OTTO -- UH-OH, HUSBAND forgot the anniversary"</td></tr>
+    <tr><td class="jp">妻</td><td class="jp">つま</td><td>wife</td><td>"TSUMA -- TWO-MA -- WIFE and mother, two roles"</td></tr>
+    <tr><td class="jp">息子</td><td class="jp">むすこ</td><td>son</td><td>"MUSKO -- my MUSCULAR SON"</td></tr>
+    <tr><td class="jp">娘</td><td class="jp">むすめ</td><td>daughter</td><td>"MUSUME -- my MUSE, my DAUGHTER"</td></tr>
+    <tr><td class="jp">祖父</td><td class="jp">そふ</td><td>grandfather (humble)</td><td>"SOFA -- grandpa on the SOFA"</td></tr>
+    <tr><td class="jp">祖母</td><td class="jp">そぼ</td><td>grandmother (humble)</td><td>"SO-BO -- grandma is SO BOLD"</td></tr>
+    <tr><td class="jp">孫</td><td class="jp">まご</td><td>grandchild</td><td>"MAGO -- grandchild MAKES you GO soft"</td></tr>
+    <tr><td class="jp">彼</td><td class="jp">かれ</td><td>he / boyfriend</td><td>"KARE -- CURRY -- HE loves curry"</td></tr>
+    <tr><td class="jp">彼女</td><td class="jp">かのじょ</td><td>she / girlfriend</td><td>"KANOJO -- CAN-OH-JO -- SHE can do it, Jo!"</td></tr>
+    <tr><td class="jp">自分</td><td class="jp">じぶん</td><td>oneself</td><td>"JIBUN -- JI-BUN -- do it by your own BUN (self)"</td></tr>
+    <tr><td class="jp">皆</td><td class="jp">みんな</td><td>everyone</td><td>"MINNA -- MINI-A -- a MINI version of EVERYONE"</td></tr>
+    <tr><td class="jp">誰</td><td class="jp">だれ</td><td>who</td><td>"DARE -- WHO DARES enter?"</td></tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 8: ONOMATOPOEIA
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="8-onomatopoeia----オノマトペ">Onomatopoeia -- <span class="jp">オノマトペ</span></h3>
+
+<p>Japanese has one of the richest onomatopoeia systems in the world. Unlike English, Japanese uses sound-symbolic words not just for sounds but for <strong>emotions, textures, states, and movements</strong>. These are essential for natural-sounding Japanese.</p>
+
+<div class="callout info">
+  <div class="callout-title">Three Types of Onomatopoeia</div>
+  <p><strong>擬音語 (ぎおんご)</strong> -- mimics actual sounds (ドンドン = banging)<br>
+  <strong>擬態語 (ぎたいご)</strong> -- describes states/feelings (ワクワク = excited)<br>
+  <strong>擬容語 (ぎようご)</strong> -- describes appearances/movements (キラキラ = sparkling)<br>
+  Korean has a similar system (의성어/의태어), so the concept transfers, but the specific words do not.</p>
+</div>
+
+<div class="diagram">
+  <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg">
+    <rect x="20" y="20" width="200" height="160" rx="12" fill="none" stroke="var(--accent)" stroke-width="2" opacity=".6"/>
+    <text x="120" y="50" text-anchor="middle" font-size="14" font-weight="600" fill="var(--accent)">擬音語</text>
+    <text x="120" y="70" text-anchor="middle" font-size="10" fill="var(--text-muted)">Sound words</text>
+    <text x="120" y="95" text-anchor="middle" font-size="11" fill="var(--text-muted)">ドンドン (banging)</text>
+    <text x="120" y="112" text-anchor="middle" font-size="11" fill="var(--text-muted)">ザーザー (heavy rain)</text>
+    <text x="120" y="129" text-anchor="middle" font-size="11" fill="var(--text-muted)">ワンワン (woof woof)</text>
+    <text x="120" y="155" text-anchor="middle" font-size="9" fill="var(--a2)">Korean: 쿵쿵, 주룩주룩, 멍멍</text>
+
+    <rect x="250" y="20" width="200" height="160" rx="12" fill="none" stroke="var(--a3)" stroke-width="2" opacity=".6"/>
+    <text x="350" y="50" text-anchor="middle" font-size="14" font-weight="600" fill="var(--a3)">擬態語</text>
+    <text x="350" y="70" text-anchor="middle" font-size="10" fill="var(--text-muted)">State / feeling words</text>
+    <text x="350" y="95" text-anchor="middle" font-size="11" fill="var(--text-muted)">ドキドキ (heart pounding)</text>
+    <text x="350" y="112" text-anchor="middle" font-size="11" fill="var(--text-muted)">ワクワク (excited)</text>
+    <text x="350" y="129" text-anchor="middle" font-size="11" fill="var(--text-muted)">イライラ (irritated)</text>
+    <text x="350" y="155" text-anchor="middle" font-size="9" fill="var(--a2)">Korean: 두근두근, 설레설레, 짜증짜증</text>
+
+    <rect x="480" y="20" width="200" height="160" rx="12" fill="none" stroke="var(--a4)" stroke-width="2" opacity=".6"/>
+    <text x="580" y="50" text-anchor="middle" font-size="14" font-weight="600" fill="var(--a4)">擬容語</text>
+    <text x="580" y="70" text-anchor="middle" font-size="10" fill="var(--text-muted)">Appearance / movement</text>
+    <text x="580" y="95" text-anchor="middle" font-size="11" fill="var(--text-muted)">キラキラ (sparkling)</text>
+    <text x="580" y="112" text-anchor="middle" font-size="11" fill="var(--text-muted)">フワフワ (fluffy)</text>
+    <text x="580" y="129" text-anchor="middle" font-size="11" fill="var(--text-muted)">ペラペラ (fluent)</text>
+    <text x="580" y="155" text-anchor="middle" font-size="9" fill="var(--a2)">Korean: 반짝반짝, 폭신폭신, 유창유창</text>
+  </svg>
+  <div class="diagram-caption">Japanese onomatopoeia: three categories. The concept exists in Korean, but every word is different.</div>
+</div>
+
+<h4>Emotions and States</h4>
+<table>
+  <thead>
+    <tr><th>Japanese</th><th>Meaning</th><th>Usage Example</th><th>Korean Equivalent</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="jp">ドキドキ</td><td>heart pounding (excitement/nervousness)</td><td class="jp">彼を見ると、ドキドキする。(When I see him, my heart pounds.)</td><td class="kr">두근두근</td></tr>
+    <tr><td class="jp">ワクワク</td><td>excited / thrilled</td><td class="jp">旅行が楽しみでワクワクする。(Excited for the trip.)</td><td class="kr">설레설레 / 두근두근</td></tr>
+    <tr><td class="jp">イライラ</td><td>irritated / frustrated</td><td class="jp">待ち時間が長くてイライラする。(Frustrated by the long wait.)</td><td class="kr">짜증나다</td></tr>
+    <tr><td class="jp">ウキウキ</td><td>cheerful / buoyant</td><td class="jp">春になるとウキウキする。(Feel cheerful when spring comes.)</td><td class="kr">들뜨다</td></tr>
+    <tr><td class="jp">ソワソワ</td><td>restless / fidgety</td><td class="jp">結果が気になってソワソワする。(Restless about the results.)</td><td class="kr">안절부절</td></tr>
+    <tr><td class="jp">ビクビク</td><td>trembling with fear</td><td class="jp">暗い道をビクビクしながら歩く。(Walk fearfully on a dark road.)</td><td class="kr">벌벌 떨다</td></tr>
+    <tr><td class="jp">メソメソ</td><td>whimpering / sniffling</td><td class="jp">メソメソ泣かないで。(Don't whimper.)</td><td class="kr">찔찔 울다</td></tr>
+    <tr><td class="jp">ニコニコ</td><td>smiling warmly</td><td class="jp">おばあちゃんがニコニコしている。(Grandma is smiling warmly.)</td><td class="kr">빙글빙글 (웃다)</td></tr>
+    <tr><td class="jp">ゲラゲラ</td><td>laughing loudly</td><td class="jp">友達とゲラゲラ笑った。(Laughed loudly with friends.)</td><td class="kr">깔깔 (웃다)</td></tr>
+    <tr><td class="jp">ぼんやり</td><td>absentminded / dazed</td><td class="jp">ぼんやりしていて聞こえなかった。(I was spaced out and didn't hear.)</td><td class="kr">멍하니</td></tr>
+    <tr><td class="jp">しっかり</td><td>firmly / steadily</td><td class="jp">しっかり勉強しなさい。(Study hard/properly.)</td><td class="kr">제대로 / 확실히</td></tr>
+    <tr><td class="jp">ぐっすり</td><td>sound asleep</td><td class="jp">昨夜はぐっすり寝た。(Slept soundly last night.)</td><td class="kr">푹 (자다)</td></tr>
+  </tbody>
+</table>
+
+<h4>Appearances and Textures</h4>
+<table>
+  <thead>
+    <tr><th>Japanese</th><th>Meaning</th><th>Usage Example</th><th>Korean Equivalent</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="jp">キラキラ</td><td>sparkling / glittering</td><td class="jp">星がキラキラ光っている。(Stars are sparkling.)</td><td class="kr">반짝반짝</td></tr>
+    <tr><td class="jp">ピカピカ</td><td>shiny / gleaming</td><td class="jp">靴をピカピカに磨いた。(Polished shoes until gleaming.)</td><td class="kr">번쩍번쩍</td></tr>
+    <tr><td class="jp">フワフワ</td><td>fluffy / soft</td><td class="jp">フワフワのパンケーキ。(Fluffy pancakes.)</td><td class="kr">폭신폭신</td></tr>
+    <tr><td class="jp">ツルツル</td><td>smooth / slippery</td><td class="jp">氷の上はツルツルだ。(It's slippery on the ice.)</td><td class="kr">미끌미끌</td></tr>
+    <tr><td class="jp">ザラザラ</td><td>rough / gritty</td><td class="jp">砂でザラザラする。(Rough from sand.)</td><td class="kr">까칠까칠 / 거칠거칠</td></tr>
+    <tr><td class="jp">ベタベタ</td><td>sticky</td><td class="jp">手がベタベタする。(Hands are sticky.)</td><td class="kr">끈적끈적</td></tr>
+    <tr><td class="jp">ペラペラ</td><td>fluent (at speaking)</td><td class="jp">日本語がペラペラだ。(Fluent in Japanese.)</td><td class="kr">유창하다</td></tr>
+    <tr><td class="jp">バラバラ</td><td>scattered / apart</td><td class="jp">意見がバラバラだ。(Opinions are scattered.)</td><td class="kr">뿔뿔이</td></tr>
+    <tr><td class="jp">ボロボロ</td><td>tattered / worn out</td><td class="jp">靴がボロボロだ。(Shoes are worn out.)</td><td class="kr">너덜너덜</td></tr>
+    <tr><td class="jp">カチカチ</td><td>hard / frozen stiff</td><td class="jp">パンがカチカチだ。(Bread is rock hard.)</td><td class="kr">딱딱</td></tr>
+  </tbody>
+</table>
+
+<h4>Sounds</h4>
+<table>
+  <thead>
+    <tr><th>Japanese</th><th>Meaning</th><th>Usage Example</th><th>Korean Equivalent</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="jp">ドンドン</td><td>banging / increasingly</td><td class="jp">ドアをドンドン叩いた。(Banged on the door.)</td><td class="kr">쿵쿵</td></tr>
+    <tr><td class="jp">ゴロゴロ</td><td>rumbling / lazing around</td><td class="jp">雷がゴロゴロ鳴っている。(Thunder is rumbling.) / 家でゴロゴロする。(Laze around at home.)</td><td class="kr">우르르 (thunder) / 뒹굴뒹굴 (lazy)</td></tr>
+    <tr><td class="jp">ザーザー</td><td>heavy rain pouring</td><td class="jp">雨がザーザー降っている。(Rain is pouring.)</td><td class="kr">주룩주룩</td></tr>
+    <tr><td class="jp">シトシト</td><td>gentle rain drizzling</td><td class="jp">雨がシトシト降っている。(Rain is drizzling gently.)</td><td class="kr">부슬부슬</td></tr>
+    <tr><td class="jp">パチパチ</td><td>crackling / clapping</td><td class="jp">火がパチパチ燃えている。(Fire is crackling.)</td><td class="kr">타닥타닥</td></tr>
+    <tr><td class="jp">ガタガタ</td><td>rattling / shaking</td><td class="jp">窓がガタガタ揺れている。(Window is rattling.)</td><td class="kr">덜컹덜컹</td></tr>
+    <tr><td class="jp">ペコペコ</td><td>starving (stomach growling)</td><td class="jp">お腹がペコペコだ。(I'm starving.)</td><td class="kr">꼬르륵</td></tr>
+    <tr><td class="jp">ガブガブ</td><td>gulping / guzzling</td><td class="jp">水をガブガブ飲む。(Guzzle water.)</td><td class="kr">벌컥벌컥</td></tr>
+    <tr><td class="jp">ワンワン</td><td>woof woof (dog)</td><td class="jp">犬がワンワン吠えている。(Dog is barking.)</td><td class="kr">멍멍</td></tr>
+    <tr><td class="jp">ニャーニャー</td><td>meow meow (cat)</td><td class="jp">猫がニャーニャー鳴いている。(Cat is meowing.)</td><td class="kr">야옹야옹</td></tr>
+    <tr><td class="jp">コケコッコー</td><td>cock-a-doodle-doo</td><td class="jp">朝、コケコッコーと鳴いた。(Crowed in the morning.)</td><td class="kr">꼬꼬댁</td></tr>
+    <tr><td class="jp">ブーブー</td><td>honking / oink oink</td><td class="jp">車がブーブー鳴っている。(Car is honking.)</td><td class="kr">빵빵 (horn) / 꿀꿀 (pig)</td></tr>
+    <tr><td class="jp">ガチャガチャ</td><td>clanking / jangling</td><td class="jp">鍵をガチャガチャ鳴らす。(Jangle keys.)</td><td class="kr">달그락달그락</td></tr>
+    <tr><td class="jp">バタバタ</td><td>flapping / rushing around</td><td class="jp">朝からバタバタしている。(Rushing around since morning.)</td><td class="kr">허둥지둥</td></tr>
+    <tr><td class="jp">スラスラ</td><td>smoothly / fluently (reading/writing)</td><td class="jp">漢字がスラスラ読める。(Can read kanji smoothly.)</td><td class="kr">술술</td></tr>
+    <tr><td class="jp">コツコツ</td><td>steadily / diligently (also tapping)</td><td class="jp">コツコツ努力する。(Work diligently.)</td><td class="kr">꾸준히</td></tr>
+    <tr><td class="jp">ブツブツ</td><td>muttering / grumbling</td><td class="jp">ブツブツ文句を言う。(Mutter complaints.)</td><td class="kr">투덜투덜</td></tr>
+    <tr><td class="jp">ヘトヘト</td><td>exhausted / worn out</td><td class="jp">仕事でヘトヘトだ。(Exhausted from work.)</td><td class="kr">녹초가 되다</td></tr>
+  </tbody>
+</table>
+
+<div class="callout warn">
+  <div class="callout-title">Elaborative Interrogation</div>
+  <p><strong>WHY is Japanese onomatopoeia mostly written in katakana?</strong></p>
+  <p>Katakana is used for emphasis, foreignness, and sound effects. Onomatopoeia in manga, ads, and casual writing uses katakana to make words visually "pop." However, the softer, gentler onomatopoeia (like <span class="jp">しとしと</span>, gentle rain) is often written in hiragana to convey that softness visually. The script choice itself carries meaning. Korean does not have this dual-script tool.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BONUS: LOCATION & HOME WORDS
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="bonus-places-and-home----場所と家">Bonus: Places and Home -- <span class="jp">場所と家</span></h3>
+
+<p>Rounding out your 200+ vocabulary target with essential location and household words.</p>
+
+<table>
+  <thead>
+    <tr><th>Japanese</th><th>Reading</th><th>Meaning</th><th>Mnemonic</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="jp">家</td><td class="jp">いえ / うち</td><td>house / home</td><td>"EE-AY / OOCHI -- my cozy HOUSE"</td></tr>
+    <tr><td class="jp">部屋</td><td class="jp">へや</td><td>room</td><td>"HEY-YA -- HEY, this is my ROOM!"</td></tr>
+    <tr><td class="jp">窓</td><td class="jp">まど</td><td>window</td><td>"MAD-OH -- MAD at the open WINDOW"</td></tr>
+    <tr><td class="jp">戸</td><td class="jp">と</td><td>door (sliding)</td><td>"TOE -- stubbed my TOE on the DOOR"</td></tr>
+    <tr><td class="jp">鍵</td><td class="jp">かぎ</td><td>key</td><td>"KA-GEE -- KEY to the garage"</td></tr>
+    <tr><td class="jp">庭</td><td class="jp">にわ</td><td>garden / yard</td><td>"NIWA -- KNEE-WAH -- kneeling in the GARDEN"</td></tr>
+    <tr><td class="jp">道</td><td class="jp">みち</td><td>road / path</td><td>"MICHI -- road to MICHIGAN"</td></tr>
+    <tr><td class="jp">橋</td><td class="jp">はし</td><td>bridge</td><td>"HASHI -- HASHISH under the BRIDGE"</td></tr>
+    <tr><td class="jp">店</td><td class="jp">みせ</td><td>shop / store</td><td>"MISE -- MISERY of shopping at a crowded STORE"</td></tr>
+    <tr><td class="jp">村</td><td class="jp">むら</td><td>village</td><td>"MURA -- MULAN's VILLAGE"</td></tr>
+    <tr><td class="jp">町</td><td class="jp">まち</td><td>town</td><td>"MATCHI -- MATCH the TOWN on the map"</td></tr>
+    <tr><td class="jp">国</td><td class="jp">くに</td><td>country</td><td>"COONEY -- every COUNTRY has a leader"</td></tr>
+    <tr><td class="jp">中</td><td class="jp">なか</td><td>inside / middle</td><td>"NAKA -- KNOCK-A on the door to get INSIDE"</td></tr>
+    <tr><td class="jp">外</td><td class="jp">そと</td><td>outside</td><td>"SO-TO -- SO, go OUTSIDE TO play"</td></tr>
+    <tr><td class="jp">上</td><td class="jp">うえ</td><td>above / on top</td><td>"WAY -- WAY UP ABOVE"</td></tr>
+    <tr><td class="jp">下</td><td class="jp">した</td><td>below / under</td><td>"SHE-TA -- she sat UNDER the tree"</td></tr>
+    <tr><td class="jp">右</td><td class="jp">みぎ</td><td>right</td><td>"MIGGI -- turn RIGHT at the MIGGI sign"</td></tr>
+    <tr><td class="jp">左</td><td class="jp">ひだり</td><td>left</td><td>"HIDARI -- HIDE-A-REE -- LEFT and hidden"</td></tr>
+    <tr><td class="jp">隣</td><td class="jp">となり</td><td>next to / neighbor</td><td>"TONARI -- TOTORO lives NEXT DOOR (となりのトトロ)"</td></tr>
+    <tr><td class="jp">向こう</td><td class="jp">むこう</td><td>over there / other side</td><td>"MUKO -- look MU-KO (yonder) OVER THERE"</td></tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     VOCABULARY COUNT SUMMARY
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="card" style="text-align:center;margin:2rem 0">
+  <div style="font-size:2.5rem;font-family:var(--serif);color:var(--accent)">200+</div>
+  <div style="font-size:1rem;color:var(--text-muted)">和語 words covered in this chapter</div>
+  <div style="display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;margin-top:1rem">
+    <div><strong>30</strong> <span style="font-size:.82rem;color:var(--text-muted)">Body</span></div>
+    <div><strong>27</strong> <span style="font-size:.82rem;color:var(--text-muted)">Food</span></div>
+    <div><strong>26</strong> <span style="font-size:.82rem;color:var(--text-muted)">Nature</span></div>
+    <div><strong>20</strong> <span style="font-size:.82rem;color:var(--text-muted)">Time</span></div>
+    <div><strong>45</strong> <span style="font-size:.82rem;color:var(--text-muted)">Actions</span></div>
+    <div><strong>39</strong> <span style="font-size:.82rem;color:var(--text-muted)">Adjectives</span></div>
+    <div><strong>30</strong> <span style="font-size:.82rem;color:var(--text-muted)">People</span></div>
+    <div><strong>40</strong> <span style="font-size:.82rem;color:var(--text-muted)">Onomatopoeia</span></div>
+    <div><strong>20</strong> <span style="font-size:.82rem;color:var(--text-muted)">Places</span></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     INTERACTIVE EXERCISES
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="interactive-exercises">Interactive Exercises</h3>
+
+<!-- Quiz 1: Flashcard -- 30+ vocabulary cards with mnemonics -->
+<div id="quiz-flashcard"></div>
+
+<!-- Quiz 2: TimedSprint -- rapid wago recognition -->
+<div id="quiz-timed"></div>
+
+<!-- Quiz 3: FillBlank -- complete sentences with correct wago -->
+<div id="quiz-fillblank"></div>
+
+<!-- Quiz 4: DragMatch -- match Japanese words to English meanings -->
+<div id="quiz-dragmatch"></div>
+
+<!-- Quiz 5: RecallCheck from Ch11-11 -->
+<h3 id="recall-check----chapters-10-11-review">Recall Check -- Chapters 10-11 Review</h3>
+<p>Mixed review of kanji readings and sino-vocabulary from previous chapters. Keep compound recognition sharp.</p>
+
+<div id="quiz-recall-bottom"></div>
+
+<!-- Mark as Complete -->
+<button class="chapter-complete" data-ch="13">Mark as Complete &#10003;</button>
+
+<div style="display:flex;justify-content:space-between;margin:2rem 0">
+  <a href="ch-12.html" class="quiz-btn secondary">&larr; Chapter 13: Sino-Vocabulary</a>
+  <a href="ch-14.html" class="quiz-btn">Next: Chapter 15 -- Honorifics &rarr;</a>
+</div>
+
+</section>
+
+</div>
+
+
+</div>
+
+<footer>
+  <p>Zero to Hero: 日本語 for Korean Speakers &middot; Chapter 13</p>
+</footer>
+
+<script src="js/shared.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/quiz-engine.js"></script>
+<script src="js/spaced-repetition.js"></script>
+<script src="js/memory-palace.js"></script>
+<script>
+// ─── Recall Check (top of chapter, from Ch11-11) ───
+QuizEngine.RecallCheck(
+  document.getElementById('recall-check-top'),
+  {
+    fromChapters: 'Ch11-11',
+    items: [
+      { question: 'Kanji: What is the くんよみ (native reading) of 山?', answer: 'やま' },
+      { question: 'Kanji: What is the おんよみ (Sino reading) of 山?', answer: 'さん / ざん' },
+      { question: 'Kanji: What is the くんよみ of 食?', answer: 'た(べる)' },
+      { question: 'Sino-vocab: How do you read 学生?', answer: 'がくせい (student)' },
+      { question: 'Sino-vocab: How do you read 図書館?', answer: 'としょかん (library)' },
+      { question: 'Sino-vocab: How do you read 電話?', answer: 'でんわ (telephone)' },
+      { question: 'Kanji: What radical is shared by 話, 読, 言?', answer: '言 (ごんべん) -- the speech radical' }
+    ]
+  }
+);
+
+// ─── Quiz 1: Flashcard -- 30+ vocabulary cards with mnemonics ───
+QuizEngine.Flashcard(
+  document.getElementById('quiz-flashcard'),
+  {
+    cards: [
+      { front: '<span class="jp" style="font-size:2.5rem">頭</span>', back: 'あたま -- head', detail: 'Mnemonic: "A LLAMA has a big head"' },
+      { front: '<span class="jp" style="font-size:2.5rem">目</span>', back: 'め -- eye', detail: 'Mnemonic: "ME! Look at ME!" (point to eye)' },
+      { front: '<span class="jp" style="font-size:2.5rem">食べる</span>', back: 'たべる -- eat', detail: 'Mnemonic: "TABLE -- eat at a TABLE"' },
+      { front: '<span class="jp" style="font-size:2.5rem">飲む</span>', back: 'のむ -- drink', detail: 'Mnemonic: "NOM-NOM drinking sounds"' },
+      { front: '<span class="jp" style="font-size:2.5rem">水</span>', back: 'みず -- water', detail: 'Mnemonic: "MIST of water"' },
+      { front: '<span class="jp" style="font-size:2.5rem">山</span>', back: 'やま -- mountain', detail: 'Mnemonic: "LLAMA on a mountain"' },
+      { front: '<span class="jp" style="font-size:2.5rem">川</span>', back: 'かわ -- river', detail: 'Mnemonic: "River flowing like a CURVE"' },
+      { front: '<span class="jp" style="font-size:2.5rem">海</span>', back: 'うみ -- sea', detail: 'Mnemonic: "OO-ME! The sea is huge!"' },
+      { front: '<span class="jp" style="font-size:2.5rem">空</span>', back: 'そら -- sky', detail: 'Mnemonic: "SOAR-AH -- birds SOAR in the sky"' },
+      { front: '<span class="jp" style="font-size:2.5rem">朝</span>', back: 'あさ -- morning', detail: 'Mnemonic: "ASAHI sunrise brew"' },
+      { front: '<span class="jp" style="font-size:2.5rem">夜</span>', back: 'よる -- night', detail: 'Mnemonic: "YOUR night, YOUR time to rest"' },
+      { front: '<span class="jp" style="font-size:2.5rem">見る</span>', back: 'みる -- see / look', detail: 'Mnemonic: "MIRROR -- see yourself in a mirror"' },
+      { front: '<span class="jp" style="font-size:2.5rem">聞く</span>', back: 'きく -- hear / listen', detail: 'Mnemonic: "KICK drum -- hear the kick drum"' },
+      { front: '<span class="jp" style="font-size:2.5rem">買う</span>', back: 'かう -- buy', detail: 'Mnemonic: "Buy a COW"' },
+      { front: '<span class="jp" style="font-size:2.5rem">行く</span>', back: 'いく -- go', detail: 'Mnemonic: "Each week (EEKU) I GO somewhere"' },
+      { front: '<span class="jp" style="font-size:2.5rem">来る</span>', back: 'くる -- come', detail: 'Mnemonic: "COME here, it\'s COOL"' },
+      { front: '<span class="jp" style="font-size:2.5rem">大きい</span>', back: 'おおきい -- big', detail: 'Mnemonic: "OH OH! That KEY is BIG"' },
+      { front: '<span class="jp" style="font-size:2.5rem">小さい</span>', back: 'ちいさい -- small', detail: 'Mnemonic: "CHEESE-EYE -- a small cheesy eye"' },
+      { front: '<span class="jp" style="font-size:2.5rem">高い</span>', back: 'たかい -- tall / expensive', detail: 'Mnemonic: "TACKY tall buildings / expensive items"' },
+      { front: '<span class="jp" style="font-size:2.5rem">安い</span>', back: 'やすい -- cheap', detail: 'Mnemonic: "EASY on the wallet = CHEAP"' },
+      { front: '<span class="jp" style="font-size:2.5rem">人</span>', back: 'ひと -- person', detail: 'Mnemonic: "HE-TOE -- every person has a he and a toe"' },
+      { front: '<span class="jp" style="font-size:2.5rem">友達</span>', back: 'ともだち -- friend', detail: 'Mnemonic: "TOMATO-CHI -- share a tomato with a friend"' },
+      { front: '<span class="jp" style="font-size:2.5rem">子供</span>', back: 'こども -- child', detail: 'Mnemonic: "CONDO-MO -- kids running in a condo"' },
+      { front: '<span class="jp" style="font-size:2.5rem">ドキドキ</span>', back: 'heart pounding', detail: 'Korean: 두근두근 -- same concept, different sound!' },
+      { front: '<span class="jp" style="font-size:2.5rem">キラキラ</span>', back: 'sparkling / glittering', detail: 'Korean: 반짝반짝' },
+      { front: '<span class="jp" style="font-size:2.5rem">嬉しい</span>', back: 'うれしい -- happy / glad', detail: 'Mnemonic: "HOORAY! I\'m HAPPY!"' },
+      { front: '<span class="jp" style="font-size:2.5rem">悲しい</span>', back: 'かなしい -- sad', detail: 'Mnemonic: "CAN-A-SHE cry? So SAD"' },
+      { front: '<span class="jp" style="font-size:2.5rem">走る</span>', back: 'はしる -- run', detail: 'Mnemonic: "RUN a HASH race"' },
+      { front: '<span class="jp" style="font-size:2.5rem">歩く</span>', back: 'あるく -- walk', detail: 'Mnemonic: "WALK a ROOK across the chessboard"' },
+      { front: '<span class="jp" style="font-size:2.5rem">春</span>', back: 'はる -- spring', detail: 'Mnemonic: "HARVEST starts in spring"' },
+      { front: '<span class="jp" style="font-size:2.5rem">夏</span>', back: 'なつ -- summer', detail: 'Mnemonic: "NUTS how hot summer is!"' },
+      { front: '<span class="jp" style="font-size:2.5rem">秋</span>', back: 'あき -- autumn', detail: 'Mnemonic: "AKITA dogs love autumn leaves"' },
+      { front: '<span class="jp" style="font-size:2.5rem">冬</span>', back: 'ふゆ -- winter', detail: 'Mnemonic: "PHEW, winter is cold!"' }
+    ]
+  }
+);
+
+// ─── Quiz 2: TimedSprint -- rapid wago recognition ───
+QuizEngine.TimedSprint(
+  document.getElementById('quiz-timed'),
+  {
+    title: 'Speed Round: 和語 Recognition',
+    timeLimit: 60,
+    items: [
+      { prompt: '頭', answer: 'あたま (head)' },
+      { prompt: '目', answer: 'め (eye)' },
+      { prompt: '耳', answer: 'みみ (ear)' },
+      { prompt: '口', answer: 'くち (mouth)' },
+      { prompt: '手', answer: 'て (hand)' },
+      { prompt: '足', answer: 'あし (foot/leg)' },
+      { prompt: '食べる', answer: 'たべる (eat)' },
+      { prompt: '飲む', answer: 'のむ (drink)' },
+      { prompt: '水', answer: 'みず (water)' },
+      { prompt: '山', answer: 'やま (mountain)' },
+      { prompt: '川', answer: 'かわ (river)' },
+      { prompt: '海', answer: 'うみ (sea)' },
+      { prompt: '空', answer: 'そら (sky)' },
+      { prompt: '朝', answer: 'あさ (morning)' },
+      { prompt: '夜', answer: 'よる (night)' },
+      { prompt: '今日', answer: 'きょう (today)' },
+      { prompt: '見る', answer: 'みる (see)' },
+      { prompt: '聞く', answer: 'きく (hear)' },
+      { prompt: '行く', answer: 'いく (go)' },
+      { prompt: '来る', answer: 'くる (come)' },
+      { prompt: '買う', answer: 'かう (buy)' },
+      { prompt: '大きい', answer: 'おおきい (big)' },
+      { prompt: '小さい', answer: 'ちいさい (small)' },
+      { prompt: '高い', answer: 'たかい (tall/expensive)' },
+      { prompt: '人', answer: 'ひと (person)' },
+      { prompt: '花', answer: 'はな (flower)' },
+      { prompt: '雨', answer: 'あめ (rain)' },
+      { prompt: '風', answer: 'かぜ (wind)' },
+      { prompt: '心', answer: 'こころ (heart)' },
+      { prompt: '嬉しい', answer: 'うれしい (happy)' },
+      { prompt: '悲しい', answer: 'かなしい (sad)' },
+      { prompt: '怖い', answer: 'こわい (scary)' },
+      { prompt: '春', answer: 'はる (spring)' },
+      { prompt: '夏', answer: 'なつ (summer)' },
+      { prompt: '友達', answer: 'ともだち (friend)' }
+    ]
+  }
+);
+
+// ─── Quiz 3: FillBlank -- complete sentences with correct wago ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-fillblank'),
+  {
+    title: 'Fill in the Blank: 和語 in Context',
+    questions: [
+      {
+        prompt: '<span class="jp">___が痛い。</span> (My head hurts.)',
+        answer: '頭',
+        acceptAlso: ['あたま'],
+        explanation: '頭 (あたま) = head. 頭が痛い is a very common expression.'
+      },
+      {
+        prompt: '<span class="jp">朝ご飯を___。</span> (I ate breakfast.)',
+        answer: '食べた',
+        acceptAlso: ['たべた'],
+        explanation: '食べた (たべた) = ate. Past tense of 食べる.'
+      },
+      {
+        prompt: '<span class="jp">___を飲みたい。</span> (I want to drink water.)',
+        answer: '水',
+        acceptAlso: ['みず'],
+        explanation: '水 (みず) = water.'
+      },
+      {
+        prompt: '<span class="jp">今日は___が暑い。</span> (Today the weather is hot.) -- Hint: sky/weather',
+        answer: '空',
+        acceptAlso: ['そら'],
+        explanation: '空 (そら) = sky. Though 天気 is more common for weather, 空 works for "the skies are hot."'
+      },
+      {
+        prompt: '<span class="jp">あの___はとても高い。</span> (That mountain is very tall.)',
+        answer: '山',
+        acceptAlso: ['やま'],
+        explanation: '山 (やま) = mountain. 高い here means tall.'
+      },
+      {
+        prompt: '<span class="jp">___に帰りたい。</span> (I want to go home.)',
+        answer: '家',
+        acceptAlso: ['いえ', 'うち'],
+        explanation: '家 (いえ/うち) = home/house.'
+      },
+      {
+        prompt: '<span class="jp">彼女は___がいい。</span> (She has a kind/gentle personality.) -- Hint: kind/gentle adjective',
+        answer: '優しい',
+        acceptAlso: ['やさしい'],
+        explanation: '優しい (やさしい) = kind, gentle.'
+      },
+      {
+        prompt: '<span class="jp">___がキラキラ光っている。</span> (Stars are sparkling.)',
+        answer: '星',
+        acceptAlso: ['ほし'],
+        explanation: '星 (ほし) = star. キラキラ = sparkling onomatopoeia.'
+      },
+      {
+        prompt: '<span class="jp">お腹が___だ。</span> (I am starving.) -- Hint: an onomatopoeia',
+        answer: 'ペコペコ',
+        acceptAlso: ['ぺこぺこ'],
+        explanation: 'ペコペコ = starving (stomach growling). Korean: 꼬르륵.'
+      },
+      {
+        prompt: '<span class="jp">日本語が___になりたい。</span> (I want to become fluent in Japanese.) -- Hint: onomatopoeia for fluent',
+        answer: 'ペラペラ',
+        acceptAlso: ['ぺらぺら'],
+        explanation: 'ペラペラ = fluent at speaking.'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 4: DragMatch -- match Japanese words to English meanings ───
+QuizEngine.DragMatch(
+  document.getElementById('quiz-dragmatch'),
+  {
+    title: 'Match: 和語 to Meaning',
+    instruction: 'Match each Japanese word to its English meaning:',
+    pairs: [
+      { left: '走る (はしる)', right: 'run' },
+      { left: '歩く (あるく)', right: 'walk' },
+      { left: '寝る (ねる)', right: 'sleep' },
+      { left: '起きる (おきる)', right: 'wake up' },
+      { left: '作る (つくる)', right: 'make / create' },
+      { left: '壊す (こわす)', right: 'break / destroy' },
+      { left: '開ける (あける)', right: 'open' },
+      { left: '閉める (しめる)', right: 'close' },
+      { left: '暑い (あつい)', right: 'hot (weather)' },
+      { left: '寒い (さむい)', right: 'cold (weather)' },
+      { left: '嬉しい (うれしい)', right: 'happy / glad' },
+      { left: '悲しい (かなしい)', right: 'sad' }
+    ]
+  }
+);
+
+// ─── Quiz 5: RecallCheck from Ch11-11 ───
+QuizEngine.RecallCheck(
+  document.getElementById('quiz-recall-bottom'),
+  {
+    fromChapters: 'Ch11-11',
+    items: [
+      { question: 'Kanji: What is the おんよみ of 水?', answer: 'すい (as in 水曜日 = すいようび)' },
+      { question: 'Kanji: What is the おんよみ of 日?', answer: 'にち / じつ' },
+      { question: 'Sino-vocab: How do you read 経済?', answer: 'けいざい (economy)' },
+      { question: 'Sino-vocab: How do you read 約束?', answer: 'やくそく (promise)' },
+      { question: 'Sino-vocab: How do you read 準備?', answer: 'じゅんび (preparation)' },
+      { question: 'Kanji: What does the radical 氵 (さんずい) relate to?', answer: 'Water -- seen in 海, 池, 波, 泳, 汗, etc.' },
+      { question: 'Sino-vocab: Korean 병원 corresponds to which Japanese word?', answer: '病院 (びょういん) -- hospital' }
+    ]
+  }
+);
+</script>
+</body>
+</html>

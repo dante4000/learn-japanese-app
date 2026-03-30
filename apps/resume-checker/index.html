@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IB Resume Bench</title>
+  <meta
+    name="description"
+    content="An editorial design lab and static prototype for an investment banking resume benchmarking flow."
+  >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:wght@400;700&family=Azeret+Mono:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&family=EB+Garamond:wght@400;500;600&family=Fira+Code:wght@400;500&family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..700,0..100,1&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=Inconsolata:wght@400;500;700&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Libre+Baskerville:wght@400;700&family=Lora:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=PT+Mono&family=Public+Sans:wght@400;500;600;700&family=Red+Hat+Mono:wght@400;500;600&family=Roboto+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;500;600&family=Source+Sans+3:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=Sora:wght@400;500;600;700&family=Work+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <div class="site-shell">
+    <header class="shell-bar panel" data-testid="shell-bar">
+      <div class="brand-block">
+        <p class="brand-kicker">Rareliquid Internal</p>
+        <div class="brand-lockup">
+          <span class="brand-mark"></span>
+          <div>
+            <p class="brand-name">IB Resume Bench</p>
+            <p class="brand-subtitle">Editorial benchmark prototype</p>
+          </div>
+        </div>
+      </div>
+
+      <nav class="page-tabs" aria-label="Primary">
+        <button class="page-tab is-active" data-page-target="page-lab" type="button">Design Lab</button>
+        <button class="page-tab" data-page-target="page-landing" type="button">Landing</button>
+        <button class="page-tab" data-page-target="page-upload" type="button">Upload</button>
+        <button class="page-tab" data-page-target="page-about" type="button">About</button>
+        <button class="page-tab" data-page-target="page-banks" type="button">Banks</button>
+        <button class="page-tab" data-page-target="page-results" type="button">Results</button>
+      </nav>
+
+      <div class="toolbar">
+        <button class="button-secondary toolbar-button" id="toolbar-use-sample" type="button">Use Sample Resume</button>
+        <button class="button-primary toolbar-button" data-go-tab="page-results" type="button">Jump to Results</button>
+      </div>
+    </header>
+
+    <main class="app-main">
+      <section class="app-page is-active" id="page-lab" data-page="page-lab">
+        <div class="lab-intro panel">
+          <div>
+            <p class="page-kicker">Live Design System</p>
+            <h1 class="page-heading" data-testid="lab-title">Every control below is live.</h1>
+            <p class="page-copy lead-copy">
+              Each option propagates through landing, upload, about, banks, and results. The point is not to
+              stack generic “premium” tokens. It is to make the product feel designed, editorial, and finance-native.
+            </p>
+          </div>
+          <div class="intro-note">
+            <p class="note-label">Audit Rule</p>
+            <p class="note-copy">
+              Each group has <strong>12</strong> real options across <strong>19</strong> control groups, verified in the bug-testing workflow with page-by-page
+              screenshots and written error reports.
+            </p>
+          </div>
+        </div>
+
+        <div class="lab-layout">
+          <div class="design-sections" id="design-sections"></div>
+
+          <aside class="preview-rail">
+            <div class="panel preview-panel">
+              <div class="panel-header">
+                <div>
+                  <button class="direction-toggle" id="direction-toggle" type="button">Current Direction</button>
+                  <h2 class="panel-title">Preview Rail</h2>
+                </div>
+                <p class="panel-status" id="selection-count">19 active decisions</p>
+              </div>
+
+              <div class="selection-ledger" id="selection-ledger"></div>
+
+              <div class="preview-stack">
+                <article class="mini-shell panel" data-testid="mini-landing-preview">
+                  <p class="mini-kicker">Landing Preview</p>
+                  <div class="mini-hero">
+                    <p class="mini-ribbon">Goldman Sachs • Morgan Stanley • Lazard • PJT</p>
+                    <div class="hero-lockup mini-lockup">
+                      <span class="hero-line hero-line-primary">Resume Benchmark</span>
+                      <span class="hero-line hero-line-accent">for Banking</span>
+                    </div>
+                    <p class="mini-copy">Invite-only review flow with editorial restraint instead of AI defaults.</p>
+                    <button class="button-primary mini-button" type="button">Review Bench</button>
+                  </div>
+                </article>
+
+                <article class="mini-shell panel" data-testid="mini-upload-preview">
+                  <p class="mini-kicker">Upload Preview</p>
+                  <div class="mini-upload">
+                    <div class="mini-dropzone">
+                      <span class="mini-drop-label">resume-sample.pdf</span>
+                      <span class="mini-drop-meta">1 page · banking format</span>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="mini-shell panel" data-testid="mini-results-preview">
+                  <p class="mini-kicker">Results Preview</p>
+                  <div class="mini-results">
+                    <div class="mini-score">
+                      <span class="mini-score-value stat-value">87</span>
+                      <span class="mini-score-label">overall</span>
+                    </div>
+                    <div class="mini-bar">
+                      <span>Formatting</span>
+                      <div class="mini-bar-track"><div class="mini-bar-fill" style="width: 88%"></div></div>
+                    </div>
+                    <div class="mini-issue">
+                      <span class="status-pill status-pill--warning">Moderate</span>
+                      <p>Quantify operating leverage in experience bullets.</p>
+                    </div>
+                  </div>
+                </article>
+              </div>
+
+              <div class="lab-actions">
+                <button class="button-secondary" id="reset-theme" type="button">Reset Default</button>
+                <button class="button-secondary" id="import-theme" type="button">Import Manifest</button>
+                <button class="button-primary" id="export-theme" type="button">Export Manifest</button>
+              </div>
+              <p class="panel-status manifest-status" id="manifest-status" aria-live="polite">
+                Import a manifest JSON to restore the page direction.
+              </p>
+
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="app-page" id="page-landing" data-page="page-landing">
+        <div class="page-shell">
+          <div class="market-ribbon" data-testid="landing-market-ribbon">
+            <span>Goldman Sachs</span>
+            <span>Morgan Stanley</span>
+            <span>Evercore</span>
+            <span>Moelis</span>
+            <span>Lazard</span>
+            <span>PJT Partners</span>
+            <span>Centerview</span>
+          </div>
+
+          <div class="landing-grid">
+            <div class="landing-copy">
+              <p class="page-kicker" data-testid="landing-kicker">Private access only</p>
+              <div class="hero-lockup" data-testid="landing-hero-lockup">
+                <span class="hero-line hero-line-primary" data-testid="landing-hero-primary">Built for IB recruiting.</span>
+                <span class="hero-line hero-line-accent" data-testid="landing-hero-accent">Unfiltered.</span>
+              </div>
+              <p class="page-copy lead-copy" data-testid="landing-description">
+                See your resume the way IB recruiters see it. Get firm-specific signals, IB format checks,
+                and actionable fixes before you apply.
+              </p>
+
+              <div class="stat-grid">
+                <article class="stat-card panel">
+                  <p class="stat-value" data-testid="landing-stat-1">18+</p>
+                  <p class="stat-label">Bank Profiles</p>
+                </article>
+                <article class="stat-card panel">
+                  <p class="stat-value" data-testid="landing-stat-2">14+</p>
+                  <p class="stat-label">Format Checks</p>
+                </article>
+                <article class="stat-card panel">
+                  <p class="stat-value" data-testid="landing-stat-3">100</p>
+                  <p class="stat-label">Point Score</p>
+                </article>
+              </div>
+
+              <div class="button-row">
+                <button class="button-primary" data-go-tab="page-upload" type="button">Review a Resume</button>
+                <button class="button-secondary" data-go-tab="page-lab" type="button">Open Design Lab</button>
+              </div>
+            </div>
+
+            <aside class="invite-card panel">
+              <p class="invite-label">Invite Only</p>
+              <h2 class="section-heading" data-testid="landing-form-heading">Enter your access code</h2>
+              <p class="page-copy">
+                Your recruiter won't tell you what's wrong with your resume. We will.
+              </p>
+
+              <div class="field-stack">
+                <label class="field-block">
+                  <span class="field-label">Email</span>
+                  <input class="field-input" id="invite-email" name="invite-email" placeholder="hello@rareliquid.com" type="email">
+                </label>
+                <label class="field-block">
+                  <span class="field-label">Access Code</span>
+                  <input class="field-input" id="invite-code" name="invite-code" placeholder="Enter access code" type="text">
+                </label>
+              </div>
+
+              <div class="button-row">
+                <button class="button-primary" data-go-tab="page-upload" type="button">Continue</button>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <section class="app-page" id="page-upload" data-page="page-upload">
+        <div class="page-shell">
+          <div class="page-header">
+            <div>
+              <p class="page-kicker">Step 1 of 3</p>
+              <h1 class="page-heading" data-testid="upload-title">
+                Upload the resume
+                <span class="hero-line hero-line-accent heading-accent" data-testid="upload-heading-accent">you want to benchmark.</span>
+              </h1>
+            </div>
+            <p class="page-copy" data-testid="upload-description">
+              The static build supports sample loading and PDF upload state. The preview favors legibility and auditability.
+            </p>
+          </div>
+
+          <div class="upload-layout">
+            <div class="upload-column">
+              <div class="upload-dropzone panel" id="drop-zone" data-testid="upload-drop-zone">
+                <div class="dropzone-icon">PDF</div>
+                <h2 class="section-heading">Drop a banking-format resume</h2>
+                <p class="page-copy">
+                  PDF only. A sample file is bundled so the site can be demoed and tested end to end after deployment.
+                </p>
+                <div class="button-row">
+                  <button class="button-primary" id="open-file-picker" type="button">Upload PDF</button>
+                  <button class="button-secondary" id="use-sample-resume" type="button">Use Sample Resume</button>
+                </div>
+              </div>
+
+              <div class="panel upload-meta">
+                <div class="meta-row">
+                  <span class="meta-label">Current file</span>
+                  <span class="meta-value stat-value" id="upload-file-name" data-testid="upload-file-name">No file selected</span>
+                </div>
+                <div class="meta-row">
+                  <span class="meta-label">Preview mode</span>
+                  <span class="meta-value" id="upload-preview-mode">Awaiting PDF</span>
+                </div>
+                <div class="meta-row">
+                  <span class="meta-label">Status</span>
+                  <span class="meta-value" id="upload-status">Ready for upload</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="resume-stage panel" data-testid="resume-stage">
+              <div class="resume-stage-header">
+                <div>
+                  <p class="panel-kicker">Resume Preview</p>
+                  <h2 class="panel-title">Document Surface</h2>
+                </div>
+                <button class="button-secondary" data-go-tab="page-about" type="button">Continue</button>
+              </div>
+
+              <div class="resume-preview is-empty" id="resume-preview" data-testid="resume-preview">
+                <div class="resume-placeholder" id="resume-placeholder">
+                  <p class="resume-placeholder-title">No file loaded</p>
+                  <p class="page-copy">Load the bundled PDF or upload your own to populate the flow.</p>
+                </div>
+                <img alt="Resume sample preview" hidden id="resume-preview-image">
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="app-page" id="page-about" data-page="page-about">
+        <div class="page-shell">
+          <div class="page-header">
+            <div>
+              <p class="page-kicker">Step 2 of 3</p>
+              <h1 class="page-heading" data-testid="about-title">
+                Context sharpens
+                <span class="hero-line hero-line-accent heading-accent" data-testid="about-heading-accent">the recommendation set.</span>
+              </h1>
+            </div>
+            <p class="page-copy" data-testid="about-description">
+              Capture just enough detail to tailor the benchmark without turning the intake into a generic CRM form.
+            </p>
+          </div>
+
+          <div class="context-grid">
+            <form class="panel context-form">
+              <div class="field-grid">
+                <label class="field-block">
+                  <span class="field-label">Candidate Name</span>
+                  <input class="field-input" id="candidate-name" placeholder="Alex Morgan" type="text">
+                </label>
+                <label class="field-block">
+                  <span class="field-label">University</span>
+                  <input class="field-input" id="candidate-school" placeholder="Wharton" type="text">
+                </label>
+                <label class="field-block">
+                  <span class="field-label">Graduation Year</span>
+                  <input class="field-input" id="candidate-year" placeholder="2027" type="text">
+                </label>
+                <label class="field-block">
+                  <span class="field-label">Major</span>
+                  <input class="field-input" id="candidate-major" placeholder="Finance + Statistics" type="text">
+                </label>
+                <label class="field-block">
+                  <span class="field-label">GPA</span>
+                  <input class="field-input" id="candidate-gpa" placeholder="3.86" type="text">
+                </label>
+                <label class="field-block">
+                  <span class="field-label">Target Cycle</span>
+                  <input class="field-input" id="candidate-cycle" placeholder="2027 Summer Analyst" type="text">
+                </label>
+              </div>
+
+              <div class="button-row">
+                <button class="button-primary" data-go-tab="page-banks" type="button">Save Context</button>
+              </div>
+            </form>
+
+            <aside class="panel context-note">
+              <p class="panel-kicker">How It Reads</p>
+              <h2 class="panel-title">The UI should feel operational.</h2>
+              <p class="stat-value" data-testid="about-mono">04</p>
+              <p class="stat-label">Active Inputs</p>
+              <p class="page-copy">
+                Tight copy, reduced corner radius, warmer neutrals, and better type hierarchy immediately kill the “LLM template”
+                signal that shows up in so many cloned fintech sites.
+              </p>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <section class="app-page" id="page-banks" data-page="page-banks">
+        <div class="page-shell">
+          <div class="page-header">
+            <div>
+              <p class="page-kicker">Step 3 of 3</p>
+              <h1 class="page-heading" data-testid="banks-title">
+                Choose the bank set
+                <span class="hero-line hero-line-accent heading-accent" data-testid="banks-heading-accent">you actually care about.</span>
+              </h1>
+            </div>
+            <p class="page-copy" data-testid="banks-description">
+              Selected banks feed the fit panel on the results page and make the flow feel purpose-built instead of generic.
+            </p>
+          </div>
+
+          <div class="panel upload-meta">
+            <div class="meta-row">
+              <span class="meta-label">Selected Targets</span>
+              <span class="meta-value stat-value" data-testid="banks-mono">03</span>
+            </div>
+          </div>
+
+          <div class="bank-selection-grid" id="bank-selection-grid" data-testid="bank-selection-grid">
+            <button class="bank-card panel is-selected" data-bank="Goldman Sachs" type="button">
+              <span class="bank-card-name">Goldman Sachs</span>
+              <span class="bank-card-meta">Bulge Bracket</span>
+            </button>
+            <button class="bank-card panel is-selected" data-bank="Morgan Stanley" type="button">
+              <span class="bank-card-name">Morgan Stanley</span>
+              <span class="bank-card-meta">Bulge Bracket</span>
+            </button>
+            <button class="bank-card panel is-selected" data-bank="J.P. Morgan" type="button">
+              <span class="bank-card-name">J.P. Morgan</span>
+              <span class="bank-card-meta">Bulge Bracket</span>
+            </button>
+            <button class="bank-card panel" data-bank="Evercore" type="button">
+              <span class="bank-card-name">Evercore</span>
+              <span class="bank-card-meta">Elite Boutique</span>
+            </button>
+            <button class="bank-card panel" data-bank="Lazard" type="button">
+              <span class="bank-card-name">Lazard</span>
+              <span class="bank-card-meta">Elite Boutique</span>
+            </button>
+            <button class="bank-card panel" data-bank="Moelis" type="button">
+              <span class="bank-card-name">Moelis</span>
+              <span class="bank-card-meta">Elite Boutique</span>
+            </button>
+            <button class="bank-card panel" data-bank="PJT Partners" type="button">
+              <span class="bank-card-name">PJT Partners</span>
+              <span class="bank-card-meta">Elite Boutique</span>
+            </button>
+            <button class="bank-card panel" data-bank="Centerview" type="button">
+              <span class="bank-card-name">Centerview</span>
+              <span class="bank-card-meta">Elite Boutique</span>
+            </button>
+          </div>
+
+          <div class="button-row">
+            <button class="button-primary" data-go-tab="page-results" type="button">View Results</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="app-page" id="page-results" data-page="page-results">
+        <div class="page-shell page-shell--results">
+          <div class="page-header results-page-header">
+            <div>
+              <p class="page-kicker">Results</p>
+              <h1 class="page-heading" data-testid="results-title">
+                A benchmark that reads
+                <span class="hero-line hero-line-accent heading-accent" data-testid="results-heading-accent">like an analyst review.</span>
+              </h1>
+            </div>
+            <div class="results-page-actions">
+              <p class="page-copy" data-testid="results-description">
+                The results page should feel like the core product, not a generic afterthought. Every live control touches this view.
+              </p>
+              <div class="button-row">
+                <button class="button-primary" type="button">Export PDF</button>
+                <button class="button-secondary" data-go-tab="page-upload" type="button">Re-upload</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="results-layout">
+            <div class="results-main">
+              <div class="panel score-panel" data-testid="results-score-panel">
+                <div class="score-summary-main">
+                  <div class="score-ring">
+                    <div class="score-ring-inner">
+                      <span class="score-number stat-value" data-testid="results-score">87</span>
+                      <span class="score-label">Overall</span>
+                    </div>
+                  </div>
+
+                  <div class="score-summary-copy">
+                    <span class="status-pill status-pill--warning" id="results-summary-status">Workable · Needs fixes</span>
+                    <h2 class="results-summary-title">
+                      Your resume will not survive the 30-second scan at
+                      <span id="results-summary-bank">Goldman Sachs</span>.
+                    </h2>
+                    <p class="page-copy results-summary-copy-text" id="results-summary-copy">
+                      The main bottleneck is bullet quality, with too many lines still sounding generic instead of quantified.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="score-breakdown score-breakdown--compact">
+                  <div class="summary-pillar">
+                    <span class="metric-label">Format</span>
+                    <div class="metric-track"><div class="metric-fill metric-fill--success" style="width: 80%"></div></div>
+                    <span class="metric-value stat-value">12/15</span>
+                  </div>
+                  <div class="summary-pillar">
+                    <span class="metric-label">Education</span>
+                    <div class="metric-track"><div class="metric-fill metric-fill--success" style="width: 80%"></div></div>
+                    <span class="metric-value stat-value">12/15</span>
+                  </div>
+                  <div class="summary-pillar">
+                    <span class="metric-label">Experience</span>
+                    <div class="metric-track"><div class="metric-fill metric-fill--warning" style="width: 67%"></div></div>
+                    <span class="metric-value stat-value">20/30</span>
+                  </div>
+                  <div class="summary-pillar">
+                    <span class="metric-label">Bullets</span>
+                    <div class="metric-track"><div class="metric-fill metric-fill--warning" style="width: 60%"></div></div>
+                    <span class="metric-value stat-value">15/25</span>
+                  </div>
+                  <div class="summary-pillar">
+                    <span class="metric-label">Positioning</span>
+                    <div class="metric-track"><div class="metric-fill metric-fill--success" style="width: 87%"></div></div>
+                    <span class="metric-value stat-value">13/15</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="panel issue-panel">
+                <div class="panel-header">
+                  <div>
+                    <p class="panel-kicker">Critical Fixes</p>
+                    <h2 class="panel-title">What needs to change first</h2>
+                  </div>
+                  <span class="status-pill status-pill--danger">3 issues</span>
+                </div>
+
+                <article class="issue-card" data-testid="issue-card-critical">
+                  <span class="status-pill status-pill--danger">Critical · Will get you rejected</span>
+                  <h3 class="issue-title">Lack of Quantification in Bullets</h3>
+                  <p class="page-copy issue-copy">
+                    Many bullets still lack numbers, which makes it hard to assess scope, impact, and direct contribution.
+                  </p>
+                  <div class="issue-context-block">
+                    <p class="issue-section-label">From your resume</p>
+                    <p class="issue-snippet-text">"Built detailed financial models and valuation analyses for public equities"</p>
+                  </div>
+                  <div class="issue-context-block">
+                    <p class="issue-section-label">Before → After</p>
+                    <div class="rewrite-grid rewrite-grid--stacked">
+                      <div class="rewrite-card rewrite-card--before">
+                        <p class="rewrite-inline">Built detailed financial models and valuation analyses for public equities.</p>
+                      </div>
+                      <div class="rewrite-card rewrite-card--after">
+                        <p class="rewrite-inline">Built detailed financial models for $1XM public equity portfolio, incorporating earnings call insights and peer comparables.</p>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="issue-card issue-card--warning" data-testid="issue-card-warning">
+                  <span class="status-pill status-pill--warning">Warning · Weakens candidacy</span>
+                  <h3 class="issue-title">Missing LinkedIn URL in Header</h3>
+                  <p class="page-copy issue-copy">
+                    A LinkedIn URL is often checked by recruiters for frictionless context. Including it helps the profile feel complete.
+                  </p>
+                  <div class="issue-context-block">
+                    <p class="issue-section-label">From your resume</p>
+                    <p class="issue-snippet-text">"Jacob Dusansky | New Orleans, LA | 914-529-1219 | jacob.s.dusansky.28@dartmouth.edu"</p>
+                  </div>
+                  <div class="issue-context-block">
+                    <p class="issue-section-label">Before → After</p>
+                    <div class="rewrite-grid rewrite-grid--stacked">
+                      <div class="rewrite-card rewrite-card--before">
+                        <p class="rewrite-inline">Jacob Dusansky New Orleans, LA | 914-529-1219 | jacob.s.dusansky.28@dartmouth.edu</p>
+                      </div>
+                      <div class="rewrite-card rewrite-card--after">
+                        <p class="rewrite-inline">Jacob Dusansky | New Orleans, LA | 914-529-1219 | jacob.s.dusansky.28@dartmouth.edu | linkedin.com/in/jacobdusansky</p>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="issue-card issue-card--tip">
+                  <span class="status-pill status-pill--success">Tip · Nice to have</span>
+                  <h3 class="issue-title">Improve bullet specificity and ownership</h3>
+                  <p class="page-copy issue-copy">
+                    Some bullets are still vague and bury ownership. Sharpening the role and outcome will raise perceived execution quality.
+                  </p>
+                  <div class="issue-context-block">
+                    <p class="issue-section-label">From your resume</p>
+                    <p class="issue-snippet-text">"Partnered with Equity and Debt teams to develop memos, analyze private market deals, and restructure real estate transactions"</p>
+                  </div>
+                  <div class="issue-context-block">
+                    <p class="issue-section-label">Before → After</p>
+                    <div class="rewrite-grid rewrite-grid--stacked">
+                      <div class="rewrite-card rewrite-card--before">
+                        <p class="rewrite-inline">Partnered with Equity and Debt teams to develop memos, analyze private market deals, and restructure real estate transactions.</p>
+                      </div>
+                      <div class="rewrite-card rewrite-card--after">
+                        <p class="rewrite-inline">Built investment memos across equity and debt workstreams, underwriting private market deals and supporting real estate restructuring decisions.</p>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </div>
+
+            <aside class="results-sidebar">
+              <div class="panel results-rail-panel">
+                <p class="panel-kicker">Bank Fit Analysis</p>
+                <div class="fit-list fit-list--analysis" id="fit-list">
+                  <div class="fit-row fit-row--analysis">
+                    <div class="fit-row-top"><span class="fit-name">Goldman Sachs</span><span class="status-pill status-pill--warning">Moderate</span></div>
+                    <p class="fit-row-copy">Quant exposure is visible, but the bullets still need sharper deal context and better quantified impact.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="panel results-rail-panel">
+                <p class="panel-kicker">Bank-Specific Intel</p>
+                <div class="intel-list" id="intel-list">
+                  <section class="intel-block">
+                    <h3 class="intel-bank">Goldman Sachs</h3>
+                    <p class="intel-copy">Tighten execution verbs and quantify scale so the resume clears the first read.</p>
+                  </section>
+                </div>
+              </div>
+
+              <div class="panel results-rail-panel timeline-panel">
+                <p class="panel-kicker">Your Recruiting Timeline</p>
+                <div class="timeline-list">
+                  <div class="timeline-item">
+                    <p class="timeline-date">Now – Mar 2026</p>
+                    <p class="timeline-copy">Refine resume to include quantifiable metrics in all bullets.</p>
+                  </div>
+                  <div class="timeline-item">
+                    <p class="timeline-date">Apr – Jun 2026</p>
+                    <p class="timeline-copy">Network with alumni and professionals at target banks.</p>
+                  </div>
+                </div>
+                <div class="meta-stack results-meta-stack">
+                  <div class="meta-row">
+                    <span class="meta-label">Candidate</span>
+                    <span class="meta-value" id="results-name">Alex Morgan</span>
+                  </div>
+                  <div class="meta-row">
+                    <span class="meta-label">School</span>
+                    <span class="meta-value" id="results-school">Wharton</span>
+                  </div>
+                  <div class="meta-row">
+                    <span class="meta-label">Cycle</span>
+                    <span class="meta-value" id="results-cycle">2027 Summer Analyst</span>
+                  </div>
+                  <div class="meta-row">
+                    <span class="meta-label">File</span>
+                    <span class="meta-value" id="results-file-name">No file loaded</span>
+                  </div>
+                </div>
+                <div class="results-resume-note resume-thumb" id="results-resume-thumb">
+                  <p class="page-copy">Load the sample resume to populate the visual state.</p>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <input accept="application/pdf" hidden id="resume-input" type="file">
+  <input accept="application/json,.json" hidden id="manifest-input" type="file">
+
+  <script type="module" src="assets/app.js"></script>
+</body>
+</html>

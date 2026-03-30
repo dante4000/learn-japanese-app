@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ch02: Hiragana — Zero to Hero 日本語</title>
+<link rel="stylesheet" href="css/design-system.css">
+</head>
+<body>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <span class="logo-badge">Zero to Hero — Memory Architecture Edition</span>
+    <div class="logo-title">日本語 for Korean Speakers</div>
+    <div class="logo-sub">From 한국어 to 日本語 — The Memory Architect's Guide</div>
+  </a>
+  <div class="sidebar-progress">
+    <div class="sidebar-progress-label">Progress</div>
+    <div class="sidebar-progress-bar">
+      <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+    </div>
+    <div class="sidebar-progress-count">0/22 complete</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="ch-00.html" class="toc-link"><span class="toc-num">00</span><span class="toc-check" data-ch="00"></span>Memory Science</a>
+    <a href="ch-01.html" class="toc-link"><span class="toc-num">01</span><span class="toc-check" data-ch="01"></span>Your Korean Advantage</a>
+    <a href="ch-02.html" class="toc-link active"><span class="toc-num">02</span><span class="toc-check" data-ch="02"></span>Hiragana</a>
+    <a href="ch-03.html" class="toc-link"><span class="toc-num">03</span><span class="toc-check" data-ch="03"></span>Katakana</a>
+    <a href="ch-04.html" class="toc-link"><span class="toc-num">04</span><span class="toc-check" data-ch="04"></span>Pronunciation</a>
+    <a href="ch-05.html" class="toc-link"><span class="toc-num">05</span><span class="toc-check" data-ch="05"></span>Survival Japanese</a>
+    <a href="ch-06.html" class="toc-link"><span class="toc-num">06</span><span class="toc-check" data-ch="06"></span>Counters</a>
+    <a href="ch-07.html" class="toc-link"><span class="toc-num">07</span><span class="toc-check" data-ch="07"></span>Particles</a>
+    <a href="ch-08.html" class="toc-link"><span class="toc-num">08</span><span class="toc-check" data-ch="08"></span>Verb Conjugation</a>
+    <a href="ch-09.html" class="toc-link"><span class="toc-num">09</span><span class="toc-check" data-ch="09"></span>Daily Conversations</a>
+    <a href="ch-10.html" class="toc-link"><span class="toc-num">10</span><span class="toc-check" data-ch="10"></span>Sentence Patterns</a>
+    <a href="ch-11.html" class="toc-link"><span class="toc-num">11</span><span class="toc-check" data-ch="11"></span>Kanji</a>
+    <a href="ch-12.html" class="toc-link"><span class="toc-num">12</span><span class="toc-check" data-ch="12"></span>Sino-Vocabulary</a>
+    <a href="ch-13.html" class="toc-link"><span class="toc-num">13</span><span class="toc-check" data-ch="13"></span>Native Vocabulary</a>
+    <a href="ch-14.html" class="toc-link"><span class="toc-num">14</span><span class="toc-check" data-ch="14"></span>Honorifics</a>
+    <a href="ch-15.html" class="toc-link"><span class="toc-num">15</span><span class="toc-check" data-ch="15"></span>Reading</a>
+    <a href="ch-16.html" class="toc-link"><span class="toc-num">16</span><span class="toc-check" data-ch="16"></span>Writing</a>
+    <a href="ch-17.html" class="toc-link"><span class="toc-num">17</span><span class="toc-check" data-ch="17"></span>Listening</a>
+    <a href="ch-18.html" class="toc-link"><span class="toc-num">18</span><span class="toc-check" data-ch="18"></span>Cultural Pragmatics</a>
+    <a href="ch-19.html" class="toc-link"><span class="toc-num">19</span><span class="toc-check" data-ch="19"></span>JLPT and Beyond</a>
+    <a href="ch-20.html" class="toc-link"><span class="toc-num">20</span><span class="toc-check" data-ch="20"></span>Memory Palace</a>
+    <a href="ch-21.html" class="toc-link"><span class="toc-num">21</span><span class="toc-check" data-ch="21"></span>The 90-Day Sprint</a>
+    <a href="appendices.html" class="toc-link" style="margin-top:.5rem;border-top:1px solid var(--border);padding-top:.8rem"><span class="toc-num">+</span>Appendices</a>
+  </nav>
+</aside>
+
+<div class="main">
+<div class="content-wrap">
+
+<section id="ch02" data-ch="02" style="padding-top:3rem">
+<h2><span class="ch-label">Chapter 02</span>Hiragana — Your First Script (ひらがな)</h2>
+
+<div class="callout memory">
+  <div class="callout-title">Memory Technique Spotlight: Method of Loci + Keyword Mnemonics</div>
+  <p>Each hiragana character gets a specific spot in your Kitchen memory palace. Combined with keyword bridges (English/Korean words that sound like the character), you'll build two independent retrieval pathways for every character.</p>
+</div>
+<div class="callout info">
+  <div class="callout-title">Palace Assignment: The Kitchen (부엌)</div>
+  <p>Your kitchen becomes the home of all 46 hiragana. Vowels on the refrigerator, か-row on the counter, さ-row at the sink, た-row on the stove, な-row by the pots, は-row at the rice cooker, ま-row by the microwave, や-row at the window, ら-row at the table, わ-row + ん at the door.</p>
+</div>
+
+<p>Hiragana is the foundation of Japanese writing. 46 basic characters, each representing one syllable. Unlike Hangeul's systematic design, hiragana evolved from cursive kanji — so the shapes are <strong>arbitrary</strong>. You'll need mnemonics. Target: <strong>3–7 days</strong>.</p>
+
+<div class="callout info">
+  <div class="callout-title">Korean Advantage</div>
+  <p>Japanese has only <strong>5 vowels</strong> (아, 이, 우, 에, 오) and no 받침. Every syllable is open: consonant + vowel. You're downshifting from Korean's 21 vowels and complex codas. This is easier, not harder.</p>
+</div>
+
+<!-- ─── RECALL CHECK (Ch01) ─── -->
+<div id="recall-check-01"></div>
+
+<!-- ─── VOWEL ROW ─── -->
+<nav class="chapter-toc">
+  <details open>
+    <summary class="chapter-toc-title">In This Chapter</summary>
+  <ol>
+    <li><a href="#the-five-vowels-あ-い-う-え-お">The Five Vowels — あ い う え お</a></li>
+    <li><a href="#k-row-か-き-く-け-こ">K-Row — か き く け こ</a></li>
+    <li><a href="#s-row-さ-し-す-せ-そ">S-Row — さ し す せ そ</a></li>
+    <li><a href="#t-row-た-ち-つ-て-と">T-Row — た ち つ て と</a></li>
+    <li><a href="#n-row-な-に-ぬ-ね-の">N-Row — な に ぬ ね の</a></li>
+    <li><a href="#h-row-は-ひ-ふ-へ-ほ">H-Row — は ひ ふ へ ほ</a></li>
+    <li><a href="#m-row-ま-み-む-め-も">M-Row — ま み む め も</a></li>
+    <li><a href="#y-row-や-ゆ-よ-only-3">Y-Row — や ゆ よ (only 3)</a></li>
+    <li><a href="#r-row-ら-り-る-れ-ろ">R-Row — ら り る れ ろ</a></li>
+    <li><a href="#w-row-わ-を-special-ん">W-Row — わ を + Special: ん</a></li>
+    <li><a href="#dakuten-and-handakuten-voicing-marks">Dakuten (゛) and Handakuten (゜) — Voicing Marks</a></li>
+    <li><a href="#yoon-拗音-combination-sounds">Yoon (拗音) — Combination Sounds</a></li>
+    <li><a href="#long-vowels-length-matters">Long Vowels — Length Matters!</a></li>
+    <li><a href="#exercises">Exercises</a></li>
+  </ol>
+  </details>
+</nav>
+
+<h3 id="the-five-vowels-あ-い-う-え-お">The Five Vowels — あ い う え お</h3>
+<p>Master these first. Every other row is just a consonant + these five vowels.</p>
+
+<div class="mnemonic-card">
+  <div>
+    <svg class="char-svg" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <text x="40" y="58" text-anchor="middle" font-size="52" font-family="'Shippori Mincho', serif" fill="var(--heading)">あ</text>
+    </svg>
+  </div>
+  <div class="char-info">
+    <div class="char-reading">a — like 아 in Korean</div>
+    <div class="char-korean">Korean approximation: 아</div>
+    <div class="char-story"><strong>Mnemonic:</strong> An <strong>a</strong>crobat doing a flip — see the cross-strokes forming an "A" shape. The curved stroke at the bottom is the acrobat's body mid-flip.</div>
+  </div>
+  <div class="char-display">あ</div>
+</div>
+
+<div class="mnemonic-card">
+  <div>
+    <svg class="char-svg" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <text x="40" y="58" text-anchor="middle" font-size="52" font-family="'Shippori Mincho', serif" fill="var(--heading)">い</text>
+    </svg>
+  </div>
+  <div class="char-info">
+    <div class="char-reading">i — like 이 in Korean</div>
+    <div class="char-korean">Korean approximation: 이</div>
+    <div class="char-story"><strong>Mnemonic:</strong> Two <strong>ee</strong>ls swimming side by side. The two vertical strokes look like a pair of eels — "ee" = い.</div>
+  </div>
+  <div class="char-display">い</div>
+</div>
+
+<div class="mnemonic-card">
+  <div>
+    <svg class="char-svg" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <text x="40" y="58" text-anchor="middle" font-size="52" font-family="'Shippori Mincho', serif" fill="var(--heading)">う</text>
+    </svg>
+  </div>
+  <div class="char-info">
+    <div class="char-reading">u — like 우 BUT unrounded</div>
+    <div class="char-korean">Korean approximation: 우 (but don't round your lips!)</div>
+    <div class="char-story"><strong>Mnemonic:</strong> A winding path going <strong>u</strong>p. The stroke curves upward like a mountain trail.</div>
+  </div>
+  <div class="char-display">う</div>
+</div>
+
+<div class="callout warn">
+  <div class="callout-title">Trap: Korean う</div>
+  <p>Korean 우 is pronounced with <strong>rounded lips</strong>. Japanese う is <strong>unrounded</strong> — keep your lips relaxed and slightly spread. This is Trap #2 from Ch04. Practice now: say "우" but without puckering.</p>
+</div>
+
+<div class="mnemonic-card">
+  <div>
+    <svg class="char-svg" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <text x="40" y="58" text-anchor="middle" font-size="52" font-family="'Shippori Mincho', serif" fill="var(--heading)">え</text>
+    </svg>
+  </div>
+  <div class="char-info">
+    <div class="char-reading">e — like 에 in Korean</div>
+    <div class="char-korean">Korean approximation: 에</div>
+    <div class="char-story"><strong>Mnemonic:</strong> An <strong>e</strong>nergetic person waving — the character looks like a stick figure with arms out saying "Hey!"</div>
+  </div>
+  <div class="char-display">え</div>
+</div>
+
+<div class="mnemonic-card">
+  <div>
+    <svg class="char-svg" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <text x="40" y="58" text-anchor="middle" font-size="52" font-family="'Shippori Mincho', serif" fill="var(--heading)">お</text>
+    </svg>
+  </div>
+  <div class="char-info">
+    <div class="char-reading">o — like 오 in Korean</div>
+    <div class="char-korean">Korean approximation: 오</div>
+    <div class="char-story"><strong>Mnemonic:</strong> A person saying "<strong>Oh!</strong>" in surprise — see the face with an open mouth. Don't mix up with あ!</div>
+  </div>
+  <div class="char-display">お</div>
+</div>
+
+<!-- Vowel quiz -->
+<div id="quiz-vowels"></div>
+
+<!-- ─── K ROW ─── -->
+<h3 id="k-row-か-き-く-け-こ">K-Row — か き く け こ</h3>
+<p>Add the "k" consonant to each vowel. Korean parallel: ㄱ sound (but lighter — no aspiration).</p>
+
+<div class="mnemonic-card">
+  <div class="char-display">か</div>
+  <div class="char-info">
+    <div class="char-reading">ka</div>
+    <div class="char-korean">Korean: 가 (but less aspirated)</div>
+    <div class="char-story"><strong>Mnemonic:</strong> A <strong>ka</strong>tana (sword) cutting through. The vertical stroke is the blade, the horizontal is the guard. Practice word: <span class="jp">かさ</span> (kasa) = umbrella.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">き</div>
+  <div class="char-info">
+    <div class="char-reading">ki</div>
+    <div class="char-korean">Korean: 기</div>
+    <div class="char-story"><strong>Mnemonic:</strong> A <strong>key</strong> — the top strokes form the key's teeth. Practice word: <span class="jp">きく</span> (kiku) = chrysanthemum / to listen.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">く</div>
+  <div class="char-info">
+    <div class="char-reading">ku</div>
+    <div class="char-korean">Korean: 구</div>
+    <div class="char-story"><strong>Mnemonic:</strong> A <strong>coo</strong>koo bird's beak — just one angled stroke, like a beak opening. Practice word: <span class="jp">くち</span> (kuchi) = mouth.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">け</div>
+  <div class="char-info">
+    <div class="char-reading">ke</div>
+    <div class="char-korean">Korean: 게/케</div>
+    <div class="char-story"><strong>Mnemonic:</strong> A <strong>ke</strong>g of beer on its side. The vertical line is the tap. Practice word: <span class="jp">けさ</span> (kesa) = this morning.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">こ</div>
+  <div class="char-info">
+    <div class="char-reading">ko</div>
+    <div class="char-korean">Korean: 고/코</div>
+    <div class="char-story"><strong>Mnemonic:</strong> Two corners of a <strong>co</strong>rner — like an equal sign bent. Practice word: <span class="jp">ここ</span> (koko) = here.</div>
+  </div>
+</div>
+
+<!-- ─── S ROW ─── -->
+<h3 id="s-row-さ-し-す-せ-そ">S-Row — さ し す せ そ</h3>
+
+<div class="mnemonic-card">
+  <div class="char-display">さ</div>
+  <div class="char-info">
+    <div class="char-reading">sa</div>
+    <div class="char-korean">Korean: 사</div>
+    <div class="char-story"><strong>Mnemonic:</strong> A <strong>sa</strong>murai slashing with a sword. Practice word: <span class="jp">さくら</span> (sakura) = cherry blossom.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">し</div>
+  <div class="char-info">
+    <div class="char-reading">shi</div>
+    <div class="char-korean">Korean: 시</div>
+    <div class="char-story"><strong>Mnemonic:</strong> A fish hook — you're fishing in the <strong>sea</strong> (shi sounds like "she"). Practice word: <span class="jp">しお</span> (shio) = salt.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">す</div>
+  <div class="char-info">
+    <div class="char-reading">su</div>
+    <div class="char-korean">Korean: 수</div>
+    <div class="char-story"><strong>Mnemonic:</strong> A <strong>su</strong>shi roll being picked up with a loop. Practice word: <span class="jp">すし</span> (sushi) = sushi.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">せ</div>
+  <div class="char-info">
+    <div class="char-reading">se</div>
+    <div class="char-korean">Korean: 세</div>
+    <div class="char-story"><strong>Mnemonic:</strong> A <strong>se</strong>t of shelves — horizontal strokes stacked. Practice word: <span class="jp">せかい</span> (sekai) = world.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">そ</div>
+  <div class="char-info">
+    <div class="char-reading">so</div>
+    <div class="char-korean">Korean: 소</div>
+    <div class="char-story"><strong>Mnemonic:</strong> A zigzag — <strong>so</strong> many turns! Like thread being <strong>so</strong>wn. Practice word: <span class="jp">そら</span> (sora) = sky.</div>
+  </div>
+</div>
+
+<!-- ─── T ROW ─── -->
+<h3 id="t-row-た-ち-つ-て-と">T-Row — た ち つ て と</h3>
+
+<div class="mnemonic-card">
+  <div class="char-display">た</div>
+  <div class="char-info">
+    <div class="char-reading">ta</div>
+    <div class="char-korean">Korean: 다/타</div>
+    <div class="char-story"><strong>Mnemonic:</strong> Looks like "た" has a cross like the letter "t" + "a". Practice word: <span class="jp">たべる</span> (taberu) = to eat.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">ち</div>
+  <div class="char-info">
+    <div class="char-reading">chi</div>
+    <div class="char-korean">Korean: 치</div>
+    <div class="char-story"><strong>Mnemonic:</strong> A <strong>chee</strong>rleader doing a pose — arm up, leg kicked. Practice word: <span class="jp">ちかい</span> (chikai) = near.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">つ</div>
+  <div class="char-info">
+    <div class="char-reading">tsu</div>
+    <div class="char-korean">Korean: 쓰 (closest, but different)</div>
+    <div class="char-story"><strong>Mnemonic:</strong> A <strong>tsu</strong>nami wave — one big curving wave. Practice word: <span class="jp">つき</span> (tsuki) = moon.</div>
+  </div>
+</div>
+
+<div class="callout warn">
+  <div class="callout-title">Trap: つ (tsu)</div>
+  <p>This sound doesn't exist in Korean. It's NOT just "스" or "추". Place your tongue behind your upper teeth (like ㄷ position) and release into "su". Practice: つ つ つ.</p>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">て</div>
+  <div class="char-info">
+    <div class="char-reading">te</div>
+    <div class="char-korean">Korean: 데/테</div>
+    <div class="char-story"><strong>Mnemonic:</strong> The <strong>te</strong>lephone receiver — a horizontal stroke with a curved hook, like picking up a phone. Practice word: <span class="jp">てがみ</span> (tegami) = letter.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">と</div>
+  <div class="char-info">
+    <div class="char-reading">to</div>
+    <div class="char-korean">Korean: 도/토</div>
+    <div class="char-story"><strong>Mnemonic:</strong> A <strong>to</strong>e stubbing on a door — vertical line (door) with a foot sticking out. Practice word: <span class="jp">とり</span> (tori) = bird.</div>
+  </div>
+</div>
+
+<!-- ─── N ROW ─── -->
+<h3 id="n-row-な-に-ぬ-ね-の">N-Row — な に ぬ ね の</h3>
+
+<div class="mnemonic-card">
+  <div class="char-display">な</div>
+  <div class="char-info">
+    <div class="char-reading">na</div>
+    <div class="char-korean">Korean: 나</div>
+    <div class="char-story"><strong>Mnemonic:</strong> A <strong>na</strong>ughty knot — crossed lines with a loop. Practice word: <span class="jp">なまえ</span> (namae) = name.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">に</div>
+  <div class="char-info">
+    <div class="char-reading">ni</div>
+    <div class="char-korean">Korean: 니</div>
+    <div class="char-story"><strong>Mnemonic:</strong> A <strong>knee</strong> — the left stroke is the leg, the two right strokes are the kneecap. Practice word: <span class="jp">にほん</span> (nihon) = Japan.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">ぬ</div>
+  <div class="char-info">
+    <div class="char-reading">nu</div>
+    <div class="char-korean">Korean: 누</div>
+    <div class="char-story"><strong>Mnemonic:</strong> <strong>Noo</strong>dles tangled in a loop. Practice word: <span class="jp">いぬ</span> (inu) = dog.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">ね</div>
+  <div class="char-info">
+    <div class="char-reading">ne</div>
+    <div class="char-korean">Korean: 네</div>
+    <div class="char-story"><strong>Mnemonic:</strong> A <strong>ne</strong>ll (snail) with a spiral shell. Practice word: <span class="jp">ねこ</span> (neko) = cat.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">の</div>
+  <div class="char-info">
+    <div class="char-reading">no</div>
+    <div class="char-korean">Korean: 노</div>
+    <div class="char-story"><strong>Mnemonic:</strong> A "<strong>NO</strong>" sign — a circle with a diagonal, like a prohibition sign. Also: の = possessive particle (like 의). Practice word: <span class="jp">のむ</span> (nomu) = to drink.</div>
+  </div>
+</div>
+
+<!-- ─── H ROW ─── -->
+<h3 id="h-row-は-ひ-ふ-へ-ほ">H-Row — は ひ ふ へ ほ</h3>
+
+<div class="mnemonic-card">
+  <div class="char-display">は</div>
+  <div class="char-info">
+    <div class="char-reading">ha (but "wa" as particle)</div>
+    <div class="char-korean">Korean: 하</div>
+    <div class="char-story"><strong>Mnemonic:</strong> A person saying "<strong>Ha!</strong>" — laughing so hard they bend over. Key fact: as a particle, は is pronounced "wa" (like Korean 는). Practice word: <span class="jp">はな</span> (hana) = flower / nose.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">ひ</div>
+  <div class="char-info">
+    <div class="char-reading">hi</div>
+    <div class="char-korean">Korean: 히</div>
+    <div class="char-story"><strong>Mnemonic:</strong> A person saying "<strong>hee</strong> hee" laughing — the curve is a smile. Practice word: <span class="jp">ひと</span> (hito) = person.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">ふ</div>
+  <div class="char-info">
+    <div class="char-reading">fu (between "fu" and "hu")</div>
+    <div class="char-korean">Korean: closest to 후 but lips don't touch</div>
+    <div class="char-story"><strong>Mnemonic:</strong> Mount <strong>Fu</strong>ji — the strokes form a mountain peak. Practice word: <span class="jp">ふね</span> (fune) = ship.</div>
+  </div>
+</div>
+
+<div class="callout warn">
+  <div class="callout-title">Trap: ふ (fu)</div>
+  <p>Japanese ふ is NOT English "f" or Korean "후". It's a <strong>bilabial fricative</strong> — blow air gently through both lips without them touching. Like blowing out a candle very softly. No teeth involved!</p>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">へ</div>
+  <div class="char-info">
+    <div class="char-reading">he (but "e" as particle)</div>
+    <div class="char-korean">Korean: 헤</div>
+    <div class="char-story"><strong>Mnemonic:</strong> A hill — going <strong>he</strong>ading toward a destination. As a particle (direction), pronounced "e". Practice word: <span class="jp">へや</span> (heya) = room.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">ほ</div>
+  <div class="char-info">
+    <div class="char-reading">ho</div>
+    <div class="char-korean">Korean: 호</div>
+    <div class="char-story"><strong>Mnemonic:</strong> A <strong>ho</strong>ly cross with a curve — like a person praying. Practice word: <span class="jp">ほん</span> (hon) = book.</div>
+  </div>
+</div>
+
+<!-- ─── M ROW ─── -->
+<h3 id="m-row-ま-み-む-め-も">M-Row — ま み む め も</h3>
+
+<div class="mnemonic-card"><div class="char-display">ま</div><div class="char-info"><div class="char-reading">ma</div><div class="char-korean">Korean: 마</div><div class="char-story"><strong>Mnemonic:</strong> <strong>Ma</strong>ma with a bun hairstyle — cross strokes with a loop. Practice: <span class="jp">まち</span> (machi) = town.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">み</div><div class="char-info"><div class="char-reading">mi</div><div class="char-korean">Korean: 미</div><div class="char-story"><strong>Mnemonic:</strong> The number 21 — looks like "2" and "1" squished, sounds like "<strong>me</strong>." Practice: <span class="jp">みみ</span> (mimi) = ear.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">む</div><div class="char-info"><div class="char-reading">mu</div><div class="char-korean">Korean: 무</div><div class="char-story"><strong>Mnemonic:</strong> A <strong>moo</strong>ing cow's face — the loop is the nose ring. Practice: <span class="jp">むし</span> (mushi) = insect.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">め</div><div class="char-info"><div class="char-reading">me</div><div class="char-korean">Korean: 메</div><div class="char-story"><strong>Mnemonic:</strong> An eye (<strong>me</strong> = eye in Japanese!) — the loops form an eye shape. Practice: <span class="jp">め</span> (me) = eye.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">も</div><div class="char-info"><div class="char-reading">mo</div><div class="char-korean">Korean: 모</div><div class="char-story"><strong>Mnemonic:</strong> A fish hook catching <strong>mo</strong>re fish. Practice: <span class="jp">もの</span> (mono) = thing.</div></div></div>
+
+<!-- ─── Y ROW ─── -->
+<h3 id="y-row-や-ゆ-よ-only-3">Y-Row — や ゆ よ (only 3)</h3>
+
+<div class="mnemonic-card"><div class="char-display">や</div><div class="char-info"><div class="char-reading">ya</div><div class="char-korean">Korean: 야</div><div class="char-story"><strong>Mnemonic:</strong> A <strong>ya</strong>k's horns. Practice: <span class="jp">やま</span> (yama) = mountain.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">ゆ</div><div class="char-info"><div class="char-reading">yu</div><div class="char-korean">Korean: 유</div><div class="char-story"><strong>Mnemonic:</strong> A fish — <strong>yu</strong> caught it! The tail curls. Practice: <span class="jp">ゆき</span> (yuki) = snow.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">よ</div><div class="char-info"><div class="char-reading">yo</div><div class="char-korean">Korean: 요</div><div class="char-story"><strong>Mnemonic:</strong> A <strong>yo</strong>-yo hanging from a string. Practice: <span class="jp">よる</span> (yoru) = night.</div></div></div>
+
+<!-- ─── R ROW ─── -->
+<h3 id="r-row-ら-り-る-れ-ろ">R-Row — ら り る れ ろ</h3>
+<p>Japanese "r" is a flap, like Korean ㄹ between vowels. You already make this sound naturally!</p>
+
+<div class="mnemonic-card"><div class="char-display">ら</div><div class="char-info"><div class="char-reading">ra</div><div class="char-korean">Korean: 라</div><div class="char-story"><strong>Mnemonic:</strong> Like the number 5 written quickly. Practice: <span class="jp">さくら</span> (sakura) = cherry blossom.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">り</div><div class="char-info"><div class="char-reading">ri</div><div class="char-korean">Korean: 리</div><div class="char-story"><strong>Mnemonic:</strong> Two <strong>ri</strong>vers flowing down. Practice: <span class="jp">とり</span> (tori) = bird.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">る</div><div class="char-info"><div class="char-reading">ru</div><div class="char-korean">Korean: 루</div><div class="char-story"><strong>Mnemonic:</strong> A <strong>loo</strong>p at the bottom — like a <strong>ru</strong>ler curling. Practice: <span class="jp">たべる</span> (taberu) = to eat.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">れ</div><div class="char-info"><div class="char-reading">re</div><div class="char-korean">Korean: 레</div><div class="char-story"><strong>Mnemonic:</strong> A <strong>re</strong>indeer's antler — the curve branches out. Practice: <span class="jp">これ</span> (kore) = this.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">ろ</div><div class="char-info"><div class="char-reading">ro</div><div class="char-korean">Korean: 로</div><div class="char-story"><strong>Mnemonic:</strong> A <strong>ro</strong>ad — simple stroke going forward. Practice: <span class="jp">ろく</span> (roku) = six.</div></div></div>
+
+<!-- ─── W ROW + N ─── -->
+<h3 id="w-row-わ-を-special-ん">W-Row — わ を + Special: ん</h3>
+
+<div class="mnemonic-card"><div class="char-display">わ</div><div class="char-info"><div class="char-reading">wa</div><div class="char-korean">Korean: 와</div><div class="char-story"><strong>Mnemonic:</strong> A <strong>wa</strong>ter whirlpool. Practice: <span class="jp">わたし</span> (watashi) = I/me.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">を</div><div class="char-info"><div class="char-reading">wo (pronounced "o")</div><div class="char-korean">Korean: Object marker 을/를</div><div class="char-story"><strong>Mnemonic:</strong> Only used as the <strong>object particle</strong> (like 을/를). Pronounced just like お but written differently. You'll use this every single sentence.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">ん</div><div class="char-info"><div class="char-reading">n (standalone consonant)</div><div class="char-korean">Korean: ㄴ받침</div><div class="char-story"><strong>Mnemonic:</strong> The ONLY hiragana that's just a consonant — no vowel attached. Like Korean ㄴ at the end of a syllable. Practice: <span class="jp">にほん</span> (nihon) = Japan.</div></div></div>
+
+<!-- ─── DAKUTEN & HANDAKUTEN ─── -->
+<h3 id="dakuten-and-handakuten-voicing-marks">Dakuten (゛) and Handakuten (゜) — Voicing Marks</h3>
+
+<p>Add ゛ to "speak up" (voice the consonant). Add ゜ for "POP!" (p-sound, only on h-row).</p>
+
+<table>
+  <thead><tr><th>Base</th><th>+ ゛ (dakuten)</th><th>+ ゜ (handakuten)</th></tr></thead>
+  <tbody>
+    <tr><td>か (ka)</td><td class="jp">が (ga)</td><td>—</td></tr>
+    <tr><td>さ (sa)</td><td class="jp">ざ (za)</td><td>—</td></tr>
+    <tr><td>た (ta)</td><td class="jp">だ (da)</td><td>—</td></tr>
+    <tr><td>は (ha)</td><td class="jp">ば (ba)</td><td class="jp">ぱ (pa)</td></tr>
+  </tbody>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">Korean Parallel</div>
+  <p>Think of dakuten like going from ㄱ→ㄲ voicing: the base sound gets "heavier." か(ka)→が(ga) is like adding voice. は(ha)→ば(ba)→ぱ(pa) gives you the full h/b/p trio.</p>
+</div>
+
+<!-- ─── YOON ─── -->
+<h3 id="yoon-拗音-combination-sounds">Yoon (拗音) — Combination Sounds</h3>
+<p>Small や, ゆ, よ after an i-row character: きゃ (kya), しゅ (shu), ちょ (cho). Like Korean compound vowels (ㅑ, ㅠ, ㅛ).</p>
+
+<table>
+  <thead><tr><th></th><th>+ゃ (ya)</th><th>+ゅ (yu)</th><th>+ょ (yo)</th></tr></thead>
+  <tbody>
+    <tr><td>き (ki)</td><td class="jp">きゃ (kya)</td><td class="jp">きゅ (kyu)</td><td class="jp">きょ (kyo)</td></tr>
+    <tr><td>し (shi)</td><td class="jp">しゃ (sha)</td><td class="jp">しゅ (shu)</td><td class="jp">しょ (sho)</td></tr>
+    <tr><td>ち (chi)</td><td class="jp">ちゃ (cha)</td><td class="jp">ちゅ (chu)</td><td class="jp">ちょ (cho)</td></tr>
+    <tr><td>に (ni)</td><td class="jp">にゃ (nya)</td><td class="jp">にゅ (nyu)</td><td class="jp">にょ (nyo)</td></tr>
+    <tr><td>ひ (hi)</td><td class="jp">ひゃ (hya)</td><td class="jp">ひゅ (hyu)</td><td class="jp">ひょ (hyo)</td></tr>
+    <tr><td>み (mi)</td><td class="jp">みゃ (mya)</td><td class="jp">みゅ (myu)</td><td class="jp">みょ (myo)</td></tr>
+    <tr><td>り (ri)</td><td class="jp">りゃ (rya)</td><td class="jp">りゅ (ryu)</td><td class="jp">りょ (ryo)</td></tr>
+  </tbody>
+</table>
+
+<!-- ─── LONG VOWELS ─── -->
+<h3 id="long-vowels-length-matters">Long Vowels — Length Matters!</h3>
+<p>Japanese distinguishes short and long vowels. Wrong length = wrong word:</p>
+
+<table>
+  <thead><tr><th>Short</th><th>Long</th><th>Difference</th></tr></thead>
+  <tbody>
+    <tr><td class="jp">おばさん (obasan)</td><td class="jp">おばあさん (obaasan)</td><td>Aunt vs. Grandmother</td></tr>
+    <tr><td class="jp">おじさん (ojisan)</td><td class="jp">おじいさん (ojiisan)</td><td>Uncle vs. Grandfather</td></tr>
+    <tr><td class="jp">ここ (koko)</td><td class="jp">こうこう (koukou)</td><td>Here vs. High school</td></tr>
+  </tbody>
+</table>
+
+<div class="callout warn">
+  <div class="callout-title">Mnemonic: Longer vowel = Older person</div>
+  <p>おば<strong>あ</strong>さん has a longer "a" and means <strong>grandmother</strong> (older). おばさん with short "a" means aunt (younger). The vowel length mirrors the age!</p>
+</div>
+
+<!-- ─── QUIZZES ─── -->
+<h3 id="exercises">Exercises</h3>
+
+<!-- Warm-Up: Flashcard -->
+<h4>Warm-Up: Flashcard Review</h4>
+<div id="quiz-flashcard"></div>
+
+<!-- Challenge: Fill-in-the-blank -->
+<h4>Challenge: Read and Type</h4>
+<div id="quiz-fill"></div>
+
+<!-- Challenge: Drag-and-Drop -->
+<h4>Challenge: Match the Reading</h4>
+<div id="quiz-match"></div>
+
+<!-- Audio Discrimination -->
+<h4>Challenge: Long vs. Short Vowels</h4>
+<div id="quiz-audio"></div>
+
+<!-- Boss Level: Timed Sprint -->
+<h4>Boss Level: Timed Recognition Sprint (90 seconds)</h4>
+<div id="quiz-sprint"></div>
+
+<!-- Mark as Complete -->
+<button class="chapter-complete" data-ch="02">Mark as Complete &#10003;</button>
+
+<div style="display:flex;justify-content:space-between;margin:2rem 0">
+  <a href="ch-01.html" class="quiz-btn secondary">&larr; Chapter 01: Your Korean Advantage</a>
+  <a href="ch-03.html" class="quiz-btn">Next: Chapter 03 -- Katakana &rarr;</a>
+</div>
+
+</section>
+</div>
+
+
+</div>
+
+<footer><p>Zero to Hero: 日本語 for Korean Speakers &middot; Chapter 02</p></footer>
+
+<script src="js/shared.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/quiz-engine.js"></script>
+<script>
+// ─── Recall Check from Ch01 ───
+QuizEngine.RecallCheck(
+  document.getElementById('recall-check-01'),
+  {
+    fromChapters: 'Ch01',
+    items: [
+      { question: 'What is the Korean topic marker, and what is its Japanese equivalent?', answer: '은/는 → は (wa)' },
+      { question: 'What percentage of the journey does Korean transfer cover?', answer: '~40% — grammar, particles, honorific concepts, Sino-vocabulary' },
+      { question: 'Name two Korean-Japanese Sino-vocabulary cognates.', answer: '학생→学生 (gakusei), 병원→病院 (byouin), 전화→電話 (denwa), etc.' },
+      { question: 'What is the biggest vocabulary challenge for Korean speakers?', answer: '和語 (wago) — native Japanese everyday words that have no Korean parallel' },
+      { question: 'Korean 이것/그것/저것 maps to which Japanese words?', answer: 'これ (kore) / それ (sore) / あれ (are)' }
+    ]
+  }
+);
+
+// ─── Vowel Quiz ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-vowels'),
+  {
+    title: 'Vowel Check',
+    questions: [
+      { prompt: 'What sound does <span class="jp" style="font-size:1.8rem">あ</span> make?', answer: 'a', acceptAlso: ['ah'], explanation: 'あ = a, like Korean 아' },
+      { prompt: 'What sound does <span class="jp" style="font-size:1.8rem">う</span> make?', answer: 'u', acceptAlso: ['oo'], explanation: 'う = u (unrounded! Not Korean 우)', korean: '우 but unrounded' },
+      { prompt: 'What sound does <span class="jp" style="font-size:1.8rem">え</span> make?', answer: 'e', explanation: 'え = e, like Korean 에', korean: '에' }
+    ]
+  }
+);
+
+// ─── Flashcard ───
+QuizEngine.Flashcard(
+  document.getElementById('quiz-flashcard'),
+  {
+    cards: [
+      { front: 'あ', back: 'a', detail: 'Acrobat flipping (Korean: 아)' },
+      { front: 'い', back: 'i', detail: 'Two eels (Korean: 이)' },
+      { front: 'う', back: 'u', detail: 'Winding path up (Korean: 우 unrounded)' },
+      { front: 'え', back: 'e', detail: 'Energetic person (Korean: 에)' },
+      { front: 'お', back: 'o', detail: 'Person saying "Oh!" (Korean: 오)' },
+      { front: 'か', back: 'ka', detail: 'Katana sword (Korean: 가)' },
+      { front: 'き', back: 'ki', detail: 'A key (Korean: 기)' },
+      { front: 'く', back: 'ku', detail: 'Coo bird beak (Korean: 구)' },
+      { front: 'さ', back: 'sa', detail: 'Samurai slash (Korean: 사)' },
+      { front: 'し', back: 'shi', detail: 'Fish hook in the sea (Korean: 시)' },
+      { front: 'た', back: 'ta', detail: 'Cross like "t"+"a" (Korean: 다)' },
+      { front: 'な', back: 'na', detail: 'Naughty knot (Korean: 나)' },
+      { front: 'は', back: 'ha', detail: 'Person laughing "Ha!" (Korean: 하)' },
+      { front: 'ま', back: 'ma', detail: 'Mama with bun (Korean: 마)' },
+      { front: 'や', back: 'ya', detail: 'Yak horns (Korean: 야)' },
+      { front: 'ら', back: 'ra', detail: 'Like number 5 (Korean: 라)' },
+      { front: 'わ', back: 'wa', detail: 'Water whirlpool (Korean: 와)' },
+      { front: 'ん', back: 'n', detail: 'Only consonant-only hiragana (Korean: ㄴ)' }
+    ]
+  }
+);
+
+// ─── Fill-in-the-blank ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-fill'),
+  {
+    title: 'Read and Type the Romaji',
+    questions: [
+      { prompt: 'Read this word: <span class="jp" style="font-size:1.5rem">さくら</span>', answer: 'sakura', explanation: 'さ(sa) く(ku) ら(ra) = sakura (cherry blossom)' },
+      { prompt: 'Read this word: <span class="jp" style="font-size:1.5rem">ねこ</span>', answer: 'neko', explanation: 'ね(ne) こ(ko) = neko (cat)' },
+      { prompt: 'Read this word: <span class="jp" style="font-size:1.5rem">にほん</span>', answer: 'nihon', explanation: 'に(ni) ほ(ho) ん(n) = nihon (Japan)' },
+      { prompt: 'Read this word: <span class="jp" style="font-size:1.5rem">すし</span>', answer: 'sushi', explanation: 'す(su) し(shi) = sushi' },
+      { prompt: 'Read this word: <span class="jp" style="font-size:1.5rem">やま</span>', answer: 'yama', explanation: 'や(ya) ま(ma) = yama (mountain)' }
+    ]
+  }
+);
+
+// ─── Drag-and-Drop matching ───
+QuizEngine.DragMatch(
+  document.getElementById('quiz-match'),
+  {
+    title: 'Hiragana Matching',
+    instruction: 'Match each hiragana to its reading:',
+    pairs: [
+      { left: 'た', right: 'ta' },
+      { left: 'の', right: 'no' },
+      { left: 'ひ', right: 'hi' },
+      { left: 'む', right: 'mu' },
+      { left: 'れ', right: 're' },
+      { left: 'を', right: 'wo' }
+    ]
+  }
+);
+
+// ─── Audio Discrimination ───
+QuizEngine.AudioDiscrimination(
+  document.getElementById('quiz-audio'),
+  {
+    title: 'Long vs. Short Vowels',
+    pairs: [
+      { a: 'おばさん (obasan)', b: 'おばあさん (obaasan)', question: 'Which one means GRANDMOTHER?', answer: 'b', explanation: 'Longer vowel (ばあ vs ば) = older person = grandmother' },
+      { a: 'ここ (koko)', b: 'こうこう (koukou)', question: 'Which one means HIGH SCHOOL?', answer: 'b', explanation: 'こうこう (koukou = 高校) = high school. ここ (koko) = here.' },
+      { a: 'おじさん (ojisan)', b: 'おじいさん (ojiisan)', question: 'Which one means UNCLE (not grandfather)?', answer: 'a', explanation: 'Short vowel おじさん = uncle. Long vowel おじいさん = grandfather.' }
+    ]
+  }
+);
+
+// ─── Timed Sprint ───
+QuizEngine.TimedSprint(
+  document.getElementById('quiz-sprint'),
+  {
+    title: 'Boss Level: 90-Second Sprint',
+    timeLimit: 90,
+    items: [
+      { prompt: 'あ', answer: 'a' }, { prompt: 'い', answer: 'i' },
+      { prompt: 'う', answer: 'u' }, { prompt: 'え', answer: 'e' },
+      { prompt: 'お', answer: 'o' }, { prompt: 'か', answer: 'ka' },
+      { prompt: 'き', answer: 'ki' }, { prompt: 'く', answer: 'ku' },
+      { prompt: 'け', answer: 'ke' }, { prompt: 'こ', answer: 'ko' },
+      { prompt: 'さ', answer: 'sa' }, { prompt: 'し', answer: 'shi' },
+      { prompt: 'す', answer: 'su' }, { prompt: 'せ', answer: 'se' },
+      { prompt: 'そ', answer: 'so' }, { prompt: 'た', answer: 'ta' },
+      { prompt: 'ち', answer: 'chi' }, { prompt: 'つ', answer: 'tsu' },
+      { prompt: 'て', answer: 'te' }, { prompt: 'と', answer: 'to' },
+      { prompt: 'な', answer: 'na' }, { prompt: 'に', answer: 'ni' },
+      { prompt: 'ぬ', answer: 'nu' }, { prompt: 'ね', answer: 'ne' },
+      { prompt: 'の', answer: 'no' }, { prompt: 'は', answer: 'ha' },
+      { prompt: 'ひ', answer: 'hi' }, { prompt: 'ふ', answer: 'fu', acceptAlso: ['hu'] },
+      { prompt: 'へ', answer: 'he' }, { prompt: 'ほ', answer: 'ho' },
+      { prompt: 'ま', answer: 'ma' }, { prompt: 'み', answer: 'mi' },
+      { prompt: 'む', answer: 'mu' }, { prompt: 'め', answer: 'me' },
+      { prompt: 'も', answer: 'mo' }, { prompt: 'や', answer: 'ya' },
+      { prompt: 'ゆ', answer: 'yu' }, { prompt: 'よ', answer: 'yo' },
+      { prompt: 'ら', answer: 'ra' }, { prompt: 'り', answer: 'ri' },
+      { prompt: 'る', answer: 'ru' }, { prompt: 'れ', answer: 're' },
+      { prompt: 'ろ', answer: 'ro' }, { prompt: 'わ', answer: 'wa' },
+      { prompt: 'を', answer: 'wo', acceptAlso: ['o'] },
+      { prompt: 'ん', answer: 'n' }
+    ]
+  }
+);
+</script>
+<script src="js/spaced-repetition.js"></script>
+<script src="js/memory-palace.js"></script>
+</body>
+</html>

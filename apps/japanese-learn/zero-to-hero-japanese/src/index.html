@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zero to Hero — 日本語 for Korean Speakers — Memory Architecture Edition</title>
+<link rel="stylesheet" href="css/design-system.css">
+</head>
+<body>
+
+<!-- SVG defs -->
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <span class="logo-badge">Zero to Hero — Memory Architecture Edition</span>
+    <div class="logo-title">日本語 for Korean Speakers</div>
+    <div class="logo-sub">From 한국어 to 日本語 — The Memory Architect's Guide</div>
+  </a>
+  <div class="sidebar-progress">
+    <div class="sidebar-progress-label">Progress</div>
+    <div class="sidebar-progress-bar">
+      <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+    </div>
+    <div class="sidebar-progress-count">0/22 complete</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="ch-00.html" class="toc-link"><span class="toc-num">00</span><span class="toc-check" data-ch="00"></span>Memory Science</a>
+    <a href="ch-01.html" class="toc-link"><span class="toc-num">01</span><span class="toc-check" data-ch="01"></span>Your Korean Advantage</a>
+    <a href="ch-02.html" class="toc-link"><span class="toc-num">02</span><span class="toc-check" data-ch="02"></span>Hiragana</a>
+    <a href="ch-03.html" class="toc-link"><span class="toc-num">03</span><span class="toc-check" data-ch="03"></span>Katakana</a>
+    <a href="ch-04.html" class="toc-link"><span class="toc-num">04</span><span class="toc-check" data-ch="04"></span>Pronunciation</a>
+    <a href="ch-05.html" class="toc-link"><span class="toc-num">05</span><span class="toc-check" data-ch="05"></span>Survival Japanese</a>
+    <a href="ch-06.html" class="toc-link"><span class="toc-num">06</span><span class="toc-check" data-ch="06"></span>Counters</a>
+    <a href="ch-07.html" class="toc-link"><span class="toc-num">07</span><span class="toc-check" data-ch="07"></span>Particles</a>
+    <a href="ch-08.html" class="toc-link"><span class="toc-num">08</span><span class="toc-check" data-ch="08"></span>Verb Conjugation</a>
+    <a href="ch-09.html" class="toc-link"><span class="toc-num">09</span><span class="toc-check" data-ch="09"></span>Daily Conversations</a>
+    <a href="ch-10.html" class="toc-link"><span class="toc-num">10</span><span class="toc-check" data-ch="10"></span>Sentence Patterns</a>
+    <a href="ch-11.html" class="toc-link"><span class="toc-num">11</span><span class="toc-check" data-ch="11"></span>Kanji</a>
+    <a href="ch-12.html" class="toc-link"><span class="toc-num">12</span><span class="toc-check" data-ch="12"></span>Sino-Vocabulary</a>
+    <a href="ch-13.html" class="toc-link"><span class="toc-num">13</span><span class="toc-check" data-ch="13"></span>Native Vocabulary</a>
+    <a href="ch-14.html" class="toc-link"><span class="toc-num">14</span><span class="toc-check" data-ch="14"></span>Honorifics</a>
+    <a href="ch-15.html" class="toc-link"><span class="toc-num">15</span><span class="toc-check" data-ch="15"></span>Reading</a>
+    <a href="ch-16.html" class="toc-link"><span class="toc-num">16</span><span class="toc-check" data-ch="16"></span>Writing</a>
+    <a href="ch-17.html" class="toc-link"><span class="toc-num">17</span><span class="toc-check" data-ch="17"></span>Listening</a>
+    <a href="ch-18.html" class="toc-link"><span class="toc-num">18</span><span class="toc-check" data-ch="18"></span>Cultural Pragmatics</a>
+    <a href="ch-19.html" class="toc-link"><span class="toc-num">19</span><span class="toc-check" data-ch="19"></span>JLPT and Beyond</a>
+    <a href="ch-20.html" class="toc-link"><span class="toc-num">20</span><span class="toc-check" data-ch="20"></span>Memory Palace</a>
+    <a href="ch-21.html" class="toc-link"><span class="toc-num">21</span><span class="toc-check" data-ch="21"></span>The 90-Day Sprint</a>
+    <a href="appendices.html" class="toc-link" style="margin-top:.5rem;border-top:1px solid var(--border);padding-top:.8rem"><span class="toc-num">+</span>Appendices</a>
+  </nav>
+</aside>
+
+<div class="main">
+
+<!-- HERO -->
+<section class="hero">
+  <!-- Torii Gate SVG silhouette -->
+  <svg class="hero-icon" viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg" width="360" fill="var(--heading)" stroke="none">
+    <!-- Top beam (kasagi) -->
+    <rect x="20" y="40" width="360" height="18" rx="3"/>
+    <!-- Second beam (nuki) with slight curve -->
+    <path d="M45,58 L45,80 Q200,95 355,80 L355,58 Q200,73 45,58Z"/>
+    <!-- Left pillar -->
+    <rect x="65" y="80" width="22" height="240" rx="2"/>
+    <!-- Right pillar -->
+    <rect x="313" y="80" width="22" height="240" rx="2"/>
+    <!-- Cross beam (shimaki) -->
+    <rect x="65" y="140" width="270" height="10" rx="2"/>
+    <!-- Pillar feet -->
+    <rect x="55" y="310" width="42" height="8" rx="2"/>
+    <rect x="303" y="310" width="42" height="8" rx="2"/>
+  </svg>
+
+  <a href="../../index.html" class="hero-back">&larr; Language Selection</a>
+  <div class="hero-badge">Zero to Hero — Memory Architecture Edition</div>
+  <h1>From <em>한국어</em> to <em>日本語</em><br>The Bridge Builder's Guide</h1>
+  <p class="hero-sub">Not a standard textbook — a systematic exploitation of everything you already know, powered by memory science. 22 chapters from zero to functional fluency, designed exclusively for Korean speakers.</p>
+  <div class="hero-meta">
+    <span>22 chapters</span>
+    <span>100+ interactive exercises</span>
+    <span>JLPT N3 → N2 path</span>
+  </div>
+</section>
+
+<div class="content-wrap">
+
+  <!-- PROGRESS BAR -->
+  <div class="progress-section">
+    <div class="progress-bar-large">
+      <div class="seg" data-label="Ch00 How Your Memory Works"></div>
+      <div class="seg" data-label="Ch01 Korean Advantage"></div>
+      <div class="seg" data-label="Ch02 Hiragana"></div>
+      <div class="seg" data-label="Ch03 Katakana"></div>
+      <div class="seg" data-label="Ch04 Pronunciation"></div>
+      <div class="seg" data-label="Ch05 Survival Japanese"></div>
+      <div class="seg" data-label="Ch06 Counters"></div>
+      <div class="seg" data-label="Ch07 Particles"></div>
+      <div class="seg" data-label="Ch08 Verb Conjugation"></div>
+      <div class="seg" data-label="Ch09 Daily Conversations"></div>
+      <div class="seg" data-label="Ch10 Sentence Patterns"></div>
+      <div class="seg" data-label="Ch11 Kanji"></div>
+      <div class="seg" data-label="Ch12 Sino-Vocabulary"></div>
+      <div class="seg" data-label="Ch13 Native Vocabulary"></div>
+      <div class="seg" data-label="Ch14 Honorifics"></div>
+      <div class="seg" data-label="Ch15 Reading"></div>
+      <div class="seg" data-label="Ch16 Writing"></div>
+      <div class="seg" data-label="Ch17 Listening"></div>
+      <div class="seg" data-label="Ch18 Cultural Pragmatics"></div>
+      <div class="seg" data-label="Ch19 JLPT and Beyond"></div>
+      <div class="seg" data-label="Ch20 Your Memory Palace"></div>
+      <div class="seg" data-label="Ch21 The 90-Day Sprint"></div>
+    </div>
+    <div class="progress-count">0/22 complete</div>
+  </div>
+
+  <button class="quiz-btn" id="daily-review-btn" style="margin:1rem auto;display:block">Daily Review — Due Items</button>
+  <div id="streak-counter" style="text-align:center;font-family:var(--mono);color:var(--a4);margin:.5rem 0">0-day streak</div>
+
+  <!-- THE THESIS -->
+  <div class="pq">
+    "The Korean speaker's unfair advantage is MASSIVE — but almost every Japanese textbook ignores it."
+    <div class="pqa">Standard textbooks waste weeks explaining SOV order, particles, topic vs. subject. You already know ALL of this.</div>
+  </div>
+
+  <div class="card-grid" style="margin:2rem 0">
+    <div class="card">
+      <h4>Starting Point: ~40%</h4>
+      <p>English speakers need ~2,200 hours for JLPT N2. You need <strong>~800–1,000</strong>. Your Korean gives you grammar, structure, honorifics, and thousands of Sino-vocabulary cognates for free.</p>
+    </div>
+    <div class="card">
+      <h4>Survival First</h4>
+      <p>By Chapter 05, you're ordering food, buying things, and navigating a Japanese city. Grammar theory comes AFTER you've tasted practical success.</p>
+    </div>
+  </div>
+
+  <!-- CHAPTER CHECKLIST -->
+  <h3 style="margin: 2rem 0 1rem; font-family: var(--serif); font-size: 1.4rem; color: var(--heading);">Chapters</h3>
+  <div class="chapter-checklist">
+
+    <a href="ch-00.html" class="checklist-item">
+      <span class="checklist-num">00</span>
+      <span class="checklist-check" data-ch="00"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">How Your Memory Works</div>
+        <div class="checklist-desc">The science of memorization — 12 memory pillars, forgetting curve, build your first memory palace</div>
+      </div>
+    </a>
+
+    <a href="ch-01.html" class="checklist-item">
+      <span class="checklist-num">01</span>
+      <span class="checklist-check" data-ch="01"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">Your Korean Advantage — What Transfers and What Doesn't</div>
+        <div class="checklist-desc">Map what you already know. Grammar transfer, vocabulary gaps, and your timeline advantage.</div>
+      </div>
+    </a>
+
+    <a href="ch-02.html" class="checklist-item">
+      <span class="checklist-num">02</span>
+      <span class="checklist-check" data-ch="02"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">Hiragana — Your First Script (ひらがな)</div>
+        <div class="checklist-desc">All 46 basic hiragana + dakuten + yoon. Visual mnemonics, stroke order, practice words.</div>
+      </div>
+    </a>
+
+    <a href="ch-03.html" class="checklist-item">
+      <span class="checklist-num">03</span>
+      <span class="checklist-check" data-ch="03"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">Katakana — The Foreign Word Script (カタカナ)</div>
+        <div class="checklist-desc">All 46 katakana paired with hiragana. Loanword bridge between Korean and Japanese.</div>
+      </div>
+    </a>
+
+    <a href="ch-04.html" class="checklist-item">
+      <span class="checklist-num">04</span>
+      <span class="checklist-check" data-ch="04"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">Pronunciation — Where Korean Habits Help and Hurt</div>
+        <div class="checklist-desc">Six traps for Korean speakers. Pitch accent, aspiration, rounded vowels, and fixes.</div>
+      </div>
+    </a>
+
+    <a href="ch-05.html" class="checklist-item">
+      <span class="checklist-num">05</span>
+      <span class="checklist-check" data-ch="05"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">Survival Japanese — Restaurants, Shopping, and Getting Around</div>
+        <div class="checklist-desc">100+ phrases for real daily situations. Your first full day in Japan.</div>
+      </div>
+    </a>
+
+    <a href="ch-06.html" class="checklist-item">
+      <span class="checklist-num">06</span>
+      <span class="checklist-check" data-ch="06"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">Counters — The Shape of Counting (助数詞/조수사)</div>
+        <div class="checklist-desc">Complete 1-10 charts for 16+ counters. Sound change master chart, Korean parallels, survival phrases.</div>
+      </div>
+    </a>
+
+    <a href="ch-07.html" class="checklist-item">
+      <span class="checklist-num">07</span>
+      <span class="checklist-check" data-ch="07"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">Particles — The 1:1 Map (助詞/조사)</div>
+        <div class="checklist-desc">は=는, が=가, を=를. The most satisfying chapter — almost everything maps directly.</div>
+      </div>
+    </a>
+
+    <a href="ch-08.html" class="checklist-item">
+      <span class="checklist-num">08</span>
+      <span class="checklist-check" data-ch="08"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">Verb Conjugation — Same System, Different Clothes (動詞/동사)</div>
+        <div class="checklist-desc">Same agglutinative system, different endings. Te-form, groups, adjective conjugation.</div>
+      </div>
+    </a>
+
+    <a href="ch-09.html" class="checklist-item">
+      <span class="checklist-num">09</span>
+      <span class="checklist-check" data-ch="09"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">Daily Conversations — Phrases That Get You Through the Day</div>
+        <div class="checklist-desc">Self-introduction, small talk, making plans, expressing opinions, filler words.</div>
+      </div>
+    </a>
+
+    <a href="ch-10.html" class="checklist-item">
+      <span class="checklist-num">10</span>
+      <span class="checklist-check" data-ch="10"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">Sentence Patterns — Thinking in Japanese (文型/문형)</div>
+        <div class="checklist-desc">Existence, desire, giving/receiving, relative clauses, reported speech.</div>
+      </div>
+    </a>
+
+    <a href="ch-11.html" class="checklist-item">
+      <span class="checklist-num">11</span>
+      <span class="checklist-check" data-ch="11"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">Kanji — The Long Game (漢字/한자)</div>
+        <div class="checklist-desc">Leverage your hanja knowledge. Sound correspondences, radicals, cognate accelerator.</div>
+      </div>
+    </a>
+
+    <a href="ch-12.html" class="checklist-item">
+      <span class="checklist-num">12</span>
+      <span class="checklist-check" data-ch="12"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">Sino-Vocabulary Turbocharger (漢語/한자어)</div>
+        <div class="checklist-desc">40-60% overlap. Domain-specific cognate lists, sound rules, false friends.</div>
+      </div>
+    </a>
+
+    <a href="ch-13.html" class="checklist-item">
+      <span class="checklist-num">13</span>
+      <span class="checklist-check" data-ch="13"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">Native Japanese Vocabulary — Words Korean Can't Help With (和語)</div>
+        <div class="checklist-desc">200+ core everyday words with keyword mnemonics. Onomatopoeia.</div>
+      </div>
+    </a>
+
+    <a href="ch-14.html" class="checklist-item">
+      <span class="checklist-num">14</span>
+      <span class="checklist-check" data-ch="14"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">Honorifics and Politeness — Mapping 존댓말 to 敬語</div>
+        <div class="checklist-desc">Keigo for Korean speakers. Structural comparison, special verbs, scenario practice.</div>
+      </div>
+    </a>
+
+    <a href="ch-15.html" class="checklist-item">
+      <span class="checklist-num">15</span>
+      <span class="checklist-check" data-ch="15"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">Reading Real Japanese — Newspapers, Manga, and the Web</div>
+        <div class="checklist-desc">Mixed-script reading strategies. Color-coded analysis, media-type approaches.</div>
+      </div>
+    </a>
+
+    <a href="ch-16.html" class="checklist-item">
+      <span class="checklist-num">16</span>
+      <span class="checklist-check" data-ch="16"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">Writing — From Texts to Business Emails</div>
+        <div class="checklist-desc">Writing across registers. LINE, Twitter, formal email with Korean parallels.</div>
+      </div>
+    </a>
+
+    <a href="ch-17.html" class="checklist-item">
+      <span class="checklist-num">17</span>
+      <span class="checklist-check" data-ch="17"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">Listening — Training Your Ear for Japanese</div>
+        <div class="checklist-desc">Speed, contractions, pitch accent, dropped particles. Shadowing method.</div>
+      </div>
+    </a>
+
+    <a href="ch-18.html" class="checklist-item">
+      <span class="checklist-num">18</span>
+      <span class="checklist-check" data-ch="18"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">Cultural Pragmatics — What the Textbook Won't Teach You</div>
+        <div class="checklist-desc">空気を読む meets 눈치, 本音と建前, business culture, regional variation.</div>
+      </div>
+    </a>
+
+    <a href="ch-19.html" class="checklist-item">
+      <span class="checklist-num">19</span>
+      <span class="checklist-check" data-ch="19"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">JLPT and Beyond — The Path to True Fluency</div>
+        <div class="checklist-desc">Test prep, immersion strategy, kanji long game, speaking maintenance.</div>
+      </div>
+    </a>
+
+    <a href="ch-20.html" class="checklist-item">
+      <span class="checklist-num">20</span>
+      <span class="checklist-check" data-ch="20"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">Your Memory Palace</div>
+        <div class="checklist-desc">Consolidate all palaces, build the Grand Tour route, learn maintenance</div>
+      </div>
+    </a>
+
+    <a href="ch-21.html" class="checklist-item">
+      <span class="checklist-num">21</span>
+      <span class="checklist-check" data-ch="21"></span>
+      <div class="checklist-info">
+        <div class="checklist-title">The 90-Day Sprint</div>
+        <div class="checklist-desc">Structured 90-day plan integrating all techniques</div>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- Appendices link -->
+  <div class="card" style="margin-top:2rem;text-align:center">
+    <h4>Appendices</h4>
+    <p style="margin-bottom:0"><a href="appendices.html">Glossary</a> &middot; <a href="appendices.html#cognates">Cognate Reference (500+)</a> &middot; <a href="appendices.html#sounds">Sound Correspondence Cheat Sheet</a> &middot; <a href="appendices.html#false-friends">False Friends (50+)</a></p>
+  </div>
+
+</div>
+</div>
+
+<footer>
+  <p>Zero to Hero: 日本語 for Korean Speakers &middot; v4.0</p>
+  <p style="margin-top:.4rem;opacity:.5">Survival-first chapter order. Interactive quizzes, mnemonics, and completion tracking.</p>
+</footer>
+
+<script src="js/shared.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/spaced-repetition.js"></script>
+<script src="js/memory-palace.js"></script>
+<script>
+(function() {
+  var btn = document.getElementById('daily-review-btn');
+  var streakEl = document.getElementById('streak-counter');
+  if (btn) {
+    btn.addEventListener('click', function() {
+      if (typeof window.SpacedRepetition !== 'undefined' && window.SpacedRepetition.getDueItems) {
+        var due = window.SpacedRepetition.getDueItems();
+        if (due.length === 0) {
+          btn.textContent = 'Daily Review — All caught up!';
+        } else {
+          window.SpacedRepetition.startReview(due);
+        }
+      }
+    });
+  }
+  if (streakEl) {
+    var streak = parseInt(localStorage.getItem('zth-streak') || '0', 10);
+    streakEl.textContent = streak + '-day streak';
+  }
+})();
+</script>
+</body>
+</html>

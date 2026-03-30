@@ -1,0 +1,122 @@
+[
+  {
+    "option": "default-ring",
+    "previewClientHeight": 406,
+    "previewScrollHeight": 406,
+    "frameClientHeight": 379,
+    "frameScrollHeight": 379,
+    "ringWidth": 112,
+    "titleHeight": 124.625,
+    "overflowing": false
+  },
+  {
+    "option": "compact-ring",
+    "previewClientHeight": 404,
+    "previewScrollHeight": 404,
+    "frameClientHeight": 376,
+    "frameScrollHeight": 376,
+    "ringWidth": 112,
+    "titleHeight": 124.625,
+    "overflowing": false
+  },
+  {
+    "option": "bold-number",
+    "previewClientHeight": 476,
+    "previewScrollHeight": 476,
+    "frameClientHeight": 448,
+    "frameScrollHeight": 448,
+    "ringWidth": 112,
+    "titleHeight": 124.625,
+    "overflowing": false
+  },
+  {
+    "option": "large-ring",
+    "previewClientHeight": 479,
+    "previewScrollHeight": 479,
+    "frameClientHeight": 451,
+    "frameScrollHeight": 451,
+    "ringWidth": 112,
+    "titleHeight": 124.625,
+    "overflowing": false
+  },
+  {
+    "option": "muted-track",
+    "previewClientHeight": 404,
+    "previewScrollHeight": 404,
+    "frameClientHeight": 377,
+    "frameScrollHeight": 377,
+    "ringWidth": 112,
+    "titleHeight": 124.625,
+    "overflowing": false
+  },
+  {
+    "option": "white-track",
+    "previewClientHeight": 482,
+    "previewScrollHeight": 482,
+    "frameClientHeight": 455,
+    "frameScrollHeight": 455,
+    "ringWidth": 112,
+    "titleHeight": 124.625,
+    "overflowing": false
+  },
+  {
+    "option": "thin-number",
+    "previewClientHeight": 481,
+    "previewScrollHeight": 481,
+    "frameClientHeight": 453,
+    "frameScrollHeight": 453,
+    "ringWidth": 112,
+    "titleHeight": 124.625,
+    "overflowing": false
+  },
+  {
+    "option": "success-ring",
+    "previewClientHeight": 478,
+    "previewScrollHeight": 478,
+    "frameClientHeight": 450,
+    "frameScrollHeight": 450,
+    "ringWidth": 112,
+    "titleHeight": 124.625,
+    "overflowing": false
+  },
+  {
+    "option": "ink-ring",
+    "previewClientHeight": 406,
+    "previewScrollHeight": 406,
+    "frameClientHeight": 378,
+    "frameScrollHeight": 378,
+    "ringWidth": 112,
+    "titleHeight": 124.625,
+    "overflowing": false
+  },
+  {
+    "option": "oversized",
+    "previewClientHeight": 480,
+    "previewScrollHeight": 480,
+    "frameClientHeight": 452,
+    "frameScrollHeight": 452,
+    "ringWidth": 112,
+    "titleHeight": 124.625,
+    "overflowing": false
+  },
+  {
+    "option": "warning-ring",
+    "previewClientHeight": 406,
+    "previewScrollHeight": 406,
+    "frameClientHeight": 378,
+    "frameScrollHeight": 378,
+    "ringWidth": 112,
+    "titleHeight": 124.625,
+    "overflowing": false
+  },
+  {
+    "option": "minimal-ring",
+    "previewClientHeight": 399,
+    "previewScrollHeight": 399,
+    "frameClientHeight": 371,
+    "frameScrollHeight": 371,
+    "ringWidth": 112,
+    "titleHeight": 124.625,
+    "overflowing": false
+  }
+]

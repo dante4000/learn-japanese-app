@@ -1,0 +1,122 @@
+[
+  {
+    "option": "default-ring",
+    "previewClientHeight": 330,
+    "previewScrollHeight": 330,
+    "frameClientHeight": 302,
+    "frameScrollHeight": 302,
+    "ringWidth": 76.15625,
+    "titleHeight": 32,
+    "overflowing": false
+  },
+  {
+    "option": "compact-ring",
+    "previewClientHeight": 350,
+    "previewScrollHeight": 350,
+    "frameClientHeight": 322,
+    "frameScrollHeight": 322,
+    "ringWidth": 96,
+    "titleHeight": 32,
+    "overflowing": false
+  },
+  {
+    "option": "bold-number",
+    "previewClientHeight": 350,
+    "previewScrollHeight": 350,
+    "frameClientHeight": 322,
+    "frameScrollHeight": 322,
+    "ringWidth": 96,
+    "titleHeight": 32,
+    "overflowing": false
+  },
+  {
+    "option": "large-ring",
+    "previewClientHeight": 350,
+    "previewScrollHeight": 350,
+    "frameClientHeight": 322,
+    "frameScrollHeight": 322,
+    "ringWidth": 96,
+    "titleHeight": 32,
+    "overflowing": false
+  },
+  {
+    "option": "muted-track",
+    "previewClientHeight": 350,
+    "previewScrollHeight": 350,
+    "frameClientHeight": 322,
+    "frameScrollHeight": 322,
+    "ringWidth": 96,
+    "titleHeight": 32,
+    "overflowing": false
+  },
+  {
+    "option": "white-track",
+    "previewClientHeight": 350,
+    "previewScrollHeight": 350,
+    "frameClientHeight": 322,
+    "frameScrollHeight": 322,
+    "ringWidth": 96,
+    "titleHeight": 32,
+    "overflowing": false
+  },
+  {
+    "option": "thin-number",
+    "previewClientHeight": 350,
+    "previewScrollHeight": 350,
+    "frameClientHeight": 322,
+    "frameScrollHeight": 322,
+    "ringWidth": 96,
+    "titleHeight": 32,
+    "overflowing": false
+  },
+  {
+    "option": "success-ring",
+    "previewClientHeight": 350,
+    "previewScrollHeight": 350,
+    "frameClientHeight": 322,
+    "frameScrollHeight": 322,
+    "ringWidth": 96,
+    "titleHeight": 32,
+    "overflowing": false
+  },
+  {
+    "option": "ink-ring",
+    "previewClientHeight": 350,
+    "previewScrollHeight": 350,
+    "frameClientHeight": 322,
+    "frameScrollHeight": 322,
+    "ringWidth": 96,
+    "titleHeight": 32,
+    "overflowing": false
+  },
+  {
+    "option": "oversized",
+    "previewClientHeight": 350,
+    "previewScrollHeight": 350,
+    "frameClientHeight": 322,
+    "frameScrollHeight": 322,
+    "ringWidth": 96,
+    "titleHeight": 32,
+    "overflowing": false
+  },
+  {
+    "option": "warning-ring",
+    "previewClientHeight": 350,
+    "previewScrollHeight": 350,
+    "frameClientHeight": 322,
+    "frameScrollHeight": 322,
+    "ringWidth": 96,
+    "titleHeight": 32,
+    "overflowing": false
+  },
+  {
+    "option": "minimal-ring",
+    "previewClientHeight": 350,
+    "previewScrollHeight": 350,
+    "frameClientHeight": 322,
+    "frameScrollHeight": 322,
+    "ringWidth": 96,
+    "titleHeight": 32,
+    "overflowing": false
+  }
+]

@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ch11: Kanji -- The Long Game -- Zero to Hero 日本語</title>
+<link rel="stylesheet" href="css/design-system.css">
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <span class="logo-badge">Zero to Hero — Memory Architecture Edition</span>
+    <div class="logo-title">日本語 for Korean Speakers</div>
+    <div class="logo-sub">From 한국어 to 日本語 — The Memory Architect's Guide</div>
+  </a>
+  <div class="sidebar-progress">
+    <div class="sidebar-progress-label">Progress</div>
+    <div class="sidebar-progress-bar">
+      <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+    </div>
+    <div class="sidebar-progress-count">0/22 complete</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="ch-00.html" class="toc-link"><span class="toc-num">00</span><span class="toc-check" data-ch="00"></span>Memory Science</a>
+    <a href="ch-01.html" class="toc-link"><span class="toc-num">01</span><span class="toc-check" data-ch="01"></span>Your Korean Advantage</a>
+    <a href="ch-02.html" class="toc-link"><span class="toc-num">02</span><span class="toc-check" data-ch="02"></span>Hiragana</a>
+    <a href="ch-03.html" class="toc-link"><span class="toc-num">03</span><span class="toc-check" data-ch="03"></span>Katakana</a>
+    <a href="ch-04.html" class="toc-link"><span class="toc-num">04</span><span class="toc-check" data-ch="04"></span>Pronunciation</a>
+    <a href="ch-05.html" class="toc-link"><span class="toc-num">05</span><span class="toc-check" data-ch="05"></span>Survival Japanese</a>
+    <a href="ch-06.html" class="toc-link"><span class="toc-num">06</span><span class="toc-check" data-ch="06"></span>Counters</a>
+    <a href="ch-07.html" class="toc-link"><span class="toc-num">07</span><span class="toc-check" data-ch="07"></span>Particles</a>
+    <a href="ch-08.html" class="toc-link"><span class="toc-num">08</span><span class="toc-check" data-ch="08"></span>Verb Conjugation</a>
+    <a href="ch-09.html" class="toc-link"><span class="toc-num">09</span><span class="toc-check" data-ch="09"></span>Daily Conversations</a>
+    <a href="ch-10.html" class="toc-link"><span class="toc-num">10</span><span class="toc-check" data-ch="10"></span>Sentence Patterns</a>
+    <a href="ch-11.html" class="toc-link active"><span class="toc-num">11</span><span class="toc-check" data-ch="11"></span>Kanji</a>
+    <a href="ch-12.html" class="toc-link"><span class="toc-num">12</span><span class="toc-check" data-ch="12"></span>Sino-Vocabulary</a>
+    <a href="ch-13.html" class="toc-link"><span class="toc-num">13</span><span class="toc-check" data-ch="13"></span>Native Vocabulary</a>
+    <a href="ch-14.html" class="toc-link"><span class="toc-num">14</span><span class="toc-check" data-ch="14"></span>Honorifics</a>
+    <a href="ch-15.html" class="toc-link"><span class="toc-num">15</span><span class="toc-check" data-ch="15"></span>Reading</a>
+    <a href="ch-16.html" class="toc-link"><span class="toc-num">16</span><span class="toc-check" data-ch="16"></span>Writing</a>
+    <a href="ch-17.html" class="toc-link"><span class="toc-num">17</span><span class="toc-check" data-ch="17"></span>Listening</a>
+    <a href="ch-18.html" class="toc-link"><span class="toc-num">18</span><span class="toc-check" data-ch="18"></span>Cultural Pragmatics</a>
+    <a href="ch-19.html" class="toc-link"><span class="toc-num">19</span><span class="toc-check" data-ch="19"></span>JLPT and Beyond</a>
+    <a href="ch-20.html" class="toc-link"><span class="toc-num">20</span><span class="toc-check" data-ch="20"></span>Memory Palace</a>
+    <a href="ch-21.html" class="toc-link"><span class="toc-num">21</span><span class="toc-check" data-ch="21"></span>The 90-Day Sprint</a>
+    <a href="appendices.html" class="toc-link" style="margin-top:.5rem;border-top:1px solid var(--border);padding-top:.8rem"><span class="toc-num">+</span>Appendices</a>
+  </nav>
+</aside>
+
+<div class="main">
+<div class="content-wrap">
+
+<section id="ch11" data-ch="11" style="padding-top:3rem">
+<h2><span class="ch-label">Chapter 11</span>漢字 -- The Long Game</h2>
+
+<div class="callout memory">
+  <div class="callout-title">Memory Technique Spotlight: Morphological Decomposition + Hanja Bridge</div>
+  <p>Your Korean hanja knowledge is a superpower. Every kanji has a Korean reading you already know — 学(학), 生(생), 校(교). By decomposing kanji into radicals and bridging through Korean readings, you transform the "impossible" kanji challenge into a systematic pattern-matching exercise.</p>
+</div>
+<div class="callout info">
+  <div class="callout-title">Palace Assignment: The Bedroom (침실)</div>
+  <p>Your bedroom becomes home to the 30 most important kanji radicals. Bed frame, pillows, nightstand, lamp, closet door, hangers, dresser drawers, mirror, curtains, and floor — each location holds a radical with its meaning and a vivid image.</p>
+</div>
+
+<div class="callout warn">
+  <div class="callout-title">No More Romaji</div>
+  <p>Starting from Chapter 12, <strong>romaji transcriptions are gone</strong>. Read Japanese in Japanese. Over the previous nine chapters you have thoroughly practiced hiragana and katakana. From now on we proceed with kanji/kana + English only.</p>
+</div>
+
+<p>Do you remember <span class="jp">駅</span>（えき, <span class="kr">역</span>）from Chapter 05? <span class="jp">禁煙</span>（きんえん）= <span class="kr">금연</span> (no smoking). <span class="jp">病院</span>（びょういん）= <span class="kr">병원</span> (hospital). You have been encountering Sino-Korean cognates all along -- now it is time to learn how to leverage them systematically.</p>
+
+<div class="pq">
+  "English speakers start kanji from a blank slate. As a Korean speaker, you already know thousands of Sino-Korean words. This is an almost unfair advantage."
+</div>
+
+<!-- ─── RECALL CHECK (top of chapter, from Ch05-08) ─── -->
+<nav class="chapter-toc">
+  <details open>
+    <summary class="chapter-toc-title">In This Chapter</summary>
+  <ol>
+    <li><a href="#recall-check----chapters-05-09">Recall Check -- Chapters 05-09</a></li>
+    <li><a href="#1-the-korean-speakers-triple-advantage">The Korean Speaker's Triple Advantage</a></li>
+    <li><a href="#2-the-cognate-accelerator----100-korean-japanese-corresponde">The Cognate Accelerator -- 100+ Korean-Japanese Correspondence Table</a></li>
+    <li><a href="#3-sound-correspondence-rules----predict-japanese-readings-fr">Sound Correspondence Rules -- Predict Japanese Readings from Korean</a></li>
+    <li><a href="#4-reading-prediction-practice----guess-the-japanese-onyomi-f">Reading Prediction Practice -- Guess the Japanese On'yomi from Korean</a></li>
+    <li><a href="#5-the-30-essential-radicals----keys-to-deconstructing-kanji">The 30 Essential Radicals -- Keys to Deconstructing Kanji</a></li>
+    <li><a href="#6-kanji-learning-strategy----a-frequency-based-approach">Kanji Learning Strategy -- A Frequency-Based Approach</a></li>
+    <li><a href="#practice-exercises">Practice Exercises</a></li>
+    <li><a href="#comprehensive-review----ch05-09-survival-japanese-grammar">Comprehensive Review -- Ch05-09 Survival Japanese + Grammar</a></li>
+  </ol>
+  </details>
+</nav>
+
+<h3 id="recall-check----chapters-05-09">Recall Check -- Chapters 05-09</h3>
+<p>Before diving into kanji study, let's review the key points from previous chapters.</p>
+
+<div id="recall-check-top"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 1: THREE-LAYER ADVANTAGE
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="1-the-korean-speakers-triple-advantage">The Korean Speaker's Triple Advantage</h3>
+
+<p>When learning kanji, Korean speakers have an advantage on three distinct layers. English speakers must learn all three from scratch.</p>
+
+<div class="card-grid">
+  <div class="card">
+    <h4 style="color:var(--accent)">Layer 1: Conceptual Understanding <span class="transfer-tag full">Instant Transfer</span></h4>
+    <p style="font-size:1.3rem;margin-bottom:.5rem"><span class="jp">学</span> = <span class="kr">학</span></p>
+    <p>You already know this character means "to learn." English speakers must learn the meaning from scratch.</p>
+    <p style="font-size:.85rem;color:var(--text-muted)"><span class="jp">学生</span> = <span class="kr">학생</span> (학 + 생 = learn + life/birth)</p>
+  </div>
+  <div class="card">
+    <h4 style="color:var(--a2)">Layer 2: Meaning Guessing <span class="transfer-tag partial">High Hit Rate</span></h4>
+    <p style="font-size:1.3rem;margin-bottom:.5rem"><span class="jp">経済学</span> = ?</p>
+    <p>You can guess the meaning using your Sino-Korean vocabulary: <span class="kr">경</span> (pass through) + <span class="kr">제</span> (cross/manage) + <span class="kr">학</span> (study) = economics. Even words you see for the first time become transparent when you break down the kanji.</p>
+  </div>
+  <div class="card">
+    <h4 style="color:var(--a3)">Layer 3: On'yomi Prediction <span class="transfer-tag partial">Regular Correspondence</span></h4>
+    <p style="font-size:1.3rem;margin-bottom:.5rem"><span class="kr">학</span> &rarr; <span class="jp">がく</span></p>
+    <p>Korean readings and Japanese on'yomi share regular phonological correspondences. Once you learn the patterns, you can <strong>predict the reading as well</strong>.</p>
+  </div>
+</div>
+
+<!-- 3-Layer Advantage SVG -->
+<div class="diagram">
+  <svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg">
+    <!-- English speaker -->
+    <rect x="30" y="30" width="300" height="220" rx="12" fill="none" stroke="var(--text-muted)" stroke-width="2" opacity=".4"/>
+    <text x="180" y="55" text-anchor="middle" font-size="14" font-weight="600" fill="var(--text-muted)">English Speaker</text>
+    <text x="180" y="85" text-anchor="middle" font-size="11" fill="var(--text-muted)">Layer 1: Meaning -- from scratch</text>
+    <text x="180" y="105" text-anchor="middle" font-size="11" fill="var(--text-muted)">Layer 2: Compound guessing -- impossible</text>
+    <text x="180" y="125" text-anchor="middle" font-size="11" fill="var(--text-muted)">Layer 3: Reading prediction -- impossible</text>
+    <text x="180" y="160" text-anchor="middle" font-size="28" fill="var(--text-muted)">~2,000 chars</text>
+    <text x="180" y="180" text-anchor="middle" font-size="10" fill="var(--text-muted)">Must memorize all</text>
+    <text x="180" y="220" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text-muted)">Difficulty: Extreme</text>
+
+    <!-- Korean speaker -->
+    <rect x="370" y="30" width="300" height="220" rx="12" fill="none" stroke="var(--accent)" stroke-width="2" opacity=".6"/>
+    <text x="520" y="55" text-anchor="middle" font-size="14" font-weight="600" fill="var(--accent)">Korean Speaker (You)</text>
+    <text x="520" y="85" text-anchor="middle" font-size="11" fill="var(--accent)">Layer 1: Meaning -- already known</text>
+    <text x="520" y="105" text-anchor="middle" font-size="11" fill="var(--accent)">Layer 2: Compound guessing -- via hanja</text>
+    <text x="520" y="125" text-anchor="middle" font-size="11" fill="var(--accent)">Layer 3: Reading prediction -- sound rules</text>
+    <text x="520" y="160" text-anchor="middle" font-size="28" fill="var(--accent)">~800 chars</text>
+    <text x="520" y="180" text-anchor="middle" font-size="10" fill="var(--accent)">Truly new material to learn</text>
+    <text x="520" y="220" text-anchor="middle" font-size="11" font-weight="600" fill="var(--accent)">Difficulty: Medium</text>
+  </svg>
+  <div class="diagram-caption">English speaker vs. Korean speaker -- the starting line for kanji study is entirely different.</div>
+</div>
+
+<div class="callout warn">
+  <div class="callout-title">Elaborative Interrogation</div>
+  <p><strong>Why can we say Korean speakers "already know" kanji?</strong></p>
+  <p>Roughly 60% of Korean vocabulary is Sino-Korean. Words like <span class="kr">학교</span> (學校, school), <span class="kr">경제</span> (經濟, economy), and <span class="kr">도서관</span> (圖書館, library) -- you may not write the hanja characters themselves, but you know that each syllable maps 1:1 to a specific hanja. This knowledge becomes an enormous lever when studying Japanese kanji.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 2: COGNATE ACCELERATOR (100+ entries)
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="2-the-cognate-accelerator----100-korean-japanese-corresponde">The Cognate Accelerator -- 100+ Korean-Japanese Correspondence Table</h3>
+
+<p>The table below lists words that use the same kanji in both Korean and Japanese. The meanings are identical and the sounds follow regular correspondences. Similarity rating: <span class="transfer-tag full">High</span> = sounds are similar / <span class="transfer-tag partial">Medium</span> = same meaning, different sounds / <span class="transfer-tag none">Caution</span> = subtle meaning difference</p>
+
+<h4>Education (教育)</h4>
+<table>
+  <thead><tr><th>漢字</th><th>Japanese Reading</th><th>Korean Reading</th><th>Meaning</th><th>Similarity</th></tr></thead>
+  <tbody>
+    <tr><td class="jp">学生</td><td class="jp">がくせい</td><td class="kr">학생</td><td>student</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">学校</td><td class="jp">がっこう</td><td class="kr">학교</td><td>school</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">大学</td><td class="jp">だいがく</td><td class="kr">대학</td><td>university</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">教室</td><td class="jp">きょうしつ</td><td class="kr">교실</td><td>classroom</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">教育</td><td class="jp">きょういく</td><td class="kr">교육</td><td>education</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">先生</td><td class="jp">せんせい</td><td class="kr">선생</td><td>teacher</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">図書館</td><td class="jp">としょかん</td><td class="kr">도서관</td><td>library</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">試験</td><td class="jp">しけん</td><td class="kr">시험</td><td>exam</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">研究</td><td class="jp">けんきゅう</td><td class="kr">연구</td><td>research</td><td><span class="transfer-tag partial">Medium</span></td></tr>
+    <tr><td class="jp">卒業</td><td class="jp">そつぎょう</td><td class="kr">졸업</td><td>graduation</td><td><span class="transfer-tag partial">Medium</span></td></tr>
+    <tr><td class="jp">入学</td><td class="jp">にゅうがく</td><td class="kr">입학</td><td>enrollment</td><td><span class="transfer-tag partial">Medium</span></td></tr>
+    <tr><td class="jp">文学</td><td class="jp">ぶんがく</td><td class="kr">문학</td><td>literature</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">数学</td><td class="jp">すうがく</td><td class="kr">수학</td><td>mathematics</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">歴史</td><td class="jp">れきし</td><td class="kr">역사</td><td>history</td><td><span class="transfer-tag partial">Medium</span></td></tr>
+  </tbody>
+</table>
+
+<h4>Medical (医療)</h4>
+<table>
+  <thead><tr><th>漢字</th><th>Japanese Reading</th><th>Korean Reading</th><th>Meaning</th><th>Similarity</th></tr></thead>
+  <tbody>
+    <tr><td class="jp">病院</td><td class="jp">びょういん</td><td class="kr">병원</td><td>hospital</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">医者</td><td class="jp">いしゃ</td><td class="kr">의사</td><td>doctor</td><td><span class="transfer-tag partial">Medium</span></td></tr>
+    <tr><td class="jp">薬局</td><td class="jp">やっきょく</td><td class="kr">약국</td><td>pharmacy</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">手術</td><td class="jp">しゅじゅつ</td><td class="kr">수술</td><td>surgery</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">診断</td><td class="jp">しんだん</td><td class="kr">진단</td><td>diagnosis</td><td><span class="transfer-tag partial">Medium</span></td></tr>
+    <tr><td class="jp">症状</td><td class="jp">しょうじょう</td><td class="kr">증상</td><td>symptoms</td><td><span class="transfer-tag partial">Medium</span></td></tr>
+    <tr><td class="jp">体温</td><td class="jp">たいおん</td><td class="kr">체온</td><td>body temperature</td><td><span class="transfer-tag partial">Medium</span></td></tr>
+    <tr><td class="jp">注射</td><td class="jp">ちゅうしゃ</td><td class="kr">주사</td><td>injection</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">入院</td><td class="jp">にゅういん</td><td class="kr">입원</td><td>hospitalization</td><td><span class="transfer-tag partial">Medium</span></td></tr>
+    <tr><td class="jp">退院</td><td class="jp">たいいん</td><td class="kr">퇴원</td><td>discharge from hospital</td><td><span class="transfer-tag partial">Medium</span></td></tr>
+  </tbody>
+</table>
+
+<h4>Business (経済/ビジネス)</h4>
+<table>
+  <thead><tr><th>漢字</th><th>Japanese Reading</th><th>Korean Reading</th><th>Meaning</th><th>Similarity</th></tr></thead>
+  <tbody>
+    <tr><td class="jp">会社</td><td class="jp">かいしゃ</td><td class="kr">회사</td><td>company</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">経済</td><td class="jp">けいざい</td><td class="kr">경제</td><td>economy</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">銀行</td><td class="jp">ぎんこう</td><td class="kr">은행</td><td>bank</td><td><span class="transfer-tag partial">Medium</span></td></tr>
+    <tr><td class="jp">契約</td><td class="jp">けいやく</td><td class="kr">계약</td><td>contract</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">株式</td><td class="jp">かぶしき</td><td class="kr">주식</td><td>stocks</td><td><span class="transfer-tag partial">Medium</span></td></tr>
+    <tr><td class="jp">給料</td><td class="jp">きゅうりょう</td><td class="kr">급료</td><td>salary</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">取引</td><td class="jp">とりひき</td><td class="kr">거래</td><td>transaction</td><td><span class="transfer-tag none">Caution</span></td></tr>
+    <tr><td class="jp">輸出</td><td class="jp">ゆしゅつ</td><td class="kr">수출</td><td>export</td><td><span class="transfer-tag partial">Medium</span></td></tr>
+    <tr><td class="jp">輸入</td><td class="jp">ゆにゅう</td><td class="kr">수입</td><td>import</td><td><span class="transfer-tag partial">Medium</span></td></tr>
+    <tr><td class="jp">投資</td><td class="jp">とうし</td><td class="kr">투자</td><td>investment</td><td><span class="transfer-tag partial">Medium</span></td></tr>
+    <tr><td class="jp">会議</td><td class="jp">かいぎ</td><td class="kr">회의</td><td>meeting</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">事務所</td><td class="jp">じむしょ</td><td class="kr">사무소</td><td>office</td><td><span class="transfer-tag partial">Medium</span></td></tr>
+  </tbody>
+</table>
+
+<h4>Politics / Administration (政治/行政)</h4>
+<table>
+  <thead><tr><th>漢字</th><th>Japanese Reading</th><th>Korean Reading</th><th>Meaning</th><th>Similarity</th></tr></thead>
+  <tbody>
+    <tr><td class="jp">政治</td><td class="jp">せいじ</td><td class="kr">정치</td><td>politics</td><td><span class="transfer-tag partial">Medium</span></td></tr>
+    <tr><td class="jp">大統領</td><td class="jp">だいとうりょう</td><td class="kr">대통령</td><td>president</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">国会</td><td class="jp">こっかい</td><td class="kr">국회</td><td>national assembly</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">選挙</td><td class="jp">せんきょ</td><td class="kr">선거</td><td>election</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">法律</td><td class="jp">ほうりつ</td><td class="kr">법률</td><td>law</td><td><span class="transfer-tag partial">Medium</span></td></tr>
+    <tr><td class="jp">外交</td><td class="jp">がいこう</td><td class="kr">외교</td><td>diplomacy</td><td><span class="transfer-tag partial">Medium</span></td></tr>
+    <tr><td class="jp">市民</td><td class="jp">しみん</td><td class="kr">시민</td><td>citizen</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">独立</td><td class="jp">どくりつ</td><td class="kr">독립</td><td>independence</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">民主</td><td class="jp">みんしゅ</td><td class="kr">민주</td><td>democracy</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">憲法</td><td class="jp">けんぽう</td><td class="kr">헌법</td><td>constitution</td><td><span class="transfer-tag partial">Medium</span></td></tr>
+  </tbody>
+</table>
+
+<h4>Daily Life (日常生活)</h4>
+<table>
+  <thead><tr><th>漢字</th><th>Japanese Reading</th><th>Korean Reading</th><th>Meaning</th><th>Similarity</th></tr></thead>
+  <tbody>
+    <tr><td class="jp">電話</td><td class="jp">でんわ</td><td class="kr">전화</td><td>telephone</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">約束</td><td class="jp">やくそく</td><td class="kr">약속</td><td>promise / appointment</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">準備</td><td class="jp">じゅんび</td><td class="kr">준비</td><td>preparation</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">食事</td><td class="jp">しょくじ</td><td class="kr">식사</td><td>meal</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">注意</td><td class="jp">ちゅうい</td><td class="kr">주의</td><td>caution</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">禁煙</td><td class="jp">きんえん</td><td class="kr">금연</td><td>no smoking</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">安全</td><td class="jp">あんぜん</td><td class="kr">안전</td><td>safety</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">危険</td><td class="jp">きけん</td><td class="kr">위험</td><td>danger</td><td><span class="transfer-tag partial">Medium</span></td></tr>
+    <tr><td class="jp">交通</td><td class="jp">こうつう</td><td class="kr">교통</td><td>traffic / transportation</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">空港</td><td class="jp">くうこう</td><td class="kr">공항</td><td>airport</td><td><span class="transfer-tag partial">Medium</span></td></tr>
+    <tr><td class="jp">出口</td><td class="jp">でぐち</td><td class="kr">출구</td><td>exit</td><td><span class="transfer-tag none">Caution</span></td></tr>
+    <tr><td class="jp">入口</td><td class="jp">いりぐち</td><td class="kr">입구</td><td>entrance</td><td><span class="transfer-tag none">Caution</span></td></tr>
+    <tr><td class="jp">家族</td><td class="jp">かぞく</td><td class="kr">가족</td><td>family</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">天気</td><td class="jp">てんき</td><td class="kr">천기</td><td>weather</td><td><span class="transfer-tag partial">Medium</span></td></tr>
+    <tr><td class="jp">時間</td><td class="jp">じかん</td><td class="kr">시간</td><td>time</td><td><span class="transfer-tag full">High</span></td></tr>
+  </tbody>
+</table>
+
+<h4>Science / Technology (科学/技術)</h4>
+<table>
+  <thead><tr><th>漢字</th><th>Japanese Reading</th><th>Korean Reading</th><th>Meaning</th><th>Similarity</th></tr></thead>
+  <tbody>
+    <tr><td class="jp">科学</td><td class="jp">かがく</td><td class="kr">과학</td><td>science</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">技術</td><td class="jp">ぎじゅつ</td><td class="kr">기술</td><td>technology</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">実験</td><td class="jp">じっけん</td><td class="kr">실험</td><td>experiment</td><td><span class="transfer-tag partial">Medium</span></td></tr>
+    <tr><td class="jp">発明</td><td class="jp">はつめい</td><td class="kr">발명</td><td>invention</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">電気</td><td class="jp">でんき</td><td class="kr">전기</td><td>electricity</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">原子</td><td class="jp">げんし</td><td class="kr">원자</td><td>atom</td><td><span class="transfer-tag partial">Medium</span></td></tr>
+    <tr><td class="jp">環境</td><td class="jp">かんきょう</td><td class="kr">환경</td><td>environment</td><td><span class="transfer-tag partial">Medium</span></td></tr>
+    <tr><td class="jp">人工</td><td class="jp">じんこう</td><td class="kr">인공</td><td>artificial</td><td><span class="transfer-tag partial">Medium</span></td></tr>
+  </tbody>
+</table>
+
+<h4>Abstract / Emotions (抽象/感情)</h4>
+<table>
+  <thead><tr><th>漢字</th><th>Japanese Reading</th><th>Korean Reading</th><th>Meaning</th><th>Similarity</th></tr></thead>
+  <tbody>
+    <tr><td class="jp">感情</td><td class="jp">かんじょう</td><td class="kr">감정</td><td>emotion</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">経験</td><td class="jp">けいけん</td><td class="kr">경험</td><td>experience</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">関係</td><td class="jp">かんけい</td><td class="kr">관계</td><td>relationship</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">意味</td><td class="jp">いみ</td><td class="kr">의미</td><td>meaning</td><td><span class="transfer-tag partial">Medium</span></td></tr>
+    <tr><td class="jp">問題</td><td class="jp">もんだい</td><td class="kr">문제</td><td>problem</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">目的</td><td class="jp">もくてき</td><td class="kr">목적</td><td>purpose</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">幸福</td><td class="jp">こうふく</td><td class="kr">행복</td><td>happiness</td><td><span class="transfer-tag partial">Medium</span></td></tr>
+    <tr><td class="jp">自由</td><td class="jp">じゆう</td><td class="kr">자유</td><td>freedom</td><td><span class="transfer-tag full">High</span></td></tr>
+    <tr><td class="jp">平和</td><td class="jp">へいわ</td><td class="kr">평화</td><td>peace</td><td><span class="transfer-tag partial">Medium</span></td></tr>
+    <tr><td class="jp">成功</td><td class="jp">せいこう</td><td class="kr">성공</td><td>success</td><td><span class="transfer-tag full">High</span></td></tr>
+  </tbody>
+</table>
+
+<div class="callout ok">
+  <div class="callout-title">100+ Cognates -- You Already Knew Them</div>
+  <p>Most of the words in the tables above are Sino-Korean words you already know in Korean. Japanese uses the same kanji with the same meanings. The only difference is <strong>how they are pronounced</strong> -- and even those pronunciations follow rules.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 3: SOUND CORRESPONDENCE RULES
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="3-sound-correspondence-rules----predict-japanese-readings-fr">Sound Correspondence Rules -- Predict Japanese Readings from Korean</h3>
+
+<p>Korean hanja readings and Japanese on'yomi (おんよみ) both diverged from the same original Chinese pronunciations, so systematic phonological correspondences exist. Once you know these rules, you can <strong>predict Japanese readings from the Korean pronunciation alone</strong>.</p>
+
+<h4>Rule 1: Korean ㅎ &rarr; Japanese <span class="jp">か</span>-row (k)</h4>
+<div class="callout info">
+  <div class="callout-title">ㅎ &rarr; k</div>
+  <p>The Korean initial consonant ㅎ frequently corresponds to the k-sound in Japanese.</p>
+</div>
+<table>
+  <thead><tr><th>Korean</th><th>Japanese</th><th>漢字</th><th>Meaning</th></tr></thead>
+  <tbody>
+    <tr><td class="kr">학 (hak)</td><td class="jp">がく (gaku)</td><td class="jp">学</td><td>to learn</td></tr>
+    <tr><td class="kr">한 (han)</td><td class="jp">かん (kan)</td><td class="jp">韓</td><td>Korea</td></tr>
+    <tr><td class="kr">해 (hae)</td><td class="jp">かい (kai)</td><td class="jp">海</td><td>sea</td></tr>
+    <tr><td class="kr">현 (hyeon)</td><td class="jp">けん (ken)</td><td class="jp">現</td><td>to appear</td></tr>
+    <tr><td class="kr">화 (hwa)</td><td class="jp">か (ka)</td><td class="jp">花</td><td>flower</td></tr>
+    <tr><td class="kr">회 (hoe)</td><td class="jp">かい (kai)</td><td class="jp">会</td><td>meeting</td></tr>
+    <tr><td class="kr">행 (haeng)</td><td class="jp">こう (kou)</td><td class="jp">行</td><td>to go / to do</td></tr>
+  </tbody>
+</table>
+
+<h4>Rule 2: Korean ㅂ &rarr; Japanese <span class="jp">は</span>-row (h) or <span class="jp">ば</span>-row (b)</h4>
+<div class="callout info">
+  <div class="callout-title">ㅂ &rarr; h/b</div>
+  <p>Korean ㅂ corresponds to h or b in Japanese. Historically, the Japanese h-sound evolved from p.</p>
+</div>
+<table>
+  <thead><tr><th>Korean</th><th>Japanese</th><th>漢字</th><th>Meaning</th></tr></thead>
+  <tbody>
+    <tr><td class="kr">발 (bal)</td><td class="jp">はつ (hatsu)</td><td class="jp">発</td><td>to emit / depart</td></tr>
+    <tr><td class="kr">반 (ban)</td><td class="jp">はん (han)</td><td class="jp">半</td><td>half</td></tr>
+    <tr><td class="kr">백 (baek)</td><td class="jp">はく (haku) / ひゃく (hyaku)</td><td class="jp">白 / 百</td><td>white / hundred</td></tr>
+    <tr><td class="kr">복 (bok)</td><td class="jp">ふく (fuku)</td><td class="jp">福</td><td>fortune</td></tr>
+    <tr><td class="kr">병 (byeong)</td><td class="jp">びょう (byou)</td><td class="jp">病</td><td>illness</td></tr>
+    <tr><td class="kr">부 (bu)</td><td class="jp">ぶ (bu) / ふ (fu)</td><td class="jp">部</td><td>part / section</td></tr>
+    <tr><td class="kr">법 (beop)</td><td class="jp">ほう (hou)</td><td class="jp">法</td><td>law</td></tr>
+  </tbody>
+</table>
+
+<h4>Rule 3: Korean ㅈ &rarr; Japanese <span class="jp">さ</span>-row (s) or <span class="jp">た</span>-row (t/d)</h4>
+<div class="callout info">
+  <div class="callout-title">ㅈ &rarr; s/t/d</div>
+  <p>Korean ㅈ corresponds to s or t/d in Japanese. Which one it becomes varies by character, but the correspondence pattern itself is regular.</p>
+</div>
+<table>
+  <thead><tr><th>Korean</th><th>Japanese</th><th>漢字</th><th>Meaning</th></tr></thead>
+  <tbody>
+    <tr><td class="kr">전 (jeon)</td><td class="jp">でん (den)</td><td class="jp">電</td><td>lightning / electricity</td></tr>
+    <tr><td class="kr">정 (jeong)</td><td class="jp">せい (sei) / しょう (shou)</td><td class="jp">正</td><td>correct</td></tr>
+    <tr><td class="kr">자 (ja)</td><td class="jp">し (shi) / じ (ji)</td><td class="jp">子</td><td>child</td></tr>
+    <tr><td class="kr">적 (jeok)</td><td class="jp">てき (teki)</td><td class="jp">的</td><td>target / -tic (suffix)</td></tr>
+    <tr><td class="kr">중 (jung)</td><td class="jp">ちゅう (chuu)</td><td class="jp">中</td><td>middle</td></tr>
+    <tr><td class="kr">진 (jin)</td><td class="jp">しん (shin)</td><td class="jp">真</td><td>true</td></tr>
+    <tr><td class="kr">절 (jeol)</td><td class="jp">せつ (setsu)</td><td class="jp">節</td><td>joint / season</td></tr>
+  </tbody>
+</table>
+
+<h4>Rule 4: Korean ㅁ &rarr; Japanese <span class="jp">ま</span>-row (m) or <span class="jp">ば</span>-row (b)</h4>
+<div class="callout info">
+  <div class="callout-title">ㅁ &rarr; m/b</div>
+  <p>Korean ㅁ is often preserved as m in Japanese, though it sometimes corresponds to b.</p>
+</div>
+<table>
+  <thead><tr><th>Korean</th><th>Japanese</th><th>漢字</th><th>Meaning</th></tr></thead>
+  <tbody>
+    <tr><td class="kr">문 (mun)</td><td class="jp">ぶん (bun) / もん (mon)</td><td class="jp">文</td><td>writing</td></tr>
+    <tr><td class="kr">명 (myeong)</td><td class="jp">めい (mei) / みょう (myou)</td><td class="jp">名</td><td>name</td></tr>
+    <tr><td class="kr">민 (min)</td><td class="jp">みん (min)</td><td class="jp">民</td><td>people</td></tr>
+    <tr><td class="kr">목 (mok)</td><td class="jp">もく (moku)</td><td class="jp">目</td><td>eye</td></tr>
+    <tr><td class="kr">무 (mu)</td><td class="jp">む (mu) / ぶ (bu)</td><td class="jp">無</td><td>nothing</td></tr>
+    <tr><td class="kr">만 (man)</td><td class="jp">まん (man)</td><td class="jp">万</td><td>ten thousand</td></tr>
+    <tr><td class="kr">미 (mi)</td><td class="jp">び (bi) / み (mi)</td><td class="jp">美</td><td>beauty</td></tr>
+  </tbody>
+</table>
+
+<h4>Rule 5: Korean ㄴ &rarr; Japanese <span class="jp">な</span>-row (n)</h4>
+<div class="callout info">
+  <div class="callout-title">ㄴ &rarr; n</div>
+  <p>Korean ㄴ corresponds almost directly to n in Japanese. This is one of the most regular correspondences.</p>
+</div>
+<table>
+  <thead><tr><th>Korean</th><th>Japanese</th><th>漢字</th><th>Meaning</th></tr></thead>
+  <tbody>
+    <tr><td class="kr">남 (nam)</td><td class="jp">なん (nan)</td><td class="jp">南</td><td>south</td></tr>
+    <tr><td class="kr">년 (nyeon)</td><td class="jp">ねん (nen)</td><td class="jp">年</td><td>year</td></tr>
+    <tr><td class="kr">내 (nae)</td><td class="jp">ない (nai)</td><td class="jp">内</td><td>inside</td></tr>
+    <tr><td class="kr">녀/여 (nyeo)</td><td class="jp">じょ (jo)</td><td class="jp">女</td><td>woman</td></tr>
+    <tr><td class="kr">능 (neung)</td><td class="jp">のう (nou)</td><td class="jp">能</td><td>ability</td></tr>
+    <tr><td class="kr">농 (nong)</td><td class="jp">のう (nou)</td><td class="jp">農</td><td>agriculture</td></tr>
+  </tbody>
+</table>
+
+<h4>Rule 6: Korean ㄹ &rarr; Japanese <span class="jp">ら</span>-row (r)</h4>
+<div class="callout info">
+  <div class="callout-title">ㄹ &rarr; r</div>
+  <p>Korean ㄹ corresponds to r in Japanese. This is an intuitive correspondence.</p>
+</div>
+<table>
+  <thead><tr><th>Korean</th><th>Japanese</th><th>漢字</th><th>Meaning</th></tr></thead>
+  <tbody>
+    <tr><td class="kr">력/역 (ryeok)</td><td class="jp">りょく (ryoku) / りき (riki)</td><td class="jp">力</td><td>power</td></tr>
+    <tr><td class="kr">류/유 (ryu)</td><td class="jp">りゅう (ryuu)</td><td class="jp">流</td><td>to flow</td></tr>
+    <tr><td class="kr">리/이 (ri)</td><td class="jp">り (ri)</td><td class="jp">理</td><td>reason / logic</td></tr>
+    <tr><td class="kr">론/논 (ron)</td><td class="jp">ろん (ron)</td><td class="jp">論</td><td>theory / argument</td></tr>
+    <tr><td class="kr">래/내 (rae)</td><td class="jp">らい (rai)</td><td class="jp">来</td><td>to come</td></tr>
+    <tr><td class="kr">량/양 (ryang)</td><td class="jp">りょう (ryou)</td><td class="jp">量</td><td>quantity</td></tr>
+  </tbody>
+</table>
+
+<!-- Sound Correspondence Summary SVG -->
+<div class="diagram">
+  <svg viewBox="0 0 700 350" xmlns="http://www.w3.org/2000/svg">
+    <text x="350" y="30" text-anchor="middle" font-size="16" font-weight="700" fill="var(--heading)">Korean-Japanese Sound Correspondence Summary</text>
+
+    <!-- Header -->
+    <text x="150" y="65" text-anchor="middle" font-size="13" font-weight="600" fill="var(--a2)">Korean Initial</text>
+    <text x="400" y="65" text-anchor="middle" font-size="13" font-weight="600" fill="var(--accent)">Japanese On'yomi</text>
+    <text x="600" y="65" text-anchor="middle" font-size="13" font-weight="600" fill="var(--text-muted)">Example</text>
+
+    <!-- Rule 1 -->
+    <text x="150" y="100" text-anchor="middle" font-size="22" font-weight="600" fill="var(--a2)">ㅎ</text>
+    <line x1="200" y1="95" x2="320" y2="95" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <text x="400" y="100" text-anchor="middle" font-size="22" font-weight="600" fill="var(--accent)">k (g)</text>
+    <text x="600" y="100" text-anchor="middle" font-size="11" fill="var(--text-muted)">학 hak &rarr; がく gaku</text>
+
+    <!-- Rule 2 -->
+    <text x="150" y="145" text-anchor="middle" font-size="22" font-weight="600" fill="var(--a2)">ㅂ</text>
+    <line x1="200" y1="140" x2="320" y2="140" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <text x="400" y="145" text-anchor="middle" font-size="22" font-weight="600" fill="var(--accent)">h (b)</text>
+    <text x="600" y="145" text-anchor="middle" font-size="11" fill="var(--text-muted)">발 bal &rarr; はつ hatsu</text>
+
+    <!-- Rule 3 -->
+    <text x="150" y="190" text-anchor="middle" font-size="22" font-weight="600" fill="var(--a2)">ㅈ</text>
+    <line x1="200" y1="185" x2="320" y2="185" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <text x="400" y="190" text-anchor="middle" font-size="22" font-weight="600" fill="var(--accent)">s / t (d)</text>
+    <text x="600" y="190" text-anchor="middle" font-size="11" fill="var(--text-muted)">전 jeon &rarr; でん den</text>
+
+    <!-- Rule 4 -->
+    <text x="150" y="235" text-anchor="middle" font-size="22" font-weight="600" fill="var(--a2)">ㅁ</text>
+    <line x1="200" y1="230" x2="320" y2="230" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <text x="400" y="235" text-anchor="middle" font-size="22" font-weight="600" fill="var(--accent)">m (b)</text>
+    <text x="600" y="235" text-anchor="middle" font-size="11" fill="var(--text-muted)">명 myeong &rarr; めい mei</text>
+
+    <!-- Rule 5 -->
+    <text x="150" y="280" text-anchor="middle" font-size="22" font-weight="600" fill="var(--a2)">ㄴ</text>
+    <line x1="200" y1="275" x2="320" y2="275" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <text x="400" y="280" text-anchor="middle" font-size="22" font-weight="600" fill="var(--accent)">n</text>
+    <text x="600" y="280" text-anchor="middle" font-size="11" fill="var(--text-muted)">남 nam &rarr; なん nan</text>
+
+    <!-- Rule 6 -->
+    <text x="150" y="325" text-anchor="middle" font-size="22" font-weight="600" fill="var(--a2)">ㄹ</text>
+    <line x1="200" y1="320" x2="320" y2="320" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <text x="400" y="325" text-anchor="middle" font-size="22" font-weight="600" fill="var(--accent)">r</text>
+    <text x="600" y="325" text-anchor="middle" font-size="11" fill="var(--text-muted)">력 ryeok &rarr; りょく ryoku</text>
+  </svg>
+  <div class="diagram-caption">Six core sound correspondences -- these rules alone let you predict the readings of hundreds of kanji.</div>
+</div>
+
+<div class="callout warn">
+  <div class="callout-title">Elaborative Interrogation</div>
+  <p><strong>Why does Korean ㅂ become h in Japanese?</strong></p>
+  <p>The original Chinese b/p-series consonants were preserved as ㅂ in Korean, but in Japanese they underwent a historical sound shift: p &rarr; ɸ &rarr; h. That is why <span class="kr">발</span> (發, "emit/depart") becomes <span class="jp">はつ</span> (hatsu) in Japanese. Interestingly, when rendaku (連濁, sequential voicing) occurs in Japanese compounds, the h can revert back to b (e.g., <span class="jp">見本 みほん</span> &rarr; <span class="jp">手本 てほん</span>, but <span class="jp">お手本 おてほん</span>).</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 4: PREDICT THE READING (Interactive)
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="4-reading-prediction-practice----guess-the-japanese-onyomi-f">Reading Prediction Practice -- Guess the Japanese On'yomi from Korean</h3>
+
+<p>Below you will be given Korean hanja readings. Use the sound correspondence rules to predict the Japanese on'yomi.</p>
+
+<div id="quiz-predict-reading"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 5: RADICALS (30 most useful)
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="5-the-30-essential-radicals----keys-to-deconstructing-kanji">The 30 Essential Radicals -- Keys to Deconstructing Kanji</h3>
+
+<p>Kanji are composed of building blocks called radicals (部首). Knowing radicals lets you guess the meaning of unfamiliar kanji and look them up in dictionaries. Memorize these 30 most frequently encountered radicals.</p>
+
+<table>
+  <thead><tr><th>Radical</th><th>Meaning</th><th>Mnemonic</th><th>Example Kanji</th></tr></thead>
+  <tbody>
+    <tr><td style="font-size:1.5rem" class="jp">人 (亻)</td><td>person</td><td>A person standing upright</td><td class="jp">休 体 作 住 何</td></tr>
+    <tr><td style="font-size:1.5rem" class="jp">口</td><td>mouth</td><td>Square shape = open mouth</td><td class="jp">言 食 名 味 呼</td></tr>
+    <tr><td style="font-size:1.5rem" class="jp">日</td><td>sun / day</td><td>The sun seen through a window</td><td class="jp">時 明 曜 早 昨</td></tr>
+    <tr><td style="font-size:1.5rem" class="jp">月</td><td>moon / body</td><td>Crescent moon shape. Also used for body parts</td><td class="jp">朝 期 肉 胃 腕</td></tr>
+    <tr><td style="font-size:1.5rem" class="jp">水 (氵)</td><td>water</td><td>Three droplets of water</td><td class="jp">海 洋 池 泳 温</td></tr>
+    <tr><td style="font-size:1.5rem" class="jp">火 (灬)</td><td>fire</td><td>Four flames</td><td class="jp">焼 煙 熱 点 照</td></tr>
+    <tr><td style="font-size:1.5rem" class="jp">木</td><td>tree</td><td>A tree with branches</td><td class="jp">林 森 本 村 松</td></tr>
+    <tr><td style="font-size:1.5rem" class="jp">土</td><td>earth</td><td>Soil piled on the ground</td><td class="jp">地 場 城 坂 堂</td></tr>
+    <tr><td style="font-size:1.5rem" class="jp">金 (釒)</td><td>metal / money</td><td>Gold nuggets mined from a cave</td><td class="jp">銀 鉄 鏡 針 鐘</td></tr>
+    <tr><td style="font-size:1.5rem" class="jp">言 (訁)</td><td>speech</td><td>Sound waves above a mouth</td><td class="jp">話 語 読 記 説</td></tr>
+    <tr><td style="font-size:1.5rem" class="jp">手 (扌)</td><td>hand</td><td>Three fingers</td><td class="jp">打 持 指 押 捨</td></tr>
+    <tr><td style="font-size:1.5rem" class="jp">心 (忄)</td><td>heart / mind</td><td>Heart shape</td><td class="jp">思 感 想 悪 恋</td></tr>
+    <tr><td style="font-size:1.5rem" class="jp">門</td><td>gate</td><td>Two door panels</td><td class="jp">間 聞 開 閉 関</td></tr>
+    <tr><td style="font-size:1.5rem" class="jp">女</td><td>woman</td><td>A person kneeling</td><td class="jp">好 姉 妹 婚 嫌</td></tr>
+    <tr><td style="font-size:1.5rem" class="jp">子</td><td>child</td><td>A child wrapped in a blanket</td><td class="jp">学 字 孫 存 季</td></tr>
+    <tr><td style="font-size:1.5rem" class="jp">糸 (糹)</td><td>thread</td><td>A wound spool of thread</td><td class="jp">紙 組 結 絵 練</td></tr>
+    <tr><td style="font-size:1.5rem" class="jp">食 (飠)</td><td>food / eat</td><td>A rice bowl with a lid</td><td class="jp">飲 飯 館 飼 餓</td></tr>
+    <tr><td style="font-size:1.5rem" class="jp">車</td><td>vehicle</td><td>A cart seen from above</td><td class="jp">転 軽 輪 輸 軍</td></tr>
+    <tr><td style="font-size:1.5rem" class="jp">目</td><td>eye</td><td>An eye turned sideways</td><td class="jp">見 眼 睡 省 瞬</td></tr>
+    <tr><td style="font-size:1.5rem" class="jp">足 (⻊)</td><td>foot</td><td>A leg and foot below the knee</td><td class="jp">走 路 跳 踊 距</td></tr>
+    <tr><td style="font-size:1.5rem" class="jp">刀 (刂)</td><td>sword</td><td>A blade shape</td><td class="jp">切 分 別 判 刻</td></tr>
+    <tr><td style="font-size:1.5rem" class="jp">力</td><td>power</td><td>A flexed muscle = strength</td><td class="jp">動 助 勉 努 効</td></tr>
+    <tr><td style="font-size:1.5rem" class="jp">田</td><td>field</td><td>Partitioned rice paddies</td><td class="jp">男 町 画 番 畑</td></tr>
+    <tr><td style="font-size:1.5rem" class="jp">石</td><td>stone</td><td>A rock at the base of a cliff</td><td class="jp">研 破 確 砂 磁</td></tr>
+    <tr><td style="font-size:1.5rem" class="jp">雨</td><td>rain</td><td>Raindrops falling from a cloud</td><td class="jp">雲 雪 電 雷 霧</td></tr>
+    <tr><td style="font-size:1.5rem" class="jp">竹 (⺮)</td><td>bamboo</td><td>Two bamboo leaves</td><td class="jp">笑 答 算 箱 筆</td></tr>
+    <tr><td style="font-size:1.5rem" class="jp">貝</td><td>shell / wealth</td><td>In ancient times, shells were currency. Money-related</td><td class="jp">買 売 貸 費 貯</td></tr>
+    <tr><td style="font-size:1.5rem" class="jp">走 (⻌)</td><td>to go / road</td><td>A foot running on a path</td><td class="jp">道 通 進 近 遠</td></tr>
+    <tr><td style="font-size:1.5rem" class="jp">示 (礻)</td><td>to show / divine</td><td>An offering on an altar = religion</td><td class="jp">神 社 祭 祝 禁</td></tr>
+    <tr><td style="font-size:1.5rem" class="jp">疒</td><td>sickness</td><td>A patient lying on a bed</td><td class="jp">病 痛 症 疲 療</td></tr>
+  </tbody>
+</table>
+
+<div class="callout ok">
+  <div class="callout-title">Knowing Radicals Makes Unfamiliar Kanji Readable</div>
+  <p>Example: <span class="jp">海</span> = 氵 (water) + 每 (<span class="kr">매</span>). You can guess it is "something water-related," and if you know the Korean <span class="kr">해</span> (海), you also know it means "sea." Radicals + Sino-Korean knowledge = double the guessing power.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 6: KANJI LEARNING STRATEGY
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="6-kanji-learning-strategy----a-frequency-based-approach">Kanji Learning Strategy -- A Frequency-Based Approach</h3>
+
+<p>There are 2,136 Joyo kanji (常用漢字), but not all kanji are equally valuable. A <strong>frequency-based</strong> approach maximizes results with minimum effort.</p>
+
+<div class="card">
+  <h4>Kanji Roadmap by JLPT Level</h4>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin:1rem 0">
+    <div style="border-left:3px solid var(--accent);padding-left:1rem">
+      <div style="font-size:1.5rem;font-family:var(--serif);color:var(--accent)">N5</div>
+      <div style="font-size:.92rem">~100 characters</div>
+      <div style="font-size:.82rem;color:var(--text-muted)">Numbers, days of the week, basic verbs</div>
+      <div style="font-size:.82rem;color:var(--a3)">Korean speakers: meaning already understood for most</div>
+    </div>
+    <div style="border-left:3px solid var(--a2);padding-left:1rem">
+      <div style="font-size:1.5rem;font-family:var(--serif);color:var(--a2)">N4</div>
+      <div style="font-size:.92rem">~300 characters (cumulative)</div>
+      <div style="font-size:.82rem;color:var(--text-muted)">Everyday kanji, location, time</div>
+      <div style="font-size:.82rem;color:var(--a3)">Cognate ratio: ~70%</div>
+    </div>
+    <div style="border-left:3px solid var(--a3);padding-left:1rem">
+      <div style="font-size:1.5rem;font-family:var(--serif);color:var(--a3)">N3</div>
+      <div style="font-size:.92rem">~650 characters (cumulative)</div>
+      <div style="font-size:.82rem;color:var(--text-muted)">Society, culture, abstract concepts</div>
+      <div style="font-size:.82rem;color:var(--a3)">Cognate ratio: ~60%</div>
+    </div>
+    <div style="border-left:3px solid var(--a4);padding-left:1rem">
+      <div style="font-size:1.5rem;font-family:var(--serif);color:var(--a4)">N2</div>
+      <div style="font-size:.92rem">~1,000 characters (cumulative)</div>
+      <div style="font-size:.82rem;color:var(--text-muted)">Newspapers, business, academic</div>
+      <div style="font-size:.82rem;color:var(--a3)">Cognate ratio: ~55%</div>
+    </div>
+    <div style="border-left:3px solid var(--text-muted);padding-left:1rem">
+      <div style="font-size:1.5rem;font-family:var(--serif);color:var(--text-muted)">N1</div>
+      <div style="font-size:.92rem">~2,000 characters (cumulative)</div>
+      <div style="font-size:.82rem;color:var(--text-muted)">Specialized, literary, advanced expressions</div>
+      <div style="font-size:.82rem;color:var(--a3)">Cognate ratio: ~50%</div>
+    </div>
+  </div>
+</div>
+
+<h4>Four-Step Kanji Learning Strategy</h4>
+
+<div class="card-grid">
+  <div class="card">
+    <h4 style="color:var(--accent)">Step 1: Cognates First</h4>
+    <p>Start by connecting Sino-Korean words you already know with their Japanese readings. Since you don't need to learn the meanings, you can focus solely on the readings.</p>
+    <p style="font-size:.85rem;color:var(--text-muted)">E.g.: <span class="kr">학생</span> &rarr; <span class="jp">学生（がくせい）</span></p>
+  </div>
+  <div class="card">
+    <h4 style="color:var(--a2)">Step 2: Use Sound Correspondences</h4>
+    <p>Apply the six sound correspondence rules above to predict the on'yomi of new kanji. Your hit rate will steadily increase over time.</p>
+    <p style="font-size:.85rem;color:var(--text-muted)">E.g.: <span class="kr">행</span> (ㅎ) &rarr; k &rarr; <span class="jp">こう</span></p>
+  </div>
+  <div class="card">
+    <h4 style="color:var(--a3)">Step 3: Learn Kun'yomi in Context</h4>
+    <p>On'yomi (おんよみ) can be predicted via rules, but kun'yomi (くんよみ) should be learned naturally in context. Kun'yomi are linked to native Japanese words, so Sino-Korean knowledge does not help here.</p>
+    <p style="font-size:.85rem;color:var(--text-muted)">E.g.: <span class="jp">食</span> -- on'yomi: <span class="jp">しょく</span> (<span class="kr">식</span>) / kun'yomi: <span class="jp">た（べる）</span></p>
+  </div>
+  <div class="card">
+    <h4 style="color:var(--a4)">Step 4: Decompose with Radicals</h4>
+    <p>When you encounter an unfamiliar kanji, break it down into radicals. Identify the meaning radical + sound radical to simultaneously guess meaning and reading.</p>
+    <p style="font-size:.85rem;color:var(--text-muted)">E.g.: <span class="jp">清</span> = 氵 (water) + 青 (<span class="kr">청</span>, blue/clear) &rarr; clear/pure</p>
+  </div>
+</div>
+
+<div class="callout warn">
+  <div class="callout-title">Elaborative Interrogation</div>
+  <p><strong>Why do Japanese kanji have two types of readings -- on'yomi and kun'yomi?</strong></p>
+  <p>When Korean adopted Chinese characters, it only borrowed the sound (on'yomi). When Japanese adopted Chinese characters, it borrowed the Chinese pronunciation (on'yomi) as well, but simultaneously <strong>attached the native Japanese word with the same meaning</strong> to the character. So <span class="jp">山</span> has on'yomi <span class="jp">さん</span> (<span class="kr">산</span>) while also having kun'yomi <span class="jp">やま</span> (native Japanese word for "mountain"). Korean does not have this dual system, which means kun'yomi is a genuinely new learning area for Korean speakers.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     INTERACTIVE EXERCISES
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="practice-exercises">Practice Exercises</h3>
+
+<!-- Quiz 1: FillBlank -- Predict the Reading -->
+<div id="quiz-fill-predict"></div>
+
+<!-- Quiz 2: DragMatch -- kanji to meanings using hanja -->
+<div id="quiz-drag-kanji"></div>
+
+<!-- Quiz 3: MultipleChoice -- sound correspondence rules -->
+<div id="quiz-mc-sound"></div>
+
+<!-- Quiz 4: RecallCheck from Ch05-08 -->
+<h3 id="comprehensive-review----ch05-09-survival-japanese-grammar">Comprehensive Review -- Ch05-09 Survival Japanese + Grammar</h3>
+<p>Let's review the key expressions and grammar from previous chapters.</p>
+
+<div id="quiz-recall-mixed"></div>
+
+<!-- Quiz 5: Flashcard -- radical recognition -->
+<div id="quiz-flashcard-radicals"></div>
+
+<!-- Mark as Complete -->
+<button class="chapter-complete" data-ch="11">Mark as Complete &#10003;</button>
+
+<div style="display:flex;justify-content:space-between;margin:2rem 0">
+  <a href="ch-10.html" class="quiz-btn secondary">&larr; Chapter 11: Sentence Patterns</a>
+  <a href="ch-12.html" class="quiz-btn">Next: Chapter 13 -- Sino-Vocabulary &rarr;</a>
+</div>
+
+</section>
+
+</div>
+
+
+</div>
+
+<footer>
+  <p>Zero to Hero: 日本語 for Korean Speakers &middot; Chapter 11</p>
+</footer>
+
+<script src="js/shared.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/quiz-engine.js"></script>
+<script src="js/spaced-repetition.js"></script>
+<script src="js/memory-palace.js"></script>
+<script>
+// ─── Recall Check (top of chapter, from Ch05-09) ───
+QuizEngine.RecallCheck(
+  document.getElementById('recall-check-top'),
+  {
+    fromChapters: 'Ch05-09',
+    items: [
+      { question: 'Survival: How do you say "Where is the station?" in Japanese?', answer: '駅はどこですか' },
+      { question: 'Survival: How do you say "How much is this?" in Japanese?', answer: 'これはいくらですか' },
+      { question: 'Particles: Which particle marks the location where an action takes place?', answer: 'で' },
+      { question: 'Conjugation: What is the て-form of 食べる?', answer: '食べて' },
+      { question: 'Conjugation: What is the past tense (plain form) of 行く?', answer: '行った' },
+      { question: 'Patterns: What form expresses "want to ~" in Japanese?', answer: 'verb ます-stem + たい' },
+      { question: 'Patterns: Which verb indicates the existence of living things?', answer: 'いる' }
+    ]
+  }
+);
+
+// ─── Quiz 1: FillBlank -- Predict the Reading ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-fill-predict'),
+  {
+    title: 'Reading Prediction -- Guess the Japanese On\'yomi from Korean',
+    questions: [
+      {
+        prompt: 'Korean <span class="kr">학교 (학 + 교)</span> &rarr; What is the reading of <span class="jp">学校</span>? (in hiragana)',
+        answer: 'がっこう',
+        acceptAlso: ['がつこう', 'gakkou'],
+        explanation: '학 (ㅎ&rarr;k) = がく, 교 (ㅎ&rarr;k) = こう. With gemination: がっこう.',
+        korean: '학교'
+      },
+      {
+        prompt: 'Korean <span class="kr">경제 (경 + 제)</span> &rarr; What is the reading of <span class="jp">経済</span>?',
+        answer: 'けいざい',
+        acceptAlso: ['keizai'],
+        explanation: '경 &rarr; けい, 제 &rarr; ざい.',
+        korean: '경제'
+      },
+      {
+        prompt: 'Korean <span class="kr">발명 (발 + 명)</span> &rarr; What is the reading of <span class="jp">発明</span>?',
+        answer: 'はつめい',
+        acceptAlso: ['hatsumei'],
+        explanation: '발 (ㅂ&rarr;h) = はつ, 명 (ㅁ&rarr;m) = めい.',
+        korean: '발명'
+      },
+      {
+        prompt: 'Korean <span class="kr">전화 (전 + 화)</span> &rarr; What is the reading of <span class="jp">電話</span>?',
+        answer: 'でんわ',
+        acceptAlso: ['denwa'],
+        explanation: '전 (ㅈ&rarr;d/t) = でん, 화 (ㅎ→w) = わ.',
+        korean: '전화'
+      },
+      {
+        prompt: 'Korean <span class="kr">민주 (민 + 주)</span> &rarr; What is the reading of <span class="jp">民主</span>?',
+        answer: 'みんしゅ',
+        acceptAlso: ['minshu'],
+        explanation: '민 (ㅁ&rarr;m) = みん, 주 (ㅈ&rarr;s/sh) = しゅ.',
+        korean: '민주'
+      },
+      {
+        prompt: 'Korean <span class="kr">남녀 (남 + 녀)</span> &rarr; What is the reading of <span class="jp">男女</span>?',
+        answer: 'だんじょ',
+        acceptAlso: ['danjo'],
+        explanation: '남 (ㄴ→d via ㄷ assimilation) = だん, 녀 (ㄴ→じょ via 女 on\'yomi) = じょ.',
+        korean: '남녀'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 2: DragMatch -- kanji to meanings using hanja ───
+QuizEngine.DragMatch(
+  document.getElementById('quiz-drag-kanji'),
+  {
+    title: 'Kanji Meaning Match -- Use Your Sino-Korean Knowledge',
+    instruction: 'Match each kanji word with its correct meaning:',
+    pairs: [
+      { left: '図書館（としょかん）', right: 'library' },
+      { left: '病院（びょういん）', right: 'hospital' },
+      { left: '大統領（だいとうりょう）', right: 'president' },
+      { left: '科学（かがく）', right: 'science' },
+      { left: '約束（やくそく）', right: 'promise' },
+      { left: '経験（けいけん）', right: 'experience' },
+      { left: '選挙（せんきょ）', right: 'election' },
+      { left: '準備（じゅんび）', right: 'preparation' }
+    ]
+  }
+);
+
+// ─── Quiz 3: MultipleChoice -- sound correspondence rules ───
+QuizEngine.MultipleChoice(
+  document.getElementById('quiz-mc-sound'),
+  {
+    title: 'Sound Correspondence Rules Quiz',
+    questions: [
+      {
+        prompt: 'Which Japanese consonant does the Korean initial ㅎ mainly correspond to?',
+        options: ['s (さ-row)', 'k (か-row)', 'n (な-row)', 'r (ら-row)'],
+        correctIndex: 1,
+        explanation: 'ㅎ &rarr; k. E.g.: 학 (hak) &rarr; がく (gaku), 한 (han) &rarr; かん (kan).'
+      },
+      {
+        prompt: 'Which Japanese consonant does the Korean initial ㅂ mainly correspond to?',
+        options: ['k (か-row)', 'r (ら-row)', 'h (は-row) or b (ば-row)', 's (さ-row)'],
+        correctIndex: 2,
+        explanation: 'ㅂ &rarr; h/b. E.g.: 발 (bal) &rarr; はつ (hatsu), 병 (byeong) &rarr; びょう (byou).'
+      },
+      {
+        prompt: 'Using sound correspondences, what is the Japanese reading of <span class="kr">법률</span> (法律)?',
+        options: ['けんりつ', 'ほうりつ', 'さんりつ', 'なんりつ'],
+        correctIndex: 1,
+        explanation: '법 (ㅂ&rarr;h) = ほう, 률 (ㄹ&rarr;r) = りつ. 법률 = ほうりつ.'
+      },
+      {
+        prompt: 'Which Japanese consonant does the Korean initial ㄹ mainly correspond to?',
+        options: ['n (な-row)', 'r (ら-row)', 'm (ま-row)', 'k (か-row)'],
+        correctIndex: 1,
+        explanation: 'ㄹ &rarr; r. E.g.: 력 (ryeok) &rarr; りょく (ryoku), 류 (ryu) &rarr; りゅう (ryuu).'
+      },
+      {
+        prompt: 'What is the Japanese reading of <span class="kr">문학</span> (文学)?',
+        options: ['ぶんがく', 'もんがく', 'ぶんかく', 'もんかく'],
+        correctIndex: 0,
+        explanation: '문 (ㅁ&rarr;b/m) = ぶん, 학 (ㅎ&rarr;k/g) = がく. 문학 = ぶんがく.'
+      },
+      {
+        prompt: 'Which consonants does the Korean initial ㅈ correspond to in Japanese?',
+        options: ['k or g', 'h or b', 's or t/d', 'r or n'],
+        correctIndex: 2,
+        explanation: 'ㅈ &rarr; s/t/d. E.g.: 전 (jeon) &rarr; でん (den), 정 (jeong) &rarr; せい (sei).'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 4: RecallCheck from Ch05-09 mixed tasks ───
+QuizEngine.RecallCheck(
+  document.getElementById('quiz-recall-mixed'),
+  {
+    fromChapters: 'Ch05-09',
+    items: [
+      { question: 'Survival: How do you say "Two people" at a restaurant in Japanese?', answer: '二人です（ふたりです）' },
+      { question: 'Particles: In "I watched a movie with a friend," which particle corresponds to "with"?', answer: 'と' },
+      { question: 'Conjugation: What is the ない-form (negative) of 飲む?', answer: '飲まない（のまない）' },
+      { question: 'Conjugation: What is the て-form of する?', answer: 'して' },
+      { question: 'Conversation: What is the phrase said before a meal ("I humbly receive")?', answer: 'いただきます' },
+      { question: 'Patterns: How do you say "I want to drink coffee" in Japanese?', answer: 'コーヒーが飲みたい（のみたい）' },
+      { question: 'Patterns: Which verb indicates the existence of inanimate objects?', answer: 'ある' }
+    ]
+  }
+);
+
+// ─── Quiz 5: Flashcard -- radical recognition ───
+QuizEngine.Flashcard(
+  document.getElementById('quiz-flashcard-radicals'),
+  {
+    cards: [
+      { front: '亻（にんべん）', back: 'person (人)', detail: 'E.g.: 休 体 作 住' },
+      { front: '氵（さんずい）', back: 'water (水)', detail: 'E.g.: 海 洋 池 泳' },
+      { front: '扌（てへん）', back: 'hand (手)', detail: 'E.g.: 打 持 指 押' },
+      { front: '忄（りっしんべん）', back: 'heart/mind (心)', detail: 'E.g.: 思 感 想 悪' },
+      { front: '訁（ごんべん）', back: 'speech (言)', detail: 'E.g.: 話 語 読 記' },
+      { front: '釒（かねへん）', back: 'metal (金)', detail: 'E.g.: 銀 鉄 鏡 針' },
+      { front: '糹（いとへん）', back: 'thread (糸)', detail: 'E.g.: 紙 組 結 絵' },
+      { front: '飠（しょくへん）', back: 'food (食)', detail: 'E.g.: 飲 飯 館 飼' },
+      { front: '⻌（しんにょう）', back: 'to go / road (走)', detail: 'E.g.: 道 通 進 近' },
+      { front: '疒（やまいだれ）', back: 'sickness (病)', detail: 'E.g.: 病 痛 症 疲' },
+      { front: '口（くちへん）', back: 'mouth (口)', detail: 'E.g.: 言 食 名 味' },
+      { front: '日（ひへん）', back: 'sun / day (日)', detail: 'E.g.: 時 明 曜 早' },
+      { front: '月（つきへん）', back: 'moon / body (月)', detail: 'E.g.: 朝 期 肉 胃' },
+      { front: '木（きへん）', back: 'tree (木)', detail: 'E.g.: 林 森 本 村' },
+      { front: '火（ひ/れんが）', back: 'fire (火)', detail: 'E.g.: 焼 煙 熱 点' },
+      { front: '土（つちへん）', back: 'earth (土)', detail: 'E.g.: 地 場 城 坂' },
+      { front: '女（おんなへん）', back: 'woman (女)', detail: 'E.g.: 好 姉 妹 婚' },
+      { front: '門（もんがまえ）', back: 'gate (門)', detail: 'E.g.: 間 聞 開 閉' },
+      { front: '貝（かいへん）', back: 'shell / wealth (貝)', detail: 'E.g.: 買 売 貸 費' },
+      { front: '刂（りっとう）', back: 'sword (刀)', detail: 'E.g.: 切 分 別 判' },
+      { front: '力（ちから）', back: 'power (力)', detail: 'E.g.: 動 助 勉 努' },
+      { front: '雨（あめかんむり）', back: 'rain (雨)', detail: 'E.g.: 雲 雪 電 雷' },
+      { front: '竹（たけかんむり）', back: 'bamboo (竹)', detail: 'E.g.: 笑 答 算 箱' },
+      { front: '石（いしへん）', back: 'stone (石)', detail: 'E.g.: 研 破 確 砂' },
+      { front: '田（た）', back: 'field (田)', detail: 'E.g.: 男 町 画 番' },
+      { front: '足（あしへん）', back: 'foot (足)', detail: 'E.g.: 走 路 跳 踊' },
+      { front: '目（め）', back: 'eye (目)', detail: 'E.g.: 見 眼 睡 省' },
+      { front: '子（こ）', back: 'child (子)', detail: 'E.g.: 学 字 孫 存' },
+      { front: '車（くるまへん）', back: 'vehicle (車)', detail: 'E.g.: 転 軽 輪 輸' },
+      { front: '礻（しめすへん）', back: 'divine / to show (示)', detail: 'E.g.: 神 社 祭 祝' }
+    ]
+  }
+);
+</script>
+</body>
+</html>

@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ch21: 90일 스프린트 — Zero to Hero 日本語</title>
+<link rel="stylesheet" href="css/design-system.css">
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <span class="logo-badge">Zero to Hero — 기억 설계 에디션</span>
+    <div class="logo-title">한국어 화자를 위한 日本語</div>
+    <div class="logo-sub">한국어에서 日本語로 — 기억 설계자의 안내서</div>
+  </a>
+  <div class="sidebar-progress">
+    <div class="sidebar-progress-label">진행률</div>
+    <div class="sidebar-progress-bar">
+      <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+    </div>
+    <div class="sidebar-progress-count">0/22 완료</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="ch-00.html" class="toc-link"><span class="toc-num">00</span><span class="toc-check" data-ch="00"></span>기억 과학</a>
+    <a href="ch-01.html" class="toc-link"><span class="toc-num">01</span><span class="toc-check" data-ch="01"></span>한국어의 이점</a>
+    <a href="ch-02.html" class="toc-link"><span class="toc-num">02</span><span class="toc-check" data-ch="02"></span>히라가나</a>
+    <a href="ch-03.html" class="toc-link"><span class="toc-num">03</span><span class="toc-check" data-ch="03"></span>가타카나</a>
+    <a href="ch-04.html" class="toc-link"><span class="toc-num">04</span><span class="toc-check" data-ch="04"></span>발음</a>
+    <a href="ch-05.html" class="toc-link"><span class="toc-num">05</span><span class="toc-check" data-ch="05"></span>서바이벌 일본어</a>
+    <a href="ch-06.html" class="toc-link"><span class="toc-num">06</span><span class="toc-check" data-ch="06"></span>조수사</a>
+    <a href="ch-07.html" class="toc-link"><span class="toc-num">07</span><span class="toc-check" data-ch="07"></span>조사</a>
+    <a href="ch-08.html" class="toc-link"><span class="toc-num">08</span><span class="toc-check" data-ch="08"></span>동사 활용</a>
+    <a href="ch-09.html" class="toc-link"><span class="toc-num">09</span><span class="toc-check" data-ch="09"></span>일상 회화</a>
+    <a href="ch-10.html" class="toc-link"><span class="toc-num">10</span><span class="toc-check" data-ch="10"></span>문형</a>
+    <a href="ch-11.html" class="toc-link"><span class="toc-num">11</span><span class="toc-check" data-ch="11"></span>한자</a>
+    <a href="ch-12.html" class="toc-link"><span class="toc-num">12</span><span class="toc-check" data-ch="12"></span>한자어</a>
+    <a href="ch-13.html" class="toc-link"><span class="toc-num">13</span><span class="toc-check" data-ch="13"></span>고유어</a>
+    <a href="ch-14.html" class="toc-link"><span class="toc-num">14</span><span class="toc-check" data-ch="14"></span>경어</a>
+    <a href="ch-15.html" class="toc-link"><span class="toc-num">15</span><span class="toc-check" data-ch="15"></span>독해</a>
+    <a href="ch-16.html" class="toc-link"><span class="toc-num">16</span><span class="toc-check" data-ch="16"></span>작문</a>
+    <a href="ch-17.html" class="toc-link"><span class="toc-num">17</span><span class="toc-check" data-ch="17"></span>청해</a>
+    <a href="ch-18.html" class="toc-link"><span class="toc-num">18</span><span class="toc-check" data-ch="18"></span>문화 화용론</a>
+    <a href="ch-19.html" class="toc-link"><span class="toc-num">19</span><span class="toc-check" data-ch="19"></span>JLPT와 그 너머</a>
+    <a href="ch-20.html" class="toc-link"><span class="toc-num">20</span><span class="toc-check" data-ch="20"></span>기억의 궁전</a>
+    <a href="ch-21.html" class="toc-link active"><span class="toc-num">21</span><span class="toc-check" data-ch="21"></span>90일 스프린트</a>
+    <a href="appendices.html" class="toc-link" style="margin-top:.5rem;border-top:1px solid var(--border);padding-top:.8rem"><span class="toc-num">+</span>부록</a>
+  </nav>
+</aside>
+
+<div class="main">
+<div class="content-wrap">
+
+<section id="ch21" data-ch="21" style="padding-top:3rem">
+<h2><span class="ch-label">제21장</span>90일 스프린트 — 모든 것을 하나로</h2>
+
+<div class="callout memory">
+  <div class="callout-title">기억 기법 스포트라이트: 실행 의도</div>
+  <p>Peter Gollwitzer의 연구에 따르면, <strong>실행 의도</strong>("나는 Y 시간에 Z 장소에서 X를 할 것이다")를 형성한 사람은 단순히 목표만 세운 사람보다 실행 가능성이 2~3배 더 높습니다. 이 장에서는 여러분의 일본어 학습 목표를 구체적인 일별 계획으로 전환하며, 특정 시간대와 습관 트리거를 제시합니다.</p>
+</div>
+
+<!-- Recall Check from Ch19 -->
+<div id="quiz-recall-top"></div>
+
+<p>여러분에게는 이미 모든 도구가 있습니다. 문법, 어휘, 한자, 기억의 궁전, 간격 반복에 관한 20개의 장을 마쳤습니다. 이제 한 가지가 더 필요합니다: <strong>여러분의 생활에 맞는 계획</strong>입니다. 이 장에서는 이 책의 첫 페이지부터 실용적인 일본어 회화 수준까지 이끌어 줄 완전한 90일 스프린트를 제공합니다.</p>
+
+<div class="pq">
+  "최고의 학습 계획은 실제로 실행하는 계획입니다. 매일 45분씩 90일간 꾸준히 학습하면, 주말에 몰아서 하는 1년치 산발적 학습보다 훨씬 뛰어난 성과를 거둘 수 있습니다."
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SECTION 1: THE 90-DAY CALENDAR -->
+<!-- ══════════════════════════════════════════════════════ -->
+<nav class="chapter-toc">
+  <details open>
+    <summary class="chapter-toc-title">이 장의 내용</summary>
+  <ol>
+    <li><a href="#1-90일-캘린더">90일 캘린더</a></li>
+    <li><a href="#2-습관-쌓기">습관 쌓기</a></li>
+    <li><a href="#3-진행-지표">진행 지표</a></li>
+    <li><a href="#4-zero에서-hero로">Zero에서 Hero로</a></li>
+    <li><a href="#인터랙티브-연습">인터랙티브 연습</a></li>
+  </ol>
+  </details>
+</nav>
+
+<h3 id="1-90일-캘린더">90일 캘린더</h3>
+
+<p>스프린트는 세 개의 30일 단계로 나뉩니다. 각 단계는 깊이가 증가하지만 일일 학습 시간이 크게 늘어나지는 않습니다. 핵심 원칙은 <strong>강도보다 일관성</strong>입니다: 매일 45분이 토요일 4시간 몰아치기보다 낫습니다.</p>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>1단계: 기초 <span class="transfer-tag full">1~30일</span></h4>
+    <p style="font-size:1.8rem;font-family:var(--serif);color:var(--accent);margin:.3rem 0">45분/일</p>
+    <p>제00장~제07장. 기억 설계를 구축하고, 두 가나 문자를 마스터하며, 첫 네 개의 기억의 궁전을 세우고, 서바이벌 표현, 조사, 기본 동사 활용을 학습합니다. 1단계가 끝나면 히라가나와 가타카나를 유창하게 읽을 수 있고, 기본적인 일본어 상황에 대처할 수 있으며, 간단한 문장을 구성할 수 있습니다.</p>
+  </div>
+  <div class="card">
+    <h4>2단계: 확장 <span class="transfer-tag partial">31~60일</span></h4>
+    <p style="font-size:1.8rem;font-family:var(--serif);color:var(--accent);margin:.3rem 0">45~60분/일</p>
+    <p>제08장~제15장. 일상 회화, 문형, 한자, 한자어 어휘, 고유 일본어 어휘, 경어, 독해로 확장합니다. 다섯 번째와 여섯 번째 기억의 궁전을 구축합니다. 2단계가 끝나면 300개 이상의 한자, 2,000개 이상의 어휘를 습득하고, 기본 회화가 가능해집니다.</p>
+  </div>
+  <div class="card">
+    <h4>3단계: 심화 <span class="transfer-tag partial">61~90일</span></h4>
+    <p style="font-size:1.8rem;font-family:var(--serif);color:var(--accent);margin:.3rem 0">45분/일</p>
+    <p>제16장~제21장. 작문, 청해, 문화 화용론 능력을 개발합니다. JLPT를 준비하고, 기억의 궁전 설계를 정비하며, 장기적인 유지 습관을 확립합니다. 3단계가 끝나면 N3 수준의 학습 자료에 도전할 준비가 됩니다.</p>
+  </div>
+</div>
+
+<h4>주간 세부 일정</h4>
+<table>
+  <thead>
+    <tr><th>주</th><th>일수</th><th>장</th><th>핵심 내용</th><th>일일 시간</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>1</strong></td><td>1~7</td><td>제00~01장</td><td>기억 과학 기초, 한국어 전이 지도, SM-2 시스템 설정</td><td>45분</td></tr>
+    <tr><td><strong>2</strong></td><td>8~14</td><td>제02~03장</td><td>히라가나 (주방 궁전), 가타카나 (거실 궁전)</td><td>45분</td></tr>
+    <tr><td><strong>3</strong></td><td>15~21</td><td>제04~05장</td><td>발음 훈련, 서바이벌 일본어 (거리 루트 궁전)</td><td>45분</td></tr>
+    <tr><td><strong>4</strong></td><td>22~30</td><td>제06~07장</td><td>조사 (욕실 궁전), 기본 동사 활용</td><td>45분</td></tr>
+    <tr style="border-top:2px solid var(--accent)"><td><strong>5</strong></td><td>31~37</td><td>제08~09장</td><td>일상 회화, 문형, 첫 스피킹 연습</td><td>50분</td></tr>
+    <tr><td><strong>6</strong></td><td>38~44</td><td>제10~11장</td><td>한자 부수 (침실 궁전), 한자어 어휘 전이</td><td>55분</td></tr>
+    <tr><td><strong>7</strong></td><td>45~51</td><td>제12~13장</td><td>고유 일본어 어휘 (공원 궁전), 경어 체계</td><td>60분</td></tr>
+    <tr><td><strong>8</strong></td><td>52~60</td><td>제15장</td><td>독해, 한자 청크 읽기, 복습 및 통합</td><td>55분</td></tr>
+    <tr style="border-top:2px solid var(--accent)"><td><strong>9</strong></td><td>61~67</td><td>제15~16장</td><td>작문 연습, 청해 및 셰도잉</td><td>45분</td></tr>
+    <tr><td><strong>10</strong></td><td>68~74</td><td>제17~18장</td><td>문화 화용론, JLPT 준비 전략</td><td>45분</td></tr>
+    <tr><td><strong>11</strong></td><td>75~81</td><td>제20장</td><td>궁전 정비, 그랜드 투어, 새 궁전 구축</td><td>45분</td></tr>
+    <tr><td><strong>12~13</strong></td><td>82~90</td><td>제21장</td><td>전체 복습, 자기 평가, 장기 습관 확립</td><td>45분</td></tr>
+  </tbody>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">유연성이 내장되어 있습니다</div>
+  <p>일상에는 변수가 있습니다. 하루를 빠뜨렸다면 다음 날 두 배로 "보충"하려고 하지 마십시오. 단순히 다음 날 중단한 곳부터 다시 시작하면 됩니다. SM-2 알고리즘이 놓친 항목을 자동으로 재스케줄링합니다. 한 장을 일찍 끝냈다면, 앞서 나가는 대신 궁전 산책이나 추가 SM-2 복습에 여유 시간을 활용하십시오.</p>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SECTION 2: HABIT STACKING -->
+<!-- ══════════════════════════════════════════════════════ -->
+<h3 id="2-습관-쌓기">습관 쌓기</h3>
+
+<p>새로운 습관을 만드는 가장 확실한 방법은 기존 습관에 연결하는 것입니다. 이를 <strong>습관 쌓기</strong>(James Clear의 <em>Atomic Habits</em>에서 유래)라고 합니다. "일본어를 45분 공부하겠다"가 아니라, "[기존 습관] 후에 [일본어 학습 활동]을 하겠다"고 정하는 것입니다. 기존 습관이 트리거가 됩니다.</p>
+
+<table>
+  <thead>
+    <tr><th>기존 습관 (트리거)</th><th>일본어 학습 활동</th><th>소요 시간</th><th>구체적 활동</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>기상 후</strong></td>
+      <td>아침 복습</td>
+      <td>5분</td>
+      <td>SM-2 예정 항목 복습. 알고리즘이 스케줄링한 항목을 회상하며 하루를 시작합니다. 이는 하루가 시작되기 전에 뇌를 일본어 모드로 준비시킵니다.</td>
+    </tr>
+    <tr>
+      <td><strong>통근 중</strong></td>
+      <td>NHK Easy 청취</td>
+      <td>20~30분</td>
+      <td>NHK News Web Easy나 일본어 팟캐스트를 청취합니다. 이해에 집중하되 생산에는 집중하지 않습니다. 가능하면 조용히 셰도잉합니다. 이것은 수동적 몰입입니다.</td>
+    </tr>
+    <tr>
+      <td><strong>점심시간</strong></td>
+      <td>새 장 섹션</td>
+      <td>15~20분</td>
+      <td>현재 장의 한 섹션을 학습합니다. 설명을 읽고, 예문을 공부하며, 새 항목을 기억의 궁전에 배치합니다. 이것이 주요 학습 시간입니다.</td>
+    </tr>
+    <tr>
+      <td><strong>저녁 식사 후</strong></td>
+      <td>연습 문제</td>
+      <td>15~20분</td>
+      <td>현재 장의 인터랙티브 퀴즈와 연습 문제를 풉니다. 이것은 인출 연습으로, 가장 효과적인 학습 형태입니다.</td>
+    </tr>
+    <tr>
+      <td><strong>취침 전</strong></td>
+      <td>궁전 산책 + 어려운 항목</td>
+      <td>5~10분</td>
+      <td>기억의 궁전 한 구역을 걸어봅니다. 낮에 틀린 항목을 복습합니다. 수면은 기억을 강화하므로, 이 시간이 최종 복습에 최적입니다.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout warn">
+  <div class="callout-title">정교화 질문</div>
+  <p><strong>왜 취침 전 학습이 기억 강화에 특히 효과적입니까?</strong></p>
+  <p>수면 중에 해마는 그날의 학습 경험을 재생하고 장기 피질 저장소로 전이합니다. 취침 직전에 학습한 자료는 이 재생 과정에서 우선권을 받습니다. 연구에 따르면, 다른 조건이 같을 때 취침 전에 복습한 항목은 아침에 복습한 항목보다 20~30% 더 잘 기억됩니다.</p>
+</div>
+
+<div class="diagram">
+  <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg">
+    <text x="350" y="22" text-anchor="middle" font-size="13" font-weight="600" fill="var(--heading)">Daily Study Flow</text>
+
+    <!-- Timeline -->
+    <line x1="50" y1="100" x2="660" y2="100" stroke="var(--border)" stroke-width="2"/>
+
+    <!-- Morning -->
+    <circle cx="100" cy="100" r="20" fill="none" stroke="var(--a3)" stroke-width="2"/>
+    <text x="100" y="104" text-anchor="middle" font-size="9" font-weight="600" fill="var(--a3)">5m</text>
+    <text x="100" y="75" text-anchor="middle" font-size="9" fill="var(--heading)" font-weight="600">Wake</text>
+    <text x="100" y="135" text-anchor="middle" font-size="8" fill="var(--text-muted)">SM-2</text>
+    <text x="100" y="147" text-anchor="middle" font-size="8" fill="var(--text-muted)">Review</text>
+
+    <!-- Commute -->
+    <circle cx="230" cy="100" r="25" fill="none" stroke="var(--accent)" stroke-width="2"/>
+    <text x="230" y="104" text-anchor="middle" font-size="9" font-weight="600" fill="var(--accent)">25m</text>
+    <text x="230" y="70" text-anchor="middle" font-size="9" fill="var(--heading)" font-weight="600">Commute</text>
+    <text x="230" y="140" text-anchor="middle" font-size="8" fill="var(--text-muted)">NHK Easy</text>
+    <text x="230" y="152" text-anchor="middle" font-size="8" fill="var(--text-muted)">Listening</text>
+
+    <!-- Lunch -->
+    <circle cx="370" cy="100" r="25" fill="none" stroke="var(--accent)" stroke-width="2"/>
+    <text x="370" y="104" text-anchor="middle" font-size="9" font-weight="600" fill="var(--accent)">18m</text>
+    <text x="370" y="70" text-anchor="middle" font-size="9" fill="var(--heading)" font-weight="600">Lunch</text>
+    <text x="370" y="140" text-anchor="middle" font-size="8" fill="var(--text-muted)">New</text>
+    <text x="370" y="152" text-anchor="middle" font-size="8" fill="var(--text-muted)">Material</text>
+
+    <!-- After dinner -->
+    <circle cx="500" cy="100" r="25" fill="none" stroke="var(--accent)" stroke-width="2"/>
+    <text x="500" y="104" text-anchor="middle" font-size="9" font-weight="600" fill="var(--accent)">18m</text>
+    <text x="500" y="70" text-anchor="middle" font-size="9" fill="var(--heading)" font-weight="600">Dinner</text>
+    <text x="500" y="140" text-anchor="middle" font-size="8" fill="var(--text-muted)">Practice</text>
+    <text x="500" y="152" text-anchor="middle" font-size="8" fill="var(--text-muted)">Exercises</text>
+
+    <!-- Before bed -->
+    <circle cx="620" cy="100" r="20" fill="none" stroke="var(--a2)" stroke-width="2"/>
+    <text x="620" y="104" text-anchor="middle" font-size="9" font-weight="600" fill="var(--a2)">8m</text>
+    <text x="620" y="75" text-anchor="middle" font-size="9" fill="var(--heading)" font-weight="600">Bed</text>
+    <text x="620" y="135" text-anchor="middle" font-size="8" fill="var(--text-muted)">Palace</text>
+    <text x="620" y="147" text-anchor="middle" font-size="8" fill="var(--text-muted)">Walk</text>
+
+    <!-- Total -->
+    <text x="350" y="185" text-anchor="middle" font-size="10" fill="var(--a3)" font-weight="600">Total: ~74 minutes spread across 5 natural touchpoints</text>
+  </svg>
+  <div class="diagram-caption">학습을 기존 일상 습관에 분산 배치하면, 연속 45분 블록 없이도 하루에 다섯 번의 접점을 만들 수 있습니다.</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SECTION 3: PROGRESS METRICS -->
+<!-- ══════════════════════════════════════════════════════ -->
+<h3 id="3-진행-지표">진행 지표</h3>
+
+<p>진도가 순조로운지 확인하려면 구체적인 목표가 필요합니다. 아래는 30일차, 60일차, 90일차의 자기 평가 체크포인트입니다. 이것은 합격/불합격 시험이 아니라 진단 도구입니다. 한 영역에서 부족하면 어디에 추가 시간을 투자해야 하는지 알 수 있습니다.</p>
+
+<div class="card">
+  <h4>30일차 자기 평가 <span class="transfer-tag full">1단계 종료</span></h4>
+  <table>
+    <thead><tr><th>기술 영역</th><th>목표</th><th>테스트 방법</th></tr></thead>
+    <tbody>
+      <tr><td>히라가나</td><td>46자 전부 인식 및 기억으로 쓰기</td><td>5분 이내에 46자 전부를 기억으로 쓰기, 100% 정확도</td></tr>
+      <tr><td>가타카나</td><td>46자 전부 인식 및 기억으로 쓰기</td><td>5분 이내에 46자 전부를 기억으로 쓰기, 100% 정확도</td></tr>
+      <tr><td>서바이벌 표현</td><td>50개 이상의 표현 회상 및 정확한 사용</td><td>거리 루트 궁전을 걸으며 프롬프트 없이 50개 이상의 표현 회상</td></tr>
+      <tr><td>조사</td><td>기본 조사 11개를 한국어 대응과 함께 이해</td><td>조사 빈칸 채우기 연습에서 90% 이상 정확도</td></tr>
+      <tr><td>동사 활용</td><td>1단, 5단, 불규칙 동사의 현재, 과거, 부정형</td><td>랜덤 동사 10개를 모든 기본 형태로 활용</td></tr>
+      <tr><td>기억의 궁전</td><td>4개의 궁전 구축 및 산책 가능 (주방, 거실, 거리, 욕실)</td><td>각 궁전을 머릿속으로 걸으며 항목의 90% 이상 회상</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="card">
+  <h4>60일차 자기 평가 <span class="transfer-tag partial">2단계 종료</span></h4>
+  <table>
+    <thead><tr><th>기술 영역</th><th>목표</th><th>테스트 방법</th></tr></thead>
+    <tbody>
+      <tr><td>한자</td><td>300자 이상 인식 및 읽기</td><td>플래시카드 테스트: 300개 한자를 각각 하나 이상의 읽기와 함께 인식</td></tr>
+      <tr><td>어휘</td><td>2,000개 이상의 단어 (한자어 + 고유어 합산)</td><td>SM-2 항목 수. 숙성 항목의 회상률 80% 이상 달성 목표</td></tr>
+      <tr><td>회화</td><td>기본 자기소개, 주문, 길 묻기</td><td>대본 없이 3가지 일반 상황을 역할극</td></tr>
+      <tr><td>경어</td><td><span class="jp">です/ます</span>, <span class="jp">尊敬語</span>, <span class="jp">謙譲語</span> 구별</td><td>10가지 사회적 상황에 적절한 격식 선택</td></tr>
+      <tr><td>독해</td><td>사전의 도움으로 NHK Easy 기사 읽기</td><td>기사 1개를 읽고 이해 문제에 답하기, 70% 이상 정확도</td></tr>
+      <tr><td>기억의 궁전</td><td>6개의 궁전 구축 및 산책 가능, 모두 연결</td><td>그랜드 투어를 걸으며 항목의 85% 이상 회상</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="card">
+  <h4>90일차 자기 평가 <span class="transfer-tag full">3단계 종료</span></h4>
+  <table>
+    <thead><tr><th>기술 영역</th><th>목표</th><th>테스트 방법</th></tr></thead>
+    <tbody>
+      <tr><td>한자</td><td>650자 이상을 여러 읽기와 함께 인식</td><td>플래시카드 테스트: 650개 한자 인식. 상위 200자의 음독과 훈독 모두 숙지</td></tr>
+      <tr><td>어휘</td><td>3,500개 이상의 단어</td><td>SM-2 항목 수. 숙성 항목의 회상률 85% 이상 달성 목표</td></tr>
+      <tr><td>문법</td><td>N3 수준 문법 패턴 인식 및 활용</td><td>N3 문법 연습 문제에서 70% 이상 정확도</td></tr>
+      <tr><td>청해</td><td>자연 속도의 NHK Easy 오디오 청취</td><td>NHK Easy 오디오 클립 3개를 듣고 이해 문제에 답하기, 70% 이상 정확도</td></tr>
+      <tr><td>작문</td><td>10문장 자기소개 및 짧은 일기 작성</td><td>사전 없이 150자 이상의 글을 작성하여 원어민이나 AI로 검증</td></tr>
+      <tr><td>기억 설계</td><td>모든 궁전 유지, 그랜드 투어 가능, 새 궁전 시작</td><td>45분 이내에 그랜드 투어를 완료하며 90% 이상 회상</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="callout ok">
+  <div class="callout-title">진행은 선형적이지 않습니다</div>
+  <p>일부 목표는 초과 달성하고 다른 목표에서는 미달할 수 있습니다. 이는 정상입니다. 이러한 평가의 목적은 판단이 아니라 <strong>진단</strong>입니다. 한자는 예정보다 앞서지만 청해가 뒤처져 있다면, 통근 시간의 습관 쌓기를 팟캐스트에서 셰도잉 연습으로 전환하십시오. 계획을 여러분의 현실에 맞게 조정하십시오.</p>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SECTION 4: CLOSING MESSAGE -->
+<!-- ══════════════════════════════════════════════════════ -->
+<h3 id="4-zero에서-hero로">Zero에서 Hero로</h3>
+
+<p>여러분은 이 책을 일본어를 외국어로 바라보는 한국어 화자로 시작했습니다. 이제 여러분은 머릿속에 일본어를 위한 영구적인 구조물을 세운 <strong>기억 설계자</strong>가 되었습니다 -- 여섯 개의 기억의 궁전, 간격 반복 시스템, 그리고 대부분의 학습자가 꿈꿀 수밖에 없는 40%의 선발 우위를 한국어가 제공한다는 깊은 이해까지 갖추었습니다.</p>
+
+<p>90일은 시작에 불과합니다. 여러분이 구축한 설계는 만료되지 않습니다. 기억의 궁전은 걸을 때마다 그곳에 있을 것입니다. SM-2 간격은 항목이 능동적 학습에서 영구적 지식으로 이동하면서 점점 더 길어질 것입니다. 한국어 전이를 통해 내재화한 문법 구조는 대화를 할 때마다 더 자연스러워질 것입니다.</p>
+
+<div class="pq">
+  "여러분은 일본어를 암기한 것이 아닙니다. 일본어가 살 곳을 지은 것입니다."
+</div>
+
+<div class="card" style="text-align:center;border:2px solid var(--accent);padding:2rem">
+  <h4 style="color:var(--accent);font-size:1.3rem;margin-bottom:1rem">이제 여러분이 읽을 수 있는 것</h4>
+  <p style="font-size:1.1rem;line-height:1.8;margin-bottom:1.5rem">
+    <span class="jp" style="font-size:1.2rem">この本を最後まで読んでくれて、本当にありがとうございます。</span><br>
+    <span style="font-size:.88rem;color:var(--text-muted)">이 책을 끝까지 읽어 주셔서 진심으로 감사합니다.</span>
+  </p>
+  <p style="font-size:1.1rem;line-height:1.8;margin-bottom:1.5rem">
+    <span class="jp" style="font-size:1.2rem">あなたはもう「ゼロ」ではありません。</span><br>
+    <span style="font-size:.88rem;color:var(--text-muted)">여러분은 더 이상 "제로"가 아닙니다.</span>
+  </p>
+  <p style="font-size:1.1rem;line-height:1.8;margin-bottom:1.5rem">
+    <span class="jp" style="font-size:1.2rem">韓国語の知識を土台にして、日本語の世界への扉を開きました。</span><br>
+    <span style="font-size:.88rem;color:var(--text-muted)">한국어 지식을 토대로, 일본어 세계로 가는 문을 열었습니다.</span>
+  </p>
+  <p style="font-size:1.1rem;line-height:1.8;margin-bottom:0">
+    <span class="jp" style="font-size:1.2rem">これからも、毎日少しずつ、前に進んでください。ヒーローへの道は続きます。</span><br>
+    <span style="font-size:.88rem;color:var(--text-muted)">앞으로도 매일 조금씩 앞으로 나아가십시오. 히어로로의 길은 계속됩니다.</span>
+  </p>
+</div>
+
+<div class="callout info" style="margin-top:2rem">
+  <div class="callout-title">위의 문장을 읽을 수 있다는 사실</div>
+  <p>위의 일본어 문장을 보십시오. 3개월 전이라면 해독 불가능한 기호였을 것입니다. 이제 여러분은 히라가나를 읽고, 가타카나 외래어를 인식하며, 한자어 지식으로 한자를 분석하고, 조사를 식별하며, 동사 활용을 이해할 수 있습니다. <strong>이것은 제로가 아닙니다. 이것이 히어로입니다.</strong></p>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- INTERACTIVE EXERCISES -->
+<!-- ══════════════════════════════════════════════════════ -->
+<h3 id="인터랙티브-연습">인터랙티브 연습</h3>
+
+<!-- Quiz 1: Study Planning Multiple Choice -->
+<div id="quiz-study-plan"></div>
+
+<!-- Quiz 2: 90-Day Targets Fill-in-the-Blank -->
+<div id="quiz-targets"></div>
+
+<!-- Mark as Complete -->
+<button class="chapter-complete" data-ch="21">완료로 표시 &#10003;</button>
+
+<div style="display:flex;justify-content:space-between;margin:2rem 0">
+  <a href="ch-20.html" class="quiz-btn secondary">&larr; 제21장: 기억의 궁전</a>
+  <a href="appendices.html" class="quiz-btn">부록 &rarr;</a>
+</div>
+
+</section>
+
+</div>
+
+
+</div>
+
+<footer>
+  <p>Zero to Hero: 日本語 한국어 화자를 위한 &middot; 제21장</p>
+</footer>
+
+<script src="js/shared.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/quiz-engine.js"></script>
+<script>
+// ─── Recall Check from Ch19 (top) ───
+QuizEngine.RecallCheck(
+  document.getElementById('quiz-recall-top'),
+  {
+    fromChapters: 'Ch19',
+    items: [
+      { question: 'Ch19: 여섯 개의 기억의 궁전 전체에 배치된 총 항목 수는 얼마입니까?', answer: '6개의 궁전에 393개 이상의 항목: 주방 (히라가나 46자), 거실 (가타카나 46자), 거리 루트 (표현 60개 이상), 욕실 (조사 11개), 침실 (부수 30개), 공원 (어휘 200개 이상).' },
+      { question: 'Ch19: 그랜드 투어의 경로 순서는 무엇입니까?', answer: '주방 --> 거실 --> (집 밖으로) --> 거리 루트 --> (도착) --> 공원 --> (집으로 귀환) --> 욕실 --> 침실.' },
+      { question: 'Ch19: 전체 그랜드 투어는 얼마나 자주 수행해야 합니까?', answer: '분기별 (약 3개월마다), 약 45분 소요.' }
+    ]
+  }
+);
+
+// ─── Quiz 1: Study Planning Multiple Choice ───
+QuizEngine.MultipleChoice(
+  document.getElementById('quiz-study-plan'),
+  {
+    title: '학습 계획 지식',
+    questions: [
+      {
+        prompt: '1단계 (1~30일) 동안 권장되는 일일 학습 시간은 얼마입니까?',
+        options: ['15분', '30분', '45분', '90분'],
+        correctIndex: 2,
+        explanation: '1단계는 하루 45분이 필요합니다. 이는 기초 장 (제00~07장)을 번아웃 없이 지속 가능한 속도로 학습하기에 충분한 시간입니다.'
+      },
+      {
+        prompt: '새 장 자료 학습에 권장되는 습관 쌓기 시간대는 무엇입니까?',
+        options: ['기상 후 (아침 복습)', '통근 중', '점심시간', '취침 전'],
+        correctIndex: 2,
+        explanation: '점심시간 (15~20분)이 새 장 섹션 학습에 권장됩니다. 이것이 주요 학습 시간으로, 설명을 읽고, 예문을 공부하며, 새 항목을 기억의 궁전에 배치합니다.'
+      },
+      {
+        prompt: '학습을 하루 빠뜨렸을 때 어떻게 해야 합니까?',
+        options: [
+          '다음 날 두 배로 보충한다',
+          '90일 카운트를 1일차부터 다시 시작한다',
+          '다음 날 중단한 곳부터 다시 시작한다',
+          '일정에 맞추기 위해 앞으로 건너뛴다'
+        ],
+        correctIndex: 2,
+        explanation: '중단한 곳부터 다시 시작하면 됩니다. 두 배 세션으로 놓친 시간을 "보충"하려고 하지 마십시오. SM-2 알고리즘이 놓친 항목을 자동으로 재스케줄링합니다.'
+      },
+      {
+        prompt: '취침 전 학습이 특히 효과적인 이유는 무엇입니까?',
+        options: [
+          '더 편안하고 집중할 수 있다',
+          '수면이 기억을 강화하며, 최근에 복습한 자료에 우선권을 부여한다',
+          '밤에는 방해 요소가 적다',
+          '저녁에 뇌가 더 창의적이다'
+        ],
+        correctIndex: 1,
+        explanation: '수면 중에 해마는 그날의 학습을 재생하고 장기 피질 저장소로 전이합니다. 취침 전에 복습한 자료는 이 강화 과정에서 우선권을 받습니다.'
+      },
+      {
+        prompt: '"습관 쌓기"란 무엇을 의미합니까?',
+        options: [
+          '여러 과목을 동시에 학습하는 것',
+          '매일 학습 시간을 늘리는 것',
+          '새 습관을 기존 습관에 트리거로 연결하는 것',
+          '난이도 순서대로 플래시카드를 쌓는 것'
+        ],
+        correctIndex: 2,
+        explanation: '습관 쌓기는 새 습관을 기존 습관에 연결하는 것을 의미합니다. "[기존 습관] 후에 [새 습관]을 한다." 기존 습관이 트리거 역할을 하여 새로운 행동을 자동화합니다.'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 2: 90-Day Targets Fill-in-the-Blank ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-targets'),
+  {
+    title: '90일 스프린트 목표',
+    questions: [
+      {
+        prompt: '30일차까지 히라가나 ___자 전부와 가타카나 ___자 전부를 마스터해야 합니다.',
+        answer: '46, 46',
+        acceptAlso: ['46 and 46', '46, 46', '46 46', 'forty-six'],
+        explanation: '히라가나와 가타카나 모두 기본 46자가 있습니다. 1단계가 끝날 때까지 전부 완전히 암기해야 합니다.'
+      },
+      {
+        prompt: '60일차까지 한자 목표는 ___자 이상을 읽기와 함께 인식하는 것입니다.',
+        answer: '300',
+        acceptAlso: ['300+', '300 kanji', 'three hundred'],
+        explanation: '60일차 목표는 300자 이상의 한자입니다. 이는 일상 독해에서 가장 자주 접하는 한자를 포함합니다.'
+      },
+      {
+        prompt: '90일차까지 어휘 목표는 ___개 이상의 단어입니다.',
+        answer: '3500',
+        acceptAlso: ['3,500', '3500+', '3,500+', '3500 words'],
+        explanation: '90일차 어휘 목표는 3,500개 이상의 단어로, 한자어 동원어와 고유 일본어 단어를 합산한 것입니다.'
+      },
+      {
+        prompt: '1단계는 제00장부터 제___장까지를 다룹니다.',
+        answer: '07',
+        acceptAlso: ['7', 'Ch07', 'chapter 07', 'chapter 7'],
+        explanation: '1단계 (1~30일)는 제00~07장을 다룹니다: 기억 과학, 한국어의 이점, 히라가나, 가타카나, 발음, 서바이벌 일본어, 조사, 동사 활용.'
+      },
+      {
+        prompt: '90일차 한자 목표는 ___자 이상을 여러 읽기와 함께 인식하는 것입니다.',
+        answer: '650',
+        acceptAlso: ['650+', '650 kanji', 'six hundred fifty'],
+        explanation: '90일차까지 650자 이상의 한자로, N3 한자 요구 사항에 해당합니다. 상위 200자에 대해서는 음독과 훈독 모두 알아야 합니다.'
+      }
+    ]
+  }
+);
+</script>
+<script src="js/spaced-repetition.js"></script>
+<script src="js/memory-palace.js"></script>
+</body>
+</html>

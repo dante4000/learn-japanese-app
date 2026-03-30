@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ch03: Katakana — Zero to Hero 日本語</title>
+<link rel="stylesheet" href="css/design-system.css">
+</head>
+<body>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <span class="logo-badge">Zero to Hero — Memory Architecture Edition</span>
+    <div class="logo-title">日本語 for Korean Speakers</div>
+    <div class="logo-sub">From 한국어 to 日本語 — The Memory Architect's Guide</div>
+  </a>
+  <div class="sidebar-progress">
+    <div class="sidebar-progress-label">Progress</div>
+    <div class="sidebar-progress-bar">
+      <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+    </div>
+    <div class="sidebar-progress-count">0/22 complete</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="ch-00.html" class="toc-link"><span class="toc-num">00</span><span class="toc-check" data-ch="00"></span>Memory Science</a>
+    <a href="ch-01.html" class="toc-link"><span class="toc-num">01</span><span class="toc-check" data-ch="01"></span>Your Korean Advantage</a>
+    <a href="ch-02.html" class="toc-link"><span class="toc-num">02</span><span class="toc-check" data-ch="02"></span>Hiragana</a>
+    <a href="ch-03.html" class="toc-link active"><span class="toc-num">03</span><span class="toc-check" data-ch="03"></span>Katakana</a>
+    <a href="ch-04.html" class="toc-link"><span class="toc-num">04</span><span class="toc-check" data-ch="04"></span>Pronunciation</a>
+    <a href="ch-05.html" class="toc-link"><span class="toc-num">05</span><span class="toc-check" data-ch="05"></span>Survival Japanese</a>
+    <a href="ch-06.html" class="toc-link"><span class="toc-num">06</span><span class="toc-check" data-ch="06"></span>Counters</a>
+    <a href="ch-07.html" class="toc-link"><span class="toc-num">07</span><span class="toc-check" data-ch="07"></span>Particles</a>
+    <a href="ch-08.html" class="toc-link"><span class="toc-num">08</span><span class="toc-check" data-ch="08"></span>Verb Conjugation</a>
+    <a href="ch-09.html" class="toc-link"><span class="toc-num">09</span><span class="toc-check" data-ch="09"></span>Daily Conversations</a>
+    <a href="ch-10.html" class="toc-link"><span class="toc-num">10</span><span class="toc-check" data-ch="10"></span>Sentence Patterns</a>
+    <a href="ch-11.html" class="toc-link"><span class="toc-num">11</span><span class="toc-check" data-ch="11"></span>Kanji</a>
+    <a href="ch-12.html" class="toc-link"><span class="toc-num">12</span><span class="toc-check" data-ch="12"></span>Sino-Vocabulary</a>
+    <a href="ch-13.html" class="toc-link"><span class="toc-num">13</span><span class="toc-check" data-ch="13"></span>Native Vocabulary</a>
+    <a href="ch-14.html" class="toc-link"><span class="toc-num">14</span><span class="toc-check" data-ch="14"></span>Honorifics</a>
+    <a href="ch-15.html" class="toc-link"><span class="toc-num">15</span><span class="toc-check" data-ch="15"></span>Reading</a>
+    <a href="ch-16.html" class="toc-link"><span class="toc-num">16</span><span class="toc-check" data-ch="16"></span>Writing</a>
+    <a href="ch-17.html" class="toc-link"><span class="toc-num">17</span><span class="toc-check" data-ch="17"></span>Listening</a>
+    <a href="ch-18.html" class="toc-link"><span class="toc-num">18</span><span class="toc-check" data-ch="18"></span>Cultural Pragmatics</a>
+    <a href="ch-19.html" class="toc-link"><span class="toc-num">19</span><span class="toc-check" data-ch="19"></span>JLPT and Beyond</a>
+    <a href="ch-20.html" class="toc-link"><span class="toc-num">20</span><span class="toc-check" data-ch="20"></span>Memory Palace</a>
+    <a href="ch-21.html" class="toc-link"><span class="toc-num">21</span><span class="toc-check" data-ch="21"></span>The 90-Day Sprint</a>
+    <a href="appendices.html" class="toc-link" style="margin-top:.5rem;border-top:1px solid var(--border);padding-top:.8rem"><span class="toc-num">+</span>Appendices</a>
+  </nav>
+</aside>
+
+<div class="main">
+<div class="content-wrap">
+
+<section id="ch03" data-ch="03" style="padding-top:3rem">
+<h2><span class="ch-label">Chapter 03</span>Katakana — The Loanword Script (カタカナ)</h2>
+
+<div class="callout memory">
+  <div class="callout-title">Memory Technique Spotlight: Dual Coding + Contrastive Encoding</div>
+  <p>You'll learn katakana BY CONTRAST with already-known hiragana — seeing both versions side by side creates a powerful contrastive encoding that makes both stronger. Each katakana also gets a spot in your Living Room palace.</p>
+</div>
+<div class="callout info">
+  <div class="callout-title">Palace Assignment: The Living Room (거실)</div>
+  <p>Your living room houses all 46 katakana. Same grouping order as the kitchen but different locations — sofa, TV stand, bookshelf, coffee table, curtains, lamp, rug, window sill, plant, and door.</p>
+</div>
+
+<p>Katakana is the <strong>angular twin</strong> of hiragana. Same 46 sounds, but a completely different look. While hiragana is curvy and flowing, katakana is sharp and straight -- derived from pieces of kanji rather than cursive forms. It's used for <strong>foreign loanwords</strong>, emphasis, onomatopoeia, and scientific terms. Target: <strong>3--5 days</strong> (faster than hiragana because you already know the sounds).</p>
+
+<div class="callout info">
+  <div class="callout-title">Korean Advantage: Konglish = Your Shortcut</div>
+  <p>Korean is packed with English loanwords (Konglish): 커피, 텔레비전, 버스, 호텔... Japanese has the <strong>exact same words</strong> written in katakana! If you can read katakana, you can instantly recognize hundreds of Japanese words you already know from Korean. This chapter gives you that superpower.</p>
+</div>
+
+<div class="callout info">
+  <div class="callout-title">When to Use Katakana</div>
+  <p><strong>1. Foreign loanwords:</strong> コーヒー (coffee), テレビ (TV)<br>
+  <strong>2. Foreign names:</strong> ソウル (Seoul), キム (Kim)<br>
+  <strong>3. Emphasis:</strong> Like CAPS or bold in English -- ダメ! (NO!)<br>
+  <strong>4. Onomatopoeia:</strong> ドキドキ (heart pounding), ワクワク (excitement)<br>
+  <strong>5. Scientific/technical terms:</strong> ウイルス (virus), エネルギー (energy)</p>
+</div>
+
+<!-- ─── RECALL CHECK (Ch02) ─── -->
+<div id="recall-check-02"></div>
+
+<!-- ─── VOWEL ROW ─── -->
+<nav class="chapter-toc">
+  <details open>
+    <summary class="chapter-toc-title">In This Chapter</summary>
+  <ol>
+    <li><a href="#the-five-vowels----ア-イ-ウ-エ-オ">The Five Vowels -- ア イ ウ エ オ</a></li>
+    <li><a href="#k-row----カ-キ-ク-ケ-コ">K-Row -- カ キ ク ケ コ</a></li>
+    <li><a href="#s-row----サ-シ-ス-セ-ソ">S-Row -- サ シ ス セ ソ</a></li>
+    <li><a href="#t-row----タ-チ-ツ-テ-ト">T-Row -- タ チ ツ テ ト</a></li>
+    <li><a href="#n-row----ナ-ニ-ヌ-ネ-ノ">N-Row -- ナ ニ ヌ ネ ノ</a></li>
+    <li><a href="#h-row----ハ-ヒ-フ-ヘ-ホ">H-Row -- ハ ヒ フ ヘ ホ</a></li>
+    <li><a href="#m-row----マ-ミ-ム-メ-モ">M-Row -- マ ミ ム メ モ</a></li>
+    <li><a href="#y-row----ヤ-ユ-ヨ-only-3">Y-Row -- ヤ ユ ヨ (only 3)</a></li>
+    <li><a href="#r-row----ラ-リ-ル-レ-ロ">R-Row -- ラ リ ル レ ロ</a></li>
+    <li><a href="#w-row----ワ-ヲ-special-ン">W-Row -- ワ ヲ + Special: ン</a></li>
+    <li><a href="#complete-hiragana-katakana-comparison">Complete Hiragana-Katakana Comparison</a></li>
+    <li><a href="#dakuten-and-handakuten----katakana-voicing-marks">Dakuten (゛) and Handakuten (゜) -- Katakana Voicing Marks</a></li>
+    <li><a href="#long-vowels-in-katakana----the-ー-dash">Long Vowels in Katakana -- The ー Dash</a></li>
+    <li><a href="#katakana-only-combinations-for-foreign-sounds">Katakana-Only Combinations for Foreign Sounds</a></li>
+    <li><a href="#the-loanword-bridge-50-korean-japanese-cognate-loanwords">The Loanword Bridge: 50 Korean-Japanese Cognate Loanwords</a></li>
+    <li><a href="#small-ッ-sokuon----double-consonants">Small ッ (Sokuon) -- Double Consonants</a></li>
+    <li><a href="#exercises">Exercises</a></li>
+  </ol>
+  </details>
+</nav>
+
+<h3 id="the-five-vowels----ア-イ-ウ-エ-オ">The Five Vowels -- ア イ ウ エ オ</h3>
+<p>Same sounds as hiragana あ い う え お, but sharper shapes. Learn the pair together.</p>
+
+<div class="mnemonic-card">
+  <div>
+    <svg class="char-svg" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <text x="40" y="58" text-anchor="middle" font-size="52" font-family="'Shippori Mincho', serif" fill="var(--heading)">ア</text>
+    </svg>
+  </div>
+  <div class="char-info">
+    <div class="char-reading">a -- Hiragana pair: あ</div>
+    <div class="char-korean">Korean approximation: 아</div>
+    <div class="char-story"><strong>Mnemonic:</strong> An <strong>a</strong>ntenna on a rooftop -- the angular strokes look like a TV antenna. Compare with curvy あ. Loanword: <span class="jp">アイス</span> (aisu) = ice cream / 아이스.</div>
+  </div>
+  <div class="char-display">ア</div>
+</div>
+
+<div class="mnemonic-card">
+  <div>
+    <svg class="char-svg" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <text x="40" y="58" text-anchor="middle" font-size="52" font-family="'Shippori Mincho', serif" fill="var(--heading)">イ</text>
+    </svg>
+  </div>
+  <div class="char-info">
+    <div class="char-reading">i -- Hiragana pair: い</div>
+    <div class="char-korean">Korean approximation: 이</div>
+    <div class="char-story"><strong>Mnemonic:</strong> Like the letter "<strong>I</strong>" leaning -- two straight strokes, one leaning against the other like an easel. Loanword: <span class="jp">インターネット</span> (intaanetto) = internet / 인터넷.</div>
+  </div>
+  <div class="char-display">イ</div>
+</div>
+
+<div class="mnemonic-card">
+  <div>
+    <svg class="char-svg" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <text x="40" y="58" text-anchor="middle" font-size="52" font-family="'Shippori Mincho', serif" fill="var(--heading)">ウ</text>
+    </svg>
+  </div>
+  <div class="char-info">
+    <div class="char-reading">u -- Hiragana pair: う</div>
+    <div class="char-korean">Korean approximation: 우 (unrounded)</div>
+    <div class="char-story"><strong>Mnemonic:</strong> A crown pointing <strong>u</strong>pward -- three strokes forming a crown shape. Loanword: <span class="jp">ウイスキー</span> (uisukii) = whisky / 위스키.</div>
+  </div>
+  <div class="char-display">ウ</div>
+</div>
+
+<div class="mnemonic-card">
+  <div>
+    <svg class="char-svg" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <text x="40" y="58" text-anchor="middle" font-size="52" font-family="'Shippori Mincho', serif" fill="var(--heading)">エ</text>
+    </svg>
+  </div>
+  <div class="char-info">
+    <div class="char-reading">e -- Hiragana pair: え</div>
+    <div class="char-korean">Korean approximation: 에</div>
+    <div class="char-story"><strong>Mnemonic:</strong> An <strong>e</strong>levator -- horizontal lines at top and bottom with a vertical shaft connecting them. Looks like the capital letter "I" or an I-beam. Loanword: <span class="jp">エレベーター</span> (erebeetaa) = elevator / 엘리베이터.</div>
+  </div>
+  <div class="char-display">エ</div>
+</div>
+
+<div class="mnemonic-card">
+  <div>
+    <svg class="char-svg" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <text x="40" y="58" text-anchor="middle" font-size="52" font-family="'Shippori Mincho', serif" fill="var(--heading)">オ</text>
+    </svg>
+  </div>
+  <div class="char-info">
+    <div class="char-reading">o -- Hiragana pair: お</div>
+    <div class="char-korean">Korean approximation: 오</div>
+    <div class="char-story"><strong>Mnemonic:</strong> An <strong>o</strong>pera singer with arms spread -- the cross stroke and vertical line look like someone striking a pose. Loanword: <span class="jp">オレンジ</span> (orenji) = orange / 오렌지.</div>
+  </div>
+  <div class="char-display">オ</div>
+</div>
+
+<!-- Vowel quiz -->
+<div id="quiz-vowels"></div>
+
+<!-- ─── K ROW ─── -->
+<h3 id="k-row----カ-キ-ク-ケ-コ">K-Row -- カ キ ク ケ コ</h3>
+<p>The "k" consonant row. Each has a hiragana twin. Katakana versions are more angular.</p>
+
+<div class="mnemonic-card">
+  <div class="char-display">カ</div>
+  <div class="char-info">
+    <div class="char-reading">ka -- Hiragana pair: か</div>
+    <div class="char-korean">Korean: 가/카</div>
+    <div class="char-story"><strong>Mnemonic:</strong> A sharp <strong>ka</strong>tana blade -- the angular strokes slice diagonally. Compare with curvy か. Loanword: <span class="jp">カメラ</span> (kamera) = camera / 카메라.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">キ</div>
+  <div class="char-info">
+    <div class="char-reading">ki -- Hiragana pair: き</div>
+    <div class="char-korean">Korean: 기/키</div>
+    <div class="char-story"><strong>Mnemonic:</strong> A <strong>key</strong> with sharp teeth -- like き but without the bottom curve. Loanword: <span class="jp">キムチ</span> (kimuchi) = kimchi / 김치.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">ク</div>
+  <div class="char-info">
+    <div class="char-reading">ku -- Hiragana pair: く</div>
+    <div class="char-korean">Korean: 구/쿠</div>
+    <div class="char-story"><strong>Mnemonic:</strong> A <strong>coo</strong>l angular hook -- like く got sharpened. Loanword: <span class="jp">クラス</span> (kurasu) = class / 클래스.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">ケ</div>
+  <div class="char-info">
+    <div class="char-reading">ke -- Hiragana pair: け</div>
+    <div class="char-korean">Korean: 게/케</div>
+    <div class="char-story"><strong>Mnemonic:</strong> A <strong>ke</strong>ttle with a spout -- the horizontal stroke is the handle, the diagonal is the spout. Loanword: <span class="jp">ケーキ</span> (keeki) = cake / 케이크.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">コ</div>
+  <div class="char-info">
+    <div class="char-reading">ko -- Hiragana pair: こ</div>
+    <div class="char-korean">Korean: 고/코</div>
+    <div class="char-story"><strong>Mnemonic:</strong> A <strong>co</strong>rner -- two right angles forming an open box. Like こ stacked vertically. Loanword: <span class="jp">コーヒー</span> (koohii) = coffee / 커피.</div>
+  </div>
+</div>
+
+<!-- ─── S ROW ─── -->
+<h3 id="s-row----サ-シ-ス-セ-ソ">S-Row -- サ シ ス セ ソ</h3>
+
+<div class="mnemonic-card">
+  <div class="char-display">サ</div>
+  <div class="char-info">
+    <div class="char-reading">sa -- Hiragana pair: さ</div>
+    <div class="char-korean">Korean: 사</div>
+    <div class="char-story"><strong>Mnemonic:</strong> A <strong>sa</strong>murai's crossed swords -- sharp diagonal strokes. Loanword: <span class="jp">サラダ</span> (sarada) = salad / 샐러드.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">シ</div>
+  <div class="char-info">
+    <div class="char-reading">shi -- Hiragana pair: し</div>
+    <div class="char-korean">Korean: 시</div>
+    <div class="char-story"><strong>Mnemonic:</strong> A <strong>she</strong> winking -- three strokes that form a smiley face tilted sideways. The dots are the eyes, the curve is the smile. CAREFUL: Don't confuse with ツ (tsu)! シ has dots going <em>bottom-to-top</em> with a <em>more horizontal</em> curve. Loanword: <span class="jp">シャツ</span> (shatsu) = shirt / 셔츠.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">ス</div>
+  <div class="char-info">
+    <div class="char-reading">su -- Hiragana pair: す</div>
+    <div class="char-korean">Korean: 스</div>
+    <div class="char-story"><strong>Mnemonic:</strong> A <strong>su</strong>per slide -- one straight stroke angling down. Loanword: <span class="jp">スプーン</span> (supuun) = spoon / 스푼.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">セ</div>
+  <div class="char-info">
+    <div class="char-reading">se -- Hiragana pair: せ</div>
+    <div class="char-korean">Korean: 세</div>
+    <div class="char-story"><strong>Mnemonic:</strong> A <strong>se</strong>t of steps going up -- angular strokes stepping upward. Loanword: <span class="jp">セーター</span> (seetaa) = sweater / 스웨터.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">ソ</div>
+  <div class="char-info">
+    <div class="char-reading">so -- Hiragana pair: そ</div>
+    <div class="char-korean">Korean: 소</div>
+    <div class="char-story"><strong>Mnemonic:</strong> A <strong>so</strong>ft serve ice cream -- two strokes swooping down. CAREFUL: Don't confuse with ン (n)! ソ has strokes going <em>top-to-bottom</em> with a <em>more vertical</em> curve. Loanword: <span class="jp">ソファー</span> (sofaa) = sofa / 소파.</div>
+  </div>
+</div>
+
+<!-- ─── COMMONLY CONFUSED PAIRS ─── -->
+<div class="callout warn">
+  <div class="callout-title">Danger Zone: Commonly Confused Katakana</div>
+  <p>These pairs trip up EVERY beginner. Study them carefully:</p>
+  <p><strong>シ (shi) vs ツ (tsu):</strong> シ has dots going <em>diagonally up</em> (bottom-left to top-right) and a <em>horizontal</em> curve. ツ has dots going <em>diagonally down</em> (top-left to bottom-right) and a <em>vertical</em> curve. Think: シ is a smiling face (horizontal mouth), ツ has tears falling down (vertical drip).</p>
+  <p><strong>ソ (so) vs ン (n):</strong> Same principle! ソ strokes sweep <em>downward</em> (like ツ's pattern). ン strokes sweep <em>upward</em> (like シ's pattern). ソ = short, sharp. ン = longer, swooping up.</p>
+  <p><strong>ウ (u) vs ワ (wa) vs フ (fu):</strong> ウ has a flat top stroke. ワ has an open top. フ is just two strokes with no side stroke.</p>
+</div>
+
+<!-- ─── T ROW ─── -->
+<h3 id="t-row----タ-チ-ツ-テ-ト">T-Row -- タ チ ツ テ ト</h3>
+
+<div class="mnemonic-card">
+  <div class="char-display">タ</div>
+  <div class="char-info">
+    <div class="char-reading">ta -- Hiragana pair: た</div>
+    <div class="char-korean">Korean: 다/타</div>
+    <div class="char-story"><strong>Mnemonic:</strong> Like a <strong>ta</strong>ll letter "T" with extra flair. Loanword: <span class="jp">タクシー</span> (takushii) = taxi / 택시.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">チ</div>
+  <div class="char-info">
+    <div class="char-reading">chi -- Hiragana pair: ち</div>
+    <div class="char-korean">Korean: 치</div>
+    <div class="char-story"><strong>Mnemonic:</strong> A <strong>chee</strong>rleader doing a sharp kick -- angular version of ち. Loanword: <span class="jp">チキン</span> (chikin) = chicken / 치킨.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">ツ</div>
+  <div class="char-info">
+    <div class="char-reading">tsu -- Hiragana pair: つ</div>
+    <div class="char-korean">Korean: 쓰 (closest)</div>
+    <div class="char-story"><strong>Mnemonic:</strong> Three drops of water during a <strong>tsu</strong>nami -- dots splash down, curve sweeps vertically. REMEMBER: Dots go <em>top-to-bottom</em> (unlike シ). Loanword: <span class="jp">ツアー</span> (tsuaa) = tour / 투어.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">テ</div>
+  <div class="char-info">
+    <div class="char-reading">te -- Hiragana pair: て</div>
+    <div class="char-korean">Korean: 데/테</div>
+    <div class="char-story"><strong>Mnemonic:</strong> A <strong>te</strong>lephone pole -- horizontal bar on top with a straight line going down. Loanword: <span class="jp">テレビ</span> (terebi) = TV / 텔레비전.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">ト</div>
+  <div class="char-info">
+    <div class="char-reading">to -- Hiragana pair: と</div>
+    <div class="char-korean">Korean: 도/토</div>
+    <div class="char-story"><strong>Mnemonic:</strong> A <strong>to</strong>tem pole -- one vertical line with a small horizontal branch. Simplest katakana! Loanword: <span class="jp">トイレ</span> (toire) = toilet / 화장실.</div>
+  </div>
+</div>
+
+<!-- ─── N ROW ─── -->
+<h3 id="n-row----ナ-ニ-ヌ-ネ-ノ">N-Row -- ナ ニ ヌ ネ ノ</h3>
+
+<div class="mnemonic-card">
+  <div class="char-display">ナ</div>
+  <div class="char-info">
+    <div class="char-reading">na -- Hiragana pair: な</div>
+    <div class="char-korean">Korean: 나</div>
+    <div class="char-story"><strong>Mnemonic:</strong> A <strong>na</strong>il driven at an angle -- a cross with one diagonal stroke. Loanword: <span class="jp">ナイフ</span> (naifu) = knife / 나이프.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">ニ</div>
+  <div class="char-info">
+    <div class="char-reading">ni -- Hiragana pair: に</div>
+    <div class="char-korean">Korean: 니</div>
+    <div class="char-story"><strong>Mnemonic:</strong> Two horizontal lines = <strong>ni</strong> (2 in Japanese)! The character literally looks like the number two. Loanword: <span class="jp">ニュース</span> (nyuusu) = news / 뉴스.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">ヌ</div>
+  <div class="char-info">
+    <div class="char-reading">nu -- Hiragana pair: ぬ</div>
+    <div class="char-korean">Korean: 누</div>
+    <div class="char-story"><strong>Mnemonic:</strong> <strong>Noo</strong>dles in a sharp bowl -- angular crossed strokes. Loanword: <span class="jp">カヌー</span> (kanuu) = canoe / 카누.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">ネ</div>
+  <div class="char-info">
+    <div class="char-reading">ne -- Hiragana pair: ね</div>
+    <div class="char-korean">Korean: 네</div>
+    <div class="char-story"><strong>Mnemonic:</strong> A <strong>ne</strong>t -- angular strokes crossing like a net. Loanword: <span class="jp">ネクタイ</span> (nekutai) = necktie / 넥타이.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">ノ</div>
+  <div class="char-info">
+    <div class="char-reading">no -- Hiragana pair: の</div>
+    <div class="char-korean">Korean: 노</div>
+    <div class="char-story"><strong>Mnemonic:</strong> A single slash -- saying "<strong>NO</strong>!" with a sharp strike. The simplest katakana: just one diagonal stroke. Loanword: <span class="jp">ノート</span> (nooto) = notebook / 노트.</div>
+  </div>
+</div>
+
+<!-- ─── H ROW ─── -->
+<h3 id="h-row----ハ-ヒ-フ-ヘ-ホ">H-Row -- ハ ヒ フ ヘ ホ</h3>
+
+<div class="mnemonic-card">
+  <div class="char-display">ハ</div>
+  <div class="char-info">
+    <div class="char-reading">ha -- Hiragana pair: は</div>
+    <div class="char-korean">Korean: 하</div>
+    <div class="char-story"><strong>Mnemonic:</strong> "<strong>Ha</strong>!" -- two strokes spreading out like arms thrown up in laughter. Loanword: <span class="jp">ハンバーガー</span> (hanbaagaa) = hamburger / 햄버거.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">ヒ</div>
+  <div class="char-info">
+    <div class="char-reading">hi -- Hiragana pair: ひ</div>
+    <div class="char-korean">Korean: 히</div>
+    <div class="char-story"><strong>Mnemonic:</strong> A person saying "<strong>hee</strong>" -- looks like a smiling mouth turned sideways. Loanword: <span class="jp">ヒーロー</span> (hiiroo) = hero / 히어로.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">フ</div>
+  <div class="char-info">
+    <div class="char-reading">fu -- Hiragana pair: ふ</div>
+    <div class="char-korean">Korean: 후 (lips don't touch)</div>
+    <div class="char-story"><strong>Mnemonic:</strong> Mount <strong>Fu</strong>ji's peak -- just two strokes forming a simple mountain peak. Loanword: <span class="jp">フライドポテト</span> (furaidopoteto) = french fries / 감자튀김.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">ヘ</div>
+  <div class="char-info">
+    <div class="char-reading">he -- Hiragana pair: へ</div>
+    <div class="char-korean">Korean: 헤</div>
+    <div class="char-story"><strong>Mnemonic:</strong> Looks <em>exactly</em> like hiragana へ! One of the only katakana that's identical to its hiragana partner. A simple mountain peak / roof shape. Loanword: <span class="jp">ヘリコプター</span> (herikoputaa) = helicopter / 헬리콥터.</div>
+  </div>
+</div>
+
+<div class="mnemonic-card">
+  <div class="char-display">ホ</div>
+  <div class="char-info">
+    <div class="char-reading">ho -- Hiragana pair: ほ</div>
+    <div class="char-korean">Korean: 호</div>
+    <div class="char-story"><strong>Mnemonic:</strong> A <strong>ho</strong>ly cross -- vertical stroke with horizontal bars and angled sides. Loanword: <span class="jp">ホテル</span> (hoteru) = hotel / 호텔.</div>
+  </div>
+</div>
+
+<!-- ─── M ROW ─── -->
+<h3 id="m-row----マ-ミ-ム-メ-モ">M-Row -- マ ミ ム メ モ</h3>
+
+<div class="mnemonic-card"><div class="char-display">マ</div><div class="char-info"><div class="char-reading">ma -- Hiragana pair: ま</div><div class="char-korean">Korean: 마</div><div class="char-story"><strong>Mnemonic:</strong> A <strong>ma</strong>th angle -- two strokes forming a sharp angle, like a less-than sign with flair. Loanword: <span class="jp">マクドナルド</span> (makudonarudo) = McDonald's / 맥도날드.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">ミ</div><div class="char-info"><div class="char-reading">mi -- Hiragana pair: み</div><div class="char-korean">Korean: 미</div><div class="char-story"><strong>Mnemonic:</strong> Three horizontal lines = <strong>mi</strong> (3 in Japanese)! Like ニ (ni=2) but with three lines. Loanword: <span class="jp">ミルク</span> (miruku) = milk / 밀크.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">ム</div><div class="char-info"><div class="char-reading">mu -- Hiragana pair: む</div><div class="char-korean">Korean: 무</div><div class="char-story"><strong>Mnemonic:</strong> A cow's face -- the angular lines form a <strong>moo</strong>ing cow. Loanword: <span class="jp">ムード</span> (muudo) = mood / 무드.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">メ</div><div class="char-info"><div class="char-reading">me -- Hiragana pair: め</div><div class="char-korean">Korean: 메</div><div class="char-story"><strong>Mnemonic:</strong> An "X" marks the spot -- like checking something off a <strong>me</strong>nu. Loanword: <span class="jp">メニュー</span> (menyuu) = menu / 메뉴.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">モ</div><div class="char-info"><div class="char-reading">mo -- Hiragana pair: も</div><div class="char-korean">Korean: 모</div><div class="char-story"><strong>Mnemonic:</strong> <strong>Mo</strong>re lines -- horizontal bars with a vertical connecting them, like adding <strong>mo</strong>re shelves. Loanword: <span class="jp">モデル</span> (moderu) = model / 모델.</div></div></div>
+
+<!-- ─── Y ROW ─── -->
+<h3 id="y-row----ヤ-ユ-ヨ-only-3">Y-Row -- ヤ ユ ヨ (only 3)</h3>
+
+<div class="mnemonic-card"><div class="char-display">ヤ</div><div class="char-info"><div class="char-reading">ya -- Hiragana pair: や</div><div class="char-korean">Korean: 야</div><div class="char-story"><strong>Mnemonic:</strong> A <strong>ya</strong>cht's mast -- angular strokes like a sailboat rigging. Loanword: <span class="jp">ヤクルト</span> (yakuruto) = Yakult / 야쿠르트.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">ユ</div><div class="char-info"><div class="char-reading">yu -- Hiragana pair: ゆ</div><div class="char-korean">Korean: 유</div><div class="char-story"><strong>Mnemonic:</strong> A <strong>u</strong>nique hook -- like a fish hook with an extra bar. Loanword: <span class="jp">ユニフォーム</span> (yunifoomu) = uniform / 유니폼.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">ヨ</div><div class="char-info"><div class="char-reading">yo -- Hiragana pair: よ</div><div class="char-korean">Korean: 요</div><div class="char-story"><strong>Mnemonic:</strong> A <strong>yo</strong>ga pose -- like the letter "E" without the bottom line, a person bending. Loanword: <span class="jp">ヨーグルト</span> (yooguruto) = yogurt / 요거트.</div></div></div>
+
+<!-- ─── R ROW ─── -->
+<h3 id="r-row----ラ-リ-ル-レ-ロ">R-Row -- ラ リ ル レ ロ</h3>
+<p>Same flapped "r" as hiragana -- like Korean ㄹ between vowels.</p>
+
+<div class="mnemonic-card"><div class="char-display">ラ</div><div class="char-info"><div class="char-reading">ra -- Hiragana pair: ら</div><div class="char-korean">Korean: 라</div><div class="char-story"><strong>Mnemonic:</strong> A <strong>ra</strong>bbit ear -- angular stroke sticking up. Loanword: <span class="jp">ラーメン</span> (raamen) = ramen / 라면.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">リ</div><div class="char-info"><div class="char-reading">ri -- Hiragana pair: り</div><div class="char-korean">Korean: 리</div><div class="char-story"><strong>Mnemonic:</strong> Two <strong>ri</strong>vers -- like り but sharper. Looks similar to い but the right stroke curves. Loanword: <span class="jp">リモコン</span> (rimokon) = remote control / 리모컨.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">ル</div><div class="char-info"><div class="char-reading">ru -- Hiragana pair: る</div><div class="char-korean">Korean: 루</div><div class="char-story"><strong>Mnemonic:</strong> A tree <strong>roo</strong>t -- two lines meeting at the bottom like roots spreading. Loanword: <span class="jp">ルール</span> (ruuru) = rule / 룰.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">レ</div><div class="char-info"><div class="char-reading">re -- Hiragana pair: れ</div><div class="char-korean">Korean: 레</div><div class="char-story"><strong>Mnemonic:</strong> A sharp <strong>re</strong>lay baton -- one angular stroke going up and turning. Loanword: <span class="jp">レストラン</span> (resutoran) = restaurant / 레스토랑.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">ロ</div><div class="char-info"><div class="char-reading">ro -- Hiragana pair: ろ</div><div class="char-korean">Korean: 로</div><div class="char-story"><strong>Mnemonic:</strong> A <strong>ro</strong>bot's mouth -- a simple open rectangle. Easiest katakana to remember! Loanword: <span class="jp">ロボット</span> (robotto) = robot / 로봇.</div></div></div>
+
+<!-- ─── W ROW + N ─── -->
+<h3 id="w-row----ワ-ヲ-special-ン">W-Row -- ワ ヲ + Special: ン</h3>
+
+<div class="mnemonic-card"><div class="char-display">ワ</div><div class="char-info"><div class="char-reading">wa -- Hiragana pair: わ</div><div class="char-korean">Korean: 와</div><div class="char-story"><strong>Mnemonic:</strong> A <strong>wa</strong>llet open at the top -- like ウ but without the top stroke. Loanword: <span class="jp">ワイン</span> (wain) = wine / 와인.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">ヲ</div><div class="char-info"><div class="char-reading">wo (pronounced "o") -- Hiragana pair: を</div><div class="char-korean">Korean: Object marker 을/를</div><div class="char-story"><strong>Mnemonic:</strong> Rarely used in modern Japanese (を is used instead). You'll almost never see ヲ except in very old texts or special contexts. Looks like フ with an extra horizontal top stroke.</div></div></div>
+
+<div class="mnemonic-card"><div class="char-display">ン</div><div class="char-info"><div class="char-reading">n (standalone consonant) -- Hiragana pair: ん</div><div class="char-korean">Korean: ㄴ받침</div><div class="char-story"><strong>Mnemonic:</strong> The ONLY consonant-only character. CAREFUL: Don't confuse with ソ (so)! ン's strokes sweep <em>upward</em> (like シ), while ソ's strokes go <em>downward</em> (like ツ). Loanword: <span class="jp">パン</span> (pan) = bread / 빵.</div></div></div>
+
+<!-- ─── HIRAGANA-KATAKANA COMPARISON TABLE ─── -->
+<h3 id="complete-hiragana-katakana-comparison">Complete Hiragana-Katakana Comparison</h3>
+<p>Use this table for quick reference. Each katakana has the same sound as its hiragana pair.</p>
+
+<table>
+  <thead><tr><th></th><th>a</th><th>i</th><th>u</th><th>e</th><th>o</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Vowels</strong></td><td>あ/ア</td><td>い/イ</td><td>う/ウ</td><td>え/エ</td><td>お/オ</td></tr>
+    <tr><td><strong>K</strong></td><td>か/カ</td><td>き/キ</td><td>く/ク</td><td>け/ケ</td><td>こ/コ</td></tr>
+    <tr><td><strong>S</strong></td><td>さ/サ</td><td>し/シ</td><td>す/ス</td><td>せ/セ</td><td>そ/ソ</td></tr>
+    <tr><td><strong>T</strong></td><td>た/タ</td><td>ち/チ</td><td>つ/ツ</td><td>て/テ</td><td>と/ト</td></tr>
+    <tr><td><strong>N</strong></td><td>な/ナ</td><td>に/ニ</td><td>ぬ/ヌ</td><td>ね/ネ</td><td>の/ノ</td></tr>
+    <tr><td><strong>H</strong></td><td>は/ハ</td><td>ひ/ヒ</td><td>ふ/フ</td><td>へ/ヘ</td><td>ほ/ホ</td></tr>
+    <tr><td><strong>M</strong></td><td>ま/マ</td><td>み/ミ</td><td>む/ム</td><td>め/メ</td><td>も/モ</td></tr>
+    <tr><td><strong>Y</strong></td><td>や/ヤ</td><td></td><td>ゆ/ユ</td><td></td><td>よ/ヨ</td></tr>
+    <tr><td><strong>R</strong></td><td>ら/ラ</td><td>り/リ</td><td>る/ル</td><td>れ/レ</td><td>ろ/ロ</td></tr>
+    <tr><td><strong>W</strong></td><td>わ/ワ</td><td></td><td></td><td></td><td>を/ヲ</td></tr>
+    <tr><td><strong>N</strong></td><td colspan="5" style="text-align:center">ん/ン</td></tr>
+  </tbody>
+</table>
+
+<!-- ─── DAKUTEN & HANDAKUTEN ─── -->
+<h3 id="dakuten-and-handakuten----katakana-voicing-marks">Dakuten (゛) and Handakuten (゜) -- Katakana Voicing Marks</h3>
+
+<p>Same voicing rules as hiragana. Add ゛ to voice the consonant, ゜ for the p-sound on H-row only.</p>
+
+<table>
+  <thead><tr><th>Base</th><th>+ ゛ (dakuten)</th><th>+ ゜ (handakuten)</th></tr></thead>
+  <tbody>
+    <tr><td>カ (ka)</td><td class="jp">ガ (ga)</td><td>--</td></tr>
+    <tr><td>キ (ki)</td><td class="jp">ギ (gi)</td><td>--</td></tr>
+    <tr><td>ク (ku)</td><td class="jp">グ (gu)</td><td>--</td></tr>
+    <tr><td>ケ (ke)</td><td class="jp">ゲ (ge)</td><td>--</td></tr>
+    <tr><td>コ (ko)</td><td class="jp">ゴ (go)</td><td>--</td></tr>
+    <tr><td>サ (sa)</td><td class="jp">ザ (za)</td><td>--</td></tr>
+    <tr><td>シ (shi)</td><td class="jp">ジ (ji)</td><td>--</td></tr>
+    <tr><td>ス (su)</td><td class="jp">ズ (zu)</td><td>--</td></tr>
+    <tr><td>セ (se)</td><td class="jp">ゼ (ze)</td><td>--</td></tr>
+    <tr><td>ソ (so)</td><td class="jp">ゾ (zo)</td><td>--</td></tr>
+    <tr><td>タ (ta)</td><td class="jp">ダ (da)</td><td>--</td></tr>
+    <tr><td>チ (chi)</td><td class="jp">ヂ (ji)</td><td>--</td></tr>
+    <tr><td>ツ (tsu)</td><td class="jp">ヅ (zu)</td><td>--</td></tr>
+    <tr><td>テ (te)</td><td class="jp">デ (de)</td><td>--</td></tr>
+    <tr><td>ト (to)</td><td class="jp">ド (do)</td><td>--</td></tr>
+    <tr><td>ハ (ha)</td><td class="jp">バ (ba)</td><td class="jp">パ (pa)</td></tr>
+    <tr><td>ヒ (hi)</td><td class="jp">ビ (bi)</td><td class="jp">ピ (pi)</td></tr>
+    <tr><td>フ (fu)</td><td class="jp">ブ (bu)</td><td class="jp">プ (pu)</td></tr>
+    <tr><td>ヘ (he)</td><td class="jp">ベ (be)</td><td class="jp">ペ (pe)</td></tr>
+    <tr><td>ホ (ho)</td><td class="jp">ボ (bo)</td><td class="jp">ポ (po)</td></tr>
+  </tbody>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">Korean Parallel</div>
+  <p>Dakuten is like voicing in Korean consonants: ㄱ(g) / ㅋ(k) / ㄲ(kk). Japanese is simpler -- you only have two variants: base (voiceless) and dakuten (voiced). The handakuten (゜) only applies to the H-row, giving you the complete ha/ba/pa set.</p>
+</div>
+
+<!-- ─── KATAKANA LONG VOWELS ─── -->
+<h3 id="long-vowels-in-katakana----the-ー-dash">Long Vowels in Katakana -- The ー Dash</h3>
+<p>In katakana, long vowels are written with a simple <strong>dash</strong> (ー) called "chouon." This is different from hiragana, which uses extra vowel characters.</p>
+
+<table>
+  <thead><tr><th>Katakana</th><th>Reading</th><th>Meaning</th><th>Korean</th></tr></thead>
+  <tbody>
+    <tr><td class="jp">コーヒー</td><td>koohii</td><td>coffee</td><td>커피</td></tr>
+    <tr><td class="jp">ケーキ</td><td>keeki</td><td>cake</td><td>케이크</td></tr>
+    <tr><td class="jp">ビール</td><td>biiru</td><td>beer</td><td>맥주</td></tr>
+    <tr><td class="jp">カレー</td><td>karee</td><td>curry</td><td>카레</td></tr>
+    <tr><td class="jp">スーパー</td><td>suupaa</td><td>supermarket</td><td>슈퍼</td></tr>
+    <tr><td class="jp">ラーメン</td><td>raamen</td><td>ramen</td><td>라면</td></tr>
+  </tbody>
+</table>
+
+<div class="callout warn">
+  <div class="callout-title">Don't Forget the Dash!</div>
+  <p>The long vowel dash ー changes meaning! <span class="jp">ビル</span> (biru) = building, but <span class="jp">ビール</span> (biiru) = beer. Missing the dash is like spelling "desert" when you mean "dessert."</p>
+</div>
+
+<!-- ─── KATAKANA SPECIAL COMBINATIONS ─── -->
+<h3 id="katakana-only-combinations-for-foreign-sounds">Katakana-Only Combinations for Foreign Sounds</h3>
+<p>Katakana has <strong>extra combinations</strong> that don't exist in hiragana, used to represent foreign sounds that native Japanese lacks:</p>
+
+<table>
+  <thead><tr><th>Combination</th><th>Sound</th><th>Example</th><th>Korean</th></tr></thead>
+  <tbody>
+    <tr><td class="jp">ティ</td><td>ti</td><td class="jp">パーティー (paatii) = party</td><td>파티</td></tr>
+    <tr><td class="jp">ディ</td><td>di</td><td class="jp">ディズニー (dizunii) = Disney</td><td>디즈니</td></tr>
+    <tr><td class="jp">ファ</td><td>fa</td><td class="jp">ファッション (fasshon) = fashion</td><td>패션</td></tr>
+    <tr><td class="jp">フィ</td><td>fi</td><td class="jp">フィルム (firumu) = film</td><td>필름</td></tr>
+    <tr><td class="jp">フェ</td><td>fe</td><td class="jp">カフェ (kafe) = cafe</td><td>카페</td></tr>
+    <tr><td class="jp">フォ</td><td>fo</td><td class="jp">フォーク (fooku) = fork</td><td>포크</td></tr>
+    <tr><td class="jp">ヴ</td><td>vu</td><td class="jp">ヴァイオリン (vaiorin) = violin</td><td>바이올린</td></tr>
+    <tr><td class="jp">ウィ</td><td>wi</td><td class="jp">ウィキペディア (wikipedia) = Wikipedia</td><td>위키피디아</td></tr>
+    <tr><td class="jp">ウェ</td><td>we</td><td class="jp">ウェブサイト (webusaito) = website</td><td>웹사이트</td></tr>
+    <tr><td class="jp">ウォ</td><td>wo</td><td class="jp">ウォーター (wootaa) = water</td><td>워터</td></tr>
+  </tbody>
+</table>
+
+<!-- ─── LOANWORD BRIDGE ─── -->
+<h3 id="the-loanword-bridge-50-korean-japanese-cognate-loanwords">The Loanword Bridge: 50 Korean-Japanese Cognate Loanwords</h3>
+<p>This is your <strong>secret weapon</strong>. Both Korean and Japanese borrowed heavily from English. If you know the Korean loanword, you already know the Japanese word -- you just need to read it in katakana. Study this list and you'll instantly add 50 words to your Japanese vocabulary!</p>
+
+<div class="callout info">
+  <div class="callout-title">How Loanwords Transform</div>
+  <p>English words get adapted to fit each language's sound system. Korean adds 받침 and uses Korean vowels. Japanese drops consonant clusters and adds vowels after every consonant. The results are often strikingly similar!<br>
+  <strong>English "coffee":</strong> Korean 커피 (keopi) / Japanese コーヒー (koohii)<br>
+  <strong>English "bus":</strong> Korean 버스 (beoseu) / Japanese バス (basu)</p>
+</div>
+
+<table>
+  <thead><tr><th>#</th><th>Japanese (カタカナ)</th><th>Reading</th><th>English</th><th>Korean</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td class="jp">コーヒー</td><td>koohii</td><td>coffee</td><td>커피</td></tr>
+    <tr><td>2</td><td class="jp">テレビ</td><td>terebi</td><td>television</td><td>텔레비전</td></tr>
+    <tr><td>3</td><td class="jp">バス</td><td>basu</td><td>bus</td><td>버스</td></tr>
+    <tr><td>4</td><td class="jp">タクシー</td><td>takushii</td><td>taxi</td><td>택시</td></tr>
+    <tr><td>5</td><td class="jp">ホテル</td><td>hoteru</td><td>hotel</td><td>호텔</td></tr>
+    <tr><td>6</td><td class="jp">レストラン</td><td>resutoran</td><td>restaurant</td><td>레스토랑</td></tr>
+    <tr><td>7</td><td class="jp">カメラ</td><td>kamera</td><td>camera</td><td>카메라</td></tr>
+    <tr><td>8</td><td class="jp">パソコン</td><td>pasokon</td><td>PC/computer</td><td>컴퓨터</td></tr>
+    <tr><td>9</td><td class="jp">インターネット</td><td>intaanetto</td><td>internet</td><td>인터넷</td></tr>
+    <tr><td>10</td><td class="jp">スマートフォン</td><td>sumaatofon</td><td>smartphone</td><td>스마트폰</td></tr>
+    <tr><td>11</td><td class="jp">アイスクリーム</td><td>aisukuriimu</td><td>ice cream</td><td>아이스크림</td></tr>
+    <tr><td>12</td><td class="jp">チョコレート</td><td>chokoreeto</td><td>chocolate</td><td>초콜릿</td></tr>
+    <tr><td>13</td><td class="jp">ケーキ</td><td>keeki</td><td>cake</td><td>케이크</td></tr>
+    <tr><td>14</td><td class="jp">サラダ</td><td>sarada</td><td>salad</td><td>샐러드</td></tr>
+    <tr><td>15</td><td class="jp">サンドイッチ</td><td>sandoicchi</td><td>sandwich</td><td>샌드위치</td></tr>
+    <tr><td>16</td><td class="jp">ジュース</td><td>juusu</td><td>juice</td><td>주스</td></tr>
+    <tr><td>17</td><td class="jp">ビール</td><td>biiru</td><td>beer</td><td>맥주</td></tr>
+    <tr><td>18</td><td class="jp">ワイン</td><td>wain</td><td>wine</td><td>와인</td></tr>
+    <tr><td>19</td><td class="jp">ミルク</td><td>miruku</td><td>milk</td><td>밀크</td></tr>
+    <tr><td>20</td><td class="jp">パン</td><td>pan</td><td>bread (from Portuguese)</td><td>빵</td></tr>
+    <tr><td>21</td><td class="jp">メニュー</td><td>menyuu</td><td>menu</td><td>메뉴</td></tr>
+    <tr><td>22</td><td class="jp">トイレ</td><td>toire</td><td>toilet</td><td>화장실</td></tr>
+    <tr><td>23</td><td class="jp">エレベーター</td><td>erebeetaa</td><td>elevator</td><td>엘리베이터</td></tr>
+    <tr><td>24</td><td class="jp">エスカレーター</td><td>esukareetaa</td><td>escalator</td><td>에스컬레이터</td></tr>
+    <tr><td>25</td><td class="jp">ラーメン</td><td>raamen</td><td>ramen</td><td>라면</td></tr>
+    <tr><td>26</td><td class="jp">ハンバーガー</td><td>hanbaagaa</td><td>hamburger</td><td>햄버거</td></tr>
+    <tr><td>27</td><td class="jp">ピザ</td><td>piza</td><td>pizza</td><td>피자</td></tr>
+    <tr><td>28</td><td class="jp">パスタ</td><td>pasuta</td><td>pasta</td><td>파스타</td></tr>
+    <tr><td>29</td><td class="jp">カレー</td><td>karee</td><td>curry</td><td>카레</td></tr>
+    <tr><td>30</td><td class="jp">スーパー</td><td>suupaa</td><td>supermarket</td><td>슈퍼</td></tr>
+    <tr><td>31</td><td class="jp">デパート</td><td>depaato</td><td>department store</td><td>백화점</td></tr>
+    <tr><td>32</td><td class="jp">コンビニ</td><td>konbini</td><td>convenience store</td><td>편의점</td></tr>
+    <tr><td>33</td><td class="jp">チキン</td><td>chikin</td><td>chicken</td><td>치킨</td></tr>
+    <tr><td>34</td><td class="jp">スプーン</td><td>supuun</td><td>spoon</td><td>스푼</td></tr>
+    <tr><td>35</td><td class="jp">フォーク</td><td>fooku</td><td>fork</td><td>포크</td></tr>
+    <tr><td>36</td><td class="jp">ナイフ</td><td>naifu</td><td>knife</td><td>나이프</td></tr>
+    <tr><td>37</td><td class="jp">グラス</td><td>gurasu</td><td>glass</td><td>글라스</td></tr>
+    <tr><td>38</td><td class="jp">ニュース</td><td>nyuusu</td><td>news</td><td>뉴스</td></tr>
+    <tr><td>39</td><td class="jp">スポーツ</td><td>supootsu</td><td>sports</td><td>스포츠</td></tr>
+    <tr><td>40</td><td class="jp">サッカー</td><td>sakkaa</td><td>soccer</td><td>축구</td></tr>
+    <tr><td>41</td><td class="jp">テニス</td><td>tenisu</td><td>tennis</td><td>테니스</td></tr>
+    <tr><td>42</td><td class="jp">シャツ</td><td>shatsu</td><td>shirt</td><td>셔츠</td></tr>
+    <tr><td>43</td><td class="jp">ネクタイ</td><td>nekutai</td><td>necktie</td><td>넥타이</td></tr>
+    <tr><td>44</td><td class="jp">ドア</td><td>doa</td><td>door</td><td>도어</td></tr>
+    <tr><td>45</td><td class="jp">ソファー</td><td>sofaa</td><td>sofa</td><td>소파</td></tr>
+    <tr><td>46</td><td class="jp">テーブル</td><td>teeburu</td><td>table</td><td>테이블</td></tr>
+    <tr><td>47</td><td class="jp">ベッド</td><td>beddo</td><td>bed</td><td>침대</td></tr>
+    <tr><td>48</td><td class="jp">ノート</td><td>nooto</td><td>notebook</td><td>노트</td></tr>
+    <tr><td>49</td><td class="jp">ペン</td><td>pen</td><td>pen</td><td>펜</td></tr>
+    <tr><td>50</td><td class="jp">ボタン</td><td>botan</td><td>button</td><td>버튼</td></tr>
+  </tbody>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">Elaborative Interrogation</div>
+  <p>Look at the table above. Why do you think some words are almost identical in Korean and Japanese (e.g., 카메라/カメラ) while others are completely different (e.g., 축구/サッカー)? <em>Hint: It depends on whether both languages borrowed from the same source language and at the same time.</em></p>
+</div>
+
+<!-- ─── SMALL TSU (DOUBLE CONSONANTS) ─── -->
+<h3 id="small-ッ-sokuon----double-consonants">Small ッ (Sokuon) -- Double Consonants</h3>
+<p>A small ッ before a consonant doubles that consonant. Think of it as a brief pause -- like a tiny catch in your throat.</p>
+
+<table>
+  <thead><tr><th>Word</th><th>Reading</th><th>Meaning</th><th>Korean</th></tr></thead>
+  <tbody>
+    <tr><td class="jp">サッカー</td><td>sa<strong>kk</strong>aa</td><td>soccer</td><td>축구</td></tr>
+    <tr><td class="jp">ロボット</td><td>robo<strong>tt</strong>o</td><td>robot</td><td>로봇</td></tr>
+    <tr><td class="jp">ベッド</td><td>be<strong>dd</strong>o</td><td>bed</td><td>침대</td></tr>
+    <tr><td class="jp">カップ</td><td>ka<strong>pp</strong>u</td><td>cup</td><td>컵</td></tr>
+    <tr><td class="jp">チケット</td><td>chike<strong>tt</strong>o</td><td>ticket</td><td>티켓</td></tr>
+  </tbody>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">Korean Parallel</div>
+  <p>Korean has a similar concept with 쌍자음 (double consonants) like ㄲ, ㅆ, ㅃ. The Japanese small ッ works like Korean 받침 followed by the same consonant: "카<strong>ㅂ</strong>" → "카<strong>pp</strong>u" (カップ). You already understand the tension!</p>
+</div>
+
+<!-- ─── QUIZZES ─── -->
+<h3 id="exercises">Exercises</h3>
+
+<!-- Warm-Up: Flashcard -->
+<h4>Warm-Up: Flashcard Review</h4>
+<div id="quiz-flashcard"></div>
+
+<!-- Challenge: Read the Menu fill-in -->
+<h4>Challenge: Read the Menu</h4>
+<p>You're at a Japanese restaurant. Read the katakana menu items and type what they are in English!</p>
+<div id="quiz-menu"></div>
+
+<!-- Challenge: Drag-and-Drop Matching -->
+<h4>Challenge: Match Katakana to Hiragana</h4>
+<div id="quiz-match"></div>
+
+<!-- Challenge: Confused Pairs -->
+<h4>Challenge: Confused Katakana Pairs</h4>
+<div id="quiz-confused"></div>
+
+<!-- Boss Level: Timed Sprint -->
+<h4>Boss Level: Timed Recognition Sprint (90 seconds)</h4>
+<div id="quiz-sprint"></div>
+
+<!-- Mark as Complete -->
+<button class="chapter-complete" data-ch="03">Mark as Complete &#10003;</button>
+
+<div style="display:flex;justify-content:space-between;margin:2rem 0">
+  <a href="ch-02.html" class="quiz-btn secondary">&larr; Chapter 02: Hiragana</a>
+  <a href="ch-04.html" class="quiz-btn">Next: Chapter 04 -- Pronunciation &rarr;</a>
+</div>
+
+</section>
+</div>
+
+
+</div>
+
+<footer><p>Zero to Hero: 日本語 for Korean Speakers &middot; Chapter 03</p></footer>
+
+<script src="js/shared.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/quiz-engine.js"></script>
+<script>
+// ─── Recall Check from Ch02 ───
+QuizEngine.RecallCheck(
+  document.getElementById('recall-check-02'),
+  {
+    fromChapters: 'Ch02',
+    items: [
+      { question: 'What are the five Japanese vowels in hiragana?', answer: 'あ (a), い (i), う (u), え (e), お (o)' },
+      { question: 'How is Japanese う different from Korean 우?', answer: 'Japanese う is unrounded -- keep your lips relaxed and slightly spread, unlike Korean 우 which is rounded.' },
+      { question: 'What does dakuten (゛) do to a consonant?', answer: 'It voices the consonant: か(ka)→が(ga), さ(sa)→ざ(za), た(ta)→だ(da), は(ha)→ば(ba)' },
+      { question: 'How is は pronounced as a particle vs. in a word?', answer: 'As a particle: "wa" (like Korean 는). In words: "ha" (like はな = hana = flower).' },
+      { question: 'What is the only hiragana that represents just a consonant with no vowel?', answer: 'ん (n) -- the standalone nasal consonant, like Korean ㄴ받침' }
+    ]
+  }
+);
+
+// ─── Vowel Quiz ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-vowels'),
+  {
+    title: 'Katakana Vowel Check',
+    questions: [
+      { prompt: 'What sound does <span class="jp" style="font-size:1.8rem">ア</span> make?', answer: 'a', acceptAlso: ['ah'], explanation: 'ア = a, like Korean 아. Hiragana pair: あ' },
+      { prompt: 'What sound does <span class="jp" style="font-size:1.8rem">エ</span> make?', answer: 'e', explanation: 'エ = e, like Korean 에. Hiragana pair: え' },
+      { prompt: 'What sound does <span class="jp" style="font-size:1.8rem">ウ</span> make?', answer: 'u', acceptAlso: ['oo'], explanation: 'ウ = u (unrounded!). Hiragana pair: う' },
+      { prompt: 'What is the hiragana pair for <span class="jp" style="font-size:1.8rem">オ</span>?', answer: 'お', explanation: 'オ = o, hiragana pair is お. Korean: 오' },
+      { prompt: 'What is the hiragana pair for <span class="jp" style="font-size:1.8rem">イ</span>?', answer: 'い', explanation: 'イ = i, hiragana pair is い. Korean: 이' }
+    ]
+  }
+);
+
+// ─── Flashcard ───
+QuizEngine.Flashcard(
+  document.getElementById('quiz-flashcard'),
+  {
+    cards: [
+      { front: 'ア', back: 'a', detail: 'Antenna on rooftop (Korean: 아) | Hiragana: あ' },
+      { front: 'イ', back: 'i', detail: 'Letter "I" leaning (Korean: 이) | Hiragana: い' },
+      { front: 'ウ', back: 'u', detail: 'Crown pointing up (Korean: 우) | Hiragana: う' },
+      { front: 'エ', back: 'e', detail: 'Elevator (Korean: 에) | Hiragana: え' },
+      { front: 'オ', back: 'o', detail: 'Opera singer (Korean: 오) | Hiragana: お' },
+      { front: 'カ', back: 'ka', detail: 'Sharp katana blade (Korean: 카) | Hiragana: か' },
+      { front: 'キ', back: 'ki', detail: 'Key with sharp teeth (Korean: 키) | Hiragana: き' },
+      { front: 'ク', back: 'ku', detail: 'Cool angular hook (Korean: 쿠) | Hiragana: く' },
+      { front: 'ケ', back: 'ke', detail: 'Kettle with spout (Korean: 케) | Hiragana: け' },
+      { front: 'コ', back: 'ko', detail: 'Corner / open box (Korean: 코) | Hiragana: こ' },
+      { front: 'サ', back: 'sa', detail: 'Samurai crossed swords (Korean: 사) | Hiragana: さ' },
+      { front: 'シ', back: 'shi', detail: 'Winking face (Korean: 시) | Hiragana: し' },
+      { front: 'ス', back: 'su', detail: 'Super slide (Korean: 스) | Hiragana: す' },
+      { front: 'タ', back: 'ta', detail: 'Tall letter T (Korean: 타) | Hiragana: た' },
+      { front: 'チ', back: 'chi', detail: 'Cheerleader kick (Korean: 치) | Hiragana: ち' },
+      { front: 'ツ', back: 'tsu', detail: 'Tsunami drops (Korean: 쓰) | Hiragana: つ' },
+      { front: 'テ', back: 'te', detail: 'Telephone pole (Korean: 테) | Hiragana: て' },
+      { front: 'ナ', back: 'na', detail: 'Nail at angle (Korean: 나) | Hiragana: な' },
+      { front: 'ニ', back: 'ni', detail: 'Two lines = ni (2) (Korean: 니) | Hiragana: に' },
+      { front: 'ハ', back: 'ha', detail: 'Arms up laughing (Korean: 하) | Hiragana: は' },
+      { front: 'フ', back: 'fu', detail: 'Fuji peak (Korean: 후) | Hiragana: ふ' },
+      { front: 'マ', back: 'ma', detail: 'Math angle (Korean: 마) | Hiragana: ま' },
+      { front: 'ミ', back: 'mi', detail: 'Three lines = mi (3) (Korean: 미) | Hiragana: み' },
+      { front: 'ヤ', back: 'ya', detail: 'Yacht mast (Korean: 야) | Hiragana: や' },
+      { front: 'ユ', back: 'yu', detail: 'Unique hook (Korean: 유) | Hiragana: ゆ' },
+      { front: 'ヨ', back: 'yo', detail: 'Yoga pose (Korean: 요) | Hiragana: よ' },
+      { front: 'ラ', back: 'ra', detail: 'Rabbit ear (Korean: 라) | Hiragana: ら' },
+      { front: 'リ', back: 'ri', detail: 'Two rivers (Korean: 리) | Hiragana: り' },
+      { front: 'ル', back: 'ru', detail: 'Tree root (Korean: 루) | Hiragana: る' },
+      { front: 'レ', back: 're', detail: 'Relay baton (Korean: 레) | Hiragana: れ' },
+      { front: 'ロ', back: 'ro', detail: 'Robot mouth (Korean: 로) | Hiragana: ろ' },
+      { front: 'ワ', back: 'wa', detail: 'Wallet open (Korean: 와) | Hiragana: わ' },
+      { front: 'ン', back: 'n', detail: 'Standalone consonant (Korean: ㄴ) | Hiragana: ん' }
+    ]
+  }
+);
+
+// ─── Read the Menu (Fill-in-the-blank Type 3) ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-menu'),
+  {
+    title: 'Read the Menu!',
+    questions: [
+      { prompt: 'Menu item: <span class="jp" style="font-size:1.5rem">コーヒー</span> — What is this drink?', answer: 'coffee', acceptAlso: ['koohii', 'kohii'], explanation: 'コーヒー (koohii) = coffee. Korean: 커피' },
+      { prompt: 'Menu item: <span class="jp" style="font-size:1.5rem">サラダ</span> — What is this food?', answer: 'salad', acceptAlso: ['sarada'], explanation: 'サラダ (sarada) = salad. Korean: 샐러드' },
+      { prompt: 'Menu item: <span class="jp" style="font-size:1.5rem">ハンバーガー</span> — What is this food?', answer: 'hamburger', acceptAlso: ['hanbaagaa', 'burger'], explanation: 'ハンバーガー (hanbaagaa) = hamburger. Korean: 햄버거' },
+      { prompt: 'Menu item: <span class="jp" style="font-size:1.5rem">ジュース</span> — What is this drink?', answer: 'juice', acceptAlso: ['juusu'], explanation: 'ジュース (juusu) = juice. Korean: 주스' },
+      { prompt: 'Menu item: <span class="jp" style="font-size:1.5rem">ケーキ</span> — What is this dessert?', answer: 'cake', acceptAlso: ['keeki'], explanation: 'ケーキ (keeki) = cake. Korean: 케이크' },
+      { prompt: 'Menu item: <span class="jp" style="font-size:1.5rem">ピザ</span> — What is this food?', answer: 'pizza', acceptAlso: ['piza'], explanation: 'ピザ (piza) = pizza. Korean: 피자' },
+      { prompt: 'Menu item: <span class="jp" style="font-size:1.5rem">パスタ</span> — What is this food?', answer: 'pasta', acceptAlso: ['pasuta'], explanation: 'パスタ (pasuta) = pasta. Korean: 파스타' },
+      { prompt: 'Menu item: <span class="jp" style="font-size:1.5rem">ワイン</span> — What is this drink?', answer: 'wine', acceptAlso: ['wain'], explanation: 'ワイン (wain) = wine. Korean: 와인' },
+      { prompt: 'Menu item: <span class="jp" style="font-size:1.5rem">チョコレート</span> — What is this?', answer: 'chocolate', acceptAlso: ['chokoreeto'], explanation: 'チョコレート (chokoreeto) = chocolate. Korean: 초콜릿' },
+      { prompt: 'Menu item: <span class="jp" style="font-size:1.5rem">カレー</span> — What is this food?', answer: 'curry', acceptAlso: ['karee'], explanation: 'カレー (karee) = curry. Korean: 카레' }
+    ]
+  }
+);
+
+// ─── Drag-and-Drop: Katakana to Hiragana matching ───
+QuizEngine.DragMatch(
+  document.getElementById('quiz-match'),
+  {
+    title: 'Katakana-Hiragana Matching',
+    instruction: 'Match each katakana to its hiragana pair:',
+    pairs: [
+      { left: 'カ', right: 'か' },
+      { left: 'シ', right: 'し' },
+      { left: 'テ', right: 'て' },
+      { left: 'ナ', right: 'な' },
+      { left: 'フ', right: 'ふ' },
+      { left: 'ミ', right: 'み' },
+      { left: 'ヨ', right: 'よ' },
+      { left: 'ル', right: 'る' }
+    ]
+  }
+);
+
+// ─── Confused Pairs Quiz ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-confused'),
+  {
+    title: 'Commonly Confused Katakana',
+    questions: [
+      { prompt: 'This character is <span class="jp" style="font-size:2.2rem">シ</span>. What is its reading?', answer: 'shi', acceptAlso: ['si'], explanation: 'シ = shi. Remember: dots go bottom-to-top, curve is more horizontal. NOT ツ (tsu)!' },
+      { prompt: 'This character is <span class="jp" style="font-size:2.2rem">ツ</span>. What is its reading?', answer: 'tsu', acceptAlso: ['tu'], explanation: 'ツ = tsu. Dots go top-to-bottom, curve is more vertical. NOT シ (shi)!' },
+      { prompt: 'This character is <span class="jp" style="font-size:2.2rem">ソ</span>. What is its reading?', answer: 'so', explanation: 'ソ = so. Strokes sweep downward (like ツ pattern). NOT ン (n)!' },
+      { prompt: 'This character is <span class="jp" style="font-size:2.2rem">ン</span>. What is its reading?', answer: 'n', explanation: 'ン = n. Strokes sweep upward (like シ pattern). NOT ソ (so)!' },
+      { prompt: 'Read this word: <span class="jp" style="font-size:1.5rem">ラーメン</span>', answer: 'raamen', acceptAlso: ['ramen', 'raamenn'], explanation: 'ラ(ra) ー(long vowel) メ(me) ン(n) = raamen (ramen noodles)' },
+      { prompt: 'Read this word: <span class="jp" style="font-size:1.5rem">テニス</span>', answer: 'tenisu', acceptAlso: ['tennis'], explanation: 'テ(te) ニ(ni) ス(su) = tenisu (tennis)' }
+    ]
+  }
+);
+
+// ─── Timed Sprint ───
+QuizEngine.TimedSprint(
+  document.getElementById('quiz-sprint'),
+  {
+    title: 'Boss Level: 90-Second Katakana Sprint',
+    timeLimit: 90,
+    items: [
+      { prompt: 'ア', answer: 'a' }, { prompt: 'イ', answer: 'i' },
+      { prompt: 'ウ', answer: 'u' }, { prompt: 'エ', answer: 'e' },
+      { prompt: 'オ', answer: 'o' }, { prompt: 'カ', answer: 'ka' },
+      { prompt: 'キ', answer: 'ki' }, { prompt: 'ク', answer: 'ku' },
+      { prompt: 'ケ', answer: 'ke' }, { prompt: 'コ', answer: 'ko' },
+      { prompt: 'サ', answer: 'sa' }, { prompt: 'シ', answer: 'shi' },
+      { prompt: 'ス', answer: 'su' }, { prompt: 'セ', answer: 'se' },
+      { prompt: 'ソ', answer: 'so' }, { prompt: 'タ', answer: 'ta' },
+      { prompt: 'チ', answer: 'chi' }, { prompt: 'ツ', answer: 'tsu' },
+      { prompt: 'テ', answer: 'te' }, { prompt: 'ト', answer: 'to' },
+      { prompt: 'ナ', answer: 'na' }, { prompt: 'ニ', answer: 'ni' },
+      { prompt: 'ヌ', answer: 'nu' }, { prompt: 'ネ', answer: 'ne' },
+      { prompt: 'ノ', answer: 'no' }, { prompt: 'ハ', answer: 'ha' },
+      { prompt: 'ヒ', answer: 'hi' }, { prompt: 'フ', answer: 'fu', acceptAlso: ['hu'] },
+      { prompt: 'ヘ', answer: 'he' }, { prompt: 'ホ', answer: 'ho' },
+      { prompt: 'マ', answer: 'ma' }, { prompt: 'ミ', answer: 'mi' },
+      { prompt: 'ム', answer: 'mu' }, { prompt: 'メ', answer: 'me' },
+      { prompt: 'モ', answer: 'mo' }, { prompt: 'ヤ', answer: 'ya' },
+      { prompt: 'ユ', answer: 'yu' }, { prompt: 'ヨ', answer: 'yo' },
+      { prompt: 'ラ', answer: 'ra' }, { prompt: 'リ', answer: 'ri' },
+      { prompt: 'ル', answer: 'ru' }, { prompt: 'レ', answer: 're' },
+      { prompt: 'ロ', answer: 'ro' }, { prompt: 'ワ', answer: 'wa' },
+      { prompt: 'ヲ', answer: 'wo', acceptAlso: ['o'] },
+      { prompt: 'ン', answer: 'n' }
+    ]
+  }
+);
+</script>
+<script src="js/spaced-repetition.js"></script>
+<script src="js/memory-palace.js"></script>
+</body>
+</html>

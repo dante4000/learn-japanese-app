@@ -1,0 +1,77 @@
+{
+  "consoleErrors": [],
+  "mobileChecks": [
+    {
+      "option": "Default Ring",
+      "innerWidth": 390,
+      "bodyScrollWidth": 390,
+      "docScrollWidth": 390
+    },
+    {
+      "option": "Compact Ring",
+      "innerWidth": 390,
+      "bodyScrollWidth": 390,
+      "docScrollWidth": 390
+    },
+    {
+      "option": "Bold Number",
+      "innerWidth": 390,
+      "bodyScrollWidth": 390,
+      "docScrollWidth": 390
+    },
+    {
+      "option": "Large Ring",
+      "innerWidth": 390,
+      "bodyScrollWidth": 390,
+      "docScrollWidth": 390
+    },
+    {
+      "option": "Muted Track",
+      "innerWidth": 390,
+      "bodyScrollWidth": 390,
+      "docScrollWidth": 390
+    },
+    {
+      "option": "White Track",
+      "innerWidth": 390,
+      "bodyScrollWidth": 390,
+      "docScrollWidth": 390
+    },
+    {
+      "option": "Thin Number",
+      "innerWidth": 390,
+      "bodyScrollWidth": 390,
+      "docScrollWidth": 390
+    },
+    {
+      "option": "Success Ring",
+      "innerWidth": 390,
+      "bodyScrollWidth": 390,
+      "docScrollWidth": 390
+    },
+    {
+      "option": "Ink Ring",
+      "innerWidth": 390,
+      "bodyScrollWidth": 390,
+      "docScrollWidth": 390
+    },
+    {
+      "option": "Oversized",
+      "innerWidth": 390,
+      "bodyScrollWidth": 390,
+      "docScrollWidth": 390
+    },
+    {
+      "option": "Warning Ring",
+      "innerWidth": 390,
+      "bodyScrollWidth": 390,
+      "docScrollWidth": 390
+    },
+    {
+      "option": "Minimal Ring",
+      "innerWidth": 390,
+      "bodyScrollWidth": 390,
+      "docScrollWidth": 390
+    }
+  ]
+}

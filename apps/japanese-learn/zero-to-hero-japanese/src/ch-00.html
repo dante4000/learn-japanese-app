@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ch00: Memory Science — Zero to Hero 日本語</title>
+<link rel="stylesheet" href="css/design-system.css">
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <span class="logo-badge">Zero to Hero — Memory Architecture Edition</span>
+    <div class="logo-title">日本語 for Korean Speakers</div>
+    <div class="logo-sub">From 한국어 to 日本語 — The Memory Architect's Guide</div>
+  </a>
+  <div class="sidebar-progress">
+    <div class="sidebar-progress-label">Progress</div>
+    <div class="sidebar-progress-bar">
+      <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+    </div>
+    <div class="sidebar-progress-count">0/22 complete</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="ch-00.html" class="toc-link active"><span class="toc-num">00</span><span class="toc-check" data-ch="00"></span>Memory Science</a>
+    <a href="ch-01.html" class="toc-link"><span class="toc-num">01</span><span class="toc-check" data-ch="01"></span>Your Korean Advantage</a>
+    <a href="ch-02.html" class="toc-link"><span class="toc-num">02</span><span class="toc-check" data-ch="02"></span>Hiragana</a>
+    <a href="ch-03.html" class="toc-link"><span class="toc-num">03</span><span class="toc-check" data-ch="03"></span>Katakana</a>
+    <a href="ch-04.html" class="toc-link"><span class="toc-num">04</span><span class="toc-check" data-ch="04"></span>Pronunciation</a>
+    <a href="ch-05.html" class="toc-link"><span class="toc-num">05</span><span class="toc-check" data-ch="05"></span>Survival Japanese</a>
+    <a href="ch-06.html" class="toc-link"><span class="toc-num">06</span><span class="toc-check" data-ch="06"></span>Counters</a>
+    <a href="ch-07.html" class="toc-link"><span class="toc-num">07</span><span class="toc-check" data-ch="07"></span>Particles</a>
+    <a href="ch-08.html" class="toc-link"><span class="toc-num">08</span><span class="toc-check" data-ch="08"></span>Verb Conjugation</a>
+    <a href="ch-09.html" class="toc-link"><span class="toc-num">09</span><span class="toc-check" data-ch="09"></span>Daily Conversations</a>
+    <a href="ch-10.html" class="toc-link"><span class="toc-num">10</span><span class="toc-check" data-ch="10"></span>Sentence Patterns</a>
+    <a href="ch-11.html" class="toc-link"><span class="toc-num">11</span><span class="toc-check" data-ch="11"></span>Kanji</a>
+    <a href="ch-12.html" class="toc-link"><span class="toc-num">12</span><span class="toc-check" data-ch="12"></span>Sino-Vocabulary</a>
+    <a href="ch-13.html" class="toc-link"><span class="toc-num">13</span><span class="toc-check" data-ch="13"></span>Native Vocabulary</a>
+    <a href="ch-14.html" class="toc-link"><span class="toc-num">14</span><span class="toc-check" data-ch="14"></span>Honorifics</a>
+    <a href="ch-15.html" class="toc-link"><span class="toc-num">15</span><span class="toc-check" data-ch="15"></span>Reading</a>
+    <a href="ch-16.html" class="toc-link"><span class="toc-num">16</span><span class="toc-check" data-ch="16"></span>Writing</a>
+    <a href="ch-17.html" class="toc-link"><span class="toc-num">17</span><span class="toc-check" data-ch="17"></span>Listening</a>
+    <a href="ch-18.html" class="toc-link"><span class="toc-num">18</span><span class="toc-check" data-ch="18"></span>Cultural Pragmatics</a>
+    <a href="ch-19.html" class="toc-link"><span class="toc-num">19</span><span class="toc-check" data-ch="19"></span>JLPT and Beyond</a>
+    <a href="ch-20.html" class="toc-link"><span class="toc-num">20</span><span class="toc-check" data-ch="20"></span>Memory Palace</a>
+    <a href="ch-21.html" class="toc-link"><span class="toc-num">21</span><span class="toc-check" data-ch="21"></span>The 90-Day Sprint</a>
+    <a href="appendices.html" class="toc-link" style="margin-top:.5rem;border-top:1px solid var(--border);padding-top:.8rem"><span class="toc-num">+</span>Appendices</a>
+  </nav>
+</aside>
+
+<div class="main">
+<div class="content-wrap">
+
+<section id="ch00" data-ch="00" style="padding-top:3rem">
+<h2><span class="ch-label">Chapter 00</span>How Your Memory Works &mdash; The Science Behind This Book</h2>
+
+<div class="callout memory">
+  <div class="callout-title">Memory Technique Spotlight: The Forgetting Curve</div>
+  <p>Hermann Ebbinghaus proved that without review, you forget ~70% within 24 hours. Every technique in this chapter is designed to flatten that curve. The spaced repetition schedule at the end of this chapter is your most powerful weapon.</p>
+</div>
+
+<p>Before you learn a single Japanese word, you need to understand <strong>how your brain stores and retrieves language</strong>. This isn't optional background reading &mdash; it's the operating system your entire learning journey runs on. Master these principles and you'll remember 80% of what you study. Ignore them and you'll forget 80%.</p>
+
+<div class="pq">
+  "This book doesn't just teach Japanese. It teaches you how to <em>remember</em> Japanese. Every exercise, every layout, every review prompt is built on the twelve memory pillars you'll learn in this chapter."
+</div>
+
+<!-- ================================================================ -->
+<!-- SECTION 0A: THE FORGETTING CURVE                                 -->
+<!-- ================================================================ -->
+<nav class="chapter-toc">
+  <details open>
+    <summary class="chapter-toc-title">In This Chapter</summary>
+  <ol>
+    <li><a href="#0a-the-forgetting-curve-your-enemy">The Forgetting Curve: Your Enemy</a></li>
+    <li><a href="#0b-the-twelve-pillars-of-memory-simplified-for-learners">The Twelve Pillars of Memory (Simplified for Learners)</a></li>
+    <li><a href="#0c-building-your-first-memory-palace">Building Your First Memory Palace</a></li>
+    <li><a href="#0d-the-daily-routine">The Daily Routine</a></li>
+  </ol>
+  </details>
+</nav>
+
+<h3 id="0a-the-forgetting-curve-your-enemy">The Forgetting Curve: Your Enemy</h3>
+
+<p>In 1885, German psychologist Hermann Ebbinghaus made a discovery that should terrify every language learner: <strong>without deliberate review, you forget roughly 80% of new material within 48 hours</strong>. He plotted this as the <em>forgetting curve</em> &mdash; a steep, relentless decline from 100% recall to near-nothing.</p>
+
+<p>But Ebbinghaus also discovered the antidote. Each time you review at the <em>right moment</em> &mdash; just before you forget &mdash; the curve flattens. After 4-5 well-timed reviews, information moves from fragile short-term storage into durable long-term memory.</p>
+
+<div class="diagram">
+  <svg viewBox="0 0 700 350" xmlns="http://www.w3.org/2000/svg">
+    <!-- Grid lines -->
+    <line x1="80" y1="40" x2="80" y2="290" stroke="var(--border)" stroke-width="1"/>
+    <line x1="80" y1="290" x2="660" y2="290" stroke="var(--border)" stroke-width="1"/>
+    <line x1="80" y1="90" x2="660" y2="90" stroke="var(--border)" stroke-width=".5" stroke-dasharray="4,4" opacity=".4"/>
+    <line x1="80" y1="140" x2="660" y2="140" stroke="var(--border)" stroke-width=".5" stroke-dasharray="4,4" opacity=".4"/>
+    <line x1="80" y1="190" x2="660" y2="190" stroke="var(--border)" stroke-width=".5" stroke-dasharray="4,4" opacity=".4"/>
+    <line x1="80" y1="240" x2="660" y2="240" stroke="var(--border)" stroke-width=".5" stroke-dasharray="4,4" opacity=".4"/>
+
+    <!-- Y-axis labels -->
+    <text x="70" y="45" text-anchor="end" font-size="11" fill="var(--text-muted)">100%</text>
+    <text x="70" y="95" text-anchor="end" font-size="11" fill="var(--text-muted)">80%</text>
+    <text x="70" y="145" text-anchor="end" font-size="11" fill="var(--text-muted)">60%</text>
+    <text x="70" y="195" text-anchor="end" font-size="11" fill="var(--text-muted)">40%</text>
+    <text x="70" y="245" text-anchor="end" font-size="11" fill="var(--text-muted)">20%</text>
+    <text x="70" y="295" text-anchor="end" font-size="11" fill="var(--text-muted)">0%</text>
+    <text x="30" y="170" text-anchor="middle" font-size="11" fill="var(--text-muted)" transform="rotate(-90,30,170)">Retention</text>
+
+    <!-- X-axis labels -->
+    <text x="80" y="310" text-anchor="middle" font-size="10" fill="var(--text-muted)">Learn</text>
+    <text x="195" y="310" text-anchor="middle" font-size="10" fill="var(--text-muted)">1 hr</text>
+    <text x="310" y="310" text-anchor="middle" font-size="10" fill="var(--text-muted)">1 day</text>
+    <text x="425" y="310" text-anchor="middle" font-size="10" fill="var(--text-muted)">3 days</text>
+    <text x="540" y="310" text-anchor="middle" font-size="10" fill="var(--text-muted)">1 week</text>
+    <text x="660" y="310" text-anchor="middle" font-size="10" fill="var(--text-muted)">1 month</text>
+
+    <!-- Line 1: No review (red, drops to ~20%) -->
+    <polyline points="80,40 140,170 195,210 250,235 310,252 370,260 425,265 480,268 540,270 600,272 660,274"
+      fill="none" stroke="#e74c3c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="665" y="268" font-size="10" fill="#e74c3c" font-weight="600">No review</text>
+
+    <!-- Line 2: Single review (orange, drops slower to ~45%) -->
+    <polyline points="80,40 140,100 195,110 250,130 280,138 310,150 340,160 370,168 425,178 480,185 540,188 600,190 660,192"
+      fill="none" stroke="#e67e22" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Review marker -->
+    <circle cx="195" cy="110" r="5" fill="#e67e22"/>
+    <text x="205" y="106" font-size="9" fill="#e67e22">Review 1</text>
+    <text x="665" y="186" font-size="10" fill="#e67e22" font-weight="600">1 review</text>
+
+    <!-- Line 3: Spaced reviews (green, stays at 80%+) -->
+    <polyline points="80,40 140,100 195,68 250,100 310,78 370,95 425,82 480,88 540,84 600,86 660,85"
+      fill="none" stroke="var(--a3)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Review markers -->
+    <circle cx="195" cy="68" r="5" fill="var(--a3)"/>
+    <circle cx="310" cy="78" r="5" fill="var(--a3)"/>
+    <circle cx="425" cy="82" r="5" fill="var(--a3)"/>
+    <circle cx="540" cy="84" r="5" fill="var(--a3)"/>
+    <text x="200" y="60" font-size="9" fill="var(--a3)">R1</text>
+    <text x="315" y="70" font-size="9" fill="var(--a3)">R2</text>
+    <text x="430" y="74" font-size="9" fill="var(--a3)">R3</text>
+    <text x="545" y="76" font-size="9" fill="var(--a3)">R4</text>
+    <text x="665" y="79" font-size="10" fill="var(--a3)" font-weight="600">Spaced reviews</text>
+
+    <!-- Title -->
+    <text x="370" y="335" text-anchor="middle" font-size="13" font-weight="600" fill="var(--text)">The Ebbinghaus Forgetting Curve</text>
+  </svg>
+  <div class="diagram-caption">Without review you lose ~80% within days (red). A single review helps (orange). But spaced reviews at increasing intervals keep retention above 80% permanently (green). This book builds spaced review into every chapter.</div>
+</div>
+
+<div class="callout warn">
+  <div class="callout-title">The Hard Truth</div>
+  <p>If you study a list of 50 Japanese words tonight and never review them, you will remember <strong>roughly 10 words</strong> by next week. That's not a discipline problem &mdash; it's biology. Without a system, your brain actively discards new information to save energy.</p>
+  <p style="margin-bottom:0"><strong>This book IS the system.</strong> Every quiz, every palace walk, every review prompt is timed to intercept forgetting before it happens.</p>
+</div>
+
+<!-- ================================================================ -->
+<!-- SECTION 0B: THE TWELVE PILLARS                                   -->
+<!-- ================================================================ -->
+<h3 id="0b-the-twelve-pillars-of-memory-simplified-for-learners">The Twelve Pillars of Memory (Simplified for Learners)</h3>
+
+<p>Cognitive science has identified twelve evidence-based techniques that dramatically improve long-term retention. Each chapter in this book uses multiple pillars &mdash; you don't need to think about them consciously. But understanding <em>why</em> each exercise exists will make you a more strategic learner.</p>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>1. Retrieval Practice</h4>
+    <p style="font-size:.92rem;color:var(--accent);margin-bottom:.5rem;font-style:italic">"Lifting weights, not watching fitness videos"</p>
+    <p>Testing yourself is not assessment &mdash; it's the learning itself. Every time you pull an answer from memory (instead of re-reading it), you strengthen the neural pathway. That's why this book is packed with quizzes, not just explanations.</p>
+  </div>
+  <div class="card">
+    <h4>2. Spaced Repetition</h4>
+    <p style="font-size:.92rem;color:var(--accent);margin-bottom:.5rem;font-style:italic">"Watering a plant regularly, not flooding it once"</p>
+    <p>Review at expanding intervals: 1 day, 3 days, 7 days, 14 days, 30 days. Each review resets the forgetting curve at a higher baseline. The SM-2 algorithm built into this book calculates your optimal review timing automatically.</p>
+  </div>
+  <div class="card">
+    <h4>3. Method of Loci</h4>
+    <p style="font-size:.92rem;color:var(--accent);margin-bottom:.5rem;font-style:italic">"Placing items in rooms of your house"</p>
+    <p>Your spatial memory is extraordinarily powerful. By mentally "placing" Japanese vocabulary at specific locations in a familiar building, you create vivid, durable memories. You'll build your first Memory Palace in Section 0C below.</p>
+  </div>
+  <div class="card">
+    <h4>4. Keyword Mnemonics</h4>
+    <p style="font-size:.92rem;color:var(--accent);margin-bottom:.5rem;font-style:italic">"Building bizarre bridges between languages"</p>
+    <p>Connect a new Japanese word to a similar-sounding Korean or English word through a vivid mental image. The stranger the image, the stronger the memory. Example: <span class="jp">鍵 (kagi)</span> = key. Imagine a giant key stuck in a <em>cage</em> (kagi sounds like "cage").</p>
+  </div>
+  <div class="card">
+    <h4>5. Dual Coding</h4>
+    <p style="font-size:.92rem;color:var(--accent);margin-bottom:.5rem;font-style:italic">"Seeing AND hearing = double the memory"</p>
+    <p>Information encoded through two channels (visual + verbal) creates two retrieval paths instead of one. That's why every vocabulary item in this book has text, an image association, and audio context. Two paths to the same memory means twice the chance of recall.</p>
+  </div>
+  <div class="card">
+    <h4>6. Elaborative Interrogation</h4>
+    <p style="font-size:.92rem;color:var(--accent);margin-bottom:.5rem;font-style:italic">"Asking WHY cements the answer"</p>
+    <p>When you ask "why does this work this way?" you connect new information to existing knowledge. Throughout this book, yellow callout boxes will prompt you to think about <em>why</em> before revealing the answer.</p>
+  </div>
+  <div class="card">
+    <h4>7. Interleaving</h4>
+    <p style="font-size:.92rem;color:var(--accent);margin-bottom:.5rem;font-style:italic">"Mixing practice types, not drilling one thing"</p>
+    <p>Practicing A-A-A-B-B-B feels easier but produces weaker memory than A-B-C-A-B-C. This book mixes grammar, vocabulary, reading, and listening within each session so your brain learns to <em>discriminate</em> between concepts.</p>
+  </div>
+  <div class="card">
+    <h4>8. Generation Effect</h4>
+    <p style="font-size:.92rem;color:var(--accent);margin-bottom:.5rem;font-style:italic">"Guessing before seeing = stronger encoding"</p>
+    <p>Attempting to produce an answer &mdash; even incorrectly &mdash; before seeing it creates stronger encoding than passive reading. That's why exercises ask you to <em>try first</em>, then check. The struggle is the learning.</p>
+  </div>
+  <div class="card">
+    <h4>9. Desirable Difficulty</h4>
+    <p style="font-size:.92rem;color:var(--accent);margin-bottom:.5rem;font-style:italic">"Harder practice = longer lasting memory"</p>
+    <p>If practice feels too easy, you're not learning efficiently. A slight struggle during retrieval &mdash; that "tip of the tongue" feeling &mdash; signals deep processing. This book deliberately increases difficulty as you progress.</p>
+  </div>
+  <div class="card">
+    <h4>10. Context-Dependent Memory</h4>
+    <p style="font-size:.92rem;color:var(--accent);margin-bottom:.5rem;font-style:italic">"Learn in the situation you'll use it"</p>
+    <p>You remember information better when the retrieval context matches the encoding context. That's why this book teaches vocabulary inside realistic conversations and scenarios, not isolated word lists.</p>
+  </div>
+  <div class="card">
+    <h4>11. Self-Reference Effect</h4>
+    <p style="font-size:.92rem;color:var(--accent);margin-bottom:.5rem;font-style:italic">"Connect everything to YOUR life"</p>
+    <p>Information related to yourself is remembered far better than abstract facts. Exercises will ask you to create sentences about your own life, your home, your daily routine &mdash; making Japanese personal and memorable.</p>
+  </div>
+  <div class="card">
+    <h4>12. Sleep Consolidation</h4>
+    <p style="font-size:.92rem;color:var(--accent);margin-bottom:.5rem;font-style:italic">"Your brain organizes while you sleep"</p>
+    <p>During sleep, your brain replays and consolidates the day's learning, transferring information from hippocampus to cortex. The daily routine in Section 0D ends with a brief palace walk before bed for exactly this reason.</p>
+  </div>
+</div>
+
+<div class="callout info">
+  <div class="callout-title">You Don't Need to Memorize the Pillars</div>
+  <p style="margin-bottom:0">Every chapter in this book activates these pillars automatically through its exercises and structure. Understanding them simply helps you appreciate <em>why</em> each activity matters &mdash; and motivates you to do the reviews instead of skipping them.</p>
+</div>
+
+<!-- ================================================================ -->
+<!-- SECTION 0C: BUILDING YOUR FIRST MEMORY PALACE                    -->
+<!-- ================================================================ -->
+<h3 id="0c-building-your-first-memory-palace">Building Your First Memory Palace</h3>
+
+<p>The Method of Loci (memory palace) is the most powerful memorization technique ever discovered. Ancient Greek orators used it to deliver hour-long speeches from memory. You'll use it to anchor Japanese vocabulary in your mind permanently.</p>
+
+<p>Your palace should be a place you know <strong>intimately</strong> &mdash; your Korean home, your childhood apartment, your current <span class="kr">집</span>. You need to be able to walk through it mentally with your eyes closed.</p>
+
+<div class="callout ok">
+  <div class="callout-title">Guided Exercise: Set Up Your 12 Loci</div>
+  <p>Close your eyes and mentally enter your home. We'll walk through 12 specific stations in a fixed order. This order will never change &mdash; consistency is what makes the palace work.</p>
+  <p style="margin-bottom:0">Spend 10-15 seconds at each station. Notice the colors, textures, smells. The more vivid your mental image, the stronger your memory anchors will be.</p>
+</div>
+
+<table>
+  <thead>
+    <tr><th>Locus #</th><th>Location</th><th>Korean</th><th>What to Notice</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>1</strong></td><td>Front Door</td><td class="kr">현관문</td><td>The door handle, the doorbell, the welcome mat</td></tr>
+    <tr><td><strong>2</strong></td><td>Shoe Area</td><td class="kr">신발장</td><td>Rows of shoes, the smell of leather, the small step up</td></tr>
+    <tr><td><strong>3</strong></td><td>Kitchen</td><td class="kr">부엌</td><td>The stove, the rice cooker hissing, the refrigerator hum</td></tr>
+    <tr><td><strong>4</strong></td><td>Dining Table</td><td class="kr">식탁</td><td>The chairs, the table surface, the light above</td></tr>
+    <tr><td><strong>5</strong></td><td>Living Room</td><td class="kr">거실</td><td>The open space, the floor, the main feeling of the room</td></tr>
+    <tr><td><strong>6</strong></td><td>Sofa</td><td class="kr">소파</td><td>The cushion texture, the throw blanket, the armrest</td></tr>
+    <tr><td><strong>7</strong></td><td>TV Area</td><td class="kr">TV 앞</td><td>The screen, the remote control, the cables behind</td></tr>
+    <tr><td><strong>8</strong></td><td>Bathroom</td><td class="kr">화장실</td><td>The mirror, the running water, the tiles</td></tr>
+    <tr><td><strong>9</strong></td><td>Bedroom</td><td class="kr">침실</td><td>The bed, the pillow, the blanket weight</td></tr>
+    <tr><td><strong>10</strong></td><td>Desk</td><td class="kr">책상</td><td>The lamp, the keyboard, the pens and papers</td></tr>
+    <tr><td><strong>11</strong></td><td>Window</td><td class="kr">창문</td><td>The view outside, the curtains, the light coming in</td></tr>
+    <tr><td><strong>12</strong></td><td>Balcony</td><td class="kr">발코니</td><td>The railing, the outdoor air, the sky above</td></tr>
+  </tbody>
+</table>
+
+<!-- SVG Floor Plan -->
+<div class="diagram">
+  <svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg">
+    <!-- Outer walls -->
+    <rect x="50" y="30" width="600" height="360" rx="4" fill="none" stroke="var(--text-muted)" stroke-width="2"/>
+
+    <!-- Room dividers -->
+    <!-- Kitchen / Dining wall -->
+    <line x1="300" y1="30" x2="300" y2="180" stroke="var(--text-muted)" stroke-width="1.5"/>
+    <!-- Living room / Bedroom wall -->
+    <line x1="400" y1="180" x2="400" y2="390" stroke="var(--text-muted)" stroke-width="1.5"/>
+    <!-- Horizontal divider (upper / lower areas) -->
+    <line x1="50" y1="180" x2="650" y2="180" stroke="var(--text-muted)" stroke-width="1.5"/>
+    <!-- Bathroom wall -->
+    <line x1="50" y1="300" x2="400" y2="300" stroke="var(--text-muted)" stroke-width="1.5"/>
+    <line x1="200" y1="300" x2="200" y2="390" stroke="var(--text-muted)" stroke-width="1.5"/>
+
+    <!-- Room labels -->
+    <text x="160" y="55" text-anchor="middle" font-size="11" fill="var(--text-muted)" font-weight="600">Kitchen</text>
+    <text x="480" y="55" text-anchor="middle" font-size="11" fill="var(--text-muted)" font-weight="600">Dining Area</text>
+    <text x="220" y="225" text-anchor="middle" font-size="11" fill="var(--text-muted)" font-weight="600">Living Room</text>
+    <text x="530" y="225" text-anchor="middle" font-size="11" fill="var(--text-muted)" font-weight="600">Bedroom</text>
+    <text x="120" y="340" text-anchor="middle" font-size="11" fill="var(--text-muted)" font-weight="600">Bathroom</text>
+    <text x="300" y="340" text-anchor="middle" font-size="11" fill="var(--text-muted)" font-weight="600">Hallway</text>
+
+    <!-- Door opening -->
+    <line x1="80" y1="390" x2="140" y2="390" stroke="var(--accent)" stroke-width="3"/>
+    <text x="110" y="410" text-anchor="middle" font-size="9" fill="var(--accent)">Entry</text>
+
+    <!-- Walking route (dashed) -->
+    <polyline points="110,380 110,370 110,345 160,110 160,85 480,85 480,140 220,240 170,240 170,270 330,270 330,240 220,260 530,280 530,330 580,330 600,200 600,130"
+      fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="6,4" opacity=".5"/>
+
+    <!-- Locus markers (numbered circles) -->
+    <!-- 1: Front Door -->
+    <circle cx="110" cy="380" r="14" fill="var(--accent)" opacity=".9"/>
+    <text x="110" y="385" text-anchor="middle" font-size="11" fill="white" font-weight="700">1</text>
+
+    <!-- 2: Shoe Area -->
+    <circle cx="110" cy="345" r="14" fill="var(--accent)" opacity=".9"/>
+    <text x="110" y="350" text-anchor="middle" font-size="11" fill="white" font-weight="700">2</text>
+
+    <!-- 3: Kitchen -->
+    <circle cx="160" cy="110" r="14" fill="var(--accent)" opacity=".9"/>
+    <text x="160" y="115" text-anchor="middle" font-size="11" fill="white" font-weight="700">3</text>
+
+    <!-- 4: Dining Table -->
+    <circle cx="480" cy="110" r="14" fill="var(--accent)" opacity=".9"/>
+    <text x="480" y="115" text-anchor="middle" font-size="11" fill="white" font-weight="700">4</text>
+
+    <!-- 5: Living Room -->
+    <circle cx="220" cy="220" r="14" fill="var(--accent)" opacity=".9"/>
+    <text x="220" y="225" text-anchor="middle" font-size="11" fill="white" font-weight="700">5</text>
+
+    <!-- 6: Sofa -->
+    <circle cx="170" cy="260" r="14" fill="var(--accent)" opacity=".9"/>
+    <text x="170" y="265" text-anchor="middle" font-size="11" fill="white" font-weight="700">6</text>
+
+    <!-- 7: TV Area -->
+    <circle cx="330" cy="250" r="14" fill="var(--accent)" opacity=".9"/>
+    <text x="330" y="255" text-anchor="middle" font-size="11" fill="white" font-weight="700">7</text>
+
+    <!-- 8: Bathroom -->
+    <circle cx="120" cy="350" r="14" fill="var(--a2)" opacity=".9"/>
+    <text x="120" y="355" text-anchor="middle" font-size="11" fill="white" font-weight="700">8</text>
+
+    <!-- 9: Bedroom -->
+    <circle cx="530" cy="280" r="14" fill="var(--accent)" opacity=".9"/>
+    <text x="530" y="285" text-anchor="middle" font-size="11" fill="white" font-weight="700">9</text>
+
+    <!-- 10: Desk -->
+    <circle cx="580" cy="330" r="14" fill="var(--accent)" opacity=".9"/>
+    <text x="580" y="335" text-anchor="middle" font-size="11" fill="white" font-weight="700">10</text>
+
+    <!-- 11: Window -->
+    <circle cx="600" cy="200" r="14" fill="var(--accent)" opacity=".9"/>
+    <text x="600" y="205" text-anchor="middle" font-size="11" fill="white" font-weight="700">11</text>
+
+    <!-- 12: Balcony -->
+    <circle cx="620" cy="100" r="14" fill="var(--accent)" opacity=".9"/>
+    <text x="620" y="105" text-anchor="middle" font-size="11" fill="white" font-weight="700">12</text>
+
+    <!-- Balcony area -->
+    <rect x="590" y="60" width="60" height="80" rx="3" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <text x="620" y="75" text-anchor="middle" font-size="9" fill="var(--accent)">Balcony</text>
+  </svg>
+  <div class="diagram-caption">Your Memory Palace floor plan with 12 loci in walking order. Front door (1) through balcony (12). You will place Japanese vocabulary at these locations throughout the book.</div>
+</div>
+
+<div class="callout info">
+  <div class="callout-title">Elaborative Interrogation</div>
+  <p><strong>WHY does spatial memory work so well for language learning?</strong></p>
+  <p style="margin-bottom:0">Think about this: you can probably describe the layout of your childhood home in perfect detail, even decades later. Spatial memory evolved over millions of years for survival &mdash; remembering where food, water, and danger are located. The hippocampus, which processes spatial navigation, is the same brain region responsible for forming new long-term memories. By linking vocabulary to locations, you're hijacking your brain's most ancient and reliable memory system.</p>
+</div>
+
+<p><strong>Practice now:</strong> Close your eyes and walk through all 12 loci in order. Do it three times. The walk should become automatic &mdash; you should be able to recite "front door, shoe area, kitchen, dining table, living room, sofa, TV area, bathroom, bedroom, desk, window, balcony" without thinking. This route is the backbone of your entire learning system.</p>
+
+<!-- ================================================================ -->
+<!-- SECTION 0D: THE DAILY ROUTINE                                    -->
+<!-- ================================================================ -->
+<h3 id="0d-the-daily-routine">The Daily Routine</h3>
+
+<p>Consistency beats intensity. Thirty minutes every day beats four hours every weekend. The following routine is designed around the twelve pillars &mdash; it ensures every session includes encoding, retrieval, spacing, and consolidation.</p>
+
+<table>
+  <thead>
+    <tr><th>Time</th><th>Activity</th><th>Duration</th><th>Pillars Activated</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Morning</strong></td>
+      <td>New material &mdash; study the next chapter section, read examples, engage with mnemonics</td>
+      <td>20&ndash;30 min</td>
+      <td>Dual Coding, Keyword Mnemonics, Elaborative Interrogation</td>
+    </tr>
+    <tr>
+      <td><strong>Midday</strong></td>
+      <td>Generate &amp; produce &mdash; complete quizzes, write sentences about your life, attempt recall without notes</td>
+      <td>5&ndash;10 min</td>
+      <td>Retrieval Practice, Generation Effect, Self-Reference</td>
+    </tr>
+    <tr>
+      <td><strong>Evening</strong></td>
+      <td>Daily review &mdash; SM-2 spaced repetition cards, interleaved with past chapter material</td>
+      <td>10&ndash;15 min</td>
+      <td>Spaced Repetition, Interleaving, Desirable Difficulty</td>
+    </tr>
+    <tr>
+      <td><strong>Before Bed</strong></td>
+      <td>Palace walk &mdash; mentally walk all loci, recall items placed during the day</td>
+      <td>5 min</td>
+      <td>Method of Loci, Context-Dependent Memory, Sleep Consolidation</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="card" style="text-align:center">
+  <div style="display:flex;justify-content:center;gap:3rem;flex-wrap:wrap;margin:1rem 0">
+    <div>
+      <div style="font-size:2.5rem;font-family:var(--serif);color:var(--accent)">40&ndash;60</div>
+      <div style="font-size:.82rem;color:var(--text-muted)">minutes per day total</div>
+    </div>
+    <div style="display:flex;align-items:center;font-size:1.5rem;color:var(--a3)">=</div>
+    <div>
+      <div style="font-size:2.5rem;font-family:var(--serif);color:var(--a3)">80%+</div>
+      <div style="font-size:.82rem;color:var(--a3)">long-term retention rate</div>
+    </div>
+  </div>
+  <p style="font-size:.88rem;color:var(--text-muted);margin-bottom:0">Compared to ~20% retention from unstructured studying. The system multiplies your effort by 4x.</p>
+</div>
+
+<h4>The Streak System</h4>
+<p>Each day you complete the full routine, you earn a streak day. Your streak is your most valuable asset &mdash; protect it.</p>
+
+<div class="callout ok">
+  <div class="callout-title">Why Streaks Work</div>
+  <p>Streaks leverage two psychological forces: <strong>loss aversion</strong> (you hate breaking a streak more than you enjoy building one) and <strong>identity formation</strong> (after 30 days, you stop being "someone who is studying Japanese" and become "someone who studies Japanese every day"). The habit becomes part of who you are.</p>
+  <p style="margin-bottom:0">Rule: if you truly can't do the full routine, do a <strong>minimum viable session</strong> &mdash; one 5-minute palace walk. Never break the chain completely.</p>
+</div>
+
+<!-- Mark as Complete -->
+<button class="chapter-complete" data-ch="00">Mark as Complete &#10003;</button>
+
+<div style="text-align:center;margin:2rem 0">
+  <a href="ch-01.html" class="quiz-btn">Next: Chapter 01 &mdash; Your Korean Advantage &rarr;</a>
+</div>
+
+</section>
+
+</div>
+
+
+</div>
+
+<footer>
+  <p>Zero to Hero: 日本語 for Korean Speakers &middot; Chapter 00 &mdash; Memory Architecture Edition</p>
+</footer>
+
+<script src="js/shared.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+</body>
+</html>

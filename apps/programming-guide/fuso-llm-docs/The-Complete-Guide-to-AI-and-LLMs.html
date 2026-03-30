@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Complete Guide to AI & Large Language Models</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0e14;
+    --bg-card: #12151e;
+    --bg-card-hover: #181c28;
+    --border: #1e2333;
+    --border-accent: #2a3050;
+    --text: #c8cdd8;
+    --text-muted: #6b7394;
+    --text-bright: #e8ecf4;
+    --heading: #f0f2f8;
+    --accent: #5b8af5;
+    --accent-glow: rgba(91, 138, 245, 0.12);
+    --accent2: #a78bfa;
+    --accent3: #34d399;
+    --accent4: #f59e42;
+    --accent5: #f472b6;
+    --code-bg: #181c28;
+    --serif: 'Instrument Serif', Georgia, serif;
+    --sans: 'DM Sans', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  [data-theme="light"] {
+    --bg: #f5f6fa;
+    --bg-card: #ffffff;
+    --bg-card-hover: #f0f1f5;
+    --border: #dde0ea;
+    --border-accent: #c5c9d8;
+    --text: #3a3f54;
+    --text-muted: #7a809a;
+    --text-bright: #1a1e30;
+    --heading: #0e1120;
+    --accent: #3b6ce7;
+    --accent-glow: rgba(59, 108, 231, 0.08);
+    --accent2: #7c5cbf;
+    --accent3: #1a9a6e;
+    --accent4: #d07a1a;
+    --accent5: #c4407a;
+    --code-bg: #edeef4;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  html, html * {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.75;
+    font-size: 17px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 4rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -40%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 900px;
+    height: 900px;
+    background: radial-gradient(circle, rgba(91,138,245,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 1rem;
+    border: 1px solid var(--border-accent);
+    border-radius: 999px;
+    font-size: 0.8rem;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 2rem;
+    background: var(--accent-glow);
+  }
+
+  .hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    color: var(--heading);
+    line-height: 1.05;
+    max-width: 900px;
+    font-weight: 400;
+  }
+
+  .hero h1 em {
+    color: var(--accent);
+    font-style: italic;
+  }
+
+  .hero-sub {
+    font-size: 1.15rem;
+    color: var(--text-muted);
+    max-width: 600px;
+    margin-top: 1.5rem;
+    line-height: 1.7;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 2rem;
+    margin-top: 3rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  .hero-meta span {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .hero-meta .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  /* ===== TABLE OF CONTENTS ===== */
+  .toc {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+  }
+
+  .toc-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+  }
+
+  .toc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+
+  .toc-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.7rem 1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.2s;
+    font-size: 0.95rem;
+  }
+
+  .toc-item:hover {
+    background: var(--bg-card);
+    color: var(--accent);
+  }
+
+  .toc-num {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    min-width: 28px;
+  }
+
+  /* ===== MAIN CONTENT ===== */
+  .content {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 2rem 6rem;
+  }
+
+  .chapter {
+    margin-top: 5rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .chapter:first-child {
+    border-top: none;
+    margin-top: 2rem;
+  }
+
+  .chapter-num {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  h2 {
+    font-family: var(--serif);
+    font-size: 2.5rem;
+    color: var(--heading);
+    font-weight: 400;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+  }
+
+  h3 {
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    color: var(--text-bright);
+    font-weight: 400;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    line-height: 1.3;
+  }
+
+  h4 {
+    font-size: 1rem;
+    color: var(--accent);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  p {
+    margin-bottom: 1.25rem;
+    color: var(--text);
+  }
+
+  strong {
+    color: var(--text-bright);
+    font-weight: 600;
+  }
+
+  /* ===== CARDS ===== */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .card-accent {
+    border-left: 3px solid var(--accent);
+  }
+
+  .card-warn {
+    border-left: 3px solid var(--accent4);
+  }
+
+  .card-success {
+    border-left: 3px solid var(--accent3);
+  }
+
+  .card-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.75rem;
+    display: block;
+  }
+
+  .card-accent .card-label { color: var(--accent); }
+  .card-warn .card-label { color: var(--accent4); }
+  .card-success .card-label { color: var(--accent3); }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  /* ===== TIMELINE ===== */
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+    margin: 2rem 0;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent2), var(--accent3));
+    border-radius: 1px;
+  }
+
+  .tl-item {
+    position: relative;
+    margin-bottom: 2rem;
+    padding-left: 1.5rem;
+  }
+
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -2rem;
+    top: 0.6rem;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    background: var(--bg);
+  }
+
+  .tl-year {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .tl-title {
+    font-weight: 600;
+    color: var(--text-bright);
+    margin-top: 0.2rem;
+  }
+
+  .tl-desc {
+    font-size: 0.93rem;
+    color: var(--text-muted);
+    margin-top: 0.3rem;
+    line-height: 1.6;
+  }
+
+  /* ===== CODE ===== */
+  .code-block {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    font-family: var(--mono);
+    font-size: 0.88rem;
+    line-height: 1.7;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    color: var(--text);
+  }
+
+  code {
+    font-family: var(--mono);
+    font-size: 0.88em;
+    background: var(--code-bg);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    color: var(--accent2);
+  }
+
+  .prompt-example {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 1.5rem 0;
+  }
+
+  .prompt-header {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .prompt-bad .prompt-header { color: var(--accent5); background: rgba(244,114,182,0.06); }
+  .prompt-good .prompt-header { color: var(--accent3); background: rgba(52,211,153,0.06); }
+
+  .prompt-body {
+    padding: 1.2rem;
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+  /* ===== COMPARISON GRID ===== */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .compare-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+  }
+
+  .compare-card h5 {
+    font-size: 0.95rem;
+    color: var(--text-bright);
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+  }
+
+  .compare-card p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+    margin-bottom: 0;
+  }
+
+  /* ===== PRINCIPLES ===== */
+  .principle {
+    display: flex;
+    gap: 1.25rem;
+    margin: 1.5rem 0;
+    padding: 1.25rem;
+    background: var(--bg-card);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+
+  .principle-num {
+    font-family: var(--serif);
+    font-size: 2rem;
+    color: var(--accent);
+    line-height: 1;
+    min-width: 36px;
+  }
+
+  .principle-body h5 {
+    font-weight: 600;
+    color: var(--text-bright);
+    margin-bottom: 0.4rem;
+  }
+
+  .principle-body p {
+    font-size: 0.93rem;
+    color: var(--text-muted);
+    margin-bottom: 0;
+    line-height: 1.6;
+  }
+
+  /* ===== HIGHLIGHT QUOTE ===== */
+  .pullquote {
+    border-left: 3px solid var(--accent2);
+    padding: 1rem 0 1rem 1.5rem;
+    margin: 2rem 0;
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    color: var(--text-bright);
+    font-style: italic;
+    line-height: 1.6;
+  }
+
+  .pullquote-attr {
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    font-style: normal;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+  }
+
+  /* ===== STAT GRID ===== */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin: 2rem 0;
+  }
+
+  .stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 2.2rem;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-top: 0.4rem;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 700px) {
+    .toc-grid { grid-template-columns: 1fr; }
+    .compare-grid { grid-template-columns: 1fr; }
+    .stat-grid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 2.8rem; }
+    h2 { font-size: 2rem; }
+    .hero-meta { flex-direction: column; gap: 0.75rem; }
+    .principle { flex-direction: column; gap: 0.75rem; }
+  }
+
+  /* ===== THEME TOGGLE ===== */
+  .theme-toggle {
+    position: fixed;
+    top: 1.25rem;
+    right: 1.25rem;
+    z-index: 1000;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid var(--border-accent);
+    background: var(--bg-card);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .theme-toggle:hover {
+    transform: scale(1.1);
+    border-color: var(--accent);
+    box-shadow: 0 4px 20px var(--accent-glow);
+  }
+
+  .theme-toggle svg {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.4s ease, opacity 0.3s ease;
+  }
+
+  .theme-toggle .icon-sun,
+  .theme-toggle .icon-moon {
+    position: absolute;
+    transition: transform 0.4s ease, opacity 0.3s ease;
+  }
+
+  /* Dark mode: show sun icon (to switch to light) */
+  .theme-toggle .icon-sun { opacity: 1; transform: rotate(0deg) scale(1); }
+  .theme-toggle .icon-moon { opacity: 0; transform: rotate(-90deg) scale(0.5); }
+
+  /* Light mode: show moon icon (to switch to dark) */
+  [data-theme="light"] .theme-toggle .icon-sun { opacity: 0; transform: rotate(90deg) scale(0.5); }
+  [data-theme="light"] .theme-toggle .icon-moon { opacity: 1; transform: rotate(0deg) scale(1); }
+
+  [data-theme="light"] .hero::before {
+    background: radial-gradient(circle, rgba(59,108,231,0.06) 0%, transparent 70%);
+  }
+
+  [data-theme="light"] .timeline::before {
+    background: linear-gradient(to bottom, var(--accent), var(--accent2), var(--accent3));
+    opacity: 0.5;
+  }
+
+  [data-theme="light"] .tl-item::before {
+    border-color: var(--accent);
+    background: var(--bg);
+  }
+
+  /* ===== FOOTER ===== */
+  .footer {
+    text-align: center;
+    padding: 3rem 2rem;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero">
+  <div class="hero-badge"><span class="dot"></span> Comprehensive Reference</div>
+  <h1>Understanding <em>AI</em> from the Ground Up</h1>
+  <p class="hero-sub">A thorough, zero-assumptions guide to artificial intelligence, large language models, and how to use them effectively at work — from historical foundations through cutting-edge techniques in 2026.</p>
+  <div class="hero-meta">
+    <span><span class="dot"></span> ~45 minute read</span>
+    <span><span class="dot"></span> 12 chapters</span>
+    <span><span class="dot"></span> Updated March 2026</span>
+  </div>
+</section>
+
+<!-- ===================== TABLE OF CONTENTS ===================== -->
+<nav class="toc">
+  <div class="toc-label">Table of Contents</div>
+  <div class="toc-grid">
+    <a href="#ch1" class="toc-item"><span class="toc-num">01</span> What Is Artificial Intelligence?</a>
+    <a href="#ch2" class="toc-item"><span class="toc-num">02</span> The Road to Modern AI</a>
+    <a href="#ch3" class="toc-item"><span class="toc-num">03</span> How LLMs Actually Work</a>
+    <a href="#ch4" class="toc-item"><span class="toc-num">04</span> The Landscape Today</a>
+    <a href="#ch5" class="toc-item"><span class="toc-num">05</span> Prompt Engineering Fundamentals</a>
+    <a href="#ch6" class="toc-item"><span class="toc-num">06</span> Advanced Prompting Techniques</a>
+    <a href="#ch7" class="toc-item"><span class="toc-num">07</span> Context Engineering</a>
+    <a href="#ch8" class="toc-item"><span class="toc-num">08</span> Hallucinations & Limitations</a>
+    <a href="#ch9" class="toc-item"><span class="toc-num">09</span> AI at Work: Real Use Cases</a>
+    <a href="#ch10" class="toc-item"><span class="toc-num">10</span> Choosing the Right Model</a>
+    <a href="#ch11" class="toc-item"><span class="toc-num">11</span> The Agentic Future</a>
+    <a href="#ch12" class="toc-item"><span class="toc-num">12</span> Building Your AI Workflow</a>
+  </div>
+</nav>
+
+<!-- ===================== CONTENT ===================== -->
+<main class="content">
+
+<!-- CH1 -->
+<section class="chapter" id="ch1">
+  <span class="chapter-num">Chapter 01</span>
+  <h2>What Is Artificial Intelligence?</h2>
+
+  <p>At its most basic, <strong>Artificial Intelligence (AI)</strong> is the science of making machines do things that would require intelligence if done by a human. That includes recognizing faces in photos, translating languages, driving cars, playing chess, and — most relevant to your daily work — understanding and generating human language.</p>
+
+  <p>AI is not a single technology. It is an umbrella term covering a wide spectrum of approaches, from simple rule-based systems ("if the email contains 'unsubscribe,' move it to promotions") to deeply complex neural networks that can write essays, generate code, and reason through multi-step problems.</p>
+
+  <h3>The Three Tiers of AI</h3>
+
+  <p>Think of AI in three nested layers, each building on the one beneath it:</p>
+
+  <div class="principle">
+    <div class="principle-num">1</div>
+    <div class="principle-body">
+      <h5>Artificial Intelligence (Broadest)</h5>
+      <p>Any system that performs tasks typically requiring human intelligence. This includes everything from the spam filter in your email to the recommendation algorithm on Netflix. These systems follow rules, detect patterns, or make decisions — but many are quite narrow in scope.</p>
+    </div>
+  </div>
+
+  <div class="principle">
+    <div class="principle-num">2</div>
+    <div class="principle-body">
+      <h5>Machine Learning (Subset of AI)</h5>
+      <p>Instead of programming explicit rules, you feed a system massive amounts of data and let it learn patterns on its own. A spam filter trained via machine learning doesn't need a human to write "if email contains X" rules — it learns from millions of examples of spam and not-spam to figure out the patterns itself.</p>
+    </div>
+  </div>
+
+  <div class="principle">
+    <div class="principle-num">3</div>
+    <div class="principle-body">
+      <h5>Deep Learning (Subset of Machine Learning)</h5>
+      <p>A specialized form of machine learning that uses <strong>neural networks</strong> — mathematical structures loosely inspired by the brain — stacked in many layers ("deep"). These deep neural networks can find incredibly complex patterns in data. Large Language Models like ChatGPT and Claude are deep learning systems.</p>
+    </div>
+  </div>
+
+  <h3>What Is a Large Language Model?</h3>
+
+  <p>A <strong>Large Language Model (LLM)</strong> is a type of deep learning AI trained on enormous quantities of text data — books, articles, websites, code, conversations — to learn the patterns of human language. The word "large" refers both to the scale of training data (hundreds of billions of words) and the model's internal complexity (billions of adjustable numerical parameters).</p>
+
+  <p>The core capability is deceptively simple: <strong>given a sequence of text, predict what comes next.</strong> If I say "the cat sat on the ___," the model predicts "mat" (or "couch" or "windowsill") based on patterns it learned during training. Scale this up to billions of parameters trained on trillions of words, and this simple next-word prediction becomes remarkably sophisticated — capable of writing coherent essays, debugging code, translating languages, and engaging in nuanced reasoning.</p>
+
+  <div class="card card-accent">
+    <span class="card-label">Key Insight</span>
+    <p>LLMs don't "understand" language the way you do. They are extraordinarily sophisticated pattern-matching machines. They have no consciousness, no lived experience, no sensory perception. But their pattern-matching is so powerful that the outputs are often indistinguishable from human-written text — which is both their superpower and their greatest risk.</p>
+  </div>
+</section>
+
+<!-- CH2 -->
+<section class="chapter" id="ch2">
+  <span class="chapter-num">Chapter 02</span>
+  <h2>The Road to Modern AI</h2>
+
+  <p>Understanding where we are requires knowing how we got here. AI didn't arrive overnight with ChatGPT — it was a 75-year journey of breakthroughs, dead ends, and paradigm shifts.</p>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-year">1950s — The Birth</div>
+      <div class="tl-title">The Dartmouth Conference & the Turing Test</div>
+      <div class="tl-desc">In 1956, researchers coined the term "artificial intelligence" at Dartmouth College. Alan Turing had already proposed his famous test: if a machine can hold a conversation indistinguishable from a human's, it demonstrates intelligence. Early AI was rule-based — researchers hand-coded knowledge into systems called "expert systems."</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-year">1980s–1990s — Machine Learning Rises</div>
+      <div class="tl-title">From Rules to Learning from Data</div>
+      <div class="tl-desc">Researchers realized that coding rules by hand couldn't scale. Machine learning shifted the paradigm: instead of telling the computer what to do, you show it examples and let it learn. IBM's Deep Blue defeated chess champion Garry Kasparov in 1997 — a symbolic milestone, though it used brute-force search rather than the neural networks that would come later.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-year">2012 — The Deep Learning Explosion</div>
+      <div class="tl-title">Neural Networks Finally Work</div>
+      <div class="tl-desc">A neural network called AlexNet crushed the ImageNet competition for image recognition, dramatically outperforming all traditional methods. This proved that deep neural networks — which had been theorized for decades but lacked sufficient data and computing power — could deliver extraordinary results when given enough of both. The "deep learning era" began.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-year">2014 — Attention Mechanisms</div>
+      <div class="tl-title">Teaching Machines to Focus</div>
+      <div class="tl-desc">A breakthrough paper introduced the concept of "attention" — allowing neural networks to focus on the most relevant parts of their input when producing output, rather than trying to compress everything into a single fixed representation. This solved a critical problem with earlier sequence-processing networks (RNNs) that struggled with long texts.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-year">2017 — The Transformer</div>
+      <div class="tl-title">"Attention Is All You Need"</div>
+      <div class="tl-desc">Google researchers published the seminal paper that created the Transformer architecture — the foundation of every major LLM that exists today. The key innovation: throw away the sequential processing of previous models entirely, and use only attention mechanisms. This allowed massive parallelization, making it possible to train on far more data, far faster. The "T" in GPT stands for Transformer.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-year">2018–2020 — GPT & BERT</div>
+      <div class="tl-title">The Pre-trained Model Revolution</div>
+      <div class="tl-desc">OpenAI released GPT (2018) and GPT-2 (2019), showing that a Transformer trained on vast text could generate remarkably coherent prose. Google released BERT, which excelled at understanding language. GPT-3 arrived in 2020 with 175 billion parameters and stunned the world with its ability to write essays, code, and poetry from a simple prompt — demonstrating "few-shot learning" (performing tasks it was never explicitly trained for, just from a few examples).</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-year">Nov 2022 — The ChatGPT Moment</div>
+      <div class="tl-title">AI Goes Mainstream</div>
+      <div class="tl-desc">OpenAI released ChatGPT, built on GPT-3.5 and refined with a technique called RLHF (Reinforcement Learning from Human Feedback) that made the model better at following instructions and having conversations. It reached 100 million users in two months — the fastest-growing consumer app in history. The world woke up to AI.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-year">2023 — The Arms Race</div>
+      <div class="tl-title">GPT-4, Claude, Gemini, & Open Source</div>
+      <div class="tl-desc">GPT-4 launched with multimodal capabilities (accepting images). Anthropic released Claude. Google launched Gemini. Meta open-sourced LLaMA, sparking an explosion of community-built models. Context windows expanded dramatically — Claude introduced 100K token contexts, allowing the model to process hundreds of pages at once.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-year">2024 — Reasoning Models</div>
+      <div class="tl-title">AI Learns to Think Step-by-Step</div>
+      <div class="tl-desc">OpenAI released o1, the first major "reasoning model" — trained not just to generate text but to think through problems methodically, showing its work and self-correcting. On math olympiad problems, reasoning models scored 83% where standard models scored 13%. Multimodal models like GPT-4o processed text, images, and audio seamlessly. DeepSeek from China matched frontier models at a fraction of the cost.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-year">2025–2026 — Agents & Integration</div>
+      <div class="tl-title">AI That Acts, Not Just Talks</div>
+      <div class="tl-desc">The focus shifted from models that chat to agents that do. Claude Code emerged as a convincing coding agent. GPT-5 merged reasoning with multimodal abilities. The industry term shifted from "prompt engineering" to "context engineering." Agentic AI — systems that can plan, execute, and adapt autonomously — became the dominant trend, with enterprise AI budgets increasing 86% year over year.</div>
+    </div>
+  </div>
+
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="stat-num">200M+</div>
+      <div class="stat-label">Monthly active ChatGPT users (2024)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">46%</div>
+      <div class="stat-label">of new code is AI-generated (GitHub, 2024)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">$36B</div>
+      <div class="stat-label">Projected LLM market by 2030</div>
+    </div>
+  </div>
+</section>
+
+<!-- CH3 -->
+<section class="chapter" id="ch3">
+  <span class="chapter-num">Chapter 03</span>
+  <h2>How LLMs Actually Work</h2>
+
+  <p>You don't need to be an engineer to use AI well, but understanding the mechanics — even at a high level — will make you dramatically more effective. Think of it like driving: you don't need to be a mechanic, but knowing that your car has limited fuel, that ice makes roads slippery, and that engines overheat changes how you drive.</p>
+
+  <h3>Step 1: Tokenization</h3>
+
+  <p>LLMs don't read text the way you do, word by word. They break text into <strong>tokens</strong> — chunks that are typically words, parts of words, or punctuation. The word "understanding" might be split into "under" + "standing." The word "AI" is a single token. A typical English word averages about 1.3 tokens.</p>
+
+  <p>This matters to you because LLMs have a <strong>context window</strong> — a maximum number of tokens they can process at once. Think of it as the model's working memory. Claude's context window is up to 200,000 tokens (roughly 150,000 words — about 500 pages of text). GPT-4o handles about 128,000 tokens. Everything the model sees — your instructions, your data, its own responses — must fit in this window.</p>
+
+  <h3>Step 2: Embeddings — Words as Numbers</h3>
+
+  <p>Computers work with numbers, not words. So each token is converted into a high-dimensional numerical vector called an <strong>embedding</strong> — a list of hundreds or thousands of numbers that represent the token's meaning and relationships. Words with similar meanings have embeddings that are numerically close to each other. "King" and "queen" are close; "king" and "banana" are far apart. This is how the model captures meaning mathematically.</p>
+
+  <h3>Step 3: The Transformer & Self-Attention</h3>
+
+  <p>This is the core innovation. The model passes all the token embeddings through layers of a <strong>Transformer</strong>, and at each layer, every token "pays attention" to every other token to understand context.</p>
+
+  <p>Consider the sentence: "The bank was steep, so the river was fast." When processing the word "bank," the attention mechanism lets the model look at "steep" and "river" and determine that "bank" means "riverbank" not "financial bank." It does this by computing attention scores — essentially asking, "for each word I'm processing, how much should I focus on each other word in the sentence?"</p>
+
+  <p>Modern models use <strong>multi-head attention</strong>, running many parallel attention computations simultaneously. Each "head" can specialize in different types of relationships — one might track grammatical structure, another tracks pronoun references, another captures topical relevance.</p>
+
+  <h3>Step 4: Prediction — One Token at a Time</h3>
+
+  <p>After processing through many Transformer layers, the model produces a probability distribution over its entire vocabulary for what the next token should be. If you've typed "The capital of France is," the model might assign high probability to "Paris" and low probability to "banana." It selects a token (with some randomness controlled by a parameter called "temperature"), outputs it, and then feeds the whole sequence — including the new token — back through to predict the next one. This is why it's called <strong>autoregressive</strong> generation: each new token is generated by regressing on all previous tokens.</p>
+
+  <div class="card card-accent">
+    <span class="card-label">Why This Matters for You</span>
+    <p>The model generates text one token at a time, each time considering everything that came before. This means the order and content of your prompt directly shapes every token the model produces. A good prompt isn't just a nice-to-have — it is literally the steering wheel for what the model generates next.</p>
+  </div>
+
+  <h3>Step 5: Training — The Three Stages</h3>
+
+  <p>Modern LLMs go through a carefully orchestrated training pipeline:</p>
+
+  <div class="principle">
+    <div class="principle-num">1</div>
+    <div class="principle-body">
+      <h5>Pre-training</h5>
+      <p>The model reads trillions of tokens from the internet, books, and code. Its goal is purely statistical: predict the next word. This is where it absorbs language patterns, world knowledge, reasoning abilities, and coding skills. It takes months and millions of dollars in compute. After pre-training, the model is knowledgeable but not particularly helpful — it might continue any text you give it, but it doesn't follow instructions well.</p>
+    </div>
+  </div>
+
+  <div class="principle">
+    <div class="principle-num">2</div>
+    <div class="principle-body">
+      <h5>Supervised Fine-Tuning (SFT)</h5>
+      <p>Human trainers write examples of ideal instruction-following behavior: "Here's a user question, here's a great answer." The model is fine-tuned on these examples to learn the format of being a helpful assistant. This transforms the raw language model into something that can have conversations and follow instructions.</p>
+    </div>
+  </div>
+
+  <div class="principle">
+    <div class="principle-num">3</div>
+    <div class="principle-body">
+      <h5>Reinforcement Learning (RLHF / RLVR)</h5>
+      <p>The model generates multiple responses to the same prompt. Humans rank which responses are better, and the model is trained to produce more responses like the preferred ones (RLHF — from Human Feedback). In 2024–2025, a new variant emerged: RLVR (from Verifiable Rewards), where models are trained against objectively checkable problems like math, producing the reasoning models (o1, o3) that can think step-by-step.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CH4 -->
+<section class="chapter" id="ch4">
+  <span class="chapter-num">Chapter 04</span>
+  <h2>The Landscape Today</h2>
+
+  <p>As of early 2026, several major AI providers compete in what has become a rapidly evolving market. Here's a map of who's who and what makes each different.</p>
+
+  <h3>The Major Models</h3>
+
+  <div class="compare-grid">
+    <div class="compare-card">
+      <h5>Claude (Anthropic)</h5>
+      <p>Known for strong instruction-following, nuanced writing, long context windows (200K tokens), and careful safety alignment. The Claude 4.6 family is the current generation. Strengths: analysis, writing, coding, document processing, and extended reasoning. Available via claude.ai and API.</p>
+    </div>
+    <div class="compare-card">
+      <h5>GPT-5 (OpenAI)</h5>
+      <p>OpenAI's flagship, merging multimodal and reasoning capabilities. GPT-5 handles text, images, and audio. The o3 reasoning model excels at math and complex logic. Strengths: broad general capability, massive ecosystem, real-time voice. Available via ChatGPT and API.</p>
+    </div>
+    <div class="compare-card">
+      <h5>Gemini 2.5 (Google)</h5>
+      <p>Google's multimodal models with extremely large context windows (up to 2M tokens). Deeply integrated into Google Workspace (Docs, Sheets, Gmail). Uses Mixture-of-Experts architecture for efficiency. Strengths: long context, Google integration, search grounding.</p>
+    </div>
+    <div class="compare-card">
+      <h5>Open-Source Models</h5>
+      <p>Meta's LLaMA 4, Alibaba's Qwen 3, Mistral 3, and DeepSeek R1 offer powerful open-weight alternatives. These can be run locally or on private servers for data-sensitive work. DeepSeek R1 notably matched frontier reasoning models while being open and much cheaper.</p>
+    </div>
+  </div>
+
+  <h3>Model Selection Quick Guide</h3>
+
+  <p>No single model is best at everything. The right choice depends on your task:</p>
+
+  <p><strong>For complex analysis, nuanced writing, or document-heavy work</strong> — Claude's large context window and instruction-following make it particularly strong. It handles long documents and multi-step reasoning well.</p>
+
+  <p><strong>For coding and technical problem-solving</strong> — Claude Code, GPT-5, and reasoning models (o3) are strong choices. For autonomous coding tasks, Claude Code's agent architecture stands out.</p>
+
+  <p><strong>For quick questions and general tasks</strong> — Any major model works well. Use whichever is most convenient for your workflow.</p>
+
+  <p><strong>For data-sensitive or enterprise work</strong> — Consider API access with no data retention, or open-source models you can host privately.</p>
+
+  <p><strong>For tasks requiring current information</strong> — Models with web search integration (like Claude, ChatGPT, or Gemini) can access real-time information to supplement their training knowledge.</p>
+</section>
+
+<!-- CH5 -->
+<section class="chapter" id="ch5">
+  <span class="chapter-num">Chapter 05</span>
+  <h2>Prompt Engineering Fundamentals</h2>
+
+  <p>Prompt engineering is the skill of crafting inputs that produce useful, accurate, and relevant outputs from an LLM. It's the single most impactful skill you can develop for working with AI. Research shows that the gap between a vague prompt and a well-structured one can be the difference between a useless answer and a transformative one.</p>
+
+  <p>The good news: it's not magic. It follows clear principles that anyone can learn.</p>
+
+  <h3>The Five Core Principles</h3>
+
+  <div class="principle">
+    <div class="principle-num">1</div>
+    <div class="principle-body">
+      <h5>Be Specific, Not Vague</h5>
+      <p>The single biggest mistake people make is being too vague. "Write me something about marketing" gives the model almost nothing to work with. The model will produce something generic because you gave it generic instructions. Specificity is the most powerful lever you have.</p>
+    </div>
+  </div>
+
+  <div class="prompt-example prompt-bad">
+    <div class="prompt-header">❌ Vague Prompt</div>
+    <div class="prompt-body">Write me a marketing email.</div>
+  </div>
+
+  <div class="prompt-example prompt-good">
+    <div class="prompt-header">✅ Specific Prompt</div>
+    <div class="prompt-body">Write a marketing email for our B2B SaaS product (project management tool, $49/mo) targeting mid-size engineering teams (20–100 people). The email should announce our new Gantt chart feature, emphasize time savings, and include a clear CTA to start a free trial. Keep the tone professional but conversational — no buzzwords. Around 200 words.</div>
+  </div>
+
+  <div class="principle">
+    <div class="principle-num">2</div>
+    <div class="principle-body">
+      <h5>Provide Context</h5>
+      <p>The model only knows what you tell it plus what it learned during training. If you're asking for advice on a specific situation, describe that situation. If you're asking it to write in a particular style, provide examples. The more relevant context you provide, the better the output.</p>
+    </div>
+  </div>
+
+  <div class="principle">
+    <div class="principle-num">3</div>
+    <div class="principle-body">
+      <h5>Define the Output Format</h5>
+      <p>Tell the model exactly what you want: a bullet list, a 3-paragraph essay, a JSON object, a table, a step-by-step guide. If you don't specify, the model will guess — and its guess may not match your needs.</p>
+    </div>
+  </div>
+
+  <div class="principle">
+    <div class="principle-num">4</div>
+    <div class="principle-body">
+      <h5>Give a Role or Persona</h5>
+      <p>Framing the AI as a specific expert activates relevant patterns from its training data. "You are an experienced financial analyst" produces different (and often better, for finance tasks) output than giving no role. Keep the role realistic and task-relevant — overly elaborate personas can add noise.</p>
+    </div>
+  </div>
+
+  <div class="principle">
+    <div class="principle-num">5</div>
+    <div class="principle-body">
+      <h5>Iterate and Refine</h5>
+      <p>Prompting is almost never one-and-done. Treat it as a conversation. If the first response isn't right, don't start over — build on it. Say "that's close, but make it more concise" or "the tone is too formal, make it warmer." Each iteration gives the model more signal about what you actually want.</p>
+    </div>
+  </div>
+
+  <h3>The Anatomy of a Great Prompt</h3>
+
+  <p>A well-structured prompt typically contains these elements, not necessarily in this order, and not all are always needed:</p>
+
+  <div class="code-block"><strong>Role:</strong> Who should the AI act as?
+<strong>Context:</strong> What background does it need?
+<strong>Task:</strong> What exactly should it do?
+<strong>Format:</strong> How should the output be structured?
+<strong>Constraints:</strong> What should it avoid? Length limits?
+<strong>Examples:</strong> (Optional) What does good output look like?</div>
+
+  <p>Here's a complete example putting it all together:</p>
+
+  <div class="prompt-example prompt-good">
+    <div class="prompt-header">✅ Complete Prompt</div>
+    <div class="prompt-body">
+      <strong>Role:</strong> You are a senior data analyst at a retail company.<br><br>
+      <strong>Context:</strong> Our Q4 2025 sales data shows a 15% decline in online revenue compared to Q3, but in-store sales increased by 8%. Marketing spend was flat. We launched a new loyalty program in October.<br><br>
+      <strong>Task:</strong> Analyze the possible causes for this divergence between online and in-store performance. Propose 3 hypotheses ranked by likelihood, and suggest what data we should examine to test each hypothesis.<br><br>
+      <strong>Format:</strong> Structure your response with a brief executive summary (3 sentences), then each hypothesis as its own section with supporting reasoning and recommended data analysis.<br><br>
+      <strong>Constraints:</strong> Keep the total response under 500 words. Avoid generic advice — be specific to our situation.
+    </div>
+  </div>
+
+  <h3>What to Tell Vs. What Not to Tell</h3>
+
+  <p>A counterintuitive principle: <strong>tell the model what to do, not what to avoid.</strong> Saying "don't use jargon" is less effective than saying "use plain language that a non-technical person would understand." The model sometimes fixates on the thing you told it to avoid. Positive instructions outperform negative ones.</p>
+
+  <div class="compare-grid">
+    <div class="compare-card">
+      <h5>❌ Negative Framing</h5>
+      <p>"Don't be too wordy. Don't use passive voice. Don't include irrelevant details. Don't be boring."</p>
+    </div>
+    <div class="compare-card">
+      <h5>✅ Positive Framing</h5>
+      <p>"Write concisely in active voice. Include only details directly relevant to the decision. Use engaging, concrete language."</p>
+    </div>
+  </div>
+</section>
+
+<!-- CH6 -->
+<section class="chapter" id="ch6">
+  <span class="chapter-num">Chapter 06</span>
+  <h2>Advanced Prompting Techniques</h2>
+
+  <p>Once you've mastered the basics, these techniques let you squeeze dramatically more capability out of LLMs.</p>
+
+  <h3>Zero-Shot Prompting</h3>
+  <p>This is the simplest approach — you give the model a task with no examples. "Summarize this article in three bullet points." For straightforward tasks, this often works well, especially with modern models that are strong at inferring intent from minimal instruction. In fact, current best practice is to <strong>always try zero-shot first</strong> before adding complexity.</p>
+
+  <h3>Few-Shot Prompting</h3>
+  <p>You include 2–5 examples of the input-output pattern you want before giving the actual task. This is one of the highest-return techniques available — it remains powerful precisely because examples communicate requirements more precisely than descriptions. The model doesn't just read your instructions; it pattern-matches on the examples you provide.</p>
+
+  <div class="prompt-example prompt-good">
+    <div class="prompt-header">✅ Few-Shot Example</div>
+    <div class="prompt-body">
+      Classify these customer support tickets by urgency (HIGH, MEDIUM, LOW):<br><br>
+      <strong>Example 1:</strong> "My account has been charged twice" → HIGH<br>
+      <strong>Example 2:</strong> "How do I change my password?" → LOW<br>
+      <strong>Example 3:</strong> "Your app crashes every time I open it" → HIGH<br>
+      <strong>Example 4:</strong> "Can I get a copy of my invoice from last month?" → MEDIUM<br><br>
+      Now classify: "I can't log in and I have a presentation in 30 minutes"
+    </div>
+  </div>
+
+  <h3>Chain-of-Thought Prompting</h3>
+  <p>Instead of asking for just the answer, ask the model to <strong>show its reasoning step by step.</strong> This dramatically improves performance on math, logic, analysis, and any multi-step problem. The act of "thinking out loud" helps the model catch errors and produce more accurate final answers.</p>
+
+  <p>The simplest version: just add "Think through this step by step" to your prompt. For more control, explicitly outline the reasoning steps you want.</p>
+
+  <div class="prompt-example prompt-good">
+    <div class="prompt-header">✅ Chain-of-Thought</div>
+    <div class="prompt-body">
+      A company has $500K in revenue and $350K in expenses. They're considering hiring 3 new people at $80K each. Should they hire all three?<br><br>
+      Think through this step by step:<br>
+      1. Calculate current profit<br>
+      2. Calculate cost of new hires<br>
+      3. Calculate projected profit after hires<br>
+      4. Consider whether this is sustainable<br>
+      5. Give your recommendation
+    </div>
+  </div>
+
+  <h3>Prompt Chaining</h3>
+  <p>Break complex tasks into a sequence of simpler prompts, where the output of one becomes the input to the next. This is more reliable than asking the model to do everything at once. For example: first ask it to extract key data points from a document, then ask it to analyze those data points, then ask it to write a recommendation.</p>
+
+  <h3>Self-Consistency / Reflection</h3>
+  <p>Ask the model to generate an answer, then ask it to critique its own answer, then ask it to produce a revised version. This "generate → evaluate → revise" loop catches errors that the initial generation misses. You can even do this in a single prompt: "First, produce the best answer. Then verify by checking assumptions, sources, and edge cases. If issues are found, revise and output the corrected answer."</p>
+
+  <h3>Structured Output Control</h3>
+  <p>When you need the output in a specific format — JSON, CSV, XML, Markdown tables — specify the structure explicitly. The model is remarkably good at conforming to format specifications when you provide them clearly.</p>
+
+  <div class="code-block">Extract the following from the text below and return as JSON:
+{
+  "company_name": "",
+  "revenue": "",
+  "growth_rate": "",
+  "key_risks": ["", ""]
+}</div>
+
+  <div class="card card-success">
+    <span class="card-label">Pro Tip — The Power of Specificity Compounding</span>
+    <p>These techniques compound. A prompt that uses a specific role + provides context + includes few-shot examples + requests chain-of-thought reasoning + specifies the output format will dramatically outperform a generic "help me with this" message. Each layer of specificity narrows the range of possible outputs, steering the model more precisely toward what you actually need.</p>
+  </div>
+</section>
+
+<!-- CH7 -->
+<section class="chapter" id="ch7">
+  <span class="chapter-num">Chapter 07</span>
+  <h2>Context Engineering</h2>
+
+  <p>In mid-2025, the AI community underwent a conceptual shift. The term "prompt engineering" started giving way to a more expansive idea: <strong>context engineering</strong>.</p>
+
+  <div class="pullquote">
+    The LLM is the CPU, and its context window is the RAM. Context engineering is the delicate art and science of filling the context window with just the right information for the next step.
+    <div class="pullquote-attr">— Andrej Karpathy, former AI Director at Tesla</div>
+  </div>
+
+  <p>Prompt engineering focuses on <strong>what you ask</strong>. Context engineering focuses on <strong>everything the model sees</strong> — the full environment of information that shapes its behavior. This includes your instructions, but also background documents, conversation history, tool definitions, examples, and constraints.</p>
+
+  <h3>Why This Shift Happened</h3>
+
+  <p>As people moved from casual chatting to building serious workflows with AI, they discovered that most failures weren't because the model was stupid — they were because the model didn't have the right information. Give a brilliant analyst the wrong data, and they'll produce wrong conclusions. LLMs work the same way.</p>
+
+  <h3>The Four Strategies of Context Engineering</h3>
+
+  <div class="principle">
+    <div class="principle-num">W</div>
+    <div class="principle-body">
+      <h5>Write — Save context for later</h5>
+      <p>Persist important information outside the context window (in files, databases, notes) so it can be retrieved when needed. This is like taking notes during a meeting so you can reference them later. Examples: saving summaries of long conversations, maintaining a knowledge base, writing scratchpad notes during complex tasks.</p>
+    </div>
+  </div>
+
+  <div class="principle">
+    <div class="principle-num">S</div>
+    <div class="principle-body">
+      <h5>Select — Pull in what's relevant</h5>
+      <p>Retrieve only the context that matters for the current task. This is the principle behind RAG (Retrieval-Augmented Generation) — instead of stuffing the model with everything, you search for and include only the relevant documents, examples, or data. Like a researcher pulling the right papers off the shelf rather than reading the entire library.</p>
+    </div>
+  </div>
+
+  <div class="principle">
+    <div class="principle-num">C</div>
+    <div class="principle-body">
+      <h5>Compress — Summarize and compact</h5>
+      <p>When context is too long, summarize it to preserve the essential information while fitting within token limits. A 50-page document might be summarized into key findings before being fed to the model. The trade-off is always: more compression means less detail, but better focus.</p>
+    </div>
+  </div>
+
+  <div class="principle">
+    <div class="principle-num">I</div>
+    <div class="principle-body">
+      <h5>Isolate — Separate concerns</h5>
+      <p>Split complex tasks across multiple model calls, each with its own focused context. Rather than one massive prompt trying to do everything, use sub-tasks where each has only the context it needs. This is the principle behind multi-agent systems — multiple specialized agents, each with a focused context window, outperforming a single agent trying to handle everything.</p>
+    </div>
+  </div>
+
+  <h3>Practical Context Engineering for Everyday Use</h3>
+
+  <p>You don't need to build complex systems to benefit from context engineering. Here are everyday applications:</p>
+
+  <p><strong>When starting a complex conversation</strong>, front-load the key context. Paste the relevant document, explain your situation, and give the model everything it needs before asking your question. Don't make it guess.</p>
+
+  <p><strong>When conversations get long</strong>, summarize what's been decided so far before continuing. Long conversations cause "context drift" where the model loses track of earlier details.</p>
+
+  <p><strong>When using projects or system prompts</strong>, treat them like production code. Your system prompt is persistent context applied to every message — a clear, well-structured system prompt is one of the most powerful tools available.</p>
+
+  <p><strong>When working with documents</strong>, include the most relevant sections rather than the entire document. Quality of context matters more than quantity. Research suggests that LLM performance starts degrading around 3,000 tokens of instructions — the practical sweet spot is often 150–300 words for the instructional part of your prompt.</p>
+
+  <div class="card card-warn">
+    <span class="card-label">The Goldilocks Principle</span>
+    <p>Too little context and the model lacks what it needs. Too much irrelevant context and the model gets confused, costs go up, and performance can actually degrade. The skill is finding the sweet spot: just enough relevant context for the model to succeed, and nothing more.</p>
+  </div>
+</section>
+
+<!-- CH8 -->
+<section class="chapter" id="ch8">
+  <span class="chapter-num">Chapter 08</span>
+  <h2>Hallucinations & Limitations</h2>
+
+  <p>This might be the most important chapter in this entire guide. If you take away one thing, let it be this: <strong>LLMs are confident but not always correct, and it is your responsibility to verify anything that matters.</strong></p>
+
+  <h3>What Are Hallucinations?</h3>
+
+  <p>A <strong>hallucination</strong> occurs when an LLM generates output that sounds plausible and confident but is factually wrong, fabricated, or unsupported by evidence. The model doesn't "know" it's wrong — it's simply producing the most statistically likely sequence of tokens given its training and your input.</p>
+
+  <p>Common types include: fabricated citations (the model invents plausible-sounding paper titles, authors, and DOIs that don't exist), incorrect facts stated with full confidence, logical inconsistencies within a response, and "context drift" where earlier assumptions snowball into larger errors in long outputs.</p>
+
+  <h3>Why This Happens</h3>
+
+  <p>Hallucinations aren't a bug that will be patched in the next update. They are an inherent consequence of how these models work. LLMs are trained on next-token prediction — they learn to produce text that is statistically likely, not text that is verified against a database of truth. Training objectives and benchmarks often reward confident responses and penalize "I don't know" answers, which implicitly incentivizes the model to guess rather than abstain.</p>
+
+  <p>As Anthropic CEO Dario Amodei noted at a 2025 developer event, on some factual tasks frontier models may already generate fewer errors than humans. But the errors they do make are uniquely dangerous because they come wrapped in confident, articulate prose that's hard to distinguish from accurate information.</p>
+
+  <h3>The Verification Framework</h3>
+
+  <p>Build a personal habit of verification that matches the stakes of what you're doing:</p>
+
+  <div class="principle">
+    <div class="principle-num">1</div>
+    <div class="principle-body">
+      <h5>Low-Stakes Tasks — Light Verification</h5>
+      <p>Brainstorming, first drafts, casual summaries, creative writing. A quick sanity check is sufficient. If the model says something surprising, verify it. Otherwise, the risk of minor errors is acceptable.</p>
+    </div>
+  </div>
+
+  <div class="principle">
+    <div class="principle-num">2</div>
+    <div class="principle-body">
+      <h5>Medium-Stakes Tasks — Cross-Reference</h5>
+      <p>Work emails, reports, analysis for internal use, technical explanations. Spot-check key claims. Verify specific numbers, dates, and names. If citing sources, check that they exist. Ask the model to show its reasoning so you can verify the logic.</p>
+    </div>
+  </div>
+
+  <div class="principle">
+    <div class="principle-num">3</div>
+    <div class="principle-body">
+      <h5>High-Stakes Tasks — Full Verification</h5>
+      <p>Legal documents, financial decisions, medical information, public-facing content, anything with regulatory implications. Independently verify every factual claim. Never publish AI-generated content in these domains without expert human review. Use AI as a drafting tool, not as the source of truth.</p>
+    </div>
+  </div>
+
+  <h3>Other Key Limitations</h3>
+
+  <p><strong>Knowledge cutoff:</strong> Models have a training data cutoff date. They don't know about events after that date unless they can search the web. Always ask yourself: could this information have changed since the model was trained?</p>
+
+  <p><strong>Math and precise reasoning:</strong> While reasoning models have improved dramatically, LLMs can still make arithmetic errors. For critical calculations, have the model write code to compute the answer rather than doing mental math.</p>
+
+  <p><strong>Sycophancy:</strong> Models have a tendency to agree with you, even when you're wrong. If you present an incorrect premise, the model may build on it rather than correcting you. Explicitly invite disagreement: "Challenge my assumptions if they seem wrong."</p>
+
+  <p><strong>Consistency:</strong> The same prompt can produce different results each time (due to the randomness in token sampling). For tasks requiring reproducibility, understand that you may need to run the same prompt multiple times and compare outputs.</p>
+
+  <p><strong>Context window limits:</strong> When you exceed the model's context window, older information gets pushed out. In very long conversations, the model may "forget" things from earlier. Summarize and re-state important context periodically.</p>
+
+  <div class="card card-warn">
+    <span class="card-label">The Golden Rule</span>
+    <p>Treat AI output the way you'd treat a smart intern's first draft: likely to be directionally useful, possibly excellent, but never to be trusted blindly without review. The higher the stakes, the more thorough your review needs to be.</p>
+  </div>
+</section>
+
+<!-- CH9 -->
+<section class="chapter" id="ch9">
+  <span class="chapter-num">Chapter 09</span>
+  <h2>AI at Work: Real Use Cases</h2>
+
+  <p>Theory is useful, but you're here because you want to get things done. Here are the highest-value ways to use LLMs at work right now, organized by category.</p>
+
+  <h3>Writing & Communication</h3>
+
+  <p><strong>Email drafting:</strong> Provide the context (who you're writing to, what you need, the relationship dynamic, and your preferred tone) and let the model draft. This is especially powerful for difficult emails — delivering bad news, negotiating, or navigating political situations. Having the model generate 2–3 different approaches lets you pick the tone that fits.</p>
+
+  <p><strong>Document editing:</strong> Paste in your draft and ask for specific improvements: "tighten the prose," "make the argument more persuasive," "simplify for a non-technical audience." AI is often better at editing than writing from scratch, because it has your draft as strong context.</p>
+
+  <p><strong>Meeting summaries:</strong> Paste in meeting notes or a transcript and ask the model to extract action items, key decisions, and open questions. This turns messy notes into structured, actionable summaries.</p>
+
+  <h3>Analysis & Research</h3>
+
+  <p><strong>Document analysis:</strong> Upload contracts, reports, or research papers and ask specific questions. "What are the three biggest risks identified in this report?" "What does section 4.2 commit us to?" Claude's large context window makes it possible to process entire documents in one pass.</p>
+
+  <p><strong>Data interpretation:</strong> Paste data tables and ask for analysis. "What trends do you see?" "What's the most surprising finding?" "How would you explain this data to our CFO?" The model can spot patterns, generate hypotheses, and frame insights for different audiences.</p>
+
+  <p><strong>Competitive research:</strong> Use web-search-enabled models to research competitors, industry trends, or market conditions. Ask for structured output: "Give me a comparison table of our top 5 competitors' pricing, features, and target markets."</p>
+
+  <h3>Code & Technical Work</h3>
+
+  <p><strong>Code generation:</strong> Describe what you need in plain language, provide relevant context (language, framework, existing code), and let the model write it. Always review and test generated code — but it can save enormous time for boilerplate, utility functions, and standard patterns.</p>
+
+  <p><strong>Debugging:</strong> Paste your error message and relevant code. The model is often remarkably good at identifying the issue and suggesting fixes. Include the full error traceback and the code around where the error occurs.</p>
+
+  <p><strong>Code explanation:</strong> Paste unfamiliar code and ask "explain what this does, line by line." This is invaluable for onboarding to a new codebase or understanding legacy code.</p>
+
+  <h3>Strategy & Decision Support</h3>
+
+  <p><strong>Brainstorming:</strong> LLMs are excellent thought partners for generating ideas. Ask for "20 creative ways to approach X" and you'll get a mix of obvious and genuinely novel suggestions. The model's breadth of training means it can draw connections across domains that you might not think of.</p>
+
+  <p><strong>Devil's advocate:</strong> Present your plan and explicitly ask the model to argue against it. "What are the strongest arguments against this approach? What am I missing? Where could this fail?" This is one of the most underutilized and highest-value use cases.</p>
+
+  <p><strong>Framework application:</strong> Ask the model to analyze your situation through specific frameworks: SWOT analysis, Porter's Five Forces, Jobs-to-be-Done, pre-mortem analysis. The model knows these frameworks deeply and can apply them to your specific context with surprisingly useful results.</p>
+
+  <h3>Learning & Professional Development</h3>
+
+  <p><strong>Concept explanation:</strong> Ask the model to explain complex topics at your level. "Explain Kubernetes like I'm a project manager who's never used it" produces a very different (and more useful) explanation than a Wikipedia article. You can adjust the depth: "Now go deeper on the networking part."</p>
+
+  <p><strong>Skill building:</strong> Use the model as a practice partner. "I'm preparing for a product management interview at a big tech company. Ask me common PM interview questions and evaluate my answers." This interactive learning is faster and more accessible than books or courses for many topics.</p>
+
+  <div class="card card-success">
+    <span class="card-label">The 80/20 Rule of AI at Work</span>
+    <p>For most knowledge workers, 80% of the value comes from four activities: drafting and editing written content, analyzing documents and data, brainstorming and strategic thinking, and writing or understanding code. Master these four use cases and you'll capture most of AI's productivity benefit.</p>
+  </div>
+</section>
+
+<!-- CH10 -->
+<section class="chapter" id="ch10">
+  <span class="chapter-num">Chapter 10</span>
+  <h2>Choosing the Right Model</h2>
+
+  <p>One of the most common mistakes is using the same model and approach for every task. Different situations call for different tools.</p>
+
+  <h3>When to Use Which Tier</h3>
+
+  <p><strong>Flagship / "Thinking" models (Claude Opus, GPT-5, o3, Gemini Ultra):</strong> Use for complex analysis, nuanced writing, multi-step reasoning, coding architecture decisions, and any task where quality matters more than speed or cost. These are your go-to for important work.</p>
+
+  <p><strong>Mid-tier models (Claude Sonnet, GPT-5 mini):</strong> The workhorse for most daily tasks. Fast, capable, and cost-effective. Great for emails, summaries, standard code, quick analysis. For 80% of work tasks, mid-tier models are the right choice.</p>
+
+  <p><strong>Small / fast models (Claude Haiku, GPT-5 nano, Gemini Flash):</strong> Use for high-volume, simpler tasks: classification, reformatting, extraction, quick Q&A. When you need speed and the task is well-defined, small models are surprisingly capable.</p>
+
+  <h3>Model-Specific Behavior</h3>
+
+  <p>Different models respond differently to the same prompt. Some practical differences to know:</p>
+
+  <p><strong>Claude</strong> tends to follow instructions very precisely, handles long contexts well, and produces nuanced, well-structured writing. It benefits from clear, direct instructions and explicit format specifications.</p>
+
+  <p><strong>GPT-5</strong> is strong at inferring intent from minimal context — you can often get away with shorter prompts. It handles multimodal inputs well and has strong real-time capabilities.</p>
+
+  <p><strong>Gemini</strong> prefers shorter, more direct prompts and always benefits from few-shot examples (Google's own documentation recommends this). Its massive context window is useful for large document processing.</p>
+
+  <div class="card card-accent">
+    <span class="card-label">Practical Advice</span>
+    <p>Keep the same fundamental prompt structure but tweak the tone and detail level for each model. Start with zero-shot (no examples) and only add few-shot examples if the output isn't what you need. Test important prompts across multiple models when the stakes are high — different models catch different things.</p>
+  </div>
+</section>
+
+<!-- CH11 -->
+<section class="chapter" id="ch11">
+  <span class="chapter-num">Chapter 11</span>
+  <h2>The Agentic Future</h2>
+
+  <p>The biggest shift happening right now — in 2026 — is the move from AI that talks to AI that acts. These are <strong>AI agents</strong>: systems that can plan, execute multi-step tasks, use tools, and adapt their approach based on results.</p>
+
+  <h3>What Makes an Agent Different?</h3>
+
+  <p>A standard chatbot conversation is reactive: you ask, it answers. An agent is proactive: you give it a goal, and it figures out the steps, executes them (often using tools like web browsers, code execution, file systems, APIs), observes the results, and adjusts its approach. The loop is: Plan → Act → Observe → Adjust → Repeat.</p>
+
+  <p>Andrej Karpathy described Claude Code as "the first convincing demonstration of what an LLM agent looks like" — an agent that strings together tool use and reasoning for extended problem-solving, running on your local computer with access to your files, environment, and data.</p>
+
+  <h3>Where Agents Are Being Used Today</h3>
+
+  <p><strong>Software development:</strong> Claude Code and similar tools can read your codebase, understand the architecture, write and modify code across multiple files, run tests, and iterate until the tests pass. This is qualitatively different from asking a chatbot to write a function.</p>
+
+  <p><strong>Research and analysis:</strong> Deep research agents can take a complex question, decompose it into sub-questions, search for information across multiple sources, synthesize findings, and produce a comprehensive report. What would take a human analyst days can sometimes be done in minutes.</p>
+
+  <p><strong>Business workflows:</strong> Agents can monitor inboxes, triage requests, update CRM records, generate reports, and manage routine processes. Gartner projects that by 2028, a third of enterprise applications will include autonomous agents.</p>
+
+  <h3>The Autonomy Slider</h3>
+
+  <p>Effective AI deployment isn't about full autonomy or no autonomy — it's about finding the right level for each task. Think of it as a slider:</p>
+
+  <p>On the left: <strong>Human does the work, AI assists</strong> (autocomplete, suggestions, spell-check). On the right: <strong>AI does the work, human reviews</strong> (agent writes a full report, human approves it). In the middle: <strong>AI does a first pass, human refines</strong> (AI drafts, human edits).</p>
+
+  <p>For most professional work in 2026, the middle position is the sweet spot. As models improve and trust increases, the slider will gradually move rightward for more tasks — but the human-in-the-loop remains essential for anything with real consequences.</p>
+</section>
+
+<!-- CH12 -->
+<section class="chapter" id="ch12">
+  <span class="chapter-num">Chapter 12</span>
+  <h2>Building Your AI Workflow</h2>
+
+  <p>Knowing about AI is different from using AI effectively every day. This final chapter is about building sustainable habits and workflows.</p>
+
+  <h3>Start Small, Then Compound</h3>
+
+  <p>Don't try to AI-ify everything at once. Pick one recurring task that eats your time — a weekly report, email drafting, code review, meeting prep — and build an AI workflow for that single task. Once it's second nature, add another. The 15-minutes-a-day practice approach works: pick one task each day, prompt until you're happy with the result, and save prompts that work well into a personal library.</p>
+
+  <h3>Build a Prompt Library</h3>
+
+  <p>As you discover prompts that work reliably, save them. Organize by category: writing, analysis, coding, communication. Over time, this library becomes your personal operating system for AI — you can reuse and adapt proven prompts instead of starting from scratch each time.</p>
+
+  <h3>The Quick-Reference Checklist</h3>
+
+  <div class="card card-success">
+    <span class="card-label">Before You Prompt</span>
+    <p>
+      <strong>1.</strong> What exactly do I need? (Be specific in your own mind first)<br>
+      <strong>2.</strong> What context does the model need that it doesn't have?<br>
+      <strong>3.</strong> What format do I want the output in?<br>
+      <strong>4.</strong> What's the quality bar? (First draft vs. final product)<br>
+      <strong>5.</strong> How will I verify the output?
+    </p>
+  </div>
+
+  <div class="card card-success">
+    <span class="card-label">After You Get Output</span>
+    <p>
+      <strong>1.</strong> Does this match what I actually needed?<br>
+      <strong>2.</strong> Are the key facts verifiable? (Check any that matter)<br>
+      <strong>3.</strong> Is the reasoning sound? (Follow the logic)<br>
+      <strong>4.</strong> What's missing that I should add?<br>
+      <strong>5.</strong> If iterating: what specific feedback should I give?
+    </p>
+  </div>
+
+  <h3>Common Mistakes to Avoid</h3>
+
+  <p><strong>Being too vague:</strong> The number one mistake. "Write something good" gives the model nothing to work with. Start with the most specific prompt you can, and relax constraints only if the output is too narrow.</p>
+
+  <p><strong>Over-engineering your first attempt:</strong> Don't write a 500-word prompt upfront. Start simple, see what you get, and add complexity only where needed. Many tasks work well with a clear 2-3 sentence prompt.</p>
+
+  <p><strong>Ignoring the model's uncertainty:</strong> If the model hedges or says it's not sure, pay attention. That's valuable signal. Push for specifics: "What are you uncertain about, and what additional information would help?"</p>
+
+  <p><strong>Treating AI as infallible:</strong> The most dangerous mistake. Automation bias — the tendency to over-trust automated systems — is real and well-documented. Build verification into your workflow as a non-negotiable step.</p>
+
+  <p><strong>Not iterating:</strong> Most people give up after one prompt. The best results almost always come from 2–4 rounds of refinement. Think of it as a conversation, not a query.</p>
+
+  <p><strong>Using the same approach for everything:</strong> A quick question doesn't need a structured prompt. A complex analysis does. Match your prompting effort to the complexity and stakes of the task.</p>
+
+  <h3>The Mental Models That Matter</h3>
+
+  <div class="pullquote">
+    Think of AI as a brilliant, tireless, well-read colleague who has never worked at your company, doesn't know your specific situation, and occasionally makes things up with complete confidence. The more context you give them, the better they perform.
+  </div>
+
+  <p>And from Karpathy's framework: the LLM is a CPU, the context window is RAM, and you are the operating system — deciding what information to load, when, and in what format. The quality of your "memory management" directly determines the quality of the model's output.</p>
+
+  <h3>Looking Forward</h3>
+
+  <p>The pace of AI development shows no signs of slowing. Models are getting more capable, context windows are expanding, reasoning is improving, and the move toward agentic systems is accelerating. The skills you build now — clear communication, effective context management, robust verification habits — will remain valuable even as the technology changes, because they're fundamentally about how humans and AI systems work together effectively.</p>
+
+  <p>The organizations and individuals who thrive won't be those who know the most about AI technology — they'll be those who learn to <strong>think clearly about what they need, communicate it precisely, and verify the results thoughtfully.</strong> Those skills are timeless, even as the tools continue to evolve.</p>
+
+  <div class="card card-accent">
+    <span class="card-label">Final Thought</span>
+    <p>AI doesn't replace thinking. It amplifies it. A clear thinker with access to AI tools is dramatically more productive than either a confused thinker with AI or a clear thinker without it. Invest in your own clarity of thought, and AI will multiply the return on that investment.</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <p>Compiled March 2026 · Built on research from Anthropic, OpenAI, Google, LangChain, MIT, Nature, and dozens of practitioner sources.</p>
+  <p style="margin-top:0.5rem; opacity:0.6;">This document is a snapshot. The field moves fast. Verify current details with the latest sources.</p>
+</footer>
+
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode" title="Toggle theme">
+  <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="5"/>
+    <line x1="12" y1="1" x2="12" y2="3"/>
+    <line x1="12" y1="21" x2="12" y2="23"/>
+    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+    <line x1="1" y1="12" x2="3" y2="12"/>
+    <line x1="21" y1="12" x2="23" y2="12"/>
+    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+  </svg>
+  <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+  </svg>
+</button>
+
+<script>
+  (function() {
+    var toggle = document.getElementById('themeToggle');
+    var html = document.documentElement;
+    
+    toggle.addEventListener('click', function() {
+      var isLight = html.getAttribute('data-theme') === 'light';
+      if (isLight) {
+        html.removeAttribute('data-theme');
+      } else {
+        html.setAttribute('data-theme', 'light');
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "sectionExists": true,
+  "cardCount": 12,
+  "ids": [
+    "heading-font",
+    "accent-font",
+    "body-font",
+    "stat-numbers",
+    "page-background",
+    "form-card-bg",
+    "text-color-palette",
+    "border-radius",
+    "cta-button",
+    "gold-accent",
+    "bank-ticker",
+    "score-display",
+    "severity-badges",
+    "progress-bars",
+    "issue-cards",
+    "rewrite-cards",
+    "bank-fit",
+    "section-headers",
+    "top-nav"
+  ]
+}

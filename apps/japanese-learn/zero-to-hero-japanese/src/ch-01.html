@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ch01: Your Korean Advantage — Zero to Hero 日本語</title>
+<link rel="stylesheet" href="css/design-system.css">
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <span class="logo-badge">Zero to Hero — Memory Architecture Edition</span>
+    <div class="logo-title">日本語 for Korean Speakers</div>
+    <div class="logo-sub">From 한국어 to 日本語 — The Memory Architect's Guide</div>
+  </a>
+  <div class="sidebar-progress">
+    <div class="sidebar-progress-label">Progress</div>
+    <div class="sidebar-progress-bar">
+      <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+    </div>
+    <div class="sidebar-progress-count">0/22 complete</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="ch-00.html" class="toc-link"><span class="toc-num">00</span><span class="toc-check" data-ch="00"></span>Memory Science</a>
+    <a href="ch-01.html" class="toc-link active"><span class="toc-num">01</span><span class="toc-check" data-ch="01"></span>Your Korean Advantage</a>
+    <a href="ch-02.html" class="toc-link"><span class="toc-num">02</span><span class="toc-check" data-ch="02"></span>Hiragana</a>
+    <a href="ch-03.html" class="toc-link"><span class="toc-num">03</span><span class="toc-check" data-ch="03"></span>Katakana</a>
+    <a href="ch-04.html" class="toc-link"><span class="toc-num">04</span><span class="toc-check" data-ch="04"></span>Pronunciation</a>
+    <a href="ch-05.html" class="toc-link"><span class="toc-num">05</span><span class="toc-check" data-ch="05"></span>Survival Japanese</a>
+    <a href="ch-06.html" class="toc-link"><span class="toc-num">06</span><span class="toc-check" data-ch="06"></span>Counters</a>
+    <a href="ch-07.html" class="toc-link"><span class="toc-num">07</span><span class="toc-check" data-ch="07"></span>Particles</a>
+    <a href="ch-08.html" class="toc-link"><span class="toc-num">08</span><span class="toc-check" data-ch="08"></span>Verb Conjugation</a>
+    <a href="ch-09.html" class="toc-link"><span class="toc-num">09</span><span class="toc-check" data-ch="09"></span>Daily Conversations</a>
+    <a href="ch-10.html" class="toc-link"><span class="toc-num">10</span><span class="toc-check" data-ch="10"></span>Sentence Patterns</a>
+    <a href="ch-11.html" class="toc-link"><span class="toc-num">11</span><span class="toc-check" data-ch="11"></span>Kanji</a>
+    <a href="ch-12.html" class="toc-link"><span class="toc-num">12</span><span class="toc-check" data-ch="12"></span>Sino-Vocabulary</a>
+    <a href="ch-13.html" class="toc-link"><span class="toc-num">13</span><span class="toc-check" data-ch="13"></span>Native Vocabulary</a>
+    <a href="ch-14.html" class="toc-link"><span class="toc-num">14</span><span class="toc-check" data-ch="14"></span>Honorifics</a>
+    <a href="ch-15.html" class="toc-link"><span class="toc-num">15</span><span class="toc-check" data-ch="15"></span>Reading</a>
+    <a href="ch-16.html" class="toc-link"><span class="toc-num">16</span><span class="toc-check" data-ch="16"></span>Writing</a>
+    <a href="ch-17.html" class="toc-link"><span class="toc-num">17</span><span class="toc-check" data-ch="17"></span>Listening</a>
+    <a href="ch-18.html" class="toc-link"><span class="toc-num">18</span><span class="toc-check" data-ch="18"></span>Cultural Pragmatics</a>
+    <a href="ch-19.html" class="toc-link"><span class="toc-num">19</span><span class="toc-check" data-ch="19"></span>JLPT and Beyond</a>
+    <a href="ch-20.html" class="toc-link"><span class="toc-num">20</span><span class="toc-check" data-ch="20"></span>Memory Palace</a>
+    <a href="ch-21.html" class="toc-link"><span class="toc-num">21</span><span class="toc-check" data-ch="21"></span>The 90-Day Sprint</a>
+    <a href="appendices.html" class="toc-link" style="margin-top:.5rem;border-top:1px solid var(--border);padding-top:.8rem"><span class="toc-num">+</span>Appendices</a>
+  </nav>
+</aside>
+
+<div class="main">
+<div class="content-wrap">
+
+<section id="ch01" data-ch="01" style="padding-top:3rem">
+<!-- ─── RECALL CHECK (Ch00) ─── -->
+<div id="recall-check-00"></div>
+
+<h2><span class="ch-label">Chapter 01</span>Your Korean Advantage — What Transfers and What Doesn't</h2>
+
+<div class="callout memory">
+  <div class="callout-title">Memory Technique Spotlight: Schema Activation</div>
+  <p>This chapter activates your existing Korean knowledge structures so new Japanese information attaches to what you already know — not learned in isolation. Research shows schema-based encoding produces 2-3x better retention than rote learning.</p>
+</div>
+
+<p>You are not starting from zero. As a proficient Korean speaker, you already carry <strong>roughly 40% of the knowledge</strong> needed for functional Japanese fluency. This chapter maps exactly what transfers, what doesn't, and where to invest your time.</p>
+
+<div class="pq">
+  "English speakers need ~2,200 hours for JLPT N2. You need ~800–1,000. Your Korean is an enormous, systematic head start."
+</div>
+
+<!-- ─── THE TRANSFER MAP ─── -->
+<nav class="chapter-toc">
+  <details open>
+    <summary class="chapter-toc-title">In This Chapter</summary>
+  <ol>
+    <li><a href="#the-grammar-transfer-map">The Grammar Transfer Map</a></li>
+    <li><a href="#what-doesnt-transfer-where-to-invest-your-time">What Doesn't Transfer — Where to Invest Your Time</a></li>
+    <li><a href="#your-timeline-advantage">Your Timeline Advantage</a></li>
+    <li><a href="#sino-vocabulary-preview-your-secret-weapon">Sino-Vocabulary Preview — Your Secret Weapon</a></li>
+    <li><a href="#the-three-way-demonstrative-system">The Three-Way Demonstrative System</a></li>
+    <li><a href="#interactive-exercises">Interactive Exercises</a></li>
+  </ol>
+  </details>
+</nav>
+
+<h3 id="the-grammar-transfer-map">The Grammar Transfer Map</h3>
+<p>Korean and Japanese share the same grammatical DNA. Look at this sentence:</p>
+
+<div class="card">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+    <div>
+      <h4 style="color:var(--a2)">Korean</h4>
+      <p style="font-size:1.3rem;margin-bottom:.3rem"><span class="kr">나는 사과를 먹는다</span></p>
+      <p style="font-size:.82rem;color:var(--text-muted)">na-neun sagwa-reul meongneunda</p>
+      <p style="font-size:.85rem">I <em>(topic)</em> apple <em>(object)</em> eat</p>
+    </div>
+    <div>
+      <h4 style="color:var(--accent)">Japanese</h4>
+      <p style="font-size:1.3rem;margin-bottom:.3rem"><span class="jp">私はりんごを食べる</span></p>
+      <p style="font-size:.82rem;color:var(--text-muted)">watashi wa ringo wo taberu</p>
+      <p style="font-size:.85rem">I <em>(topic)</em> apple <em>(object)</em> eat</p>
+    </div>
+  </div>
+  <p style="margin-top:1rem;font-size:.88rem;color:var(--a3)"><strong>100% structural match.</strong> Same word order, same particle functions, same verb-final position. The ONLY difference is the words themselves.</p>
+</div>
+
+<h4>Complete Grammar Transfer Table</h4>
+<table>
+  <thead>
+    <tr><th>Concept</th><th>Korean</th><th>Japanese</th><th>Transfer</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Word order (SOV)</td><td class="kr">나는 사과를 먹는다</td><td class="jp">私はりんごを食べる</td><td><span class="transfer-tag full">100%</span></td></tr>
+    <tr><td>Topic marker</td><td class="kr">은/는</td><td class="jp">は (wa)</td><td><span class="transfer-tag full">100%</span></td></tr>
+    <tr><td>Subject marker</td><td class="kr">이/가</td><td class="jp">が (ga)</td><td><span class="transfer-tag full">100%</span></td></tr>
+    <tr><td>Object marker</td><td class="kr">을/를</td><td class="jp">を (wo)</td><td><span class="transfer-tag full">100%</span></td></tr>
+    <tr><td>Location (static)</td><td class="kr">에</td><td class="jp">に (ni)</td><td><span class="transfer-tag full">~90%</span></td></tr>
+    <tr><td>Location (action)</td><td class="kr">에서</td><td class="jp">で (de)</td><td><span class="transfer-tag full">~90%</span></td></tr>
+    <tr><td>Direction</td><td class="kr">으로/로</td><td class="jp">へ (e)</td><td><span class="transfer-tag partial">~85%</span></td></tr>
+    <tr><td>Possessive</td><td class="kr">의</td><td class="jp">の (no)</td><td><span class="transfer-tag full">100%</span></td></tr>
+    <tr><td>Verb-final</td><td class="kr">Always</td><td class="jp">Always</td><td><span class="transfer-tag full">100%</span></td></tr>
+    <tr><td>Pro-drop (subject omission)</td><td class="kr">Constant</td><td class="jp">Constant</td><td><span class="transfer-tag full">100%</span></td></tr>
+    <tr><td>Agglutinative conjugation</td><td class="kr">먹다→먹습니다</td><td class="jp">食べる→食べます</td><td><span class="transfer-tag partial">System yes, forms differ</span></td></tr>
+    <tr><td>Honorifics</td><td class="kr">존댓말/반말</td><td class="jp">敬語 (keigo)</td><td><span class="transfer-tag partial">Concept 100%, specifics ~60%</span></td></tr>
+    <tr><td>Sino-vocabulary</td><td class="kr">한자어 (학생, 경제)</td><td class="jp">漢語 (学生, 経済)</td><td><span class="transfer-tag partial">~40-60% cognate</span></td></tr>
+    <tr><td>Demonstratives</td><td class="kr">이것/그것/저것</td><td class="jp">これ/それ/あれ</td><td><span class="transfer-tag full">100%</span></td></tr>
+    <tr><td>Counters</td><td class="kr">개, 명, 마리</td><td class="jp">個, 人, 匹</td><td><span class="transfer-tag partial">System yes, specifics differ</span></td></tr>
+  </tbody>
+</table>
+
+<!-- ─── TRANSFER MAP SVG ─── -->
+<div class="diagram">
+  <svg viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg">
+    <!-- Korean circle -->
+    <circle cx="280" cy="150" r="130" fill="none" stroke="var(--a2)" stroke-width="2" opacity=".6"/>
+    <text x="180" y="60" class="label-text" fill="var(--a2)" font-size="14">Korean</text>
+    <text x="180" y="78" class="sub-text" fill="var(--a2)">한국어</text>
+
+    <!-- Japanese circle -->
+    <circle cx="420" cy="150" r="130" fill="none" stroke="var(--accent)" stroke-width="2" opacity=".6"/>
+    <text x="480" y="60" class="label-text" fill="var(--accent)" font-size="14">Japanese</text>
+    <text x="480" y="78" class="sub-text" fill="var(--accent)">日本語</text>
+
+    <!-- Overlap region -->
+    <text x="350" y="100" text-anchor="middle" font-size="11" font-weight="600" fill="var(--a3)">SHARED</text>
+    <text x="350" y="118" text-anchor="middle" font-size="9" fill="var(--text-muted)">SOV word order</text>
+    <text x="350" y="132" text-anchor="middle" font-size="9" fill="var(--text-muted)">Particle system</text>
+    <text x="350" y="146" text-anchor="middle" font-size="9" fill="var(--text-muted)">Topic/Subject marking</text>
+    <text x="350" y="160" text-anchor="middle" font-size="9" fill="var(--text-muted)">Agglutinative verbs</text>
+    <text x="350" y="174" text-anchor="middle" font-size="9" fill="var(--text-muted)">Honorific system</text>
+    <text x="350" y="188" text-anchor="middle" font-size="9" fill="var(--text-muted)">Subject omission</text>
+    <text x="350" y="202" text-anchor="middle" font-size="9" fill="var(--text-muted)">Sino-vocabulary (40-60%)</text>
+    <text x="350" y="216" text-anchor="middle" font-size="9" fill="var(--text-muted)">Demonstrative system</text>
+
+    <!-- Korean only -->
+    <text x="195" y="130" text-anchor="middle" font-size="9" fill="var(--text-muted)">받침 (coda)</text>
+    <text x="195" y="145" text-anchor="middle" font-size="9" fill="var(--text-muted)">14 vowels</text>
+    <text x="195" y="160" text-anchor="middle" font-size="9" fill="var(--text-muted)">Hangeul script</text>
+    <text x="195" y="175" text-anchor="middle" font-size="9" fill="var(--text-muted)">3-way stops</text>
+
+    <!-- Japanese only -->
+    <text x="505" y="130" text-anchor="middle" font-size="9" fill="var(--text-muted)">3 scripts</text>
+    <text x="505" y="145" text-anchor="middle" font-size="9" fill="var(--text-muted)">5 vowels</text>
+    <text x="505" y="160" text-anchor="middle" font-size="9" fill="var(--text-muted)">Pitch accent</text>
+    <text x="505" y="175" text-anchor="middle" font-size="9" fill="var(--text-muted)">和語 vocabulary</text>
+    <text x="505" y="190" text-anchor="middle" font-size="9" fill="var(--text-muted)">Giving/receiving</text>
+  </svg>
+  <div class="diagram-caption">Korean-Japanese transfer map — the overlap zone is massive. Your effort goes into the non-overlapping areas.</div>
+</div>
+
+<!-- ─── WHAT DOESN'T TRANSFER ─── -->
+<h3 id="what-doesnt-transfer-where-to-invest-your-time">What Doesn't Transfer — Where to Invest Your Time</h3>
+
+<div class="callout warn">
+  <div class="callout-title">Elaborative Interrogation</div>
+  <p><strong>WHY does Korean share so much grammar with Japanese but have such different core vocabulary?</strong></p>
+  <p>Think about this before reading on. The grammar similarity is likely due to deep Altaic-type structural convergence (or shared areal features) over millennia. The vocabulary divergence is because Korean native words (순우리말) and Japanese native words (和語/wago) evolved independently. Only the borrowed Chinese-origin words (한자어/漢語) overlap — and even those shifted in pronunciation over centuries through different sound changes.</p>
+</div>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>Writing System <span class="transfer-tag none">Difficulty: ★★★★</span></h4>
+    <p>Three scripts: hiragana (46), katakana (46), kanji (~2,000 for literacy). Hiragana and katakana take days. Kanji is the long game — but your hanja knowledge gives you a <strong>massive shortcut</strong> (Ch10).</p>
+  </div>
+  <div class="card">
+    <h4>Pronunciation <span class="transfer-tag partial">Difficulty: ★★</span></h4>
+    <p>Japanese is <em>simpler</em> than Korean phonetically: fewer consonants, no 받침, simpler syllable structure. But <strong>pitch accent</strong> is entirely new, and you'll need to unlearn aspirated consonants (Ch04).</p>
+  </div>
+  <div class="card">
+    <h4>Core Vocabulary <span class="transfer-tag none">Difficulty: ★★★★★</span></h4>
+    <p>The biggest investment. 和語 (wago) — native Japanese words for everyday things — are <strong>completely different</strong> from Korean. 水 (mizu) = water, 食べる (taberu) = eat. Your hanja helps with formal/academic words, not daily life (Ch12).</p>
+  </div>
+  <div class="card">
+    <h4>Verb Conjugation Forms <span class="transfer-tag partial">Difficulty: ★★★</span></h4>
+    <p>Same <em>system</em> (agglutinative suffixes), different <em>forms</em>. You know how to drive — now the controls are rearranged (Ch07).</p>
+  </div>
+  <div class="card">
+    <h4>Adjective System <span class="transfer-tag partial">Difficulty: ★★</span></h4>
+    <p>Japanese splits adjectives into two types (い-adjectives and な-adjectives) that conjugate differently. Korean doesn't make this distinction the same way.</p>
+  </div>
+  <div class="card">
+    <h4>Cultural Pragmatics <span class="transfer-tag partial">Difficulty: ★★</span></h4>
+    <p>Similar spirit, different execution. Korean 눈치 maps to Japanese 空気を読む, but the specifics of when to bow, what to say, and how to decline differ (Ch17).</p>
+  </div>
+</div>
+
+<!-- ─── TIMELINE ─── -->
+<h3 id="your-timeline-advantage">Your Timeline Advantage</h3>
+
+<div class="card" style="text-align:center">
+  <div style="display:flex;justify-content:center;gap:3rem;flex-wrap:wrap;margin:1rem 0">
+    <div>
+      <div style="font-size:2.5rem;font-family:var(--serif);color:var(--text-muted)">~2,200</div>
+      <div style="font-size:.82rem;color:var(--text-muted)">hours — English speaker</div>
+    </div>
+    <div style="display:flex;align-items:center;font-size:1.5rem;color:var(--accent)">vs.</div>
+    <div>
+      <div style="font-size:2.5rem;font-family:var(--serif);color:var(--a3)">~800–1,000</div>
+      <div style="font-size:.82rem;color:var(--a3)">hours — Korean speaker (you)</div>
+    </div>
+  </div>
+  <p style="font-size:.88rem;color:var(--text-muted);margin-bottom:0">Based on FSI language difficulty ratings adjusted for L1 Korean transfer. You're starting from roughly 40%, not zero.</p>
+</div>
+
+<!-- ─── SINO-VOCABULARY PREVIEW ─── -->
+<h3 id="sino-vocabulary-preview-your-secret-weapon">Sino-Vocabulary Preview — Your Secret Weapon</h3>
+<p>You already know thousands of Japanese words. You just don't know it yet. These Korean 한자어 words are <strong>cognates</strong> — same Chinese characters, similar meanings, predictable sound shifts:</p>
+
+<table>
+  <thead><tr><th>Korean (한자어)</th><th>Japanese (漢語)</th><th>Meaning</th><th>Similarity</th></tr></thead>
+  <tbody>
+    <tr><td class="kr">학생 (學生)</td><td class="jp">学生 (gakusei)</td><td>Student</td><td><span class="cognate-tag">Cognate</span></td></tr>
+    <tr><td class="kr">경제 (經濟)</td><td class="jp">経済 (keizai)</td><td>Economy</td><td><span class="cognate-tag">Cognate</span></td></tr>
+    <tr><td class="kr">도서관 (圖書館)</td><td class="jp">図書館 (toshokan)</td><td>Library</td><td><span class="cognate-tag">Cognate</span></td></tr>
+    <tr><td class="kr">병원 (病院)</td><td class="jp">病院 (byouin)</td><td>Hospital</td><td><span class="cognate-tag">Cognate</span></td></tr>
+    <tr><td class="kr">대학교 (大學校)</td><td class="jp">大学 (daigaku)</td><td>University</td><td><span class="cognate-tag">Cognate</span></td></tr>
+    <tr><td class="kr">전화 (電話)</td><td class="jp">電話 (denwa)</td><td>Telephone</td><td><span class="cognate-tag">Cognate</span></td></tr>
+    <tr><td class="kr">약속 (約束)</td><td class="jp">約束 (yakusoku)</td><td>Promise</td><td><span class="cognate-tag">Cognate</span></td></tr>
+    <tr><td class="kr">준비 (準備)</td><td class="jp">準備 (junbi)</td><td>Preparation</td><td><span class="cognate-tag">Cognate</span></td></tr>
+  </tbody>
+</table>
+
+<div class="callout ok">
+  <div class="callout-title">The Sound Correspondence Shortcut</div>
+  <p>Korean and Japanese on'yomi readings follow <strong>predictable sound rules</strong> (covered in depth in Ch10-11). For example: Korean ㅎ often corresponds to Japanese k — 학 (hak) → 学 (gaku). Once you learn the patterns, you can <em>predict</em> Japanese readings from Korean.</p>
+</div>
+
+<!-- ─── DEMONSTRATIVE SYSTEM ─── -->
+<h3 id="the-three-way-demonstrative-system">The Three-Way Demonstrative System</h3>
+<p>This is one of the most satisfying transfers. Korean and Japanese have an identical three-way pointing system:</p>
+
+<table>
+  <thead><tr><th>Distance</th><th>Korean</th><th>Japanese</th><th>Meaning</th></tr></thead>
+  <tbody>
+    <tr><td>Near speaker</td><td class="kr">이것 (igeos)</td><td class="jp">これ (kore)</td><td>This one</td></tr>
+    <tr><td>Near listener</td><td class="kr">그것 (geugeos)</td><td class="jp">それ (sore)</td><td>That one (near you)</td></tr>
+    <tr><td>Far from both</td><td class="kr">저것 (jeogeos)</td><td class="jp">あれ (are)</td><td>That one (over there)</td></tr>
+    <tr><td>Question</td><td class="kr">어느 것 (eoneu geos)</td><td class="jp">どれ (dore)</td><td>Which one?</td></tr>
+  </tbody>
+</table>
+<p><span class="transfer-tag full">100% transfer</span> — The concept, the three-way split, and the question form all map perfectly. Only the words differ.</p>
+
+<!-- ─── INTERACTIVE EXERCISES ─── -->
+<h3 id="interactive-exercises">Interactive Exercises</h3>
+
+<!-- Exercise 1: Sentence Builder — predict Japanese structure -->
+<div id="quiz-sentence-builder"></div>
+
+<!-- Exercise 2: Multiple Choice — transfer knowledge -->
+<div id="quiz-transfer"></div>
+
+<!-- Exercise 3: Drag-and-Drop — particle matching -->
+<div id="quiz-particles"></div>
+
+<!-- Exercise 4: Elaborative Interrogation -->
+<div class="callout info" style="margin-top:2rem">
+  <div class="callout-title">Think Before You Read</div>
+  <p><strong>WHY does Korean have a three-way consonant distinction (ㄱ/ㅋ/ㄲ) while Japanese only has two-way (k/g)?</strong></p>
+  <p style="margin-bottom:0">Consider: Japanese never developed the tense/aspirated distinction. This means Japanese pronunciation is actually <em>simpler</em> for you — you're downshifting, not upshifting. You'll explore this in Chapter 04.</p>
+</div>
+
+<!-- Mark as Complete -->
+<button class="chapter-complete" data-ch="01">Mark as Complete &#10003;</button>
+
+<div style="text-align:center;margin:2rem 0">
+  <a href="ch-02.html" class="quiz-btn">Next: Chapter 02 — Hiragana →</a>
+</div>
+
+</section>
+
+</div>
+
+
+</div>
+
+<footer>
+  <p>Zero to Hero: 日本語 for Korean Speakers &middot; Chapter 01</p>
+</footer>
+
+<script src="js/shared.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/quiz-engine.js"></script>
+<script>
+// ─── Recall Check from Ch00 ───
+QuizEngine.RecallCheck(
+  document.getElementById('recall-check-00'),
+  {
+    fromChapters: 'Ch00',
+    items: [
+      { question: 'What percentage of material do you forget within 24 hours without review?', answer: '~70% (Ebbinghaus forgetting curve)' },
+      { question: 'Name three of the twelve memory pillars from Chapter 00.', answer: 'Spaced Repetition, Active Recall, Method of Loci, Keyword Mnemonics, Elaborative Interrogation, Interleaving, etc.' },
+      { question: 'How many loci (locations) does the memory palace in this course use?', answer: '12 loci — from front door to balcony' },
+      { question: 'What is the optimal first review interval in spaced repetition?', answer: '1 day after initial learning' }
+    ]
+  }
+);
+
+// ─── Quiz 1: Sentence Builder ───
+QuizEngine.SentenceBuilder(
+  document.getElementById('quiz-sentence-builder'),
+  {
+    title: 'Predict the Japanese Structure',
+    sentences: [
+      {
+        hint: 'Korean: <span class="kr">나는 학교에 간다</span> (I go to school) — Predict the Japanese word order:',
+        words: ['私は', '学校に', '行く'],
+        correct: '私は学校に行く'
+      },
+      {
+        hint: 'Korean: <span class="kr">그는 커피를 마신다</span> (He drinks coffee) — Build the Japanese:',
+        words: ['彼は', 'コーヒーを', '飲む'],
+        correct: '彼はコーヒーを飲む'
+      },
+      {
+        hint: 'Korean: <span class="kr">이것은 내 책이다</span> (This is my book) — Build the Japanese:',
+        words: ['これは', '私の', '本だ'],
+        correct: 'これは私の本だ'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 2: Transfer Knowledge ───
+QuizEngine.MultipleChoice(
+  document.getElementById('quiz-transfer'),
+  {
+    title: 'Test Your Transfer Knowledge',
+    questions: [
+      {
+        prompt: 'Which of these Korean grammar concepts does NOT transfer to Japanese?',
+        options: [
+          'Topic marker (은/는 → は)',
+          'Subject omission (pro-drop)',
+          '받침 (final consonant clusters)',
+          'Agglutinative verb conjugation'
+        ],
+        correctIndex: 2,
+        explanation: '받침 does not exist in Japanese. Japanese syllables are open (consonant + vowel), never ending in a consonant (except ん).'
+      },
+      {
+        prompt: 'Approximately what percentage of your Japanese journey is covered by Korean transfer?',
+        options: ['10%', '25%', '40%', '75%'],
+        correctIndex: 2,
+        explanation: 'Roughly 40% — grammar structure, particle system, honorific concepts, and Sino-vocabulary all transfer.'
+      },
+      {
+        prompt: 'Which area requires the MOST investment for Korean speakers learning Japanese?',
+        options: [
+          'Word order (SOV)',
+          'Core everyday vocabulary (和語)',
+          'Particle system',
+          'Subject omission'
+        ],
+        correctIndex: 1,
+        explanation: 'Native Japanese words (和語/wago) are completely different from Korean. This is your biggest vocabulary investment.'
+      },
+      {
+        prompt: 'Korean 학생 (學生) corresponds to Japanese 学生. What is this type of shared vocabulary called?',
+        options: [
+          '和語 (wago)',
+          'False friends',
+          'Sino-vocabulary cognates (한자어/漢語)',
+          'Loanwords'
+        ],
+        correctIndex: 2,
+        explanation: 'These are Sino-vocabulary cognates — words borrowed from Chinese that exist in both Korean and Japanese with similar meanings.'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 3: Particle Matching ───
+QuizEngine.DragMatch(
+  document.getElementById('quiz-particles'),
+  {
+    title: 'Particle Matching',
+    instruction: 'Match each Korean particle to its Japanese equivalent:',
+    pairs: [
+      { left: '은/는 (topic)', right: 'は (wa)' },
+      { left: '이/가 (subject)', right: 'が (ga)' },
+      { left: '을/를 (object)', right: 'を (wo)' },
+      { left: '의 (possessive)', right: 'の (no)' },
+      { left: '에 (location)', right: 'に (ni)' },
+      { left: '에서 (action location)', right: 'で (de)' }
+    ]
+  }
+);
+</script>
+<script src="js/spaced-repetition.js"></script>
+<script src="js/memory-palace.js"></script>
+</body>
+</html>

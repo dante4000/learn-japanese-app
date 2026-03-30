@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ch20: Your Memory Palace — Zero to Hero 日本語</title>
+<link rel="stylesheet" href="css/design-system.css">
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <span class="logo-badge">Zero to Hero — Memory Architecture Edition</span>
+    <div class="logo-title">日本語 for Korean Speakers</div>
+    <div class="logo-sub">From 한국어 to 日本語 — The Memory Architect's Guide</div>
+  </a>
+  <div class="sidebar-progress">
+    <div class="sidebar-progress-label">Progress</div>
+    <div class="sidebar-progress-bar">
+      <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+    </div>
+    <div class="sidebar-progress-count">0/22 complete</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="ch-00.html" class="toc-link"><span class="toc-num">00</span><span class="toc-check" data-ch="00"></span>Memory Science</a>
+    <a href="ch-01.html" class="toc-link"><span class="toc-num">01</span><span class="toc-check" data-ch="01"></span>Your Korean Advantage</a>
+    <a href="ch-02.html" class="toc-link"><span class="toc-num">02</span><span class="toc-check" data-ch="02"></span>Hiragana</a>
+    <a href="ch-03.html" class="toc-link"><span class="toc-num">03</span><span class="toc-check" data-ch="03"></span>Katakana</a>
+    <a href="ch-04.html" class="toc-link"><span class="toc-num">04</span><span class="toc-check" data-ch="04"></span>Pronunciation</a>
+    <a href="ch-05.html" class="toc-link"><span class="toc-num">05</span><span class="toc-check" data-ch="05"></span>Survival Japanese</a>
+    <a href="ch-06.html" class="toc-link"><span class="toc-num">06</span><span class="toc-check" data-ch="06"></span>Counters</a>
+    <a href="ch-07.html" class="toc-link"><span class="toc-num">07</span><span class="toc-check" data-ch="07"></span>Particles</a>
+    <a href="ch-08.html" class="toc-link"><span class="toc-num">08</span><span class="toc-check" data-ch="08"></span>Verb Conjugation</a>
+    <a href="ch-09.html" class="toc-link"><span class="toc-num">09</span><span class="toc-check" data-ch="09"></span>Daily Conversations</a>
+    <a href="ch-10.html" class="toc-link"><span class="toc-num">10</span><span class="toc-check" data-ch="10"></span>Sentence Patterns</a>
+    <a href="ch-11.html" class="toc-link"><span class="toc-num">11</span><span class="toc-check" data-ch="11"></span>Kanji</a>
+    <a href="ch-12.html" class="toc-link"><span class="toc-num">12</span><span class="toc-check" data-ch="12"></span>Sino-Vocabulary</a>
+    <a href="ch-13.html" class="toc-link"><span class="toc-num">13</span><span class="toc-check" data-ch="13"></span>Native Vocabulary</a>
+    <a href="ch-14.html" class="toc-link"><span class="toc-num">14</span><span class="toc-check" data-ch="14"></span>Honorifics</a>
+    <a href="ch-15.html" class="toc-link"><span class="toc-num">15</span><span class="toc-check" data-ch="15"></span>Reading</a>
+    <a href="ch-16.html" class="toc-link"><span class="toc-num">16</span><span class="toc-check" data-ch="16"></span>Writing</a>
+    <a href="ch-17.html" class="toc-link"><span class="toc-num">17</span><span class="toc-check" data-ch="17"></span>Listening</a>
+    <a href="ch-18.html" class="toc-link"><span class="toc-num">18</span><span class="toc-check" data-ch="18"></span>Cultural Pragmatics</a>
+    <a href="ch-19.html" class="toc-link"><span class="toc-num">19</span><span class="toc-check" data-ch="19"></span>JLPT and Beyond</a>
+    <a href="ch-20.html" class="toc-link active"><span class="toc-num">20</span><span class="toc-check" data-ch="20"></span>Memory Palace</a>
+    <a href="ch-21.html" class="toc-link"><span class="toc-num">21</span><span class="toc-check" data-ch="21"></span>The 90-Day Sprint</a>
+    <a href="appendices.html" class="toc-link" style="margin-top:.5rem;border-top:1px solid var(--border);padding-top:.8rem"><span class="toc-num">+</span>Appendices</a>
+  </nav>
+</aside>
+
+<div class="main">
+<div class="content-wrap">
+
+<section id="ch20" data-ch="20" style="padding-top:3rem">
+<h2><span class="ch-label">Chapter 20</span>Your Memory Palace — Building the Permanent Architecture</h2>
+
+<div class="callout memory">
+  <div class="callout-title">Memory Technique Spotlight: Palace Consolidation</div>
+  <p>You have spent 18 chapters building individual memory palaces for different language domains. This chapter consolidates them into a single, interconnected architecture. Research on the method of loci shows that <strong>linked palace systems</strong> produce 40-60% better long-term retention than isolated locations, because the spatial connections create additional retrieval pathways.</p>
+</div>
+
+<!-- Recall Check from Ch19 -->
+<div id="quiz-recall-top"></div>
+
+<p>Over the course of this book, you have constructed six distinct memory palaces, each housing a different aspect of Japanese. Now it is time to take inventory, connect them, learn to build new ones, and establish the maintenance habits that will keep your knowledge permanent.</p>
+
+<div class="pq">
+  "A memory palace is not a trick. It is architecture. And architecture, once built, does not forget."
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SECTION 1: PALACE INVENTORY AUDIT -->
+<!-- ══════════════════════════════════════════════════════ -->
+<nav class="chapter-toc">
+  <details open>
+    <summary class="chapter-toc-title">In This Chapter</summary>
+  <ol>
+    <li><a href="#1-palace-inventory-audit">Palace Inventory Audit</a></li>
+    <li><a href="#2-palace-linking-the-grand-tour">Palace Linking — The Grand Tour</a></li>
+    <li><a href="#3-building-new-palaces">Building New Palaces</a></li>
+    <li><a href="#4-maintenance-schedule">Maintenance Schedule</a></li>
+    <li><a href="#interactive-exercises">Interactive Exercises</a></li>
+  </ol>
+  </details>
+</nav>
+
+<h3 id="1-palace-inventory-audit">Palace Inventory Audit</h3>
+
+<p>Before linking your palaces together, you need to know exactly what lives in each one. Below is a complete inventory of every palace you have built throughout this course, with item counts and the chapter where each was established.</p>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>Kitchen <span class="transfer-tag full">Ch02</span></h4>
+    <p style="font-size:2rem;font-family:var(--serif);color:var(--accent);margin:.5rem 0">46</p>
+    <p style="font-size:.88rem;color:var(--text-muted);margin-bottom:.5rem">Hiragana characters</p>
+    <p>All 46 basic hiragana placed at kitchen loci: refrigerator, stove, sink, countertop, cabinets, table, chairs, drawers, spice rack, microwave, and more. Each character anchored with a vivid keyword mnemonic image.</p>
+    <p style="font-size:.82rem;color:var(--a3)">Status: Should be fully mature in SM-2 by now</p>
+  </div>
+  <div class="card">
+    <h4>Living Room <span class="transfer-tag full">Ch03</span></h4>
+    <p style="font-size:2rem;font-family:var(--serif);color:var(--accent);margin:.5rem 0">46</p>
+    <p style="font-size:.88rem;color:var(--text-muted);margin-bottom:.5rem">Katakana characters</p>
+    <p>All 46 basic katakana placed at living room loci: sofa, TV, coffee table, bookshelf, window, lamp, rug, curtains, remote control, picture frames. Parallel structure to the Kitchen palace for easy cross-referencing.</p>
+    <p style="font-size:.82rem;color:var(--a3)">Status: Should be fully mature in SM-2 by now</p>
+  </div>
+  <div class="card">
+    <h4>Street Route <span class="transfer-tag partial">Ch05</span></h4>
+    <p style="font-size:2rem;font-family:var(--serif);color:var(--accent);margin:.5rem 0">60+</p>
+    <p style="font-size:.88rem;color:var(--text-muted);margin-bottom:.5rem">Survival phrases</p>
+    <p>Essential survival Japanese placed along a familiar walking route: greetings at the mailbox, restaurant phrases at the corner shop, transportation phrases at the bus stop, emergency phrases at the fire hydrant, shopping phrases at the storefront.</p>
+    <p style="font-size:.82rem;color:var(--a3)">Status: Core phrases mature, newer additions still in review</p>
+  </div>
+  <div class="card">
+    <h4>Bathroom <span class="transfer-tag full">Ch07</span></h4>
+    <p style="font-size:2rem;font-family:var(--serif);color:var(--accent);margin:.5rem 0">11</p>
+    <p style="font-size:.88rem;color:var(--text-muted);margin-bottom:.5rem">Core particles</p>
+    <p>All 11 essential particles placed at bathroom loci: <span class="jp">は</span> on the mirror, <span class="jp">が</span> on the faucet, <span class="jp">を</span> in the bathtub, <span class="jp">に</span> on the towel rack, <span class="jp">で</span> on the soap, <span class="jp">の</span> on the toothbrush, <span class="jp">へ</span> on the door handle, <span class="jp">と</span> on the tile, <span class="jp">も</span> on the mat, <span class="jp">から</span> on the showerhead, <span class="jp">まで</span> on the shelf.</p>
+    <p style="font-size:.82rem;color:var(--a3)">Status: Should be fully mature in SM-2 by now</p>
+  </div>
+  <div class="card">
+    <h4>Bedroom <span class="transfer-tag partial">Ch11</span></h4>
+    <p style="font-size:2rem;font-family:var(--serif);color:var(--accent);margin:.5rem 0">30</p>
+    <p style="font-size:.88rem;color:var(--text-muted);margin-bottom:.5rem">Kanji radicals</p>
+    <p>The 30 most productive kanji radicals placed at bedroom loci: bed, pillow, nightstand, dresser, closet, window, desk, chair, lamp, bookshelf, and more. These radicals unlock the decomposition of hundreds of complex kanji.</p>
+    <p style="font-size:.82rem;color:var(--a3)">Status: Most radicals mature, continue building kanji associations</p>
+  </div>
+  <div class="card">
+    <h4>Park <span class="transfer-tag partial">Ch13</span></h4>
+    <p style="font-size:2rem;font-family:var(--serif);color:var(--accent);margin:.5rem 0">200+</p>
+    <p style="font-size:.88rem;color:var(--text-muted);margin-bottom:.5rem">Native vocabulary (<span class="jp">和語</span>)</p>
+    <p>Native Japanese vocabulary placed along a park walk: nature words at the pond, body parts on the statue, daily actions at the playground, food items at the picnic area, time words along the sundial, weather words under the sky.</p>
+    <p style="font-size:.82rem;color:var(--a3)">Status: Ongoing -- new words added regularly via SM-2</p>
+  </div>
+</div>
+
+<div class="callout info">
+  <div class="callout-title">Total Inventory</div>
+  <p>Across your six palaces you have placed <strong>393+ distinct items</strong> at specific spatial locations. Each one is retrievable by mentally walking to its spot. This is the foundation of your permanent Japanese architecture.</p>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SECTION 2: PALACE LINKING — THE GRAND TOUR -->
+<!-- ══════════════════════════════════════════════════════ -->
+<h3 id="2-palace-linking-the-grand-tour">Palace Linking — The Grand Tour</h3>
+
+<p>Individual palaces are powerful. But <strong>linked palaces are transformative</strong>. By connecting all six palaces into one continuous walking route, you create a Grand Tour -- a single mental journey that touches every aspect of your Japanese knowledge. The act of walking between palaces strengthens the connections between language domains, so particles naturally flow into vocabulary, which flows into kanji, which flows into phrases.</p>
+
+<div class="diagram">
+  <svg viewBox="0 0 750 320" xmlns="http://www.w3.org/2000/svg">
+    <text x="375" y="22" text-anchor="middle" font-size="14" font-weight="600" fill="var(--heading)">The Grand Tour Route</text>
+
+    <!-- Kitchen -->
+    <rect x="30" y="60" width="110" height="70" rx="8" fill="none" stroke="var(--accent)" stroke-width="2"/>
+    <text x="85" y="85" text-anchor="middle" font-size="11" font-weight="600" fill="var(--accent)">Kitchen</text>
+    <text x="85" y="100" text-anchor="middle" font-size="9" fill="var(--text-muted)">46 Hiragana</text>
+    <text x="85" y="115" text-anchor="middle" font-size="8" fill="var(--a3)">Ch02</text>
+
+    <!-- Arrow 1 -->
+    <line x1="140" y1="95" x2="175" y2="95" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+    <!-- Living Room -->
+    <rect x="180" y="60" width="110" height="70" rx="8" fill="none" stroke="var(--accent)" stroke-width="2"/>
+    <text x="235" y="85" text-anchor="middle" font-size="11" font-weight="600" fill="var(--accent)">Living Room</text>
+    <text x="235" y="100" text-anchor="middle" font-size="9" fill="var(--text-muted)">46 Katakana</text>
+    <text x="235" y="115" text-anchor="middle" font-size="8" fill="var(--a3)">Ch03</text>
+
+    <!-- Arrow 2 (exit house) -->
+    <line x1="290" y1="95" x2="325" y2="95" stroke="var(--a2)" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrowhead)"/>
+    <text x="307" y="85" text-anchor="middle" font-size="7" fill="var(--a2)">exit</text>
+    <text x="307" y="75" text-anchor="middle" font-size="7" fill="var(--a2)">house</text>
+
+    <!-- Street Route -->
+    <rect x="330" y="60" width="110" height="70" rx="8" fill="none" stroke="var(--a2)" stroke-width="2"/>
+    <text x="385" y="85" text-anchor="middle" font-size="11" font-weight="600" fill="var(--a2)">Street Route</text>
+    <text x="385" y="100" text-anchor="middle" font-size="9" fill="var(--text-muted)">60+ Phrases</text>
+    <text x="385" y="115" text-anchor="middle" font-size="8" fill="var(--a3)">Ch05</text>
+
+    <!-- Arrow 3 (arrive at park) -->
+    <line x1="440" y1="95" x2="475" y2="95" stroke="var(--a2)" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrowhead)"/>
+    <text x="457" y="85" text-anchor="middle" font-size="7" fill="var(--a2)">arrive</text>
+
+    <!-- Park -->
+    <rect x="480" y="60" width="110" height="70" rx="8" fill="none" stroke="var(--a2)" stroke-width="2"/>
+    <text x="535" y="85" text-anchor="middle" font-size="11" font-weight="600" fill="var(--a2)">Park</text>
+    <text x="535" y="100" text-anchor="middle" font-size="9" fill="var(--text-muted)">200+ Vocabulary</text>
+    <text x="535" y="115" text-anchor="middle" font-size="8" fill="var(--a3)">Ch13</text>
+
+    <!-- Arrow 4 (return home -- curves down) -->
+    <path d="M535,130 L535,180 L385,180" fill="none" stroke="var(--a2)" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrowhead)"/>
+    <text x="460" y="175" text-anchor="middle" font-size="7" fill="var(--a2)">return home</text>
+
+    <!-- Bathroom -->
+    <rect x="250" y="200" width="110" height="70" rx="8" fill="none" stroke="var(--accent)" stroke-width="2"/>
+    <text x="305" y="225" text-anchor="middle" font-size="11" font-weight="600" fill="var(--accent)">Bathroom</text>
+    <text x="305" y="240" text-anchor="middle" font-size="9" fill="var(--text-muted)">11 Particles</text>
+    <text x="305" y="255" text-anchor="middle" font-size="8" fill="var(--a3)">Ch07</text>
+
+    <!-- Arrow from return to bathroom -->
+    <line x1="385" y1="185" x2="360" y2="210" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+    <!-- Arrow 5 -->
+    <line x1="250" y1="235" x2="215" y2="235" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+    <!-- Bedroom -->
+    <rect x="80" y="200" width="130" height="70" rx="8" fill="none" stroke="var(--accent)" stroke-width="2"/>
+    <text x="145" y="225" text-anchor="middle" font-size="11" font-weight="600" fill="var(--accent)">Bedroom</text>
+    <text x="145" y="240" text-anchor="middle" font-size="9" fill="var(--text-muted)">30 Kanji Radicals</text>
+    <text x="145" y="255" text-anchor="middle" font-size="8" fill="var(--a3)">Ch11</text>
+
+    <!-- Legend -->
+    <rect x="530" y="200" width="180" height="80" rx="6" fill="none" stroke="var(--border)" stroke-width="1"/>
+    <text x="540" y="218" font-size="9" font-weight="600" fill="var(--heading)">Grand Tour Summary</text>
+    <text x="540" y="234" font-size="8" fill="var(--text-muted)">6 palaces, 393+ items</text>
+    <text x="540" y="248" font-size="8" fill="var(--text-muted)">1 continuous walking route</text>
+    <text x="540" y="262" font-size="8" fill="var(--text-muted)">Est. time: 30-45 minutes</text>
+  </svg>
+  <div class="diagram-caption">The Grand Tour links all six palaces into one continuous route. Indoor palaces (Kitchen, Living Room, Bathroom, Bedroom) are connected through hallways; outdoor palaces (Street, Park) are reached by stepping outside.</div>
+</div>
+
+<div class="callout ok">
+  <div class="callout-title">Why Linking Works</div>
+  <p>The power of a linked palace system lies in <strong>contextual reinstatement</strong>. When you walk from the Kitchen (hiragana) into the Living Room (katakana), your brain naturally activates the connections between the two scripts. Walking from the Street Route (phrases) into the Park (vocabulary) reinforces the relationship between memorized phrases and the individual words that compose them. Each transition is a retrieval cue that strengthens every connected memory.</p>
+</div>
+
+<h4>How to Walk the Grand Tour</h4>
+<ol>
+  <li><strong>Start in the Kitchen.</strong> Walk to each locus. For every hiragana, silently recall the character, its reading, and one word that starts with it.</li>
+  <li><strong>Walk to the Living Room.</strong> Do the same for katakana. Note any characters you hesitate on -- these go back into active SM-2 review.</li>
+  <li><strong>Exit the house onto the Street.</strong> Walk your street route, recalling each survival phrase and its context of use.</li>
+  <li><strong>Arrive at the Park.</strong> Walk the park path, recalling native vocabulary items. Group them: nature words, body parts, daily actions, food.</li>
+  <li><strong>Return home to the Bathroom.</strong> Walk to each particle locus. For each particle, recall its function, its Korean equivalent, and one example sentence.</li>
+  <li><strong>End in the Bedroom.</strong> Walk to each radical locus. For each radical, recall its meaning and name two kanji that contain it.</li>
+</ol>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SECTION 3: BUILDING NEW PALACES -->
+<!-- ══════════════════════════════════════════════════════ -->
+<h3 id="3-building-new-palaces">Building New Palaces</h3>
+
+<p>The six palaces from this course are your foundation, but your Japanese vocabulary will continue to grow long after you finish this book. You need to know how to build new palaces for any domain of vocabulary you choose to learn.</p>
+
+<h4>Suggested Locations for New Palaces</h4>
+<div class="card-grid">
+  <div class="card">
+    <h4>Workplace / Office</h4>
+    <p>Business Japanese vocabulary: <span class="jp">会議</span> (meeting), <span class="jp">報告書</span> (report), <span class="jp">締め切り</span> (deadline). Place items at your desk, the meeting room, the break room, the elevator, the reception area.</p>
+  </div>
+  <div class="card">
+    <h4>School / University</h4>
+    <p>Academic vocabulary: <span class="jp">授業</span> (class), <span class="jp">試験</span> (exam), <span class="jp">図書館</span> (library). Place items at classrooms, the library entrance, the cafeteria, the auditorium, the lab.</p>
+  </div>
+  <div class="card">
+    <h4>Gym / Sports Center</h4>
+    <p>Body and health vocabulary: <span class="jp">筋肉</span> (muscle), <span class="jp">運動</span> (exercise), <span class="jp">汗</span> (sweat). Place items at the treadmill, the weight rack, the locker room, the water fountain, the stretching mat.</p>
+  </div>
+  <div class="card">
+    <h4>Restaurant / Cafe</h4>
+    <p>Food and dining vocabulary: <span class="jp">注文</span> (order), <span class="jp">お会計</span> (check), <span class="jp">席</span> (seat). Place items at the entrance, the menu board, the counter, the table, the kitchen window.</p>
+  </div>
+  <div class="card">
+    <h4>Train Station</h4>
+    <p>Transportation and travel vocabulary: <span class="jp">切符</span> (ticket), <span class="jp">改札</span> (ticket gate), <span class="jp">乗り換え</span> (transfer). Place items at the ticket machine, the platform, the waiting room, the information board, the exit gate.</p>
+  </div>
+</div>
+
+<h4>Step-by-Step: Build a New Palace</h4>
+<div class="card" style="background:var(--surface)">
+  <div style="display:grid;grid-template-columns:auto 1fr;gap:1rem;align-items:start">
+    <div style="font-size:1.8rem;font-family:var(--serif);color:var(--accent);font-weight:700;line-height:1">1</div>
+    <div>
+      <h4 style="margin-top:0">Choose a Location You Know Well</h4>
+      <p style="margin-bottom:0">Pick a real place you can visualize in detail -- your office, a friend's house, your favorite restaurant. The more familiar it is, the better it works. You need to be able to walk through it in your mind with your eyes closed.</p>
+    </div>
+
+    <div style="font-size:1.8rem;font-family:var(--serif);color:var(--accent);font-weight:700;line-height:1">2</div>
+    <div>
+      <h4 style="margin-top:0">Walk It Physically (If Possible)</h4>
+      <p style="margin-bottom:0">Visit the location and walk through it slowly. Pay attention to specific objects, textures, smells, and sounds. The richer your sensory encoding, the stronger the loci become. If you cannot visit, use Google Street View or a detailed mental reconstruction.</p>
+    </div>
+
+    <div style="font-size:1.8rem;font-family:var(--serif);color:var(--accent);font-weight:700;line-height:1">3</div>
+    <div>
+      <h4 style="margin-top:0">Identify 10-20 Loci</h4>
+      <p style="margin-bottom:0">Select 10-20 distinct, memorable spots along a natural walking path through the location. Each locus should be visually distinct and large enough to "hold" an imaginary object. Number them in walking order. Write them down.</p>
+    </div>
+
+    <div style="font-size:1.8rem;font-family:var(--serif);color:var(--accent);font-weight:700;line-height:1">4</div>
+    <div>
+      <h4 style="margin-top:0">Assign Items to Loci</h4>
+      <p style="margin-bottom:0">For each vocabulary item, create a vivid keyword mnemonic image and place it at its locus. The image should be bizarre, exaggerated, and multi-sensory. Korean anchor --> phonetic bridge --> vivid image --> Japanese word. Place the image so it interacts with the locus (sitting on it, hanging from it, crashing into it).</p>
+    </div>
+
+    <div style="font-size:1.8rem;font-family:var(--serif);color:var(--accent);font-weight:700;line-height:1">5</div>
+    <div>
+      <h4 style="margin-top:0">Review Immediately and Schedule SM-2</h4>
+      <p style="margin-bottom:0">Walk the palace mentally three times immediately after placing items. Then register all new items in your SM-2 system for spaced review. The palace provides the spatial scaffold; SM-2 provides the optimal review timing.</p>
+    </div>
+  </div>
+</div>
+
+<div class="callout warn">
+  <div class="callout-title">Elaborative Interrogation</div>
+  <p><strong>WHY do bizarre, exaggerated images work better than realistic ones for memory palace placement?</strong></p>
+  <p>Think about this before reading on. The answer involves the Von Restorff effect (isolation effect) -- distinctive items stand out against the background of ordinary memories. Your brain pays more attention to the unusual, so an image of a giant flaming sushi roll on your desk is far more memorable than a normal sushi roll sitting quietly on a plate. The bizarreness forces deeper encoding.</p>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SECTION 4: MAINTENANCE SCHEDULE -->
+<!-- ══════════════════════════════════════════════════════ -->
+<h3 id="4-maintenance-schedule">Maintenance Schedule</h3>
+
+<p>A memory palace, like a real building, requires maintenance. Without periodic revisiting, the images fade and the spatial connections weaken. The schedule below keeps your palaces sharp with minimal time investment.</p>
+
+<table>
+  <thead>
+    <tr><th>Frequency</th><th>Activity</th><th>Duration</th><th>Details</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Daily</strong></td>
+      <td>SM-2 spaced repetition review</td>
+      <td>10-15 min</td>
+      <td>Review whatever items the SM-2 algorithm schedules for today. This is your non-negotiable daily habit. Items from all palaces will cycle through naturally.</td>
+    </tr>
+    <tr>
+      <td><strong>Weekly</strong></td>
+      <td>Walk one palace</td>
+      <td>~10 min</td>
+      <td>Pick one of your six palaces each week (rotate through all six over six weeks). Walk every locus, recall every item. Note any weak spots and flag them for extra SM-2 review.</td>
+    </tr>
+    <tr>
+      <td><strong>Monthly</strong></td>
+      <td>Walk all palaces</td>
+      <td>30-60 min</td>
+      <td>Once a month, walk through all six palaces in one session. This is a comprehensive audit. It reinforces cross-palace connections and catches any items that have drifted.</td>
+    </tr>
+    <tr>
+      <td><strong>Quarterly</strong></td>
+      <td>Grand Tour</td>
+      <td>~45 min</td>
+      <td>Walk the full linked Grand Tour route: Kitchen --> Living Room --> Street --> Park --> Bathroom --> Bedroom. Take your time. This is the deepest level of consolidation.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout ok">
+  <div class="callout-title">Maintenance is Not Re-learning</div>
+  <p>Palace maintenance walks are <strong>fast</strong> because you already know the items. A weekly 10-minute walk is not studying -- it is confirming. You are verifying that the architecture is intact, not rebuilding it. Think of it like walking through your own house: you do not have to re-learn where the kitchen is. You just check that everything is in its place.</p>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- INTERACTIVE EXERCISES -->
+<!-- ══════════════════════════════════════════════════════ -->
+<h3 id="interactive-exercises">Interactive Exercises</h3>
+
+<!-- Quiz 1: Recall Check from all 6 palaces -->
+<div id="quiz-palace-recall"></div>
+
+<!-- Quiz 2: Multiple Choice about palace maintenance -->
+<div id="quiz-maintenance"></div>
+
+<!-- Quiz 3: Fill in the Blank about palace locations -->
+<div id="quiz-palace-locations"></div>
+
+<!-- Mark as Complete -->
+<button class="chapter-complete" data-ch="20">Mark as Complete &#10003;</button>
+
+<div style="display:flex;justify-content:space-between;margin:2rem 0">
+  <a href="ch-19.html" class="quiz-btn secondary">&larr; Chapter 20: JLPT and Beyond</a>
+  <a href="ch-21.html" class="quiz-btn">Next: Chapter 21 -- The 90-Day Sprint &rarr;</a>
+</div>
+
+</section>
+
+</div>
+
+
+</div>
+
+<footer>
+  <p>Zero to Hero: 日本語 for Korean Speakers &middot; Chapter 20</p>
+</footer>
+
+<script src="js/shared.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/quiz-engine.js"></script>
+<script>
+// ─── Recall Check from Ch19 (top) ───
+QuizEngine.RecallCheck(
+  document.getElementById('quiz-recall-top'),
+  {
+    fromChapters: 'Ch19',
+    items: [
+      { question: 'Ch19: What is the minimum JLPT level generally required for employment at a Japanese company?', answer: 'N2. Most companies and universities require N2 or above. Some specialized fields require N1.' },
+      { question: 'Ch19: In which JLPT section do Korean speakers have the greatest advantage?', answer: '文字・語彙 (Characters/Vocabulary), because thousands of Sino-vocabulary cognates transfer directly from Korean.' },
+      { question: 'Ch19: Approximately how many kanji are required for N3?', answer: 'Approximately 650 kanji.' }
+    ]
+  }
+);
+
+// ─── Quiz 1: Palace Recall Check from all 6 palaces ───
+QuizEngine.RecallCheck(
+  document.getElementById('quiz-palace-recall'),
+  {
+    fromChapters: 'All Palaces (Ch02-Ch13)',
+    items: [
+      { question: 'Kitchen Palace (Ch02): Where in the kitchen did you place the hiragana あ? What is the keyword mnemonic image?', answer: 'Recall the specific locus and your personal mnemonic image. The key is that you can mentally walk to the spot and see the image clearly.' },
+      { question: 'Living Room Palace (Ch03): How many katakana characters are placed in this palace?', answer: '46 basic katakana characters, placed at distinct loci throughout the living room.' },
+      { question: 'Street Route Palace (Ch05): Name three survival phrases and their locations along your street route.', answer: 'Answers will vary. Examples: すみません at the mailbox, いくらですか at the storefront, 助けて at the fire hydrant.' },
+      { question: 'Bathroom Palace (Ch07): Which particle is placed on the mirror, and what is its function?', answer: 'は (wa) -- the topic marker. Korean equivalent: 은/는.' },
+      { question: 'Bedroom Palace (Ch11): Name two kanji radicals from your bedroom palace and the kanji they appear in.', answer: 'Answers will vary. Examples: 木 (tree) appears in 林 (grove), 森 (forest), 本 (book). 水/氵 (water) appears in 海 (sea), 池 (pond), 泳 (swim).' },
+      { question: 'Park Palace (Ch13): What category of vocabulary items did you place near the pond?', answer: 'Nature-related native Japanese vocabulary (和語). Examples: 水 (みず/water), 川 (かわ/river), 魚 (さかな/fish).' }
+    ]
+  }
+);
+
+// ─── Quiz 2: Multiple Choice about palace maintenance ───
+QuizEngine.MultipleChoice(
+  document.getElementById('quiz-maintenance'),
+  {
+    title: 'Palace Maintenance Knowledge',
+    questions: [
+      {
+        prompt: 'How often should you walk the full Grand Tour (all linked palaces)?',
+        options: ['Daily', 'Weekly', 'Monthly', 'Quarterly'],
+        correctIndex: 3,
+        explanation: 'The Grand Tour is a quarterly activity (~45 minutes). Daily review is handled by SM-2, weekly walks cover one palace at a time, and monthly walks cover all palaces individually.'
+      },
+      {
+        prompt: 'What is the recommended daily time investment for SM-2 spaced repetition review?',
+        options: ['2-5 minutes', '10-15 minutes', '30-45 minutes', '60 minutes'],
+        correctIndex: 1,
+        explanation: '10-15 minutes of daily SM-2 review is the non-negotiable daily habit. It keeps all items from all palaces on their optimal review schedule.'
+      },
+      {
+        prompt: 'Why are linked palace systems more effective than isolated palaces?',
+        options: [
+          'They use less total memory space',
+          'They are faster to walk through',
+          'The spatial connections between palaces create additional retrieval pathways',
+          'They require fewer loci per palace'
+        ],
+        correctIndex: 2,
+        explanation: 'Linked palaces create additional retrieval pathways through contextual reinstatement. Walking between palaces strengthens connections between language domains.'
+      },
+      {
+        prompt: 'When building a new palace, what is the recommended number of loci to identify?',
+        options: ['3-5', '10-20', '50-100', '200+'],
+        correctIndex: 1,
+        explanation: '10-20 loci is ideal for a new palace. Enough to hold a meaningful set of vocabulary, but not so many that the loci become indistinct or hard to remember.'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 3: Fill in the Blank about palace locations ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-palace-locations'),
+  {
+    title: 'Palace Locations and Contents',
+    questions: [
+      {
+        prompt: 'The Kitchen palace (Ch02) contains ___ hiragana characters.',
+        answer: '46',
+        acceptAlso: ['46 hiragana', 'forty-six', '46 characters'],
+        explanation: 'All 46 basic hiragana characters are placed at distinct loci throughout the Kitchen palace.'
+      },
+      {
+        prompt: 'The Bathroom palace (Ch07) contains ___ core particles.',
+        answer: '11',
+        acceptAlso: ['11 particles', 'eleven', '11 core particles'],
+        explanation: 'All 11 essential Japanese particles are placed at bathroom loci.'
+      },
+      {
+        prompt: 'The weekly palace maintenance activity involves walking ___ palace(s) and takes approximately 10 minutes.',
+        answer: 'one',
+        acceptAlso: ['1', 'one palace', '1 palace'],
+        explanation: 'Each week, you walk one palace (rotating through all six over six weeks). The monthly walk covers all palaces.'
+      },
+      {
+        prompt: 'The Grand Tour route begins in the ___ and ends in the ___.',
+        answer: 'Kitchen, Bedroom',
+        acceptAlso: ['kitchen, bedroom', 'Kitchen and Bedroom', 'kitchen and bedroom', 'Kitchen Bedroom'],
+        explanation: 'The Grand Tour follows the route: Kitchen (hiragana) --> Living Room (katakana) --> Street (phrases) --> Park (vocabulary) --> Bathroom (particles) --> Bedroom (radicals).'
+      }
+    ]
+  }
+);
+</script>
+<script src="js/spaced-repetition.js"></script>
+<script src="js/memory-palace.js"></script>
+</body>
+</html>

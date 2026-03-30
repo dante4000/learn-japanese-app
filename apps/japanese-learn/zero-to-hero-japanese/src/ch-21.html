@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ch21: The 90-Day Sprint — Zero to Hero 日本語</title>
+<link rel="stylesheet" href="css/design-system.css">
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <span class="logo-badge">Zero to Hero — Memory Architecture Edition</span>
+    <div class="logo-title">日本語 for Korean Speakers</div>
+    <div class="logo-sub">From 한국어 to 日本語 — The Memory Architect's Guide</div>
+  </a>
+  <div class="sidebar-progress">
+    <div class="sidebar-progress-label">Progress</div>
+    <div class="sidebar-progress-bar">
+      <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+    </div>
+    <div class="sidebar-progress-count">0/22 complete</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="ch-00.html" class="toc-link"><span class="toc-num">00</span><span class="toc-check" data-ch="00"></span>Memory Science</a>
+    <a href="ch-01.html" class="toc-link"><span class="toc-num">01</span><span class="toc-check" data-ch="01"></span>Your Korean Advantage</a>
+    <a href="ch-02.html" class="toc-link"><span class="toc-num">02</span><span class="toc-check" data-ch="02"></span>Hiragana</a>
+    <a href="ch-03.html" class="toc-link"><span class="toc-num">03</span><span class="toc-check" data-ch="03"></span>Katakana</a>
+    <a href="ch-04.html" class="toc-link"><span class="toc-num">04</span><span class="toc-check" data-ch="04"></span>Pronunciation</a>
+    <a href="ch-05.html" class="toc-link"><span class="toc-num">05</span><span class="toc-check" data-ch="05"></span>Survival Japanese</a>
+    <a href="ch-06.html" class="toc-link"><span class="toc-num">06</span><span class="toc-check" data-ch="06"></span>Counters</a>
+    <a href="ch-07.html" class="toc-link"><span class="toc-num">07</span><span class="toc-check" data-ch="07"></span>Particles</a>
+    <a href="ch-08.html" class="toc-link"><span class="toc-num">08</span><span class="toc-check" data-ch="08"></span>Verb Conjugation</a>
+    <a href="ch-09.html" class="toc-link"><span class="toc-num">09</span><span class="toc-check" data-ch="09"></span>Daily Conversations</a>
+    <a href="ch-10.html" class="toc-link"><span class="toc-num">10</span><span class="toc-check" data-ch="10"></span>Sentence Patterns</a>
+    <a href="ch-11.html" class="toc-link"><span class="toc-num">11</span><span class="toc-check" data-ch="11"></span>Kanji</a>
+    <a href="ch-12.html" class="toc-link"><span class="toc-num">12</span><span class="toc-check" data-ch="12"></span>Sino-Vocabulary</a>
+    <a href="ch-13.html" class="toc-link"><span class="toc-num">13</span><span class="toc-check" data-ch="13"></span>Native Vocabulary</a>
+    <a href="ch-14.html" class="toc-link"><span class="toc-num">14</span><span class="toc-check" data-ch="14"></span>Honorifics</a>
+    <a href="ch-15.html" class="toc-link"><span class="toc-num">15</span><span class="toc-check" data-ch="15"></span>Reading</a>
+    <a href="ch-16.html" class="toc-link"><span class="toc-num">16</span><span class="toc-check" data-ch="16"></span>Writing</a>
+    <a href="ch-17.html" class="toc-link"><span class="toc-num">17</span><span class="toc-check" data-ch="17"></span>Listening</a>
+    <a href="ch-18.html" class="toc-link"><span class="toc-num">18</span><span class="toc-check" data-ch="18"></span>Cultural Pragmatics</a>
+    <a href="ch-19.html" class="toc-link"><span class="toc-num">19</span><span class="toc-check" data-ch="19"></span>JLPT and Beyond</a>
+    <a href="ch-20.html" class="toc-link"><span class="toc-num">20</span><span class="toc-check" data-ch="20"></span>Memory Palace</a>
+    <a href="ch-21.html" class="toc-link active"><span class="toc-num">21</span><span class="toc-check" data-ch="21"></span>The 90-Day Sprint</a>
+    <a href="appendices.html" class="toc-link" style="margin-top:.5rem;border-top:1px solid var(--border);padding-top:.8rem"><span class="toc-num">+</span>Appendices</a>
+  </nav>
+</aside>
+
+<div class="main">
+<div class="content-wrap">
+
+<section id="ch21" data-ch="21" style="padding-top:3rem">
+<h2><span class="ch-label">Chapter 21</span>The 90-Day Sprint — Putting It All Together</h2>
+
+<div class="callout memory">
+  <div class="callout-title">Memory Technique Spotlight: Implementation Intentions</div>
+  <p>Research by Peter Gollwitzer shows that people who form <strong>implementation intentions</strong> ("I will do X at time Y in location Z") are 2-3x more likely to follow through than those who simply set goals. This chapter turns your Japanese learning goal into a concrete, day-by-day plan with specific time slots and habit triggers.</p>
+</div>
+
+<!-- Recall Check from Ch20 -->
+<div id="quiz-recall-top"></div>
+
+<p>You have all the tools. Twenty chapters of grammar, vocabulary, kanji, memory palaces, and spaced repetition. Now you need one thing: <strong>a plan that fits your life</strong>. This chapter gives you a complete 90-day sprint that takes you from the first page of this book to functional conversational Japanese.</p>
+
+<div class="pq">
+  "The best study plan is the one you actually follow. Ninety days of consistent 45-minute sessions will outperform a year of sporadic weekend cramming."
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SECTION 1: THE 90-DAY CALENDAR -->
+<!-- ══════════════════════════════════════════════════════ -->
+<nav class="chapter-toc">
+  <details open>
+    <summary class="chapter-toc-title">In This Chapter</summary>
+  <ol>
+    <li><a href="#1-the-90-day-calendar">The 90-Day Calendar</a></li>
+    <li><a href="#2-habit-stacking">Habit Stacking</a></li>
+    <li><a href="#3-progress-metrics">Progress Metrics</a></li>
+    <li><a href="#4-from-zero-to-hero">From Zero to Hero</a></li>
+    <li><a href="#interactive-exercises">Interactive Exercises</a></li>
+  </ol>
+  </details>
+</nav>
+
+<h3 id="1-the-90-day-calendar">The 90-Day Calendar</h3>
+
+<p>The sprint is divided into three 30-day phases. Each phase increases in depth but not dramatically in daily time commitment. The key principle is <strong>consistency over intensity</strong>: 45 minutes every day beats 4 hours on Saturday.</p>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>Phase 1: Foundation <span class="transfer-tag full">Days 1-30</span></h4>
+    <p style="font-size:1.8rem;font-family:var(--serif);color:var(--accent);margin:.3rem 0">45 min/day</p>
+    <p>Chapters 00-07. Build your memory architecture, master both kana scripts, establish your first four memory palaces, learn survival phrases, particles, and basic verb conjugation. By the end of Phase 1, you can read hiragana and katakana fluently, navigate basic Japanese situations, and construct simple sentences.</p>
+  </div>
+  <div class="card">
+    <h4>Phase 2: Expansion <span class="transfer-tag partial">Days 31-60</span></h4>
+    <p style="font-size:1.8rem;font-family:var(--serif);color:var(--accent);margin:.3rem 0">45-60 min/day</p>
+    <p>Chapters 08-14. Expand into daily conversations, sentence patterns, kanji, Sino-vocabulary, native vocabulary, honorifics, and reading. Build your fifth and sixth memory palaces. By the end of Phase 2, you have 300+ kanji, 2000+ vocabulary words, and can hold basic conversations.</p>
+  </div>
+  <div class="card">
+    <h4>Phase 3: Depth <span class="transfer-tag partial">Days 61-90</span></h4>
+    <p style="font-size:1.8rem;font-family:var(--serif);color:var(--accent);margin:.3rem 0">45 min/day</p>
+    <p>Chapters 15-20. Develop writing, listening, and cultural pragmatics skills. Prepare for JLPT, consolidate your memory palace architecture, and establish long-term maintenance habits. By the end of Phase 3, you are ready for N3-level material.</p>
+  </div>
+</div>
+
+<h4>Week-by-Week Breakdown</h4>
+<table>
+  <thead>
+    <tr><th>Week</th><th>Days</th><th>Chapters</th><th>Focus</th><th>Daily Time</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>1</strong></td><td>1-7</td><td>Ch00-01</td><td>Memory science foundations, Korean transfer map, set up SM-2 system</td><td>45 min</td></tr>
+    <tr><td><strong>2</strong></td><td>8-14</td><td>Ch02-03</td><td>Hiragana (Kitchen palace), Katakana (Living Room palace)</td><td>45 min</td></tr>
+    <tr><td><strong>3</strong></td><td>15-21</td><td>Ch04-05</td><td>Pronunciation drills, Survival Japanese (Street Route palace)</td><td>45 min</td></tr>
+    <tr><td><strong>4</strong></td><td>22-30</td><td>Ch07-07</td><td>Particles (Bathroom palace), Verb conjugation basics</td><td>45 min</td></tr>
+    <tr style="border-top:2px solid var(--accent)"><td><strong>5</strong></td><td>31-37</td><td>Ch09-09</td><td>Daily conversations, Sentence patterns, first speaking practice</td><td>50 min</td></tr>
+    <tr><td><strong>6</strong></td><td>38-44</td><td>Ch11-11</td><td>Kanji radicals (Bedroom palace), Sino-vocabulary transfer</td><td>55 min</td></tr>
+    <tr><td><strong>7</strong></td><td>45-51</td><td>Ch13-13</td><td>Native vocabulary (Park palace), Honorifics system</td><td>60 min</td></tr>
+    <tr><td><strong>8</strong></td><td>52-60</td><td>Ch15</td><td>Reading comprehension, kanji chunk reading, review and consolidation</td><td>55 min</td></tr>
+    <tr style="border-top:2px solid var(--accent)"><td><strong>9</strong></td><td>61-67</td><td>Ch16-16</td><td>Writing practice, Listening and shadowing</td><td>45 min</td></tr>
+    <tr><td><strong>10</strong></td><td>68-74</td><td>Ch18-18</td><td>Cultural pragmatics, JLPT preparation strategy</td><td>45 min</td></tr>
+    <tr><td><strong>11</strong></td><td>75-81</td><td>Ch20</td><td>Palace consolidation, Grand Tour, build new palaces</td><td>45 min</td></tr>
+    <tr><td><strong>12-13</strong></td><td>82-90</td><td>Ch21</td><td>Full review, self-assessment, establish long-term habits</td><td>45 min</td></tr>
+  </tbody>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">Flexibility Built In</div>
+  <p>Life happens. If you miss a day, do not try to "make it up" with a double session. Simply resume the next day where you left off. The SM-2 algorithm will automatically reschedule any items you missed. If you finish a chapter early, use the extra time for palace walks or additional SM-2 review rather than rushing ahead.</p>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SECTION 2: HABIT STACKING -->
+<!-- ══════════════════════════════════════════════════════ -->
+<h3 id="2-habit-stacking">Habit Stacking</h3>
+
+<p>The most reliable way to build a new habit is to attach it to an existing one. This is called <strong>habit stacking</strong> (from James Clear's <em>Atomic Habits</em>). Instead of "I will study Japanese for 45 minutes," you commit to "After [existing habit], I will [Japanese study activity]." The existing habit becomes the trigger.</p>
+
+<table>
+  <thead>
+    <tr><th>Existing Habit (Trigger)</th><th>Japanese Study Activity</th><th>Duration</th><th>What You Do</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>After waking up</strong></td>
+      <td>Morning Review</td>
+      <td>5 min</td>
+      <td>SM-2 review of due items. Start the day by recalling what the algorithm has scheduled. This primes your brain for Japanese before the day begins.</td>
+    </tr>
+    <tr>
+      <td><strong>During commute</strong></td>
+      <td>NHK Easy listening</td>
+      <td>20-30 min</td>
+      <td>Listen to NHK News Web Easy or a Japanese podcast. Focus on comprehension, not production. Shadow along quietly when possible. This is passive immersion.</td>
+    </tr>
+    <tr>
+      <td><strong>During lunch break</strong></td>
+      <td>New chapter section</td>
+      <td>15-20 min</td>
+      <td>Work through one section of the current chapter. Read explanations, study examples, place new items in your memory palace. This is your primary learning time.</td>
+    </tr>
+    <tr>
+      <td><strong>After dinner</strong></td>
+      <td>Practice exercises</td>
+      <td>15-20 min</td>
+      <td>Complete the interactive quizzes and exercises for the current chapter. This is retrieval practice -- the most effective form of study.</td>
+    </tr>
+    <tr>
+      <td><strong>Before bed</strong></td>
+      <td>Palace Walk + hard items</td>
+      <td>5-10 min</td>
+      <td>Walk one section of your memory palace. Review any items you got wrong during the day. Sleep consolidates memories, so this is the optimal time for final review.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout warn">
+  <div class="callout-title">Elaborative Interrogation</div>
+  <p><strong>WHY is studying before bed particularly effective for memory consolidation?</strong></p>
+  <p>During sleep, the hippocampus replays the day's learning experiences and transfers them to long-term cortical storage. Material studied shortly before sleep gets priority in this replay process. Studies show that items reviewed before bed are retained 20-30% better than items reviewed in the morning, all else being equal.</p>
+</div>
+
+<div class="diagram">
+  <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg">
+    <text x="350" y="22" text-anchor="middle" font-size="13" font-weight="600" fill="var(--heading)">Daily Study Flow</text>
+
+    <!-- Timeline -->
+    <line x1="50" y1="100" x2="660" y2="100" stroke="var(--border)" stroke-width="2"/>
+
+    <!-- Morning -->
+    <circle cx="100" cy="100" r="20" fill="none" stroke="var(--a3)" stroke-width="2"/>
+    <text x="100" y="104" text-anchor="middle" font-size="9" font-weight="600" fill="var(--a3)">5m</text>
+    <text x="100" y="75" text-anchor="middle" font-size="9" fill="var(--heading)" font-weight="600">Wake</text>
+    <text x="100" y="135" text-anchor="middle" font-size="8" fill="var(--text-muted)">SM-2</text>
+    <text x="100" y="147" text-anchor="middle" font-size="8" fill="var(--text-muted)">Review</text>
+
+    <!-- Commute -->
+    <circle cx="230" cy="100" r="25" fill="none" stroke="var(--accent)" stroke-width="2"/>
+    <text x="230" y="104" text-anchor="middle" font-size="9" font-weight="600" fill="var(--accent)">25m</text>
+    <text x="230" y="70" text-anchor="middle" font-size="9" fill="var(--heading)" font-weight="600">Commute</text>
+    <text x="230" y="140" text-anchor="middle" font-size="8" fill="var(--text-muted)">NHK Easy</text>
+    <text x="230" y="152" text-anchor="middle" font-size="8" fill="var(--text-muted)">Listening</text>
+
+    <!-- Lunch -->
+    <circle cx="370" cy="100" r="25" fill="none" stroke="var(--accent)" stroke-width="2"/>
+    <text x="370" y="104" text-anchor="middle" font-size="9" font-weight="600" fill="var(--accent)">18m</text>
+    <text x="370" y="70" text-anchor="middle" font-size="9" fill="var(--heading)" font-weight="600">Lunch</text>
+    <text x="370" y="140" text-anchor="middle" font-size="8" fill="var(--text-muted)">New</text>
+    <text x="370" y="152" text-anchor="middle" font-size="8" fill="var(--text-muted)">Material</text>
+
+    <!-- After dinner -->
+    <circle cx="500" cy="100" r="25" fill="none" stroke="var(--accent)" stroke-width="2"/>
+    <text x="500" y="104" text-anchor="middle" font-size="9" font-weight="600" fill="var(--accent)">18m</text>
+    <text x="500" y="70" text-anchor="middle" font-size="9" fill="var(--heading)" font-weight="600">Dinner</text>
+    <text x="500" y="140" text-anchor="middle" font-size="8" fill="var(--text-muted)">Practice</text>
+    <text x="500" y="152" text-anchor="middle" font-size="8" fill="var(--text-muted)">Exercises</text>
+
+    <!-- Before bed -->
+    <circle cx="620" cy="100" r="20" fill="none" stroke="var(--a2)" stroke-width="2"/>
+    <text x="620" y="104" text-anchor="middle" font-size="9" font-weight="600" fill="var(--a2)">8m</text>
+    <text x="620" y="75" text-anchor="middle" font-size="9" fill="var(--heading)" font-weight="600">Bed</text>
+    <text x="620" y="135" text-anchor="middle" font-size="8" fill="var(--text-muted)">Palace</text>
+    <text x="620" y="147" text-anchor="middle" font-size="8" fill="var(--text-muted)">Walk</text>
+
+    <!-- Total -->
+    <text x="350" y="185" text-anchor="middle" font-size="10" fill="var(--a3)" font-weight="600">Total: ~74 minutes spread across 5 natural touchpoints</text>
+  </svg>
+  <div class="diagram-caption">By distributing study across existing daily habits, you create five touchpoints without ever needing a single uninterrupted 45-minute block.</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SECTION 3: PROGRESS METRICS -->
+<!-- ══════════════════════════════════════════════════════ -->
+<h3 id="3-progress-metrics">Progress Metrics</h3>
+
+<p>You need concrete targets to know if you are on track. Below are self-assessment checkpoints at Day 30, Day 60, and Day 90. These are not pass/fail tests -- they are diagnostic tools. If you fall short in one area, you know where to focus extra time.</p>
+
+<div class="card">
+  <h4>Day 30 Self-Assessment <span class="transfer-tag full">End of Phase 1</span></h4>
+  <table>
+    <thead><tr><th>Skill Area</th><th>Target</th><th>How to Test</th></tr></thead>
+    <tbody>
+      <tr><td>Hiragana</td><td>All 46 characters recognized and written from memory</td><td>Write all 46 from memory in under 5 minutes, 100% accuracy</td></tr>
+      <tr><td>Katakana</td><td>All 46 characters recognized and written from memory</td><td>Write all 46 from memory in under 5 minutes, 100% accuracy</td></tr>
+      <tr><td>Survival Phrases</td><td>50+ phrases recalled and used correctly</td><td>Walk the Street Route palace, recall 50+ phrases without prompts</td></tr>
+      <tr><td>Particles</td><td>All 11 basic particles understood with Korean equivalents</td><td>Complete a particle fill-in-the-blank exercise with 90%+ accuracy</td></tr>
+      <tr><td>Verb Conjugation</td><td>Present, past, negative for Group 1, 2, and 3 verbs</td><td>Conjugate 10 random verbs through all basic forms</td></tr>
+      <tr><td>Memory Palaces</td><td>4 palaces built and walkable (Kitchen, Living Room, Street, Bathroom)</td><td>Walk each palace mentally, recalling 90%+ of items</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="card">
+  <h4>Day 60 Self-Assessment <span class="transfer-tag partial">End of Phase 2</span></h4>
+  <table>
+    <thead><tr><th>Skill Area</th><th>Target</th><th>How to Test</th></tr></thead>
+    <tbody>
+      <tr><td>Kanji</td><td>300+ kanji recognized with readings</td><td>Flashcard test: recognize 300 kanji with at least one reading each</td></tr>
+      <tr><td>Vocabulary</td><td>2,000+ words (Sino + native combined)</td><td>SM-2 item count. Aim for 80%+ recall rate on mature items</td></tr>
+      <tr><td>Conversations</td><td>Basic self-introduction, ordering, asking directions</td><td>Role-play 3 common scenarios without script</td></tr>
+      <tr><td>Honorifics</td><td>Distinguish <span class="jp">です/ます</span>, <span class="jp">尊敬語</span>, <span class="jp">謙譲語</span></td><td>Choose correct register for 10 social scenarios</td></tr>
+      <tr><td>Reading</td><td>Read simple NHK Easy articles with dictionary support</td><td>Read one article, answer comprehension questions, 70%+ accuracy</td></tr>
+      <tr><td>Memory Palaces</td><td>6 palaces built and walkable, all linked</td><td>Walk the Grand Tour, recalling 85%+ of items</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="card">
+  <h4>Day 90 Self-Assessment <span class="transfer-tag full">End of Phase 3</span></h4>
+  <table>
+    <thead><tr><th>Skill Area</th><th>Target</th><th>How to Test</th></tr></thead>
+    <tbody>
+      <tr><td>Kanji</td><td>650+ kanji recognized with multiple readings</td><td>Flashcard test: recognize 650 kanji. Know both on'yomi and kun'yomi for the top 200</td></tr>
+      <tr><td>Vocabulary</td><td>3,500+ words</td><td>SM-2 item count. Aim for 85%+ recall rate on mature items</td></tr>
+      <tr><td>Grammar</td><td>N3-level grammar patterns recognized and used</td><td>Complete N3 grammar practice problems with 70%+ accuracy</td></tr>
+      <tr><td>Listening</td><td>Follow NHK Easy audio at natural speed</td><td>Listen to 3 NHK Easy audio clips, answer comprehension questions, 70%+ accuracy</td></tr>
+      <tr><td>Writing</td><td>Write 10-sentence self-introduction and short diary entries</td><td>Write a 150+ character passage without dictionary, checked by a native speaker or AI</td></tr>
+      <tr><td>Memory Architecture</td><td>All palaces maintained, Grand Tour walkable, new palaces started</td><td>Complete Grand Tour in under 45 minutes with 90%+ recall</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="callout ok">
+  <div class="callout-title">Progress Is Not Linear</div>
+  <p>You will likely exceed some targets and fall short of others. That is normal. The purpose of these assessments is not judgment but <strong>diagnosis</strong>. If your kanji is ahead of schedule but your listening is behind, shift your daily habit-stacking commute time from podcasts to shadowing exercises. Adapt the plan to your reality.</p>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SECTION 4: CLOSING MESSAGE -->
+<!-- ══════════════════════════════════════════════════════ -->
+<h3 id="4-from-zero-to-hero">From Zero to Hero</h3>
+
+<p>You began this book as a Korean speaker looking at Japanese as a foreign language. You end it as a <strong>memory architect</strong> who has built a permanent structure for Japanese in your mind -- six memory palaces, a spaced repetition system, and a deep understanding of how your Korean gives you a 40% head start that most learners can only dream of.</p>
+
+<p>The 90 days are just the beginning. The architecture you have built does not expire. Your memory palaces will be there whenever you walk them. Your SM-2 intervals will stretch longer and longer as items move from active learning to permanent knowledge. The grammar structures you internalized through Korean transfer will feel more natural with each conversation.</p>
+
+<div class="pq">
+  "You did not memorize Japanese. You built a place for it to live."
+</div>
+
+<div class="card" style="text-align:center;border:2px solid var(--accent);padding:2rem">
+  <h4 style="color:var(--accent);font-size:1.3rem;margin-bottom:1rem">What You Can Now Read</h4>
+  <p style="font-size:1.1rem;line-height:1.8;margin-bottom:1.5rem">
+    <span class="jp" style="font-size:1.2rem">この本を最後まで読んでくれて、本当にありがとうございます。</span><br>
+    <span style="font-size:.88rem;color:var(--text-muted)">Thank you truly for reading this book to the very end.</span>
+  </p>
+  <p style="font-size:1.1rem;line-height:1.8;margin-bottom:1.5rem">
+    <span class="jp" style="font-size:1.2rem">あなたはもう「ゼロ」ではありません。</span><br>
+    <span style="font-size:.88rem;color:var(--text-muted)">You are no longer "zero."</span>
+  </p>
+  <p style="font-size:1.1rem;line-height:1.8;margin-bottom:1.5rem">
+    <span class="jp" style="font-size:1.2rem">韓国語の知識を土台にして、日本語の世界への扉を開きました。</span><br>
+    <span style="font-size:.88rem;color:var(--text-muted)">Using your Korean knowledge as a foundation, you have opened the door to the world of Japanese.</span>
+  </p>
+  <p style="font-size:1.1rem;line-height:1.8;margin-bottom:0">
+    <span class="jp" style="font-size:1.2rem">これからも、毎日少しずつ、前に進んでください。ヒーローへの道は続きます。</span><br>
+    <span style="font-size:.88rem;color:var(--text-muted)">From now on, keep moving forward, little by little, every day. The road to hero continues.</span>
+  </p>
+</div>
+
+<div class="callout info" style="margin-top:2rem">
+  <div class="callout-title">The Fact That You Can Read the Above</div>
+  <p>Look at those Japanese sentences. Three months ago, they would have been indecipherable symbols. Now you can read the hiragana, recognize the katakana loanword, parse the kanji through your Sino-vocabulary knowledge, identify the particles, and understand the verb conjugations. <strong>That is not zero. That is hero.</strong></p>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- INTERACTIVE EXERCISES -->
+<!-- ══════════════════════════════════════════════════════ -->
+<h3 id="interactive-exercises">Interactive Exercises</h3>
+
+<!-- Quiz 1: Study Planning Multiple Choice -->
+<div id="quiz-study-plan"></div>
+
+<!-- Quiz 2: 90-Day Targets Fill-in-the-Blank -->
+<div id="quiz-targets"></div>
+
+<!-- Mark as Complete -->
+<button class="chapter-complete" data-ch="21">Mark as Complete &#10003;</button>
+
+<div style="display:flex;justify-content:space-between;margin:2rem 0">
+  <a href="ch-20.html" class="quiz-btn secondary">&larr; Chapter 21: Memory Palace</a>
+  <a href="appendices.html" class="quiz-btn">Appendices &rarr;</a>
+</div>
+
+</section>
+
+</div>
+
+
+</div>
+
+<footer>
+  <p>Zero to Hero: 日本語 for Korean Speakers &middot; Chapter 21</p>
+</footer>
+
+<script src="js/shared.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/quiz-engine.js"></script>
+<script>
+// ─── Recall Check from Ch20 (top) ───
+QuizEngine.RecallCheck(
+  document.getElementById('quiz-recall-top'),
+  {
+    fromChapters: 'Ch20',
+    items: [
+      { question: 'Ch20: How many total items are placed across all six memory palaces?', answer: '393+ items across six palaces: Kitchen (46 hiragana), Living Room (46 katakana), Street Route (60+ phrases), Bathroom (11 particles), Bedroom (30 radicals), Park (200+ vocabulary).' },
+      { question: 'Ch20: What is the Grand Tour route order?', answer: 'Kitchen --> Living Room --> (exit house) --> Street Route --> (arrive) --> Park --> (return home) --> Bathroom --> Bedroom.' },
+      { question: 'Ch20: How often should you walk the full Grand Tour?', answer: 'Quarterly (approximately every 3 months), taking about 45 minutes.' }
+    ]
+  }
+);
+
+// ─── Quiz 1: Study Planning Multiple Choice ───
+QuizEngine.MultipleChoice(
+  document.getElementById('quiz-study-plan'),
+  {
+    title: 'Study Planning Knowledge',
+    questions: [
+      {
+        prompt: 'What is the recommended daily study time during Phase 1 (Days 1-30)?',
+        options: ['15 minutes', '30 minutes', '45 minutes', '90 minutes'],
+        correctIndex: 2,
+        explanation: 'Phase 1 requires 45 minutes per day. This is enough time to work through foundation chapters (Ch00-07) at a sustainable pace without burning out.'
+      },
+      {
+        prompt: 'Which habit stacking slot is recommended for new chapter material?',
+        options: ['After waking (Morning Review)', 'During commute', 'During lunch break', 'Before bed'],
+        correctIndex: 2,
+        explanation: 'The lunch break (15-20 minutes) is recommended for new chapter sections. This is your primary learning time, when you read explanations, study examples, and place new items in your memory palace.'
+      },
+      {
+        prompt: 'What should you do if you miss a day of study?',
+        options: [
+          'Do a double session the next day to catch up',
+          'Start the 90-day count over from Day 1',
+          'Simply resume the next day where you left off',
+          'Skip ahead to stay on schedule'
+        ],
+        correctIndex: 2,
+        explanation: 'Simply resume where you left off. Do not try to "make up" missed time with double sessions. The SM-2 algorithm automatically reschedules items you missed.'
+      },
+      {
+        prompt: 'Why is studying before bed particularly effective?',
+        options: [
+          'You are more relaxed and focused',
+          'Sleep consolidates memories, giving priority to recently reviewed material',
+          'There are fewer distractions at night',
+          'The brain is more creative in the evening'
+        ],
+        correctIndex: 1,
+        explanation: 'During sleep, the hippocampus replays the day\'s learning and transfers it to long-term cortical storage. Material reviewed before bed gets priority in this consolidation process.'
+      },
+      {
+        prompt: 'What does "habit stacking" mean?',
+        options: [
+          'Studying multiple subjects at the same time',
+          'Increasing study time each day',
+          'Attaching a new habit to an existing one as a trigger',
+          'Stacking flashcards in order of difficulty'
+        ],
+        correctIndex: 2,
+        explanation: 'Habit stacking means attaching a new habit to an existing one. "After [existing habit], I will [new habit]." The existing habit serves as the trigger, making the new behavior automatic.'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 2: 90-Day Targets Fill-in-the-Blank ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-targets'),
+  {
+    title: '90-Day Sprint Targets',
+    questions: [
+      {
+        prompt: 'By Day 30, you should have mastered all ___ hiragana and all ___ katakana characters.',
+        answer: '46, 46',
+        acceptAlso: ['46 and 46', '46, 46', '46 46', 'forty-six'],
+        explanation: 'Both hiragana and katakana have 46 basic characters each. All should be fully memorized by the end of Phase 1.'
+      },
+      {
+        prompt: 'By Day 60, the kanji target is ___+ kanji recognized with readings.',
+        answer: '300',
+        acceptAlso: ['300+', '300 kanji', 'three hundred'],
+        explanation: 'The Day 60 target is 300+ kanji. This covers the most common characters encountered in everyday reading.'
+      },
+      {
+        prompt: 'By Day 90, the vocabulary target is ___+ words.',
+        answer: '3500',
+        acceptAlso: ['3,500', '3500+', '3,500+', '3500 words'],
+        explanation: 'The Day 90 vocabulary target is 3,500+ words, combining Sino-vocabulary cognates and native Japanese words.'
+      },
+      {
+        prompt: 'Phase 1 covers Chapters 00 through ___.',
+        answer: '07',
+        acceptAlso: ['7', 'Ch08', 'chapter 08', 'chapter 7'],
+        explanation: 'Phase 1 (Days 1-30) covers Chapters 00-07: memory science, Korean advantage, hiragana, katakana, pronunciation, survival Japanese, particles, and verb conjugation.'
+      },
+      {
+        prompt: 'The Day 90 kanji target is ___+ kanji with multiple readings.',
+        answer: '650',
+        acceptAlso: ['650+', '650 kanji', 'six hundred fifty'],
+        explanation: '650+ kanji by Day 90, corresponding to the N3 kanji requirement. For the top 200, you should know both on\'yomi and kun\'yomi readings.'
+      }
+    ]
+  }
+);
+</script>
+<script src="js/spaced-repetition.js"></script>
+<script src="js/memory-palace.js"></script>
+</body>
+</html>

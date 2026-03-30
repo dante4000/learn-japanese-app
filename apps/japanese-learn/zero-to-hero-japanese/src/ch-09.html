@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ch09: Daily Conversations — Zero to Hero 日本語</title>
+<link rel="stylesheet" href="css/design-system.css">
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <span class="logo-badge">Zero to Hero — Memory Architecture Edition</span>
+    <div class="logo-title">日本語 for Korean Speakers</div>
+    <div class="logo-sub">From 한국어 to 日本語 — The Memory Architect's Guide</div>
+  </a>
+  <div class="sidebar-progress">
+    <div class="sidebar-progress-label">Progress</div>
+    <div class="sidebar-progress-bar">
+      <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+    </div>
+    <div class="sidebar-progress-count">0/22 complete</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="ch-00.html" class="toc-link"><span class="toc-num">00</span><span class="toc-check" data-ch="00"></span>Memory Science</a>
+    <a href="ch-01.html" class="toc-link"><span class="toc-num">01</span><span class="toc-check" data-ch="01"></span>Your Korean Advantage</a>
+    <a href="ch-02.html" class="toc-link"><span class="toc-num">02</span><span class="toc-check" data-ch="02"></span>Hiragana</a>
+    <a href="ch-03.html" class="toc-link"><span class="toc-num">03</span><span class="toc-check" data-ch="03"></span>Katakana</a>
+    <a href="ch-04.html" class="toc-link"><span class="toc-num">04</span><span class="toc-check" data-ch="04"></span>Pronunciation</a>
+    <a href="ch-05.html" class="toc-link"><span class="toc-num">05</span><span class="toc-check" data-ch="05"></span>Survival Japanese</a>
+    <a href="ch-06.html" class="toc-link"><span class="toc-num">06</span><span class="toc-check" data-ch="06"></span>Counters</a>
+    <a href="ch-07.html" class="toc-link"><span class="toc-num">07</span><span class="toc-check" data-ch="07"></span>Particles</a>
+    <a href="ch-08.html" class="toc-link"><span class="toc-num">08</span><span class="toc-check" data-ch="08"></span>Verb Conjugation</a>
+    <a href="ch-09.html" class="toc-link active"><span class="toc-num">09</span><span class="toc-check" data-ch="09"></span>Daily Conversations</a>
+    <a href="ch-10.html" class="toc-link"><span class="toc-num">10</span><span class="toc-check" data-ch="10"></span>Sentence Patterns</a>
+    <a href="ch-11.html" class="toc-link"><span class="toc-num">11</span><span class="toc-check" data-ch="11"></span>Kanji</a>
+    <a href="ch-12.html" class="toc-link"><span class="toc-num">12</span><span class="toc-check" data-ch="12"></span>Sino-Vocabulary</a>
+    <a href="ch-13.html" class="toc-link"><span class="toc-num">13</span><span class="toc-check" data-ch="13"></span>Native Vocabulary</a>
+    <a href="ch-14.html" class="toc-link"><span class="toc-num">14</span><span class="toc-check" data-ch="14"></span>Honorifics</a>
+    <a href="ch-15.html" class="toc-link"><span class="toc-num">15</span><span class="toc-check" data-ch="15"></span>Reading</a>
+    <a href="ch-16.html" class="toc-link"><span class="toc-num">16</span><span class="toc-check" data-ch="16"></span>Writing</a>
+    <a href="ch-17.html" class="toc-link"><span class="toc-num">17</span><span class="toc-check" data-ch="17"></span>Listening</a>
+    <a href="ch-18.html" class="toc-link"><span class="toc-num">18</span><span class="toc-check" data-ch="18"></span>Cultural Pragmatics</a>
+    <a href="ch-19.html" class="toc-link"><span class="toc-num">19</span><span class="toc-check" data-ch="19"></span>JLPT and Beyond</a>
+    <a href="ch-20.html" class="toc-link"><span class="toc-num">20</span><span class="toc-check" data-ch="20"></span>Memory Palace</a>
+    <a href="ch-21.html" class="toc-link"><span class="toc-num">21</span><span class="toc-check" data-ch="21"></span>The 90-Day Sprint</a>
+    <a href="appendices.html" class="toc-link" style="margin-top:.5rem;border-top:1px solid var(--border);padding-top:.8rem"><span class="toc-num">+</span>Appendices</a>
+  </nav>
+</aside>
+
+<div class="main">
+<div class="content-wrap">
+
+<section id="ch09" data-ch="09" style="padding-top:3rem">
+<h2><span class="ch-label">Chapter 09</span>Daily Conversations -- Phrases That Get You Through the Day</h2>
+
+<div class="callout memory">
+  <div class="callout-title">Memory Technique Spotlight: Episode Encoding + Social Simulation</div>
+  <p>Conversations are stored as episodes — mini-movies in your memory. By mentally simulating social interactions (self-introductions, small talk, goodbyes), you create vivid episodic memories that activate automatically in real situations. The Self-Reference Effect means using YOUR actual name and details makes the encoding even stronger.</p>
+</div>
+
+<p>Chapter 05 gave you <strong>survival fragments</strong> -- enough to order food and ask for directions. Now, with particles (Ch07) and verb conjugation (Ch08) under your belt, it is time to speak in <strong>complete, connected sentences</strong>. This chapter teaches you the conversational patterns that turn a tourist into someone who can actually <em>interact</em> with people.</p>
+
+<div class="pq">
+  "Survival phrases get you through a transaction. Conversational patterns get you through a relationship."
+</div>
+
+<!-- ─── Recall Check (from Ch05-07) ─── -->
+<div id="recall-check-top"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     8A: SELF-INTRODUCTION (自己紹介)
+     ═══════════════════════════════════════════════════════════════ -->
+<nav class="chapter-toc">
+  <details open>
+    <summary class="chapter-toc-title">In This Chapter</summary>
+  <ol>
+    <li><a href="#8a-self-introduction-自己紹介-자기소개">Self-Introduction (自己紹介 / 자기소개)</a></li>
+    <li><a href="#8b-small-talk-patterns-世間話-일상-대화">Small Talk Patterns (世間話 / 일상 대화)</a></li>
+    <li><a href="#8c-making-plans-約束する-약속하다">Making Plans (約束する / 약속하다)</a></li>
+    <li><a href="#8d-expressing-opinions-意見を言う-의견-말하기">Expressing Opinions (意見を言う / 의견 말하기)</a></li>
+    <li><a href="#8e-apologies-and-requests----the-escalation-ladder">Apologies and Requests -- The Escalation Ladder</a></li>
+    <li><a href="#8f-filler-words----what-makes-you-sound-natural-つなぎ言葉">Filler Words -- What Makes You Sound Natural (つなぎ言葉)</a></li>
+    <li><a href="#interactive-exercises">Interactive Exercises</a></li>
+  </ol>
+  </details>
+</nav>
+
+<h3 id="8a-self-introduction-自己紹介-자기소개">Self-Introduction (自己紹介 / 자기소개)</h3>
+<p>The self-introduction is a <strong>ritual</strong> in Japan. At a party, at work, at a language exchange -- you will deliver this script dozens of times. The structure is nearly identical to Korean, so the transfer is massive.</p>
+
+<div class="callout info">
+  <div class="callout-title">자기소개/自己紹介 -- Another Cognate!</div>
+  <p><span class="kr">자기소개</span> (自己紹介) and <span class="jp">じこしょうかい</span> (自己紹介) share the exact same kanji. Korean: ja-gi-so-gae. Japanese: ji-ko-shou-kai. Same concept, same characters, predictable sound shift.</p>
+</div>
+
+<h4>The Full Self-Introduction Script</h4>
+<div class="card">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+    <div>
+      <h4 style="color:var(--accent)">Japanese (日本語)</h4>
+      <p style="font-size:1.1rem;line-height:2"><span class="jp">初めまして。</span><br>
+      <span class="jp">[Name]と申します。</span><br>
+      <span class="jp">韓国から来ました。</span><br>
+      <span class="jp">[Occupation]をしています。</span><br>
+      <span class="jp">日本語を勉強しています。</span><br>
+      <span class="jp">どうぞよろしくお願いします。</span></p>
+    </div>
+    <div>
+      <h4 style="color:var(--a2)">Korean (한국어)</h4>
+      <p style="font-size:1.1rem;line-height:2"><span class="kr">처음 뵙겠습니다.</span><br>
+      <span class="kr">[이름]이라고 합니다.</span><br>
+      <span class="kr">한국에서 왔습니다.</span><br>
+      <span class="kr">[직업]을 하고 있습니다.</span><br>
+      <span class="kr">일본어를 공부하고 있습니다.</span><br>
+      <span class="kr">잘 부탁드립니다.</span></p>
+    </div>
+  </div>
+</div>
+
+<h4>Line-by-Line Breakdown</h4>
+<table>
+  <thead>
+    <tr><th>Line</th><th>Japanese</th><th>Romaji</th><th>Literal Meaning</th><th>Korean Parallel</th><th>Grammar Note</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Greeting</td>
+      <td class="jp">初めまして</td>
+      <td>hajimemashite</td>
+      <td>"For the first time" (beginning)</td>
+      <td class="kr">처음 뵙겠습니다</td>
+      <td>Set phrase -- memorize as a unit</td>
+    </tr>
+    <tr>
+      <td>Name</td>
+      <td class="jp">[Name]と申します</td>
+      <td>[Name] to moushimasu</td>
+      <td>[Name]-[quote] humbly-say</td>
+      <td class="kr">[이름]이라고 합니다</td>
+      <td>と = quotation particle (Korean 라고). 申す = humble form of 言う</td>
+    </tr>
+    <tr>
+      <td>Origin</td>
+      <td class="jp">韓国から来ました</td>
+      <td>kankoku kara kimashita</td>
+      <td>Korea-from came-[polite-past]</td>
+      <td class="kr">한국에서 왔습니다</td>
+      <td>から = from (Korean 에서). 来ました = past polite of 来る</td>
+    </tr>
+    <tr>
+      <td>Occupation</td>
+      <td class="jp">[X]をしています</td>
+      <td>[X] wo shiteimasu</td>
+      <td>[X]-[object] doing-am</td>
+      <td class="kr">[X]을 하고 있습니다</td>
+      <td>している = progressive form (Ch08). Identical structure to Korean ~하고 있다</td>
+    </tr>
+    <tr>
+      <td>Study</td>
+      <td class="jp">日本語を勉強しています</td>
+      <td>nihongo wo benkyou shiteimasu</td>
+      <td>Japanese-[object] study doing-am</td>
+      <td class="kr">일본어를 공부하고 있습니다</td>
+      <td>勉強/공부 = study. Both use する/하다 verb pattern</td>
+    </tr>
+    <tr>
+      <td>Closing</td>
+      <td class="jp">どうぞよろしくお願いします</td>
+      <td>douzo yoroshiku onegai shimasu</td>
+      <td>please well-[hon]-wish do-[polite]</td>
+      <td class="kr">잘 부탁드립니다</td>
+      <td>Untranslatable set phrase. Meaning: "Please look favorably upon me"</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4>Common Occupations for Self-Introduction</h4>
+<table>
+  <thead>
+    <tr><th>Japanese</th><th>Romaji</th><th>Korean</th><th>Meaning</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="jp">会社員</td><td>kaishain</td><td class="kr">회사원</td><td>Company employee -- <span class="cognate-tag">Cognate</span></td></tr>
+    <tr><td class="jp">学生</td><td>gakusei</td><td class="kr">학생</td><td>Student -- <span class="cognate-tag">Cognate</span></td></tr>
+    <tr><td class="jp">エンジニア</td><td>enjinia</td><td class="kr">엔지니어</td><td>Engineer (both katakana loanwords)</td></tr>
+    <tr><td class="jp">デザイナー</td><td>dezainaa</td><td class="kr">디자이너</td><td>Designer (both katakana loanwords)</td></tr>
+    <tr><td class="jp">先生</td><td>sensei</td><td class="kr">선생(님)</td><td>Teacher -- <span class="cognate-tag">Cognate</span></td></tr>
+    <tr><td class="jp">主婦</td><td>shufu</td><td class="kr">주부</td><td>Homemaker -- <span class="cognate-tag">Cognate</span></td></tr>
+  </tbody>
+</table>
+
+<!-- Self-intro diagram -->
+<div class="diagram">
+  <svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg">
+    <!-- Title -->
+    <text x="350" y="25" text-anchor="middle" font-size="14" font-weight="600" fill="var(--heading)">Self-Introduction Flow (自己紹介の流れ)</text>
+
+    <!-- Step boxes -->
+    <rect x="30" y="50" width="100" height="50" rx="8" fill="none" stroke="var(--accent)" stroke-width="2"/>
+    <text x="80" y="72" text-anchor="middle" font-size="10" fill="var(--accent)" font-weight="600">初めまして</text>
+    <text x="80" y="88" text-anchor="middle" font-size="8" fill="var(--text-muted)">Greeting</text>
+
+    <line x1="130" y1="75" x2="155" y2="75" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+    <rect x="155" y="50" width="100" height="50" rx="8" fill="none" stroke="var(--accent)" stroke-width="2"/>
+    <text x="205" y="72" text-anchor="middle" font-size="10" fill="var(--accent)" font-weight="600">~と申します</text>
+    <text x="205" y="88" text-anchor="middle" font-size="8" fill="var(--text-muted)">Name</text>
+
+    <line x1="255" y1="75" x2="280" y2="75" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+    <rect x="280" y="50" width="120" height="50" rx="8" fill="none" stroke="var(--accent)" stroke-width="2"/>
+    <text x="340" y="72" text-anchor="middle" font-size="10" fill="var(--accent)" font-weight="600">韓国から来ました</text>
+    <text x="340" y="88" text-anchor="middle" font-size="8" fill="var(--text-muted)">Origin</text>
+
+    <line x1="400" y1="75" x2="425" y2="75" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+    <rect x="425" y="50" width="120" height="50" rx="8" fill="none" stroke="var(--accent)" stroke-width="2"/>
+    <text x="485" y="72" text-anchor="middle" font-size="10" fill="var(--accent)" font-weight="600">~をしています</text>
+    <text x="485" y="88" text-anchor="middle" font-size="8" fill="var(--text-muted)">Occupation</text>
+
+    <line x1="545" y1="75" x2="570" y2="75" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+    <rect x="570" y="50" width="100" height="50" rx="8" fill="none" stroke="var(--accent)" stroke-width="2"/>
+    <text x="620" y="68" text-anchor="middle" font-size="9" fill="var(--accent)" font-weight="600">どうぞ</text>
+    <text x="620" y="82" text-anchor="middle" font-size="9" fill="var(--accent)" font-weight="600">よろしく</text>
+    <text x="620" y="95" text-anchor="middle" font-size="8" fill="var(--text-muted)">Closing</text>
+
+    <!-- Korean parallel row -->
+    <text x="350" y="140" text-anchor="middle" font-size="12" font-weight="600" fill="var(--a2)">Korean Parallel (한국어 병렬)</text>
+
+    <rect x="30" y="155" width="100" height="50" rx="8" fill="none" stroke="var(--a2)" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <text x="80" y="175" text-anchor="middle" font-size="9" fill="var(--a2)">처음 뵙겠습니다</text>
+    <text x="80" y="192" text-anchor="middle" font-size="8" fill="var(--text-muted)">Greeting</text>
+
+    <rect x="155" y="155" width="100" height="50" rx="8" fill="none" stroke="var(--a2)" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <text x="205" y="175" text-anchor="middle" font-size="9" fill="var(--a2)">~이라고 합니다</text>
+    <text x="205" y="192" text-anchor="middle" font-size="8" fill="var(--text-muted)">Name</text>
+
+    <rect x="280" y="155" width="120" height="50" rx="8" fill="none" stroke="var(--a2)" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <text x="340" y="175" text-anchor="middle" font-size="9" fill="var(--a2)">한국에서 왔습니다</text>
+    <text x="340" y="192" text-anchor="middle" font-size="8" fill="var(--text-muted)">Origin</text>
+
+    <rect x="425" y="155" width="120" height="50" rx="8" fill="none" stroke="var(--a2)" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <text x="485" y="175" text-anchor="middle" font-size="9" fill="var(--a2)">~을 하고 있습니다</text>
+    <text x="485" y="192" text-anchor="middle" font-size="8" fill="var(--text-muted)">Occupation</text>
+
+    <rect x="570" y="155" width="100" height="50" rx="8" fill="none" stroke="var(--a2)" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <text x="620" y="178" text-anchor="middle" font-size="9" fill="var(--a2)">잘 부탁드립니다</text>
+    <text x="620" y="195" text-anchor="middle" font-size="8" fill="var(--text-muted)">Closing</text>
+
+    <!-- Connection lines (vertical dashes showing equivalence) -->
+    <line x1="80" y1="100" x2="80" y2="155" stroke="var(--text-muted)" stroke-width="1" stroke-dasharray="3,3" opacity=".4"/>
+    <line x1="205" y1="100" x2="205" y2="155" stroke="var(--text-muted)" stroke-width="1" stroke-dasharray="3,3" opacity=".4"/>
+    <line x1="340" y1="100" x2="340" y2="155" stroke="var(--text-muted)" stroke-width="1" stroke-dasharray="3,3" opacity=".4"/>
+    <line x1="485" y1="100" x2="485" y2="155" stroke="var(--text-muted)" stroke-width="1" stroke-dasharray="3,3" opacity=".4"/>
+    <line x1="620" y1="100" x2="620" y2="155" stroke="var(--text-muted)" stroke-width="1" stroke-dasharray="3,3" opacity=".4"/>
+
+    <!-- Note -->
+    <text x="350" y="240" text-anchor="middle" font-size="11" fill="var(--a3)" font-weight="600">100% structural match -- same order, same flow, same ritual logic.</text>
+    <text x="350" y="260" text-anchor="middle" font-size="10" fill="var(--text-muted)">The only difference is the words themselves. You already know the choreography.</text>
+  </svg>
+  <div class="diagram-caption">Self-introduction flow: Japanese and Korean follow an identical sequence. The structure transfers completely.</div>
+</div>
+
+<div class="callout warn">
+  <div class="callout-title">Elaborative Interrogation</div>
+  <p><strong>WHY does Japanese use 申します (moushimasu, humble) instead of 言います (iimasu, plain "say") in self-introductions?</strong></p>
+  <p>Think about this: In Korean, you say <span class="kr">~이라고 합니다</span> (plain "say") but could use <span class="kr">~이라고 말씀드립니다</span> (humble). Japanese defaults to the humble form in introductions because self-deprecation is the social norm -- you lower yourself to elevate the listener. This is 謙譲語 (kenjoogo / humble speech), which you will study in depth in Chapter 14.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     8B: SMALL TALK PATTERNS (世間話)
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="8b-small-talk-patterns-世間話-일상-대화">Small Talk Patterns (世間話 / 일상 대화)</h3>
+<p>After the self-introduction, you need to keep the conversation going. Small talk in Japanese follows predictable patterns that map beautifully to Korean equivalents.</p>
+
+<h4>Weather Talk (天気の話)</h4>
+<p>Weather is the universal conversation starter. Japanese people use it constantly, just like Koreans.</p>
+
+<table>
+  <thead>
+    <tr><th>Japanese</th><th>Romaji</th><th>Korean</th><th>Usage</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="jp">今日は暑いですね</td>
+      <td>kyou wa atsui desu ne</td>
+      <td class="kr">오늘 덥네요</td>
+      <td>It's hot today, isn't it</td>
+    </tr>
+    <tr>
+      <td class="jp">今日は寒いですね</td>
+      <td>kyou wa samui desu ne</td>
+      <td class="kr">오늘 춥네요</td>
+      <td>It's cold today, isn't it</td>
+    </tr>
+    <tr>
+      <td class="jp">いい天気ですね</td>
+      <td>ii tenki desu ne</td>
+      <td class="kr">날씨 좋네요</td>
+      <td>Nice weather, isn't it</td>
+    </tr>
+    <tr>
+      <td class="jp">雨が降っていますね</td>
+      <td>ame ga futteimasu ne</td>
+      <td class="kr">비가 오고 있네요</td>
+      <td>It's raining, isn't it</td>
+    </tr>
+    <tr>
+      <td class="jp">蒸し暑いですね</td>
+      <td>mushiatsui desu ne</td>
+      <td class="kr">무덥네요 / 습하네요</td>
+      <td>It's humid, isn't it</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout ok">
+  <div class="callout-title">The Magic of ね (ne)</div>
+  <p>The sentence-ending particle <span class="jp">ね</span> works exactly like Korean <span class="kr">~네(요)</span>. Both seek agreement, soften statements, and create connection. <span class="jp">暑いですね</span> = <span class="kr">덥네요</span>. The function is a 100% transfer -- even the sound is close: ne/ne!</p>
+</div>
+
+<h4>Compliments and Reactions</h4>
+
+<table>
+  <thead>
+    <tr><th>Japanese</th><th>Romaji</th><th>Korean</th><th>When to use</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="jp">日本語がお上手ですね</td>
+      <td>nihongo ga ojouzu desu ne</td>
+      <td class="kr">일본어 잘하시네요</td>
+      <td>Complimenting someone's Japanese (you will hear this a lot!)</td>
+    </tr>
+    <tr>
+      <td class="jp">いいえ、まだまだです</td>
+      <td>iie, madamada desu</td>
+      <td class="kr">아니에요, 아직 멀었어요</td>
+      <td>Humble deflection -- the expected response</td>
+    </tr>
+    <tr>
+      <td class="jp">すごいですね！</td>
+      <td>sugoi desu ne!</td>
+      <td class="kr">대단하네요!</td>
+      <td>That's amazing!</td>
+    </tr>
+    <tr>
+      <td class="jp">おしゃれですね</td>
+      <td>oshare desu ne</td>
+      <td class="kr">멋지네요 / 세련되네요</td>
+      <td>That's stylish! (clothes, places)</td>
+    </tr>
+    <tr>
+      <td class="jp">美味しそう！</td>
+      <td>oishisou!</td>
+      <td class="kr">맛있겠다!</td>
+      <td>Looks delicious!</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">Cultural Note: The Compliment-Deflection Dance</div>
+  <p>When someone says <span class="jp">日本語がお上手ですね</span>, <strong>never</strong> say <span class="jp">はい</span> (yes). Instead, deflect with <span class="jp">いいえ、まだまだです</span> (no, I still have a long way to go). This is identical to Korean culture -- when someone says <span class="kr">잘하시네요</span>, you respond <span class="kr">아직 멀었어요</span>. The humility reflex transfers perfectly.</p>
+</div>
+
+<h4>Talking About Hobbies (趣味の話)</h4>
+
+<table>
+  <thead>
+    <tr><th>Japanese</th><th>Romaji</th><th>Korean</th><th>Note</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="jp">趣味は何ですか？</td>
+      <td>shumi wa nan desu ka?</td>
+      <td class="kr">취미가 뭐예요?</td>
+      <td>趣味/취미 -- <span class="cognate-tag">Cognate</span></td>
+    </tr>
+    <tr>
+      <td class="jp">趣味は映画を見ることです</td>
+      <td>shumi wa eiga wo miru koto desu</td>
+      <td class="kr">취미는 영화 보는 거예요</td>
+      <td>こと = 것 (nominalizer). 映画/영화 -- <span class="cognate-tag">Cognate</span></td>
+    </tr>
+    <tr>
+      <td class="jp">音楽を聴くのが好きです</td>
+      <td>ongaku wo kiku no ga suki desu</td>
+      <td class="kr">음악 듣는 걸 좋아해요</td>
+      <td>音楽/음악 -- <span class="cognate-tag">Cognate</span>. の = 것 (nominalizer)</td>
+    </tr>
+    <tr>
+      <td class="jp">料理が好きです</td>
+      <td>ryouri ga suki desu</td>
+      <td class="kr">요리를 좋아해요</td>
+      <td>料理/요리 -- <span class="cognate-tag">Cognate</span></td>
+    </tr>
+    <tr>
+      <td class="jp">旅行によく行きます</td>
+      <td>ryokou ni yoku ikimasu</td>
+      <td class="kr">여행을 자주 가요</td>
+      <td>旅行/여행 -- <span class="cognate-tag">Cognate</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     8C: MAKING PLANS (約束する)
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="8c-making-plans-約束する-약속하다">Making Plans (約束する / 약속하다)</h3>
+<p>Making plans with someone is where real conversation happens. Note how 約束/약속 is yet another cognate -- you already know the word for "making plans/promises"!</p>
+
+<table>
+  <thead>
+    <tr><th>Situation</th><th>Japanese</th><th>Romaji</th><th>Korean</th><th>Grammar Note</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Are you free Saturday?</td>
+      <td class="jp">土曜日、暇ですか？</td>
+      <td>doyoubi, hima desu ka?</td>
+      <td class="kr">토요일 시간 있어요?</td>
+      <td>暇 (hima) = free time. Korean uses 시간 있다 (have time)</td>
+    </tr>
+    <tr>
+      <td>Let's go together</td>
+      <td class="jp">一緒に行きましょう</td>
+      <td>issho ni ikimashou</td>
+      <td class="kr">같이 가요</td>
+      <td>~ましょう = volitional "let's" (Ch08). 一緒に = 같이</td>
+    </tr>
+    <tr>
+      <td>What time?</td>
+      <td class="jp">何時にしましょうか？</td>
+      <td>nanji ni shimashou ka?</td>
+      <td class="kr">몇 시로 할까요?</td>
+      <td>~ましょうか = "shall we?" (proposal form)</td>
+    </tr>
+    <tr>
+      <td>How about 2 o'clock?</td>
+      <td class="jp">2時はどうですか？</td>
+      <td>niji wa dou desu ka?</td>
+      <td class="kr">2시는 어때요?</td>
+      <td>~はどうですか = ~은/는 어때요? (suggestion pattern)</td>
+    </tr>
+    <tr>
+      <td>Where shall we meet?</td>
+      <td class="jp">どこで会いましょうか？</td>
+      <td>doko de aimashou ka?</td>
+      <td class="kr">어디서 만날까요?</td>
+      <td>どこで = 어디서 (where-at). 会う = 만나다</td>
+    </tr>
+    <tr>
+      <td>At the station</td>
+      <td class="jp">駅で会いましょう</td>
+      <td>eki de aimashou</td>
+      <td class="kr">역에서 만나요</td>
+      <td>駅/역 -- <span class="cognate-tag">Cognate</span></td>
+    </tr>
+    <tr>
+      <td>Sounds good!</td>
+      <td class="jp">いいですね！</td>
+      <td>ii desu ne!</td>
+      <td class="kr">좋네요!</td>
+      <td>Agreement -- used exactly like Korean</td>
+    </tr>
+    <tr>
+      <td>Sorry, that day is no good</td>
+      <td class="jp">すみません、その日はちょっと...</td>
+      <td>sumimasen, sono hi wa chotto...</td>
+      <td class="kr">죄송해요, 그 날은 좀...</td>
+      <td>ちょっと... = 좀... (trailing off = polite refusal)</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout ok">
+  <div class="callout-title">The Power of ちょっと... (chotto...)</div>
+  <p>Japanese people rarely say "no" directly. Instead, they trail off with <span class="jp">ちょっと...</span> ("a little..."), and the listener understands it means "no." This is identical to Korean <span class="kr">좀...</span> -- both cultures use the same indirect refusal strategy. If you hear <span class="jp">ちょっと...</span> followed by silence, that is a "no."</p>
+</div>
+
+<h4>Sample Plan-Making Dialogue</h4>
+<div class="card">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+    <div>
+      <h4 style="color:var(--accent)">Japanese</h4>
+      <p style="line-height:2">
+        <strong>A:</strong> <span class="jp">土曜日、暇ですか？</span><br>
+        <strong>B:</strong> <span class="jp">はい、暇ですよ。</span><br>
+        <strong>A:</strong> <span class="jp">一緒に映画を見ませんか？</span><br>
+        <strong>B:</strong> <span class="jp">いいですね！何時にしましょうか？</span><br>
+        <strong>A:</strong> <span class="jp">2時はどうですか？</span><br>
+        <strong>B:</strong> <span class="jp">2時でいいです。駅で会いましょう。</span><br>
+        <strong>A:</strong> <span class="jp">じゃ、土曜日に！</span>
+      </p>
+    </div>
+    <div>
+      <h4 style="color:var(--a2)">Korean</h4>
+      <p style="line-height:2">
+        <strong>A:</strong> <span class="kr">토요일 시간 있어요?</span><br>
+        <strong>B:</strong> <span class="kr">네, 있어요.</span><br>
+        <strong>A:</strong> <span class="kr">같이 영화 볼래요?</span><br>
+        <strong>B:</strong> <span class="kr">좋네요! 몇 시로 할까요?</span><br>
+        <strong>A:</strong> <span class="kr">2시 어때요?</span><br>
+        <strong>B:</strong> <span class="kr">2시 좋아요. 역에서 만나요.</span><br>
+        <strong>A:</strong> <span class="kr">그럼, 토요일에!</span>
+      </p>
+    </div>
+  </div>
+  <p style="margin-top:1rem;font-size:.88rem;color:var(--a3)"><strong>Identical dialogue structure.</strong> Same number of turns, same flow, same social logic. Only the words differ.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     8D: EXPRESSING OPINIONS (意見を言う)
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="8d-expressing-opinions-意見を言う-의견-말하기">Expressing Opinions (意見を言う / 의견 말하기)</h3>
+<p>Moving beyond small talk requires expressing what you think, like, and want. These patterns are the backbone of real conversation.</p>
+
+<h4>"I think..." Pattern</h4>
+<table>
+  <thead>
+    <tr><th>Japanese</th><th>Romaji</th><th>Korean</th><th>Grammar</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="jp">〜と思います</td>
+      <td>~to omoimasu</td>
+      <td class="kr">〜라고 생각해요</td>
+      <td>Quote particle + think verb. Identical structure!</td>
+    </tr>
+    <tr>
+      <td class="jp">日本語は難しいと思います</td>
+      <td>nihongo wa muzukashii to omoimasu</td>
+      <td class="kr">일본어는 어렵다고 생각해요</td>
+      <td>Japanese [topic] difficult [quote] think</td>
+    </tr>
+    <tr>
+      <td class="jp">明日は雨だと思います</td>
+      <td>ashita wa ame da to omoimasu</td>
+      <td class="kr">내일은 비라고 생각해요</td>
+      <td>Tomorrow [topic] rain [copula] [quote] think</td>
+    </tr>
+    <tr>
+      <td class="jp">この映画はいいと思います</td>
+      <td>kono eiga wa ii to omoimasu</td>
+      <td class="kr">이 영화는 좋다고 생각해요</td>
+      <td>This movie [topic] good [quote] think</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4>Likes and Dislikes</h4>
+<table>
+  <thead>
+    <tr><th>Pattern</th><th>Japanese</th><th>Korean</th><th>Note</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>I like ~</td>
+      <td class="jp">〜が好きです</td>
+      <td class="kr">〜을/를 좋아해요</td>
+      <td>Japanese uses が (subject marker), Korean uses 을/를 (object marker) -- structural difference!</td>
+    </tr>
+    <tr>
+      <td>I don't like ~</td>
+      <td class="jp">〜が好きじゃないです</td>
+      <td class="kr">〜을/를 안 좋아해요</td>
+      <td>じゃない = negation of copula (Ch08)</td>
+    </tr>
+    <tr>
+      <td>I really like ~</td>
+      <td class="jp">〜が大好きです</td>
+      <td class="kr">〜을/를 엄청 좋아해요</td>
+      <td>大好き = 大 (big) + 好き (like) = love/really like</td>
+    </tr>
+    <tr>
+      <td>I hate ~</td>
+      <td class="jp">〜が嫌いです</td>
+      <td class="kr">〜을/를 싫어해요</td>
+      <td>嫌い (kirai) = dislike. Use carefully -- quite strong</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout warn">
+  <div class="callout-title">Watch Out: Particle Difference with 好き</div>
+  <p><strong>Korean says:</strong> <span class="kr">커피<strong>를</strong> 좋아해요</span> (coffee-[object] like)<br>
+  <strong>Japanese says:</strong> <span class="jp">コーヒー<strong>が</strong>好きです</span> (coffee-[subject] likeable-is)</p>
+  <p>This is because Korean 좋아하다 is an action verb ("to like"), but Japanese 好き is a な-adjective ("likeable"). Different grammar, same meaning. This is one of the few places where the particle mapping breaks down. Use <strong>が</strong>, not を, with 好き.</p>
+</div>
+
+<h4>Wants and Preferences</h4>
+<table>
+  <thead>
+    <tr><th>Pattern</th><th>Japanese</th><th>Korean</th><th>Example</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>I want (thing)</td>
+      <td class="jp">〜がほしいです</td>
+      <td class="kr">〜이/가 갖고 싶어요</td>
+      <td><span class="jp">新しいパソコンがほしいです</span> = 새 컴퓨터가 갖고 싶어요</td>
+    </tr>
+    <tr>
+      <td>I want to (verb)</td>
+      <td class="jp">〜たいです</td>
+      <td class="kr">〜고 싶어요</td>
+      <td><span class="jp">日本に行きたいです</span> = 일본에 가고 싶어요</td>
+    </tr>
+    <tr>
+      <td>I don't want to</td>
+      <td class="jp">〜たくないです</td>
+      <td class="kr">〜고 싶지 않아요</td>
+      <td><span class="jp">帰りたくないです</span> = 돌아가고 싶지 않아요</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     8E: APOLOGIES AND REQUESTS — ESCALATION LADDER
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="8e-apologies-and-requests----the-escalation-ladder">Apologies and Requests -- The Escalation Ladder</h3>
+<p>Both Japanese and Korean have a formality spectrum for apologies. The levels map almost perfectly. Understanding <em>when</em> to use which level is as important as knowing the words.</p>
+
+<h4>Apology Escalation: Japanese ↔ Korean</h4>
+<div class="card">
+  <table>
+    <thead>
+      <tr><th>Level</th><th>Japanese</th><th>Korean</th><th>When to use</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="transfer-tag partial">Casual</span></td>
+        <td class="jp" style="font-size:1.1rem">ごめん</td>
+        <td class="kr" style="font-size:1.1rem">미안</td>
+        <td>Close friends, family. Very casual.</td>
+      </tr>
+      <tr>
+        <td><span class="transfer-tag partial">Polite casual</span></td>
+        <td class="jp" style="font-size:1.1rem">ごめんなさい</td>
+        <td class="kr" style="font-size:1.1rem">미안해요</td>
+        <td>Acquaintances, light apologies. Polite but personal.</td>
+      </tr>
+      <tr>
+        <td><span class="transfer-tag full">Standard polite</span></td>
+        <td class="jp" style="font-size:1.1rem">すみません</td>
+        <td class="kr" style="font-size:1.1rem">죄송해요</td>
+        <td>Strangers, colleagues. Also means "excuse me." Default safe choice.</td>
+      </tr>
+      <tr>
+        <td><span class="transfer-tag none">Formal/Business</span></td>
+        <td class="jp" style="font-size:1.1rem">申し訳ございません</td>
+        <td class="kr" style="font-size:1.1rem">대단히 죄송합니다</td>
+        <td>Serious situations, business, to superiors. Deep apology.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Apology Escalation Mnemonic SVG -->
+<div class="diagram">
+  <svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg">
+    <text x="350" y="20" text-anchor="middle" font-size="14" font-weight="600" fill="var(--heading)">Apology Escalation Ladder</text>
+
+    <!-- Steps (bottom to top) -->
+    <!-- Level 1 -->
+    <rect x="80" y="210" width="540" height="45" rx="6" fill="none" stroke="var(--text-muted)" stroke-width="1.5"/>
+    <text x="200" y="237" text-anchor="middle" font-size="13" fill="var(--accent)" font-weight="600">ごめん</text>
+    <text x="500" y="237" text-anchor="middle" font-size="13" fill="var(--a2)" font-weight="600">미안</text>
+    <text x="350" y="237" text-anchor="middle" font-size="10" fill="var(--text-muted)">Casual</text>
+
+    <!-- Level 2 -->
+    <rect x="80" y="158" width="540" height="45" rx="6" fill="none" stroke="var(--text-muted)" stroke-width="1.5"/>
+    <text x="200" y="185" text-anchor="middle" font-size="13" fill="var(--accent)" font-weight="600">ごめんなさい</text>
+    <text x="500" y="185" text-anchor="middle" font-size="13" fill="var(--a2)" font-weight="600">미안해요</text>
+    <text x="350" y="185" text-anchor="middle" font-size="10" fill="var(--text-muted)">Polite casual</text>
+
+    <!-- Level 3 -->
+    <rect x="80" y="106" width="540" height="45" rx="6" fill="none" stroke="var(--accent)" stroke-width="2"/>
+    <text x="200" y="133" text-anchor="middle" font-size="13" fill="var(--accent)" font-weight="600">すみません</text>
+    <text x="500" y="133" text-anchor="middle" font-size="13" fill="var(--a2)" font-weight="600">죄송해요</text>
+    <text x="350" y="133" text-anchor="middle" font-size="10" fill="var(--a3)" font-weight="600">Safe default</text>
+
+    <!-- Level 4 -->
+    <rect x="80" y="54" width="540" height="45" rx="6" fill="none" stroke="var(--a3)" stroke-width="2"/>
+    <text x="200" y="81" text-anchor="middle" font-size="12" fill="var(--accent)" font-weight="600">申し訳ございません</text>
+    <text x="500" y="81" text-anchor="middle" font-size="12" fill="var(--a2)" font-weight="600">대단히 죄송합니다</text>
+    <text x="350" y="81" text-anchor="middle" font-size="10" fill="var(--a3)" font-weight="600">Formal / business</text>
+
+    <!-- Arrow showing escalation -->
+    <line x1="50" y1="240" x2="50" y2="60" stroke="var(--a3)" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <text x="45" y="150" text-anchor="middle" font-size="10" fill="var(--a3)" transform="rotate(-90, 45, 150)">More formal</text>
+  </svg>
+  <div class="diagram-caption">Apology formality ladder -- both languages have nearly identical escalation levels. Default to すみません (Level 3) when unsure.</div>
+</div>
+
+<h4>Request Escalation</h4>
+<table>
+  <thead>
+    <tr><th>Level</th><th>Japanese</th><th>Korean</th><th>Example</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Casual</td>
+      <td class="jp">〜して</td>
+      <td class="kr">〜해</td>
+      <td><span class="jp">ちょっと待って</span> = <span class="kr">잠깐만</span> (Wait a sec)</td>
+    </tr>
+    <tr>
+      <td>Polite</td>
+      <td class="jp">〜してください</td>
+      <td class="kr">〜해 주세요</td>
+      <td><span class="jp">ちょっと待ってください</span> = <span class="kr">잠깐만 기다려 주세요</span></td>
+    </tr>
+    <tr>
+      <td>More polite</td>
+      <td class="jp">〜していただけますか</td>
+      <td class="kr">〜해 주시겠어요?</td>
+      <td><span class="jp">少々お待ちいただけますか</span> = <span class="kr">잠시 기다려 주시겠어요?</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     8F: FILLER WORDS (つなぎ言葉)
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="8f-filler-words----what-makes-you-sound-natural-つなぎ言葉">Filler Words -- What Makes You Sound Natural (つなぎ言葉)</h3>
+<p>Textbooks teach you grammar. Filler words teach you how to <em>sound human</em>. These tiny words buy you thinking time, connect ideas, and signal that you are a real conversationalist -- not a phrasebook robot.</p>
+
+<div class="pq">
+  "A foreigner who uses えーと and あのう sounds more fluent than one who speaks grammatically perfect sentences with no fillers."
+</div>
+
+<h4>Hesitation and Thinking Fillers</h4>
+<table>
+  <thead>
+    <tr><th>Korean</th><th>Japanese</th><th>Function</th><th>Usage Note</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="kr">음... / 그...</td>
+      <td class="jp">えーと... / あのう...</td>
+      <td>Stalling for time / "um..."</td>
+      <td>えーと is casual, あのう is slightly more polite. Use constantly!</td>
+    </tr>
+    <tr>
+      <td class="kr">그래서</td>
+      <td class="jp">だから / それで</td>
+      <td>"So..." / "Therefore..."</td>
+      <td>だから is more direct (can sound pushy). それで is softer and more common in conversation</td>
+    </tr>
+    <tr>
+      <td class="kr">근데</td>
+      <td class="jp">でも / けど</td>
+      <td>"But..." / "However..."</td>
+      <td>でも starts a sentence. けど ends a clause. Both map to 근데</td>
+    </tr>
+    <tr>
+      <td class="kr">그리고</td>
+      <td class="jp">それから / あと</td>
+      <td>"And then..." / "Also..."</td>
+      <td>それから is formal, あと is casual. Like Korean 그리고 vs 또</td>
+    </tr>
+    <tr>
+      <td class="kr">진짜?</td>
+      <td class="jp">本当に？ / マジで？</td>
+      <td>"Really?!"</td>
+      <td>本当に is standard. マジで is slang (like 진짜 vs 레알). Use マジで with friends only!</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4>Conversation Reaction Fillers</h4>
+<table>
+  <thead>
+    <tr><th>Korean</th><th>Japanese</th><th>Meaning</th><th>When to use</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="kr">아 그래요?</td>
+      <td class="jp">あ、そうですか？</td>
+      <td>"Oh, is that so?"</td>
+      <td>Showing interest. Use frequently as a listener</td>
+    </tr>
+    <tr>
+      <td class="kr">그렇구나</td>
+      <td class="jp">そうなんだ</td>
+      <td>"I see" / "Is that so"</td>
+      <td>Casual acknowledgment -- like active listening</td>
+    </tr>
+    <tr>
+      <td class="kr">네네 / 응응</td>
+      <td class="jp">うんうん / はいはい</td>
+      <td>"Uh-huh, uh-huh"</td>
+      <td>Backchanneling -- absolutely essential in Japanese! Nod and say this while someone talks</td>
+    </tr>
+    <tr>
+      <td class="kr">역시!</td>
+      <td class="jp">やっぱり！/ さすが！</td>
+      <td>"As expected!" / "As I thought!"</td>
+      <td>やっぱり = 역시 (confirmed expectation). さすが = admiration</td>
+    </tr>
+    <tr>
+      <td class="kr">어쩐지</td>
+      <td class="jp">どうりで</td>
+      <td>"No wonder..."</td>
+      <td>When something finally makes sense</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout warn">
+  <div class="callout-title">Elaborative Interrogation</div>
+  <p><strong>WHY is backchanneling (相槌/あいづち) more important in Japanese than in Korean?</strong></p>
+  <p>Both cultures value active listening, but Japanese speakers use backchanneling <em>more frequently</em>. In Korean, you can listen silently and nod. In Japanese, if you are silent, the speaker may think you are not listening or disagree. You should say <span class="jp">うんうん</span>, <span class="jp">はい</span>, <span class="jp">そうですか</span>, or <span class="jp">なるほど</span> ("I see") every few sentences. Think of it as a verbal nod -- the speaker needs constant confirmation that you are following along.</p>
+</div>
+
+<h4>Putting It All Together: A Natural-Sounding Exchange</h4>
+<div class="card">
+  <p style="font-size:.88rem;color:var(--text-muted);margin-bottom:.5rem">Notice the fillers (highlighted in bold) that make this sound like real speech:</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+    <div>
+      <h4 style="color:var(--accent)">Natural Japanese</h4>
+      <p style="line-height:2.2">
+        <strong>A:</strong> <span class="jp"><strong>あのう</strong>、週末は何をしましたか？</span><br>
+        <strong>B:</strong> <span class="jp"><strong>えーと</strong>、友達と映画を見ました。</span><br>
+        <strong>A:</strong> <span class="jp"><strong>あ、そうですか。</strong>どんな映画ですか？</span><br>
+        <strong>B:</strong> <span class="jp">ホラー映画です。<strong>けど</strong>、あまり怖くなかったです。</span><br>
+        <strong>A:</strong> <span class="jp"><strong>本当に？</strong>私はホラーが好きじゃないです。</span><br>
+        <strong>B:</strong> <span class="jp"><strong>そうなんだ。</strong><strong>じゃ</strong>、今度コメディを見ましょう！</span>
+      </p>
+    </div>
+    <div>
+      <h4 style="color:var(--a2)">Natural Korean</h4>
+      <p style="line-height:2.2">
+        <strong>A:</strong> <span class="kr"><strong>있잖아</strong>, 주말에 뭐 했어요?</span><br>
+        <strong>B:</strong> <span class="kr"><strong>음</strong>, 친구랑 영화 봤어요.</span><br>
+        <strong>A:</strong> <span class="kr"><strong>아, 그래요?</strong> 어떤 영화예요?</span><br>
+        <strong>B:</strong> <span class="kr">공포 영화예요. <strong>근데</strong> 별로 안 무서웠어요.</span><br>
+        <strong>A:</strong> <span class="kr"><strong>진짜?</strong> 저는 공포영화 안 좋아해요.</span><br>
+        <strong>B:</strong> <span class="kr"><strong>그렇구나.</strong> <strong>그럼</strong> 다음에 코미디 봐요!</span>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     INTERACTIVE EXERCISES
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="interactive-exercises">Interactive Exercises</h3>
+
+<!-- Quiz 1: SentenceBuilder — build self-introduction parts -->
+<div id="quiz-self-intro-builder"></div>
+
+<!-- Quiz 2: FillBlank — conversation completion (small talk, plans) -->
+<div id="quiz-conversation-fill"></div>
+
+<!-- Quiz 3: DragMatch — match apology levels Korean→Japanese -->
+<div id="quiz-apology-match"></div>
+
+<!-- Quiz 4: MultipleChoice — choose correct filler word -->
+<div id="quiz-filler-mc"></div>
+
+<!-- Quiz 5: RecallCheck from Ch05-07 -->
+<div id="quiz-recall-mixed"></div>
+
+<!-- Mark as Complete -->
+<button class="chapter-complete" data-ch="09">Mark as Complete &#10003;</button>
+
+<div style="display:flex;justify-content:space-between;margin:2rem 0">
+  <a href="ch-08.html" class="quiz-btn secondary">&larr; Chapter 09: Verb Conjugation</a>
+  <a href="ch-10.html" class="quiz-btn">Next: Chapter 11 -- Sentence Patterns &rarr;</a>
+</div>
+
+</section>
+
+</div>
+
+
+</div>
+
+<footer>
+  <p>Zero to Hero: 日本語 for Korean Speakers &middot; Chapter 09</p>
+</footer>
+
+<script src="js/shared.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/quiz-engine.js"></script>
+<script src="js/spaced-repetition.js"></script>
+<script src="js/memory-palace.js"></script>
+<script>
+// ─── Recall Check (top of chapter, from Ch05-07) ───
+QuizEngine.RecallCheck(
+  document.getElementById('recall-check-top'),
+  {
+    fromChapters: 'Ch05-07',
+    items: [
+      { question: 'Ch05: How do you say "Excuse me, where is the station?" in Japanese?', answer: 'すみません、駅はどこですか？ (sumimasen, eki wa doko desu ka?)' },
+      { question: 'Ch05: How do you say "One ticket to [X]" in Japanese?', answer: '[X]まで一枚 ([X] made ichimai)' },
+      { question: 'Ch07: What particle marks the topic of a sentence? (Korean: 은/는)', answer: 'は (wa)' },
+      { question: 'Ch07: What particle marks the object? (Korean: 을/를)', answer: 'を (wo)' },
+      { question: 'Ch07: What particle means "from"? (Korean: 에서/부터)', answer: 'から (kara)' },
+      { question: 'Ch08: Conjugate 食べる (taberu, to eat) into polite present form.', answer: '食べます (tabemasu)' },
+      { question: 'Ch08: Conjugate 行く (iku, to go) into polite past form.', answer: '行きました (ikimashita)' },
+      { question: 'Ch08: How do you make the negative polite form of 飲む (nomu, to drink)?', answer: '飲みません (nomimasen)' }
+    ]
+  }
+);
+
+// ─── Quiz 1: SentenceBuilder — build self-introduction parts ───
+QuizEngine.SentenceBuilder(
+  document.getElementById('quiz-self-intro-builder'),
+  {
+    title: 'Build Your Self-Introduction',
+    sentences: [
+      {
+        hint: 'Introduce yourself: "Nice to meet you. My name is Kim." -- <span class="kr">처음 뵙겠습니다. 김이라고 합니다.</span>',
+        words: ['初めまして。', 'キムと', '申します。'],
+        correct: '初めまして。キムと申します。'
+      },
+      {
+        hint: 'Say where you are from: "I came from Korea." -- <span class="kr">한국에서 왔습니다.</span>',
+        words: ['韓国から', '来ました。'],
+        correct: '韓国から来ました。'
+      },
+      {
+        hint: 'State your occupation: "I am a company employee." -- <span class="kr">회사원을 하고 있습니다.</span>',
+        words: ['会社員を', 'しています。'],
+        correct: '会社員をしています。'
+      },
+      {
+        hint: 'Say what you study: "I am studying Japanese." -- <span class="kr">일본어를 공부하고 있습니다.</span>',
+        words: ['日本語を', '勉強', 'しています。'],
+        correct: '日本語を勉強しています。'
+      },
+      {
+        hint: 'Close the introduction: "Please treat me well." -- <span class="kr">잘 부탁드립니다.</span>',
+        words: ['どうぞ', 'よろしく', 'お願いします。'],
+        correct: 'どうぞよろしくお願いします。'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 2: FillBlank — conversation completion ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-conversation-fill'),
+  {
+    title: 'Complete the Conversation',
+    questions: [
+      {
+        prompt: 'Start a weather conversation: "It\'s hot today, isn\'t it?" <br>(Korean: <span class="kr">오늘 덥네요</span>)',
+        answer: '今日は暑いですね',
+        acceptAlso: ['きょうはあついですね', 'kyou wa atsui desu ne'],
+        explanation: '今日は (today) + 暑い (hot) + ですね (isn\'t it)',
+        korean: '오늘 덥네요'
+      },
+      {
+        prompt: 'Ask about hobbies: "What are your hobbies?" <br>(Korean: <span class="kr">취미가 뭐예요?</span>)',
+        answer: '趣味は何ですか？',
+        acceptAlso: ['しゅみはなんですか', 'shumi wa nan desu ka'],
+        explanation: '趣味は (hobby-topic) + 何ですか (what is)',
+        korean: '취미가 뭐예요?'
+      },
+      {
+        prompt: 'Invite someone: "Let\'s go together!" <br>(Korean: <span class="kr">같이 가요</span>)',
+        answer: '一緒に行きましょう',
+        acceptAlso: ['いっしょにいきましょう', 'issho ni ikimashou'],
+        explanation: '一緒に (together) + 行きましょう (let\'s go)',
+        korean: '같이 가요'
+      },
+      {
+        prompt: 'Suggest a time: "How about 2 o\'clock?" <br>(Korean: <span class="kr">2시는 어때요?</span>)',
+        answer: '2時はどうですか？',
+        acceptAlso: ['にじはどうですか', 'niji wa dou desu ka', '二時はどうですか？'],
+        explanation: '2時は (2 o\'clock-topic) + どうですか (how is it)',
+        korean: '2시는 어때요?'
+      },
+      {
+        prompt: 'Express an opinion: "I think Japanese is difficult." <br>(Korean: <span class="kr">일본어는 어렵다고 생각해요</span>)',
+        answer: '日本語は難しいと思います',
+        acceptAlso: ['にほんごはむずかしいとおもいます', 'nihongo wa muzukashii to omoimasu'],
+        explanation: '日本語は (Japanese-topic) + 難しい (difficult) + と思います (I think)',
+        korean: '일본어는 어렵다고 생각해요'
+      },
+      {
+        prompt: 'Politely decline: "Sorry, that day is a bit..." (trail off) <br>(Korean: <span class="kr">죄송해요, 그 날은 좀...</span>)',
+        answer: 'すみません、その日はちょっと...',
+        acceptAlso: ['すみません、その日はちょっと', 'sumimasen, sono hi wa chotto'],
+        explanation: 'ちょっと... (trailing off) is the Japanese way to say "no" indirectly, just like Korean 좀...',
+        korean: '죄송해요, 그 날은 좀...'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 3: DragMatch — match apology levels Korean→Japanese ───
+QuizEngine.DragMatch(
+  document.getElementById('quiz-apology-match'),
+  {
+    title: 'Apology Level Matching',
+    instruction: 'Match each Korean apology to its Japanese equivalent at the same formality level:',
+    pairs: [
+      { left: '미안 (casual)', right: 'ごめん' },
+      { left: '미안해요 (polite casual)', right: 'ごめんなさい' },
+      { left: '죄송해요 (standard polite)', right: 'すみません' },
+      { left: '대단히 죄송합니다 (formal)', right: '申し訳ございません' }
+    ]
+  }
+);
+
+// ─── Quiz 4: MultipleChoice — choose correct filler word ───
+QuizEngine.MultipleChoice(
+  document.getElementById('quiz-filler-mc'),
+  {
+    title: 'Choose the Right Filler Word',
+    questions: [
+      {
+        prompt: 'You need a moment to think before answering. In Korean you would say "음..." What do you say in Japanese?',
+        options: ['だから', 'えーと...', 'でも', 'やっぱり'],
+        correctIndex: 1,
+        explanation: 'えーと (eeto) is the Japanese equivalent of Korean 음... -- a hesitation filler to buy thinking time.'
+      },
+      {
+        prompt: 'You want to say "but" to contrast with what was just said. In Korean: 근데. What is the Japanese equivalent?',
+        options: ['それから', 'だから', 'でも / けど', 'えーと'],
+        correctIndex: 2,
+        explanation: 'でも (demo) starts a contrasting sentence, けど (kedo) ends a contrasting clause. Both map to Korean 근데.'
+      },
+      {
+        prompt: 'Your friend tells you something surprising. You want to say "Really?!" In Korean: 진짜? What do you say?',
+        options: ['やっぱり！', '本当に？ / マジで？', 'なるほど', 'そうなんだ'],
+        correctIndex: 1,
+        explanation: '本当に (hontou ni) = really? (standard). マジで (maji de) = seriously?! (slang, like 진짜).'
+      },
+      {
+        prompt: 'You want to add another point: "And also..." In Korean: 그리고. What do you say?',
+        options: ['でも', 'だから', 'それから / あと', 'どうりで'],
+        correctIndex: 2,
+        explanation: 'それから (sorekara) = and then / also (formal). あと (ato) = also (casual). Both map to Korean 그리고.'
+      },
+      {
+        prompt: 'Something you suspected turned out to be true. "As I thought!" In Korean: 역시! What do you say?',
+        options: ['本当に？', 'そうなんだ', 'やっぱり！', 'えーと'],
+        correctIndex: 2,
+        explanation: 'やっぱり (yappari) = as expected / as I thought. It maps perfectly to Korean 역시.'
+      },
+      {
+        prompt: 'While listening to someone talk, you want to show you are following along. What do you say?',
+        options: ['えーと', 'うんうん / はいはい', 'マジで？', 'だから'],
+        correctIndex: 1,
+        explanation: 'うんうん (un un) or はいはい (hai hai) = uh-huh, uh-huh. This backchanneling (相槌) is essential in Japanese conversation.'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 5: RecallCheck from Ch05-07: mixed survival + particles + conjugation ───
+QuizEngine.RecallCheck(
+  document.getElementById('quiz-recall-mixed'),
+  {
+    fromChapters: 'Ch05-07 (Mixed Review)',
+    items: [
+      { question: 'Ch05 Survival: How do you say "Check, please" at a restaurant?', answer: 'お会計お願いします (okaikei onegai shimasu)' },
+      { question: 'Ch05 Survival: How do you say "I\'m lost"?', answer: '道に迷いました (michi ni mayoimashita)' },
+      { question: 'Ch07 Particles: Fill in the particle: 東京___行きます (going TO Tokyo)', answer: 'に (or へ) -- 東京に行きます / 東京へ行きます' },
+      { question: 'Ch07 Particles: Fill in the particle: 図書館___勉強します (studying AT the library)', answer: 'で -- 図書館で勉強します' },
+      { question: 'Ch08 Conjugation: What is the て-form of 書く (kaku, to write)?', answer: '書いて (kaite)' },
+      { question: 'Ch08 Conjugation: Make the volitional (let\'s) form of 食べる (taberu, to eat):', answer: '食べましょう (tabemashou)' },
+      { question: 'Ch08 Conjugation: What is the negative past polite form of する (suru, to do)?', answer: 'しませんでした (shimasen deshita)' }
+    ]
+  }
+);
+</script>
+</body>
+</html>

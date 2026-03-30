@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ch15: Reading Real Japanese — Zero to Hero 日本語</title>
+<link rel="stylesheet" href="css/design-system.css">
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <span class="logo-badge">Zero to Hero — Memory Architecture Edition</span>
+    <div class="logo-title">日本語 for Korean Speakers</div>
+    <div class="logo-sub">From 한국어 to 日本語 — The Memory Architect's Guide</div>
+  </a>
+  <div class="sidebar-progress">
+    <div class="sidebar-progress-label">Progress</div>
+    <div class="sidebar-progress-bar">
+      <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+    </div>
+    <div class="sidebar-progress-count">0/22 complete</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="ch-00.html" class="toc-link"><span class="toc-num">00</span><span class="toc-check" data-ch="00"></span>Memory Science</a>
+    <a href="ch-01.html" class="toc-link"><span class="toc-num">01</span><span class="toc-check" data-ch="01"></span>Your Korean Advantage</a>
+    <a href="ch-02.html" class="toc-link"><span class="toc-num">02</span><span class="toc-check" data-ch="02"></span>Hiragana</a>
+    <a href="ch-03.html" class="toc-link"><span class="toc-num">03</span><span class="toc-check" data-ch="03"></span>Katakana</a>
+    <a href="ch-04.html" class="toc-link"><span class="toc-num">04</span><span class="toc-check" data-ch="04"></span>Pronunciation</a>
+    <a href="ch-05.html" class="toc-link"><span class="toc-num">05</span><span class="toc-check" data-ch="05"></span>Survival Japanese</a>
+    <a href="ch-06.html" class="toc-link"><span class="toc-num">06</span><span class="toc-check" data-ch="06"></span>Counters</a>
+    <a href="ch-07.html" class="toc-link"><span class="toc-num">07</span><span class="toc-check" data-ch="07"></span>Particles</a>
+    <a href="ch-08.html" class="toc-link"><span class="toc-num">08</span><span class="toc-check" data-ch="08"></span>Verb Conjugation</a>
+    <a href="ch-09.html" class="toc-link"><span class="toc-num">09</span><span class="toc-check" data-ch="09"></span>Daily Conversations</a>
+    <a href="ch-10.html" class="toc-link"><span class="toc-num">10</span><span class="toc-check" data-ch="10"></span>Sentence Patterns</a>
+    <a href="ch-11.html" class="toc-link"><span class="toc-num">11</span><span class="toc-check" data-ch="11"></span>Kanji</a>
+    <a href="ch-12.html" class="toc-link"><span class="toc-num">12</span><span class="toc-check" data-ch="12"></span>Sino-Vocabulary</a>
+    <a href="ch-13.html" class="toc-link"><span class="toc-num">13</span><span class="toc-check" data-ch="13"></span>Native Vocabulary</a>
+    <a href="ch-14.html" class="toc-link"><span class="toc-num">14</span><span class="toc-check" data-ch="14"></span>Honorifics</a>
+    <a href="ch-15.html" class="toc-link active"><span class="toc-num">15</span><span class="toc-check" data-ch="15"></span>Reading</a>
+    <a href="ch-16.html" class="toc-link"><span class="toc-num">16</span><span class="toc-check" data-ch="16"></span>Writing</a>
+    <a href="ch-17.html" class="toc-link"><span class="toc-num">17</span><span class="toc-check" data-ch="17"></span>Listening</a>
+    <a href="ch-18.html" class="toc-link"><span class="toc-num">18</span><span class="toc-check" data-ch="18"></span>Cultural Pragmatics</a>
+    <a href="ch-19.html" class="toc-link"><span class="toc-num">19</span><span class="toc-check" data-ch="19"></span>JLPT and Beyond</a>
+    <a href="ch-20.html" class="toc-link"><span class="toc-num">20</span><span class="toc-check" data-ch="20"></span>Memory Palace</a>
+    <a href="ch-21.html" class="toc-link"><span class="toc-num">21</span><span class="toc-check" data-ch="21"></span>The 90-Day Sprint</a>
+    <a href="appendices.html" class="toc-link" style="margin-top:.5rem;border-top:1px solid var(--border);padding-top:.8rem"><span class="toc-num">+</span>Appendices</a>
+  </nav>
+</aside>
+
+<div class="main">
+<div class="content-wrap">
+
+<section id="ch15" data-ch="15" style="padding-top:3rem">
+<h2><span class="ch-label">Chapter 15</span>Reading Real Japanese &mdash; Mixed-Script Reading Strategies</h2>
+
+<div class="callout memory">
+  <div class="callout-title">Memory Technique Spotlight: Extensive Reading + Incidental Acquisition</div>
+  <p>Reading Japanese text exposes you to vocabulary and grammar in natural context — the most powerful form of incidental learning. Your Korean kanji knowledge lets you read at a much higher level than your "official" Japanese level, creating a virtuous cycle of comprehension and acquisition.</p>
+</div>
+
+<p>You know hiragana, katakana, and a foundation of kanji. Now it is time to read real Japanese &mdash; the kind that appears on websites, in newspapers, on signs, and in manga. Real Japanese mixes all three scripts in a single sentence, and learning to parse that mix is a distinct skill.</p>
+
+<div class="pq">
+  "Reading Japanese is not decoding one script. It is navigating three scripts simultaneously, each carrying a different signal. Your Korean hanja instinct is the compass."
+</div>
+
+<!-- ─── RECALL CHECK (top of chapter, from Ch11-12) ─── -->
+<nav class="chapter-toc">
+  <details open>
+    <summary class="chapter-toc-title">In This Chapter</summary>
+  <ol>
+    <li><a href="#recall-check-chapters-10-12">Recall Check — Chapters 10-12</a></li>
+    <li><a href="#section-1-seeing-the-three-scripts-at-work">Seeing the Three Scripts at Work</a></li>
+    <li><a href="#section-2-reading-strategies-by-media-type">Reading Strategies by Media Type</a></li>
+    <li><a href="#section-3-the-korean-meaning-first-strategy">The Korean "Meaning-First" Strategy</a></li>
+    <li><a href="#section-4-useful-reading-tools">Useful Reading Tools</a></li>
+    <li><a href="#section-5-practice-nhk-easy-news-guided-analysis">Practice — NHK Easy News Guided Analysis</a></li>
+    <li><a href="#interactive-exercises">Interactive Exercises</a></li>
+    <li><a href="#recall-check-chapters-10-12-review">Recall Check — Chapters 10-12 Review</a></li>
+  </ol>
+  </details>
+</nav>
+
+<h3 id="recall-check-chapters-10-12">Recall Check &mdash; Chapters 10-12</h3>
+<p>Before tackling real-world reading, confirm that your kanji, Sino-vocabulary, and native vocabulary foundations are solid.</p>
+
+<div id="recall-check-top"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 1: COLOR-CODED SCRIPT DEMO
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="section-1-seeing-the-three-scripts-at-work">Seeing the Three Scripts at Work</h3>
+
+<p>Every Japanese sentence is a tapestry of three scripts. Each script plays a specific role. Let's color-code a real sentence to see the pattern:</p>
+
+<div class="card" style="padding:1.5rem">
+  <p style="font-size:1.6rem;line-height:2.2;letter-spacing:.05em;margin-bottom:1rem">
+    <span style="color:#e74c3c;font-weight:600">東京</span><span style="color:#3498db">の</span><span style="color:#e74c3c">天気</span><span style="color:#3498db">は</span><span style="color:#e74c3c">今日</span><span style="color:#3498db">も</span><span style="color:#3498db">とても</span><span style="color:#e74c3c">暑</span><span style="color:#3498db">くて、</span><span style="color:#27ae60">アイスコーヒー</span><span style="color:#3498db">を</span><span style="color:#e74c3c">三</span><span style="color:#3498db">つも</span><span style="color:#e74c3c">飲</span><span style="color:#3498db">んでしまいました。</span>
+  </p>
+  <div style="display:flex;gap:1.5rem;flex-wrap:wrap;font-size:.85rem;margin-bottom:1rem">
+    <span><span style="display:inline-block;width:12px;height:12px;background:#e74c3c;border-radius:2px;vertical-align:middle;margin-right:.3rem"></span> <strong>Kanji</strong> &mdash; meaning-bearing content words</span>
+    <span><span style="display:inline-block;width:12px;height:12px;background:#3498db;border-radius:2px;vertical-align:middle;margin-right:.3rem"></span> <strong>Hiragana</strong> &mdash; grammar, particles, conjugation endings</span>
+    <span><span style="display:inline-block;width:12px;height:12px;background:#27ae60;border-radius:2px;vertical-align:middle;margin-right:.3rem"></span> <strong>Katakana</strong> &mdash; loanwords, foreign names, emphasis</span>
+  </div>
+  <p style="font-size:.9rem;color:var(--text-muted);margin-bottom:.3rem"><strong>Translation:</strong> The weather in Tokyo is very hot today too, and I ended up drinking three iced coffees.</p>
+  <p style="font-size:.85rem;color:var(--text-muted);margin-bottom:0"><strong>Korean parallel:</strong> <span class="kr">도쿄의 날씨는 오늘도 매우 더워서, 아이스커피를 세 잔이나 마셔버렸습니다.</span></p>
+</div>
+
+<div class="callout info">
+  <div class="callout-title">The Script-Function Rule</div>
+  <p><strong>Kanji</strong> = content (nouns, verb/adjective roots). <strong>Hiragana</strong> = grammar glue (particles, endings, function words). <strong>Katakana</strong> = foreign imports and special emphasis. This division is consistent across virtually all Japanese text. Once you internalize it, your eyes learn to extract meaning from kanji first, then fill in grammar from the hiragana &mdash; exactly how your Korean hanja instinct already works.</p>
+</div>
+
+<h4>Script Functions at a Glance</h4>
+<table>
+  <thead>
+    <tr><th>Script</th><th>Primary Role</th><th>Examples</th><th>Korean Parallel</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong style="color:#e74c3c">漢字</strong></td>
+      <td>Content words: nouns, verb/adjective stems</td>
+      <td class="jp">食べる、学校、美しい</td>
+      <td class="kr">한자어 content words (학교, 경제)</td>
+    </tr>
+    <tr>
+      <td><strong style="color:#3498db">ひらがな</strong></td>
+      <td>Particles, conjugation, function words, furigana</td>
+      <td class="jp">は、を、の、ている、から</td>
+      <td class="kr">조사 and 어미 (은/는, 을/를, -고)</td>
+    </tr>
+    <tr>
+      <td><strong style="color:#27ae60">カタカナ</strong></td>
+      <td>Loanwords, foreign names, onomatopoeia, emphasis</td>
+      <td class="jp">コンピューター、パリ、ガタガタ</td>
+      <td class="kr">외래어 (컴퓨터, 파리)</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Mnemonic SVG: Three-script reading flow -->
+<div class="diagram">
+  <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg">
+    <!-- Kanji box -->
+    <rect x="30" y="50" width="170" height="120" rx="12" fill="none" stroke="#e74c3c" stroke-width="2"/>
+    <text x="115" y="85" text-anchor="middle" font-size="14" font-weight="600" fill="#e74c3c">漢字 (Kanji)</text>
+    <text x="115" y="108" text-anchor="middle" font-size="10" fill="var(--text-muted)">WHAT is being said</text>
+    <text x="115" y="125" text-anchor="middle" font-size="10" fill="var(--text-muted)">Meaning carrier</text>
+    <text x="115" y="148" text-anchor="middle" font-size="10" fill="var(--text-muted)">= Korean 한자어 roots</text>
+
+    <!-- Arrow 1 -->
+    <line x1="200" y1="110" x2="250" y2="110" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+    <!-- Hiragana box -->
+    <rect x="260" y="50" width="170" height="120" rx="12" fill="none" stroke="#3498db" stroke-width="2"/>
+    <text x="345" y="85" text-anchor="middle" font-size="14" font-weight="600" fill="#3498db">ひらがな</text>
+    <text x="345" y="108" text-anchor="middle" font-size="10" fill="var(--text-muted)">HOW it connects</text>
+    <text x="345" y="125" text-anchor="middle" font-size="10" fill="var(--text-muted)">Grammar glue</text>
+    <text x="345" y="148" text-anchor="middle" font-size="10" fill="var(--text-muted)">= Korean 조사 + 어미</text>
+
+    <!-- Arrow 2 -->
+    <line x1="430" y1="110" x2="480" y2="110" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+    <!-- Katakana box -->
+    <rect x="490" y="50" width="180" height="120" rx="12" fill="none" stroke="#27ae60" stroke-width="2"/>
+    <text x="580" y="85" text-anchor="middle" font-size="14" font-weight="600" fill="#27ae60">カタカナ</text>
+    <text x="580" y="108" text-anchor="middle" font-size="10" fill="var(--text-muted)">WHAT is borrowed</text>
+    <text x="580" y="125" text-anchor="middle" font-size="10" fill="var(--text-muted)">Foreign imports</text>
+    <text x="580" y="148" text-anchor="middle" font-size="10" fill="var(--text-muted)">= Korean 외래어</text>
+
+    <!-- Bottom label -->
+    <text x="350" y="200" text-anchor="middle" font-size="11" fill="var(--text-muted)">Reading strategy: Kanji first (get meaning) &rarr; Hiragana (parse grammar) &rarr; Katakana (decode loanwords)</text>
+  </svg>
+  <div class="diagram-caption">The three-script reading flow. Start with kanji for meaning, then parse grammar through hiragana, and decode loanwords in katakana.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 2: READING BY MEDIA TYPE
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="section-2-reading-strategies-by-media-type">Reading Strategies by Media Type</h3>
+
+<p>Different media types present Japanese in distinct ways. Each has its own conventions, difficulty level, and reading strategies.</p>
+
+<!-- ── 2A: Newspapers (NHK Easy News) ── -->
+<h4>A. Newspapers &mdash; NHK Easy News (NHKやさしいにほんのニュース)</h4>
+
+<div class="card">
+  <h4 style="color:var(--accent)">Why Start Here</h4>
+  <p><strong>NHK Easy News</strong> (NHK NEWS WEB EASY) rewrites real news articles using simplified grammar, limited kanji, and furigana over every kanji. It is the single best free resource for bridging the gap between textbook Japanese and real-world reading.</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem">
+    <div>
+      <p style="font-size:.85rem;font-weight:600;color:var(--a3)">Characteristics:</p>
+      <ul style="font-size:.85rem;margin:0">
+        <li>Furigana on all kanji</li>
+        <li>Simplified grammar (N4-N3 level)</li>
+        <li>Short paragraphs (3-5 sentences)</li>
+        <li>Audio reading available</li>
+        <li>Vocabulary definitions on hover</li>
+      </ul>
+    </div>
+    <div>
+      <p style="font-size:.85rem;font-weight:600;color:var(--a2)">Korean Advantage:</p>
+      <ul style="font-size:.85rem;margin:0">
+        <li>News vocabulary is heavily Sino &mdash; your 한자어 shines</li>
+        <li>Formal sentence endings (ました、ています) are predictable</li>
+        <li>Topic structure mirrors Korean news writing</li>
+        <li><span class="kr">경제</span> = <span class="jp">経済</span>, <span class="kr">정부</span> = <span class="jp">政府</span>, <span class="kr">대통령</span> = <span class="jp">大統領</span></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="callout ok">
+  <div class="callout-title">Newspaper Reading Strategy</div>
+  <p><strong>Step 1:</strong> Read the headline &mdash; it is mostly kanji. Use your hanja knowledge to predict the topic.<br>
+  <strong>Step 2:</strong> Skim for kanji clusters &mdash; these are the key nouns and verbs. Guess the gist.<br>
+  <strong>Step 3:</strong> Read hiragana to fill in the grammar. Pay attention to particles and verb endings.<br>
+  <strong>Step 4:</strong> Check any katakana words &mdash; they are usually English loanwords you already know.</p>
+</div>
+
+<!-- ── 2B: Manga ── -->
+<h4>B. Manga &mdash; Speech Patterns and Sound Effects</h4>
+
+<div class="card">
+  <h4 style="color:var(--accent)">Why Manga is Uniquely Useful</h4>
+  <p>Manga gives you natural spoken Japanese &mdash; casual forms, contractions, slang, gendered speech, and emotional expression &mdash; in a context where images support comprehension. For Korean speakers, manga parallels the way Korean webtoons (<span class="kr">웹툰</span>) use casual speech.</p>
+
+  <table style="margin-top:1rem">
+    <thead>
+      <tr><th>Manga Feature</th><th>What You'll See</th><th>Korean Parallel</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Casual contractions</td>
+        <td class="jp">～ている → ～てる<br>～てしまう → ～ちゃう</td>
+        <td class="kr">-하고 있어 → -하고 있어<br>(Korean contracts less)</td>
+      </tr>
+      <tr>
+        <td>Sentence-final particles</td>
+        <td class="jp">よ、ね、ぞ、ぜ、わ、な</td>
+        <td class="kr">-요, -네, -지, -잖아</td>
+      </tr>
+      <tr>
+        <td>Sound effects (擬音語)</td>
+        <td class="jp">ドキドキ (heartbeat)<br>ゴロゴロ (rolling/thunder)<br>シーン (silence)</td>
+        <td class="kr">두근두근<br>우르르<br>쥐 죽은 듯</td>
+      </tr>
+      <tr>
+        <td>Gendered speech</td>
+        <td class="jp">俺 vs 私 vs あたし<br>～だぜ vs ～だわ</td>
+        <td class="kr">Less gendered, but 나 vs 저 registers exist</td>
+      </tr>
+      <tr>
+        <td>All-katakana for emphasis</td>
+        <td class="jp">ダメ！ (instead of 駄目)</td>
+        <td class="kr">대문자 느낌 (capital-letter feel)</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="callout warn">
+  <div class="callout-title">Elaborative Interrogation</div>
+  <p><strong>WHY are manga sound effects written in katakana rather than hiragana?</strong></p>
+  <p>Think about it: katakana has angular, sharp strokes that visually convey impact. Hiragana is round and soft. The visual form of katakana itself carries a sense of sharpness, suddenness, and foreignness &mdash; perfect for onomatopoeia that represents sounds breaking into a scene. This is a design choice, not a grammatical rule. The same word can appear in hiragana in prose but switches to katakana in manga for visual punch.</p>
+</div>
+
+<!-- ── 2C: Web/Social Media ── -->
+<h4>C. Web and Social Media &mdash; Abbreviations, Emoji, and Internet Japanese</h4>
+
+<div class="card">
+  <h4 style="color:var(--accent)">Digital Japanese</h4>
+  <p>Online Japanese drops formality and embraces abbreviation. If you use Korean internet, the patterns will feel familiar.</p>
+
+  <table style="margin-top:1rem">
+    <thead>
+      <tr><th>Pattern</th><th>Japanese</th><th>Korean Equivalent</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Laughter</td>
+        <td class="jp">www / 笑 / 草</td>
+        <td class="kr">ㅋㅋㅋ</td>
+      </tr>
+      <tr>
+        <td>Abbreviation</td>
+        <td class="jp">おつ (from お疲れ様)</td>
+        <td class="kr">ㅇㅋ (from 오케이)</td>
+      </tr>
+      <tr>
+        <td>Emoticons (kaomoji)</td>
+        <td class="jp">(^_^) (T_T) (・∀・)</td>
+        <td class="kr">ㅠㅠ ^^</td>
+      </tr>
+      <tr>
+        <td>Sentence-final softener</td>
+        <td class="jp">～かな / ～かも</td>
+        <td class="kr">～인 듯 / ～일지도</td>
+      </tr>
+      <tr>
+        <td>Deliberate misspelling</td>
+        <td class="jp">すごい → すげー<br>やばい → やべー</td>
+        <td class="kr">대박 → ㄷㅂ</td>
+      </tr>
+      <tr>
+        <td>Omitted particles</td>
+        <td class="jp">これ美味しい！(は omitted)</td>
+        <td class="kr">이거 맛있어! (는 omitted)</td>
+      </tr>
+      <tr>
+        <td>Hashtag style</td>
+        <td class="jp">#今日のコーデ #カフェ巡り</td>
+        <td class="kr">#오늘의코디 #카페투어</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="callout info">
+  <div class="callout-title">www = ㅋㅋㅋ Explained</div>
+  <p><span class="jp">笑う</span> (to laugh) &rarr; abbreviated to <span class="jp">笑</span> &rarr; then to <span class="jp">w</span> (from <span class="jp">warai</span>) &rarr; chained as <span class="jp">www</span> or <span class="jp">wwwww</span> for intensity. When the w's pile up they look like grass, so internet users call heavy laughter <span class="jp">草</span> (grass) or <span class="jp">草生える</span> (grass is growing). Exactly like how <span class="kr">ㅋ</span> stacks into <span class="kr">ㅋㅋㅋㅋ</span> in Korean.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 3: KOREAN "MEANING-FIRST" STRATEGY
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="section-3-the-korean-meaning-first-strategy">The Korean "Meaning-First" Strategy</h3>
+
+<p>As a Korean speaker with hanja knowledge, you have a reading superpower that English speakers do not: you can extract meaning from kanji clusters before understanding a single grammar point. This is your <strong>meaning-first strategy</strong>.</p>
+
+<div class="card" style="padding:1.5rem">
+  <h4 style="color:var(--accent)">Demo: Reading a Sentence You've Never Studied</h4>
+  <p style="font-size:1.3rem;line-height:2;margin-bottom:1rem" class="jp">日本政府は新しい経済政策を発表しました。</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+    <div>
+      <p style="font-size:.85rem;font-weight:600;color:var(--a3)">Step 1: Extract Kanji Clusters</p>
+      <ul style="font-size:.85rem;margin:0">
+        <li><span class="jp">日本</span> &rarr; <span class="kr">일본</span> = Japan</li>
+        <li><span class="jp">政府</span> &rarr; <span class="kr">정부</span> = Government</li>
+        <li><span class="jp">経済</span> &rarr; <span class="kr">경제</span> = Economy</li>
+        <li><span class="jp">政策</span> &rarr; <span class="kr">정책</span> = Policy</li>
+        <li><span class="jp">発表</span> &rarr; <span class="kr">발표</span> = Announcement</li>
+      </ul>
+    </div>
+    <div>
+      <p style="font-size:.85rem;font-weight:600;color:var(--a2)">Step 2: Get the Gist</p>
+      <p style="font-size:.85rem">Japan + Government + Economy + Policy + Announcement<br>
+      &rarr; "The Japanese government announced an economic policy."</p>
+      <p style="font-size:.85rem;font-weight:600;color:var(--accent);margin-top:.5rem">Step 3: Fill Grammar</p>
+      <p style="font-size:.85rem"><span class="jp">は</span> = topic marker, <span class="jp">新しい</span> = new, <span class="jp">を</span> = object marker, <span class="jp">しました</span> = did (past polite)</p>
+    </div>
+  </div>
+  <p style="font-size:.88rem;color:var(--a3);margin-top:1rem;margin-bottom:0"><strong>Full meaning:</strong> The Japanese government announced a new economic policy. &mdash; You got 80% of this from kanji/hanja alone.</p>
+</div>
+
+<div class="callout warn">
+  <div class="callout-title">Elaborative Interrogation</div>
+  <p><strong>WHY does this meaning-first strategy work better for Korean speakers than for Chinese speakers?</strong></p>
+  <p>Chinese speakers can also read kanji, but their grammar is SVO &mdash; completely different from Japanese SOV. Korean speakers get the double advantage: kanji meaning extraction <em>plus</em> grammatical structure that maps 1:1 onto Japanese. When you see <span class="jp">政府は…を発表しました</span>, the は/を/しました pattern is identical to <span class="kr">정부는…을/를 발표했습니다</span>. Chinese speakers cannot make this grammar transfer.</p>
+</div>
+
+<h4>More Meaning-First Examples</h4>
+<table>
+  <thead>
+    <tr><th>Japanese Sentence</th><th>Kanji &rarr; Korean Hanja</th><th>Instant Gist</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="jp">国際会議が来月開催される</td>
+      <td class="kr">국제(国際) 회의(会議) 내월(来月) 개최(開催)</td>
+      <td>International conference next month held</td>
+    </tr>
+    <tr>
+      <td class="jp">環境問題について議論した</td>
+      <td class="kr">환경(環境) 문제(問題) 의론(議論)</td>
+      <td>Discussed environmental problems</td>
+    </tr>
+    <tr>
+      <td class="jp">大学の入学試験が始まった</td>
+      <td class="kr">대학(大学) 입학(入学) 시험(試験)</td>
+      <td>University entrance exams started</td>
+    </tr>
+    <tr>
+      <td class="jp">新幹線の運行が再開された</td>
+      <td class="kr">신간선(新幹線) 운행(運行) 재개(再開)</td>
+      <td>Shinkansen service resumed</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 4: USEFUL READING TOOLS
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="section-4-useful-reading-tools">Useful Reading Tools</h3>
+
+<p>The right tools accelerate your reading development dramatically. Here are the essentials:</p>
+
+<div class="card-grid">
+  <div class="card">
+    <h4><span class="transfer-tag full" style="font-size:.75rem">Free</span> Dictionaries</h4>
+    <ul style="font-size:.85rem">
+      <li><strong>Jisho.org</strong> &mdash; English-Japanese dictionary with kanji lookup by radical, stroke, or drawing</li>
+      <li><strong>Weblio</strong> &mdash; Japanese-Japanese definitions (monolingual, for intermediate+)</li>
+      <li><strong>Naver 일본어 사전</strong> &mdash; Japanese-Korean dictionary, perfect for Korean speakers</li>
+      <li><strong>NAVER Papago</strong> &mdash; JP&harr;KR machine translation (better than EN for your purposes)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4><span class="transfer-tag full" style="font-size:.75rem">Free</span> Browser Extensions</h4>
+    <ul style="font-size:.85rem">
+      <li><strong>Yomitan</strong> (formerly Yomichan) &mdash; hover over any Japanese text to see reading, meaning, pitch accent</li>
+      <li><strong>10ten Japanese Reader</strong> &mdash; similar hover-to-read functionality</li>
+      <li><strong>rikaikun</strong> &mdash; lightweight alternative for Chrome</li>
+    </ul>
+    <p style="font-size:.82rem;color:var(--text-muted);margin-bottom:0">Install one of these and every Japanese webpage becomes a learning environment.</p>
+  </div>
+  <div class="card">
+    <h4><span class="transfer-tag partial" style="font-size:.75rem">Varies</span> Reading Apps</h4>
+    <ul style="font-size:.85rem">
+      <li><strong>NHK NEWS WEB EASY</strong> &mdash; simplified news with furigana (free)</li>
+      <li><strong>Satori Reader</strong> &mdash; graded reading with grammar notes (paid)</li>
+      <li><strong>Tadoku</strong> &mdash; free graded readers (Level 0-5)</li>
+      <li><strong>BookLive / Amazon.co.jp</strong> &mdash; Japanese ebooks and manga</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4><span class="transfer-tag partial" style="font-size:.75rem">Tip</span> Korean-Specific Strategy</h4>
+    <ul style="font-size:.85rem">
+      <li>Use <strong>Naver 사전</strong> over English dictionaries &mdash; JP&harr;KR definitions are more precise for you</li>
+      <li>Look up unknown kanji by their <strong>hanja reading</strong> first</li>
+      <li>Read Japanese news alongside <strong>KBS/MBC Korean news</strong> on the same topic to leverage parallel content</li>
+      <li>Set your phone to Japanese &mdash; daily exposure through familiar interfaces</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 5: NHK EASY NEWS GUIDED ANALYSIS
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="section-5-practice-nhk-easy-news-guided-analysis">Practice &mdash; NHK Easy News Guided Analysis</h3>
+
+<p>Let's walk through a realistic NHK Easy News-style paragraph together. Read it, then work through the guided analysis below.</p>
+
+<div class="card" style="padding:1.5rem;border-left:4px solid var(--accent)">
+  <p style="font-size:.82rem;color:var(--text-muted);margin-bottom:.5rem">NHK Easy News style passage (simplified)</p>
+  <p style="font-size:1.15rem;line-height:2.2" class="jp">
+    日本で外国人の観光客がとても増えています。去年は約三千万人が日本に来ました。政府は二〇三〇年までに六千万人にしたいと言っています。しかし、観光客が増えると、ホテルが足りなくなったり、電車が混んだりする問題もあります。
+  </p>
+</div>
+
+<h4>Guided Analysis</h4>
+
+<div class="card" style="padding:1.5rem">
+  <p style="font-size:.85rem;font-weight:600;color:var(--a3)">Step 1: Kanji Cluster Extraction (meaning-first)</p>
+  <table style="font-size:.88rem">
+    <thead><tr><th>Kanji</th><th>Korean Hanja</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td class="jp">外国人</td><td class="kr">외국인 (外國人)</td><td>Foreigner</td></tr>
+      <tr><td class="jp">観光客</td><td class="kr">관광객 (觀光客)</td><td>Tourist</td></tr>
+      <tr><td class="jp">増える</td><td class="kr">증(增) = increase</td><td>To increase</td></tr>
+      <tr><td class="jp">去年</td><td class="kr">거년/작년 (去年)</td><td>Last year</td></tr>
+      <tr><td class="jp">約</td><td class="kr">약 (約)</td><td>Approximately</td></tr>
+      <tr><td class="jp">三千万人</td><td class="kr">삼천만 명</td><td>30 million people</td></tr>
+      <tr><td class="jp">政府</td><td class="kr">정부 (政府)</td><td>Government</td></tr>
+      <tr><td class="jp">問題</td><td class="kr">문제 (問題)</td><td>Problem</td></tr>
+    </tbody>
+  </table>
+
+  <p style="font-size:.85rem;font-weight:600;color:var(--a2);margin-top:1rem">Step 2: Grammar Notes</p>
+  <ul style="font-size:.85rem">
+    <li><span class="jp">増えています</span> &mdash; <span class="jp">ている</span> form = ongoing state. <span class="kr">"증가하고 있습니다"</span></li>
+    <li><span class="jp">約三千万人が…来ました</span> &mdash; past polite. <span class="kr">"약 3천만 명이 왔습니다"</span></li>
+    <li><span class="jp">～にしたいと言っています</span> &mdash; want to make it ~, (they) are saying. <span class="kr">"~으로 하고 싶다고 말하고 있습니다"</span></li>
+    <li><span class="jp">しかし</span> &mdash; however. <span class="kr">"그러나"</span></li>
+    <li><span class="jp">～たり…たりする</span> &mdash; listing actions (among other things). <span class="kr">"~하기도 하고 ~하기도 하다"</span></li>
+  </ul>
+
+  <p style="font-size:.85rem;font-weight:600;color:var(--accent);margin-top:1rem">Step 3: Full Translation</p>
+  <p style="font-size:.88rem;color:var(--text-muted);margin-bottom:0">Foreign tourists are increasing a lot in Japan. About 30 million people came to Japan last year. The government says it wants to reach 60 million by 2030. However, when tourists increase, there are also problems like hotels running out and trains getting crowded.</p>
+</div>
+
+<div class="callout info">
+  <div class="callout-title">Reading Difficulty Ladder</div>
+  <p><strong>Level 1:</strong> NHK Easy News, children's books, graded readers (N5-N4)<br>
+  <strong>Level 2:</strong> Regular NHK News, simple manga, blog posts (N3)<br>
+  <strong>Level 3:</strong> Newspaper articles, light novels, business emails (N2)<br>
+  <strong>Level 4:</strong> Academic papers, literary fiction, legal documents (N1)<br>
+  Start at Level 1 even if it feels easy. The goal is volume, not difficulty.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     INTERACTIVE EXERCISES
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="interactive-exercises">Interactive Exercises</h3>
+
+<!-- Quiz 1: FillBlank -- reading comprehension from passage -->
+<div id="quiz-reading-comprehension"></div>
+
+<!-- Quiz 2: MultipleChoice -- identify script types and functions -->
+<div id="quiz-script-functions"></div>
+
+<!-- Quiz 3: MultipleChoice -- media type reading strategies -->
+<div id="quiz-media-strategies"></div>
+
+<!-- Quiz 4: Drag Match -- kanji to Korean hanja meaning -->
+<div id="quiz-kanji-hanja"></div>
+
+<!-- Quiz 5: Recall Check from Ch11-12 (bottom) -->
+<h3 id="recall-check-chapters-10-12-review">Recall Check &mdash; Chapters 10-12 Review</h3>
+<p>Mixed review of kanji, Sino-vocabulary, and native vocabulary from previous chapters.</p>
+
+<div id="quiz-recall-bottom"></div>
+
+<!-- Mark as Complete -->
+<button class="chapter-complete" data-ch="15">Mark as Complete &#10003;</button>
+
+<div style="display:flex;justify-content:space-between;margin:2rem 0">
+  <a href="ch-14.html" class="quiz-btn secondary">&larr; Chapter 15: Honorifics</a>
+  <a href="ch-16.html" class="quiz-btn">Next: Chapter 17 -- Writing &rarr;</a>
+</div>
+
+</section>
+
+</div>
+
+
+</div>
+
+<footer>
+  <p>Zero to Hero: 日本語 for Korean Speakers &middot; Chapter 15</p>
+</footer>
+
+<script src="js/shared.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/quiz-engine.js"></script>
+<script>
+// ─── Recall Check (top of chapter, from Ch11-12) ───
+QuizEngine.RecallCheck(
+  document.getElementById('recall-check-top'),
+  {
+    fromChapters: 'Ch11-12',
+    items: [
+      { question: 'Ch11: What are the two types of kanji readings?', answer: '音読み (Sino-Japanese / on\'yomi) and 訓読み (native Japanese / kun\'yomi)' },
+      { question: 'Ch11: How does Korean ㅎ often correspond in Japanese on\'yomi?', answer: 'Korean ㅎ often maps to Japanese k. Example: 학 (hak) → 学 (gaku)' },
+      { question: 'Ch12: What is the Japanese Sino-vocabulary word for 경제 (economy)?', answer: '経済 (けいざい)' },
+      { question: 'Ch12: What is 약속 in Japanese?', answer: '約束 (やくそく) — promise' },
+      { question: 'Ch13: What is the native Japanese word for water?', answer: '水 (みず)' },
+      { question: 'Ch13: Name two native Japanese body-part words.', answer: 'Examples: 目 (め, eye), 手 (て, hand), 口 (くち, mouth), 耳 (みみ, ear)' }
+    ]
+  }
+);
+
+// ─── Quiz 1: FillBlank -- reading comprehension from passage ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-reading-comprehension'),
+  {
+    title: 'Reading Comprehension',
+    questions: [
+      {
+        prompt: 'From the NHK passage: How many tourists came to Japan last year? Write the number in Japanese kanji.',
+        answer: '約三千万人',
+        acceptAlso: ['三千万人', '約三千万'],
+        explanation: '約三千万人が日本に来ました — approximately 30 million people.',
+        korean: '약 삼천만 명'
+      },
+      {
+        prompt: 'From the NHK passage: By what year does the government want to reach 60 million visitors?',
+        answer: '二〇三〇年',
+        acceptAlso: ['2030年', '2030', '二〇三〇'],
+        explanation: '政府は二〇三〇年までに六千万人にしたいと言っています。',
+        korean: '2030년'
+      },
+      {
+        prompt: 'From the NHK passage: What are the two problems mentioned? Name one in Japanese.',
+        answer: 'ホテルが足りない',
+        acceptAlso: ['電車が混む', 'ホテルが足りなくなる', '電車が混んだりする', 'ホテル', '電車'],
+        explanation: 'ホテルが足りなくなったり、電車が混んだりする — hotels running out, trains getting crowded.',
+        korean: '호텔이 부족하다 / 전철이 붐비다'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 2: MultipleChoice -- identify script types and functions ───
+QuizEngine.MultipleChoice(
+  document.getElementById('quiz-script-functions'),
+  {
+    title: 'Script Types and Functions',
+    questions: [
+      {
+        prompt: 'In the sentence 東京でコンサートがありました, which word is written in katakana and what does it signal?',
+        options: [
+          '東京 — a place name written in kanji',
+          'コンサート — a foreign loanword (concert)',
+          'ありました — past tense in hiragana',
+          'が — a subject particle'
+        ],
+        correctIndex: 1,
+        explanation: 'コンサート is "concert" written in katakana, signaling it is a loanword from English.'
+      },
+      {
+        prompt: 'What is the primary function of hiragana in a mixed-script sentence?',
+        options: [
+          'Expressing meaning-bearing content words',
+          'Writing foreign loanwords',
+          'Providing grammar: particles, verb endings, and function words',
+          'Adding emphasis to important words'
+        ],
+        correctIndex: 2,
+        explanation: 'Hiragana handles grammar glue — particles (は、を、の), verb conjugation endings, and function words like ている.'
+      },
+      {
+        prompt: 'You see ドキドキ in a manga panel. What is this?',
+        options: [
+          'A character name',
+          'A loanword from English',
+          'An onomatopoeia (sound effect) for a heartbeat',
+          'A slang abbreviation'
+        ],
+        correctIndex: 2,
+        explanation: 'ドキドキ is a giongo (擬音語) representing the sound of a heartbeat — pounding/nervousness. Korean equivalent: 두근두근.'
+      },
+      {
+        prompt: 'On Japanese social media, what does www mean?',
+        options: [
+          'World Wide Web',
+          'Laughter (from 笑う → わらう → w)',
+          'A typo for ん',
+          'An abbreviation for わかりません'
+        ],
+        correctIndex: 1,
+        explanation: '笑う (to laugh) → warai → w → www for repeated laughter. Equivalent to Korean ㅋㅋㅋ.'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 3: MultipleChoice -- media type reading strategies ───
+QuizEngine.MultipleChoice(
+  document.getElementById('quiz-media-strategies'),
+  {
+    title: 'Reading Strategy by Media Type',
+    questions: [
+      {
+        prompt: 'Which reading material is best for a learner who just finished Chapter 14 of this course?',
+        options: [
+          'A newspaper editorial in 朝日新聞',
+          'NHK NEWS WEB EASY (simplified news with furigana)',
+          'A literary novel by Haruki Murakami',
+          'A university-level academic paper'
+        ],
+        correctIndex: 1,
+        explanation: 'NHK Easy News uses simplified grammar, limited kanji with furigana, and short paragraphs — ideal for intermediate learners.'
+      },
+      {
+        prompt: 'When reading a Japanese news headline with many kanji, what should a Korean speaker do FIRST?',
+        options: [
+          'Look up every word in a dictionary',
+          'Try to identify the hiragana particles',
+          'Extract kanji clusters and match them to hanja knowledge for instant gist',
+          'Skip it and find an English translation'
+        ],
+        correctIndex: 2,
+        explanation: 'The meaning-first strategy: extract kanji clusters, match to Korean hanja (정부, 경제, 발표...), and get the gist before parsing grammar.'
+      },
+      {
+        prompt: 'Why is manga useful for learning natural spoken Japanese?',
+        options: [
+          'Manga uses only formal keigo',
+          'Manga has furigana on every kanji',
+          'Manga exposes you to casual contractions, slang, and gendered speech with visual context',
+          'Manga only uses katakana'
+        ],
+        correctIndex: 2,
+        explanation: 'Manga is rich in casual spoken forms (てる、ちゃう、sentence-final particles) with images that support comprehension.'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 4: Drag Match -- kanji compound to Korean hanja meaning ───
+QuizEngine.DragMatch(
+  document.getElementById('quiz-kanji-hanja'),
+  {
+    title: 'Kanji-Hanja Meaning Match',
+    instruction: 'Match each Japanese kanji compound to its Korean hanja equivalent:',
+    pairs: [
+      { left: '観光客', right: '관광객 (tourist)' },
+      { left: '政府', right: '정부 (government)' },
+      { left: '環境', right: '환경 (environment)' },
+      { left: '問題', right: '문제 (problem)' },
+      { left: '発表', right: '발표 (announcement)' },
+      { left: '国際', right: '국제 (international)' }
+    ]
+  }
+);
+
+// ─── Quiz 5: Recall Check from Ch11-12 (bottom) ───
+QuizEngine.RecallCheck(
+  document.getElementById('quiz-recall-bottom'),
+  {
+    fromChapters: 'Ch11-12',
+    items: [
+      { question: 'Ch11: Write the kanji for "mountain" and give both readings.', answer: '山 — 音読み: サン, 訓読み: やま' },
+      { question: 'Ch12: What is the Japanese word for 도서관 (library)?', answer: '図書館 (としょかん)' },
+      { question: 'Ch12: What is the Japanese word for 전화 (telephone)?', answer: '電話 (でんわ)' },
+      { question: 'Ch13: Give the て-form of 飲む (to drink).', answer: '飲んで (む→んで pattern)' },
+      { question: 'Ch13: What is the Japanese native word for "flower"?', answer: '花 (はな)' },
+      { question: 'Ch11: What reading does 学生 use — 音読み or 訓読み?', answer: '音読み — がくせい (both characters use on\'yomi)' }
+    ]
+  }
+);
+</script>
+<script src="js/spaced-repetition.js"></script>
+<script src="js/memory-palace.js"></script>
+</body>
+</html>

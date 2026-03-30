@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ch18: 문화 화용론 — 교과서가 가르쳐주지 않는 것 — Zero to Hero 日本語</title>
+<link rel="stylesheet" href="css/design-system.css">
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="테마 전환">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <span class="logo-badge">Zero to Hero — 기억 설계 에디션</span>
+    <div class="logo-title">한국어 화자를 위한 日本語</div>
+    <div class="logo-sub">한국어에서 日本語로 — 기억 설계자의 안내서</div>
+  </a>
+  <div class="sidebar-progress">
+    <div class="sidebar-progress-label">진행률</div>
+    <div class="sidebar-progress-bar">
+      <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+    </div>
+    <div class="sidebar-progress-count">0/22 완료</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="ch-00.html" class="toc-link"><span class="toc-num">00</span><span class="toc-check" data-ch="00"></span>기억 과학</a>
+    <a href="ch-01.html" class="toc-link"><span class="toc-num">01</span><span class="toc-check" data-ch="01"></span>한국어의 이점</a>
+    <a href="ch-02.html" class="toc-link"><span class="toc-num">02</span><span class="toc-check" data-ch="02"></span>히라가나</a>
+    <a href="ch-03.html" class="toc-link"><span class="toc-num">03</span><span class="toc-check" data-ch="03"></span>가타카나</a>
+    <a href="ch-04.html" class="toc-link"><span class="toc-num">04</span><span class="toc-check" data-ch="04"></span>발음</a>
+    <a href="ch-05.html" class="toc-link"><span class="toc-num">05</span><span class="toc-check" data-ch="05"></span>서바이벌 일본어</a>
+    <a href="ch-06.html" class="toc-link"><span class="toc-num">06</span><span class="toc-check" data-ch="06"></span>조수사</a>
+    <a href="ch-07.html" class="toc-link"><span class="toc-num">07</span><span class="toc-check" data-ch="07"></span>조사</a>
+    <a href="ch-08.html" class="toc-link"><span class="toc-num">08</span><span class="toc-check" data-ch="08"></span>동사 활용</a>
+    <a href="ch-09.html" class="toc-link"><span class="toc-num">09</span><span class="toc-check" data-ch="09"></span>일상 회화</a>
+    <a href="ch-10.html" class="toc-link"><span class="toc-num">10</span><span class="toc-check" data-ch="10"></span>문형</a>
+    <a href="ch-11.html" class="toc-link"><span class="toc-num">11</span><span class="toc-check" data-ch="11"></span>한자</a>
+    <a href="ch-12.html" class="toc-link"><span class="toc-num">12</span><span class="toc-check" data-ch="12"></span>한자어</a>
+    <a href="ch-13.html" class="toc-link"><span class="toc-num">13</span><span class="toc-check" data-ch="13"></span>고유어</a>
+    <a href="ch-14.html" class="toc-link"><span class="toc-num">14</span><span class="toc-check" data-ch="14"></span>경어</a>
+    <a href="ch-15.html" class="toc-link"><span class="toc-num">15</span><span class="toc-check" data-ch="15"></span>독해</a>
+    <a href="ch-16.html" class="toc-link"><span class="toc-num">16</span><span class="toc-check" data-ch="16"></span>작문</a>
+    <a href="ch-17.html" class="toc-link"><span class="toc-num">17</span><span class="toc-check" data-ch="17"></span>청해</a>
+    <a href="ch-18.html" class="toc-link active"><span class="toc-num">18</span><span class="toc-check" data-ch="18"></span>문화 화용론</a>
+    <a href="ch-19.html" class="toc-link"><span class="toc-num">19</span><span class="toc-check" data-ch="19"></span>JLPT와 그 너머</a>
+    <a href="ch-20.html" class="toc-link"><span class="toc-num">20</span><span class="toc-check" data-ch="20"></span>기억의 궁전</a>
+    <a href="ch-21.html" class="toc-link"><span class="toc-num">21</span><span class="toc-check" data-ch="21"></span>90일 스프린트</a>
+    <a href="appendices.html" class="toc-link" style="margin-top:.5rem;border-top:1px solid var(--border);padding-top:.8rem"><span class="toc-num">+</span>부록</a>
+  </nav>
+</aside>
+
+<div class="main">
+<div class="content-wrap">
+
+<section id="ch18" data-ch="18" style="padding-top:3rem">
+<h2><span class="ch-label">제18장</span>문화 화용론 &mdash; 교과서가 가르쳐주지 않는 것</h2>
+<div class="callout memory"><div class="callout-title">기억 기법 스포트라이트: 자기 참조 효과</div><p>문화 규범을 자신의 경험에 연결하면 기억이 강화됩니다.</p></div>
+
+<p>제5장에서 식사 후에 <span class="jp">ごちそうさまでした</span>라고 말하는 것을 배웠습니다. 하지만 왜 그럴까요? 왜 먹기 전에 <span class="jp">いただきます</span>라고 선언할까요? 왜 누군가가 선물을 줄 때 사과를 할까요? 이 장에서는 언어 뒤에 숨겨진 문화적 논리 &mdash; "올바른 일본어"와 "자연스러운 일본어"를 구분하는 암묵적 규칙에 대해 설명합니다.</p>
+
+<div class="pq">
+  "문법은 이해받게 해줍니다. 문화 화용론은 받아들여지게 해줍니다. 한국 문화와 일본 문화는 사촌 관계입니다 &mdash; 친숙하게 느낄 만큼 가깝지만, 진짜 오해를 일으킬 만큼 다릅니다."
+</div>
+
+<!-- ─── RECALL CHECK (top of chapter, from all prior chapters) ─── -->
+<nav class="chapter-toc">
+  <details open>
+    <summary class="chapter-toc-title">이 장의 내용</summary>
+  <ol>
+    <li><a href="#복습-확인-이전-장-전체">복습 확인 — 이전 장 전체</a></li>
+    <li><a href="#섹션-1-空気を読む-분위기를-읽다-눈치-사회적-감각">空気を読む (분위기를 읽다) ↔ 눈치 (사회적 감각)</a></li>
+    <li><a href="#섹션-2-本音と建前-진심과-공적-입장-겉과-속">本音と建前 (진심과 공적 입장) ↔ 겉과 속</a></li>
+    <li><a href="#섹션-3-迷惑-폐를-끼치지-않는-것의-개념">迷惑 — 폐를 끼치지 않는 것의 개념</a></li>
+    <li><a href="#섹션-4-비즈니스-문화-차이">비즈니스 문화 차이</a></li>
+    <li><a href="#섹션-5-지역-변이-関西弁과-그-외">지역 변이 — 関西弁과 그 외</a></li>
+    <li><a href="#필수-문화-어휘">필수 문화 어휘</a></li>
+    <li><a href="#대화형-연습">대화형 연습</a></li>
+    <li><a href="#복습-확인-종합-복습">복습 확인 — 종합 복습</a></li>
+  </ol>
+  </details>
+</nav>
+
+<h3 id="복습-확인-이전-장-전체">복습 확인 &mdash; 이전 장 전체</h3>
+<p>이것은 마지막에서 두 번째 장입니다. 히라가나부터 청해까지 모든 내용이 여전히 기억나는지 확인하세요.</p>
+
+<div id="recall-check-top"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 1: 空気を読む ↔ 눈치
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="섹션-1-空気を読む-분위기를-읽다-눈치-사회적-감각"><span class="jp">空気を読む</span> (분위기를 읽다) &harr; <span class="kr">눈치</span> (사회적 감각)</h3>
+
+<p>한국 문화와 일본 문화 모두 말하지 않은 사회적 신호를 감지하는 능력을 중시합니다. 하지만 이 능력을 실행하는 방식은 다릅니다.</p>
+
+<div class="card">
+  <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:1rem;align-items:start">
+    <div>
+      <h4 style="color:var(--a2)">한국: <span class="kr">눈치</span></h4>
+      <ul style="font-size:.9rem">
+        <li>능동적 사회적 지능</li>
+        <li>알아차리고 <strong>빠르게 반응</strong>합니다</li>
+        <li>상황을 파악한 후 직접적으로 행동할 수 있습니다</li>
+        <li><span class="kr">눈치가 빠르다</span> = "빨리 알아차리다" (칭찬)</li>
+        <li><span class="kr">눈치가 없다</span> = "감각이 없다" (비난)</li>
+      </ul>
+    </div>
+    <div style="font-size:1.5rem;color:var(--text-muted);padding-top:2rem">&harr;</div>
+    <div>
+      <h4 style="color:var(--accent)">일본: <span class="jp">空気を読む</span></h4>
+      <ul style="font-size:.9rem">
+        <li>수동적 사회적 조화</li>
+        <li>감지하고 <strong>조용히 맞춥</strong>니다</li>
+        <li>분위기를 읽은 후에도 간접적으로 남습니다</li>
+        <li><span class="jp">空気が読める</span> = "분위기를 읽을 수 있다" (기본 기대)</li>
+        <li><span class="jp">KY</span> (空気読めない) = "분위기를 못 읽는다" (사회적 사형선고)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="callout warn">
+  <div class="callout-title">결정적인 차이</div>
+  <p>한국에서는 분위기를 파악한 후 행동할 수 있습니다 &mdash; 때로는 직설적으로. 일본에서는 분위기를 읽는다는 것은 <strong>혼란을 피하기 위해 자신의 행동을 조절하는 것</strong>을 의미하며, 종종 문제를 직접적으로 언급하지 않습니다. 한국의 <span class="kr">눈치</span>는 행동을 위한 도구입니다. 일본의 <span class="jp">空気を読む</span>는 <strong>비행동</strong>을 위한 도구입니다.</p>
+</div>
+
+<div class="card">
+  <h4>실제 예시: 직장에서의 야근</h4>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+    <div>
+      <h4 style="color:var(--a2);font-size:.9rem">한국 직장</h4>
+      <p style="font-size:.88rem">상사가 아직 일하고 있습니다. 눈치를 챕니다(<span class="kr">눈치</span>). 남아 있을 수도 있고, <span class="kr">"먼저 들어가겠습니다"</span>라고 말할 수도 있습니다 &mdash; 직접적인 인정.</p>
+    </div>
+    <div>
+      <h4 style="color:var(--accent);font-size:.9rem">일본 직장</h4>
+      <p style="font-size:.88rem">상사가 아직 일하고 있습니다. 분위기를 읽습니다. 조용히 남아 있습니다. 꼭 떠나야 한다면, 사과하는 어조로 <span class="jp">お先に失礼します</span> (먼저 실례합니다)라고 말하며, 고개를 숙일 수도 있습니다.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 2: 本音と建前 ↔ 겉과 속
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="섹션-2-本音と建前-진심과-공적-입장-겉과-속"><span class="jp">本音と建前</span> (진심과 공적 입장) &harr; <span class="kr">겉과 속</span></h3>
+
+<p>모든 문화에는 생각하는 것과 말하는 것 사이에 차이가 있습니다. 일본에서는 이 차이에 이름과 체계가 있습니다.</p>
+
+<div class="diagram">
+  <svg viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg">
+    <!-- Title -->
+    <text x="360" y="30" text-anchor="middle" font-size="14" font-weight="600" fill="var(--heading)">간접성 스펙트럼</text>
+
+    <!-- Scale line -->
+    <line x1="60" y1="80" x2="660" y2="80" stroke="var(--border)" stroke-width="2"/>
+
+    <!-- Direct end -->
+    <text x="60" y="70" text-anchor="start" font-size="11" fill="var(--heading)" font-weight="600">직접적</text>
+    <circle cx="60" cy="80" r="4" fill="var(--heading)"/>
+
+    <!-- Indirect end -->
+    <text x="660" y="70" text-anchor="end" font-size="11" fill="var(--heading)" font-weight="600">간접적</text>
+    <circle cx="660" cy="80" r="4" fill="var(--heading)"/>
+
+    <!-- Korean position -->
+    <circle cx="250" cy="80" r="8" fill="var(--a2)" opacity=".8"/>
+    <text x="250" y="105" text-anchor="middle" font-size="11" fill="var(--a2)" font-weight="600">한국어</text>
+    <text x="250" y="120" text-anchor="middle" font-size="9" fill="var(--text-muted)">겉/속 구분이 있지만</text>
+    <text x="250" y="133" text-anchor="middle" font-size="9" fill="var(--text-muted)">필요할 때 직접적으로</text>
+    <text x="250" y="146" text-anchor="middle" font-size="9" fill="var(--text-muted)">말할 의향이 더 강함</text>
+
+    <!-- Japanese position -->
+    <circle cx="530" cy="80" r="8" fill="var(--accent)" opacity=".8"/>
+    <text x="530" y="105" text-anchor="middle" font-size="11" fill="var(--accent)" font-weight="600">일본어</text>
+    <text x="530" y="120" text-anchor="middle" font-size="9" fill="var(--text-muted)">建前이 기본값</text>
+    <text x="530" y="133" text-anchor="middle" font-size="9" fill="var(--text-muted)">本音은 친한 친구나</text>
+    <text x="530" y="146" text-anchor="middle" font-size="9" fill="var(--text-muted)">술자리에서만 드러남</text>
+
+    <!-- Key phrases box -->
+    <rect x="60" y="170" width="290" height="110" rx="8" fill="none" stroke="var(--a2)" stroke-width="1.5"/>
+    <text x="205" y="192" text-anchor="middle" font-size="11" fill="var(--a2)" font-weight="600">한국어 거절 패턴</text>
+    <text x="205" y="212" text-anchor="middle" font-size="10" fill="var(--text-muted)">Q: 내일 시간 있어? (내일 시간 돼?)</text>
+    <text x="205" y="228" text-anchor="middle" font-size="10" fill="var(--text-muted)">A: 아니, 내일은 좀... (아니, 내일은 좀...)</text>
+    <text x="205" y="244" text-anchor="middle" font-size="10" fill="var(--text-muted)">또는: 미안, 안 돼. (미안, 안 돼.)</text>
+    <text x="205" y="264" text-anchor="middle" font-size="9" fill="var(--a2)">직접적으로 "안 돼"라고 말할 수 있음</text>
+
+    <rect x="370" y="170" width="290" height="110" rx="8" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+    <text x="515" y="192" text-anchor="middle" font-size="11" fill="var(--accent)" font-weight="600">일본어 거절 패턴</text>
+    <text x="515" y="212" text-anchor="middle" font-size="10" fill="var(--text-muted)">Q: 明日、時間ある？ (내일 시간 돼?)</text>
+    <text x="515" y="228" text-anchor="middle" font-size="10" fill="var(--text-muted)">A: 明日はちょっと... (내일은 좀...)</text>
+    <text x="515" y="244" text-anchor="middle" font-size="10" fill="var(--text-muted)">절대 안 씀: いいえ、無理です。</text>
+    <text x="515" y="264" text-anchor="middle" font-size="9" fill="var(--accent)">ちょっと... = "안 돼" (암시)</text>
+  </svg>
+  <div class="diagram-caption">한국어와 일본어 모두 거절을 부드럽게 하지만, 일본어는 간접성을 더 극단적으로 가져갑니다. 일본인이 <span class="jp">ちょっと...</span> (좀...)이라고 말하고 흐지부지하면, "안 돼"라고 말하는 것입니다. 이것이 建前의 실체입니다.</div>
+</div>
+
+<h4>간접적인 일본어 해독하기</h4>
+
+<table>
+  <thead>
+    <tr><th>그들이 말하는 것</th><th>실제 의미</th><th>한국어 대응 표현</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="jp">ちょっと...</td>
+      <td>아닙니다 (정중한 거절)</td>
+      <td class="kr">좀...</td>
+    </tr>
+    <tr>
+      <td class="jp">考えておきます</td>
+      <td>아마 아닙니다 ("생각해 볼게요")</td>
+      <td class="kr">생각해 볼게요 (한국어에서는 실제로 생각해 본다는 뜻일 수 있음)</td>
+    </tr>
+    <tr>
+      <td class="jp">難しいですね</td>
+      <td>아닙니다, 불가능합니다</td>
+      <td class="kr">어렵겠네요 (한국어: 정말 어려움; 일본어: 완전한 거절)</td>
+    </tr>
+    <tr>
+      <td class="jp">前向きに検討します</td>
+      <td>우리는 이것을 하지 않을 것입니다 (비즈니스 완곡어법)</td>
+      <td class="kr">긍정적으로 검토하겠습니다 (한국어에서는 진심일 수 있음)</td>
+    </tr>
+    <tr>
+      <td class="jp">結構です</td>
+      <td>아닙니다, 괜찮습니다 ("충분하다"라는 뜻도 가능)</td>
+      <td class="kr">괜찮습니다 (같은 모호함이 존재)</td>
+    </tr>
+    <tr>
+      <td class="jp">いいです</td>
+      <td>맥락에 따라: "네, 좋습니다" 또는 "아니요, 괜찮습니다 (필요 없습니다)"</td>
+      <td class="kr">괜찮아요 (같은 모호함)</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">정교한 질문</div>
+  <p><strong>왜 일본어의 간접성이 한국어보다 강할까요?</strong></p>
+  <p><span class="jp">和</span> (조화)라는 문화적 개념을 생각해 보세요. 일본의 섬나라 지리와 역사적 사회 구조는 집단 결속에 대한 극단적인 강조를 만들어냈습니다. 직접적인 거절은 <span class="jp">和</span>를 깨뜨립니다. 한국은 유교적 가치를 공유하지만, 보다 대립적인 역사적 서사(침략에 대한 저항, 사회 운동)가 특정 맥락에서의 직접성을 정상화시켰습니다.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 3: 迷惑 (MEIWAKU)
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="섹션-3-迷惑-폐를-끼치지-않는-것의-개념"><span class="jp">迷惑</span> &mdash; 폐를 끼치지 않는 것의 개념</h3>
+
+<p><span class="jp">迷惑</span> (민폐/폐/불편)은 일본에서 가장 중요한 문화적 개념 중 하나입니다. 한국에도 <span class="kr">폐</span> (<span class="kr">폐를 끼치다</span>에서와 같은)가 있지만, 일본의 <span class="jp">迷惑</span> 개념은 훨씬 더 높은 민감도 수준에서 작동합니다.</p>
+
+<div class="card">
+  <h4><span class="jp">迷惑</span> 민감도 스펙트럼</h4>
+  <table>
+    <thead>
+      <tr><th>상황</th><th>한국에서</th><th>일본에서</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>전철에서 전화 통화</td>
+        <td class="kr">일반적으로 허용됨</td>
+        <td class="jp">강력히 자제 &mdash; マナーモード (매너 모드)가 기대됨</td>
+      </tr>
+      <tr>
+        <td>걸으면서 먹기</td>
+        <td class="kr">흔하고 허용됨</td>
+        <td class="jp">축제 때를 제외하면 눈살을 찌푸리게 함 &mdash; 부스러기, 냄새 = 迷惑</td>
+      </tr>
+      <tr>
+        <td>핸드폰 스피커로 음악 재생</td>
+        <td class="kr">공공장소에서 다소 흔함</td>
+        <td class="jp">절대 용납 불가 &mdash; イヤホン (이어폰)은 필수</td>
+      </tr>
+      <tr>
+        <td>전철에서 강한 향수</td>
+        <td class="kr">일반적으로 용인됨</td>
+        <td class="jp">迷惑으로 간주 &mdash; 다른 사람에게 자신의 향을 강요하는 것</td>
+      </tr>
+      <tr>
+        <td>5분 늦기</td>
+        <td class="kr">사회적으로 종종 허용됨</td>
+        <td class="jp">사과가 필요함: <span class="jp">遅れてすみません</span></td>
+      </tr>
+      <tr>
+        <td>식당에서 음식 남기기</td>
+        <td class="kr">때때로 허용됨</td>
+        <td class="jp">요리사의 노력을 낭비 = 식당에 대한 迷惑</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="callout ok">
+  <div class="callout-title">迷惑을 피하기 위한 핵심 표현</div>
+  <ul style="margin-bottom:0">
+    <li><span class="jp">ご迷惑をおかけして申し訳ございません</span> &mdash; 폐를 끼쳐서 진심으로 사과드립니다 (<span class="kr">폐를 끼쳐서 죄송합니다</span>)</li>
+    <li><span class="jp">お邪魔します</span> &mdash; 실례합니다 (타인의 집에 들어갈 때) (<span class="kr">실례합니다</span>)</li>
+    <li><span class="jp">お手数ですが</span> &mdash; 번거로우시겠지만... (<span class="kr">번거로우시겠지만</span>)</li>
+    <li><span class="jp">すみません、ちょっとよろしいですか</span> &mdash; 죄송합니다, 잠시 괜찮으세요? (<span class="kr">죄송합니다, 잠시 괜찮으세요?</span>)</li>
+  </ul>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 4: BUSINESS CULTURE
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="섹션-4-비즈니스-문화-차이">비즈니스 문화 차이</h3>
+
+<h4><span class="jp">名刺交換</span> &mdash; 명함 교환</h4>
+
+<div class="card">
+  <h4>의식(단순한 교환이 아닌)</h4>
+  <ol>
+    <li><strong>양손으로</strong> 명함을 건네며, 텍스트가 상대방을 향하게 합니다</li>
+    <li><strong>양손으로</strong> 상대의 명함을 받으며, <span class="jp">頂戴いたします</span> ("삼가 받겠습니다")라고 말합니다</li>
+    <li>명함을 주의 깊게 살펴봅니다 &mdash; 명함에 글을 쓰거나, 접거나, 뒷주머니에 넣지 마세요</li>
+    <li>회의 중 테이블 위에 상대가 앉은 위치에 맞춰 놓습니다</li>
+    <li>회의 후, 명함 케이스(<span class="jp">名刺入れ</span>)에 정중히 보관합니다</li>
+  </ol>
+  <p style="font-size:.85rem;color:var(--text-muted)">한국의 명함 교환도 유사하지만 덜 의례적입니다. 한국에서는 동료에게 한 손으로 명함을 받을 수도 있습니다. 일본에서는 후배에게도 <strong>반드시 양손</strong>으로 받습니다.</p>
+</div>
+
+<h4>회의 프로토콜</h4>
+
+<div class="card">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+    <div>
+      <h4 style="color:var(--a2);font-size:.9rem">한국 회의 (<span class="kr">회의</span>)</h4>
+      <ul style="font-size:.88rem">
+        <li>회의 중 이견을 표현할 수 있습니다</li>
+        <li><span class="kr">제 생각은 좀 다른데요</span>는 허용됩니다</li>
+        <li>회의실에서 결정을 내릴 수 있습니다</li>
+        <li>카카오톡이나 이메일로 후속 조치</li>
+      </ul>
+    </div>
+    <div>
+      <h4 style="color:var(--accent);font-size:.9rem">일본 회의 (<span class="jp">会議</span>)</h4>
+      <ul style="font-size:.88rem">
+        <li>결정은 종종 사전에 준비됨 (<span class="jp">根回し</span>)</li>
+        <li>회의는 공식적인 확인을 위한 것이지, 토론을 위한 것이 아닙니다</li>
+        <li>이견은 회의 전/후에 개인적으로 표현합니다</li>
+        <li>회의록 (<span class="jp">議事録</span>)이 매우 중요합니다</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="callout warn">
+  <div class="callout-title">根回し (네마와시) &mdash; 사전 회의</div>
+  <p>일본에서는 진짜 회의가 회의 <em>전에</em> 일어납니다. <span class="jp">根回し</span>는 문자 그대로 "뿌리를 돌리다" (나무를 옮기기 전에)라는 뜻입니다. 핵심 이해관계자들과 비공식적으로 개별 논의하여 공식 회의 전에 합의를 도출합니다. 회의 자체는 의례적입니다. 한국에서도 이것을 합니다 (<span class="kr">사전 조율</span>), 하지만 일본의 <span class="jp">根回し</span>는 더 체계적이고 기대됩니다.</p>
+</div>
+
+<h4><span class="jp">飲み会</span> vs <span class="kr">회식</span> &mdash; 음주 문화</h4>
+
+<div class="card">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+    <div>
+      <h4 style="color:var(--a2);font-size:.9rem">한국 <span class="kr">회식</span></h4>
+      <ul style="font-size:.88rem">
+        <li>종종 반강제적이며, 여러 차 (<span class="kr">1차, 2차, 3차</span>)</li>
+        <li>다른 사람에게 술을 따르는 것이 중요합니다</li>
+        <li>윗사람 앞에서 마실 때 고개를 돌립니다</li>
+        <li>상당히 시끌벅적할 수 있습니다</li>
+        <li>음주 거부가 점점 더 수용되고 있습니다</li>
+      </ul>
+    </div>
+    <div>
+      <h4 style="color:var(--accent);font-size:.9rem">일본 <span class="jp">飲み会</span></h4>
+      <ul style="font-size:.88rem">
+        <li>관계 구축에 중요 (<span class="jp">飲みニケーション</span>)</li>
+        <li>술 따르기: 항상 윗사람에게 먼저 따릅니다</li>
+        <li><span class="jp">乾杯</span> (건배) 전까지 마시지 않고 기다립니다</li>
+        <li>한국 회식보다 더 절제됩니다</li>
+        <li><span class="jp">無礼講</span> (격식 해제)를 선언하지만 완전히 실제적이지는 않습니다</li>
+      </ul>
+    </div>
+  </div>
+  <p style="margin-top:1rem;font-size:.85rem;color:var(--text-muted)">핵심 어휘: <span class="jp">お酌</span> (다른 사람에게 술 따르기), <span class="jp">二次会</span> (2차), <span class="jp">割り勘</span> (더치페이), <span class="jp">おごる</span> (한턱 내다)</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 5: REGIONAL VARIATION
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="섹션-5-지역-변이-関西弁과-그-외">지역 변이 &mdash; <span class="jp">関西弁</span>과 그 외</h3>
+
+<p>표준 일본어 (<span class="jp">標準語</span>)는 도쿄 말을 기반으로 합니다. 하지만 일본에는 풍부한 지역 방언이 있습니다. 가장 중요하게 알아야 할 것은 오사카, 교토, 고베에서 사용되는 <span class="jp">関西弁</span> (간사이 방언)입니다.</p>
+
+<div class="diagram">
+  <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg">
+    <!-- Title -->
+    <text x="360" y="30" text-anchor="middle" font-size="14" font-weight="600" fill="var(--heading)">도쿄 vs 오사카: 주요 문화적 차이</text>
+
+    <!-- Tokyo box -->
+    <rect x="40" y="50" width="300" height="200" rx="10" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+    <text x="190" y="75" text-anchor="middle" font-size="13" font-weight="600" fill="var(--accent)">도쿄 (東京)</text>
+
+    <text x="60" y="100" font-size="10" fill="var(--text-muted)">절제적, 격식적, 간접적</text>
+    <text x="60" y="118" font-size="10" fill="var(--text-muted)">표준 일본어 (標準語)</text>
+    <text x="60" y="136" font-size="10" fill="var(--text-muted)">에스컬레이터: 왼쪽 서기, 오른쪽 걷기</text>
+    <text x="60" y="154" font-size="10" fill="var(--text-muted)">유머: 은근하고 아이러니</text>
+    <text x="60" y="172" font-size="10" fill="var(--text-muted)">낯선 사람과의 대화: 최소</text>
+    <text x="60" y="195" font-size="10" fill="var(--text-muted)">「ありがとうございます」</text>
+    <text x="60" y="213" font-size="10" fill="var(--text-muted)">「じゃないですか」</text>
+    <text x="60" y="235" font-size="9" fill="var(--accent)" font-weight="500">한국 서울 문화에 더 가까움</text>
+
+    <!-- Osaka box -->
+    <rect x="380" y="50" width="300" height="200" rx="10" fill="none" stroke="var(--a3)" stroke-width="1.5"/>
+    <text x="530" y="75" text-anchor="middle" font-size="13" font-weight="600" fill="var(--a3)">오사카 (大阪)</text>
+
+    <text x="400" y="100" font-size="10" fill="var(--text-muted)">외향적, 직접적, 표현적</text>
+    <text x="400" y="118" font-size="10" fill="var(--text-muted)">간사이 방언 (関西弁)</text>
+    <text x="400" y="136" font-size="10" fill="var(--text-muted)">에스컬레이터: 오른쪽 서기, 왼쪽 걷기</text>
+    <text x="400" y="154" font-size="10" fill="var(--text-muted)">유머: 슬랩스틱, ツッコミ/ボケ</text>
+    <text x="400" y="172" font-size="10" fill="var(--text-muted)">낯선 사람과의 대화: 흔함</text>
+    <text x="400" y="195" font-size="10" fill="var(--text-muted)">「おおきに」(감사합니다)</text>
+    <text x="400" y="213" font-size="10" fill="var(--text-muted)">「ちゃうやん」(그거 아니잖아)</text>
+    <text x="400" y="235" font-size="9" fill="var(--a3)" font-weight="500">한국 부산 문화에 더 가까움</text>
+  </svg>
+  <div class="diagram-caption">도쿄와 오사카는 서울과 부산처럼 뚜렷한 문화적 성격을 가지고 있습니다. 간사이 방언은 더 따뜻하고, 직접적이며, 감정적으로 표현이 풍부합니다.</div>
+</div>
+
+<h4>필수 <span class="jp">関西弁</span> 변환표</h4>
+
+<table>
+  <thead>
+    <tr><th>표준어 (標準語)</th><th>간사이 (関西弁)</th><th>의미</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="jp">ない</td><td class="jp">あらへん / ない</td><td>없다 (부정)</td></tr>
+    <tr><td class="jp">だめ</td><td class="jp">あかん</td><td>안 돼 / 불가</td></tr>
+    <tr><td class="jp">違う</td><td class="jp">ちゃう</td><td>틀리다 / 다르다</td></tr>
+    <tr><td class="jp">本当</td><td class="jp">ほんま</td><td>정말 / 진짜</td></tr>
+    <tr><td class="jp">すごい</td><td class="jp">めっちゃ</td><td>매우 / 엄청</td></tr>
+    <tr><td class="jp">〜ている</td><td class="jp">〜てる / 〜とる</td><td>~하고 있다 (진행형)</td></tr>
+    <tr><td class="jp">〜ではないか</td><td class="jp">〜やんか</td><td>~아니야?</td></tr>
+    <tr><td class="jp">面白い</td><td class="jp">おもろい</td><td>재미있다 / 흥미롭다</td></tr>
+    <tr><td class="jp">ありがとう</td><td class="jp">おおきに</td><td>감사합니다</td></tr>
+    <tr><td class="jp">です / だ</td><td class="jp">や</td><td>서술격 조사 (~이다)</td></tr>
+  </tbody>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">関西弁을 배워야 할까요?</div>
+  <p>적극적으로 배울 필요는 없습니다 &mdash; <strong>알아듣는 것</strong>에 집중하세요, 직접 사용하는 것이 아닙니다. 비원어민이 関西弁을 사용하면 어색하게 들립니다 (한국에서 외국인이 부산 사투리로 말하는 것과 같습니다). 하지만 미디어, 여행, 간사이 지역 출신 일본인 친구들에게서 자주 접하게 되므로 이해하는 것은 필수적입니다. 인식에 집중하고, 생산은 하지 마세요.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     ADDITIONAL CULTURAL CONCEPTS
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="필수-문화-어휘">필수 문화 어휘</h3>
+
+<div class="card-grid">
+  <div class="card">
+    <h4><span class="jp">義理</span> (의리/의무)</h4>
+    <p style="font-size:.88rem">갚아야 하는 사회적 빚. <span class="jp">義理チョコ</span> (발렌타인데이 의무 초콜릿)이 이를 완벽하게 보여줍니다. 한국의 <span class="kr">의리</span>와 비슷하지만 일본에서 더 형식화되어 있습니다. 모든 호의는 빚을 만듭니다.</p>
+  </div>
+  <div class="card">
+    <h4><span class="jp">遠慮</span> (사양/자제)</h4>
+    <p style="font-size:.88rem">부담을 주지 않기 위해 자제하는 것. 음식을 더 권유받으면 적어도 한 번은 <span class="jp">遠慮します</span>라고 말합니다. 주인은 다시 권합니다. 그런 다음 수락할 수 있습니다. 이 춤은 한국에서도 존재하지만 (<span class="kr">사양합니다</span>), 일본에서 더 의례화되어 있습니다.</p>
+  </div>
+  <div class="card">
+    <h4><span class="jp">もったいない</span> (아까움/낭비)</h4>
+    <p style="font-size:.88rem">낭비에 대한 깊은 거부감 &mdash; 음식, 자원, 잠재력. 환경적인 것뿐만 아니라 정신적인 것: 모든 것에는 가치가 있습니다. 한국의 <span class="kr">아깝다</span>와 비슷하지만 <span class="jp">もったいない</span>는 더 강한 도덕적 무게를 지닙니다.</p>
+  </div>
+  <div class="card">
+    <h4><span class="jp">我慢</span> (인내)</h4>
+    <p style="font-size:.88rem">고통이나 어려움을 조용히 견디는 것. 단순한 필요가 아닌 미덕으로 여겨집니다. 한국의 <span class="kr">참다/인내</span>와 비슷하지만, 일본의 <span class="jp">我慢</span>는 사회적 기대로 격상되어 있습니다 &mdash; 불평하는 것 자체가 <span class="jp">迷惑</span>입니다.</p>
+  </div>
+  <div class="card">
+    <h4><span class="jp">おもてなし</span> (환대)</h4>
+    <p style="font-size:.88rem">필요가 표현되기 전에 미리 예측하는 것. 단순한 서비스가 아니라 <strong>선제적 배려</strong>입니다. 한국의 환대 (<span class="kr">정</span>)는 더 따뜻하고 감정적입니다; 일본의 <span class="jp">おもてなし</span>는 더 정밀하고 예측적입니다.</p>
+  </div>
+  <div class="card">
+    <h4><span class="jp">報連相</span> (보고-연락-상담)</h4>
+    <p style="font-size:.88rem"><span class="jp">報告・連絡・相談</span> = 보고, 연락, 상담. 일본 직장 커뮤니케이션의 삼위일체입니다. <span class="jp">報連相</span>를 하지 않는 것은 커리어에 치명적인 실수입니다. 한국 직장에서도 이를 중시하지만, 이 용어와 체계는 뚜렷하게 일본적입니다.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     INTERACTIVE EXERCISES
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="대화형-연습">대화형 연습</h3>
+
+<!-- Quiz 1: MultipleChoice -- cultural situation responses -->
+<div id="quiz-culture-situations"></div>
+
+<!-- Quiz 2: FillBlank -- complete cultural phrases -->
+<div id="quiz-culture-fill"></div>
+
+<!-- Quiz 3: DragMatch -- match Korean ↔ Japanese cultural concepts -->
+<div id="quiz-culture-match"></div>
+
+<!-- Quiz 4: MultipleChoice -- Kansai dialect recognition -->
+<div id="quiz-kansai"></div>
+
+<!-- Quiz 5: Recall Check from all prior chapters (bottom) -->
+<h3 id="복습-확인-종합-복습">복습 확인 &mdash; 종합 복습</h3>
+<p>마지막 장 전 최종 폭넓은 복습입니다. 모든 주요 기술 영역에서 자신을 테스트하세요.</p>
+
+<div id="quiz-recall-bottom"></div>
+
+<!-- Mark as Complete -->
+<button class="chapter-complete" data-ch="18">완료 표시 &#10003;</button>
+
+<div style="display:flex;justify-content:space-between;margin:2rem 0">
+  <a href="ch-17.html" class="quiz-btn secondary">&larr; 제18장: 청해</a>
+  <a href="ch-19.html" class="quiz-btn">다음: 제20장 -- JLPT와 그 너머 &rarr;</a>
+</div>
+
+</section>
+
+</div>
+
+
+</div>
+
+<footer>
+  <p>Zero to Hero: 한국어 화자를 위한 日本語 &middot; 제18장</p>
+</footer>
+
+<script src="js/shared.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/quiz-engine.js"></script>
+<script src="js/spaced-repetition.js"></script>
+<script src="js/memory-palace.js"></script>
+<script>
+// ─── 복습 확인 (장 상단, 이전 장 전체에서) ───
+QuizEngine.RecallCheck(
+  document.getElementById('recall-check-top'),
+  {
+    fromChapters: '제1-16장',
+    items: [
+      { question: '제2장: 다섯 개의 모음 히라가나 문자를 쓰세요.', answer: 'あ、い、う、え、お' },
+      { question: '제8장: 行く의 て형은 무엇입니까?', answer: '行って (불규칙: く→って)' },
+      { question: '제11장: 学의 音読み와 한국어 대응어는 무엇입니까?', answer: '音読み: ガク. 한국어: 학. 학생 → 学生' },
+      { question: '제14장: 言う의 겸양어(謙譲語) 형태는 무엇입니까?', answer: '申す (もうす)' },
+      { question: '제17장: ている의 축약형은 무엇입니까?', answer: 'てる (예: 食べている → 食べてる)' }
+    ]
+  }
+);
+
+// ─── 퀴즈 1: 객관식 -- 문화적 상황 대응 ───
+QuizEngine.MultipleChoice(
+  document.getElementById('quiz-culture-situations'),
+  {
+    title: '문화적 상황 대응',
+    questions: [
+      {
+        prompt: '일본인 동료를 저녁 식사에 초대했습니다. 그들이 이렇게 말합니다: <span class="jp">「ちょっと予定が...」</span> 이것은 무슨 뜻입니까?',
+        options: [
+          '일정을 확인하고 다시 연락하겠다는 뜻입니다',
+          '초대를 정중하게 거절하고 있습니다',
+          '다른 날을 제안해 달라는 뜻입니다',
+          '몇 시인지 묻고 있습니다'
+        ],
+        correctIndex: 1,
+        explanation: 'ちょっと...로 문장을 끝맺지 않는 것은 전형적인 일본식 간접 거절입니다. 문장은 의도적으로 미완성 상태로 남겨져서 상대방이 "분위기를 읽고" "아니오"라고 이해할 수 있게 합니다.'
+      },
+      {
+        prompt: '처음으로 일본인 동료의 집에 들어갑니다. 현관에서 뭐라고 말해야 합니까?',
+        options: [
+          'こんにちは (안녕하세요)',
+          'お邪魔します (실례합니다)',
+          'ただいま (다녀왔습니다)',
+          'いらっしゃいませ (어서 오세요)'
+        ],
+        correctIndex: 1,
+        explanation: 'お邪魔します는 문자 그대로 "폐를 끼치겠습니다/방해가 되겠습니다"라는 뜻입니다. 누군가의 사적 공간에 들어가는 것이 부담이 된다는 것을 인정하는 것으로 -- 핵심적인 迷惑 개념입니다.'
+      },
+      {
+        prompt: '일본에서의 비즈니스 회의에서 상대방이 <span class="jp">「前向きに検討します」</span> (긍정적으로 검토하겠습니다)라고 말합니다. 예상되는 결과는 무엇입니까?',
+        options: [
+          '곧 제안을 승인할 것입니다',
+          '더 많은 시간이 필요하지만 관심이 있습니다',
+          '제안을 정중하게 거절하고 있습니다',
+          '더 많은 서류를 제출해 달라는 뜻입니다'
+        ],
+        correctIndex: 2,
+        explanation: '前向きに検討します는 유명한 비즈니스 완곡어법으로 "아니오"를 의미합니다. 긍정적으로 들리지만 실제로는 建前 (공적 입장)입니다. 진정한 "예"는 承知しました나 進めましょう처럼 들립니다.'
+      },
+      {
+        prompt: '일본에서 전철을 타고 있습니다. 전화가 울립니다. 어떻게 해야 합니까?',
+        options: [
+          '조용히 받아서 간단히 통화합니다',
+          '울리도록 놔두고 전철에서 내린 후 다시 겁니다',
+          '받은 후 차량 간 연결 공간으로 이동합니다',
+          'B와 C 모두 적절합니다'
+        ],
+        correctIndex: 3,
+        explanation: '일본 전철에서의 전화 통화는 迷惑으로 간주됩니다. 음성 사서함으로 넘기고 나중에 다시 걸거나, 긴급한 경우 차량 간 공간으로 이동해야 합니다. 안내 방송은 다음과 같습니다: 携帯電話はマナーモードに設定してください.'
+      },
+      {
+        prompt: '일본인 호스트가 음식을 더 권합니다. 배가 부릅니다. 문화적으로 적절한 첫 번째 반응은 무엇입니까?',
+        options: [
+          'もう食べられません (더 이상 먹을 수 없습니다)',
+          'いいえ、結構です (아니요, 괜찮습니다)',
+          'もう少しいただきます (조금 더 먹겠습니다)',
+          'お腹いっぱいです (배가 부릅니다)'
+        ],
+        correctIndex: 1,
+        explanation: '먼저 結構です나 遠慮します로 정중하게 거절합니다. 호스트가 다시 권할 수 있습니다. 그러면 수락하거나 다시 거절할 수 있습니다. お腹いっぱい는 첫 번째 반응으로는 너무 직접적입니다. 이 의례는 한국 문화에도 존재하지만 일본에서 더 기대됩니다.'
+      }
+    ]
+  }
+);
+
+// ─── 퀴즈 2: 빈칸 채우기 -- 문화적 표현 완성 ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-culture-fill'),
+  {
+    title: '문화적 표현 완성하기',
+    questions: [
+      {
+        prompt: '식사 전에 말합니다: <span class="jp">________</span> (감사히 먹겠습니다)',
+        answer: 'いただきます',
+        acceptAlso: [],
+        explanation: 'いただきます는 모든 식사 전에 합니다. 음식을 가능하게 한 모든 사람 -- 농부, 요리사, 재료의 생명에 대한 감사를 표현합니다.',
+        korean: '잘 먹겠습니다'
+      },
+      {
+        prompt: '식사 후에 말합니다: <span class="jp">________</span> (잘 먹었습니다)',
+        answer: 'ごちそうさまでした',
+        acceptAlso: ['ごちそうさま'],
+        explanation: 'ごちそうさまでした는 문자 그대로 "잔치였습니다"라는 뜻입니다. 편의점 주먹밥이라도 모든 식사 후에 말합니다.',
+        korean: '잘 먹었습니다'
+      },
+      {
+        prompt: '누군가의 집에 들어갈 때 말합니다: <span class="jp">________</span> (실례합니다)',
+        answer: 'お邪魔します',
+        acceptAlso: ['おじゃまします'],
+        explanation: 'お邪魔します는 상대의 사적 공간에 부담을 준다는 것을 인정합니다. 떠날 때는 お邪魔しました (과거형)라고 말합니다.',
+        korean: '실례합니다'
+      },
+      {
+        prompt: '상사보다 먼저 퇴근할 때 말합니다: <span class="jp">________</span> (먼저 실례하겠습니다)',
+        answer: 'お先に失礼します',
+        acceptAlso: ['おさきにしつれいします'],
+        explanation: 'お先に失礼します는 필수적인 직장 일본어입니다. 다른 사람보다 먼저 떠나는 것이 배려 없어 보일 수 있다는 것을 인정합니다.',
+        korean: '먼저 들어가겠습니다'
+      },
+      {
+        prompt: '누군가에게 폐를 끼쳤습니다. 이렇게 말합니다: <span class="jp">ご迷惑をおかけして________</span>',
+        answer: '申し訳ございません',
+        acceptAlso: ['もうしわけございません', '申し訳ありません', 'すみません'],
+        explanation: 'ご迷惑をおかけして申し訳ございません는 폐/불편을 끼친 것에 대한 정식 사과입니다. 비즈니스 일본어에서 가장 중요한 표현 중 하나입니다.',
+        korean: '폐를 끼쳐서 죄송합니다'
+      }
+    ]
+  }
+);
+
+// ─── 퀴즈 3: 드래그 매칭 -- 한국어 ↔ 일본어 문화 개념 매칭 ───
+QuizEngine.DragMatch(
+  document.getElementById('quiz-culture-match'),
+  {
+    title: '문화 개념 매칭: 한국어에서 일본어로',
+    instruction: '각 한국 문화 개념을 일본어 대응 개념과 매칭하세요:',
+    pairs: [
+      { left: '눈치 (사회적 감각)', right: '空気を読む (분위기를 읽다)' },
+      { left: '겉과 속 (겉과 속)', right: '本音と建前 (진심/공적 입장)' },
+      { left: '폐를 끼치다 (민폐)', right: '迷惑をかける (메이와쿠를 끼치다)' },
+      { left: '회식 (직장 회식)', right: '飲み会 (음주 모임)' },
+      { left: '의리 (의리/의무)', right: '義理 (사회적 의무)' },
+      { left: '정 (정/유대)', right: 'おもてなし (환대)' }
+    ]
+  }
+);
+
+// ─── 퀴즈 4: 객관식 -- 간사이 방언 인식 ───
+QuizEngine.MultipleChoice(
+  document.getElementById('quiz-kansai'),
+  {
+    title: '간사이 방언 인식',
+    questions: [
+      {
+        prompt: '関西弁에서 <span class="jp">あかん</span>은 무슨 뜻입니까?',
+        options: [
+          '빨갛다',
+          '안 돼 / 불가',
+          '밝다 / 맑다',
+          '열리다'
+        ],
+        correctIndex: 1,
+        explanation: 'あかん = だめ (안 돼, 불가). 가장 상징적인 간사이 표현 중 하나입니다. あかんて！ = "안 돼!" / "하지 마!"'
+      },
+      {
+        prompt: '<span class="jp">ほんまに？</span>의 표준 일본어 대응어는 무엇입니까?',
+        options: [
+          '本当に？ (정말?)',
+          '本気で？ (진심으로?)',
+          'まさか？ (설마?)',
+          '確かに？ (확실히?)'
+        ],
+        correctIndex: 0,
+        explanation: 'ほんま = 本当 (정말/진짜). ほんまに？ = 本当に？ = "정말?" 이것은 가장 알아보기 쉬운 간사이벤 단어 중 하나입니다.'
+      },
+      {
+        prompt: '関西弁에서 서술격 조사 だ는 무엇으로 바뀝니까?',
+        options: [
+          'じゃ',
+          'や',
+          'で',
+          'な'
+        ],
+        correctIndex: 1,
+        explanation: 'だ → や (간사이 방언). そうだ → そうや, 何だ → 何や. 간사이 말을 들을 때 가장 먼저 알아차리게 되는 특징 중 하나입니다.'
+      },
+      {
+        prompt: '다음 중 <span class="jp">すごい</span> (대단한)를 표현하는 간사이 방식은 무엇입니까?',
+        options: [
+          'やばい',
+          'えらい',
+          'めっちゃ',
+          'マジで'
+        ],
+        correctIndex: 2,
+        explanation: 'めっちゃ는 간사이에서 유래했으며 "매우/엄청"을 뜻합니다. めっちゃおいしい = すごくおいしい. 참고: めっちゃ는 전국적으로 퍼졌지만 여전히 간사이 출신으로 간주됩니다.'
+      }
+    ]
+  }
+);
+
+// ─── 퀴즈 5: 이전 장 전체 복습 확인 (하단) ───
+QuizEngine.RecallCheck(
+  document.getElementById('quiz-recall-bottom'),
+  {
+    fromChapters: '제1-16장 (종합)',
+    items: [
+      { question: '제1장: 일본어 학습의 몇 퍼센트가 한국어에서 전이된다고 추정됩니까?', answer: '약 40% -- 문법, 조사 체계, 한자어 어휘, 경어 개념' },
+      { question: '제5장: 상대의 주의를 끌기 위해 "실례합니다"는 어떻게 말합니까?', answer: 'すみません' },
+      { question: '제7장: 문장의 주제를 나타내는 조사는 무엇입니까?', answer: 'は (주제 표지), 한국어 은/는에 해당' },
+      { question: '제10장: 희망("~하고 싶다")을 표현하는 문형은 무엇입니까?', answer: '동사 어간 + たい (예: 食べたい = 먹고 싶다)' },
+      { question: '제12장: 한국어 図書館 (도서관)은 일본어로 어떻게 읽습니까?', answer: '図書館 (としょかん) -- 도서관' },
+      { question: '제14장: 食べる의 존경어 (尊敬語)는 무엇입니까?', answer: '召し上がる' },
+      { question: '제17장: 청해 연습의 세 단계는 무엇입니까?', answer: '다청(대량 노출) → 정청(받아쓰기/분석) → 섀도잉(따라 말하기)' }
+    ]
+  }
+);
+</script>
+</body>
+</html>

@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ch14: 경어와 공손함 — Zero to Hero 日本語</title>
+<link rel="stylesheet" href="css/design-system.css">
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="테마 전환">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <span class="logo-badge">Zero to Hero — 기억 설계 에디션</span>
+    <div class="logo-title">한국어 화자를 위한 日本語</div>
+    <div class="logo-sub">한국어에서 日本語로 — 기억 설계자의 안내서</div>
+  </a>
+  <div class="sidebar-progress">
+    <div class="sidebar-progress-label">진행률</div>
+    <div class="sidebar-progress-bar">
+      <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+    </div>
+    <div class="sidebar-progress-count">0/22 완료</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="ch-00.html" class="toc-link"><span class="toc-num">00</span><span class="toc-check" data-ch="00"></span>기억 과학</a>
+    <a href="ch-01.html" class="toc-link"><span class="toc-num">01</span><span class="toc-check" data-ch="01"></span>한국어의 이점</a>
+    <a href="ch-02.html" class="toc-link"><span class="toc-num">02</span><span class="toc-check" data-ch="02"></span>히라가나</a>
+    <a href="ch-03.html" class="toc-link"><span class="toc-num">03</span><span class="toc-check" data-ch="03"></span>가타카나</a>
+    <a href="ch-04.html" class="toc-link"><span class="toc-num">04</span><span class="toc-check" data-ch="04"></span>발음</a>
+    <a href="ch-05.html" class="toc-link"><span class="toc-num">05</span><span class="toc-check" data-ch="05"></span>서바이벌 일본어</a>
+    <a href="ch-06.html" class="toc-link"><span class="toc-num">06</span><span class="toc-check" data-ch="06"></span>조수사</a>
+    <a href="ch-07.html" class="toc-link"><span class="toc-num">07</span><span class="toc-check" data-ch="07"></span>조사</a>
+    <a href="ch-08.html" class="toc-link"><span class="toc-num">08</span><span class="toc-check" data-ch="08"></span>동사 활용</a>
+    <a href="ch-09.html" class="toc-link"><span class="toc-num">09</span><span class="toc-check" data-ch="09"></span>일상 회화</a>
+    <a href="ch-10.html" class="toc-link"><span class="toc-num">10</span><span class="toc-check" data-ch="10"></span>문형</a>
+    <a href="ch-11.html" class="toc-link"><span class="toc-num">11</span><span class="toc-check" data-ch="11"></span>한자</a>
+    <a href="ch-12.html" class="toc-link"><span class="toc-num">12</span><span class="toc-check" data-ch="12"></span>한자어</a>
+    <a href="ch-13.html" class="toc-link"><span class="toc-num">13</span><span class="toc-check" data-ch="13"></span>고유어</a>
+    <a href="ch-14.html" class="toc-link active"><span class="toc-num">14</span><span class="toc-check" data-ch="14"></span>경어</a>
+    <a href="ch-15.html" class="toc-link"><span class="toc-num">15</span><span class="toc-check" data-ch="15"></span>독해</a>
+    <a href="ch-16.html" class="toc-link"><span class="toc-num">16</span><span class="toc-check" data-ch="16"></span>작문</a>
+    <a href="ch-17.html" class="toc-link"><span class="toc-num">17</span><span class="toc-check" data-ch="17"></span>청해</a>
+    <a href="ch-18.html" class="toc-link"><span class="toc-num">18</span><span class="toc-check" data-ch="18"></span>문화 화용론</a>
+    <a href="ch-19.html" class="toc-link"><span class="toc-num">19</span><span class="toc-check" data-ch="19"></span>JLPT와 그 너머</a>
+    <a href="ch-20.html" class="toc-link"><span class="toc-num">20</span><span class="toc-check" data-ch="20"></span>기억의 궁전</a>
+    <a href="ch-21.html" class="toc-link"><span class="toc-num">21</span><span class="toc-check" data-ch="21"></span>90일 스프린트</a>
+    <a href="appendices.html" class="toc-link" style="margin-top:.5rem;border-top:1px solid var(--border);padding-top:.8rem"><span class="toc-num">+</span>부록</a>
+  </nav>
+</aside>
+
+<div class="main">
+<div class="content-wrap">
+
+<section id="ch14" data-ch="14" style="padding-top:3rem">
+<h2><span class="ch-label">제14장</span>경어와 공손함 &mdash; 존댓말에서 敬語로</h2>
+
+<div class="callout memory"><div class="callout-title">기억 기법 스포트라이트: 맥락 의존 기억</div><p>경어는 실제 사회적 상황에서 배워야 올바르게 고정됩니다.</p></div>
+
+<p>제5장에서 <span class="jp">ください</span>와 <span class="jp">お願いします</span>를 경어인 줄 모르고 사용했습니다. 제9장에서는 자기소개에서 <span class="jp">申します</span>를 사용했습니다. 이미 경어를 사용해 왔으니, 이제 전체 체계를 이해해 봅시다.</p>
+
+<div class="pq">
+  "한국어 화자는 이미 경어 체계 안에서 살고 있습니다. 언제 말투를 바꿔야 하는지, 누가 윗사람인지, 하나의 어미가 어떻게 사회적 상황을 바꾸는지 이미 알고 있습니다. 일본어 경어(敬語)는 같은 영역의 다른 지도입니다."
+</div>
+
+<!-- ─── RECALL CHECK (top of chapter, from Ch08-12) ─── -->
+<nav class="chapter-toc">
+  <details open>
+    <summary class="chapter-toc-title">이 장의 내용</summary>
+  <ol>
+    <li><a href="#복습-확인-제9장제13장">복습 확인 — 제9장~제13장</a></li>
+    <li><a href="#제1절-구조적-대조-한국어의-경어-단계와-일본어-경어敬語">구조적 대조 — 한국어의 경어 단계와 일본어 경어(敬語)</a></li>
+    <li><a href="#제2절-특수-경어-동사-쌍과-한국어-대응-표현">특수 경어 동사 쌍과 한국어 대응 표현</a></li>
+    <li><a href="#제3절-おご-접두사-체계">お/ご 접두사 체계</a></li>
+    <li><a href="#제4절-상황별-연습">상황별 연습</a></li>
+    <li><a href="#제5절-외국인이-흔히-저지르는-경어-실수">외국인이 흔히 저지르는 경어 실수</a></li>
+    <li><a href="#대화형-연습">대화형 연습</a></li>
+    <li><a href="#복습-확인-제9장제13장-복습">복습 확인 — 제9장~제13장 복습</a></li>
+  </ol>
+  </details>
+</nav>
+
+<h3 id="복습-확인-제9장제13장">복습 확인 &mdash; 제9장~제13장</h3>
+<p>경어 체계를 배우기 전에, 이전 장에서 배운 조사, 활용, 한자, 어휘가 아직 확실한지 확인합니다.</p>
+
+<div id="recall-check-top"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 1: STRUCTURAL COMPARISON
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="제1절-구조적-대조-한국어의-경어-단계와-일본어-경어敬語">구조적 대조 &mdash; 한국어의 경어 단계와 일본어 경어(敬語)</h3>
+
+<p>한국어에는 풍부한 경어 체계가 있습니다. 일본어에도 이에 대응하는 체계가 있지만, 범주의 대응 관계가 다릅니다. 핵심적인 대응 관계는 다음과 같습니다:</p>
+
+<div class="card">
+  <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:.5rem;align-items:center">
+    <div style="text-align:center">
+      <h4 style="color:var(--a2)">한국어</h4>
+      <p style="font-size:.82rem;color:var(--text-muted)">한국어 경어 체계</p>
+    </div>
+    <div style="font-size:1.5rem;color:var(--text-muted)">&harr;</div>
+    <div style="text-align:center">
+      <h4 style="color:var(--accent)">일본어</h4>
+      <p style="font-size:.82rem;color:var(--text-muted)">日本語 敬語体系</p>
+    </div>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr><th>한국어 단계</th><th>일본어 대응 표현</th><th>기능</th><th>예시</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="kr">반말 (비격식)</td>
+      <td class="jp">タメ口 / 普通体</td>
+      <td>동등한 관계에서 사용하는 기본형/사전형</td>
+      <td class="jp">食べる、行く、いい</td>
+    </tr>
+    <tr>
+      <td class="kr">존댓말 (공손)</td>
+      <td class="jp">丁寧語 (ていねいご)</td>
+      <td>공손한 어미: <span class="jp">-です / -ます</span></td>
+      <td class="jp">食べます、行きます、いいです</td>
+    </tr>
+    <tr>
+      <td class="kr">높임말 (존경)</td>
+      <td class="jp">尊敬語 (そんけいご)</td>
+      <td>상대방의 행위를 높임</td>
+      <td class="jp">お+になる、召し上がる</td>
+    </tr>
+    <tr>
+      <td class="kr">겸양어 (겸손)</td>
+      <td class="jp">謙譲語 (けんじょうご)</td>
+      <td>자신의 행위를 낮춤</td>
+      <td class="jp">お+する、申す、いただく</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout ok">
+  <div class="callout-title">한국어 화자의 이점</div>
+  <p>여러분은 이미 <strong>그 논리</strong>를 이해하고 있습니다: 상대를 높이고, 자신을 낮추며, 상황에 따라 어미를 조절합니다. 한국어에서 <span class="kr">해체</span>, <span class="kr">해요체</span>, <span class="kr">하십시오체</span>를 자동으로 전환하듯, 일본어에서는 <span class="jp">普通体</span>, <span class="jp">丁寧語</span>, <span class="jp">尊敬語/謙譲語</span>를 전환합니다. 감각은 같고, 형태만 다릅니다.</p>
+</div>
+
+<!-- Keigo Structure SVG Diagram -->
+<div class="diagram">
+  <svg viewBox="0 0 720 340" xmlns="http://www.w3.org/2000/svg">
+    <!-- Title -->
+    <text x="360" y="28" text-anchor="middle" font-size="14" font-weight="700" fill="var(--heading)">한국어 &harr; 일본어 경어 체계 대조도</text>
+
+    <!-- Korean side -->
+    <rect x="20" y="50" width="320" height="270" rx="12" fill="none" stroke="var(--a2)" stroke-width="2" opacity=".5"/>
+    <text x="180" y="75" text-anchor="middle" font-size="13" font-weight="600" fill="var(--a2)">한국어 경어 체계</text>
+
+    <!-- Korean levels (bottom to top = casual to formal) -->
+    <rect x="50" y="240" width="260" height="50" rx="8" fill="var(--quiz-neutral)" opacity=".12"/>
+    <text x="180" y="260" text-anchor="middle" font-size="12" fill="var(--text-muted)">반말 (비격식)</text>
+    <text x="180" y="278" text-anchor="middle" font-size="10" fill="var(--text-muted)">먹어, 가, 뭐해</text>
+
+    <rect x="50" y="175" width="260" height="50" rx="8" fill="var(--quiz-neutral)" opacity=".12"/>
+    <text x="180" y="195" text-anchor="middle" font-size="12" fill="var(--a2)">존댓말 (공손)</text>
+    <text x="180" y="213" text-anchor="middle" font-size="10" fill="var(--text-muted)">먹어요, 가요, 뭐해요</text>
+
+    <rect x="50" y="110" width="126" height="50" rx="8" fill="var(--quiz-neutral)" opacity=".12"/>
+    <text x="113" y="130" text-anchor="middle" font-size="11" fill="var(--a3)">높임말</text>
+    <text x="113" y="148" text-anchor="middle" font-size="9" fill="var(--text-muted)">드시다, 가시다</text>
+
+    <rect x="184" y="110" width="126" height="50" rx="8" fill="var(--quiz-neutral)" opacity=".12"/>
+    <text x="247" y="130" text-anchor="middle" font-size="11" fill="var(--a4)">겸양어</text>
+    <text x="247" y="148" text-anchor="middle" font-size="9" fill="var(--text-muted)">말씀드리다, 여쭙다</text>
+
+    <!-- Japanese side -->
+    <rect x="380" y="50" width="320" height="270" rx="12" fill="none" stroke="var(--accent)" stroke-width="2" opacity=".5"/>
+    <text x="540" y="75" text-anchor="middle" font-size="13" font-weight="600" fill="var(--accent)">일본어 敬語体系</text>
+
+    <rect x="410" y="240" width="260" height="50" rx="8" fill="var(--quiz-neutral)" opacity=".12"/>
+    <text x="540" y="260" text-anchor="middle" font-size="12" fill="var(--text-muted)">タメ口 / 普通体</text>
+    <text x="540" y="278" text-anchor="middle" font-size="10" fill="var(--text-muted)">食べる、行く、何する</text>
+
+    <rect x="410" y="175" width="260" height="50" rx="8" fill="var(--quiz-neutral)" opacity=".12"/>
+    <text x="540" y="195" text-anchor="middle" font-size="12" fill="var(--accent)">丁寧語 (ていねいご)</text>
+    <text x="540" y="213" text-anchor="middle" font-size="10" fill="var(--text-muted)">食べます、行きます、何しますか</text>
+
+    <rect x="410" y="110" width="126" height="50" rx="8" fill="var(--quiz-neutral)" opacity=".12"/>
+    <text x="473" y="130" text-anchor="middle" font-size="11" fill="var(--a3)">尊敬語</text>
+    <text x="473" y="148" text-anchor="middle" font-size="9" fill="var(--text-muted)">召し上がる、いらっしゃる</text>
+
+    <rect x="544" y="110" width="126" height="50" rx="8" fill="var(--quiz-neutral)" opacity=".12"/>
+    <text x="607" y="130" text-anchor="middle" font-size="11" fill="var(--a4)">謙譲語</text>
+    <text x="607" y="148" text-anchor="middle" font-size="9" fill="var(--text-muted)">いただく、申す</text>
+
+    <!-- Connecting arrows -->
+    <line x1="310" y1="265" x2="410" y2="265" stroke="var(--text-muted)" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowhead)"/>
+    <line x1="310" y1="200" x2="410" y2="200" stroke="var(--text-muted)" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowhead)"/>
+    <line x1="176" y1="135" x2="410" y2="135" stroke="var(--text-muted)" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowhead)"/>
+    <line x1="310" y1="135" x2="544" y2="135" stroke="var(--text-muted)" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowhead)"/>
+  </svg>
+  <div class="diagram-caption">4단계 경어 대조도. 한국어와 일본어는 같은 개념적 구조를 공유합니다 &mdash; 비격식, 공손, 존경(상대를 높임), 겸양(자신을 낮춤).</div>
+</div>
+
+<div class="callout warn">
+  <div class="callout-title">정교화 질문</div>
+  <p><strong>왜 한국어는 높임말을 어미에 삽입(-시-)하는 반면, 일본어는 완전히 다른 동사(召し上がる vs 食べる)를 사용할까요?</strong></p>
+  <p>한국어는 높임을 교착적으로 삽입합니다: <span class="kr">먹다 &rarr; 드시다</span>, <span class="kr">가다 &rarr; 가시다</span> &mdash; <span class="kr">시</span> 삽입어는 생산적이고 예측 가능합니다. 일본어도 <span class="jp">お～になる</span> 패턴으로 이렇게 하지만, 기본형과 형태론적 관계가 전혀 없는 불규칙 "특수 경어 동사" 목록도 유지합니다. 이 부분은 한국어의 직감으로 해결되지 않으므로, 쌍을 단순히 암기해야 합니다.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 2: SPECIAL VERB PAIRS
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="제2절-특수-경어-동사-쌍과-한국어-대응-표현">특수 경어 동사 쌍과 한국어 대응 표현</h3>
+
+<p>이 동사들은 예측 가능한 패턴을 따르지 않는 불규칙 경어 동사입니다. 어릴 때 <span class="kr">먹다 &rarr; 드시다</span>를 외웠듯이, 고정된 쌍으로 암기해야 합니다. 아래 표는 기본형 &rarr; 존경어(尊敬語) &rarr; 겸양어(謙譲語) &rarr; 한국어 대응을 보여줍니다.</p>
+
+<table>
+  <thead>
+    <tr><th>기본형</th><th>尊敬語 (존경)</th><th>謙譲語 (겸양)</th><th>한국어 기본형</th><th>한국어 높임말</th><th>한국어 겸양어</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="jp">食べる</td>
+      <td class="jp" style="color:var(--a3)">召し上がる</td>
+      <td class="jp" style="color:var(--a4)">いただく</td>
+      <td class="kr">먹다</td>
+      <td class="kr">드시다</td>
+      <td class="kr">먹겠습니다</td>
+    </tr>
+    <tr>
+      <td class="jp">飲む</td>
+      <td class="jp" style="color:var(--a3)">召し上がる</td>
+      <td class="jp" style="color:var(--a4)">いただく</td>
+      <td class="kr">마시다</td>
+      <td class="kr">드시다</td>
+      <td class="kr">마시겠습니다</td>
+    </tr>
+    <tr>
+      <td class="jp">行く</td>
+      <td class="jp" style="color:var(--a3)">いらっしゃる</td>
+      <td class="jp" style="color:var(--a4)">参る (まいる)</td>
+      <td class="kr">가다</td>
+      <td class="kr">가시다</td>
+      <td class="kr">가겠습니다</td>
+    </tr>
+    <tr>
+      <td class="jp">来る</td>
+      <td class="jp" style="color:var(--a3)">いらっしゃる</td>
+      <td class="jp" style="color:var(--a4)">参る (まいる)</td>
+      <td class="kr">오다</td>
+      <td class="kr">오시다</td>
+      <td class="kr">오겠습니다</td>
+    </tr>
+    <tr>
+      <td class="jp">いる</td>
+      <td class="jp" style="color:var(--a3)">いらっしゃる</td>
+      <td class="jp" style="color:var(--a4)">おる</td>
+      <td class="kr">있다</td>
+      <td class="kr">계시다</td>
+      <td class="kr">있겠습니다</td>
+    </tr>
+    <tr>
+      <td class="jp">言う</td>
+      <td class="jp" style="color:var(--a3)">おっしゃる</td>
+      <td class="jp" style="color:var(--a4)">申す (もうす)</td>
+      <td class="kr">말하다</td>
+      <td class="kr">말씀하시다</td>
+      <td class="kr">말씀드리다</td>
+    </tr>
+    <tr>
+      <td class="jp">する</td>
+      <td class="jp" style="color:var(--a3)">なさる</td>
+      <td class="jp" style="color:var(--a4)">いたす</td>
+      <td class="kr">하다</td>
+      <td class="kr">하시다</td>
+      <td class="kr">하겠습니다</td>
+    </tr>
+    <tr>
+      <td class="jp">見る</td>
+      <td class="jp" style="color:var(--a3)">ご覧になる (ごらんになる)</td>
+      <td class="jp" style="color:var(--a4)">拝見する (はいけんする)</td>
+      <td class="kr">보다</td>
+      <td class="kr">보시다</td>
+      <td class="kr">봬다 / 뵙다</td>
+    </tr>
+    <tr>
+      <td class="jp">知る</td>
+      <td class="jp" style="color:var(--a3)">ご存じだ (ごぞんじだ)</td>
+      <td class="jp" style="color:var(--a4)">存じる (ぞんじる)</td>
+      <td class="kr">알다</td>
+      <td class="kr">아시다</td>
+      <td class="kr">알고 있습니다</td>
+    </tr>
+    <tr>
+      <td class="jp">もらう</td>
+      <td class="jp" style="color:var(--text-muted)">&mdash;</td>
+      <td class="jp" style="color:var(--a4)">いただく</td>
+      <td class="kr">받다</td>
+      <td class="kr">&mdash;</td>
+      <td class="kr">받겠습니다</td>
+    </tr>
+    <tr>
+      <td class="jp">あげる</td>
+      <td class="jp" style="color:var(--text-muted)">&mdash;</td>
+      <td class="jp" style="color:var(--a4)">差し上げる (さしあげる)</td>
+      <td class="kr">주다</td>
+      <td class="kr">&mdash;</td>
+      <td class="kr">드리다</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">패턴을 주목하세요</div>
+  <p><span class="jp">いらっしゃる</span>는 존경어의 만능 도구입니다 &mdash; <span class="jp">行く</span>, <span class="jp">来る</span>, <span class="jp">いる</span>를 모두 포괄합니다. 마찬가지로 <span class="jp">いただく</span>는 겸양형에서 <span class="jp">食べる</span>와 <span class="jp">もらう</span>를 모두 포괄합니다. 문맥이 의미를 결정하며, 이는 한국어에서 <span class="kr">계시다</span>가 "계시다"와 "머무르시다"를 모두 포괄하는 것과 같습니다.</p>
+</div>
+
+<div class="callout ok">
+  <div class="callout-title">암기법: 핵심 5쌍</div>
+  <p>이 5개의 존경어/겸양어 쌍을 먼저 우선적으로 외우세요. 거의 모든 비즈니스 또는 격식 있는 상황에서 등장합니다:<br>
+  <strong>1.</strong> <span class="jp">いらっしゃる / 参る</span> &mdash; 있다, 가다, 오다<br>
+  <strong>2.</strong> <span class="jp">おっしゃる / 申す</span> &mdash; 말하다<br>
+  <strong>3.</strong> <span class="jp">召し上がる / いただく</span> &mdash; 먹다, 받다<br>
+  <strong>4.</strong> <span class="jp">ご覧になる / 拝見する</span> &mdash; 보다<br>
+  <strong>5.</strong> <span class="jp">なさる / いたす</span> &mdash; 하다</p>
+</div>
+
+<!-- Mnemonic SVG: Keigo Elevation/Humbling -->
+<div class="diagram">
+  <svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg">
+    <!-- Title -->
+    <text x="350" y="25" text-anchor="middle" font-size="14" font-weight="700" fill="var(--heading)">경어의 방향: 상대를 높이고, 자신을 낮추기</text>
+
+    <!-- Center line (neutral) -->
+    <line x1="50" y1="150" x2="650" y2="150" stroke="var(--text-muted)" stroke-width="1" stroke-dasharray="4,4"/>
+    <text x="350" y="165" text-anchor="middle" font-size="10" fill="var(--text-muted)">--- 丁寧語 기준선 (です/ます) ---</text>
+
+    <!-- Sonkeigo (up) -->
+    <rect x="80" y="45" width="240" height="75" rx="10" fill="none" stroke="var(--a3)" stroke-width="2" opacity=".7"/>
+    <text x="200" y="70" text-anchor="middle" font-size="13" font-weight="600" fill="var(--a3)">尊敬語 (존경어)</text>
+    <text x="200" y="90" text-anchor="middle" font-size="10" fill="var(--text-muted)">상대방을 위로 높이기</text>
+    <text x="200" y="108" text-anchor="middle" font-size="10" fill="var(--a3)">召し上がる、いらっしゃる、おっしゃる</text>
+
+    <!-- Arrow up from center -->
+    <line x1="200" y1="145" x2="200" y2="125" stroke="var(--a3)" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+    <!-- Kenjougo (down) -->
+    <rect x="380" y="185" width="240" height="75" rx="10" fill="none" stroke="var(--a4)" stroke-width="2" opacity=".7"/>
+    <text x="500" y="210" text-anchor="middle" font-size="13" font-weight="600" fill="var(--a4)">謙譲語 (겸양어)</text>
+    <text x="500" y="230" text-anchor="middle" font-size="10" fill="var(--text-muted)">자신을 아래로 낮추기</text>
+    <text x="500" y="248" text-anchor="middle" font-size="10" fill="var(--a4)">いただく、参る、申す、拝見する</text>
+
+    <!-- Arrow down from center -->
+    <line x1="500" y1="155" x2="500" y2="180" stroke="var(--a4)" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+    <!-- Korean parallel note -->
+    <text x="350" y="275" text-anchor="middle" font-size="10" font-weight="500" fill="var(--a2)">한국어 대응: 높임말은 상대를 높이고 (드시다), 겸양어는 자신을 낮춤 (말씀드리다)</text>
+  </svg>
+  <div class="diagram-caption">존경어는 상대방의 행위를 높이고, 겸양어는 화자의 행위를 낮춥니다. 효과는 동일합니다: 존경의 거리를 넓히는 것입니다. 한국어도 같은 이축 체계를 사용합니다.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 3: THE お/ご PREFIX SYSTEM
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="제3절-おご-접두사-체계">お/ご 접두사 체계</h3>
+
+<p>일본어에는 명사와 형용사 앞에 <span class="jp">お</span> 또는 <span class="jp">ご</span>를 붙여 더 공손하게 만드는 체계적인 방법이 있습니다. 규칙은 단어의 <strong>어원</strong>에 기반합니다:</p>
+
+<div class="card-grid">
+  <div class="card">
+    <h4 style="color:var(--accent)"><span class="jp">お</span> + 和語 (일본 고유어)</h4>
+    <p>고대 일본어에서 유래한 단어(和語/やまとことば)에는 <span class="jp">お</span>를 붙입니다:</p>
+    <table>
+      <tbody>
+        <tr><td class="jp">はし &rarr; おはし</td><td>젓가락</td></tr>
+        <tr><td class="jp">水 &rarr; お水</td><td>물</td></tr>
+        <tr><td class="jp">名前 &rarr; お名前</td><td>이름</td></tr>
+        <tr><td class="jp">茶 &rarr; お茶</td><td>차</td></tr>
+        <tr><td class="jp">金 &rarr; お金</td><td>돈</td></tr>
+        <tr><td class="jp">手紙 &rarr; お手紙</td><td>편지</td></tr>
+        <tr><td class="jp">体 &rarr; お体</td><td>몸/건강</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="card">
+    <h4 style="color:var(--a2)"><span class="jp">ご</span> + 漢語 (한자어)</h4>
+    <p>중국에서 차용한 단어(漢語/かんご)에는 <span class="jp">ご</span>를 붙입니다:</p>
+    <table>
+      <tbody>
+        <tr><td class="jp">住所 &rarr; ご住所</td><td>주소</td></tr>
+        <tr><td class="jp">連絡 &rarr; ご連絡</td><td>연락</td></tr>
+        <tr><td class="jp">家族 &rarr; ご家族</td><td>가족</td></tr>
+        <tr><td class="jp">意見 &rarr; ご意見</td><td>의견</td></tr>
+        <tr><td class="jp">案内 &rarr; ご案内</td><td>안내</td></tr>
+        <tr><td class="jp">質問 &rarr; ご質問</td><td>질문</td></tr>
+        <tr><td class="jp">注文 &rarr; ご注文</td><td>주문</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="callout info">
+  <div class="callout-title">한국어 대응: 고유 경어 명사</div>
+  <p>한국어에는 <span class="jp">お/ご</span>와 같은 접두사 체계가 없습니다. 대신 한국어에는 <strong>완전히 별개의 경어 명사</strong>가 있습니다:<br>
+  <span class="kr">밥 &rarr; 진지</span> (식사), <span class="kr">말 &rarr; 말씀</span> (말), <span class="kr">나이 &rarr; 연세</span> (나이), <span class="kr">이름 &rarr; 성함</span> (이름), <span class="kr">집 &rarr; 댁</span> (집).<br>
+  일본어는 더 체계적입니다: <span class="jp">お/ご</span>를 붙이면 단어가 격식을 갖춥니다. 한국어는 단어 자체를 교체합니다.</p>
+</div>
+
+<h4>お/ご + 동사 패턴 (생산적 경어)</h4>
+<p>특수 동사 쌍을 암기하는 것 외에도, 이 공식을 사용하면 <strong>어떤</strong> 동사든 경어를 만들 수 있습니다:</p>
+
+<table>
+  <thead>
+    <tr><th>유형</th><th>공식</th><th>예시 (待つ = 기다리다)</th><th>한국어 대응</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="transfer-tag full" style="font-size:.75rem">尊敬語</span></td>
+      <td class="jp">お + 連用形 + になる</td>
+      <td class="jp">お待ちになる</td>
+      <td class="kr">기다리시다</td>
+    </tr>
+    <tr>
+      <td><span class="transfer-tag partial" style="font-size:.75rem">謙譲語</span></td>
+      <td class="jp">お + 連用形 + する</td>
+      <td class="jp">お待ちする</td>
+      <td class="kr">기다리겠습니다</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="card">
+  <h4>생산적 패턴의 추가 예시</h4>
+  <table>
+    <thead>
+      <tr><th>기본형</th><th>尊敬語 (お～になる)</th><th>謙譲語 (お～する)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="jp">読む</td><td class="jp">お読みになる</td><td class="jp">お読みする</td></tr>
+      <tr><td class="jp">書く</td><td class="jp">お書きになる</td><td class="jp">お書きする</td></tr>
+      <tr><td class="jp">聞く</td><td class="jp">お聞きになる</td><td class="jp">お聞きする</td></tr>
+      <tr><td class="jp">話す</td><td class="jp">お話しになる</td><td class="jp">お話しする</td></tr>
+      <tr><td class="jp">帰る</td><td class="jp">お帰りになる</td><td class="jp">&mdash;</td></tr>
+      <tr><td class="jp">伝える</td><td class="jp">お伝えになる</td><td class="jp">お伝えする</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:.85rem;color:var(--text-muted);margin-bottom:0">이 생산적 패턴은 한국어에서 <span class="kr">-시-</span>를 붙이는 것과 같습니다 &mdash; 거의 모든 동사에 적용됩니다. 제2절의 불규칙 특수 쌍은 이 패턴보다 우선합니다.</p>
+</div>
+
+<div class="callout warn">
+  <div class="callout-title">정교화 질문</div>
+  <p><strong>왜 일본어는 경어 접두사를 어원별로(お는 和語, ご는 漢語) 구분하는데 한국어에는 그런 구분이 없을까요?</strong></p>
+  <p>일본어는 문법과 음운 체계 전반에 걸쳐 고유어(和語)와 한자 차용어(漢語)를 깊이 구분합니다. <span class="jp">お/ご</span> 구분은 이 어원적 인식의 표면적 반영입니다. 한국어는 한자어를 너무 완전히 흡수하여 고유어/차용어 구분이 같은 방식으로 문법 규칙을 좌우하지 않습니다. 이것은 한국어가 매끄럽게 다듬은 역사적 층위를 일본어가 보존하고 있는 또 다른 사례입니다.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 4: SCENARIO-BASED PRACTICE
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="제4절-상황별-연습">상황별 연습</h3>
+
+<p>경어는 맥락 속에서만 의미가 있습니다. 어떤 단계를 사용해야 하는지, 그리고 그 이유를 보여주는 네 가지 실제 상황을 소개합니다.</p>
+
+<!-- Scenario 1: Company -->
+<div class="card">
+  <h4>상황 1: 회사에서 &mdash; 상사의 상사를 만날 때</h4>
+  <p style="font-size:.85rem;color:var(--text-muted)">여러분은 신입사원(<span class="jp">新入社員</span>)입니다. 부장(<span class="jp">部長</span>)을 처음 만납니다.</p>
+
+  <table>
+    <thead><tr><th>상황</th><th>일본어 (경어)</th><th>단계</th><th>한국어 대응</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>자기소개</td>
+        <td class="jp">初めまして。田中と申します。よろしくお願いいたします。</td>
+        <td><span class="transfer-tag partial" style="font-size:.7rem">謙譲語</span></td>
+        <td class="kr">처음 뵙겠습니다. 다나카라고 합니다. 잘 부탁드리겠습니다.</td>
+      </tr>
+      <tr>
+        <td>보고서를 보셨는지 묻기</td>
+        <td class="jp">報告書はご覧になりましたか。</td>
+        <td><span class="transfer-tag full" style="font-size:.7rem">尊敬語</span></td>
+        <td class="kr">보고서는 보셨습니까?</td>
+      </tr>
+      <tr>
+        <td>확인하겠다고 말하기</td>
+        <td class="jp">私が確認いたします。</td>
+        <td><span class="transfer-tag partial" style="font-size:.7rem">謙譲語</span></td>
+        <td class="kr">제가 확인하겠습니다.</td>
+      </tr>
+      <tr>
+        <td>어떻게 생각하시는지 묻기</td>
+        <td class="jp">部長はどのようにお考えですか。</td>
+        <td><span class="transfer-tag full" style="font-size:.7rem">尊敬語</span></td>
+        <td class="kr">부장님은 어떻게 생각하십니까?</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Scenario 2: Restaurant -->
+<div class="card">
+  <h4>상황 2: 레스토랑에서 &mdash; 직원이 손님에게 말할 때</h4>
+  <p style="font-size:.85rem;color:var(--text-muted)">여러분은 서버입니다. 손님은 항상 높여야 합니다.</p>
+
+  <table>
+    <thead><tr><th>상황</th><th>일본어 (경어)</th><th>단계</th><th>한국어 대응</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>손님 맞이</td>
+        <td class="jp">いらっしゃいませ。何名様でいらっしゃいますか。</td>
+        <td><span class="transfer-tag full" style="font-size:.7rem">尊敬語</span></td>
+        <td class="kr">어서 오십시오. 몇 분이십니까?</td>
+      </tr>
+      <tr>
+        <td>주문 받기</td>
+        <td class="jp">ご注文はお決まりでしょうか。</td>
+        <td><span class="transfer-tag full" style="font-size:.7rem">尊敬語</span></td>
+        <td class="kr">주문하시겠습니까?</td>
+      </tr>
+      <tr>
+        <td>음식 서빙</td>
+        <td class="jp">お待たせいたしました。どうぞ召し上がってください。</td>
+        <td><span class="transfer-tag partial" style="font-size:.7rem">謙+尊</span></td>
+        <td class="kr">오래 기다리셨습니다. 드시기 바랍니다.</td>
+      </tr>
+      <tr>
+        <td>계산서 가져오기</td>
+        <td class="jp">お会計はこちらでございます。</td>
+        <td><span class="transfer-tag partial" style="font-size:.7rem">丁寧+謙</span></td>
+        <td class="kr">계산은 이쪽입니다.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Scenario 3: Email to Professor -->
+<div class="card">
+  <h4>상황 3: 교수님에게 보내는 이메일</h4>
+  <p style="font-size:.85rem;color:var(--text-muted)">대학교 교수님에게 이메일을 씁니다. 서면 경어는 구어보다 더 격식적입니다.</p>
+
+  <div style="background:var(--quiz-neutral);padding:1.2rem;border-radius:8px;font-size:.92rem;margin:.8rem 0;opacity:.15;position:absolute;width:calc(100% - 2.4rem)"></div>
+  <div style="position:relative;padding:1.2rem;font-size:.92rem;margin:.8rem 0">
+    <p class="jp" style="margin-bottom:.8rem"><strong>件名：</strong>来週のゼミについてお伺いしたいことがございます</p>
+    <p class="jp" style="margin-bottom:.5rem">山田先生</p>
+    <p class="jp" style="margin-bottom:.5rem">お忙しいところ失礼いたします。<br>来週のゼミの発表についてお伺いしたいことがございます。<br>お時間のある時に、ご連絡いただけますと幸いです。</p>
+    <p class="jp" style="margin-bottom:.5rem">何卒よろしくお願い申し上げます。</p>
+    <p class="jp" style="margin-bottom:0">田中太郎</p>
+  </div>
+
+  <p style="font-size:.85rem;color:var(--text-muted)">한국어 대응 격식: <span class="kr">교수님, 바쁘신 중에 죄송합니다. 다음 주 세미나 발표에 대해 여쭈어 볼 것이 있습니다. 시간 되실 때 연락 주시면 감사하겠습니다. 잘 부탁드립니다.</span></p>
+</div>
+
+<!-- Scenario 4: Customer Service -->
+<div class="card">
+  <h4>상황 4: 고객센터에 전화할 때</h4>
+  <p style="font-size:.85rem;color:var(--text-muted)">회사에 전화합니다. 상담원은 고객인 여러분에게 최고 수준의 경어를 사용합니다.</p>
+
+  <table>
+    <thead><tr><th>상담원의 말</th><th>단계</th><th>의미 (기본형)</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="jp">お電話ありがとうございます。</td>
+        <td><span class="transfer-tag partial" style="font-size:.7rem">丁寧語</span></td>
+        <td class="jp">電話ありがとう。</td>
+      </tr>
+      <tr>
+        <td class="jp">少々お待ちくださいませ。</td>
+        <td><span class="transfer-tag full" style="font-size:.7rem">尊敬語</span></td>
+        <td class="jp">ちょっと待って。</td>
+      </tr>
+      <tr>
+        <td class="jp">お名前をお伺いしてもよろしいでしょうか。</td>
+        <td><span class="transfer-tag partial" style="font-size:.7rem">謙譲語</span></td>
+        <td class="jp">名前を聞いてもいい？</td>
+      </tr>
+      <tr>
+        <td class="jp">担当者にお繋ぎいたします。</td>
+        <td><span class="transfer-tag partial" style="font-size:.7rem">謙譲語</span></td>
+        <td class="jp">担当者に繋ぐ。</td>
+      </tr>
+      <tr>
+        <td class="jp">ご不明な点がございましたら、お申し付けくださいませ。</td>
+        <td><span class="transfer-tag partial" style="font-size:.7rem">謙+尊</span></td>
+        <td class="jp">分からないことがあったら、言ってね。</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 5: COMMON KEIGO MISTAKES
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="제5절-외국인이-흔히-저지르는-경어-실수">외국인이 흔히 저지르는 경어 실수</h3>
+
+<p>상급 학습자도 이런 실수를 합니다. 한국어 배경은 일부 실수를 방지해 주지만, 전부는 아닙니다.</p>
+
+<div class="card-grid">
+  <div class="card">
+    <h4><span class="transfer-tag none" style="font-size:.75rem">실수</span> 이중 경어 (二重敬語)</h4>
+    <p><span class="jp" style="color:var(--a5)">&#x2717; お召し上がりになる</span></p>
+    <p><span class="jp" style="color:var(--a3)">&#x2713; 召し上がる</span></p>
+    <p style="font-size:.85rem;color:var(--text-muted)"><span class="jp">召し上がる</span>는 이미 존경어입니다. 여기에 <span class="jp">お～になる</span>를 더하면 이중 경어가 됩니다. 한국어에서 <span class="kr" style="color:var(--a5)">*드시시다</span>라고 절대 하지 않는 것과 같습니다.</p>
+  </div>
+  <div class="card">
+    <h4><span class="transfer-tag none" style="font-size:.75rem">실수</span> 자기 행위에 존경어 사용</h4>
+    <p><span class="jp" style="color:var(--a5)">&#x2717; 私がいらっしゃいます</span></p>
+    <p><span class="jp" style="color:var(--a3)">&#x2713; 私が参ります</span></p>
+    <p style="font-size:.85rem;color:var(--text-muted)"><span class="jp">いらっしゃる</span>는 주어를 높입니다. 자신에게 사용하면 한국어에서 <span class="kr" style="color:var(--a5)">*제가 가시겠습니다</span>라고 하는 것처럼 문법적으로 말이 되지 않습니다.</p>
+  </div>
+  <div class="card">
+    <h4><span class="transfer-tag none" style="font-size:.75rem">실수</span> 자사를 높이는 표현</h4>
+    <p><span class="jp" style="color:var(--a5)">&#x2717; 私の会社の社長がおっしゃいました</span></p>
+    <p><span class="jp" style="color:var(--a3)">&#x2713; 弊社の社長が申しました</span></p>
+    <p style="font-size:.85rem;color:var(--text-muted)">외부인에게 이야기할 때, 상사를 포함한 회사 내 모든 사람은 "우리 편"이므로 겸양어를 사용합니다. 한국어에서도 마찬가지입니다: <span class="kr">저희 사장님이 말씀하셨습니다</span>가 격식적인 외부 맥락에서는 <span class="kr">저희 사장이 말씀드렸습니다</span>가 됩니다.</p>
+  </div>
+  <div class="card">
+    <h4><span class="transfer-tag none" style="font-size:.75rem">실수</span> ございます를 아무 데나 사용</h4>
+    <p><span class="jp" style="color:var(--a5)">&#x2717; それはすごくございます</span></p>
+    <p><span class="jp" style="color:var(--a3)">&#x2713; それは素晴らしゅうございます</span> (또는 간단히 <span class="jp">素晴らしいです</span>)</p>
+    <p style="font-size:.85rem;color:var(--text-muted)"><span class="jp">ございます</span>는 <span class="jp">ある</span>의 경어형이지, 범용 공손함 강화제가 아닙니다. 무엇에 붙일 수 있는지에 대한 엄격한 문법 규칙이 있습니다.</p>
+  </div>
+  <div class="card">
+    <h4><span class="transfer-tag partial" style="font-size:.75rem">실수</span> 문장 중간에 격식 수준 혼합</h4>
+    <p><span class="jp" style="color:var(--a5)">&#x2717; 先生が来たんですが、もう帰りになりました</span></p>
+    <p><span class="jp" style="color:var(--a3)">&#x2713; 先生がいらっしゃったんですが、もうお帰りになりました</span></p>
+    <p style="font-size:.85rem;color:var(--text-muted)">문장 전체에서 격식 수준을 일관되게 유지하세요. 같은 사람에 대해 한 동사에서 존경어를 사용했다면, 모든 동사에서 사용해야 합니다.</p>
+  </div>
+  <div class="card">
+    <h4><span class="transfer-tag partial" style="font-size:.75rem">실수</span> 비격식 상황에서 과도한 경어</h4>
+    <p style="font-size:.85rem;color:var(--text-muted)">친한 친구나 어린 가족에게 경어를 사용하면 딱딱하고 거리감이 생깁니다. 한국어에서 가장 친한 친구에게 <span class="kr">하십시오체</span>로 말하면 이상하게 느끼듯이, 친한 친구에게 <span class="jp">召し上がりますか</span>를 사용하는 것도 마찬가지로 부자연스럽습니다. 상황을 파악하세요.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     INTERACTIVE EXERCISES
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="대화형-연습">대화형 연습</h3>
+
+<!-- Quiz 1: Multiple Choice -- choose correct keigo level -->
+<div id="quiz-keigo-level"></div>
+
+<!-- Quiz 2: Fill in the Blank -- convert plain to keigo -->
+<div id="quiz-keigo-convert"></div>
+
+<!-- Quiz 3: Drag Match -- plain verbs to keigo pairs -->
+<div id="quiz-keigo-pairs"></div>
+
+<!-- Quiz 4: Sentence Builder -- construct polite sentences -->
+<div id="quiz-keigo-sentences"></div>
+
+<!-- Quiz 5: Recall Check from Ch08-12 -->
+<h3 id="복습-확인-제9장제13장-복습">복습 확인 &mdash; 제9장~제13장 복습</h3>
+<p>이전 장에서 다룬 회화, 한자, 어휘, 문법의 종합 복습입니다.</p>
+
+<div id="quiz-recall-bottom"></div>
+
+<!-- Mark as Complete -->
+<button class="chapter-complete" data-ch="14">완료로 표시 &#10003;</button>
+
+<div style="display:flex;justify-content:space-between;margin:2rem 0">
+  <a href="ch-13.html" class="quiz-btn secondary">&larr; 제14장: 고유어</a>
+  <a href="ch-15.html" class="quiz-btn">다음: 제16장 -- 독해 &rarr;</a>
+</div>
+
+</section>
+
+</div>
+
+
+</div>
+
+<footer>
+  <p>Zero to Hero: 한국어 화자를 위한 日本語 &middot; 제14장</p>
+</footer>
+
+<script src="js/shared.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/quiz-engine.js"></script>
+<script src="js/spaced-repetition.js"></script>
+<script src="js/memory-palace.js"></script>
+<script>
+// ─── 복습 확인 (장 상단, 제9장~제13장에서) ───
+QuizEngine.RecallCheck(
+  document.getElementById('recall-check-top'),
+  {
+    fromChapters: 'Ch08-12',
+    items: [
+      { question: '제9장: 일본어로 "처음 뵙겠습니다"를 격식체로 어떻게 말합니까?', answer: '初めまして、どうぞよろしくお願いします' },
+      { question: '제9장: 이름으로 자기소개를 어떻게 합니까? (예: "다나카입니다")', answer: '田中と申します (또는 덜 격식적인 상황에서는 田中です)' },
+      { question: '제10장: 유정물(사람, 동물)의 존재에 어떤 동사를 사용합니까?', answer: 'いる' },
+      { question: '제10장: 무정물(사물, 개념)의 존재에 어떤 동사를 사용합니까?', answer: 'ある' },
+      { question: '제11장: 한자의 두 가지 읽기 방법을 무엇이라고 합니까?', answer: '音読み (おんよみ, 한자음) 과 訓読み (くんよみ, 일본 고유 읽기)' },
+      { question: '제12장: "도서관(도서관)"에 해당하는 일본어 한자어는 무엇입니까?', answer: '図書館 (としょかん)' },
+      { question: '제13장: "물"에 해당하는 일본 고유어는 무엇입니까?', answer: '水 (みず)' }
+    ]
+  }
+);
+
+// ─── 퀴즈 1: 객관식 -- 상황에 맞는 올바른 경어 단계 선택 ───
+QuizEngine.MultipleChoice(
+  document.getElementById('quiz-keigo-level'),
+  {
+    title: '올바른 경어 단계 선택',
+    questions: [
+      {
+        prompt: '상사가 점심을 드셨습니다. 상사의 행위를 존경을 담아 묘사할 때 어떤 동사를 사용합니까?',
+        options: [
+          '食べた (기본형)',
+          '食べました (丁寧語)',
+          '召し上がった (尊敬語)',
+          'いただいた (謙譲語)'
+        ],
+        correctIndex: 2,
+        explanation: '召し上がる는 食べる의 존경어(尊敬語) 형태입니다. 윗사람에게 사용합니다. いただく는 겸양어로, 자신이 먹을 때 사용합니다.'
+      },
+      {
+        prompt: '거래처에 이메일을 작성하고 있습니다. "확인하겠습니다"라고 말하고 싶습니다. 어떤 형태를 사용합니까?',
+        options: [
+          '確認する (기본형)',
+          '確認します (丁寧語)',
+          'ご確認になります (尊敬語)',
+          '確認いたします (謙譲語)'
+        ],
+        correctIndex: 3,
+        explanation: '자신이 하는 행위이므로 겸양어로 자신을 낮춥니다. 確認いたします는 いたす(する의 겸양형)를 사용합니다.'
+      },
+      {
+        prompt: '매장에서 고객이 질문합니다. "잠시만 기다려 주십시오"라고 말하고 싶습니다. 가장 적절한 표현은?',
+        options: [
+          'ちょっと待って (기본형)',
+          '少し待ってください (丁寧語)',
+          '少々お待ちくださいませ (尊敬語)',
+          'お待ちいたします (謙譲語)'
+        ],
+        correctIndex: 2,
+        explanation: '접객 상황에서는 고객을 높입니다. 少々お待ちくださいませ는 존경어 패턴 お+待ち+ください에 더욱 공손한 ませ를 붙인 형태입니다.'
+      },
+      {
+        prompt: '외부 회사에 자사 사장님이 하신 말씀을 전하고 있습니다. 어떻게 전합니까?',
+        options: [
+          '社長が言いました',
+          '社長がおっしゃいました',
+          '社長が申しました',
+          '社長がお話しになりました'
+        ],
+        correctIndex: 2,
+        explanation: '외부인에게 이야기할 때 자기 회사 상사는 "우리 편"이므로 겸양어를 사용합니다. 申す는 言う의 겸양형입니다. 외부인에게 자사 상사에 대해 おっしゃる(존경어)를 사용하는 것은 전형적인 실수입니다.'
+      },
+      {
+        prompt: '교수님에게 "이 논문을 읽으셨습니까?"라고 묻고 싶습니다. 올바른 표현은?',
+        options: [
+          'この論文を読みましたか',
+          'この論文をお読みになりましたか',
+          'この論文を拝見しましたか',
+          'この論文を読んだ？'
+        ],
+        correctIndex: 1,
+        explanation: 'お読みになる는 読む의 존경어 패턴입니다. 拝見する는 겸양어로, 자신이 읽을 때 사용합니다. "교수님의 논문을 읽었습니다"라고 할 때 拝見する를 사용합니다.'
+      },
+      {
+        prompt: '레스토랑에서 웨이터가 음식을 가져오며 "맛있게 드세요"라고 말합니다. 어떤 표현을 사용합니까?',
+        options: [
+          '食べてください',
+          '召し上がってください',
+          'いただいてください',
+          '食べなさい'
+        ],
+        correctIndex: 1,
+        explanation: '召し上がる는 존경어입니다. 웨이터가 고객의 행위(먹는 것)를 높입니다. いただく는 겸양어로, 고객을 낮추는 셈이 되어 거꾸로입니다.'
+      }
+    ]
+  }
+);
+
+// ─── 퀴즈 2: 빈칸 채우기 -- 기본형을 존경어/겸양어로 변환 ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-keigo-convert'),
+  {
+    title: '경어로 변환',
+    questions: [
+      {
+        prompt: '食べる를 <strong>존경어(尊敬語)</strong>로 변환하세요:',
+        answer: '召し上がる',
+        acceptAlso: ['めしあがる'],
+        explanation: '食べる → 召し上がる (특수 존경어 쌍). 암기해야 하는 불규칙 형태입니다.',
+        korean: '먹다 → 드시다'
+      },
+      {
+        prompt: '言う를 <strong>겸양어(謙譲語)</strong>로 변환하세요:',
+        answer: '申す',
+        acceptAlso: ['もうす'],
+        explanation: '言う → 申す (겸양). 자신이 화자이고 자신의 행위를 낮출 때 사용합니다.',
+        korean: '말하다 → 말씀드리다'
+      },
+      {
+        prompt: '見る를 <strong>겸양어(謙譲語)</strong>로 변환하세요:',
+        answer: '拝見する',
+        acceptAlso: ['はいけんする'],
+        explanation: '見る → 拝見する (겸양). "삼가 보겠습니다." 자신이 보는 행위에 사용합니다.',
+        korean: '보다 → 봬다'
+      },
+      {
+        prompt: '行く를 <strong>존경어(尊敬語)</strong>로 변환하세요:',
+        answer: 'いらっしゃる',
+        acceptAlso: [],
+        explanation: '行く → いらっしゃる (존경어). 来る와 いる의 존경어도 됩니다.',
+        korean: '가다 → 가시다'
+      },
+      {
+        prompt: 'する를 <strong>겸양어(謙譲語)</strong>로 변환하세요:',
+        answer: 'いたす',
+        acceptAlso: [],
+        explanation: 'する → いたす (겸양). 確認する → 確認いたします (삼가 확인하겠습니다).',
+        korean: '하다 → 하겠습니다'
+      },
+      {
+        prompt: '知る를 <strong>존경어(尊敬語)</strong>로 변환하세요 ("아십니까?"에 사용):',
+        answer: 'ご存じだ',
+        acceptAlso: ['ご存じです', 'ごぞんじだ', 'ごぞんじです', 'ご存知だ', 'ご存知です'],
+        explanation: '知る → ご存じだ (존경어). ご存じですか = "아십니까?" (존경 표현).',
+        korean: '알다 → 아시다'
+      }
+    ]
+  }
+);
+
+// ─── 퀴즈 3: 드래그 매칭 -- 기본 동사와 경어 쌍 매칭 ───
+QuizEngine.DragMatch(
+  document.getElementById('quiz-keigo-pairs'),
+  {
+    title: '기본 동사와 경어 형태 매칭',
+    instruction: '각 기본 동사를 올바른 존경어(尊敬語) 형태에 매칭하세요:',
+    pairs: [
+      { left: '食べる / 飲む', right: '召し上がる' },
+      { left: '行く / 来る / いる', right: 'いらっしゃる' },
+      { left: '言う', right: 'おっしゃる' },
+      { left: 'する', right: 'なさる' },
+      { left: '見る', right: 'ご覧になる' },
+      { left: '知る', right: 'ご存じだ' }
+    ]
+  }
+);
+
+// ─── 퀴즈 4: 문장 조립 -- 상황에 맞는 경어 문장 구성 ───
+QuizEngine.SentenceBuilder(
+  document.getElementById('quiz-keigo-sentences'),
+  {
+    title: '경어 문장 만들기',
+    sentences: [
+      {
+        hint: '만드세요: "다나카라고 합니다." (겸양 자기소개) -- <span class="kr">다나카라고 합니다</span>',
+        words: ['田中', 'と', '申します'],
+        correct: '田中と申します'
+      },
+      {
+        hint: '만드세요: "드세요." (손님/어르신에게 존경 표현) -- <span class="kr">드세요</span>',
+        words: ['どうぞ', '召し上がって', 'ください'],
+        correct: 'どうぞ召し上がってください'
+      },
+      {
+        hint: '만드세요: "잘 먹겠습니다." (겸양) -- <span class="kr">잘 먹겠습니다</span>',
+        words: ['いただきます'],
+        correct: 'いただきます'
+      },
+      {
+        hint: '만드세요: "확인하겠습니다." (거래처에 보내는 이메일) -- <span class="kr">확인하겠습니다</span>',
+        words: ['確認', 'いたします'],
+        correct: '確認いたします'
+      },
+      {
+        hint: '만드세요: "이 서류를 보셨습니까?" (상사에게 존경어) -- <span class="kr">이 서류 보셨습니까?</span>',
+        words: ['この', '書類は', 'ご覧に', 'なりましたか'],
+        correct: 'この書類はご覧になりましたか'
+      },
+      {
+        hint: '만드세요: "잠시만 기다려 주십시오." (고객 서비스) -- <span class="kr">잠시만 기다려 주십시오</span>',
+        words: ['少々', 'お待ち', 'ください', 'ませ'],
+        correct: '少々お待ちくださいませ'
+      }
+    ]
+  }
+);
+
+// ─── 퀴즈 5: 제9장~제13장 복습 확인 (하단) ───
+QuizEngine.RecallCheck(
+  document.getElementById('quiz-recall-bottom'),
+  {
+    fromChapters: 'Ch08-12',
+    items: [
+      { question: '제9장: "어디서 오셨습니까?"를 공손하게 어떻게 묻습니까?', answer: 'お国はどちらですか / どちらからいらっしゃいましたか' },
+      { question: '제10장: 行く(가다)의 -たい형을 만드세요.', answer: '行きたい' },
+      { question: '제10장: 수수(주고받기) 동사 세 가지는 무엇입니까?', answer: 'あげる (주다), くれる (화자 쪽으로 주다), もらう (받다)' },
+      { question: '제11장: 音読み와 訓読み란 무엇입니까? 山으로 예를 들어주세요.', answer: '音読み = サン (한자음), 訓読み = やま (고유 읽기). 山은 두 가지 모두로 읽을 수 있습니다.' },
+      { question: '제12장: 경제(경제)에 해당하는 일본어 단어는 무엇입니까?', answer: '経済 (けいざい) -- 경제' },
+      { question: '제12장: 약속(약속)에 해당하는 일본어 단어는 무엇입니까?', answer: '約束 (やくそく) -- 약속' },
+      { question: '제13장: 書く의 て형은 무엇입니까?', answer: '書いて (く→いて 패턴)' }
+    ]
+  }
+);
+</script>
+</body>
+</html>

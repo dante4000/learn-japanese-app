@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ch08: Verb Conjugation — Zero to Hero 日本語</title>
+<link rel="stylesheet" href="css/design-system.css">
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <span class="logo-badge">Zero to Hero — Memory Architecture Edition</span>
+    <div class="logo-title">日本語 for Korean Speakers</div>
+    <div class="logo-sub">From 한국어 to 日本語 — The Memory Architect's Guide</div>
+  </a>
+  <div class="sidebar-progress">
+    <div class="sidebar-progress-label">Progress</div>
+    <div class="sidebar-progress-bar">
+      <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+    </div>
+    <div class="sidebar-progress-count">0/22 complete</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="ch-00.html" class="toc-link"><span class="toc-num">00</span><span class="toc-check" data-ch="00"></span>Memory Science</a>
+    <a href="ch-01.html" class="toc-link"><span class="toc-num">01</span><span class="toc-check" data-ch="01"></span>Your Korean Advantage</a>
+    <a href="ch-02.html" class="toc-link"><span class="toc-num">02</span><span class="toc-check" data-ch="02"></span>Hiragana</a>
+    <a href="ch-03.html" class="toc-link"><span class="toc-num">03</span><span class="toc-check" data-ch="03"></span>Katakana</a>
+    <a href="ch-04.html" class="toc-link"><span class="toc-num">04</span><span class="toc-check" data-ch="04"></span>Pronunciation</a>
+    <a href="ch-05.html" class="toc-link"><span class="toc-num">05</span><span class="toc-check" data-ch="05"></span>Survival Japanese</a>
+    <a href="ch-06.html" class="toc-link"><span class="toc-num">06</span><span class="toc-check" data-ch="06"></span>Counters</a>
+    <a href="ch-07.html" class="toc-link"><span class="toc-num">07</span><span class="toc-check" data-ch="07"></span>Particles</a>
+    <a href="ch-08.html" class="toc-link active"><span class="toc-num">08</span><span class="toc-check" data-ch="08"></span>Verb Conjugation</a>
+    <a href="ch-09.html" class="toc-link"><span class="toc-num">09</span><span class="toc-check" data-ch="09"></span>Daily Conversations</a>
+    <a href="ch-10.html" class="toc-link"><span class="toc-num">10</span><span class="toc-check" data-ch="10"></span>Sentence Patterns</a>
+    <a href="ch-11.html" class="toc-link"><span class="toc-num">11</span><span class="toc-check" data-ch="11"></span>Kanji</a>
+    <a href="ch-12.html" class="toc-link"><span class="toc-num">12</span><span class="toc-check" data-ch="12"></span>Sino-Vocabulary</a>
+    <a href="ch-13.html" class="toc-link"><span class="toc-num">13</span><span class="toc-check" data-ch="13"></span>Native Vocabulary</a>
+    <a href="ch-14.html" class="toc-link"><span class="toc-num">14</span><span class="toc-check" data-ch="14"></span>Honorifics</a>
+    <a href="ch-15.html" class="toc-link"><span class="toc-num">15</span><span class="toc-check" data-ch="15"></span>Reading</a>
+    <a href="ch-16.html" class="toc-link"><span class="toc-num">16</span><span class="toc-check" data-ch="16"></span>Writing</a>
+    <a href="ch-17.html" class="toc-link"><span class="toc-num">17</span><span class="toc-check" data-ch="17"></span>Listening</a>
+    <a href="ch-18.html" class="toc-link"><span class="toc-num">18</span><span class="toc-check" data-ch="18"></span>Cultural Pragmatics</a>
+    <a href="ch-19.html" class="toc-link"><span class="toc-num">19</span><span class="toc-check" data-ch="19"></span>JLPT and Beyond</a>
+    <a href="ch-20.html" class="toc-link"><span class="toc-num">20</span><span class="toc-check" data-ch="20"></span>Memory Palace</a>
+    <a href="ch-21.html" class="toc-link"><span class="toc-num">21</span><span class="toc-check" data-ch="21"></span>The 90-Day Sprint</a>
+    <a href="appendices.html" class="toc-link" style="margin-top:.5rem;border-top:1px solid var(--border);padding-top:.8rem"><span class="toc-num">+</span>Appendices</a>
+  </nav>
+</aside>
+
+<div class="main">
+<div class="content-wrap">
+
+<section id="ch08" data-ch="08" style="padding-top:3rem">
+<h2><span class="ch-label">Chapter 08</span>Verb Conjugation -- Same System, Different Clothes</h2>
+
+<div class="callout memory">
+  <div class="callout-title">Memory Technique Spotlight: Procedural Memory + Pattern Completion</div>
+  <p>Verb conjugation is procedural knowledge — like riding a bicycle. Once the pattern is drilled enough, it becomes automatic. You'll practice until conjugation feels like muscle memory, not conscious thinking. The te-form song ("U-TSU-RU → って, MU-BU-NU → んで, KU → いて, GU → いで, SU → して") is your procedural anchor.</p>
+</div>
+
+<p>Korean and Japanese both conjugate verbs by stacking suffixes onto stems. You already understand this system intuitively -- in Korean, <span class="kr">먹다</span> becomes <span class="kr">먹습니다</span>, <span class="kr">먹었다</span>, <span class="kr">먹어서</span>, <span class="kr">먹을 수 있다</span>. Japanese does the <strong>exact same thing</strong>, just with different endings.</p>
+
+<div class="pq">
+  "You know how to drive. Now the controls are rearranged."
+</div>
+
+<div class="callout info">
+  <div class="callout-title">The Big Idea</div>
+  <p>In Korean, you never think twice about conjugation <em>mechanics</em> -- you just <em>do</em> it. The agglutinative system (stacking endings) is already in your muscle memory. This chapter maps Japanese conjugation forms onto your existing Korean framework. You are not learning a new system; you are <strong>re-labeling the controls</strong>.</p>
+</div>
+
+<!-- ─── RECALL CHECK ─── -->
+<div id="recall-check-top"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 1: ANCHOR VERB 食べる
+     ═══════════════════════════════════════════════════════════════ -->
+<nav class="chapter-toc">
+  <details open>
+    <summary class="chapter-toc-title">In This Chapter</summary>
+  <ol>
+    <li><a href="#anchor-verb-食べる-taberu-먹다-to-eat">Anchor Verb: 食べる (taberu) = 먹다 (to eat)</a></li>
+    <li><a href="#the-three-verb-groups">The Three Verb Groups</a></li>
+    <li><a href="#te-form-the-swiss-army-knife-of-japanese-conjugation">Te-Form: The Swiss Army Knife of Japanese Conjugation</a></li>
+    <li><a href="#practical-connection-now-you-know-why">Practical Connection: Now You Know WHY</a></li>
+    <li><a href="#adjective-conjugation-yes-adjectives-conjugate-too">Adjective Conjugation: Yes, Adjectives Conjugate Too</a></li>
+    <li><a href="#interactive-exercises">Interactive Exercises</a></li>
+  </ol>
+  </details>
+</nav>
+
+<h3 id="anchor-verb-食べる-taberu-먹다-to-eat">Anchor Verb: 食べる (taberu) = 먹다 (to eat)</h3>
+<p>We start with one verb and master every form. Once you see the full pattern on a single verb, every other verb becomes a variation. Think of <span class="jp">食べる</span> as your Rosetta Stone.</p>
+
+<h4>Complete Conjugation Table: 食べる vs. 먹다</h4>
+<table>
+  <thead>
+    <tr><th>Form</th><th>Japanese</th><th>Romaji</th><th>Korean</th><th>Function</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Dictionary</strong></td>
+      <td class="jp">食べる</td>
+      <td>taberu</td>
+      <td class="kr">먹다</td>
+      <td>Plain/casual present</td>
+    </tr>
+    <tr>
+      <td><strong>Polite (masu)</strong></td>
+      <td class="jp">食べます</td>
+      <td>tabemasu</td>
+      <td class="kr">먹습니다 / 먹어요</td>
+      <td>Polite present/future</td>
+    </tr>
+    <tr>
+      <td><strong>Negative</strong></td>
+      <td class="jp">食べない</td>
+      <td>tabenai</td>
+      <td class="kr">먹지 않다 / 안 먹다</td>
+      <td>Plain negative</td>
+    </tr>
+    <tr>
+      <td><strong>Polite Negative</strong></td>
+      <td class="jp">食べません</td>
+      <td>tabemasen</td>
+      <td class="kr">먹지 않습니다</td>
+      <td>Polite negative</td>
+    </tr>
+    <tr>
+      <td><strong>Past</strong></td>
+      <td class="jp">食べた</td>
+      <td>tabeta</td>
+      <td class="kr">먹었다</td>
+      <td>Plain past</td>
+    </tr>
+    <tr>
+      <td><strong>Polite Past</strong></td>
+      <td class="jp">食べました</td>
+      <td>tabemashita</td>
+      <td class="kr">먹었습니다</td>
+      <td>Polite past</td>
+    </tr>
+    <tr>
+      <td><strong>Te-form</strong></td>
+      <td class="jp">食べて</td>
+      <td>tabete</td>
+      <td class="kr">먹어서 / 먹고</td>
+      <td>Connecting, requesting</td>
+    </tr>
+    <tr>
+      <td><strong>Potential</strong></td>
+      <td class="jp">食べられる</td>
+      <td>taberareru</td>
+      <td class="kr">먹을 수 있다</td>
+      <td>"Can eat"</td>
+    </tr>
+    <tr>
+      <td><strong>Volitional</strong></td>
+      <td class="jp">食べよう</td>
+      <td>tabeyou</td>
+      <td class="kr">먹자</td>
+      <td>"Let's eat" / intention</td>
+    </tr>
+    <tr>
+      <td><strong>Conditional (ba)</strong></td>
+      <td class="jp">食べれば</td>
+      <td>tabereba</td>
+      <td class="kr">먹으면</td>
+      <td>"If (one) eats"</td>
+    </tr>
+    <tr>
+      <td><strong>Conditional (tara)</strong></td>
+      <td class="jp">食べたら</td>
+      <td>tabetara</td>
+      <td class="kr">먹었으면 / 먹으면</td>
+      <td>"If/when (one) eats/ate"</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout ok">
+  <div class="callout-title">Pattern Recognition</div>
+  <p>Notice the stem <span class="jp">食べ</span> (tabe) stays constant in every form. The endings change: <strong>-る, -ます, -ない, -た, -て, -られる, -よう, -れば, -たら</strong>. This is identical to how Korean keeps <span class="kr">먹</span> as the stem and stacks: <span class="kr">-다, -습니다, -지 않다, -었다, -어서, -을 수 있다, -자, -으면</span>. Same engine, different fuel.</p>
+</div>
+
+<!-- ─── CONJUGATION FLOW DIAGRAM ─── -->
+<div class="diagram">
+  <svg viewBox="0 0 700 350" xmlns="http://www.w3.org/2000/svg">
+    <!-- Center: stem -->
+    <rect x="280" y="140" width="140" height="50" rx="8" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+    <text x="350" y="162" text-anchor="middle" font-size="16" font-weight="700" fill="var(--accent)">食べ (tabe-)</text>
+    <text x="350" y="178" text-anchor="middle" font-size="10" fill="var(--text-muted)">STEM</text>
+
+    <!-- Branches -->
+    <!-- Top row -->
+    <line x1="310" y1="140" x2="120" y2="60" stroke="var(--a2)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+    <rect x="30" y="35" width="120" height="40" rx="6" fill="none" stroke="var(--a2)" stroke-width="1.5"/>
+    <text x="90" y="52" text-anchor="middle" font-size="11" fill="var(--a2)">+ る = 食べる</text>
+    <text x="90" y="67" text-anchor="middle" font-size="9" fill="var(--text-muted)">Dictionary</text>
+
+    <line x1="350" y1="140" x2="350" y2="60" stroke="var(--a2)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+    <rect x="280" y="20" width="140" height="40" rx="6" fill="none" stroke="var(--a2)" stroke-width="1.5"/>
+    <text x="350" y="37" text-anchor="middle" font-size="11" fill="var(--a2)">+ ます = 食べます</text>
+    <text x="350" y="52" text-anchor="middle" font-size="9" fill="var(--text-muted)">Polite</text>
+
+    <line x1="390" y1="140" x2="580" y2="60" stroke="var(--a2)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+    <rect x="510" y="35" width="140" height="40" rx="6" fill="none" stroke="var(--a2)" stroke-width="1.5"/>
+    <text x="580" y="52" text-anchor="middle" font-size="11" fill="var(--a2)">+ ない = 食べない</text>
+    <text x="580" y="67" text-anchor="middle" font-size="9" fill="var(--text-muted)">Negative</text>
+
+    <!-- Bottom row -->
+    <line x1="300" y1="190" x2="80" y2="270" stroke="var(--a3)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+    <rect x="10" y="250" width="130" height="40" rx="6" fill="none" stroke="var(--a3)" stroke-width="1.5"/>
+    <text x="75" y="267" text-anchor="middle" font-size="11" fill="var(--a3)">+ て = 食べて</text>
+    <text x="75" y="282" text-anchor="middle" font-size="9" fill="var(--text-muted)">Te-form</text>
+
+    <line x1="330" y1="190" x2="230" y2="300" stroke="var(--a3)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+    <rect x="160" y="290" width="140" height="40" rx="6" fill="none" stroke="var(--a3)" stroke-width="1.5"/>
+    <text x="230" y="307" text-anchor="middle" font-size="11" fill="var(--a3)">+ た = 食べた</text>
+    <text x="230" y="322" text-anchor="middle" font-size="9" fill="var(--text-muted)">Past</text>
+
+    <line x1="370" y1="190" x2="470" y2="300" stroke="var(--a3)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+    <rect x="400" y="290" width="150" height="40" rx="6" fill="none" stroke="var(--a3)" stroke-width="1.5"/>
+    <text x="475" y="307" text-anchor="middle" font-size="11" fill="var(--a3)">+ られる = 食べられる</text>
+    <text x="475" y="322" text-anchor="middle" font-size="9" fill="var(--text-muted)">Potential</text>
+
+    <line x1="400" y1="190" x2="610" y2="270" stroke="var(--a3)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+    <rect x="550" y="250" width="130" height="40" rx="6" fill="none" stroke="var(--a3)" stroke-width="1.5"/>
+    <text x="615" y="267" text-anchor="middle" font-size="11" fill="var(--a3)">+ よう = 食べよう</text>
+    <text x="615" y="282" text-anchor="middle" font-size="9" fill="var(--text-muted)">Volitional</text>
+  </svg>
+  <div class="diagram-caption">The 食べ stem is the hub. Every conjugation is just a different suffix -- exactly like Korean 먹- with its endings.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 2: VERB GROUPS
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="the-three-verb-groups">The Three Verb Groups</h3>
+<p>Japanese verbs fall into three groups, each with its own conjugation rules. Korean does not make this same distinction, so this is one area where you are learning something genuinely new. The good news: once you identify the group, conjugation is completely predictable.</p>
+
+<!-- Group 2 (ichidan) -->
+<h4>Group 2 -- Ichidan (一段): "One Step"</h4>
+<div class="card">
+  <p><strong>Rule:</strong> Drop <span class="jp">る</span> and add the ending. That is it. One step.</p>
+  <p><strong>Identifier:</strong> The verb ends in <span class="jp">-いる</span> or <span class="jp">-える</span> (with some exceptions).</p>
+  <p style="font-size:.88rem;color:var(--text-muted)">Korean parallel: Think of Korean verbs where the stem never changes -- like <span class="kr">가다 → 가요, 갑니다, 갔다</span>. The <span class="kr">가</span> stays put. Ichidan verbs work the same way.</p>
+
+  <table>
+    <thead>
+      <tr><th>Verb</th><th>Meaning</th><th>Stem</th><th>Polite</th><th>Negative</th><th>Te-form</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="jp">食べる</td><td>to eat</td><td class="jp">食べ</td>
+        <td class="jp">食べます</td><td class="jp">食べない</td><td class="jp">食べて</td>
+      </tr>
+      <tr>
+        <td class="jp">見る</td><td>to see/watch</td><td class="jp">見</td>
+        <td class="jp">見ます</td><td class="jp">見ない</td><td class="jp">見て</td>
+      </tr>
+      <tr>
+        <td class="jp">起きる</td><td>to get up</td><td class="jp">起き</td>
+        <td class="jp">起きます</td><td class="jp">起きない</td><td class="jp">起きて</td>
+      </tr>
+      <tr>
+        <td class="jp">教える</td><td>to teach</td><td class="jp">教え</td>
+        <td class="jp">教えます</td><td class="jp">教えない</td><td class="jp">教えて</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout ok">
+    <div class="callout-title">Mnemonic</div>
+    <p>"<strong>Ichidan = One step, One cut.</strong>" You make ONE cut (drop る), then paste the new ending. No stem changes, no tricks. This is the easiest group.</p>
+  </div>
+</div>
+
+<!-- Group 1 (godan) -->
+<h4>Group 1 -- Godan (五段): "Five Steps"</h4>
+<div class="card">
+  <p><strong>Rule:</strong> The final consonant of the stem <strong>shifts</strong> across the five vowel rows (あ段, い段, う段, え段, お段). Hence "five steps."</p>
+  <p><strong>Identifier:</strong> Most verbs that do NOT end in <span class="jp">-いる</span> or <span class="jp">-える</span>. Also, some -いる/-える verbs are actually godan (tricky!).</p>
+
+  <table>
+    <thead>
+      <tr><th>Verb</th><th>Meaning</th><th>う-row (Dict.)</th><th>い-row (Masu)</th><th>あ-row (Neg.)</th><th>Te-form</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="jp">飲む</td><td>to drink</td>
+        <td class="jp">飲<strong>む</strong></td><td class="jp">飲<strong>み</strong>ます</td>
+        <td class="jp">飲<strong>ま</strong>ない</td><td class="jp">飲<strong>んで</strong></td>
+      </tr>
+      <tr>
+        <td class="jp">書く</td><td>to write</td>
+        <td class="jp">書<strong>く</strong></td><td class="jp">書<strong>き</strong>ます</td>
+        <td class="jp">書<strong>か</strong>ない</td><td class="jp">書<strong>いて</strong></td>
+      </tr>
+      <tr>
+        <td class="jp">話す</td><td>to speak</td>
+        <td class="jp">話<strong>す</strong></td><td class="jp">話<strong>し</strong>ます</td>
+        <td class="jp">話<strong>さ</strong>ない</td><td class="jp">話<strong>して</strong></td>
+      </tr>
+      <tr>
+        <td class="jp">行く</td><td>to go</td>
+        <td class="jp">行<strong>く</strong></td><td class="jp">行<strong>き</strong>ます</td>
+        <td class="jp">行<strong>か</strong>ない</td><td class="jp">行<strong>って</strong></td>
+      </tr>
+      <tr>
+        <td class="jp">待つ</td><td>to wait</td>
+        <td class="jp">待<strong>つ</strong></td><td class="jp">待<strong>ち</strong>ます</td>
+        <td class="jp">待<strong>た</strong>ない</td><td class="jp">待<strong>って</strong></td>
+      </tr>
+      <tr>
+        <td class="jp">読む</td><td>to read</td>
+        <td class="jp">読<strong>む</strong></td><td class="jp">読<strong>み</strong>ます</td>
+        <td class="jp">読<strong>ま</strong>ない</td><td class="jp">読<strong>んで</strong></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Godan vowel-row diagram -->
+<div class="diagram">
+  <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg">
+    <!-- Five columns -->
+    <text x="350" y="25" text-anchor="middle" font-size="14" font-weight="600" fill="var(--heading)">The Five Vowel Rows of Godan Verbs (using 飲む)</text>
+
+    <!-- Row labels -->
+    <rect x="60" y="55" width="100" height="50" rx="8" fill="none" stroke="var(--a2)" stroke-width="2"/>
+    <text x="110" y="75" text-anchor="middle" font-size="12" font-weight="600" fill="var(--a2)">あ段</text>
+    <text x="110" y="95" text-anchor="middle" font-size="11" fill="var(--text-muted)">飲ま (neg.)</text>
+
+    <rect x="180" y="55" width="100" height="50" rx="8" fill="none" stroke="var(--a3)" stroke-width="2"/>
+    <text x="230" y="75" text-anchor="middle" font-size="12" font-weight="600" fill="var(--a3)">い段</text>
+    <text x="230" y="95" text-anchor="middle" font-size="11" fill="var(--text-muted)">飲み (masu)</text>
+
+    <rect x="300" y="55" width="100" height="50" rx="8" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+    <text x="350" y="75" text-anchor="middle" font-size="12" font-weight="700" fill="var(--accent)">う段</text>
+    <text x="350" y="95" text-anchor="middle" font-size="11" fill="var(--accent)">飲む (dict.)</text>
+
+    <rect x="420" y="55" width="100" height="50" rx="8" fill="none" stroke="var(--a2)" stroke-width="2"/>
+    <text x="470" y="75" text-anchor="middle" font-size="12" font-weight="600" fill="var(--a2)">え段</text>
+    <text x="470" y="95" text-anchor="middle" font-size="11" fill="var(--text-muted)">飲め (potential)</text>
+
+    <rect x="540" y="55" width="100" height="50" rx="8" fill="none" stroke="var(--a2)" stroke-width="2"/>
+    <text x="590" y="75" text-anchor="middle" font-size="12" font-weight="600" fill="var(--a2)">お段</text>
+    <text x="590" y="95" text-anchor="middle" font-size="11" fill="var(--text-muted)">飲も (volit.)</text>
+
+    <!-- Connecting arrows -->
+    <line x1="160" y1="80" x2="178" y2="80" stroke="var(--border)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+    <line x1="280" y1="80" x2="298" y2="80" stroke="var(--border)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+    <line x1="400" y1="80" x2="418" y2="80" stroke="var(--border)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+    <line x1="520" y1="80" x2="538" y2="80" stroke="var(--border)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+    <!-- Bottom: the consonant -->
+    <text x="350" y="140" text-anchor="middle" font-size="12" fill="var(--text-muted)">The consonant stays <strong>m</strong>. Only the vowel shifts: ま み む め も</text>
+    <text x="350" y="165" text-anchor="middle" font-size="11" fill="var(--a3)">Korean parallel: 먹다 stem 먹 is constant too -- but Korean doesn't shift vowels this way.</text>
+    <text x="350" y="185" text-anchor="middle" font-size="11" fill="var(--text-muted)">This vowel-shifting pattern is the one genuinely new concept for Korean speakers.</text>
+  </svg>
+  <div class="diagram-caption">Godan verbs "walk" across the five vowel rows. Once you see the pattern, it becomes automatic.</div>
+</div>
+
+<!-- Group 3 (irregular) -->
+<h4>Group 3 -- Irregular: Just Two Verbs</h4>
+<div class="card">
+  <p><strong>There are only two irregular verbs in Japanese.</strong> That is it. Just two. Memorize them and move on.</p>
+
+  <table>
+    <thead>
+      <tr><th>Form</th><th class="jp">する (to do)</th><th>Korean</th><th class="jp">来る/くる (to come)</th><th>Korean</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Dictionary</td><td class="jp">する</td><td class="kr">하다</td><td class="jp">来る (くる)</td><td class="kr">오다</td></tr>
+      <tr><td>Polite</td><td class="jp">します</td><td class="kr">합니다</td><td class="jp">来ます (きます)</td><td class="kr">옵니다</td></tr>
+      <tr><td>Negative</td><td class="jp">しない</td><td class="kr">하지 않다</td><td class="jp">来ない (こない)</td><td class="kr">오지 않다</td></tr>
+      <tr><td>Past</td><td class="jp">した</td><td class="kr">했다</td><td class="jp">来た (きた)</td><td class="kr">왔다</td></tr>
+      <tr><td>Te-form</td><td class="jp">して</td><td class="kr">해서/하고</td><td class="jp">来て (きて)</td><td class="kr">와서/오고</td></tr>
+      <tr><td>Potential</td><td class="jp">できる</td><td class="kr">할 수 있다</td><td class="jp">来られる (こられる)</td><td class="kr">올 수 있다</td></tr>
+      <tr><td>Volitional</td><td class="jp">しよう</td><td class="kr">하자</td><td class="jp">来よう (こよう)</td><td class="kr">오자</td></tr>
+      <tr><td>Conditional</td><td class="jp">すれば</td><td class="kr">하면</td><td class="jp">来れば (くれば)</td><td class="kr">오면</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout info">
+    <div class="callout-title">Korean Connection</div>
+    <p><span class="jp">する</span> is the Japanese <span class="kr">하다</span>. Just like Korean attaches 하다 to nouns to make verbs (<span class="kr">勉強하다</span> = to study), Japanese attaches する: <span class="jp">勉強する</span> (benkyou suru). The pattern is <strong>identical</strong>. Notice also that <span class="jp">来る</span> changes its reading: くる → きます → こない. The kanji stays, but the reading shifts. This is the only truly unpredictable part.</p>
+  </div>
+</div>
+
+<div class="callout warn">
+  <div class="callout-title">Elaborative Interrogation</div>
+  <p><strong>WHY does Japanese have only 2 irregular verbs while Korean has more irregular patterns (ㅂ-irregular, ㄷ-irregular, ㅎ-irregular, etc.)?</strong></p>
+  <p>Japanese irregularity concentrates in just する and 来る because the language historically regularized most verbs into the godan/ichidan system. Korean retained more stem-changing patterns from Middle Korean. For you, this is good news -- Japanese irregularity is far simpler than what you already handle in Korean.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 3: TE-FORM (CRITICAL)
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="te-form-the-swiss-army-knife-of-japanese-conjugation">Te-Form: The Swiss Army Knife of Japanese Conjugation</h3>
+<p>The te-form is the single most important conjugation to master. It connects sentences, makes requests, describes ongoing actions, gives permission, and more. For ichidan and irregular verbs, it is simple. For godan verbs, the ending depends on the dictionary form's final kana.</p>
+
+<h4>Te-Form Rules for Godan Verbs</h4>
+<table>
+  <thead>
+    <tr><th>Dictionary Ending</th><th>Te-Form Change</th><th>Example</th><th>Te-Form</th><th>Mnemonic Group</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="jp">う, つ, る</td>
+      <td class="jp">→ って</td>
+      <td class="jp">買う, 待つ, 帰る</td>
+      <td class="jp">買って, 待って, 帰って</td>
+      <td><strong>U-TSU-RU</strong></td>
+    </tr>
+    <tr>
+      <td class="jp">む, ぶ, ぬ</td>
+      <td class="jp">→ んで</td>
+      <td class="jp">飲む, 遊ぶ, 死ぬ</td>
+      <td class="jp">飲んで, 遊んで, 死んで</td>
+      <td><strong>M-B-N</strong></td>
+    </tr>
+    <tr>
+      <td class="jp">く</td>
+      <td class="jp">→ いて</td>
+      <td class="jp">書く</td>
+      <td class="jp">書いて</td>
+      <td><strong>K</strong></td>
+    </tr>
+    <tr>
+      <td class="jp">ぐ</td>
+      <td class="jp">→ いで</td>
+      <td class="jp">泳ぐ</td>
+      <td class="jp">泳いで</td>
+      <td><strong>G</strong></td>
+    </tr>
+    <tr>
+      <td class="jp">す</td>
+      <td class="jp">→ して</td>
+      <td class="jp">話す</td>
+      <td class="jp">話して</td>
+      <td><strong>S</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout warn">
+  <div class="callout-title">Exception Alert</div>
+  <p><span class="jp">行く</span> (iku = to go) is the one godan verb that breaks the K rule. Instead of <span class="jp">行いて</span>, it becomes <span class="jp">行って</span> (itte). Just memorize this single exception.</p>
+</div>
+
+<h4>The Te-Form Song -- Memory Aid</h4>
+<div class="card" style="text-align:center;padding:2rem">
+  <h4 style="color:var(--accent);margin-bottom:1rem">The Te-Form Song</h4>
+  <p style="font-size:1.1rem;line-height:2;font-family:var(--serif)">
+    <span class="jp" style="color:var(--a2)">う、つ、る</span> &rarr; <span class="jp" style="color:var(--accent)">って</span><br>
+    <span class="jp" style="color:var(--a2)">む、ぶ、ぬ</span> &rarr; <span class="jp" style="color:var(--accent)">んで</span><br>
+    <span class="jp" style="color:var(--a2)">く</span> &rarr; <span class="jp" style="color:var(--accent)">いて</span>
+    &nbsp;&nbsp;
+    <span class="jp" style="color:var(--a2)">ぐ</span> &rarr; <span class="jp" style="color:var(--accent)">いで</span><br>
+    <span class="jp" style="color:var(--a2)">す</span> &rarr; <span class="jp" style="color:var(--accent)">して</span><br>
+  </p>
+  <p style="font-size:.88rem;color:var(--text-muted);margin-top:1rem">Sing it, chant it, tattoo it. This pattern covers every single godan verb's te-form. Repeat until automatic.</p>
+  <p style="font-size:.85rem;color:var(--a3);margin-top:.5rem"><strong>Rhythm mnemonic:</strong> "U-tsu-ru って! Mu-bu-nu んで! Ku いて, gu いで, su して!" (Clap on each arrow.)</p>
+</div>
+
+<!-- Te-form mnemonic SVG -->
+<div class="diagram">
+  <svg viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg">
+    <text x="350" y="25" text-anchor="middle" font-size="14" font-weight="600" fill="var(--heading)">Te-Form Map: Dictionary Ending &rarr; Te-Form</text>
+
+    <!-- Group 1: U-TSU-RU -->
+    <rect x="30" y="50" width="180" height="70" rx="10" fill="none" stroke="var(--accent)" stroke-width="2"/>
+    <text x="120" y="72" text-anchor="middle" font-size="13" font-weight="600" fill="var(--accent)">う つ る</text>
+    <text x="120" y="92" text-anchor="middle" font-size="18" font-weight="700" fill="var(--a3)">→ って</text>
+    <text x="120" y="112" text-anchor="middle" font-size="9" fill="var(--text-muted)">買う→買って 待つ→待って</text>
+
+    <!-- Group 2: M-B-N -->
+    <rect x="260" y="50" width="180" height="70" rx="10" fill="none" stroke="var(--accent)" stroke-width="2"/>
+    <text x="350" y="72" text-anchor="middle" font-size="13" font-weight="600" fill="var(--accent)">む ぶ ぬ</text>
+    <text x="350" y="92" text-anchor="middle" font-size="18" font-weight="700" fill="var(--a3)">→ んで</text>
+    <text x="350" y="112" text-anchor="middle" font-size="9" fill="var(--text-muted)">飲む→飲んで 遊ぶ→遊んで</text>
+
+    <!-- Group 3: K -->
+    <rect x="490" y="50" width="180" height="70" rx="10" fill="none" stroke="var(--accent)" stroke-width="2"/>
+    <text x="580" y="72" text-anchor="middle" font-size="13" font-weight="600" fill="var(--accent)">く</text>
+    <text x="580" y="92" text-anchor="middle" font-size="18" font-weight="700" fill="var(--a3)">→ いて</text>
+    <text x="580" y="112" text-anchor="middle" font-size="9" fill="var(--text-muted)">書く→書いて (exception: 行く→行って)</text>
+
+    <!-- Group 4: G -->
+    <rect x="100" y="170" width="180" height="70" rx="10" fill="none" stroke="var(--a2)" stroke-width="2"/>
+    <text x="190" y="192" text-anchor="middle" font-size="13" font-weight="600" fill="var(--a2)">ぐ</text>
+    <text x="190" y="212" text-anchor="middle" font-size="18" font-weight="700" fill="var(--a3)">→ いで</text>
+    <text x="190" y="232" text-anchor="middle" font-size="9" fill="var(--text-muted)">泳ぐ→泳いで 脱ぐ→脱いで</text>
+
+    <!-- Group 5: S -->
+    <rect x="400" y="170" width="180" height="70" rx="10" fill="none" stroke="var(--a2)" stroke-width="2"/>
+    <text x="490" y="192" text-anchor="middle" font-size="13" font-weight="600" fill="var(--a2)">す</text>
+    <text x="490" y="212" text-anchor="middle" font-size="18" font-weight="700" fill="var(--a3)">→ して</text>
+    <text x="490" y="232" text-anchor="middle" font-size="9" fill="var(--text-muted)">話す→話して 出す→出して</text>
+
+    <!-- Bottom note -->
+    <text x="350" y="280" text-anchor="middle" font-size="11" fill="var(--text-muted)">Ichidan verbs: just drop る and add て (食べる→食べて). Irregulars: する→して, 来る→きて.</text>
+  </svg>
+  <div class="diagram-caption">The Te-Form Map. Five groups for godan verbs, one rule for ichidan, two memorized irregulars. That covers every verb in Japanese.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 4: PRACTICAL CONNECTION TO CH05
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="practical-connection-now-you-know-why">Practical Connection: Now You Know WHY</h3>
+<p>In Chapter 05, you used survival phrases as complete units without knowing the grammar behind them. Now you can see the machinery.</p>
+
+<div class="card">
+  <h4 style="color:var(--accent)">Decoding Ch05 Phrases with Te-Form</h4>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+    <div>
+      <p style="font-size:1.1rem;margin-bottom:.3rem"><span class="jp">止めてください</span></p>
+      <p style="font-size:.82rem;color:var(--text-muted)">tomete kudasai = "Stop, please"</p>
+      <p style="font-size:.88rem"><span class="jp">止める</span> (ichidan, "to stop") &rarr; drop る &rarr; <span class="jp">止め</span> + <span class="jp">て</span> = <span class="jp">止めて</span><br>+ <span class="jp">ください</span> = "please"</p>
+      <p style="font-size:.82rem;color:var(--a3)"><span class="kr">세우다 → 세워 + 주세요 = 세워주세요</span> -- same pattern!</p>
+    </div>
+    <div>
+      <p style="font-size:1.1rem;margin-bottom:.3rem"><span class="jp">曲がってください</span></p>
+      <p style="font-size:.82rem;color:var(--text-muted)">magatte kudasai = "Turn, please"</p>
+      <p style="font-size:.88rem"><span class="jp">曲がる</span> (godan, U-TSU-RU group) &rarr; る → <span class="jp">って</span> = <span class="jp">曲がって</span><br>+ <span class="jp">ください</span> = "please"</p>
+      <p style="font-size:.82rem;color:var(--a3)"><span class="kr">돌다 → 돌아 + 주세요 = 돌아주세요</span></p>
+    </div>
+  </div>
+  <div style="margin-top:1.5rem;display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+    <div>
+      <p style="font-size:1.1rem;margin-bottom:.3rem"><span class="jp">見せてください</span></p>
+      <p style="font-size:.82rem;color:var(--text-muted)">misete kudasai = "Show me, please"</p>
+      <p style="font-size:.88rem"><span class="jp">見せる</span> (ichidan) &rarr; drop る &rarr; <span class="jp">見せ</span> + <span class="jp">て</span> = <span class="jp">見せて</span><br>+ <span class="jp">ください</span> = "please"</p>
+    </div>
+    <div>
+      <p style="font-size:1.1rem;margin-bottom:.3rem"><span class="jp">書いてください</span></p>
+      <p style="font-size:.82rem;color:var(--text-muted)">kaite kudasai = "Write it, please"</p>
+      <p style="font-size:.88rem"><span class="jp">書く</span> (godan, K group) &rarr; く → <span class="jp">いて</span> = <span class="jp">書いて</span><br>+ <span class="jp">ください</span> = "please"</p>
+    </div>
+  </div>
+
+  <p style="margin-top:1.5rem;font-size:.92rem;color:var(--a3);text-align:center"><strong>Te-form + ください = Polite request.</strong> This is the #1 practical use of te-form, and you have been using it since Chapter 05.</p>
+</div>
+
+<div class="callout ok">
+  <div class="callout-title">The Universal Request Formula</div>
+  <p><strong>[Verb te-form] + ください</strong> = "Please [verb]." This maps perfectly to Korean <strong>[verb 해/아/어 form] + 주세요</strong>. The structure is identical -- only the specific forms differ.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 5: ADJECTIVE SYSTEM
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="adjective-conjugation-yes-adjectives-conjugate-too">Adjective Conjugation: Yes, Adjectives Conjugate Too</h3>
+<p>In Korean, adjectives conjugate like verbs (<span class="kr">덥다 → 더워요 → 더웠어요</span>). Japanese does the same thing -- but splits adjectives into two distinct types that follow different rules.</p>
+
+<!-- い-adjectives -->
+<h4>い-Adjectives: They HAVE the い</h4>
+<div class="card">
+  <p><strong>Rule:</strong> Drop the final <span class="jp">い</span> and add the ending.</p>
+
+  <table>
+    <thead>
+      <tr><th>Form</th><th class="jp">暑い (atsui = hot)</th><th class="jp">高い (takai = expensive/tall)</th><th>Korean Parallel</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Present</td><td class="jp">暑い</td><td class="jp">高い</td><td class="kr">덥다 / 비싸다</td></tr>
+      <tr><td>Negative</td><td class="jp">暑<strong>くない</strong></td><td class="jp">高<strong>くない</strong></td><td class="kr">덥지 않다 / 비싸지 않다</td></tr>
+      <tr><td>Past</td><td class="jp">暑<strong>かった</strong></td><td class="jp">高<strong>かった</strong></td><td class="kr">더웠다 / 비쌌다</td></tr>
+      <tr><td>Past Negative</td><td class="jp">暑<strong>くなかった</strong></td><td class="jp">高<strong>くなかった</strong></td><td class="kr">덥지 않았다</td></tr>
+      <tr><td>Te-form</td><td class="jp">暑<strong>くて</strong></td><td class="jp">高<strong>くて</strong></td><td class="kr">더워서 / 비싸서</td></tr>
+      <tr><td>Adverb</td><td class="jp">暑<strong>く</strong></td><td class="jp">高<strong>く</strong></td><td class="kr">덥게 / 비싸게</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout warn">
+    <div class="callout-title">Exception: いい (good)</div>
+    <p><span class="jp">いい</span> (good) is irregular. Its conjugated forms use <span class="jp">よ-</span> as the stem: <span class="jp">よくない</span> (not good), <span class="jp">よかった</span> (was good), <span class="jp">よくなかった</span> (was not good). The dictionary form is いい, but everything else uses よ-.</p>
+  </div>
+</div>
+
+<!-- な-adjectives -->
+<h4>な-Adjectives: They NEED な</h4>
+<div class="card">
+  <p><strong>Rule:</strong> They act like nouns. Add <span class="jp">な</span> before nouns, and use <span class="jp">だ/じゃない/だった/じゃなかった</span> for conjugation.</p>
+
+  <table>
+    <thead>
+      <tr><th>Form</th><th class="jp">静か (shizuka = quiet)</th><th class="jp">元気 (genki = healthy/well)</th><th>Korean Parallel</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Present</td><td class="jp">静か<strong>だ</strong></td><td class="jp">元気<strong>だ</strong></td><td class="kr">조용하다 / 건강하다</td></tr>
+      <tr><td>Before noun</td><td class="jp">静か<strong>な</strong>部屋</td><td class="jp">元気<strong>な</strong>人</td><td class="kr">조용<strong>한</strong> 방 / 건강<strong>한</strong> 사람</td></tr>
+      <tr><td>Negative</td><td class="jp">静か<strong>じゃない</strong></td><td class="jp">元気<strong>じゃない</strong></td><td class="kr">조용하지 않다</td></tr>
+      <tr><td>Past</td><td class="jp">静か<strong>だった</strong></td><td class="jp">元気<strong>だった</strong></td><td class="kr">조용했다</td></tr>
+      <tr><td>Past Negative</td><td class="jp">静か<strong>じゃなかった</strong></td><td class="jp">元気<strong>じゃなかった</strong></td><td class="kr">조용하지 않았다</td></tr>
+      <tr><td>Te-form</td><td class="jp">静か<strong>で</strong></td><td class="jp">元気<strong>で</strong></td><td class="kr">조용해서 / 조용하고</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="card" style="text-align:center;padding:1.5rem">
+  <h4 style="color:var(--accent);margin-bottom:1rem">Mnemonic: い vs. な</h4>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem">
+    <div>
+      <p style="font-size:1.5rem;color:var(--a2)"><span class="jp">暑<strong>い</strong></span></p>
+      <p style="font-size:.95rem"><strong>い-adjectives HAVE the い.</strong></p>
+      <p style="font-size:.85rem;color:var(--text-muted)">The い is built-in. You conjugate by replacing it.</p>
+    </div>
+    <div>
+      <p style="font-size:1.5rem;color:var(--a3)"><span class="jp">静か<strong>な</strong></span></p>
+      <p style="font-size:.95rem"><strong>な-adjectives NEED な.</strong></p>
+      <p style="font-size:.85rem;color:var(--text-muted)">They are missing something -- they need な to modify nouns.</p>
+    </div>
+  </div>
+  <p style="margin-top:1rem;font-size:.88rem;color:var(--text-muted)">"HAVE い" vs. "NEED な" -- this one mnemonic sorts every adjective.</p>
+</div>
+
+<!-- Adjective mnemonic SVG -->
+<div class="diagram">
+  <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg">
+    <text x="350" y="25" text-anchor="middle" font-size="14" font-weight="600" fill="var(--heading)">Adjective Conjugation Comparison</text>
+
+    <!-- い-adj column -->
+    <rect x="40" y="45" width="280" height="160" rx="10" fill="none" stroke="var(--a2)" stroke-width="2"/>
+    <text x="180" y="68" text-anchor="middle" font-size="13" font-weight="600" fill="var(--a2)">い-Adjectives (HAVE い)</text>
+    <text x="180" y="92" text-anchor="middle" font-size="11" fill="var(--text-muted)">暑い → 暑くない → 暑かった</text>
+    <text x="180" y="112" text-anchor="middle" font-size="11" fill="var(--text-muted)">高い → 高くない → 高かった</text>
+    <text x="180" y="132" text-anchor="middle" font-size="11" fill="var(--text-muted)">おいしい → おいしくない → おいしかった</text>
+    <text x="180" y="162" text-anchor="middle" font-size="10" font-weight="500" fill="var(--a2)">Pattern: drop い, add くない / かった</text>
+    <text x="180" y="182" text-anchor="middle" font-size="10" fill="var(--a2)">They conjugate THEMSELVES</text>
+
+    <!-- な-adj column -->
+    <rect x="380" y="45" width="280" height="160" rx="10" fill="none" stroke="var(--a3)" stroke-width="2"/>
+    <text x="520" y="68" text-anchor="middle" font-size="13" font-weight="600" fill="var(--a3)">な-Adjectives (NEED な)</text>
+    <text x="520" y="92" text-anchor="middle" font-size="11" fill="var(--text-muted)">静かだ → 静かじゃない → 静かだった</text>
+    <text x="520" y="112" text-anchor="middle" font-size="11" fill="var(--text-muted)">元気だ → 元気じゃない → 元気だった</text>
+    <text x="520" y="132" text-anchor="middle" font-size="11" fill="var(--text-muted)">きれいだ → きれいじゃない → きれいだった</text>
+    <text x="520" y="162" text-anchor="middle" font-size="10" font-weight="500" fill="var(--a3)">Pattern: add じゃない / だった (like nouns)</text>
+    <text x="520" y="182" text-anchor="middle" font-size="10" fill="var(--a3)">They borrow NOUN conjugation</text>
+  </svg>
+  <div class="diagram-caption">Two adjective types, two patterns. い-adjectives conjugate internally; な-adjectives use noun-style endings. Korean speakers: な-adjectives are like 하다-adjectives (조용하다, 건강하다).</div>
+</div>
+
+<div class="callout warn">
+  <div class="callout-title">Elaborative Interrogation</div>
+  <p><strong>WHY does Japanese split adjectives into two groups while Korean uses a unified adjective conjugation system?</strong></p>
+  <p>Japanese い-adjectives descend from Old Japanese native adjectives (形容詞), while な-adjectives evolved from nouns combined with the copula (形容動詞). Korean adjectives all conjugate verb-style regardless of origin. The split in Japanese is a historical artifact -- but for you, notice that な-adjectives work almost identically to Korean <span class="kr">하다</span>-adjectives (조용하다 = 静かだ). The mapping is tighter than it first appears.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     INTERACTIVE EXERCISES
+     ═══════════════════════════════════════════════════════════════ -->
+<h3 id="interactive-exercises">Interactive Exercises</h3>
+
+<!-- Quiz 1: FillBlank — conjugation exercises -->
+<div id="quiz-conjugation-fill"></div>
+
+<!-- Quiz 2: DragMatch — dictionary to te-form -->
+<div id="quiz-teform-match"></div>
+
+<!-- Quiz 3: SentenceBuilder — conjugated verb sentences -->
+<div id="quiz-sentence-builder"></div>
+
+<!-- Quiz 4: RecallCheck from Ch05-06 -->
+<div id="quiz-recall-check"></div>
+
+<!-- Quiz 5: Multiple Choice — verb groups & adjective types -->
+<div id="quiz-verb-groups"></div>
+
+<!-- Mark as Complete -->
+<button class="chapter-complete" data-ch="08">Mark as Complete &#10003;</button>
+
+<div style="display:flex;justify-content:space-between;margin:2rem 0">
+  <a href="ch-07.html" class="quiz-btn secondary">&larr; Chapter 08: Particles</a>
+  <a href="ch-09.html" class="quiz-btn">Next: Chapter 10 -- Daily Conversations &rarr;</a>
+</div>
+
+</section>
+
+</div>
+
+
+</div>
+
+<footer>
+  <p>Zero to Hero: 日本語 for Korean Speakers &middot; Chapter 08</p>
+</footer>
+
+<script src="js/shared.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/quiz-engine.js"></script>
+<script src="js/spaced-repetition.js"></script>
+<script src="js/memory-palace.js"></script>
+<script>
+// ─── Quiz 1: FillBlank — Conjugation Exercises ───
+QuizEngine.FillBlank(
+  document.getElementById('quiz-conjugation-fill'),
+  {
+    title: 'Conjugation Practice',
+    questions: [
+      {
+        prompt: 'Convert to polite form: <span class="jp">食べる</span> (to eat) → ___',
+        answer: '食べます',
+        acceptAlso: ['たべます'],
+        korean: '먹다 → 먹습니다',
+        explanation: 'Ichidan: drop る, add ます → 食べます'
+      },
+      {
+        prompt: 'Convert to te-form: <span class="jp">飲む</span> (to drink) → ___',
+        answer: '飲んで',
+        acceptAlso: ['のんで'],
+        korean: '마시다 → 마셔서',
+        explanation: 'Godan M-B-N group: む → んで → 飲んで'
+      },
+      {
+        prompt: 'Convert to te-form: <span class="jp">書く</span> (to write) → ___',
+        answer: '書いて',
+        acceptAlso: ['かいて'],
+        korean: '쓰다 → 써서',
+        explanation: 'Godan K group: く → いて → 書いて'
+      },
+      {
+        prompt: 'Convert to negative: <span class="jp">見る</span> (to see) → ___',
+        answer: '見ない',
+        acceptAlso: ['みない'],
+        korean: '보다 → 보지 않다',
+        explanation: 'Ichidan: drop る, add ない → 見ない'
+      },
+      {
+        prompt: 'Convert to past: <span class="jp">する</span> (to do) → ___',
+        answer: 'した',
+        korean: '하다 → 했다',
+        explanation: 'Irregular: する → した (just memorize it)'
+      },
+      {
+        prompt: 'Convert to te-form: <span class="jp">話す</span> (to speak) → ___',
+        answer: '話して',
+        acceptAlso: ['はなして'],
+        korean: '말하다 → 말해서',
+        explanation: 'Godan S group: す → して → 話して'
+      },
+      {
+        prompt: 'Convert to negative: <span class="jp">暑い</span> (hot) → ___',
+        answer: '暑くない',
+        acceptAlso: ['あつくない'],
+        korean: '덥다 → 덥지 않다',
+        explanation: 'い-adjective: drop い, add くない → 暑くない'
+      },
+      {
+        prompt: 'Convert to past: <span class="jp">静かだ</span> (quiet) → ___',
+        answer: '静かだった',
+        acceptAlso: ['しずかだった'],
+        korean: '조용하다 → 조용했다',
+        explanation: 'な-adjective: add だった → 静かだった'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 2: DragMatch — Dictionary Form to Te-Form ───
+QuizEngine.DragMatch(
+  document.getElementById('quiz-teform-match'),
+  {
+    title: 'Te-Form Matching',
+    instruction: 'Match each dictionary form to its correct te-form:',
+    pairs: [
+      { left: '食べる (to eat)', right: '食べて' },
+      { left: '飲む (to drink)', right: '飲んで' },
+      { left: '書く (to write)', right: '書いて' },
+      { left: '話す (to speak)', right: '話して' },
+      { left: '待つ (to wait)', right: '待って' },
+      { left: '泳ぐ (to swim)', right: '泳いで' },
+      { left: '行く (to go)', right: '行って' }
+    ]
+  }
+);
+
+// ─── Quiz 3: SentenceBuilder — Conjugated Verb Sentences ───
+QuizEngine.SentenceBuilder(
+  document.getElementById('quiz-sentence-builder'),
+  {
+    title: 'Build Sentences with Conjugated Verbs',
+    sentences: [
+      {
+        hint: 'Build: "Please eat." (te-form + kudasai) -- <span class="kr">드세요 / 먹어 주세요</span>',
+        words: ['食べて', 'ください'],
+        correct: '食べてください'
+      },
+      {
+        hint: 'Build: "I drank coffee." (polite past) -- <span class="kr">커피를 마셨습니다</span>',
+        words: ['コーヒーを', '飲みました'],
+        correct: 'コーヒーを飲みました'
+      },
+      {
+        hint: 'Build: "I cannot go tomorrow." (negative polite) -- <span class="kr">내일은 갈 수 없습니다</span>',
+        words: ['明日は', '行けません'],
+        correct: '明日は行けません'
+      },
+      {
+        hint: 'Build: "Let\'s study Japanese." (volitional) -- <span class="kr">일본어를 공부하자</span>',
+        words: ['日本語を', '勉強しよう'],
+        correct: '日本語を勉強しよう'
+      },
+      {
+        hint: 'Build: "This room is not quiet." (な-adjective negative) -- <span class="kr">이 방은 조용하지 않다</span>',
+        words: ['この部屋は', '静かじゃない'],
+        correct: 'この部屋は静かじゃない'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 4: RecallCheck from Ch05–06 ───
+QuizEngine.RecallCheck(
+  document.getElementById('quiz-recall-check'),
+  {
+    fromChapters: 'Ch05–06',
+    items: [
+      {
+        question: 'Ch05: How do you say "Stop here, please" in Japanese? (taxi phrase)',
+        answer: 'ここで止めてください (koko de tomete kudasai)'
+      },
+      {
+        question: 'Ch05: How do you say "Check, please" at a restaurant?',
+        answer: 'お会計お願いします (okaikei onegai shimasu)'
+      },
+      {
+        question: 'Ch05: How do you say "Excuse me / I\'m sorry" (the multi-tool word)?',
+        answer: 'すみません (sumimasen)'
+      },
+      {
+        question: 'Ch07: Which particle marks the topic of a sentence? (Korean: 은/는)',
+        answer: 'は (wa) -- topic marker, same function as Korean 은/는'
+      },
+      {
+        question: 'Ch07: Which particle marks the location where an action takes place? (Korean: 에서)',
+        answer: 'で (de) -- action location marker, same as Korean 에서'
+      }
+    ]
+  }
+);
+
+// ─── Quiz 5: Multiple Choice — Verb Groups & Adjective Types ───
+QuizEngine.MultipleChoice(
+  document.getElementById('quiz-verb-groups'),
+  {
+    title: 'Verb Groups & Adjective Types',
+    questions: [
+      {
+        prompt: 'Which verb group does 食べる (to eat) belong to?',
+        options: [
+          'Group 1 (Godan)',
+          'Group 2 (Ichidan)',
+          'Group 3 (Irregular)'
+        ],
+        correctIndex: 1,
+        explanation: '食べる ends in -える, making it ichidan (Group 2). Just drop る and add the ending.'
+      },
+      {
+        prompt: 'What is the te-form of 待つ (to wait)?',
+        options: ['待いて', '待して', '待って', '待んで'],
+        correctIndex: 2,
+        explanation: '待つ ends in つ, which belongs to the U-TSU-RU group: つ → って = 待って.'
+      },
+      {
+        prompt: 'How many truly irregular verbs does Japanese have?',
+        options: ['0', '2', '5', '12'],
+        correctIndex: 1,
+        explanation: 'Only する (to do) and 来る (to come) are irregular. Compare this to Korean\'s many irregular patterns!'
+      },
+      {
+        prompt: 'What type of adjective is 静か (quiet)?',
+        options: [
+          'い-adjective -- conjugates by dropping い',
+          'な-adjective -- conjugates like a noun',
+          'Irregular adjective',
+          'Both い and な'
+        ],
+        correctIndex: 1,
+        explanation: '静か is a な-adjective. It NEEDS な to modify nouns (静かな部屋) and conjugates with だ/じゃない/だった.'
+      },
+      {
+        prompt: 'What is the negative form of the い-adjective 高い (expensive)?',
+        options: ['高いない', '高じゃない', '高くない', '高ないです'],
+        correctIndex: 2,
+        explanation: 'い-adjective rule: drop い, add くない → 高くない. Remember: い-adjectives HAVE the い -- you replace it.'
+      }
+    ]
+  }
+);
+</script>
+</body>
+</html>

@@ -1,0 +1,2 @@
+[      58ms] [ERROR] Error: <rect> attribute rx: Expected length, "0 7 7 0". @ http://localhost:8765/LLMs-for-Fuso-HMI-Expert-Reference.html:576
+[    1388ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:8765/favicon.ico:0
