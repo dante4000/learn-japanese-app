@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="プログラミング未経験からマルチエージェントAIコーディングシステムのオーケストレーションまでを網羅した、完全なインタラクティブガイド。47章、10フェーズ、120以上の演習、ブラウザ内Python実行機能付き。">
+<title>ゼロからヒーロー — プログラミングからマルチエージェントClaude Codeへ</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/design-system.css">
+<script>try{if(localStorage.getItem('zth-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+<script>try{var z=localStorage.getItem('zth-zoom');if(z&&+z>=50&&+z<=200)document.documentElement.style.zoom=+z/100}catch(e){}</script>
+</head>
+<body>
+
+<!-- SVG Arrow Defs -->
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+<marker id="arrowhead-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--a5)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="テーマを切り替える">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<!-- SIDEBAR — identical across all files -->
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo"><span>ゼロからヒーロー</span>プログラミング &rarr; マルチエージェントAI</a>
+  <div class="toc-group">
+    <div class="toc-group-title">基礎</div>
+    <a href="phase-1.html#ch01" class="toc-link"><span class="toc-num">01</span>プログラミングとは何か</a>
+    <a href="phase-1.html#ch02" class="toc-link"><span class="toc-num">02</span>コンピュータがコードを実行する仕組み</a>
+    <a href="phase-1.html#ch03" class="toc-link"><span class="toc-num">03</span>環境のセットアップ</a>
+    <a href="phase-1.html#ch04" class="toc-link"><span class="toc-num">04</span>書く前にコードを読む</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Python</div>
+    <a href="phase-2.html#ch05" class="toc-link"><span class="toc-num">05</span>関数、ロジック、制御フロー</a>
+    <a href="phase-2.html#ch06" class="toc-link"><span class="toc-num">06</span>データ構造</a>
+    <a href="phase-2.html#ch07" class="toc-link"><span class="toc-num">07</span>クラスとオブジェクト指向プログラミング</a>
+    <a href="phase-2.html#ch08" class="toc-link"><span class="toc-num">08</span>ファイル、モジュール、標準ライブラリ</a>
+    <a href="phase-2.html#ch09" class="toc-link"><span class="toc-num">09</span>エラー処理、デバッグ、テスト</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">開発ツール</div>
+    <a href="phase-3.html#ch10" class="toc-link"><span class="toc-num">10</span>ターミナルとシェル</a>
+    <a href="phase-3.html#ch11" class="toc-link"><span class="toc-num">11</span>Gitの基礎</a>
+    <a href="phase-3.html#ch12" class="toc-link"><span class="toc-num">12</span>GitリモートとGitHub</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">構築とデプロイ</div>
+    <a href="phase-4.html#ch13" class="toc-link"><span class="toc-num">13</span>APIとHTTP</a>
+    <a href="phase-4.html#ch14" class="toc-link"><span class="toc-num">14</span>FlaskでAPIを構築する</a>
+    <a href="phase-4.html#ch15" class="toc-link"><span class="toc-num">15</span>データベースの基礎</a>
+    <a href="phase-4.html#ch16" class="toc-link"><span class="toc-num">16</span>Dockerとコンテナ</a>
+    <a href="phase-4.html#ch17" class="toc-link"><span class="toc-num">17</span>CI/CDとGitHub Actions</a>
+    <a href="phase-4.html#ch18" class="toc-link"><span class="toc-num">18</span>プロジェクトアーキテクチャ</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">データ構造</div>
+    <a href="phase-5.html#ch19" class="toc-link"><span class="toc-num">19</span>計算量分析</a>
+    <a href="phase-5.html#ch20" class="toc-link"><span class="toc-num">20</span>線形構造</a>
+    <a href="phase-5.html#ch21" class="toc-link"><span class="toc-num">21</span>ハッシュテーブルとマップ</a>
+    <a href="phase-5.html#ch22" class="toc-link"><span class="toc-num">22</span>木構造</a>
+    <a href="phase-5.html#ch23" class="toc-link"><span class="toc-num">23</span>グラフ</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">アルゴリズム</div>
+    <a href="phase-6.html#ch24" class="toc-link"><span class="toc-num">24</span>探索とソート</a>
+    <a href="phase-6.html#ch25" class="toc-link"><span class="toc-num">25</span>再帰と動的計画法</a>
+    <a href="phase-6.html#ch26" class="toc-link"><span class="toc-num">26</span>アルゴリズムパターン</a>
+    <a href="phase-6.html#ch27" class="toc-link"><span class="toc-num">27</span>グラフアルゴリズム</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">エンジニアリングの技術</div>
+    <a href="phase-7.html#ch28" class="toc-link"><span class="toc-num">28</span>デザインパターンとSOLID</a>
+    <a href="phase-7.html#ch29" class="toc-link"><span class="toc-num">29</span>SQLとクエリマスタリー</a>
+    <a href="phase-7.html#ch30" class="toc-link"><span class="toc-num">30</span>トランザクションとNoSQL</a>
+    <a href="phase-7.html#ch31" class="toc-link"><span class="toc-num">31</span>ネットワークとインターネット</a>
+    <a href="phase-7.html#ch32" class="toc-link"><span class="toc-num">32</span>並行性と並列処理</a>
+    <a href="phase-7.html#ch33" class="toc-link"><span class="toc-num">33</span>セキュリティエンジニアリング</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">システムとスケール</div>
+    <a href="phase-8.html#ch34" class="toc-link"><span class="toc-num">34</span>システム設計</a>
+    <a href="phase-8.html#ch35" class="toc-link"><span class="toc-num">35</span>分散システム</a>
+    <a href="phase-8.html#ch36" class="toc-link"><span class="toc-num">36</span>パフォーマンスと可観測性</a>
+    <a href="phase-8.html#ch37" class="toc-link"><span class="toc-num">37</span>大規模コードベースのナビゲーション</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AIレベル1〜5</div>
+    <a href="phase-9.html#ch38" class="toc-link"><span class="toc-num">38</span>AIコードの評価と指示</a>
+    <a href="phase-9.html#ch39" class="toc-link"><span class="toc-num">39</span>レベル1&amp;2 — タブ補完とエージェントIDE</a>
+    <a href="phase-9.html#ch40" class="toc-link"><span class="toc-num">40</span>レベル3 — コンテキストエンジニアリング</a>
+    <a href="phase-9.html#ch41" class="toc-link"><span class="toc-num">41</span>レベル4 — 複合エンジニアリング</a>
+    <a href="phase-9.html#ch42" class="toc-link"><span class="toc-num">42</span>レベル5 — MCP、スキル、機能</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AIレベル6〜8</div>
+    <a href="phase-10.html#ch43" class="toc-link"><span class="toc-num">43</span>レベル6 — ハーネスエンジニアリング</a>
+    <a href="phase-10.html#ch44" class="toc-link"><span class="toc-num">44</span>レベル7 — バックグラウンドエージェント</a>
+    <a href="phase-10.html#ch45" class="toc-link"><span class="toc-num">45</span>DockerでのClaude Code</a>
+    <a href="phase-10.html#ch46" class="toc-link"><span class="toc-num">46</span>レベル8 — 自律エージェントチーム</a>
+    <a href="phase-10.html#ch47" class="toc-link"><span class="toc-num">47</span>マルチプレイヤー効果</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">リファレンス</div>
+    <a href="appendices.html#glossary" class="toc-link"><span class="toc-num">&oplus;</span>用語集</a>
+    <a href="appendices.html#prompt-library" class="toc-link"><span class="toc-num">&oplus;</span>プロンプトライブラリ</a>
+    <a href="appendices.html#self-assessment" class="toc-link"><span class="toc-num">&oplus;</span>自己評価</a>
+    <a href="appendices.html#common-mistakes" class="toc-link"><span class="toc-num">&oplus;</span>よくある間違い</a>
+    <a href="appendices.html#appendix-d" class="toc-link"><span class="toc-num">&oplus;</span>トラブルシューティング</a>
+    <a href="appendices.html#appendix-e" class="toc-link"><span class="toc-num">&oplus;</span>リソース</a>
+  </div>
+</aside>
+
+<div class="main">
+<section class="hero">
+  <!-- Terminal/code SVG silhouette -->
+  <svg class="hero-art" viewBox="0 0 520 320" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="var(--heading)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Terminal window -->
+    <rect x="40" y="20" width="440" height="280" rx="12" fill="var(--heading)"/>
+    <!-- Title bar -->
+    <rect x="40" y="20" width="440" height="36" rx="12" fill="var(--heading)"/>
+    <rect x="40" y="44" width="440" height="12" fill="var(--heading)"/>
+    <!-- Window buttons -->
+    <circle cx="68" cy="38" r="6" fill="var(--bg)" opacity=".5"/>
+    <circle cx="88" cy="38" r="6" fill="var(--bg)" opacity=".5"/>
+    <circle cx="108" cy="38" r="6" fill="var(--bg)" opacity=".5"/>
+    <!-- Terminal content lines -->
+    <rect x="65" y="75" width="120" height="8" rx="4" fill="var(--bg)" opacity=".35"/>
+    <rect x="65" y="100" width="200" height="8" rx="4" fill="var(--bg)" opacity=".25"/>
+    <rect x="65" y="125" width="160" height="8" rx="4" fill="var(--bg)" opacity=".3"/>
+    <rect x="65" y="150" width="260" height="8" rx="4" fill="var(--bg)" opacity=".2"/>
+    <rect x="65" y="175" width="100" height="8" rx="4" fill="var(--bg)" opacity=".25"/>
+    <rect x="65" y="200" width="180" height="8" rx="4" fill="var(--bg)" opacity=".3"/>
+    <!-- Cursor -->
+    <rect x="65" y="235" width="10" height="16" rx="2" fill="var(--bg)" opacity=".45"/>
+    <!-- Prompt chevron -->
+    <path d="M65,243 L75,243" stroke="var(--bg)" stroke-width="2" opacity=".5"/>
+  </svg>
+
+  <div class="hero-badge">ゼロからヒーロー &mdash; プログラミングからマルチエージェントAIへ</div>
+  <h1>コードゼロから<em>AIエージェントのオーケストレーション</em>へ</h1>
+  <p class="hero-sub">コードを一行も書いたことがなくても大丈夫です。このインタラクティブガイドは、プログラミングの基礎からマルチエージェントAIコーディングシステムの監督まで、ステップバイステップで導きます。各フェーズで次に進むための判断力を身につけていきましょう。近道はありません&mdash;すべての章は、その先の章が必要とするから存在します。</p>
+  <div class="hero-meta"><span>47章</span><span>10フェーズ</span><span>120以上の演習</span><span>2026年3月</span></div>
+
+  <div class="progress-ring-wrap" id="progress-dashboard" style="display:none">
+    <svg class="progress-ring" width="90" height="90">
+      <circle class="ring-bg" cx="45" cy="45" r="40"/>
+      <circle class="ring-fill" cx="45" cy="45" r="40" stroke-dasharray="251.3" stroke-dashoffset="251.3"/>
+    </svg>
+    <div class="progress-ring-pct">0%</div>
+    <div class="progress-text">演習完了</div>
+    <a id="continue-link" href="#" style="display:none;margin-top:.5rem;font-size:.85rem;color:var(--accent)">続きから再開する &rarr;</a>
+  </div>
+</section>
+
+<div class="content-wrap">
+
+<h2 class="section-heading">フェーズを選ぶ</h2>
+
+<a href="phase-1.html" class="phase-card">
+  <div class="phase-num">フェーズ 1</div>
+  <h3>コードとは何か？</h3>
+  <p>コードとは何か、コンピュータがそれをどう実行するかを理解しましょう。AIが生成したコードを読み、評価し、方向性を示すための基礎を固めます。読めないコードは監督できません。</p>
+  <div class="phase-chapters">第01〜04章 &middot; 基礎</div>
+  <div class="progress-bar"><div class="progress-fill" data-phase="1" style="width:0%"></div></div>
+</a>
+
+<a href="phase-2.html" class="phase-card">
+  <div class="phase-num">フェーズ 2</div>
+  <h3>Pythonを書く</h3>
+  <p>Pythonの実践力を身につけます：関数（function）、データ構造（data structure）、クラス（class）、ファイル操作、テスト。どんな関数でも読みこなし、テストを書き、AIが生成したコードの微妙なバグを見抜ける力を養います。</p>
+  <div class="phase-chapters">第05〜09章 &middot; Python</div>
+  <div class="progress-bar"><div class="progress-fill" data-phase="2" style="width:0%"></div></div>
+</a>
+
+<a href="phase-3.html" class="phase-card">
+  <div class="phase-num">フェーズ 3</div>
+  <h3>開発ツール</h3>
+  <p>ターミナル（Terminal）、Git、GitHub。Claude Codeが実際に使うプロフェッショナルなツールです。AIを監督するには、まずこれらのツールを理解する必要があります。</p>
+  <div class="phase-chapters">第10〜12章 &middot; 開発ツール</div>
+  <div class="progress-bar"><div class="progress-fill" data-phase="3" style="width:0%"></div></div>
+</a>
+
+<a href="phase-4.html" class="phase-card">
+  <div class="phase-num">フェーズ 4</div>
+  <h3>構築とデプロイ</h3>
+  <p>API、Flask、データベース（Database）、Docker、CI/CD、そしてプロのプロジェクト設計を学びます。ソフトウェアを使う側から、自ら構築して世の中にリリースする側へステップアップしましょう。</p>
+  <div class="phase-chapters">第13〜18章 &middot; 構築とデプロイ</div>
+  <div class="progress-bar"><div class="progress-fill" data-phase="4" style="width:0%"></div></div>
+</a>
+
+<a href="phase-5.html" class="phase-card">
+  <div class="phase-num">フェーズ 5</div>
+  <h3>データ構造と計算量</h3>
+  <p>データがメモリにどう存在するかを理解します：配列（array）、連結リスト（linked list）、ハッシュテーブル（hash table）、木構造（tree）、グラフ（graph）。ビッグO記法を学び、目的に合ったデータ構造を選ぶ目を養います。</p>
+  <div class="phase-chapters">第19〜23章 &middot; データ構造と計算量</div>
+  <div class="progress-bar"><div class="progress-fill" data-phase="5" style="width:0%"></div></div>
+</a>
+
+<a href="phase-6.html" class="phase-card">
+  <div class="phase-num">フェーズ 6</div>
+  <h3>アルゴリズム</h3>
+  <p>探索（search）、ソート（sort）、再帰（recursion）、グラフ走査（graph traversal）。AIが生成したコードが本当に効率的かどうかを自分で判断できるアルゴリズム的思考力を磨きます。</p>
+  <div class="phase-chapters">第24〜27章 &middot; アルゴリズム</div>
+  <div class="progress-bar"><div class="progress-fill" data-phase="6" style="width:0%"></div></div>
+</a>
+
+<a href="phase-7.html" class="phase-card">
+  <div class="phase-num">フェーズ 7</div>
+  <h3>エンジニアリングの技術</h3>
+  <p>デザインパターン（Design Pattern）、データベースの深い理解、高度なテスト手法、コードアーキテクチャ。趣味のプログラマーとプロのエンジニアを分ける実践的なスキルを身につけます。</p>
+  <div class="phase-chapters">第28〜33章 &middot; エンジニアリングの技術</div>
+  <div class="progress-bar"><div class="progress-fill" data-phase="7" style="width:0%"></div></div>
+</a>
+
+<a href="phase-8.html" class="phase-card">
+  <div class="phase-num">フェーズ 8</div>
+  <h3>システムとスケール</h3>
+  <p>システム設計（System Design）、分散アーキテクチャ、ネットワーク、パフォーマンス最適化。AIエージェントが実際に動作するシステムの仕組みを深く理解します。</p>
+  <div class="phase-chapters">第34〜37章 &middot; システムとスケール</div>
+  <div class="progress-bar"><div class="progress-fill" data-phase="8" style="width:0%"></div></div>
+</a>
+
+<a href="phase-9.html" class="phase-card">
+  <div class="phase-num">フェーズ 9</div>
+  <h3>AI支援開発（レベル1〜5）</h3>
+  <p>AIの出力を評価するところから始めて、カスタムスキルとMCPの構築まで進みます。「AIのコードを判断できる」から「AIに自分で設計した機能を持たせられる」への進化を体験しましょう。</p>
+  <div class="phase-chapters">第38〜42章 &middot; AI支援開発</div>
+  <div class="progress-bar"><div class="progress-fill" data-phase="9" style="width:0%"></div></div>
+</a>
+
+<a href="phase-10.html" class="phase-card">
+  <div class="phase-num">フェーズ 10</div>
+  <h3>AIオーケストレーション（レベル6〜8）</h3>
+  <p>ハーネスエンジニアリング（Harness Engineering）、バックグラウンドエージェント、Docker環境でのClaude Code、自律エージェントチームの構成。プロジェクトが成長するにつれて、いつでも戻ってきて参考にしてください。</p>
+  <div class="phase-chapters">第43〜47章 &middot; AIオーケストレーション</div>
+  <div class="progress-bar"><div class="progress-fill" data-phase="10" style="width:0%"></div></div>
+</a>
+
+<a href="appendices.html" class="phase-card">
+  <div class="phase-num">付録</div>
+  <h3>補足資料</h3>
+  <p>用語集、プロンプトライブラリ、自己評価クイズ。すべてを一か所にまとめました。</p>
+  <div class="phase-chapters">用語集 &middot; プロンプトライブラリ &middot; 自己評価</div>
+</a>
+
+<div class="pq">
+フェーズ1〜8のすべての章は、フェーズ9〜10のための必須基礎です。関数（function）を学ぶ理由は、Claude Codeが200行の関数を生成したとき、それが意図通りに動いているかを自分で判断できるようになるためです。データ構造とアルゴリズム（フェーズ5〜6）を学ぶ理由は、AIが生成したコードが本当に効率的かを検証するためです。エンジニアリングの技術とシステム思考（フェーズ7〜8）を身につける理由は、エージェントが実際の本番環境で動作するからです。Git、Docker、APIを扱う理由は、Claude Codeがブランチを作成し、コンテナ内で実行し、複数のサービスをオーケストレーションするからです。このカリキュラムに寄り道はありません&mdash;すべての章が次への前提条件です。
+</div>
+<nav class="phase-nav">
+  <a href="phase-1.html" class="phase-nav-link next"><span class="phase-nav-label">ここから始める</span>フェーズ 1: コードとは何か？ &rarr;</a>
+</nav>
+
+</div>
+</div>
+
+<footer>
+<p>ゼロからヒーロー：プログラミングからマルチエージェント Claude Code へ &middot; 2026年3月</p>
+<p><button onclick="if(confirm('演習の進捗をすべてリセットしますか？'))window.ZTH.progress.reset()" style="background:none;border:1px solid var(--border-accent);color:var(--text-muted);padding:.3rem .8rem;border-radius:4px;cursor:pointer;font-size:.75rem">進捗をリセット</button></p>
+</footer>
+
+<script src="../js/progress.js"></script>
+<script src="../js/theme.js"></script>
+<script src="../js/sidebar.js"></script>
+<script src="../js/shared.js"></script>
+<script>
+/* Landing page progress dashboard */
+(function () {
+  if (!window.ZTH || !window.ZTH.progress) return;
+  var data = window.ZTH.progress.load();
+  var total = 0;
+  Object.keys(data).forEach(function (ch) {
+    Object.keys(data[ch]).forEach(function (ex) {
+      if (data[ch][ex]) total++;
+    });
+  });
+  if (total > 0) {
+    var dash = document.getElementById('progress-dashboard');
+    if (dash) dash.style.display = '';
+  }
+  window.ZTH.progress.updateProgressBars();
+
+  /* "Continue where you left off" — link to the phase containing the highest active chapter */
+  var chapterPhase = {
+    '01':1,'02':1,'03':1,'04':1,
+    '05':2,'06':2,'07':2,'08':2,'09':2,
+    '10':3,'11':3,'12':3,
+    '13':4,'14':4,'15':4,'16':4,'17':4,'18':4,
+    '19':5,'20':5,'21':5,'22':5,'23':5,
+    '24':6,'25':6,'26':6,'27':6,
+    '28':7,'29':7,'30':7,'31':7,'32':7,'33':7,
+    '34':8,'35':8,'36':8,'37':8,
+    '38':9,'39':9,'40':9,'41':9,'42':9,
+    '43':10,'44':10,'45':10,'46':10,'47':10,
+    'gate4':4,'gate5':5,'gate6':6,'gate7':7,'gate8':8,'gate9':9,'gate10':10
+  };
+  var phaseFiles = {1:'phase-1.html',2:'phase-2.html',3:'phase-3.html',4:'phase-4.html',5:'phase-5.html',6:'phase-6.html',7:'phase-7.html',8:'phase-8.html',9:'phase-9.html',10:'phase-10.html'};
+  var chapterOrder = ['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','gate4','19','20','21','22','23','gate5','24','25','26','27','gate6','28','29','30','31','32','33','gate7','34','35','36','37','gate8','38','39','40','41','42','gate9','43','44','45','46','47','gate10'];
+  var highestCh = null;
+  Object.keys(data).forEach(function (ch) {
+    if (chapterPhase[ch]) {
+      if (!highestCh || chapterOrder.indexOf(ch) > chapterOrder.indexOf(highestCh)) {
+        highestCh = ch;
+      }
+    }
+  });
+  if (highestCh && total > 0) {
+    var phase = chapterPhase[highestCh];
+    var link = document.getElementById('continue-link');
+    if (link) {
+      link.href = phaseFiles[phase] + '#' + (highestCh.indexOf('gate') === 0 ? highestCh : 'ch' + highestCh);
+      link.style.display = '';
+    }
+  }
+})();
+</script>
+</body>
+</html>

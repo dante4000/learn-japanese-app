@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Phase 10: AI orchestration — harness engineering, background agents, Claude Code in Docker, and autonomous multi-agent teams. Chapters 43–47.">
+<title>Phase 10: AI Orchestration — Zero to Hero</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/design-system.css">
+<script>try{if(localStorage.getItem('zth-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+<script>try{var z=localStorage.getItem('zth-zoom');if(z&&+z>=50&&+z<=200)document.documentElement.style.zoom=+z/100}catch(e){}</script>
+</head>
+<body>
+
+<!-- SVG Arrow Defs -->
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+<marker id="arrowhead-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--a5)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<!-- SIDEBAR — identical across all files -->
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo"><span>Zero to Hero</span>Programming &rarr; Multi-Agent AI</a>
+  <div class="toc-group">
+    <div class="toc-group-title">Foundations</div>
+    <a href="phase-1.html#ch01" class="toc-link"><span class="toc-num">01</span>What Programming Actually Is</a>
+    <a href="phase-1.html#ch02" class="toc-link"><span class="toc-num">02</span>How Computers Execute Code</a>
+    <a href="phase-1.html#ch03" class="toc-link"><span class="toc-num">03</span>Setting Up Your Environment</a>
+    <a href="phase-1.html#ch04" class="toc-link"><span class="toc-num">04</span>Reading Code Before Writing It</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Python</div>
+    <a href="phase-2.html#ch05" class="toc-link"><span class="toc-num">05</span>Functions, Logic &amp; Control Flow</a>
+    <a href="phase-2.html#ch06" class="toc-link"><span class="toc-num">06</span>Data Structures</a>
+    <a href="phase-2.html#ch07" class="toc-link"><span class="toc-num">07</span>Classes &amp; OOP Basics</a>
+    <a href="phase-2.html#ch08" class="toc-link"><span class="toc-num">08</span>Files, Modules &amp; Standard Library</a>
+    <a href="phase-2.html#ch09" class="toc-link"><span class="toc-num">09</span>Error Handling, Debugging &amp; Testing</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Development Tools</div>
+    <a href="phase-3.html#ch10" class="toc-link"><span class="toc-num">10</span>The Terminal &amp; Shell</a>
+    <a href="phase-3.html#ch11" class="toc-link"><span class="toc-num">11</span>Git Fundamentals</a>
+    <a href="phase-3.html#ch12" class="toc-link"><span class="toc-num">12</span>Git Remote &amp; GitHub</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Building &amp; Deploying</div>
+    <a href="phase-4.html#ch13" class="toc-link"><span class="toc-num">13</span>APIs &amp; HTTP</a>
+    <a href="phase-4.html#ch14" class="toc-link"><span class="toc-num">14</span>Building APIs with Flask</a>
+    <a href="phase-4.html#ch15" class="toc-link"><span class="toc-num">15</span>Database Basics</a>
+    <a href="phase-4.html#ch16" class="toc-link"><span class="toc-num">16</span>Docker &amp; Containers</a>
+    <a href="phase-4.html#ch17" class="toc-link"><span class="toc-num">17</span>CI/CD &amp; GitHub Actions</a>
+    <a href="phase-4.html#ch18" class="toc-link"><span class="toc-num">18</span>Project Architecture</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Data Structures</div>
+    <a href="phase-5.html#ch19" class="toc-link"><span class="toc-num">19</span>Complexity Analysis</a>
+    <a href="phase-5.html#ch20" class="toc-link"><span class="toc-num">20</span>Linear Structures</a>
+    <a href="phase-5.html#ch21" class="toc-link"><span class="toc-num">21</span>Hash Tables &amp; Maps</a>
+    <a href="phase-5.html#ch22" class="toc-link"><span class="toc-num">22</span>Trees</a>
+    <a href="phase-5.html#ch23" class="toc-link"><span class="toc-num">23</span>Graphs</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Algorithms</div>
+    <a href="phase-6.html#ch24" class="toc-link"><span class="toc-num">24</span>Searching &amp; Sorting</a>
+    <a href="phase-6.html#ch25" class="toc-link"><span class="toc-num">25</span>Recursion &amp; DP</a>
+    <a href="phase-6.html#ch26" class="toc-link"><span class="toc-num">26</span>Algorithm Patterns</a>
+    <a href="phase-6.html#ch27" class="toc-link"><span class="toc-num">27</span>Graph Algorithms</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Engineering Craft</div>
+    <a href="phase-7.html#ch28" class="toc-link"><span class="toc-num">28</span>Design Patterns &amp; SOLID</a>
+    <a href="phase-7.html#ch29" class="toc-link"><span class="toc-num">29</span>SQL &amp; Query Mastery</a>
+    <a href="phase-7.html#ch30" class="toc-link"><span class="toc-num">30</span>Transactions &amp; NoSQL</a>
+    <a href="phase-7.html#ch31" class="toc-link"><span class="toc-num">31</span>Networking &amp; the Internet</a>
+    <a href="phase-7.html#ch32" class="toc-link"><span class="toc-num">32</span>Concurrency &amp; Parallelism</a>
+    <a href="phase-7.html#ch33" class="toc-link"><span class="toc-num">33</span>Security Engineering</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Systems &amp; Scale</div>
+    <a href="phase-8.html#ch34" class="toc-link"><span class="toc-num">34</span>System Design</a>
+    <a href="phase-8.html#ch35" class="toc-link"><span class="toc-num">35</span>Distributed Systems</a>
+    <a href="phase-8.html#ch36" class="toc-link"><span class="toc-num">36</span>Performance &amp; Observability</a>
+    <a href="phase-8.html#ch37" class="toc-link"><span class="toc-num">37</span>Navigating Large Codebases</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AI Levels 1&ndash;5</div>
+    <a href="phase-9.html#ch38" class="toc-link"><span class="toc-num">38</span>Evaluating &amp; Directing AI Code</a>
+    <a href="phase-9.html#ch39" class="toc-link"><span class="toc-num">39</span>Levels 1 &amp; 2 &mdash; Tab Complete &amp; Agent IDE</a>
+    <a href="phase-9.html#ch40" class="toc-link"><span class="toc-num">40</span>Level 3 &mdash; Context Engineering</a>
+    <a href="phase-9.html#ch41" class="toc-link"><span class="toc-num">41</span>Level 4 &mdash; Compounding Engineering</a>
+    <a href="phase-9.html#ch42" class="toc-link"><span class="toc-num">42</span>Level 5 &mdash; MCP, Skills &amp; Capabilities</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AI Levels 6&ndash;8</div>
+    <a href="#ch43" class="toc-link"><span class="toc-num">43</span>Level 6 &mdash; Harness Engineering</a>
+    <a href="#ch44" class="toc-link"><span class="toc-num">44</span>Level 7 &mdash; Background Agents</a>
+    <a href="#ch45" class="toc-link"><span class="toc-num">45</span>Claude Code in Docker</a>
+    <a href="#ch46" class="toc-link"><span class="toc-num">46</span>Level 8 &mdash; Autonomous Agent Teams</a>
+    <a href="#ch47" class="toc-link"><span class="toc-num">47</span>The Multiplayer Effect</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Reference</div>
+    <a href="appendices.html#glossary" class="toc-link"><span class="toc-num">&oplus;</span>Glossary</a>
+    <a href="appendices.html#prompt-library" class="toc-link"><span class="toc-num">&oplus;</span>Prompt Library</a>
+    <a href="appendices.html#self-assessment" class="toc-link"><span class="toc-num">&oplus;</span>Self-Assessment</a>
+    <a href="appendices.html#common-mistakes" class="toc-link"><span class="toc-num">&oplus;</span>Common Mistakes</a>
+    <a href="appendices.html#appendix-d" class="toc-link"><span class="toc-num">&oplus;</span>Troubleshooting</a>
+    <a href="appendices.html#appendix-e" class="toc-link"><span class="toc-num">&oplus;</span>Resources</a>
+  </div>
+</aside>
+
+<div class="main">
+<section class="hero hero-sm">
+  <div class="hero-badge">Phase 10 &mdash; AI Orchestration</div>
+  <h1>Levels 6–8 of <em>Agentic Engineering</em></h1>
+  <p class="hero-sub">This phase is reference material for advanced orchestration patterns. You may not execute all of it immediately after Phase 9. Return to it as projects grow. The progression from Level 5 to Level 6 typically takes months of daily practice, not days.</p>
+  <div class="hero-meta"><span>Chapters 43–47</span><span>Phase Gate + TaskForge</span></div>
+</section>
+
+<div class="content-wrap">
+
+<div role="note" class="callout info">
+<div class="callout-title">Before You Begin Phase 10</div>
+<p>This phase assumes you can: evaluate AI-generated code and identify common failure patterns (Ch 38), write effective CLAUDE.md files and manage context (Ch 40), and use Claude Code for single-task development with tests (Ch 39-42). Phase 10 is reference material &mdash; return to it as your projects grow.</p>
+</div>
+
+<!-- ===== BRIDGE: Why Multiple Agents ===== -->
+<div role="note" class="callout info">
+<div class="callout-title">Why One Agent Isn't Always Enough</div>
+<p>A single Claude Code session is powerful. But some work doesn't fit in one session:</p>
+<ul>
+<li><strong>Context limits:</strong> One session can't hold an entire large codebase. Specialized agents focus on specific areas.</li>
+<li><strong>Separation of concerns:</strong> The agent that writes code shouldn't grade its own work. Splitting implementation and review catches more bugs.</li>
+<li><strong>Parallelism:</strong> Three independent features built simultaneously finish in the time of one.</li>
+<li><strong>Specialization:</strong> An agent configured for security auditing produces better results than a general-purpose agent asked to check security as an afterthought.</li>
+</ul>
+<p>Think of it like a team at a company: one person writes code, another reviews it, another writes tests, another updates documentation. More people means more throughput&mdash;but also more coordination overhead. More agents without constraints produces chaos, not productivity. That's why this phase focuses on harnesses and guardrails as much as on dispatching work.</p>
+</div>
+
+<!-- ===== CH 24 ===== -->
+<section id="ch43" data-ch="43">
+<h2><span class="ch-label">Chapter 43</span> Level 6 &mdash; Harness Engineering &amp; Automated Feedback Loops</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>At Levels 1-5, you're the quality gate&mdash;you review every change. That works for single features, but it doesn't scale. Level 6 builds automated quality gates so agents can catch their own mistakes, freeing you to focus on design decisions instead of line-by-line review.</p>
+</div>
+
+<p>At Level 5, you gave the agent capabilities. At Level 6, you give the agent <strong>guardrails that let it verify its own work</strong>. The shift: your job moves from reviewing code to designing the harness.</p>
+
+<h3>Backpressure</h3>
+<p><strong>Backpressure</strong> is automated feedback that lets agents self-correct without human intervention. Instead of you catching errors in code review, the tools catch them immediately:</p>
+
+<table>
+<caption>Backpressure mechanisms for automated agent correction</caption>
+<tr><th>Mechanism</th><th>What It Catches</th></tr>
+<tr><td>TypeScript strict / mypy</td><td>Type errors</td></tr>
+<tr><td>Linter (ESLint, Ruff)</td><td>Style violations</td></tr>
+<tr><td>Test suite</td><td>Behavioral regressions</td></tr>
+<tr><td>Pre-commit hooks</td><td>Format, lint, type-check before every commit</td></tr>
+<tr><td>CI pipeline</td><td>Integration failures</td></tr>
+</table>
+
+<p>When the agent runs <code>git commit</code> and a pre-commit hook fails, the agent sees the error, fixes the code, and tries again. That's backpressure in action.</p>
+
+<div role="note" class="callout warn">
+<div class="callout-title">What Happens Without Backpressure</div>
+<p>You ask an agent to add a feature. It writes code with a subtle type error. Without a type checker, the code looks fine. You deploy it. It crashes in production. With pre-commit hooks running the type checker, the agent catches and fixes the error before it ever reaches you. The fix costs seconds instead of hours.</p>
+</div>
+
+<h3>Constraints > Instructions</h3>
+<p>Step-by-step instructions tell the model <em>how</em> to work. Constraints tell it <em>what success looks like</em> and let it figure out the how. Constraints scale better because the model adapts its approach to the problem.</p>
+
+<div class="pe">
+<div class="pb"><div class="ph">Step-by-Step (Brittle)</div><div class="pp">1. Read the user model.<br>2. Add an email field.<br>3. Add RFC 5322 validation.<br>4. Update the migration.<br>5. Update the tests.</div></div>
+<div class="pg"><div class="ph">Constraint-Based (Robust)</div><div class="pp">Add email to user model.<br><br><strong>Requirements:</strong> RFC 5322 validation, unique constraint.<br><strong>Acceptance:</strong> All tests pass, new tests for valid/invalid/duplicate/null.<br><strong>Run:</strong> Work until <code>npm test</code> passes.</div></div>
+</div>
+
+<h3>Security Boundaries</h3>
+<p>Agents, code, and secrets live in separate trust domains. Never give an agent direct access to production credentials. Use environment variables, secret managers, and least-privilege access.</p>
+
+<h3>Docs-as-Navigation</h3>
+<p>CLAUDE.md as a ~100-line table of contents. Detailed docs elsewhere (architecture.md, API docs, deployment guide). The model discovers on demand via the <strong>progressive disclosure</strong> pattern from Chapter 22.</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 240" xmlns="http://www.w3.org/2000/svg" aria-label="Diagram: Agent surrounded by verification harness tools — Type Checker, Linter, Test Suite, CI Pipeline, and Pre-commit">
+  <!-- Center Agent node -->
+  <rect class="node-accent" x="280" y="90" width="140" height="50" rx="8"/>
+  <text class="label-text" x="350" y="120" text-anchor="middle">Agent</text>
+  <!-- Type Checker - top -->
+  <rect class="node-fill" x="270" y="5" width="160" height="40" rx="6"/>
+  <text class="label-text" x="350" y="30" text-anchor="middle">Type Checker</text>
+  <line class="arrow" x1="340" y1="45" x2="340" y2="90"/>
+  <line class="arrow" x1="360" y1="90" x2="360" y2="45"/>
+  <!-- Linter - left -->
+  <rect class="node-fill" x="40" y="95" width="140" height="40" rx="6"/>
+  <text class="label-text" x="110" y="120" text-anchor="middle">Linter</text>
+  <line class="arrow" x1="180" y1="110" x2="280" y2="110"/>
+  <line class="arrow" x1="280" y1="120" x2="180" y2="120"/>
+  <!-- Test Suite - right -->
+  <rect class="node-fill" x="520" y="95" width="140" height="40" rx="6"/>
+  <text class="label-text" x="590" y="120" text-anchor="middle">Test Suite</text>
+  <line class="arrow" x1="420" y1="110" x2="520" y2="110"/>
+  <line class="arrow" x1="520" y1="120" x2="420" y2="120"/>
+  <!-- CI Pipeline - bottom left -->
+  <rect class="node-fill" x="100" y="185" width="160" height="40" rx="6"/>
+  <text class="label-text" x="180" y="210" text-anchor="middle">CI Pipeline</text>
+  <line class="arrow" x1="260" y1="185" x2="310" y2="140"/>
+  <line class="arrow" x1="300" y1="140" x2="250" y2="185"/>
+  <!-- Pre-commit - bottom right -->
+  <rect class="node-fill" x="440" y="185" width="160" height="40" rx="6"/>
+  <text class="label-text" x="520" y="210" text-anchor="middle">Pre-commit</text>
+  <line class="arrow" x1="440" y1="185" x2="390" y2="140"/>
+  <line class="arrow" x1="400" y1="140" x2="450" y2="185"/>
+</svg>
+<div class="diagram-caption">The harness lets the agent verify its own work. Your job shifts from reviewing code to designing the harness.</div>
+</div>
+
+<h3>TaskForge Connection</h3>
+<p>You'll set up a pre-commit hook for TaskForge that runs Ruff (linter) and pytest. This lets Claude Code self-correct when adding features.</p>
+
+<h3>Case Study: The Docker Scaffold</h3>
+<p>Here's a real-world instruction scaffold that applies every principle from this chapter and from Chapter 21's scaffold section. The goal: tell Claude Code how to containerize any project for multi-agent development. This scaffold was refined over dozens of iterations where Claude got things wrong&mdash;each failure became a new constraint.</p>
+
+<h4>What Makes It Work</h4>
+<p>The scaffold is a CLAUDE.md file, roughly 300 lines. Here's why each section exists:</p>
+
+<div class="pr"><div class="pn">1</div><div class="pb2"><h5>One-sentence goal</h5><p>"One container. When you exec into it, you get Claude Code pointed at your repo. CMD is sleep infinity." Leaves zero room for interpretation. The model knows what "done" looks like.</p></div></div>
+<div class="pr"><div class="pn">2</div><div class="pb2"><h5>Exact file contents, not descriptions</h5><p>The Dockerfile, docker-compose service, and shell script are provided verbatim&mdash;not described. <code>FROM debian:bookworm-slim</code>, not "use a Debian-based image." <code>curl -fsSL https://claude.ai/install.sh | bash</code>, not "install Claude Code." Every line the model generates from scratch is a line that could vary between runs.</p></div></div>
+<div class="pr"><div class="pn">3</div><div class="pb2"><h5>Explicit prohibitions from real failures</h5><p>Each "NEVER" line exists because Claude did the wrong thing in practice:
+<ul>
+<li>"NEVER use npm install&mdash;it causes auth/PATH corruption" &mdash; Claude's training data includes old npm-based tutorials</li>
+<li>"Do NOT add CLAUDE_MODEL to the environment block&mdash;it is not a real env var" &mdash; Claude hallucinated this env var repeatedly</li>
+<li>"NEVER overwrite .env&mdash;append only" &mdash; Claude destroyed existing configuration by rewriting the file</li>
+<li>"Do NOT add any environment: block to the claude service" &mdash; Claude added redundant env vars that conflicted with env_file</li>
+</ul></p></div></div>
+<div class="pr"><div class="pn">4</div><div class="pb2"><h5>Failure mode table</h5><p>An authentication reference table maps symptoms to causes to fixes. "Onboarding wizard appears" → ".claude.json missing" → "Dockerfile pre-creates it." This gives the model a debugging playbook, not just a build recipe.</p></div></div>
+<div class="pr"><div class="pn">5</div><div class="pb2"><h5>Validation checklist</h5><p>15 yes/no checks that verify correctness: "Is the base image debian:bookworm-slim?" "Was .env NOT overwritten?" "Does agent.sh use --dangerously-skip-permissions?" These are deterministic guardrails. The model can't rationalize its way past a checklist.</p></div></div>
+
+<div role="note" class="callout critical">
+<div class="callout-title">The Non-Determinism Principle in Practice</div>
+<p>This scaffold works because it minimizes the decisions the model needs to make. A vague "set up Docker" gives Claude thousands of possible configurations. The scaffold narrows that to essentially one. This is the fundamental pattern: <strong>the tighter the constraints, the more deterministic the output</strong>. Every unspecified detail is a coin flip. Good scaffolds eliminate coin flips.</p>
+</div>
+
+<p>Notice the scaffold doesn't just instruct&mdash;it <strong>protects</strong>. Append-only rules for .env prevent data loss. Separate Dockerfile.claude prevents clobbering the project's existing Docker setup. Volume mounts for auth prevent re-authentication on every restart. The scaffold is defensive engineering: it assumes the model will try to do something destructive and makes it structurally impossible.</p>
+
+<p>When you build your own scaffolds&mdash;for deployment, testing, code generation, or any repeatable task&mdash;follow this pattern: <strong>goal → exact content → prohibitions → failure modes → validation</strong>. The more specific you are, the more reliable the output becomes, across every run, regardless of the model's non-determinism.</p>
+
+<h3>Micro-Exercises</h3>
+<div role="note" class="callout ok"><div class="callout-title">1: Install Pre-commit</div><p>Create <code>.pre-commit-config.yaml</code> for TaskForge with a Ruff linter step. Run <code>pre-commit install</code>. Make a deliberate style violation and commit&mdash;watch it get caught.</p></div>
+<div role="note" class="callout ok"><div class="callout-title">2: Write a Constraint Prompt</div><p>Write a constraint-based prompt (not step-by-step) for adding a feature to TaskForge. Include: what to build, acceptance criteria, and the command to verify.</p></div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">Try This Now</div>
+<p>Set up pre-commit (linter + pytest) for TaskForge. Then ask Claude Code:</p>
+<div class="prompt-block"><pre><code>Add a `priority` field to tasks (high/medium/low) with validation.
+Work on it until pre-commit passes cleanly.
+Fix failures yourself. Don't ask me unless genuinely stuck.</code></pre></div>
+<p>Watch the agent self-correct through backpressure.</p>
+<p><strong>Verification:</strong> The pre-commit hook passes. The feature works. You didn't intervene.</p>
+<p><strong>If this doesn't work:</strong> (1) Pre-commit not running &rarr; <code>pre-commit install</code> must be run inside the git repo. (2) Agent enters infinite loop &rarr; constraints might be contradictory. Simplify. (3) Agent asks for help immediately &rarr; your CLAUDE.md might lack necessary context.</p>
+</div>
+
+<div class="pq">You just watched an agent self-correct through automated feedback&mdash;without your intervention. Your job shifted from reviewing code to designing the system that reviews code. That's the Level 6 transition.</div>
+
+<h3>Interactive Exercises</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="43" data-ex="validator">
+  <div class="exercise-header">
+    <h4>Code Validator</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Write <code>validate_code(code_str)</code> that checks Python code for common issues. Return a list of issue strings. Check for: bare <code>except:</code> (should specify exception type), <code>from X import *</code>, functions longer than 30 lines, and TODO comments.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">def validate_code(code_str):
+    issues = []
+    lines = code_str.split('\n')
+    # Your code here
+    return issues</script>
+    <script type="text/plain" class="test-code">assert validate_code("x = 1") == [], "Clean code"
+assert any("except" in i.lower() for i in validate_code("try:\n    x = 1\nexcept:\n    pass")), "Bare except"
+assert any("import *" in i.lower() for i in validate_code("from os import *")), "Star import"
+assert any("todo" in i.lower() for i in validate_code("x = 1  # TODO fix this")), "TODO comment"
+long_fn = "def f():\n" + "\n".join(["    x = " + str(i) for i in range(35)])
+assert any("long" in i.lower() or "30" in i for i in validate_code(long_fn)), "Long function"</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">Iterate through lines. Check each line for patterns.</p>
+    <p class="hint">For bare except: look for lines matching <code>except:</code> (with colon, no exception type).</p>
+    <p class="hint">For function length: track when a <code>def</code> starts and count indented lines until the next <code>def</code> or unindented line.</p>
+  </div>
+</div>
+
+<div class="quiz" data-ch="43" data-ex="quiz-backpressure">
+  <h4>Knowledge Check</h4>
+  <p>What is 'backpressure' in agentic engineering?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">When the AI pushes back on your instructions</button>
+    <button class="quiz-option" data-correct="false">Network latency between agent calls</button>
+    <button class="quiz-option" data-correct="true">Automated constraints (linters, tests, hooks) that force the agent to self-correct</button>
+    <button class="quiz-option" data-correct="false">Memory pressure from large context windows</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="checklist" data-ch="43" data-ex="harness-check">
+  <h4>Harness Setup</h4>
+  <label><input type="checkbox"><span>Pre-commit hooks installed in TaskForge</span></label>
+  <label><input type="checkbox"><span>Linter (ruff or similar) runs on commit</span></label>
+  <label><input type="checkbox"><span>pytest runs on commit</span></label>
+  <label><input type="checkbox"><span>Agent self-corrected through backpressure (fixed a lint or test failure automatically)</span></label>
+</div>
+</section>
+
+<!-- ===== CH 25 ===== -->
+<section id="ch44" data-ch="44">
+<h2><span class="ch-label">Chapter 44</span> Level 7 &mdash; Background Agents</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>Level 7 is where AI stops being a tool you use and starts being a team you manage. Instead of working with one agent at a time, you dispatch specialists&mdash;like a project manager assigning tasks to team members with different expertise. Each agent works in its own space, and results come back to you for review.</p>
+</div>
+
+<p>At Level 6, the agent self-corrects. At Level 7, <strong>you dispatch multiple agents on independent tasks</strong> while your session stays lean. This is where the leverage multiplies.</p>
+
+<h3>Background Agent Orchestration</h3>
+<p>Your main session becomes a command center. Workers execute in isolated contexts (fresh context windows, separate worktrees). Stuck workers surface questions back to you.</p>
+
+<p>Remember: each "background agent" is just a Claude Code session with a fresh context, a specific task, and access to your project's files and tools. There's no magic&mdash;it uses the same model, the same CLAUDE.md, the same test suite. The leverage comes from parallelism and specialization, not from any new capability.</p>
+
+<div role="note" class="callout info">
+<div class="callout-title">Current Tool (March 2026)</div>
+<p><strong>Dispatch</strong>. Install: <code>npx skills add bassimeledath/dispatch -g</code>. Workers get fresh context windows. Stuck workers surface questions.</p>
+</div>
+
+<pre><code>/dispatch pre-launch sweep for TaskForge:
+1) security audit the auth flow — use opus, worktree
+2) write missing integration tests — use sonnet
+3) update documentation — use haiku</code></pre>
+
+<h3>Multi-Model Dispatch</h3>
+<p>Different models for different tasks. Each has strengths:</p>
+<table>
+<caption>AI model strengths for multi-model dispatch</caption>
+<tr><th>Model</th><th>Best For</th></tr>
+<tr><td>Opus</td><td>Architecture, security audits, complex reasoning</td></tr>
+<tr><td>Sonnet</td><td>Implementation, feature building, test writing</td></tr>
+<tr><td>Haiku</td><td>Formatting, documentation, simple transforms</td></tr>
+<tr><td>Gemini</td><td>Research, large-context analysis</td></tr>
+<tr><td>Codex</td><td>Code review, parallel generation</td></tr>
+</table>
+
+<h3>Choosing the Right Model for the Task</h3>
+<p>Not every task needs the most powerful model. Matching model capability to task complexity saves cost and often improves speed without sacrificing quality.</p>
+
+<table>
+<caption>Recommended model tier by task complexity</caption>
+<tr><th>Task Type</th><th>Recommended Tier</th><th>Why</th><th>Example</th></tr>
+<tr>
+<td>Architecture decisions, complex refactors, ambiguous specs</td>
+<td><strong>Highest capability</strong> (e.g., Opus)</td>
+<td>Requires deep reasoning, handling ambiguity, and maintaining coherence across many files</td>
+<td>"Redesign TaskForge's storage layer from JSON files to SQLite, maintaining all existing tests"</td>
+</tr>
+<tr>
+<td>Feature implementation, bug fixes, test writing</td>
+<td><strong>Mid-tier</strong> (e.g., Sonnet)</td>
+<td>Well-defined tasks with clear acceptance criteria; strong capability at lower cost</td>
+<td>"Add a <code>--priority</code> flag to the <code>add</code> command with values low/medium/high"</td>
+</tr>
+<tr>
+<td>Documentation, formatting, boilerplate, simple edits</td>
+<td><strong>Fast/lightweight</strong> (e.g., Haiku)</td>
+<td>Mechanical tasks where speed matters more than deep reasoning</td>
+<td>"Add docstrings to all public functions in <code>taskforge/api.py</code>"</td>
+</tr>
+</table>
+
+<div role="note" class="callout info">
+<div class="callout-title">The Two-Layer Pattern Applies Here Too</div>
+<p>Model names change. "Opus," "Sonnet," and "Haiku" are current as of March 2026. The principle is stable: <strong>match model capability to task complexity.</strong> Use the most capable model for ambiguous or high-stakes work; use faster models for well-defined, mechanical tasks. Check <a href="https://docs.anthropic.com/en/docs/about-claude/models">docs.anthropic.com/models</a> for the current lineup.</p>
+</div>
+
+<p><strong>When in doubt, use the mid-tier model.</strong> It handles 80% of development tasks well. Escalate to the highest tier only when the task is ambiguous, touches many files, or requires architectural judgment. Drop to the lightweight tier for bulk operations where you'd review the output regardless.</p>
+
+<h3>Implementer/Reviewer Separation</h3>
+<p>Never let the same model grade its own exam. If Sonnet writes the code, use Opus or a different model to review it. Biased self-evaluation is a known failure mode.</p>
+
+<h3>The Ralph Loop</h3>
+<p>An autonomous agent loop: run until a PRD (Product Requirements Document) is complete, each iteration gets a fresh context. <strong>Caution:</strong> under-specified PRDs bite back. The loop amplifies ambiguity&mdash;a vague requirement becomes a confidently wrong implementation repeated across 10 iterations.</p>
+
+<div role="note" class="callout ok">
+<div class="callout-title">Hands-On: Build a Ralph Loop</div>
+<p>The Ralph Loop is an autonomous looping agent pattern: the agent runs a task, checks the results against success criteria, and if the criteria aren't met, it iterates&mdash;fixing issues and re-checking&mdash;until the task succeeds or a maximum iteration limit is hit. Each iteration gets a fresh context window, which prevents context pollution from failed attempts. The key insight is that the loop is <em>self-correcting</em>: the agent doesn't just retry blindly, it reads the failure output and adapts its approach. This makes it powerful for tasks with clear, testable success criteria.</p>
+<p>Set up a simple Ralph Loop for TaskForge:</p>
+<div class="prompt-block"><pre><code>claude --background "Fix all failing tests in TaskForge.
+Run: python3 -m pytest
+If any tests fail, read the failure output, fix the code, and re-run.
+Repeat until all tests pass.
+Maximum 5 iterations. If still failing after 5, stop and report what's left."</code></pre></div>
+<p>To test this, intentionally break something first: introduce a bug in <code>models.py</code> (e.g., change a return value, break a validation check). Then launch the loop and watch the agent find and fix it.</p>
+<p><strong>Verification:</strong> The agent's final output shows all tests passing. Check <code>git diff</code> to confirm the fix is sensible&mdash;not a hack like deleting the failing test.</p>
+<p><strong>If this doesn't work:</strong> (1) Agent loops forever &rarr; the iteration limit is essential, never omit it. (2) Agent deletes tests instead of fixing code &rarr; add to the prompt: "Do NOT delete or skip tests. Fix the source code." (3) <code>--background</code> not available &rarr; use dispatch instead: <code>/dispatch fix all failing tests, max 5 iterations — use sonnet</code>.</p>
+</div>
+
+<div role="note" class="callout warn">
+<div class="callout-title">Always Set Iteration Limits</div>
+<p>A Ralph Loop without a maximum iteration count can run indefinitely, burning API credits and potentially making the codebase worse with each pass. Always specify a hard limit (3-5 iterations for most tasks). If the agent can't fix it in 5 tries, the problem needs human judgment, not more iterations.</p>
+</div>
+
+<h3>CI-Triggered Agents</h3>
+<p>Agents that activate on repository events: PR review bots on pull request, docs updaters on merge, security scanners on dependency changes.</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg" aria-label="Diagram: Central session dispatching tasks to parallel workers — Opus for Security, Sonnet for Tests, Haiku for Docs, and Codex for Review">
+  <!-- Center: Your Session -->
+  <rect class="node-accent" x="270" y="80" width="160" height="50" rx="8"/>
+  <text class="label-text" x="350" y="110" text-anchor="middle">Your Session</text>
+  <!-- Opus: Security - top left -->
+  <rect class="node-fill" x="40" y="10" width="160" height="44" rx="6"/>
+  <text class="label-text" x="120" y="30" text-anchor="middle">Opus: Security</text>
+  <text class="sub-text" x="120" y="44" text-anchor="middle">worktree</text>
+  <line class="arrow" x1="200" y1="42" x2="280" y2="80"/>
+  <text class="sub-text" x="220" y="52" fill="var(--a3)">result</text>
+  <!-- Sonnet: Tests - top right -->
+  <rect class="node-fill" x="500" y="10" width="160" height="44" rx="6"/>
+  <text class="label-text" x="580" y="30" text-anchor="middle">Sonnet: Tests</text>
+  <line class="arrow" x1="420" y1="80" x2="500" y2="42"/>
+  <text class="sub-text" x="480" y="52" fill="var(--a3)">task</text>
+  <!-- Haiku: Docs - bottom left -->
+  <rect class="node-fill" x="40" y="165" width="160" height="44" rx="6"/>
+  <text class="label-text" x="120" y="192" text-anchor="middle">Haiku: Docs</text>
+  <line class="arrow" x1="280" y1="130" x2="200" y2="170"/>
+  <text class="sub-text" x="220" y="160" fill="var(--a3)">task</text>
+  <!-- Codex: Review - bottom right -->
+  <rect class="node-fill" x="500" y="165" width="160" height="44" rx="6"/>
+  <text class="label-text" x="580" y="192" text-anchor="middle">Codex: Review</text>
+  <line class="arrow" x1="500" y1="178" x2="420" y2="130"/>
+  <text class="sub-text" x="480" y="160" fill="var(--a3)">result</text>
+</svg>
+<div class="diagram-caption">Your session becomes a command center. Workers execute in fresh contexts. Questions surface to you. Results return when done.</div>
+</div>
+
+<h3>TaskForge Connection</h3>
+<p>You'll dispatch multiple independent improvements to TaskForge using different models. This is the first time TaskForge benefits from parallel AI development.</p>
+
+<h3>Micro-Exercises</h3>
+<div role="note" class="callout ok"><div class="callout-title">1: Install Dispatch</div><p>Run <code>npx skills add bassimeledath/dispatch -g</code>. Then: <code>/dispatch use sonnet to list all functions in the project without docstrings</code>.</p></div>
+<div role="note" class="callout ok"><div class="callout-title">2: Multi-Model Comparison</div><p>Dispatch two tasks simultaneously to different models. Compare output quality. Which model was better for which task?</p></div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">Try This Now</div>
+<p>Dispatch three independent TaskForge improvements:</p>
+<div class="prompt-block"><pre><code>/dispatch three TaskForge improvements:
+1) add due dates with reminder logic — use sonnet
+2) add tags with filtering — use sonnet
+3) improve error handling across all functions — use haiku</code></pre></div>
+<p>Review all three outputs. Are there conflicts? Fix them.</p>
+<p><strong>Verification:</strong> All three features work. Tests pass. No conflicts in the merged result.</p>
+<p><strong>If this doesn't work:</strong> (1) Dispatch not found &rarr; ensure install completed, restart Claude Code. (2) Workers fail silently &rarr; check <code>.dispatch/</code> for logs. (3) Merge conflicts &rarr; expected with parallel work. Resolve manually.</p>
+</div>
+
+<div class="pq">You just dispatched parallel AI workers and merged their results. Three features built in the time of one&mdash;that's the Level 7 multiplier.</div>
+
+<h3>Interactive Exercises</h3>
+
+<div class="quiz" data-ch="44" data-ex="quiz-ralph">
+  <h4>Knowledge Check</h4>
+  <p>What is a Ralph Loop?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">A debugging technique for infinite loops</button>
+    <button class="quiz-option" data-correct="true">An autonomous iteration cycle: implement, test, fix, repeat</button>
+    <button class="quiz-option" data-correct="false">A type of for loop in Python</button>
+    <button class="quiz-option" data-correct="false">A code review process</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz" data-ch="44" data-ex="quiz-maxiter">
+  <h4>Knowledge Check</h4>
+  <p>Why should you set a maximum iteration count for autonomous agent loops?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">To save money on API calls</button>
+    <button class="quiz-option" data-correct="true">To prevent infinite loops of failed attempts</button>
+    <button class="quiz-option" data-correct="false">Because agents work better with limits</button>
+    <button class="quiz-option" data-correct="false">It's required by the API</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="checklist" data-ch="44" data-ex="bg-check">
+  <h4>Background Agent Usage</h4>
+  <label><input type="checkbox"><span>Dispatched at least one background agent task</span></label>
+  <label><input type="checkbox"><span>Reviewed the agent's output</span></label>
+  <label><input type="checkbox"><span>Identified at least one issue in the output</span></label>
+  <label><input type="checkbox"><span>Documented the correction needed</span></label>
+</div>
+</section>
+
+<!-- ===== CH 26 ===== -->
+<section id="ch45" data-ch="45">
+<h2><span class="ch-label">Chapter 45</span> Claude Code in Docker</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>Running Claude Code in Docker gives you isolated, reproducible AI coding environments. This is how you scale from one agent to many without polluting your local machine.</p>
+</div>
+
+<h3>Why Run Claude Code in Docker?</h3>
+<p>Running Claude Code directly on your host machine works fine for single sessions. But as you scale to multiple agents, Docker solves problems that become unavoidable:</p>
+<ul>
+<li><strong>Isolated environments per project/agent:</strong> Each agent gets its own filesystem, tools, and dependencies&mdash;no cross-contamination.</li>
+<li><strong>Reproducible setups:</strong> Same tools, same config, every time. No drift between machines or sessions.</li>
+<li><strong>Safe experimentation with <code>--dangerously-skip-permissions</code>:</strong> Container isolation makes this flag safe&mdash;the agent can't touch anything outside the container.</li>
+<li><strong>Multiple parallel agents:</strong> Run several agents simultaneously on the same codebase using volume mounts.</li>
+<li><strong>CI/CD integration:</strong> Trigger Claude Code agents from pipelines&mdash;automated code review, test generation, documentation updates.</li>
+</ul>
+
+<h3>Prerequisites</h3>
+<p>Before proceeding, ensure you have:</p>
+<ul>
+<li><strong>Docker installed</strong> and running (Chapter 16)</li>
+<li><strong>Claude Max or Pro subscription</strong> (or an Anthropic API key)</li>
+</ul>
+
+<h3>The Dockerfile.claude Pattern</h3>
+<p>Here's the production-grade Dockerfile for running Claude Code in a container. This is the result of the scaffold pattern from Chapter 43&mdash;every line exists because leaving it out caused a failure.</p>
+<pre><code>FROM debian:bookworm-slim
+
+# System packages — minimal set for Claude Code to operate
+RUN apt-get update &amp;&amp; apt-get install -y --no-install-recommends \
+    git bash curl ca-certificates build-essential \
+    jq tree ripgrep python3 python3-pip \
+    &amp;&amp; rm -rf /var/lib/apt/lists/*
+
+# Non-root user
+RUN groupadd -r claude &amp;&amp; useradd -r -g claude -m -s /bin/bash claude
+
+# Install Claude Code (NATIVE installer — never npm)
+USER claude
+WORKDIR /home/claude
+RUN curl -fsSL https://claude.ai/install.sh | bash
+ENV PATH="/home/claude/.local/bin:/home/claude/.claude/bin:${PATH}"
+
+# Pre-configure auth so the onboarding wizard never appears
+RUN mkdir -p /home/claude/.claude &amp;&amp; \
+    echo '{"hasCompletedOnboarding":true,"installMethod":"native"}' \
+      > /home/claude/.claude/.claude.json &amp;&amp; \
+    ln -sf /home/claude/.claude/.claude.json /home/claude/.claude.json &amp;&amp; \
+    echo '{"permissions":{"allow":["*"],"deny":[]},"env":{"CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC":"1"}}' \
+      > /home/claude/.claude/settings.json
+
+WORKDIR /workspace
+CMD ["sleep", "infinity"]</code></pre>
+
+<p>Why each decision matters:</p>
+<table>
+<caption>Dockerfile design decisions for headless Claude Code</caption>
+<tr><th>Decision</th><th>Why</th></tr>
+<tr><td><code>debian:bookworm-slim</code></td><td>Must be glibc-based. Alpine/musl breaks the native Claude Code binary.</td></tr>
+<tr><td>Native installer, not npm</td><td>The npm package uses different config paths and causes auth corruption. The native installer is Anthropic's official method.</td></tr>
+<tr><td>Non-root <code>claude</code> user</td><td>Security best practice. Limits blast radius if something goes wrong.</td></tr>
+<tr><td>Pre-created <code>.claude.json</code></td><td>Without it, the onboarding wizard appears every time&mdash;blocking headless operation. The symlink covers both config paths different versions check.</td></tr>
+<tr><td><code>settings.json</code> with <code>"allow":["*"]</code></td><td>Equivalent to <code>--dangerously-skip-permissions</code> baked into config. No prompts in headless mode.</td></tr>
+<tr><td><code>CMD ["sleep", "infinity"]</code></td><td>Container stays alive. You <code>docker exec</code> into it for each session. Multiple execs = multiple Claude Code sessions, all sharing the workspace.</td></tr>
+</table>
+
+<div role="note" class="callout critical">
+<div class="callout-title">The Non-Determinism Lesson</div>
+<p>This Dockerfile is the scaffold pattern in action. A vague "create a Dockerfile for Claude Code" instruction produces wildly different results: npm vs native, Alpine vs Debian, root vs non-root, ENTRYPOINT vs CMD. Each wrong choice causes a specific failure&mdash;auth loops, binary crashes, permission errors. The scaffold eliminates every coin flip. That's how you make non-deterministic output reliable.</p>
+</div>
+
+<h3>Authentication Methods</h3>
+<p>Claude Code needs authentication. Two approaches, and they must never coexist in the same <code>.env</code>:</p>
+
+<h4>OAuth Token (Claude Max/Pro)</h4>
+<p>Generate a token on your host machine, then pass it as an environment variable:</p>
+<div class="prompt-block"><span class="label">Terminal (on host)</span>claude setup-token</div>
+<p>Add the resulting token to your <code>.env</code> file:</p>
+<pre><code>CLAUDE_CODE_OAUTH_TOKEN=sk-ant-oat01-your-token-here</code></pre>
+<p>The token is passed into the container via <code>env_file: .env</code> in docker-compose.yml. It is <strong>never</strong> baked into the Docker image.</p>
+
+<h4>API Key</h4>
+<p>For per-token billing (without a subscription):</p>
+<pre><code>ANTHROPIC_API_KEY=sk-ant-api03-your-key-here</code></pre>
+
+<div role="note" class="callout critical">
+<div class="callout-title">Never Set Both</div>
+<p>If both <code>ANTHROPIC_API_KEY</code> and <code>CLAUDE_CODE_OAUTH_TOKEN</code> exist, the API key takes precedence and you get billed per-token instead of using your subscription. Pick one.</p>
+</div>
+
+<h3>Running a Single Claude Agent</h3>
+<p>The pattern: start the container once, then <code>docker exec</code> into it for each session. Each exec is an independent Claude Code session sharing the same workspace.</p>
+<div class="prompt-block"><span class="label">Terminal</span># Build and start the container
+docker compose up -d claude
+
+# Open an interactive Claude Code session
+docker exec -it claude-myproject claude --dangerously-skip-permissions
+
+# Open ANOTHER session in a second terminal pane
+docker exec -it claude-myproject claude --dangerously-skip-permissions</div>
+
+<p>The <code>-v $(pwd):/workspace</code> volume mount maps your current directory into the container. Changes the agent makes inside the container appear on your host filesystem immediately.</p>
+
+<h3>Running with --dangerously-skip-permissions</h3>
+<p>The <code>--dangerously-skip-permissions</code> flag tells Claude Code to skip all permission prompts&mdash;file writes, command execution, network requests. The agent acts without asking.</p>
+
+<div role="note" class="callout warn">
+<div class="callout-title">When to Use This Flag</div>
+<p>On your host machine, this flag is genuinely dangerous&mdash;the agent could modify any file, run any command. Inside a Docker container, the risk is contained: the agent can only affect the container's filesystem and the mounted volume. This is why containers and <code>--dangerously-skip-permissions</code> are a natural pair: container isolation makes autonomous operation safe.</p>
+</div>
+
+<p>Run a non-interactive task with full autonomy:</p>
+<div class="prompt-block"><span class="label">Terminal</span>docker run -it -e ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY -v $(pwd):/workspace claude-agent --dangerously-skip-permissions -p "fix all failing tests"</div>
+
+<p>The <code>-p</code> flag passes a prompt directly instead of opening an interactive session. Combined with <code>--dangerously-skip-permissions</code>, this lets the agent work completely autonomously: read files, edit code, run tests, and iterate until done.</p>
+
+<h3>Docker Compose Setup</h3>
+<p>The compose file defines the claude service alongside any existing project services:</p>
+<pre><code># docker-compose.yml
+services:
+  claude:
+    build:
+      context: .
+      dockerfile: Dockerfile.claude
+    container_name: claude-${COMPOSE_PROJECT_NAME:-agents}
+    env_file: .env
+    volumes:
+      - .:/workspace
+      - claude-auth:/home/claude/.claude
+    working_dir: /workspace
+    stdin_open: true
+    tty: true
+
+volumes:
+  claude-auth:
+    name: claude-auth-${COMPOSE_PROJECT_NAME:-default}</code></pre>
+
+<p>Key details: <code>claude-auth</code> volume persists authentication across container restarts. <code>.:/workspace</code> mounts your project. <code>env_file: .env</code> passes the OAuth token. The container name includes the project directory name so each repo gets a unique container.</p>
+
+<div class="prompt-block"><span class="label">Terminal</span># Start the container
+docker compose up -d claude
+
+# Run multiple agent sessions (each in its own terminal pane)
+docker exec -it claude-myproject claude --dangerously-skip-permissions --model claude-opus-4-6
+docker exec -it claude-myproject claude --dangerously-skip-permissions --model claude-opus-4-6</div>
+
+<div role="note" class="callout warn">
+<div class="callout-title">Coordination Challenges</div>
+<p>When multiple agents share the same volume mount, they can write to the same files simultaneously. This can cause conflicts&mdash;one agent overwrites another's changes. Strategies: (1) assign agents to non-overlapping directories, (2) use git worktrees so each agent has its own working copy, (3) run agents sequentially in a pipeline instead of in parallel.</p>
+</div>
+
+<h3>The agent.sh Pattern</h3>
+<p>A thin convenience script that ensures the container is running, then execs in. The model is forced via <code>--model</code> flag (environment variables don't work for model selection).</p>
+<pre><code>#!/usr/bin/env bash
+set -euo pipefail
+
+PROJECT_NAME="${COMPOSE_PROJECT_NAME:-$(basename "$(pwd)")}"
+CONTAINER="claude-${PROJECT_NAME}"
+
+# Start container if not running
+if ! docker ps --format '{{.Names}}' | grep -q "^${CONTAINER}$"; then
+  docker compose up -d claude
+  sleep 2
+fi
+
+# Interactive or one-shot
+if [ $# -gt 0 ]; then
+  docker exec -it "$CONTAINER" claude \
+    --dangerously-skip-permissions --model claude-opus-4-6 -p "$*"
+else
+  docker exec -it "$CONTAINER" claude \
+    --dangerously-skip-permissions --model claude-opus-4-6
+fi</code></pre>
+<p>Usage:</p>
+<div class="prompt-block"><span class="label">Terminal</span>./agent.sh                              # interactive session
+./agent.sh "refactor the auth module"   # one-shot prompt</div>
+<p>To run multiple agents, open more terminal panes and run <code>./agent.sh</code> in each one. Each exec is an independent session, all sharing the same workspace.</p>
+
+<h3>Practical Patterns</h3>
+
+<h4>Sequential Pipeline</h4>
+<p>Agent 1 writes code, Agent 2 reviews it, Agent 3 writes tests. Each agent's output feeds into the next. This ensures review before testing and catches issues early.</p>
+
+<h4>Parallel Workers</h4>
+<p>Multiple agents work on independent features simultaneously. When all finish, merge the results. Best when features don't share files.</p>
+
+<h4>Watcher Agent</h4>
+<p>An agent that monitors test results (or CI output) and dispatches fix agents when tests fail. This creates a self-healing pipeline: break something, and the watcher assigns an agent to fix it.</p>
+
+<h3>Resource Management</h3>
+<p>Docker lets you limit resources per container so one runaway agent doesn't consume your entire machine:</p>
+<pre><code># docker-compose.yml
+services:
+  agent-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.claude
+    command: ["--dangerously-skip-permissions", "-p", "implement API endpoints"]
+    volumes:
+      - .:/workspace
+    environment:
+      - ANTHROPIC_API_KEY
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: "1.0"</code></pre>
+
+<p>Clean up stopped containers regularly to reclaim disk space:</p>
+<div class="prompt-block"><span class="label">Terminal</span># Remove all stopped containers
+docker container prune
+
+# Remove unused images
+docker image prune</div>
+
+<h3>Common Failure Modes</h3>
+<table>
+<caption>Common Docker container failure modes and fixes</caption>
+<tr><th>Symptom</th><th>Cause</th><th>Fix</th></tr>
+<tr><td>Onboarding wizard appears</td><td><code>.claude.json</code> missing or malformed</td><td>Dockerfile must pre-create it + symlink both paths</td></tr>
+<tr><td>Token expires on restart</td><td>Auth files not persisted</td><td><code>claude-auth</code> volume on <code>/home/claude/.claude</code></td></tr>
+<tr><td>API billing instead of subscription</td><td>Both <code>ANTHROPIC_API_KEY</code> and OAuth token in .env</td><td>Remove the API key; keep only the OAuth token</td></tr>
+<tr><td>Binary crashes on startup</td><td>Alpine/musl base image</td><td>Use <code>debian:bookworm-slim</code> (glibc)</td></tr>
+<tr><td>npm install breaks auth flow</td><td>npm version uses different config paths</td><td>Use native installer only</td></tr>
+</table>
+
+<h3>TaskForge Connection</h3>
+<p>Run two Claude agents in Docker simultaneously&mdash;one to add a new feature to TaskForge, another to write tests for existing features. Then merge the results. This is the first time you'll see parallel AI development on your own project with full container isolation.</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg" aria-label="Diagram: Docker Compose orchestrating parallel Claude agents — Backend, Test, and Review — sharing a project volume">
+  <!-- Developer -->
+  <rect class="node-accent" x="270" y="10" width="160" height="44" rx="8"/>
+  <text class="label-text" x="350" y="37" text-anchor="middle">Developer</text>
+  <!-- docker-compose -->
+  <rect class="node-fill" x="245" y="95" width="210" height="44" rx="8"/>
+  <text class="label-text" x="350" y="122" text-anchor="middle">docker-compose.yml</text>
+  <line class="arrow" x1="350" y1="54" x2="350" y2="95"/>
+  <!-- Agent 1: Backend -->
+  <rect class="node-fill" x="40" y="185" width="170" height="55" rx="6"/>
+  <text class="label-text" x="125" y="208" text-anchor="middle">Backend Agent</text>
+  <text class="sub-text" x="125" y="224" text-anchor="middle">Implements features</text>
+  <line class="arrow" x1="280" y1="139" x2="160" y2="185"/>
+  <!-- Agent 2: Test -->
+  <rect class="node-fill" x="265" y="185" width="170" height="55" rx="6"/>
+  <text class="label-text" x="350" y="208" text-anchor="middle">Test Agent</text>
+  <text class="sub-text" x="350" y="224" text-anchor="middle">Writes test suites</text>
+  <line class="arrow" x1="350" y1="139" x2="350" y2="185"/>
+  <!-- Agent 3: Review -->
+  <rect class="node-fill" x="490" y="185" width="170" height="55" rx="6"/>
+  <text class="label-text" x="575" y="208" text-anchor="middle">Review Agent</text>
+  <text class="sub-text" x="575" y="224" text-anchor="middle">Audits code quality</text>
+  <line class="arrow" x1="420" y1="139" x2="540" y2="185"/>
+  <!-- Shared Volume -->
+  <rect class="node-accent" x="170" y="280" width="360" height="34" rx="6"/>
+  <text class="label-text" x="350" y="302" text-anchor="middle">Shared Volume: Project Code</text>
+  <line x1="125" y1="240" x2="230" y2="280" stroke="var(--a5)" stroke-width="1.5" marker-end="url(#arrowhead-muted)"/>
+  <line x1="350" y1="240" x2="350" y2="280" stroke="var(--a5)" stroke-width="1.5" marker-end="url(#arrowhead-muted)"/>
+  <line x1="575" y1="240" x2="470" y2="280" stroke="var(--a5)" stroke-width="1.5" marker-end="url(#arrowhead-muted)"/>
+</svg>
+<div class="diagram-caption">Docker Compose orchestrates multiple Claude Code agents. Each runs in its own container but shares the project code through a mounted volume. The developer manages the composition, not the individual agents.</div>
+</div>
+
+<h3>Micro-Exercises</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">1: Build the Dockerfile.claude</div>
+<p>Create <code>Dockerfile.claude</code> for TaskForge using the pattern above. Build with <code>docker compose build claude</code>. Verify the container starts: <code>docker compose up -d claude &amp;&amp; docker exec claude-taskforge-project echo "ok"</code>.</p>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">2: Run Claude Code in Docker</div>
+<p>Run <code>./agent.sh "list all Python files in the project"</code> and examine the output. Verify the agent found your project files inside <code>/workspace</code>.</p>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">Try This Now</div>
+<p>Set up the full Docker scaffold for TaskForge: <code>Dockerfile.claude</code>, <code>docker-compose.yml</code> (with claude-auth volume), <code>agent.sh</code>, and <code>.env</code> with your OAuth token. Then open two terminal panes and run:</p>
+<div class="prompt-block"><span class="label">Terminal Pane 1</span>./agent.sh "add a delete_task function to TaskForge that removes a task by ID"</div>
+<div class="prompt-block"><span class="label">Terminal Pane 2</span>./agent.sh "write comprehensive pytest tests for the add_task function"</div>
+<p>Both sessions share the same container and workspace.</p>
+<p><strong>Verification:</strong> Both agents complete their tasks. <code>git diff</code> shows modifications from both agents. The container stayed running throughout.</p>
+<p><strong>If this doesn't work:</strong> (1) Onboarding wizard appears &rarr; <code>docker compose down -v &amp;&amp; docker compose build --no-cache claude &amp;&amp; docker compose up -d claude</code>. (2) Token expired &rarr; run <code>claude setup-token</code> on host, update <code>.env</code>, restart container. (3) Agents conflict on the same file &rarr; expected; resolve manually or use git worktrees.</p>
+</div>
+
+<div class="pq">You just ran multiple AI agents in isolated containers, each working on your project simultaneously. This is the pattern that scales from two agents to twenty&mdash;container isolation makes it safe, and Docker Compose makes it manageable.</div>
+
+<h3>Interactive Exercises</h3>
+
+<div class="quiz" data-ch="45" data-ex="quiz-perms">
+  <h4>Knowledge Check</h4>
+  <p>Why is <code>--dangerously-skip-permissions</code> acceptable inside a Docker container?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">It's not actually dangerous</button>
+    <button class="quiz-option" data-correct="true">Docker containers are already isolated — the agent can't escape to the host</button>
+    <button class="quiz-option" data-correct="false">It's required for Docker to work</button>
+    <button class="quiz-option" data-correct="false">It makes the agent faster</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz" data-ch="45" data-ex="quiz-mount">
+  <h4>Knowledge Check</h4>
+  <p>What does <code>-v $(pwd):/workspace</code> do when running Claude Code in Docker?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">Creates a backup of your code</button>
+    <button class="quiz-option" data-correct="true">Mounts your local code into the container so the agent can read and modify it</button>
+    <button class="quiz-option" data-correct="false">Installs dependencies inside the container</button>
+    <button class="quiz-option" data-correct="false">Sets the container's hostname</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="checklist" data-ch="45" data-ex="docker-agent-check">
+  <h4>Docker Agent</h4>
+  <label><input type="checkbox"><span>Built Dockerfile.claude for TaskForge</span></label>
+  <label><input type="checkbox"><span>Ran Claude Code inside a Docker container</span></label>
+  <label><input type="checkbox"><span>Agent successfully read files in /workspace</span></label>
+  <label><input type="checkbox"><span>Agent's changes were visible on host machine</span></label>
+</div>
+</section>
+
+<!-- ===== CH 27 ===== -->
+<section id="ch46" data-ch="46">
+<h2><span class="ch-label">Chapter 46</span> Level 8 &mdash; Autonomous Agent Teams</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>Level 8 is the frontier&mdash;and it's important to understand both its power and its limits. Agent teams can tackle large projects where coordination between frontend, backend, and testing is essential. But more agents also means more coordination overhead, more potential for conflicting changes, and more need for robust CI. This chapter teaches you when teams are worth the complexity&mdash;and when simpler patterns are better.</p>
+</div>
+
+<p>Level 7 dispatches workers that report back to you. Level 8 is <strong>agents that communicate with each other</strong>&mdash;peer-to-peer coordination, not hub-and-spoke. This is experimental territory.</p>
+
+<h3>Peer-to-Peer Agent Coordination</h3>
+<p>Instead of all workers reporting to a single orchestrator, agents in a team share a mailbox and coordinate directly. A frontend agent can ask a backend agent about an API contract without routing through you.</p>
+
+<div role="note" class="callout info">
+<div class="callout-title">Current Feature (March 2026)</div>
+<p>Claude Code Agent Teams (experimental): <code>export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1</code>. Team lead + workers with shared mailbox.</p>
+</div>
+
+<h3>What Pioneers Found</h3>
+<p><strong>Anthropic</strong> (16 agents building a C compiler): needed CI to prevent regressions. Without automated tests, agents would break each other's work.</p>
+<p><strong>Cursor</strong> (hundreds of agents for codebase migration): without hierarchy, agents churned&mdash;making and reverting the same changes repeatedly.</p>
+
+<h3>Current Orchestrators</h3>
+<table>
+<caption>Current multi-agent orchestration tools and their patterns</caption>
+<tr><th>Tool</th><th>Pattern</th></tr>
+<tr><td>Dispatch</td><td>Local, hub-and-spoke</td></tr>
+<tr><td>Gas Town</td><td>Structured workflows</td></tr>
+<tr><td>Multiclaude</td><td>Simple parallel execution</td></tr>
+<tr><td>Claude Flow</td><td>Complex multi-step workflows</td></tr>
+<tr><td>Ramp Inspect</td><td>Cloud VMs for isolation</td></tr>
+</table>
+
+<div role="note" class="callout warn">
+<div class="callout-title">The Honest Assessment</div>
+<p>"For day-to-day work, Level 7 is where the leverage is." Level 8 is for very large projects where the coordination cost is justified. Most TaskForge-sized projects never need it.</p>
+</div>
+
+<div role="note" class="callout critical">
+<div class="callout-title">The Multi-Agent Tradeoff</div>
+<p><strong>More agents = more throughput</strong>&mdash;three features built simultaneously instead of sequentially. But <strong>more agents = more coordination overhead</strong>&mdash;merge conflicts, inconsistent patterns, duplicated work. And <strong>more agents without constraints = chaos</strong>&mdash;agents that undo each other's changes, introduce conflicting patterns, or confidently build the wrong thing faster. Verification and CI become <em>more</em> important as concurrency increases, not less.</p>
+</div>
+
+<div class="diagram">
+<svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg" aria-label="Diagram: Agent team pattern with Team Lead delegating to Backend, Frontend, and Testing workers who also communicate peer-to-peer">
+  <!-- Team Lead -->
+  <rect class="node-accent" x="270" y="10" width="160" height="44" rx="8"/>
+  <text class="label-text" x="350" y="37" text-anchor="middle">Team Lead</text>
+  <!-- Workers -->
+  <rect class="node-fill" x="40" y="100" width="140" height="44" rx="6"/>
+  <text class="label-text" x="110" y="127" text-anchor="middle">Backend</text>
+  <rect class="node-fill" x="280" y="100" width="140" height="44" rx="6"/>
+  <text class="label-text" x="350" y="127" text-anchor="middle">Frontend</text>
+  <rect class="node-fill" x="520" y="100" width="140" height="44" rx="6"/>
+  <text class="label-text" x="590" y="127" text-anchor="middle">Testing</text>
+  <!-- Lead to workers -->
+  <line class="arrow" x1="310" y1="54" x2="140" y2="100"/>
+  <line class="arrow" x1="350" y1="54" x2="350" y2="100"/>
+  <line class="arrow" x1="390" y1="54" x2="560" y2="100"/>
+  <!-- Worker-to-worker (peer-to-peer) -->
+  <line class="arrow" x1="180" y1="122" x2="280" y2="122" stroke-dasharray="6,4"/>
+  <line class="arrow" x1="280" y1="132" x2="180" y2="132" stroke-dasharray="6,4"/>
+  <line class="arrow" x1="420" y1="122" x2="520" y2="122" stroke-dasharray="6,4"/>
+  <line class="arrow" x1="520" y1="132" x2="420" y2="132" stroke-dasharray="6,4"/>
+  <!-- Shared repo -->
+  <rect class="node-fill" x="240" y="185" width="220" height="30" rx="6"/>
+  <text class="sub-text" x="350" y="205" text-anchor="middle">Shared Repository</text>
+  <line class="arrow" x1="110" y1="144" x2="260" y2="185" marker-end="url(#arrowhead-muted)"/>
+  <line class="arrow" x1="350" y1="144" x2="350" y2="185" marker-end="url(#arrowhead-muted)"/>
+  <line class="arrow" x1="590" y1="144" x2="440" y2="185" marker-end="url(#arrowhead-muted)"/>
+</svg>
+<div class="diagram-caption">Agent Teams differ from Dispatch: workers communicate with each other (dashed lines), not just through the lead.</div>
+</div>
+
+<h3>Decision Tree: Choosing the Right Pattern</h3>
+<p>More agents is not always better. Match the coordination pattern to the task:</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg" aria-label="Decision tree: Choosing the right multi-agent pattern based on task type — single session, subagents, dispatch, builder-validator, or agent team">
+  <!-- Root -->
+  <rect class="node-accent" x="250" y="5" width="200" height="36" rx="6"/>
+  <text class="label-text" x="350" y="28" text-anchor="middle">What's your task?</text>
+  <!-- Branch 1: Simple -->
+  <rect class="node-fill" x="5" y="80" width="120" height="50" rx="6"/>
+  <text class="sub-text" x="65" y="100" text-anchor="middle">Simple,</text>
+  <text class="sub-text" x="65" y="114" text-anchor="middle">one-file</text>
+  <line class="arrow" x1="270" y1="41" x2="100" y2="80"/>
+  <text class="sub-text" x="65" y="150" text-anchor="middle" fill="var(--accent)">Single session</text>
+  <!-- Branch 2: Exploration -->
+  <rect class="node-fill" x="145" y="80" width="120" height="50" rx="6"/>
+  <text class="sub-text" x="205" y="100" text-anchor="middle">Needs</text>
+  <text class="sub-text" x="205" y="114" text-anchor="middle">exploration</text>
+  <line class="arrow" x1="300" y1="41" x2="220" y2="80"/>
+  <text class="sub-text" x="205" y="150" text-anchor="middle" fill="var(--accent)">Subagents</text>
+  <!-- Branch 3: Independent -->
+  <rect class="node-fill" x="285" y="80" width="130" height="50" rx="6"/>
+  <text class="sub-text" x="350" y="100" text-anchor="middle">Multiple</text>
+  <text class="sub-text" x="350" y="114" text-anchor="middle">independent</text>
+  <line class="arrow" x1="350" y1="41" x2="350" y2="80"/>
+  <text class="sub-text" x="350" y="150" text-anchor="middle" fill="var(--accent)">Dispatch / L7</text>
+  <!-- Branch 4: Impl + QA -->
+  <rect class="node-fill" x="435" y="80" width="130" height="50" rx="6"/>
+  <text class="sub-text" x="500" y="100" text-anchor="middle">Implementation</text>
+  <text class="sub-text" x="500" y="114" text-anchor="middle">+ QA</text>
+  <line class="arrow" x1="400" y1="41" x2="480" y2="80"/>
+  <text class="sub-text" x="500" y="150" text-anchor="middle" fill="var(--accent)">Builder-Validator</text>
+  <!-- Branch 5: Very large -->
+  <rect class="node-fill" x="580" y="80" width="115" height="50" rx="6"/>
+  <text class="sub-text" x="637" y="100" text-anchor="middle">Very large</text>
+  <text class="sub-text" x="637" y="114" text-anchor="middle">project</text>
+  <line class="arrow" x1="430" y1="41" x2="610" y2="80"/>
+  <text class="sub-text" x="637" y="150" text-anchor="middle" fill="var(--accent)">Agent Teams / L8</text>
+  <!-- Summary row -->
+  <rect x="50" y="185" width="600" height="80" rx="8" fill="var(--bg-card)" stroke="var(--border)"/>
+  <text class="sub-text" x="350" y="210" text-anchor="middle">Key distinctions:</text>
+  <text class="sub-text" x="350" y="228" text-anchor="middle">Subagents = isolated, report to parent</text>
+  <text class="sub-text" x="350" y="246" text-anchor="middle">Dispatch = orchestrated parallel, questions surface to you</text>
+  <text class="sub-text" x="350" y="264" text-anchor="middle">Agent Teams = peer-to-peer, experimental</text>
+</svg>
+<div class="diagram-caption">Match the coordination pattern to the task. More agents is not always better.</div>
+</div>
+
+<h3>When NOT to Use Multiple Agents</h3>
+<p>The decision tree above starts with "Simple, one-file" routing to a single session. But that category is larger than it looks. Most tasks fit a single agent. Here's the concrete decision framework:</p>
+
+<div role="note" class="callout warn">
+<div class="callout-title">Default to Single Agent</div>
+<p><strong>Use a single well-configured agent when:</strong></p>
+<ul>
+<li>The task fits in one context window (roughly &lt;20 files touched)</li>
+<li>The feature touches fewer than 5 files</li>
+<li>There are no independent subtasks that could run in parallel</li>
+<li>You can describe the entire change in one prompt</li>
+</ul>
+<p><strong>Escalate to multi-agent when:</strong></p>
+<ul>
+<li>Independent features can genuinely be parallelized (not just "it would be nice")</li>
+<li>Implementation and review should be separated (builder-validator pattern)</li>
+<li>The task exceeds one context window and has natural split points</li>
+<li>You need different tool configurations for different subtasks</li>
+</ul>
+<p>TaskForge at its current size? Single agent. A full-stack app with separate frontend, backend, and infrastructure changes? Consider dispatch. If you find yourself writing more orchestration code than feature code, step back to a simpler pattern.</p>
+</div>
+
+<h3>TaskForge Connection</h3>
+<p>Would agent teams be appropriate for TaskForge? No&mdash;it's too small. Subagents or Dispatch are sufficient. Knowing <em>when not to use</em> a pattern is as important as knowing how.</p>
+
+<h3>Micro-Exercises</h3>
+<div role="note" class="callout ok"><div class="callout-title">1: Draw Your Decision Tree</div><p>Write a decision tree (on paper or in markdown) for when you'd use each agent pattern. Include at least 5 branches.</p></div>
+<div role="note" class="callout ok"><div class="callout-title">2: Assess TaskForge</div><p>For your TaskForge project: would agent teams be appropriate? Why or why not? (Expected: no&mdash;it's too small.)</p></div>
+
+<div class="pq"><blockquote>"Perfection is achieved, not when there is nothing more to add, but when there is nothing left to take away."<br>&mdash;Antoine de Saint-Exup&eacute;ry, <em>Airman's Odyssey</em></blockquote></div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">Try This Now: Parallel Agents and Merge Conflicts</div>
+<p>Dispatch two agents to work on different TaskForge features simultaneously, then resolve the resulting merge conflict:</p>
+<div class="prompt-block"><pre><code>/dispatch two TaskForge features in parallel:
+1) add an "archive_task" command that moves completed tasks
+   to an "archived" list — use sonnet, worktree
+2) add a "task_stats" command that prints counts of
+   pending/completed tasks — use sonnet, worktree</code></pre></div>
+<p>Both agents will modify shared files (<code>main.py</code>, <code>models.py</code>, tests). When both finish:</p>
+<ol>
+<li>Try to merge both branches into <code>main</code>. Expect a merge conflict.</li>
+<li>Open the conflicting file(s). Look for <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code> markers.</li>
+<li>Resolve by keeping both features&mdash;don't discard either agent's work.</li>
+<li>Run <code>python3 -m pytest</code> to verify both features work together.</li>
+</ol>
+<p><strong>Expected outcome:</strong> Both <code>archive_task</code> and <code>task_stats</code> work. Tests pass. Git log shows the merge commit.</p>
+<p><strong>Verification:</strong> <code>git log --graph --oneline</code> shows two branches merging. Both new commands work when tested manually. All tests pass.</p>
+<p><strong>If this doesn't work:</strong> (1) No merge conflict &rarr; agents may have touched different files. This is fine&mdash;it means the features were truly independent. (2) Tests fail after merge &rarr; both agents may have added conflicting test fixtures. Reconcile the test setup. (3) One agent's feature breaks the other &rarr; this is the coordination cost from the chapter introduction. Fix by reading both implementations and adjusting the integration points.</p>
+</div>
+
+<div class="pq">You just articulated when each agent pattern is appropriate&mdash;and when it's overkill. Knowing when NOT to add complexity is as valuable as knowing how.</div>
+
+<h3>Interactive Exercises</h3>
+
+<div class="quiz" data-ch="46" data-ex="quiz-teams">
+  <h4>Knowledge Check</h4>
+  <p>When should you NOT use autonomous agent teams?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">When the project has many independent features</button>
+    <button class="quiz-option" data-correct="true">When the project is small enough for a single agent to handle</button>
+    <button class="quiz-option" data-correct="false">When you have multiple team members</button>
+    <button class="quiz-option" data-correct="false">When using Docker containers</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="46" data-ex="deps">
+  <div class="exercise-header">
+    <h4>Dependency Planner</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Write <code>plan_execution(tasks)</code> that takes a dict mapping task names to their dependencies (list of task names) and returns a list of sets, where each set contains tasks that can run in parallel. Tasks in later sets depend on tasks in earlier sets. Raise <code>ValueError</code> if there's a circular dependency.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">def plan_execution(tasks):
+    # tasks = {"A": [], "B": ["A"], "C": ["A"], "D": ["B", "C"]}
+    # Return: [{"A"}, {"B", "C"}, {"D"}]
+    pass</script>
+    <script type="text/plain" class="test-code">result = plan_execution({"A": [], "B": ["A"], "C": ["A"], "D": ["B", "C"]})
+assert result[0] == {"A"}, "A has no deps, runs first"
+assert result[1] == {"B", "C"}, "B and C can run in parallel"
+assert result[2] == {"D"}, "D depends on B and C"
+assert plan_execution({"X": [], "Y": []}) == [{"X", "Y"}], "Independent tasks"
+try:
+    plan_execution({"A": ["B"], "B": ["A"]})
+    assert False, "Should detect circular dependency"
+except ValueError:
+    pass</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">Start by finding tasks with no dependencies (no unresolved deps). Those go in the first set.</p>
+    <p class="hint">After processing a set, remove those tasks from all dependency lists. Repeat until all tasks are planned.</p>
+    <p class="hint">If a round produces no new tasks but some remain, there's a cycle.</p>
+  </div>
+</div>
+
+<div class="checklist" data-ch="46" data-ex="multiagent-check">
+  <h4>Multi-Agent Experience</h4>
+  <label><input type="checkbox"><span>Dispatched 2+ agents on different features simultaneously</span></label>
+  <label><input type="checkbox"><span>Both agents completed their tasks</span></label>
+  <label><input type="checkbox"><span>Merged results (resolved any conflicts)</span></label>
+  <label><input type="checkbox"><span>All tests pass after merging</span></label>
+</div>
+</section>
+
+<!-- ===== CH 28 ===== -->
+<section id="ch47" data-ch="47">
+<h2><span class="ch-label">Chapter 47</span> The Multiplayer Effect and What Comes Next</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>Individual skill has a ceiling. Teams have compounding leverage. This chapter connects your personal growth through the 8 Levels to the broader challenge of making your team effective&mdash;because the bottleneck is always the least-equipped member of the workflow.</p>
+</div>
+
+<p>Your individual level matters. But <strong>your team's level matters more</strong>. This chapter connects the 8 Levels to real-world team dynamics.</p>
+
+<h3>The Multiplayer Bottleneck</h3>
+<p>"If you're Level 7 raising PRs while you sleep, but your reviewer is Level 2, your throughput is capped at Level 2."</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 240" xmlns="http://www.w3.org/2000/svg" aria-label="Table diagram: Team maturity levels from L2 to L7 showing capabilities and bottlenecks at each level">
+  <!-- Header row -->
+  <rect x="10" y="5" width="150" height="30" rx="4" fill="var(--bg-card)" stroke="var(--border)"/>
+  <text class="sub-text" x="85" y="25" text-anchor="middle" style="font-weight:600">Team Level</text>
+  <rect x="170" y="5" width="250" height="30" rx="4" fill="var(--bg-card)" stroke="var(--border)"/>
+  <text class="sub-text" x="295" y="25" text-anchor="middle" style="font-weight:600">Everyone can...</text>
+  <rect x="430" y="5" width="260" height="30" rx="4" fill="var(--bg-card)" stroke="var(--border)"/>
+  <text class="sub-text" x="560" y="25" text-anchor="middle" style="font-weight:600">Bottleneck</text>
+  <!-- Row 1 -->
+  <rect class="node-fill" x="10" y="42" width="150" height="30" rx="4"/>
+  <text class="sub-text" x="85" y="62" text-anchor="middle">Mostly L2</text>
+  <rect class="node-fill" x="170" y="42" width="250" height="30" rx="4"/>
+  <text class="sub-text" x="295" y="62" text-anchor="middle">Agent IDE edits</text>
+  <rect class="node-fill" x="430" y="42" width="260" height="30" rx="4"/>
+  <text class="sub-text" x="560" y="62" text-anchor="middle">Manual review</text>
+  <!-- Row 2 -->
+  <rect class="node-fill" x="10" y="79" width="150" height="30" rx="4"/>
+  <text class="sub-text" x="85" y="99" text-anchor="middle">Mostly L4</text>
+  <rect class="node-fill" x="170" y="79" width="250" height="30" rx="4"/>
+  <text class="sub-text" x="295" y="99" text-anchor="middle">Compound learnings</text>
+  <rect class="node-fill" x="430" y="79" width="260" height="30" rx="4"/>
+  <text class="sub-text" x="560" y="99" text-anchor="middle">Inconsistent shared rules</text>
+  <!-- Row 3 -->
+  <rect class="node-fill" x="10" y="116" width="150" height="30" rx="4"/>
+  <text class="sub-text" x="85" y="136" text-anchor="middle">Mostly L5</text>
+  <rect class="node-fill" x="170" y="116" width="250" height="30" rx="4"/>
+  <text class="sub-text" x="295" y="136" text-anchor="middle">Use shared skills</text>
+  <rect class="node-fill" x="430" y="116" width="260" height="30" rx="4"/>
+  <text class="sub-text" x="560" y="136" text-anchor="middle">Non-standardized skills</text>
+  <!-- Row 4 -->
+  <rect class="node-fill" x="10" y="153" width="150" height="30" rx="4"/>
+  <text class="sub-text" x="85" y="173" text-anchor="middle">Mostly L7</text>
+  <rect class="node-fill" x="170" y="153" width="250" height="30" rx="4"/>
+  <text class="sub-text" x="295" y="173" text-anchor="middle">Background agents</text>
+  <rect class="node-fill" x="430" y="153" width="260" height="30" rx="4"/>
+  <text class="sub-text" x="560" y="173" text-anchor="middle">Review/merge bandwidth</text>
+  <!-- Row 5 - highlighted -->
+  <rect class="node-accent" x="10" y="190" width="150" height="30" rx="4"/>
+  <text class="label-text" x="85" y="210" text-anchor="middle">Mixed</text>
+  <rect class="node-accent" x="170" y="190" width="250" height="30" rx="4"/>
+  <text class="label-text" x="295" y="210" text-anchor="middle">Nothing uniform</text>
+  <rect class="node-accent" x="430" y="190" width="260" height="30" rx="4"/>
+  <text class="label-text" x="560" y="210" text-anchor="middle">Lowest blocks highest</text>
+</svg>
+<div class="diagram-caption">Your individual level matters. Your team's level matters more. Pull your team up.</div>
+</div>
+
+<h3>Team Skills Registry</h3>
+<p>At Block (and other companies), shared skills get PRs, reviews, and versions&mdash;same as code. A team skills registry means everyone benefits from every improvement.</p>
+
+<h3>Self-Assessment</h3>
+<div role="note" class="callout info">
+<div class="callout-title">Find Your Level</div>
+<p>The full self-assessment quiz with detailed checklists and next-step guidance for each level is in <a href="appendices.html#self-assessment">Appendix C: Self-Assessment Quiz</a>. Take it now&mdash;identify your current level and the specific item blocking you from the next one.</p>
+</div>
+
+<h3>What Comes Next</h3>
+<p>The field is moving fast. Expect: voice-to-voice coding, tighter CI/CD integration, cross-model coordination protocols, and the iterative nature of software itself being reimagined. But the fundamentals from Phases 1-4 don't change. Code is still logic expressed in text. Tests still verify behavior. Architecture still matters.</p>
+
+<h3>TaskForge Connection</h3>
+<p>Look at how far TaskForge has come: from a 40-line script to a tested, structured, AI-configured, multi-agent-ready project. That progression mirrors the 8 Levels. Your next project starts at whatever level you've reached.</p>
+
+<h3>Micro-Exercises</h3>
+<div role="note" class="callout ok"><div class="callout-title">1: Take the Self-Assessment</div><p>Use the full checklist in <a href="appendices.html#self-assessment">Appendix C</a>. Write down your level honestly. Identify the specific item that blocks you from the next level.</p></div>
+<div role="note" class="callout ok"><div class="callout-title">2: Audit Your Team</div><p>If you work on a team (even a team of 2): estimate each member's level. Find the bottleneck. What's one thing you could share (a skill, a CLAUDE.md template, a workflow) to raise the team's floor?</p></div>
+
+<h3>Try This Now</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">Your Action Plan</div>
+<p>Take the self-assessment above. Identify your current level. Write a 5-sentence action plan for reaching the next level within 30 days. Be specific: what tool to install, what skill to create, what habit to build.</p>
+<p><strong>Verification:</strong> Your action plan has concrete dates and deliverables, not just intentions.</p>
+</div>
+
+<div class="pq">
+<blockquote>"The computer programmer is a creator of universes for which he alone is the lawgiver. No playwright, no combiner of things ever fashioned universes complete with their own laws."<br>&mdash;Joseph Weizenbaum, <em>Computer Power and Human Reason</em></blockquote>
+</div>
+
+<h3>Interactive Exercises</h3>
+
+<div class="quiz" data-ch="47" data-ex="quiz-level">
+  <h4>Knowledge Check</h4>
+  <p>At what levels do most professional developers operate?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">Levels 1-2</button>
+    <button class="quiz-option" data-correct="true">Levels 3-6</button>
+    <button class="quiz-option" data-correct="false">Level 8 only</button>
+    <button class="quiz-option" data-correct="false">All levels equally</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="checklist" data-ch="47" data-ex="assessment">
+  <h4>Self Assessment &amp; Action Plan</h4>
+  <label><input type="checkbox"><span>Completed the Self-Assessment Quiz in Appendix C</span></label>
+  <label><input type="checkbox"><span>Identified my current level honestly</span></label>
+  <label><input type="checkbox"><span>Identified the specific item blocking advancement</span></label>
+  <label><input type="checkbox"><span>Wrote a 5-sentence action plan with concrete dates</span></label>
+  <label><input type="checkbox"><span>Shared my assessment with a colleague or mentor (optional)</span></label>
+</div>
+</section>
+
+<!-- ===== PHASE 6 GATE ===== -->
+<section id="gate10">
+<h2><span class="ch-label">Phase 10 Gate</span> Checkpoint &amp; TaskForge Multi-Agent</h2>
+<div class="card">
+<h4>Minimum Competency</h4>
+<p>Pre-commit hooks providing backpressure. 2+ background agent tasks dispatched and reviewed. Output review with error identification. Agent pattern decision criteria articulated.</p>
+</div>
+<div class="card">
+<h4>Your Artifact</h4>
+<p>TaskForge with: git log showing agent-implemented features with backpressure verification. A written decision tree covering all 5 agent patterns.</p>
+</div>
+<div class="card">
+<h4>Verification</h4>
+<p>Pre-commit passes. Agent output was reviewed (corrections documented). Decision tree covers all patterns with specific criteria.</p>
+</div>
+<div role="note" class="callout critical">
+<div class="callout-title">Failure Signal</div>
+<p>If background agents produce output you cannot evaluate &rarr; return to Phase 9. Evaluation skill (Chapter 38) is the prerequisite for everything in Phase 10.</p>
+</div>
+<h3>TaskForge Checkpoint</h3>
+<p>TaskForge now has multi-agent-implemented features, automated quality gates, and a decision framework for future agent coordination. <strong>The curriculum is complete.</strong></p>
+
+<h3>What You Can Now Do</h3>
+<div class="card">
+<ul>
+<li>Design automated feedback loops (harnesses) that let agents self-correct</li>
+<li>Dispatch background agents for parallel development</li>
+<li>Choose the right agent pattern for the right task</li>
+<li>Evaluate and merge multi-agent output</li>
+<li>Articulate when multi-agent coordination is worth the overhead&mdash;and when it isn't</li>
+</ul>
+</div>
+
+<h3>The Full Arc</h3>
+<div role="note" class="callout info">
+<div class="callout-title">From Zero to Supervisor</div>
+<p>Look at how far you've come. In Phase 1, you couldn't read a line of code. Now you can orchestrate multiple AI agents working in parallel on a structured project with automated quality gates. Every phase was necessary: you can't supervise AI code you can't read (Phase 1), test code you can't write (Phase 2), manage projects without professional tools (Phase 3), deploy without infrastructure knowledge (Phase 4), or direct agents without context engineering skills (Phase 9). The phases aren't detours&mdash;they're the prerequisites that make competent AI supervision possible.</p>
+</div>
+</section>
+
+<nav class="phase-nav">
+  <a href="phase-9.html" class="phase-nav-link prev"><span class="phase-nav-label">Previous Phase</span>&larr; Phase 9: AI-Assisted Development</a>
+  <a href="appendices.html" class="phase-nav-link next"><span class="phase-nav-label">Reference</span>Appendices &rarr;</a>
+</nav>
+
+</div>
+</div>
+
+<footer>
+<p>Zero to Hero: Programming to Multi-Agent Claude Code &middot; March 2026</p>
+</footer>
+
+<script src="js/progress.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ace-builds@1.36.5/src-min-noconflict/ace.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/shared.js"></script>
+<script src="js/ace-init.js"></script>
+<script src="js/pyodide-runner.js"></script>
+<script src="js/quiz.js"></script>
+<script src="js/exercise-runner.js"></script>
+</body>
+</html>

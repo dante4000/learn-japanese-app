@@ -1,0 +1,1619 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Phase 8: 시스템과 확장 — 시스템 설계, 분산 시스템, 성능과 관측 가능성, 대규모 코드베이스 탐색. 34~37장.">
+<title>Phase 8: 시스템과 확장 — 제로 투 히어로</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&amp;family=JetBrains+Mono:wght@400;500&family=Noto+Sans+KR:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/design-system.css">
+<script>try{if(localStorage.getItem('zth-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+<script>try{var z=localStorage.getItem('zth-zoom');if(z&&+z>=50&&+z<=200)document.documentElement.style.zoom=+z/100}catch(e){}</script>
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+<marker id="arrowhead-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--a5)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo"><span>제로 투 히어로</span>프로그래밍 &rarr; 멀티 에이전트 AI</a>
+  <div class="toc-group">
+    <div class="toc-group-title">기초</div>
+    <a href="phase-1.html#ch01" class="toc-link"><span class="toc-num">01</span>프로그래밍이란 무엇인가</a>
+    <a href="phase-1.html#ch02" class="toc-link"><span class="toc-num">02</span>컴퓨터가 코드를 실행하는 방법</a>
+    <a href="phase-1.html#ch03" class="toc-link"><span class="toc-num">03</span>환경 설정하기</a>
+    <a href="phase-1.html#ch04" class="toc-link"><span class="toc-num">04</span>쓰기 전에 코드 읽기</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Python</div>
+    <a href="phase-2.html#ch05" class="toc-link"><span class="toc-num">05</span>함수, 논리, 제어 흐름</a>
+    <a href="phase-2.html#ch06" class="toc-link"><span class="toc-num">06</span>자료 구조</a>
+    <a href="phase-2.html#ch07" class="toc-link"><span class="toc-num">07</span>클래스와 객체 지향 프로그래밍</a>
+    <a href="phase-2.html#ch08" class="toc-link"><span class="toc-num">08</span>파일, 모듈, 표준 라이브러리</a>
+    <a href="phase-2.html#ch09" class="toc-link"><span class="toc-num">09</span>에러 처리, 디버깅, 테스트</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">개발 도구</div>
+    <a href="phase-3.html#ch10" class="toc-link"><span class="toc-num">10</span>터미널과 셸</a>
+    <a href="phase-3.html#ch11" class="toc-link"><span class="toc-num">11</span>Git 기초</a>
+    <a href="phase-3.html#ch12" class="toc-link"><span class="toc-num">12</span>Git 원격 저장소와 GitHub</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">구축과 배포</div>
+    <a href="phase-4.html#ch13" class="toc-link"><span class="toc-num">13</span>API와 HTTP</a>
+    <a href="phase-4.html#ch14" class="toc-link"><span class="toc-num">14</span>Flask로 API 구축하기</a>
+    <a href="phase-4.html#ch15" class="toc-link"><span class="toc-num">15</span>데이터베이스 기초</a>
+    <a href="phase-4.html#ch16" class="toc-link"><span class="toc-num">16</span>Docker와 컨테이너</a>
+    <a href="phase-4.html#ch17" class="toc-link"><span class="toc-num">17</span>CI/CD와 GitHub Actions</a>
+    <a href="phase-4.html#ch18" class="toc-link"><span class="toc-num">18</span>프로젝트 아키텍처</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">자료 구조</div>
+    <a href="phase-5.html#ch19" class="toc-link"><span class="toc-num">19</span>복잡도 분석</a>
+    <a href="phase-5.html#ch20" class="toc-link"><span class="toc-num">20</span>선형 구조</a>
+    <a href="phase-5.html#ch21" class="toc-link"><span class="toc-num">21</span>해시 테이블과 맵</a>
+    <a href="phase-5.html#ch22" class="toc-link"><span class="toc-num">22</span>트리</a>
+    <a href="phase-5.html#ch23" class="toc-link"><span class="toc-num">23</span>그래프</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">알고리즘</div>
+    <a href="phase-6.html#ch24" class="toc-link"><span class="toc-num">24</span>탐색과 정렬</a>
+    <a href="phase-6.html#ch25" class="toc-link"><span class="toc-num">25</span>재귀와 동적 프로그래밍</a>
+    <a href="phase-6.html#ch26" class="toc-link"><span class="toc-num">26</span>알고리즘 패턴</a>
+    <a href="phase-6.html#ch27" class="toc-link"><span class="toc-num">27</span>그래프 알고리즘</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">엔지니어링 기술</div>
+    <a href="phase-7.html#ch28" class="toc-link"><span class="toc-num">28</span>디자인 패턴과 SOLID</a>
+    <a href="phase-7.html#ch29" class="toc-link"><span class="toc-num">29</span>SQL과 쿼리 마스터</a>
+    <a href="phase-7.html#ch30" class="toc-link"><span class="toc-num">30</span>트랜잭션과 NoSQL</a>
+    <a href="phase-7.html#ch31" class="toc-link"><span class="toc-num">31</span>네트워킹과 인터넷</a>
+    <a href="phase-7.html#ch32" class="toc-link"><span class="toc-num">32</span>동시성과 병렬 처리</a>
+    <a href="phase-7.html#ch33" class="toc-link"><span class="toc-num">33</span>보안 엔지니어링</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">시스템과 확장</div>
+    <a href="phase-8.html#ch34" class="toc-link"><span class="toc-num">34</span>시스템 설계</a>
+    <a href="phase-8.html#ch35" class="toc-link"><span class="toc-num">35</span>분산 시스템</a>
+    <a href="phase-8.html#ch36" class="toc-link"><span class="toc-num">36</span>성능과 관측 가능성</a>
+    <a href="phase-8.html#ch37" class="toc-link"><span class="toc-num">37</span>대규모 코드베이스 탐색</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AI 레벨 1~5</div>
+    <a href="phase-9.html#ch38" class="toc-link"><span class="toc-num">38</span>AI 코드 평가와 지시</a>
+    <a href="phase-9.html#ch39" class="toc-link"><span class="toc-num">39</span>레벨 1&amp;2 — 탭 자동완성과 에이전트 IDE</a>
+    <a href="phase-9.html#ch40" class="toc-link"><span class="toc-num">40</span>레벨 3 — 컨텍스트 엔지니어링</a>
+    <a href="phase-9.html#ch41" class="toc-link"><span class="toc-num">41</span>레벨 4 — 복합 엔지니어링</a>
+    <a href="phase-9.html#ch42" class="toc-link"><span class="toc-num">42</span>레벨 5 — MCP, 스킬, 기능</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AI 레벨 6~8</div>
+    <a href="phase-10.html#ch43" class="toc-link"><span class="toc-num">43</span>레벨 6 — 하네스 엔지니어링</a>
+    <a href="phase-10.html#ch44" class="toc-link"><span class="toc-num">44</span>레벨 7 — 백그라운드 에이전트</a>
+    <a href="phase-10.html#ch45" class="toc-link"><span class="toc-num">45</span>Docker에서의 Claude Code</a>
+    <a href="phase-10.html#ch46" class="toc-link"><span class="toc-num">46</span>레벨 8 — 자율 에이전트 팀</a>
+    <a href="phase-10.html#ch47" class="toc-link"><span class="toc-num">47</span>멀티플레이어 효과</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">참고 자료</div>
+    <a href="appendices.html#glossary" class="toc-link"><span class="toc-num">&oplus;</span>용어집</a>
+    <a href="appendices.html#prompt-library" class="toc-link"><span class="toc-num">&oplus;</span>프롬프트 라이브러리</a>
+    <a href="appendices.html#self-assessment" class="toc-link"><span class="toc-num">&oplus;</span>자기 평가</a>
+    <a href="appendices.html#common-mistakes" class="toc-link"><span class="toc-num">&oplus;</span>흔한 실수</a>
+    <a href="appendices.html#appendix-d" class="toc-link"><span class="toc-num">&oplus;</span>문제 해결</a>
+    <a href="appendices.html#appendix-e" class="toc-link"><span class="toc-num">&oplus;</span>리소스</a>
+  </div>
+</aside>
+</aside>
+
+<!-- ================================================================== -->
+<!--  MAIN CONTENT                                                       -->
+<!-- ================================================================== -->
+<div class="main">
+<section class="hero hero-sm">
+  <div class="hero-badge">Phase 8 &mdash; 시스템과 확장</div>
+  <h1>시스템과 <em>확장</em></h1>
+  <p class="hero-sub">시스템 설계, 분산 아키텍처, 성능 엔지니어링, 그리고 실무 코드베이스 탐색. 단일 머신과 단일 개발자를 넘어서 사고하는 방법을 배웁니다.</p>
+  <div class="hero-meta"><span>34~37장</span><span>Phase Gate + TaskForge</span></div>
+</section>
+<div class="content-wrap">
+
+<div role="note" class="callout info">
+<div class="callout-title">Phase 8 시작 전에</div>
+<p>이 단계는 다음을 할 수 있다고 가정합니다: 디자인 패턴을 활용한 코드 구조화 (28장), 최적화된 SQL 쿼리 작성 (29~30장), 네트워킹 기초 이해 (31장), 동시성 추론 (32장), 보안 실천 구현 (33장). 이 중 어느 것이든 자신 없으면 해당 장으로 먼저 돌아가십시오.</p>
+</div>
+
+
+<!-- ===== CH 34 ===== -->
+<section id="ch34" data-ch="34">
+<h2><span class="ch-label">Chapter 34</span> 시스템 설계 기초 &mdash; 확장을 위한 구축</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">지금 이것이 중요한 이유</div>
+<p>지금까지 작성한 모든 프로그램은 단일 머신에서 단일 사용자를 대상으로 실행됩니다. 학습에는 충분하지만, 실제 소프트웨어는 수천 명 &mdash; 때로는 수백만 명 &mdash; 의 사용자를 동시에 서비스합니다. 시스템 설계(system design)는 수요가 증가함에 따라 애플리케이션이 빠르고 안정적이며 비용 효율적으로 유지되도록 서버, 데이터베이스, 캐시, 큐를 <em>어떻게</em> 배치할지 선택하는 분야입니다. 이 결정들은 엔지니어가 내리는 가장 중요한 결정 중 하나입니다. 잘못된 아키텍처 선택은 수개월의 재작업을 초래할 수 있는 반면, 좋은 선택은 제품을 수년간 지탱할 수 있습니다.</p>
+</div>
+
+<h3>확장 사고: 수직 확장 vs. 수평 확장</h3>
+
+<p>애플리케이션이 부하 아래에서 느려지기 시작하면 더 빠르게 만들기 위한 두 가지 기본적인 선택지가 있습니다. <strong>수직 확장(vertical scaling)</strong>(또는 "스케일 업"이라고도 함)은 기존 서버에 더 많은 자원 &mdash; 더 많은 CPU 코어, 더 많은 RAM, 더 빠른 디스크 &mdash; 을 부여하는 것입니다. 가장 단순한 전략으로, 코드를 전혀 변경하지 않고 더 큰 머신으로 옮기기만 하면 됩니다. 문제는 수직 확장에 물리적 한계가 있다는 것입니다. 임대할 수 있는 가장 큰 단일 서버는 시간당 수천 달러에 달하고, 그것조차 결국 감당할 수 없는 수준이 됩니다.</p>
+
+<p><strong>수평 확장(horizontal scaling)</strong>(또는 "스케일 아웃"이라고도 함)은 애플리케이션을 <em>여러</em> 머신에서 실행하고 트래픽을 분산시키는 것입니다. 이것이 모든 주요 웹 애플리케이션이 작동하는 방식입니다. 이론적 한계가 없어 머신을 계속 추가할 수 있습니다. 하지만 수평 확장은 수직 확장이 피할 수 있는 복잡성을 도입합니다. 트래픽을 어떻게 분산하나요? 머신들이 데이터를 어떻게 공유하나요? 한 머신이 충돌하면 어떻게 되나요?</p>
+
+<p>수평 확장을 가능하게 하는 핵심 개념은 <strong>무상태성(statelessness)</strong>입니다. <strong>무상태 서비스(stateless service)</strong>는 요청 사이에 사용자별 데이터를 저장하지 않습니다. 모든 요청은 처리에 필요한 모든 정보를 담아 전달됩니다 (주로 HTTP 헤더의 토큰을 통해). 단일 서버가 아무것도 "기억"하지 않기 때문에 어느 서버든 어느 요청이나 처리할 수 있고, 서버를 자유롭게 추가하거나 제거할 수 있습니다.</p>
+
+<p>반면 <strong>상태 보존 서비스(stateful service)</strong>는 요청 사이에 메모리에 데이터를 유지합니다 &mdash; 예를 들어 플레이어 위치를 추적하는 게임 서버가 그렇습니다. 상태 보존 서비스는 각 사용자를 동일한 서버로 라우팅하거나("스티키 세션"이라고 함) 머신 간에 상태를 복제해야 하므로 확장이 더 어렵고 비용이 많이 들며 오류가 발생하기 쉽습니다.</p>
+
+<div class="pq">&ldquo;가능한 모든 곳에서 무상태로 만드십시오. 상태는 이를 관리하도록 설계된 데이터베이스와 캐시에 위임하십시오.&rdquo;</div>
+
+<h3>로드 밸런싱(Load Balancing)</h3>
+
+<p>여러 서버를 보유하게 되면 들어오는 요청을 서버들에게 분배할 무언가가 필요합니다. 그것이 바로 <strong>로드 밸런서(load balancer)</strong>입니다 &mdash; 사용자와 서버 사이에 위치하는 특수 구성 요소입니다. 사용자는 로드 밸런서에 연결하고, 로드 밸런서는 각 요청을 애플리케이션 서버 중 하나로 전달합니다.</p>
+
+<p>로드 밸런서가 각 요청을 <em>어떤</em> 서버에 보낼지 결정하는 데 사용할 수 있는 여러 전략이 있습니다:</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>로드 밸런싱 전략</caption>
+<thead><tr><th>전략</th><th>작동 방식</th><th>최적 사용 상황</th></tr></thead>
+<tbody>
+<tr><td><strong>라운드 로빈(Round Robin)</strong></td><td>서버에 순서대로 요청을 보냄: A, B, C, A, B, C&hellip;</td><td>동일한 용량의 서버</td></tr>
+<tr><td><strong>최소 연결(Least Connections)</strong></td><td>현재 활성 연결이 가장 적은 서버로 각 요청을 전송</td><td>요청 처리 시간이 다양한 경우</td></tr>
+<tr><td><strong>일관 해싱(Consistent Hashing)</strong></td><td>키(예: 사용자 ID)를 해시하여 처리 서버를 결정; 서버 추가/제거 시 일부 키만 재분배됨</td><td>캐싱 레이어, 스티키 라우팅</td></tr>
+<tr><td><strong>가중 라운드 로빈(Weighted Round Robin)</strong></td><td>라운드 로빈과 같지만 용량이 더 큰 서버가 비례적으로 더 많은 요청을 처리</td><td>혼합 하드웨어 환경</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>모든 프로덕션 로드 밸런서는 <strong>헬스 체크(health check)</strong>도 수행합니다 &mdash; 각 서버가 살아있고 응답하는지 확인하기 위해 주기적으로 핑을 보냅니다. 서버가 헬스 체크에 실패하면 로드 밸런서는 복구될 때까지 해당 서버로의 트래픽 전송을 중단합니다. 이것이 사용자가 알아채지 못하는 사이에 개별 서버 장애를 애플리케이션이 견뎌내는 방법입니다.</p>
+
+<div role="note" class="callout warn">
+<div class="callout-title">주의: &ldquo;로드 밸런서는 모든 단일 장애 지점을 제거한다&rdquo;</div>
+<p>로드 밸런서 <em>자체</em>가 단일 장애 지점입니다. 프로덕션에서는 로드 밸런서를 쌍으로 운영합니다 (액티브/스탠바이). 액티브 로드 밸런서가 다운되면 스탠바이로 전환되는 플로팅 IP 주소를 사용합니다. 항상 자문하십시오: &ldquo;<em>이</em> 구성 요소가 실패하면 어떻게 되는가?&rdquo;</p>
+</div>
+
+<h3>캐싱(Caching): 가장 빠른 요청은 처음부터 만들지 않는 것</h3>
+
+<p><strong>캐싱(caching)</strong>은 비용이 많이 드는 작업의 결과를 저장하여 동일한 데이터에 대한 향후 요청을 즉시 처리할 수 있도록 합니다. 잘 배치된 캐시는 200ms의 데이터베이스 쿼리를 1ms의 메모리 조회로 바꿀 수 있습니다. 캐싱은 여러 레이어에 존재합니다:</p>
+
+<ul>
+<li><strong>브라우저 캐시(browser cache)</strong> &mdash; 사용자의 브라우저가 정적 파일(CSS, JS, 이미지)을 로컬에 저장합니다. <code>Cache-Control</code> 같은 HTTP 헤더로 제어됩니다.</li>
+<li><strong>CDN 캐시(CDN cache)</strong> &mdash; 콘텐츠 전달 네트워크(Content Delivery Network)가 전 세계 엣지 위치에 정적 자산의 복사본을 캐시하여 먼 사용자의 지연 시간을 줄입니다.</li>
+<li><strong>애플리케이션 캐시(application cache)</strong> &mdash; 서버가 자주 접근하는 데이터를 인메모리 저장소(Redis나 Memcached 등)에 유지하여 매번 데이터베이스를 조회하지 않습니다.</li>
+<li><strong>데이터베이스 쿼리 캐시(database query cache)</strong> &mdash; 데이터베이스 자체가 최근 쿼리 결과를 캐시합니다.</li>
+</ul>
+
+<p>캐싱의 어려운 문제는 <strong>캐시 무효화(cache invalidation)</strong>입니다 &mdash; 캐시된 데이터가 오래되어 갱신이 필요한 시점을 아는 것입니다. 세 가지 주요 전략이 있습니다:</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>캐시 무효화 전략과 트레이드오프</caption>
+<thead><tr><th>전략</th><th>작동 방식</th><th>트레이드오프</th></tr></thead>
+<tbody>
+<tr><td><strong>TTL (Time-To-Live, 생존 시간)</strong></td><td>캐시된 데이터가 고정된 시간(예: 60초) 후 만료됨</td><td>단순하지만 TTL 기간 동안 데이터가 오래될 수 있음</td></tr>
+<tr><td><strong>라이트 스루(Write-Through)</strong></td><td>모든 쓰기가 캐시와 데이터베이스 양쪽에 동시에 전달됨</td><td>데이터는 항상 일관되지만 쓰기가 느림</td></tr>
+<tr><td><strong>라이트 비하인드(Write-Behind)</strong></td><td>쓰기가 먼저 캐시에 전달된 후 비동기적으로 데이터베이스에 전파됨</td><td>쓰기가 빠르지만 전파 전에 캐시가 충돌하면 데이터 손실 위험 있음</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>특히 까다로운 문제는 <strong>캐시 스탬피드(cache stampede)</strong>(또는 "썬더링 허드(thundering herd)"라고도 함)입니다. 인기 있는 캐시 항목이 만료되고 10,000개의 요청이 동시에 해당 데이터를 요청한다고 상상해 보십시오. 10,000개 모두 데이터베이스를 한 번에 조회하여 데이터베이스를 압도할 수 있습니다. 해결책으로는 잠금(하나의 요청만 캐시를 재생성하고 다른 요청은 대기), 확률적 조기 만료(TTL이 실제로 만료되기 전에 무작위로 갱신), stale-while-revalidate(백그라운드에서 재생성하는 동안 오래된 데이터를 제공)가 있습니다.</p>
+
+<h3>콘텐츠 전달 네트워크(CDN)</h3>
+
+<p><strong>CDN(Content Delivery Network, 콘텐츠 전달 네트워크)</strong>은 많은 지리적 위치에 분산된 서버 네트워크입니다("엣지 위치" 또는 "거점"). 도쿄의 사용자가 버지니아에 호스팅된 애플리케이션에서 이미지를 요청하면, CDN은 대신 도쿄의 서버에서 해당 이미지를 제공합니다. 결과: 정적 자산의 지연 시간이 극적으로 감소합니다.</p>
+
+<p>CDN은 자주 변경되지 않는 콘텐츠 &mdash; 이미지, CSS, JavaScript 번들, 폰트, 동영상 &mdash; 에 가장 효과적입니다. 일부 CDN은 동적 콘텐츠의 지연 시간을 더욱 낮추기 위해 엣지 위치에서 애플리케이션 로직의 일부를 실행하는 "엣지 컴퓨트(edge compute)"도 지원합니다.</p>
+
+<h3>메시지 큐(Message Queue): 작업 분리</h3>
+
+<p>모든 작업을 사용자에게 응답하기 전에 완료해야 하는 것은 아닙니다. 사용자가 가입하면 즉시 계정을 생성해야 하지만 &mdash; 환영 이메일은 몇 초 후에 보내도 됩니다. <strong>메시지 큐(message queue)</strong>를 사용하면 이러한 작업을 분리할 수 있습니다. 애플리케이션 서버는 큐에 메시지("user@example.com에게 환영 이메일 발송")를 넣고 즉시 사용자에게 응답합니다. 별도의 <strong>워커(worker)</strong> 프로세스가 메시지를 가져가 이메일을 비동기적으로 발송합니다.</p>
+
+<p>이 패턴 &mdash; <strong>프로듀서(producer)</strong>가 메시지를 쓰고 <strong>컨슈머(consumer)</strong>가 읽는 &mdash; 은 여러 이점을 제공합니다: API가 느린 작업을 기다리지 않으므로 빠른 상태를 유지하고; 프로듀서와 컨슈머가 독립적으로 확장할 수 있으며; 컨슈머가 충돌하면 다른 컨슈머가 가져갈 때까지 메시지가 큐에 남아 있습니다.</p>
+
+<p>이해해야 할 두 가지 중요한 전달 보장:</p>
+<ul>
+<li><strong>최소 한 번 전달(at-least-once delivery)</strong> &mdash; 큐는 모든 메시지가 전달됨을 보장하지만, 일부 메시지는 두 번 이상 전달될 수 있습니다 (컨슈머가 처리 후 확인하기 전에 충돌할 경우). 컨슈머는 <strong>멱등성(idempotent)</strong>을 가져야 합니다 &mdash; 동일한 메시지를 두 번 처리해도 같은 결과가 나와야 합니다.</li>
+<li><strong>정확히 한 번 전달(exactly-once delivery)</strong> &mdash; 큐는 각 메시지가 정확히 한 번 전달되고 처리됨을 보장합니다. 이는 구현이 훨씬 어렵고 대부분의 시스템은 멱등성 있는 컨슈머와 함께 최소 한 번 전달로 타협합니다.</li>
+</ul>
+
+<p>여러 번 재시도 후에도 메시지를 처리할 수 없을 때(잘못된 형식의 데이터 때문일 수 있음), 해당 메시지는 <strong>데드 레터 큐(dead letter queue, DLQ)</strong>로 이동합니다 &mdash; 엔지니어가 실패한 메시지를 검사하고 처리 방법을 결정할 수 있는 보관 영역입니다.</p>
+
+<h3>속도 제한(Rate Limiting): 시스템 보호</h3>
+
+<p><strong>속도 제한(rate limiting)</strong>은 클라이언트가 시간 창 내에 만들 수 있는 요청 수를 제한합니다. API는 남용(우발적 또는 악의적)을 방지하고, 클라이언트 간 공정한 사용을 보장하며, 백엔드 시스템이 압도되지 않도록 속도 제한이 필요합니다.</p>
+
+<p><strong>토큰 버킷 알고리즘(token bucket algorithm)</strong>이 가장 일반적인 구현입니다. 고정된 수의 토큰(예: 100개)을 담는 버킷을 상상해 보십시오. 각 요청은 토큰 하나를 소모합니다. 일정한 속도(예: 초당 10개)로 버킷에 토큰이 추가됩니다. 버킷이 비어 있으면 요청이 거부됩니다 (일반적으로 HTTP 429 "Too Many Requests"로). 이는 장기적인 평균 속도를 유지하면서 단기적인 트래픽 급증을 허용합니다.</p>
+
+<p><strong>슬라이딩 윈도우(sliding window)</strong> 알고리즘은 고정 간격 대신 롤링 시간 창(예: 최근 60초)에서 요청을 카운트합니다. 윈도우 경계에서 의도한 속도의 최대 2배를 허용할 수 있는 고정 창 카운팅보다 더 정밀합니다.</p>
+
+<h3>트레이드오프 분석: 핵심 기술</h3>
+
+<p>시스템 아키텍처의 모든 설계 결정에는 트레이드오프가 포함됩니다. "최선의" 아키텍처는 없습니다 &mdash; <em>주어진 요구 사항에 대해</em> 더 낫거나 더 나쁜 아키텍처만 있을 뿐입니다. 이러한 트레이드오프를 명확하게 표현하는 능력이 시스템 설계에서 가장 가치 있는 기술입니다.</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>일반적인 시스템 설계 트레이드오프</caption>
+<thead><tr><th>트레이드오프</th><th>선택 A</th><th>선택 B</th></tr></thead>
+<tbody>
+<tr><td><strong>일관성 vs. 가용성</strong></td><td>일부 요청이 실패하더라도 항상 최신 데이터 반환</td><td>데이터가 약간 오래될 수 있더라도 항상 응답</td></tr>
+<tr><td><strong>지연 시간 vs. 처리량</strong></td><td>각 요청에 가능한 한 빠르게 응답</td><td>초당 가능한 한 많은 요청 처리 (배치 처리는 처리량을 높이지만 개별 지연 시간을 늘림)</td></tr>
+<tr><td><strong>복잡성 vs. 유지보수성</strong></td><td>모든 엣지 케이스를 처리하는 정교한 시스템 구축</td><td>이해하고, 디버그하고, 수정하기 쉬운 더 단순한 시스템 구축</td></tr>
+<tr><td><strong>비용 vs. 성능</strong></td><td>더 많은 하드웨어로 문제 해결</td><td>기존 자원 내에서 작동하도록 코드 최적화</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="pq">&ldquo;주니어 엔지니어는 '어느 쪽이 더 좋은가?'를 묻습니다. 시니어 엔지니어는 '우리가 무엇을 최적화하고 있으며, 무엇을 기꺼이 포기할 것인가?'를 묻습니다.&rdquo;</div>
+
+<!-- SVG Diagram: System Architecture -->
+<svg viewBox="0 0 780 440" aria-label="System architecture diagram showing a load balancer distributing requests to multiple app servers, connected to a cache layer, a database, and a message queue with worker processes" style="width:100%;max-width:780px;margin:2rem auto;display:block">
+  <!-- Users -->
+  <rect x="320" y="10" width="140" height="40" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="390" y="36" text-anchor="middle" class="label-text" font-size="14">Users</text>
+
+  <!-- Arrow: Users -> LB -->
+  <line x1="390" y1="50" x2="390" y2="85" class="arrow" marker-end="url(#arrowhead)"/>
+
+  <!-- Load Balancer -->
+  <rect x="290" y="88" width="200" height="44" rx="8" class="node-accent" stroke="var(--accent)" stroke-width="2"/>
+  <text x="390" y="115" text-anchor="middle" class="label-text" font-size="14" fill="var(--bg)">Load Balancer</text>
+
+  <!-- Arrows: LB -> App Servers -->
+  <line x1="340" y1="132" x2="160" y2="185" class="arrow" marker-end="url(#arrowhead)"/>
+  <line x1="390" y1="132" x2="390" y2="185" class="arrow" marker-end="url(#arrowhead)"/>
+  <line x1="440" y1="132" x2="620" y2="185" class="arrow" marker-end="url(#arrowhead)"/>
+
+  <!-- App Server 1 -->
+  <rect x="80" y="188" width="160" height="44" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="160" y="215" text-anchor="middle" class="label-text" font-size="13">App Server 1</text>
+
+  <!-- App Server 2 -->
+  <rect x="310" y="188" width="160" height="44" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="390" y="215" text-anchor="middle" class="label-text" font-size="13">App Server 2</text>
+
+  <!-- App Server 3 -->
+  <rect x="540" y="188" width="160" height="44" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="620" y="215" text-anchor="middle" class="label-text" font-size="13">App Server 3</text>
+
+  <!-- Arrows: App Servers -> Cache -->
+  <line x1="160" y1="232" x2="270" y2="295" class="arrow" marker-end="url(#arrowhead)"/>
+  <line x1="390" y1="232" x2="320" y2="295" class="arrow" marker-end="url(#arrowhead)"/>
+
+  <!-- Cache -->
+  <rect x="220" y="298" width="150" height="44" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="295" y="318" text-anchor="middle" class="label-text" font-size="13">Cache (Redis)</text>
+  <text x="295" y="333" text-anchor="middle" class="sub-text" font-size="10">fast lookups</text>
+
+  <!-- Arrow: Cache -> DB -->
+  <line x1="295" y1="342" x2="295" y2="385" class="arrow" marker-end="url(#arrowhead)"/>
+
+  <!-- Database -->
+  <rect x="220" y="388" width="150" height="44" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="295" y="415" text-anchor="middle" class="label-text" font-size="13">Database</text>
+
+  <!-- Arrow: App Server 3 -> Message Queue -->
+  <line x1="620" y1="232" x2="620" y2="295" class="arrow" marker-end="url(#arrowhead)"/>
+
+  <!-- Message Queue -->
+  <rect x="540" y="298" width="160" height="44" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="620" y="318" text-anchor="middle" class="label-text" font-size="13">Message Queue</text>
+  <text x="620" y="333" text-anchor="middle" class="sub-text" font-size="10">async tasks</text>
+
+  <!-- Arrow: MQ -> Workers -->
+  <line x1="620" y1="342" x2="620" y2="385" class="arrow" marker-end="url(#arrowhead)"/>
+
+  <!-- Workers -->
+  <rect x="540" y="388" width="160" height="44" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="620" y="408" text-anchor="middle" class="label-text" font-size="13">Workers</text>
+  <text x="620" y="423" text-anchor="middle" class="sub-text" font-size="10">emails, reports</text>
+
+  <!-- Labels -->
+  <text x="40" y="325" class="sub-text" font-size="11" fill="var(--a5)">read path</text>
+  <line x1="68" y1="330" x2="218" y2="318" stroke="var(--a5)" stroke-width="1" stroke-dasharray="4"/>
+  <text x="500" y="275" class="sub-text" font-size="11" fill="var(--a5)">write path</text>
+</svg>
+
+<div role="note" class="callout warn">
+<div class="callout-title">주의: 단순하게 시작하고 필요할 때 확장하라</div>
+<p>흔한 실수는 첫날부터 과도하게 설계하는 것입니다. 사용자 50명의 애플리케이션에 마이크로서비스, 메시지 큐, 세 개의 캐싱 레이어는 필요하지 않습니다. 단일 서버의 모놀리스로 시작하십시오. 데이터베이스가 병목이 될 때 캐시를 추가하십시오. 한 서버가 따라가지 못할 때 로드 밸런서를 추가하십시오. 동기 처리가 API를 느리게 할 때 메시지 큐를 추가하십시오. 확장 결정은 예상된 문제가 아닌 측정된 문제에 의해 이루어져야 합니다.</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">TaskForge 연결: 10,000명 사용자를 위한 설계</div>
+<p>TaskForge가 갑자기 입소문이 나서 10,000명의 동시 사용자를 지원해야 한다고 상상해 보십시오. SQLite를 사용하는 단일 Flask 서버는 버티지 못할 것입니다. 아키텍처를 발전시키는 방법은 다음과 같습니다:</p>
+<ol>
+<li><strong>데이터베이스:</strong> SQLite에서 PostgreSQL로 마이그레이션 (동시 쓰기 처리).</li>
+<li><strong>애플리케이션:</strong> 로드 밸런서 뒤에 4개의 무상태 앱 서버를 실행. 서버 메모리가 아닌 Redis에 세션 저장.</li>
+<li><strong>캐싱:</strong> 30초 TTL로 Redis에 자주 읽는 태스크 목록 캐시.</li>
+<li><strong>비동기 작업:</strong> 이메일 알림과 보고서 생성을 워커 프로세스가 있는 메시지 큐로 이동.</li>
+<li><strong>CDN:</strong> 정적 자산(CSS, JS, 이미지)을 CDN을 통해 제공.</li>
+</ol>
+<p>각 변경은 특정 병목을 해결합니다. 순서가 중요합니다 &mdash; 가장 큰 병목부터 해결하십시오.</p>
+</div>
+
+<!-- Micro-Exercise -->
+<div role="note" class="callout ok">
+<div class="callout-title">직접 해보기: 병목 찾기</div>
+<p>TaskForge API의 부하 하의 응답 시간: 태스크 목록 조회는 800ms (400ms는 데이터베이스 쿼리), 태스크 생성은 50ms, 알림 이메일 발송은 3초 (응답을 차단함). 어떤 문제를 먼저 수정하고 어떻게 하겠습니까? 계속 읽기 전에 답을 적어 보십시오.</p>
+<p><strong>답:</strong> 이메일 알림부터 수정하십시오 &mdash; 이것이 가장 영향력 있는 병목입니다 (사용자 요청을 3초 동안 차단). API가 즉시 응답하도록 메시지 큐로 이동시키십시오. 그런 다음 최근 쿼리 캐시를 추가하여 느린 태스크 목록 조회 문제를 해결하십시오.</p>
+</div>
+
+<!-- Quiz 1 -->
+<div class="quiz" data-ch="34" data-ex="quiz-caching-strategy">
+  <h4>핵심 개념 확인</h4>
+  <p>캐시와 데이터베이스 양쪽에 동시에 쓰는 캐싱 전략은 무엇입니까?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">TTL 기반 만료</button>
+    <button class="quiz-option" data-correct="true">라이트 스루(Write-through)</button>
+    <button class="quiz-option" data-correct="false">라이트 비하인드(Write-behind)</button>
+    <button class="quiz-option" data-correct="false">캐시 어사이드(Cache-aside, 지연 로딩)</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Quiz 2 -->
+<div class="quiz" data-ch="34" data-ex="quiz-consistent-hashing">
+  <h4>핵심 개념 확인</h4>
+  <p>일관 해싱(consistent hashing)이 단순 라운드 로빈(round-robin)으로는 해결하지 못하는 문제는 무엇입니까?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">모든 서버가 동일한 부하를 처리하게 함</button>
+    <button class="quiz-option" data-correct="false">헬스 체크의 필요성을 제거함</button>
+    <button class="quiz-option" data-correct="true">서버 추가/제거 시 키 재분배를 최소화함</button>
+    <button class="quiz-option" data-correct="false">가장 빠른 서버가 항상 요청을 받도록 보장함</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Quiz 3 -->
+<div class="quiz" data-ch="34" data-ex="quiz-rate-limiting">
+  <h4>핵심 개념 확인</h4>
+  <p>토큰 버킷 알고리즘(token bucket algorithm)에서 버킷이 비어 있을 때 요청이 도착하면 어떻게 됩니까?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">토큰이 사용 가능할 때까지 요청이 큐에 대기</button>
+    <button class="quiz-option" data-correct="false">즉시 새 토큰이 생성됨</button>
+    <button class="quiz-option" data-correct="true">요청이 거부됨 (HTTP 429)</button>
+    <button class="quiz-option" data-correct="false">요청이 다른 서버로 전달됨</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Checklist -->
+<div class="checklist" data-ch="34" data-ex="checklist-system-design">
+  <h4>시스템 설계 기초 체크리스트</h4>
+  <label><input type="checkbox"><span>수직 확장과 수평 확장의 차이를 설명할 수 있습니다</span></label>
+  <label><input type="checkbox"><span>무상태 서비스가 확장하기 더 쉬운 이유를 이해합니다</span></label>
+  <label><input type="checkbox"><span>세 가지 로드 밸런싱 전략과 각각의 사용 시기를 말할 수 있습니다</span></label>
+  <label><input type="checkbox"><span>캐시 무효화 전략(TTL, 라이트 스루, 라이트 비하인드)을 설명할 수 있습니다</span></label>
+  <label><input type="checkbox"><span>캐시 스탬피드가 무엇이고 예방하는 방법을 이해합니다</span></label>
+  <label><input type="checkbox"><span>메시지 큐 vs. 동기 처리 사용 시기를 설명할 수 있습니다</span></label>
+  <label><input type="checkbox"><span>속도 제한을 위한 토큰 버킷 알고리즘을 이해합니다</span></label>
+  <label><input type="checkbox"><span>트레이드오프(일관성 vs. 가용성, 지연 시간 vs. 처리량)를 표현할 수 있습니다</span></label>
+</div>
+
+</section>
+
+
+<!-- ===== CH 35 ===== -->
+<section id="ch35" data-ch="35">
+<h2><span class="ch-label">Chapter 35</span> 분산 시스템과 아키텍처 &mdash; 단일 머신을 넘어서</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">지금 이것이 중요한 이유</div>
+<p>34장에서는 로드 밸런서, 캐시, 큐를 사용하여 시스템을 확장하는 방법을 배웠습니다. 하지만 애플리케이션이 너무 커서 단일 팀이 모두 소유할 수 없을 때는 어떻게 될까요? 서로 다른 기능이 서로 다른 속도로 확장되어야 할 때? 데이터가 너무 중요해서 전체 데이터 센터 장애에서도 살아남아야 할 때? 이러한 질문들이 분산 시스템(distributed systems)으로 이어집니다 &mdash; 여러 독립적인 서비스가 네트워크를 통해 협력하는 아키텍처입니다. 분산 시스템은 모든 주요 기술 제품을 구동하며, 그 제약을 이해하면 소프트웨어에 대한 사고방식이 근본적으로 바뀔 것입니다.</p>
+</div>
+
+<h3>모놀리스 vs. 마이크로서비스: 솔직한 비교</h3>
+
+<p><strong>모놀리스(monolith)</strong>는 애플리케이션의 모든 기능을 포함하는 단일 배포 가능 단위입니다. 모든 코드가 하나의 저장소, 하나의 프로세스, 하나의 배포 파이프라인에 있습니다. 모놀리스는 나쁜 평판을 얻고 있지만 진정한 장점이 있습니다:</p>
+
+<ul>
+<li><strong>개발이 더 단순</strong> &mdash; 모듈 간 함수 호출이 빠르고 컴파일 시 타입 체크됨.</li>
+<li><strong>배포가 더 단순</strong> &mdash; 하나의 빌드, 하나의 아티팩트, 하나의 배포.</li>
+<li><strong>디버깅이 더 단순</strong> &mdash; 스택 트레이스가 전체 이야기를 알려줌; 추적할 네트워크 홉 없음.</li>
+<li><strong>테스트가 더 단순</strong> &mdash; 통합 테스트가 네트워크 호출을 모킹(mocking)하지 않고 단일 프로세스에서 실행됨.</li>
+<li><strong>트랜잭션 일관성</strong> &mdash; 단일 데이터베이스 트랜잭션이 여러 테이블을 원자적으로 업데이트할 수 있음.</li>
+</ul>
+
+<p><strong>마이크로서비스(microservices)</strong>는 애플리케이션을 각각 하나의 비즈니스 기능을 담당하는 여러 개의 작고 독립적으로 배포 가능한 서비스로 분리합니다. 각 서비스는 자체 데이터베이스, 자체 배포 파이프라인, 자체 팀을 가집니다. 장점은 다음과 같습니다:</p>
+
+<ul>
+<li><strong>독립적인 확장</strong> &mdash; 검색 서비스가 청구 서비스보다 100배 더 많은 트래픽을 받음; 독립적으로 확장 가능.</li>
+<li><strong>독립적인 배포</strong> &mdash; 결제 서비스에 위험을 주지 않고 알림 서비스 배포 가능.</li>
+<li><strong>기술 유연성</strong> &mdash; 각 서비스가 필요에 가장 적합한 언어와 데이터베이스 사용 가능.</li>
+<li><strong>팀 자율성</strong> &mdash; 소규모 팀이 소규모 서비스를 엔드투엔드로 소유.</li>
+</ul>
+
+<p>하지만 마이크로서비스는 <em>엄청난</em> 복잡성을 도입합니다:</p>
+
+<ul>
+<li><strong>네트워크는 신뢰할 수 없음</strong> &mdash; 서비스 간 호출이 실패하거나, 타임아웃되거나, 잘못된 데이터를 반환할 수 있음. 이 모든 것을 처리해야 함.</li>
+<li><strong>분산 데이터 일관성</strong> &mdash; 서비스 간에 단일 데이터베이스 트랜잭션을 사용할 수 없음. 사가(saga), 최종 일관성, 또는 다른 패턴이 필요함 (아래에서 다룸).</li>
+<li><strong>운영 오버헤드</strong> &mdash; 20개의 서비스를 모니터링, 배포, 디버깅하는 것은 하나를 모니터링하는 것보다 근본적으로 어려움.</li>
+<li><strong>통합 테스트</strong> &mdash; 서비스 간 상호작용 테스트에는 비용이 많이 드는 엔드투엔드 테스트나 계약 테스트가 필요함.</li>
+</ul>
+
+<div class="pq">&ldquo;잘 구조화된 모놀리스를 구축할 수 없다면, 마이크로서비스가 답이라고 생각하는 이유는 무엇입니까?&rdquo; &mdash; Simon Brown</div>
+
+<p><strong>언제 분리할까:</strong> 모놀리스로 시작하십시오. 명확한 이유가 있을 때만 서비스로 분리하십시오 &mdash; 모듈에 독립적인 확장이 필요하거나, 팀이 배포 자율성이 필요하거나, 기술 제약이 다른 런타임을 요구하는 경우. 기술 레이어가 아닌 자연스러운 비즈니스 경계(사용자, 주문, 알림)를 따라 분리하십시오.</p>
+
+<h3>CAP 정리(CAP Theorem)</h3>
+
+<p><strong>CAP 정리(CAP theorem)</strong>는 네트워크 파티션이 발생했을 때 분산 시스템은 <strong>일관성(Consistency)</strong> 또는 <strong>가용성(Availability)</strong> 중 하나만 제공할 수 있으며, 둘 다는 불가능하다고 말합니다. 정확하게 정의하면:</p>
+
+<ul>
+<li><strong>일관성(C, Consistency)</strong> &mdash; 모든 읽기는 가장 최근의 쓰기를 반환합니다. 모든 노드가 동시에 동일한 데이터를 봅니다.</li>
+<li><strong>가용성(A, Availability)</strong> &mdash; 일부 노드가 다운되더라도 모든 요청이 응답(오류 없음)을 받습니다.</li>
+<li><strong>파티션 허용성(P, Partition Tolerance)</strong> &mdash; 일부 노드 간의 네트워크 통신이 끊어져도 시스템이 계속 작동합니다.</li>
+</ul>
+
+<p>모든 분산 시스템에서 네트워크 파티션은 <em>반드시</em> 발생합니다 (케이블이 끊어지고, 스위치가 실패하고, 데이터 센터의 전원이 나갑니다). 따라서 파티션 허용성은 선택사항이 아닙니다 &mdash; 항상 P가 필요합니다. 진정한 선택은 파티션 발생 시 C와 A 사이입니다:</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>CAP 정리: 파티션 시 일관성 또는 가용성 선택</caption>
+<thead><tr><th>선택</th><th>파티션 중 동작</th><th>예시</th></tr></thead>
+<tbody>
+<tr><td><strong>CP (일관성 + 파티션 허용성)</strong></td><td>오래된 데이터를 가질 수 있는 노드로의 요청 거부. 일부 요청은 실패하지만 오래된 읽기는 없음.</td><td>뱅킹 시스템 &mdash; 잘못된 잔액을 절대 보여서는 안 됨</td></tr>
+<tr><td><strong>AP (가용성 + 파티션 허용성)</strong></td><td>항상 응답하지만 일부 응답에 오래된 데이터가 포함될 수 있음. 나중에 조정.</td><td>소셜 미디어 &mdash; "좋아요" 수가 잠깐 틀려도 허용 가능</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>CAP는 파티션 <em>중</em> 동작에 관한 것임에 주의하십시오. 네트워크가 정상적일 때는 세 가지 모두를 가질 수 있습니다. 이 정리는 문제가 발생했을 때 사용자에게 가장 중요한 것이 무엇인지 생각하도록 강요합니다.</p>
+
+<h3>이벤트 기반 아키텍처(Event-Driven Architecture)</h3>
+
+<p>전통적인 아키텍처에서 서비스는 서로 직접 호출하여 통신합니다: 서비스 A가 서비스 B에게 요청을 보내고 응답을 기다립니다. <strong>이벤트 기반 아키텍처(event-driven architecture)</strong>에서 서비스는 이벤트를 발행하고 구독하여 통신합니다. 중요한 일이 발생하면 서비스는 이벤트("태스크 생성됨", "결제 성공")를 발행하고, 관심 있는 서비스가 이에 반응할 수 있습니다.</p>
+
+<p><strong>이벤트(event)</strong>와 <strong>커맨드(command)</strong>의 구분이 중요합니다. 커맨드는 "이것을 하라"고 말합니다 (이메일 발송, 카드 청구) &mdash; 특정 서비스를 향합니다. 이벤트는 "이것이 발생했다"고 말합니다 (주문 접수, 사용자 가입) &mdash; 관심 있는 누구에게나 브로드캐스트됩니다. 발행자가 누가 듣고 있는지 알지도 신경 쓰지도 않기 때문에 이벤트는 더 느슨한 결합(loose coupling)을 만듭니다.</p>
+
+<p><strong>이벤트 소싱(event sourcing)</strong>은 이를 더 발전시킵니다: 엔티티의 <em>현재 상태</em>를 저장하는 대신, 해당 상태를 만들어낸 <em>이벤트</em>의 시퀀스를 저장합니다. 은행 계좌는 "잔액: $500"이 아닙니다 &mdash; 완전한 역사입니다: $1000으로 개설, $200 출금, $100 입금, $400 출금. 이벤트를 재생하여 항상 현재 상태를 재구성할 수 있고, 완전한 감사 추적이 무료로 제공됩니다.</p>
+
+<p><strong>CQRS</strong>(Command Query Responsibility Segregation, 커맨드 쿼리 책임 분리)는 읽기 모델을 쓰기 모델에서 분리합니다. 쓰기는 커맨드 측을 통해 이루어지는 반면(이벤트 소싱을 사용할 수 있음), 읽기는 별도의 최적화된 읽기 모델(비정규화된 데이터베이스 뷰일 수 있음)에서 제공됩니다. 이를 통해 읽기와 쓰기를 독립적으로 최적화할 수 있습니다.</p>
+
+<h3>대규모 API 설계</h3>
+
+<p>여러 서비스와 팀이 API를 공유할 때, 사소해 보이는 설계 결정이 중요해집니다. 주요 고려 사항은 다음과 같습니다:</p>
+
+<p><strong>버전 관리(versioning):</strong> API는 변경됩니다. 기존 클라이언트를 깨지 않고 발전시키는 전략이 필요합니다.</p>
+
+<pre style="overflow-x:auto"><code># URL path versioning (most common, most visible)
+GET /api/v1/tasks
+GET /api/v2/tasks
+
+# Header versioning (cleaner URLs, harder to test in browser)
+GET /api/tasks
+Accept: application/vnd.taskforge.v2+json
+
+# Query parameter versioning
+GET /api/tasks?version=2</code></pre>
+
+<p><strong>페이지네이션(pagination):</strong> 무제한 목록을 반환하지 마십시오. 두 가지 방법:</p>
+
+<pre style="overflow-x:auto"><code># Offset pagination (simple, but slow for large offsets)
+GET /api/tasks?offset=100&amp;limit=20
+
+# Cursor pagination (efficient, stable under inserts/deletes)
+GET /api/tasks?cursor=eyJpZCI6MTAwfQ&amp;limit=20
+# Response includes: "next_cursor": "eyJpZCI6MTIwfQ"</code></pre>
+
+<p><strong>멱등성 키(idempotency key):</strong> 클라이언트가 실패한 요청을 재시도할 때(응답이 전송 중에 손실된 경우), 작업이 두 번 수행되지 않도록 해야 합니다. 클라이언트는 각 요청과 함께 고유한 <code>Idempotency-Key</code> 헤더를 전송합니다. 서버는 이 값을 키로 결과를 저장하고 재시도 시 저장된 결과를 반환합니다.</p>
+
+<p><strong>하위 호환성(backward compatibility):</strong> 응답에 필드를 추가하는 것은 안전합니다. 필드를 제거하거나 유형을 변경하면 클라이언트가 깨집니다. 항상 추가하고, 절대 제거하지 마십시오.</p>
+
+<h3>서비스 통신 패턴</h3>
+
+<p>서비스는 <strong>동기적(synchronous)</strong> (요청/응답)으로 또는 <strong>비동기적(asynchronous)</strong> (메시지 큐를 통해)으로 통신할 수 있습니다. 동기는 더 단순하지만 강한 결합을 만듭니다 &mdash; 서비스 B가 다운되면 서비스 A의 요청이 실패합니다. 비동기는 더 탄력적이지만 추론하기 더 어렵습니다.</p>
+
+<p><strong>서킷 브레이커 패턴(circuit breaker pattern)</strong>은 동기 통신에서 연쇄 장애를 방지합니다. 전기 회로 차단기처럼 세 가지 상태가 있습니다:</p>
+
+<ol>
+<li><strong>닫힘(Closed)</strong> (정상) &mdash; 요청이 통과됩니다. 실패가 임계값을 초과하면 차단기가 "트립"됩니다.</li>
+<li><strong>열림(Open)</strong> &mdash; 다운스트림 서비스를 호출하지 않고 모든 요청이 즉시 실패합니다. 이미 어려움을 겪고 있는 서비스를 압도하는 것을 방지합니다.</li>
+<li><strong>반열림(Half-Open)</strong> &mdash; 타임아웃 후 단일 테스트 요청이 통과됩니다. 성공하면 차단기가 닫힙니다. 실패하면 차단기가 다시 열립니다.</li>
+</ol>
+
+<p><strong>지수 백오프를 사용한 재시도(retry with exponential backoff)</strong>는 또 다른 필수 패턴입니다. 요청이 실패하면 즉시 재시도하지 마십시오 &mdash; 1초, 그 다음 2초, 4초, 8초를 기다리십시오. 많은 클라이언트가 동시에 재시도하는 것을 방지하기 위해 작은 무작위 "지터(jitter)"를 추가하십시오.</p>
+
+<pre style="overflow-x:auto"><code>import random
+import time
+
+def retry_with_backoff(operation, max_retries=5):
+    """Retry an operation with exponential backoff and jitter."""
+    for attempt in range(max_retries):
+        try:
+            return operation()
+        except Exception as e:
+            if attempt == max_retries - 1:
+                raise  # Final attempt failed; propagate the error
+            wait = (2 ** attempt) + random.uniform(0, 1)
+            print(f"Attempt {attempt + 1} failed: {e}. Retrying in {wait:.1f}s")
+            time.sleep(wait)</code></pre>
+
+<h3>분산 시스템의 데이터 일관성</h3>
+
+<p>각 마이크로서비스가 자체 데이터베이스를 소유할 때, 서비스 간 작업을 단일 트랜잭션으로 묶을 수 없습니다. <strong>사가 패턴(saga pattern)</strong>이 표준 해결책입니다: 사가는 각각 다른 서비스에 있는 로컬 트랜잭션의 시퀀스로, 각 단계에는 나중 단계가 실패할 경우 이를 되돌리는 <strong>보상 작업(compensating action)</strong>이 있습니다.</p>
+
+<p>예시: 주문 생성은 (1) 재고 예약, (2) 결제 청구, (3) 배송 라벨 생성을 포함할 수 있습니다. 3단계가 실패하면 사가는 보상 작업을 실행합니다: 결제 환불 (2단계 취소), 재고 해제 (1단계 취소).</p>
+
+<p><strong>최종 일관성(eventual consistency)</strong>은 쓰기 후 모든 읽기가 즉시 새 데이터를 보지 못할 수 있지만 &mdash; 새로운 쓰기 없이 충분한 시간이 지나면 모든 읽기가 <em>결국</em> 동일한 값을 보게 된다는 것을 의미합니다. 강한 일관성이 필요해 보이는 많은 시스템이 실제로는 최종 일관성으로도 잘 작동합니다. 사용자의 친구 목록이 새 친구를 반영하는 데 2초가 걸리는 것이 중요한가요? 보통은 그렇지 않습니다.</p>
+
+<p><strong>분산 트랜잭션(distributed transaction)</strong>(2단계 커밋)은 서비스 간에 강한 일관성을 <em>제공하지만</em>, 심각한 비용이 따릅니다: 느리고, 프로토콜 중에 자원을 잠그며, 코디네이터가 충돌하면 모든 참가자가 막힙니다. 절대적으로 필요한 경우가 아니면 마이크로서비스 아키텍처에서 분산 트랜잭션을 피하십시오.</p>
+
+<!-- SVG Diagram: Microservices Architecture -->
+<svg viewBox="0 0 780 460" aria-label="Microservices architecture diagram showing an API Gateway routing to three services each with its own database, connected by a message bus, with a circuit breaker between services" style="width:100%;max-width:780px;margin:2rem auto;display:block">
+  <!-- API Gateway -->
+  <rect x="290" y="10" width="200" height="44" rx="8" class="node-accent" stroke="var(--accent)" stroke-width="2"/>
+  <text x="390" y="37" text-anchor="middle" class="label-text" font-size="14" fill="var(--bg)">API Gateway</text>
+
+  <!-- Arrows from Gateway -->
+  <line x1="330" y1="54" x2="140" y2="105" class="arrow" marker-end="url(#arrowhead)"/>
+  <line x1="390" y1="54" x2="390" y2="105" class="arrow" marker-end="url(#arrowhead)"/>
+  <line x1="450" y1="54" x2="640" y2="105" class="arrow" marker-end="url(#arrowhead)"/>
+
+  <!-- Task Service -->
+  <rect x="50" y="108" width="180" height="44" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="140" y="135" text-anchor="middle" class="label-text" font-size="13">Task Service</text>
+
+  <!-- User Service -->
+  <rect x="300" y="108" width="180" height="44" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="390" y="135" text-anchor="middle" class="label-text" font-size="13">User Service</text>
+
+  <!-- Notification Service -->
+  <rect x="550" y="108" width="180" height="44" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="640" y="135" text-anchor="middle" class="label-text" font-size="13">Notification Service</text>
+
+  <!-- Databases -->
+  <line x1="140" y1="152" x2="140" y2="195" class="arrow" marker-end="url(#arrowhead)"/>
+  <rect x="70" y="198" width="140" height="38" rx="6" class="node-fill" stroke="var(--a5)" stroke-width="1.5"/>
+  <text x="140" y="222" text-anchor="middle" class="sub-text" font-size="12">Tasks DB</text>
+
+  <line x1="390" y1="152" x2="390" y2="195" class="arrow" marker-end="url(#arrowhead)"/>
+  <rect x="320" y="198" width="140" height="38" rx="6" class="node-fill" stroke="var(--a5)" stroke-width="1.5"/>
+  <text x="390" y="222" text-anchor="middle" class="sub-text" font-size="12">Users DB</text>
+
+  <line x1="640" y1="152" x2="640" y2="195" class="arrow" marker-end="url(#arrowhead)"/>
+  <rect x="570" y="198" width="140" height="38" rx="6" class="node-fill" stroke="var(--a5)" stroke-width="1.5"/>
+  <text x="640" y="222" text-anchor="middle" class="sub-text" font-size="12">Notifications DB</text>
+
+  <!-- Message Bus -->
+  <rect x="140" y="290" width="500" height="44" rx="8" class="node-accent" stroke="var(--accent)" stroke-width="2"/>
+  <text x="390" y="317" text-anchor="middle" class="label-text" font-size="14" fill="var(--bg)">Message Bus (Event Stream)</text>
+
+  <!-- Connections to Message Bus -->
+  <line x1="140" y1="236" x2="240" y2="288" class="arrow" marker-end="url(#arrowhead)"/>
+  <line x1="390" y1="236" x2="390" y2="288" class="arrow" marker-end="url(#arrowhead)"/>
+  <line x1="640" y1="236" x2="540" y2="288" class="arrow" marker-end="url(#arrowhead)"/>
+
+  <!-- Pub/Sub labels -->
+  <text x="170" y="268" class="sub-text" font-size="10" fill="var(--a5)">publish</text>
+  <text x="402" y="268" class="sub-text" font-size="10" fill="var(--a5)">pub/sub</text>
+  <text x="580" y="268" class="sub-text" font-size="10" fill="var(--a5)">subscribe</text>
+
+  <!-- Circuit Breaker between Task Service and User Service -->
+  <line x1="230" y1="130" x2="268" y2="130" stroke="var(--accent)" stroke-width="2"/>
+  <circle cx="280" cy="130" r="12" fill="var(--warn)" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="280" y="134" text-anchor="middle" font-size="10" fill="var(--bg)" font-weight="bold">CB</text>
+  <line x1="292" y1="130" x2="298" y2="130" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Circuit Breaker label -->
+  <text x="280" y="115" text-anchor="middle" class="sub-text" font-size="9" fill="var(--a5)">Circuit Breaker</text>
+
+  <!-- Event examples -->
+  <text x="390" y="365" text-anchor="middle" class="sub-text" font-size="11" fill="var(--a5)">Events: task.created &middot; user.updated &middot; notification.sent</text>
+
+  <!-- Legend box -->
+  <rect x="180" y="395" width="420" height="55" rx="6" fill="none" stroke="var(--a5)" stroke-width="1" stroke-dasharray="4"/>
+  <text x="390" y="415" text-anchor="middle" class="sub-text" font-size="11">Each service owns its data &middot; Services communicate via events</text>
+  <text x="390" y="435" text-anchor="middle" class="sub-text" font-size="11">Circuit breaker prevents cascade failures on sync calls</text>
+</svg>
+
+<div role="note" class="callout warn">
+<div class="callout-title">주의: &ldquo;마이크로서비스는 항상 모놀리스보다 낫다&rdquo;</div>
+<p>많은 성공적인 회사들이 엄청난 규모에서 모놀리스를 운영합니다. Shopify, Stack Overflow, Basecamp 모두 모놀리식 아키텍처를 사용합니다. 마이크로서비스는 기술 문제보다 조직 문제(여러 팀이 하나의 제품에서 작업)를 더 많이 해결합니다. 소규모 팀이라면 모놀리스가 거의 확실히 올바른 선택입니다. 최선의 아키텍처는 팀이 안정적으로 출시할 수 있게 해주는 것입니다.</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">TaskForge 연결: 서비스 분해</div>
+<p>TaskForge가 성장하여 마이크로서비스 아키텍처가 필요해진다면, 합리적인 분해 방법은 다음과 같습니다:</p>
+<ul>
+<li><strong>태스크 서비스(Task Service)</strong> &mdash; 태스크의 CRUD, 태스크 상태 전환, 할당 로직. 태스크 데이터베이스 소유.</li>
+<li><strong>사용자 서비스(User Service)</strong> &mdash; 인증, 권한 부여, 사용자 프로필. 사용자 데이터베이스 소유.</li>
+<li><strong>알림 서비스(Notification Service)</strong> &mdash; <code>task.assigned</code>, <code>task.overdue</code> 같은 이벤트를 구독하고 이메일과 푸시 알림을 발송.</li>
+</ul>
+<p>태스크 서비스는 태스크 할당 시 사용자 ID 검증을 위해 (서킷 브레이커와 함께) 사용자 서비스를 호출합니다. 태스크가 생성되면 태스크 서비스는 메시지 버스에 <code>task.created</code> 이벤트를 발행합니다. 알림 서비스는 이 이벤트를 구독하고 알림을 발송합니다. 알림 서비스가 다운되면 메시지가 큐에 쌓이고 복구되면 처리됩니다 &mdash; 태스크가 손실되지 않습니다.</p>
+</div>
+
+<!-- Micro-Exercise -->
+<div role="note" class="callout ok">
+<div class="callout-title">직접 해보기: CAP 트레이드오프 분석</div>
+<p>각 시나리오에서 CP(가용성보다 일관성 우선) 또는 AP(일관성보다 가용성 우선) 중 어느 것을 선택하겠습니까? 이유를 설명하십시오:</p>
+<ol>
+<li>의료 기록 시스템</li>
+<li>소셜 미디어 "트렌딩 토픽" 기능</li>
+<li>항공사 좌석 예약 시스템</li>
+<li>상품 추천 엔진</li>
+</ol>
+<p><strong>답:</strong> (1) CP &mdash; 잘못된 의료 데이터는 위험할 수 있음. (2) AP &mdash; 약간 오래된 트렌딩 토픽은 무해함. (3) CP &mdash; 좌석 이중 예약은 허용 불가. (4) AP &mdash; 약간 오래된 추천은 괜찮음.</p>
+</div>
+
+<!-- Quiz 1 -->
+<div class="quiz" data-ch="35" data-ex="quiz-cap-theorem">
+  <h4>핵심 개념 확인</h4>
+  <p>CAP 정리에서 뱅킹 시스템은 네트워크 파티션 중에 일반적으로 무엇을 희생합니까?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">일관성 &mdash; 오래된 잔액을 보여줌</button>
+    <button class="quiz-option" data-correct="true">가용성 &mdash; 잘못된 데이터를 보여줄 위험보다 요청 거부</button>
+    <button class="quiz-option" data-correct="false">파티션 허용성 &mdash; 네트워크 분할을 방지함</button>
+    <button class="quiz-option" data-correct="false">셋 모두 &mdash; 뱅킹 시스템은 CAP를 사용하지 않음</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Quiz 2 -->
+<div class="quiz" data-ch="35" data-ex="quiz-circuit-breaker">
+  <h4>핵심 개념 확인</h4>
+  <p>마이크로서비스 아키텍처에서 서킷 브레이커(circuit breaker)는 무엇을 합니까?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">서비스 간 트래픽을 암호화함</button>
+    <button class="quiz-option" data-correct="false">서비스 인스턴스 간 부하를 분산함</button>
+    <button class="quiz-option" data-correct="true">연쇄 장애를 방지하기 위해 실패하는 서비스 호출을 중단함</button>
+    <button class="quiz-option" data-correct="false">API 요청 스키마를 검증함</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Quiz 3 -->
+<div class="quiz" data-ch="35" data-ex="quiz-saga-pattern">
+  <h4>핵심 개념 확인</h4>
+  <p>사가 패턴(saga pattern)에서 4단계 사가의 3단계가 실패하면 어떻게 됩니까?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">전체 사가가 1단계부터 재시도함</button>
+    <button class="quiz-option" data-correct="true">보상 작업이 2단계, 1단계 순으로 (역순으로) 취소함</button>
+    <button class="quiz-option" data-correct="false">1단계와 2단계가 데이터베이스에 의해 자동으로 롤백됨</button>
+    <button class="quiz-option" data-correct="false">사가가 부분적으로 표시되고 불일치 상태로 남겨짐</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Checklist -->
+<div class="checklist" data-ch="35" data-ex="checklist-architecture">
+  <h4>아키텍처 결정 체크리스트</h4>
+  <label><input type="checkbox"><span>모놀리스와 마이크로서비스 사이의 실제 트레이드오프를 설명할 수 있습니다</span></label>
+  <label><input type="checkbox"><span>주어진 시스템에 대해 CP와 AP 중 어떤 것을 선택할지 CAP 정리를 적용할 수 있습니다</span></label>
+  <label><input type="checkbox"><span>이벤트 vs. 커맨드의 차이와 이벤트 기반 아키텍처 사용 시기를 이해합니다</span></label>
+  <label><input type="checkbox"><span>API 버전 관리와 페이지네이션 전략을 설계할 수 있습니다</span></label>
+  <label><input type="checkbox"><span>서킷 브레이커 패턴과 지수 백오프를 설명할 수 있습니다</span></label>
+  <label><input type="checkbox"><span>분산 데이터 일관성을 위한 사가 패턴을 이해합니다</span></label>
+  <label><input type="checkbox"><span>최종 일관성이 허용되는 경우와 그렇지 않은 경우를 알고 있습니다</span></label>
+  <label><input type="checkbox"><span>모놀리스로 시작하고 필요할 때만 분리하는 접근법을 취할 것입니다</span></label>
+</div>
+
+</section>
+
+
+<!-- ===== CH 36 ===== -->
+<section id="ch36" data-ch="36">
+<h2><span class="ch-label">Chapter 36</span> 성능과 관측 가능성 &mdash; 시스템 내부 보기</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">지금 이것이 중요한 이유</div>
+<p>세상에서 가장 우아한 아키텍처를 설계해도 그 내부에서 무슨 일이 일어나는지 <em>볼</em> 수 없다면 눈을 감고 비행하는 것과 같습니다. 애플리케이션이 느릴 때 <em>어디서</em>, <em>왜</em> 느린지 알아야 합니다. 새벽 3시에 장애가 발생하면 추측 없이 무엇이 잘못되었는지 알려주는 도구가 필요합니다. 성능 엔지니어링과 관측 가능성(observability)은 실행 중인 시스템 내부에 눈과 귀를 제공하는 분야입니다. "느린 것 같다"를 "이 함수가 누락된 인덱스 때문에 400ms 걸린다"로 바꿔줍니다.</p>
+</div>
+
+<h3>프로파일링(Profiling): 병목 찾기</h3>
+
+<p><strong>프로파일링(profiling)</strong>은 프로그램이 시간(또는 메모리)을 정확히 어디에 사용하는지 측정하는 것입니다. 추측과 앎의 차이입니다. 흔한 실수는 중요하지 않은 코드를 최적화하는 것입니다 &mdash; 전체 런타임의 0.1%를 차지하는 함수를 10배 빠르게 만드는 데 몇 시간을 소비하는 것입니다. 프로파일링은 코드의 어떤 5%가 느린 속도의 95%를 담당하는지 알려줍니다.</p>
+
+<p><strong>CPU 프로파일링(CPU profiling)</strong>은 각 함수에서 소요되는 시간을 측정합니다. Python의 내장 <code>cProfile</code> 모듈이 표준 도구입니다:</p>
+
+<pre style="overflow-x:auto"><code>import cProfile
+
+def slow_function():
+    total = 0
+    for i in range(1_000_000):
+        total += i ** 2
+    return total
+
+def fast_function():
+    return sum(i ** 2 for i in range(1_000_000))
+
+def main():
+    slow_function()
+    fast_function()
+
+# Profile the main function
+cProfile.run('main()')
+# Output shows: function name, call count, time per call, cumulative time</code></pre>
+
+<p>프로파일 출력은 어떤 함수가 시간을 소비하는지 정확하게 보여줍니다. 먼저 "누적 시간(cumulative time)" 열을 보십시오 &mdash; 함수가 호출하는 모든 함수를 <em>포함하여</em> 해당 함수에서 소요된 총 시간을 알려줍니다. 그런 다음 "호출당 시간(time per call)"을 보고 개별적으로 느린 함수를 찾으십시오.</p>
+
+<p><strong>메모리 프로파일링(memory profiling)</strong>은 프로그램이 할당하는 메모리의 양을 추적합니다. 메모리 누수가 몇 시간 또는 며칠에 걸쳐 충돌을 일으키는 장시간 실행 서버 프로세스에 중요합니다. <code>memory_profiler</code> 같은 도구는 줄별로 메모리 사용량을 보여줄 수 있습니다.</p>
+
+<p><strong>플레임 그래프(flame graph)</strong>는 프로파일링 데이터의 시각적 표현입니다. x축은 각 함수에서 소요된 시간의 비율을 나타내고, y축은 호출 스택을 보여줍니다. 그래프 상단의 넓은 막대가 병목입니다. 복잡한 애플리케이션에서 시간이 어디에 소비되는지 빠르게 이해하는 가장 강력한 도구 중 하나입니다.</p>
+
+<h3>실제 캐싱</h3>
+
+<p>34장에서 캐싱 아키텍처를 논의했습니다. 이제 코드 수준의 구현을 살펴보겠습니다. Python의 <code>functools.lru_cache</code> 데코레이터는 <strong>메모이제이션(memoization)</strong>을 제공합니다 &mdash; 인수를 기반으로 함수의 반환 값을 캐싱합니다:</p>
+
+<pre style="overflow-x:auto"><code>from functools import lru_cache
+
+@lru_cache(maxsize=128)
+def fibonacci(n):
+    """Without caching, this is O(2^n). With caching, it is O(n)."""
+    if n &lt; 2:
+        return n
+    return fibonacci(n - 1) + fibonacci(n - 2)
+
+# First call: computes and caches
+print(fibonacci(100))  # Instant, thanks to caching
+
+# Check cache statistics
+print(fibonacci.cache_info())
+# CacheInfo(hits=98, misses=101, maxsize=128, currsize=101)</code></pre>
+
+<p><strong>캐시 어사이드 패턴(cache-aside pattern)</strong>(또는 "지연 로딩(lazy loading)"이라고도 함)은 가장 일반적인 애플리케이션 수준 캐싱 전략입니다. 코드가 먼저 캐시를 확인하고, 미스(miss)가 발생하면 데이터베이스에서 읽어 캐시에 저장하고 반환합니다:</p>
+
+<pre style="overflow-x:auto"><code>def get_task(task_id, cache, database):
+    """Cache-aside pattern: check cache first, fall back to database."""
+    # 1. Check cache
+    cached = cache.get(f"task:{task_id}")
+    if cached is not None:
+        return cached  # Cache hit!
+
+    # 2. Cache miss - read from database
+    task = database.query("SELECT * FROM tasks WHERE id = %s", (task_id,))
+
+    # 3. Store in cache for next time (with 60-second TTL)
+    cache.set(f"task:{task_id}", task, ttl=60)
+
+    return task</code></pre>
+
+<p><strong>Redis</strong>는 가장 널리 사용되는 애플리케이션 캐시입니다. 문자열, 리스트, 집합, 해시, 정렬된 집합을 지원하는 인메모리 키-값 저장소입니다. 일반적인 사용 사례로는 세션 저장, 속도 제한 카운터, 리더보드(정렬된 집합 사용), 범용 캐싱이 있습니다.</p>
+
+<h3>관측 가능성의 세 가지 기둥</h3>
+
+<p><strong>관측 가능성(observability)</strong>은 시스템의 출력을 검사하여 내부에서 무슨 일이 일어나고 있는지 이해하는 능력입니다. 세 가지 기둥은 <strong>로그(logs)</strong>, <strong>메트릭(metrics)</strong>, <strong>트레이스(traces)</strong>입니다. 각각은 다른 질문에 답하며, 완전한 그림을 위해 세 가지 모두가 필요합니다.</p>
+
+<!-- SVG Diagram: Three Pillars of Observability -->
+<svg viewBox="0 0 780 380" aria-label="Three pillars of observability diagram showing Logs, Metrics, and Traces as columns with examples and the questions each answers" style="width:100%;max-width:780px;margin:2rem auto;display:block">
+  <!-- Title -->
+  <text x="390" y="30" text-anchor="middle" class="label-text" font-size="16" font-weight="bold">Three Pillars of Observability</text>
+
+  <!-- Pillar 1: Logs -->
+  <rect x="30" y="50" width="220" height="290" rx="10" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <rect x="30" y="50" width="220" height="44" rx="10" class="node-accent" stroke="var(--accent)" stroke-width="2"/>
+  <text x="140" y="78" text-anchor="middle" class="label-text" font-size="15" fill="var(--bg)" font-weight="bold">Logs</text>
+
+  <text x="140" y="118" text-anchor="middle" class="sub-text" font-size="11" font-weight="bold">What happened?</text>
+  <text x="50" y="145" class="sub-text" font-size="11">Discrete events with</text>
+  <text x="50" y="160" class="sub-text" font-size="11">timestamps and context</text>
+
+  <text x="140" y="190" text-anchor="middle" class="sub-text" font-size="10" fill="var(--a5)">Examples:</text>
+  <text x="50" y="210" class="sub-text" font-size="10" fill="var(--a5)">- User login failed</text>
+  <text x="50" y="228" class="sub-text" font-size="10" fill="var(--a5)">- Payment processed</text>
+  <text x="50" y="246" class="sub-text" font-size="10" fill="var(--a5)">- Database timeout</text>
+  <text x="50" y="264" class="sub-text" font-size="10" fill="var(--a5)">- Request details</text>
+
+  <text x="140" y="300" text-anchor="middle" class="sub-text" font-size="10" font-style="italic">High detail, high volume</text>
+  <text x="140" y="318" text-anchor="middle" class="sub-text" font-size="10" font-style="italic">Best for debugging</text>
+
+  <!-- Pillar 2: Metrics -->
+  <rect x="280" y="50" width="220" height="290" rx="10" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <rect x="280" y="50" width="220" height="44" rx="10" class="node-accent" stroke="var(--accent)" stroke-width="2"/>
+  <text x="390" y="78" text-anchor="middle" class="label-text" font-size="15" fill="var(--bg)" font-weight="bold">Metrics</text>
+
+  <text x="390" y="118" text-anchor="middle" class="sub-text" font-size="11" font-weight="bold">How is it performing?</text>
+  <text x="300" y="145" class="sub-text" font-size="11">Numeric measurements</text>
+  <text x="300" y="160" class="sub-text" font-size="11">over time (aggregates)</text>
+
+  <text x="390" y="190" text-anchor="middle" class="sub-text" font-size="10" fill="var(--a5)">Examples:</text>
+  <text x="300" y="210" class="sub-text" font-size="10" fill="var(--a5)">- Request latency (p50, p99)</text>
+  <text x="300" y="228" class="sub-text" font-size="10" fill="var(--a5)">- Error rate (5xx / total)</text>
+  <text x="300" y="246" class="sub-text" font-size="10" fill="var(--a5)">- CPU usage (%)</text>
+  <text x="300" y="264" class="sub-text" font-size="10" fill="var(--a5)">- Queue depth</text>
+
+  <text x="390" y="300" text-anchor="middle" class="sub-text" font-size="10" font-style="italic">Low detail, low volume</text>
+  <text x="390" y="318" text-anchor="middle" class="sub-text" font-size="10" font-style="italic">Best for alerting and trends</text>
+
+  <!-- Pillar 3: Traces -->
+  <rect x="530" y="50" width="220" height="290" rx="10" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <rect x="530" y="50" width="220" height="44" rx="10" class="node-accent" stroke="var(--accent)" stroke-width="2"/>
+  <text x="640" y="78" text-anchor="middle" class="label-text" font-size="15" fill="var(--bg)" font-weight="bold">Traces</text>
+
+  <text x="640" y="118" text-anchor="middle" class="sub-text" font-size="11" font-weight="bold">Where is time spent?</text>
+  <text x="550" y="145" class="sub-text" font-size="11">End-to-end request path</text>
+  <text x="550" y="160" class="sub-text" font-size="11">across services</text>
+
+  <text x="640" y="190" text-anchor="middle" class="sub-text" font-size="10" fill="var(--a5)">Examples:</text>
+  <text x="550" y="210" class="sub-text" font-size="10" fill="var(--a5)">- API to Auth to DB to Cache</text>
+  <text x="550" y="228" class="sub-text" font-size="10" fill="var(--a5)">- 200ms in auth service</text>
+  <text x="550" y="246" class="sub-text" font-size="10" fill="var(--a5)">- 50ms in database</text>
+  <text x="550" y="264" class="sub-text" font-size="10" fill="var(--a5)">- 10ms in cache lookup</text>
+
+  <text x="640" y="300" text-anchor="middle" class="sub-text" font-size="10" font-style="italic">Medium detail, medium vol.</text>
+  <text x="640" y="318" text-anchor="middle" class="sub-text" font-size="10" font-style="italic">Best for latency analysis</text>
+
+  <!-- Connecting arrows at bottom -->
+  <line x1="250" y1="360" x2="280" y2="360" stroke="var(--a5)" stroke-width="1.5" marker-end="url(#arrowhead-muted)"/>
+  <line x1="500" y1="360" x2="530" y2="360" stroke="var(--a5)" stroke-width="1.5" marker-end="url(#arrowhead-muted)"/>
+  <text x="265" y="375" text-anchor="middle" class="sub-text" font-size="9" fill="var(--a5)">correlate</text>
+  <text x="515" y="375" text-anchor="middle" class="sub-text" font-size="9" fill="var(--a5)">correlate</text>
+</svg>
+
+<h3>구조화된 로깅(Structured Logging)</h3>
+
+<p>전통적인 텍스트 로그는 다음과 같습니다:</p>
+
+<pre style="overflow-x:auto"><code>2026-03-18 14:23:05 ERROR Failed to create task for user 42: database timeout</code></pre>
+
+<p>사람이 읽기는 쉽지만 기계에는 적대적입니다. "사용자 42의 모든 오류"를 검색하려면 불안정한 정규식 파싱이 필요합니다. <strong>구조화된 로깅(structured logging)</strong>은 일관된 필드를 가진 JSON 객체로 로그를 출력합니다:</p>
+
+<pre style="overflow-x:auto"><code>import json
+import time
+import uuid
+
+class StructuredLogger:
+    """Logger that outputs JSON-formatted log entries."""
+
+    def __init__(self, service_name):
+        self.service_name = service_name
+
+    def log(self, level, message, **context):
+        entry = {
+            "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+            "level": level,
+            "service": self.service_name,
+            "message": message,
+            **context
+        }
+        print(json.dumps(entry))
+
+logger = StructuredLogger("taskforge-api")
+
+# Usage with correlation ID for request tracing
+correlation_id = str(uuid.uuid4())
+logger.log("INFO", "Task created",
+    correlation_id=correlation_id,
+    user_id=42,
+    task_id=1001,
+    duration_ms=45
+)
+# Output:
+# {"timestamp":"2026-03-18T14:23:05Z","level":"INFO","service":"taskforge-api",
+#  "message":"Task created","correlation_id":"a1b2c3...","user_id":42,
+#  "task_id":1001,"duration_ms":45}</code></pre>
+
+<p><strong>상관 관계 ID(correlation ID)</strong>(때로는 "요청 ID" 또는 "추적 ID"라고도 함)는 요청이 시스템에 들어올 때 생성되는 고유 식별자입니다. 모든 서비스가 로그에 이 ID를 포함하므로, 요청이 접촉한 모든 서비스에서 단일 요청의 모든 로그 항목을 필터링할 수 있습니다.</p>
+
+<p>표준 <strong>로그 레벨(log level)</strong>은 심각도를 전달합니다:</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>표준 로그 레벨과 각각의 사용 시기</caption>
+<thead><tr><th>레벨</th><th>사용 시기</th><th>예시</th></tr></thead>
+<tbody>
+<tr><td><code>DEBUG</code></td><td>개발자를 위한 상세한 진단 정보</td><td>변수 값, 쿼리 파라미터</td></tr>
+<tr><td><code>INFO</code></td><td>기록할 가치 있는 정상 작업</td><td>사용자 로그인, 태스크 생성</td></tr>
+<tr><td><code>WARNING</code></td><td>예상치 못하지만 깨지지는 않은 것</td><td>캐시 미스율이 임계값 초과</td></tr>
+<tr><td><code>ERROR</code></td><td>이 요청에 대해 무언가 실패함</td><td>데이터베이스 쿼리 타임아웃</td></tr>
+<tr><td><code>CRITICAL</code></td><td>시스템이 다운될 위험이 있음</td><td>디스크 꽉 참, 메모리 부족</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>모니터링과 알림: 황금 신호(Golden Signals)</h3>
+
+<p>Google의 Site Reliability Engineering 책은 모든 서비스가 모니터링해야 할 네 가지 <strong>황금 신호(golden signal)</strong>를 정의합니다:</p>
+
+<ol>
+<li><strong>지연 시간(latency)</strong> &mdash; 요청이 걸리는 시간. 평균만이 아닌 백분위수(p50, p95, p99)를 추적하십시오. 100ms의 평균은 요청의 1%가 5초 걸린다는 사실을 숨길 수 있습니다.</li>
+<li><strong>트래픽(traffic)</strong> &mdash; 시스템에 가해지는 수요. 초당 요청, 동시 사용자 수, 또는 데이터 처리량.</li>
+<li><strong>오류(errors)</strong> &mdash; 실패한 요청의 비율. 명시적 실패 (HTTP 500)와 암묵적 실패 (HTTP 200이지만 잘못된 콘텐츠) 모두 포함.</li>
+<li><strong>포화도(saturation)</strong> &mdash; 시스템이 얼마나 "가득 찬" 상태인지. CPU 사용률, 메모리 사용량, 큐 깊이, 디스크 I/O. 포화도는 문제가 발생하기 전에 미래 문제를 예측합니다.</li>
+</ol>
+
+<p>이 신호들은 <strong>SLI, SLO, SLA</strong>와 연결됩니다:</p>
+
+<ul>
+<li><strong>SLI (Service Level Indicator, 서비스 수준 지표)</strong> &mdash; 정량적 측정. 예시: "요청의 99.2%가 200ms 미만에 완료됨."</li>
+<li><strong>SLO (Service Level Objective, 서비스 수준 목표)</strong> &mdash; 내부적으로 설정한 목표. 예시: "요청의 99.5%가 200ms 미만을 목표로 함."</li>
+<li><strong>SLA (Service Level Agreement, 서비스 수준 계약)</strong> &mdash; 위반 시 결과를 포함한 고객에 대한 계약상 약속. 예시: "99.9% 가동 시간을 보장하며 그렇지 않으면 크레딧을 제공함."</li>
+</ul>
+
+<p>좋은 알림은 <em>원인</em> (CPU 80% 초과)이 아닌 <em>증상</em> (오류율 5% 초과)을 기반으로 합니다. 높은 CPU는 사용자에게 보이는 영향을 초래할 때만 문제입니다. 사용자가 경험하는 것에 대해 알림을 설정하고, 대시보드와 로그를 사용하여 원인을 찾으십시오.</p>
+
+<h3>분산 추적(Distributed Tracing)</h3>
+
+<p>단일 사용자 요청이 다섯 개의 서비스를 통과하고 총 응답 시간이 2초일 때, 어떤 서비스가 병목입니까? <strong>분산 추적(distributed tracing)</strong>은 서비스 경계 전반에 걸쳐 요청을 추적함으로써 이에 답합니다.</p>
+
+<p>각 서비스는 <strong>스팬(span)</strong>을 생성합니다 &mdash; 수행한 작업, 소요 시간, 그리고 부모 스팬의 기록입니다. 스팬들이 함께 요청의 완전한 라이프사이클을 보여주는 <strong>트레이스(trace)</strong> 트리를 형성합니다. 모든 스팬을 연결하기 위해 추적 ID가 서비스 간에 전달됩니다 (보통 HTTP 헤더로).</p>
+
+<pre style="overflow-x:auto"><code># Conceptual trace structure (simplified)
+trace = {
+    "trace_id": "abc-123",
+    "spans": [
+        {"service": "api-gateway",    "duration_ms": 1950, "parent": None},
+        {"service": "auth-service",   "duration_ms": 150,  "parent": "api-gateway"},
+        {"service": "task-service",   "duration_ms": 1700, "parent": "api-gateway"},
+        {"service": "database",       "duration_ms": 1500, "parent": "task-service"},
+    ]
+}
+# Diagnosis: 1500ms in the database query - that is the bottleneck!</code></pre>
+
+<h3>프로덕션 디버깅: 조사 마인드셋</h3>
+
+<p>프로덕션 디버깅은 개발 중 디버깅과 근본적으로 다릅니다. 디버거를 연결할 수 없고, 출력 문을 추가할 수 없으며, 문제가 간헐적일 수 있습니다. 접근 방식은 체계적이어야 합니다:</p>
+
+<ol>
+<li><strong>관찰(Observe)</strong> &mdash; 증상은 무엇입니까? 대시보드, 오류율, 최근 로그를 확인하십시오. 언제 시작되었습니까? 최근에 무엇이 변경되었습니까 (배포, 설정 변경, 트래픽 급증)?</li>
+<li><strong>가설 수립(Hypothesize)</strong> &mdash; 원인에 대한 이론을 형성하십시오. "새 배포가 느린 쿼리를 도입했다." "트래픽 급증으로 데이터베이스가 과부하되었다."</li>
+<li><strong>테스트(Test)</strong> &mdash; 가설을 검증하십시오. 쿼리 성능 메트릭을 확인하십시오. 데이터베이스 연결 수를 살펴보십시오. 배포 전후의 오류율을 비교하십시오.</li>
+<li><strong>조치(Act)</strong> &mdash; 즉각적인 문제를 수정하고 (배포 롤백, 데이터베이스 스케일 업), 그런 다음 근본 원인을 해결하십시오.</li>
+</ol>
+
+<p>인시던트 해결 후 <strong>포스트모텀(postmortem)</strong>을 수행하십시오. 좋은 포스트모텀은 <strong>비난 없음(blameless)</strong>입니다 &mdash; 개인 책임 ("Bob이 나쁜 쿼리를 작성했다")이 아닌 시스템적 원인 ("코드 리뷰 프로세스가 이것을 잡지 못했다")에 집중합니다. 구체적인 실행 항목을 도출합니다: "태스크 목록 엔드포인트에 부하 테스트 추가", "데이터베이스 지연 시간이 500ms를 초과할 때 알림 추가."</p>
+
+<div class="pq">&ldquo;모든 인시던트는 선물입니다 &mdash; 시스템에 있었는지 몰랐던 약점에 대해 배울 기회입니다.&rdquo;</div>
+
+<div role="note" class="callout warn">
+<div class="callout-title">주의: 관측 가능성은 선택 사항이 아닙니다</div>
+<p>많은 개발자들이 로깅과 모니터링을 나중에 추가할 것으로 취급합니다. 실제로 적절한 관측 가능성 없이 발생하는 첫 번째 프로덕션 인시던트는 처음부터 관측 가능성을 설정하는 것보다 더 많은 엔지니어링 시간을 소비하게 됩니다. 첫날부터 구축하십시오. 구조화된 로깅, 기본 메트릭 (네 가지 황금 신호), 상관 관계 ID는 구축하는 모든 서비스에서 표준이 되어야 합니다.</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">TaskForge 연결: 프로덕션을 위한 계측</div>
+<p>TaskForge의 프로덕션 준비된 관측 가능성의 모습:</p>
+<ul>
+<li><strong>구조화된 로깅:</strong> 모든 API 요청이 메서드, 경로, 상태 코드, 지속 시간, 사용자 ID, 상관 관계 ID를 기록합니다.</li>
+<li><strong>메트릭:</strong> 요청 지연 시간 (p50, p95, p99), 오류율 (5xx 응답 / 전체), 활성 태스크 수 (비즈니스 메트릭), 데이터베이스 쿼리 지속 시간을 추적합니다.</li>
+<li><strong>알림:</strong> 오류율이 5분 동안 5%를 초과하거나, p99 지연 시간이 2초를 초과하거나, 데이터베이스 연결 풀이 80% 사용률을 초과할 때 트리거됩니다.</li>
+<li><strong>프로파일:</strong> 태스크 목록 엔드포인트에서 <code>cProfile</code>을 실행하여 <code>tasks.user_id</code>에 누락된 인덱스가 전체 테이블 스캔을 유발한다는 것을 발견합니다. 인덱스를 추가하면 지연 시간이 800ms에서 15ms로 떨어집니다.</li>
+</ul>
+</div>
+
+<!-- Micro-Exercise -->
+<div role="note" class="callout ok">
+<div class="callout-title">직접 해보기: 구조화된 로그 읽기</div>
+<p>이 로그 항목이 주어졌을 때 답하십시오: 무슨 일이 발생했습니까? 어떤 사용자가 영향을 받았습니까? 얼마나 걸렸습니까? 이것은 어떤 요청의 일부였습니까?</p>
+<pre style="overflow-x:auto"><code>{"timestamp":"2026-03-18T09:15:22Z","level":"ERROR","service":"taskforge-api",
+ "message":"Failed to create task","correlation_id":"f47ac10b-58cc",
+ "user_id":87,"error":"database_timeout","duration_ms":5003}</code></pre>
+<p><strong>답:</strong> 데이터베이스 타임아웃으로 인해 태스크 생성 시도가 실패했습니다. 사용자 87이 영향을 받았습니다. 요청은 5003ms (5초 이상) 걸렸습니다. 상관 관계 ID <code>f47ac10b-58cc</code>를 사용하여 서비스 전반에 걸쳐 이 요청과 관련된 모든 로그 항목을 찾을 수 있습니다.</p>
+</div>
+
+<!-- Pyodide Exercise: Profiling Comparison -->
+<div class="exercise" data-type="pyodide" data-ch="36" data-ex="profiling-comparison">
+  <div class="exercise-header">
+    <h4>연습문제: 프로파일링과 비교</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">두 함수가 1부터 n까지의 제곱합을 계산합니다. 하나는 O(n&sup2;)이고 다른 하나는 O(1)입니다. Python의 <code>time</code> 모듈을 사용하여 두 함수를 프로파일링하고, 더 빠른 방법의 이름을 반환하는 <code>identify_faster</code> 함수를 작성하십시오. 그런 다음 O(1) 수학 공식 n(n+1)(2n+1)/6를 사용하여 <code>sum_of_squares_fast</code>를 구현하십시오.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+import time
+
+def sum_of_squares_slow(n):
+    """O(n^2) approach: compute each square by repeated addition."""
+    total = 0
+    for i in range(1, n + 1):
+        square = 0
+        for j in range(i):
+            square += i
+        total += square
+    return total
+
+def sum_of_squares_fast(n):
+    """O(1) approach: use the mathematical formula."""
+    # TODO: Return n*(n+1)*(2*n+1)//6
+    pass
+
+def identify_faster(n=5000):
+    """Time both functions and return the name of the faster one.
+
+    Returns:
+        str: Either "slow" or "fast"
+    """
+    # TODO: Time sum_of_squares_slow(n) and sum_of_squares_fast(n)
+    # Return "slow" or "fast" based on which is quicker
+    pass
+    </script>
+    <script type="text/plain" class="test-code">
+# Test correctness of fast implementation
+assert sum_of_squares_fast(1) == 1, "sum_of_squares_fast(1) should be 1"
+assert sum_of_squares_fast(5) == 55, "sum_of_squares_fast(5) should be 55 (1+4+9+16+25)"
+assert sum_of_squares_fast(10) == 385, "sum_of_squares_fast(10) should be 385"
+assert sum_of_squares_fast(100) == 338350, "sum_of_squares_fast(100) should be 338350"
+
+# Test that both functions produce the same result
+for test_n in [1, 5, 10, 50]:
+    slow_result = sum_of_squares_slow(test_n)
+    fast_result = sum_of_squares_fast(test_n)
+    assert slow_result == fast_result, f"Results differ for n={test_n}: slow={slow_result}, fast={fast_result}"
+
+# Test that identify_faster correctly identifies the fast version
+result = identify_faster(5000)
+assert result == "fast", f"identify_faster should return 'fast', got '{result}'"
+
+print("All profiling tests passed!")
+print(f"sum_of_squares_fast(1000) = {sum_of_squares_fast(1000)}")
+    </script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">실행</button>
+    <button class="ex-check">확인</button>
+    <button class="ex-hint" data-level="0">힌트</button>
+    <button class="ex-reset">초기화</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">제곱합의 수학 공식: n * (n + 1) * (2 * n + 1) // 6. 결과를 정수로 유지하려면 정수 나눗셈(//)을 사용하십시오.</p>
+    <p class="hint">함수를 측정하려면 호출 전후에 time.time()을 기록하십시오. 차이가 초 단위의 경과 시간입니다.</p>
+    <p class="hint">identify_faster에서: start1 = time.time(); sum_of_squares_slow(n); time_slow = time.time() - start1. fast도 동일하게 하십시오. time_fast &lt; time_slow이면 "fast"를, 그렇지 않으면 "slow"를 반환하십시오.</p>
+  </div>
+</div>
+
+<!-- Quiz -->
+<div class="quiz" data-ch="36" data-ex="quiz-golden-signals">
+  <h4>핵심 개념 확인</h4>
+  <p>네 가지 황금 신호 중 시스템이 얼마나 "가득 찬" 상태인지를 측정하는 것은 무엇입니까?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">지연 시간(Latency)</button>
+    <button class="quiz-option" data-correct="false">트래픽(Traffic)</button>
+    <button class="quiz-option" data-correct="false">오류(Errors)</button>
+    <button class="quiz-option" data-correct="true">포화도(Saturation)</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Quiz 2 -->
+<div class="quiz" data-ch="36" data-ex="quiz-log-levels">
+  <h4>핵심 개념 확인</h4>
+  <p>사용자가 태스크 생성이 가끔 실패한다고 보고합니다. 로그를 확인하니 "데이터베이스 연결 풀 소진" 메시지가 보입니다. 이 메시지의 로그 레벨은 무엇이어야 합니까?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">DEBUG &mdash; 기술적인 세부 사항임</button>
+    <button class="quiz-option" data-correct="false">INFO &mdash; 정상적인 운영 이벤트임</button>
+    <button class="quiz-option" data-correct="false">WARNING &mdash; 아직 실제로 실패하지 않음</button>
+    <button class="quiz-option" data-correct="true">ERROR &mdash; 요청 실패를 유발하고 있음</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Checklist -->
+<div class="checklist" data-ch="36" data-ex="checklist-observability">
+  <h4>성능과 관측 가능성 체크리스트</h4>
+  <label><input type="checkbox"><span>Python 프로그램을 프로파일링하여 성능 병목을 찾을 수 있습니다</span></label>
+  <label><input type="checkbox"><span>관측 가능성의 세 가지 기둥(로그, 메트릭, 트레이스)을 이해합니다</span></label>
+  <label><input type="checkbox"><span>상관 관계 ID를 사용한 구조화된 로깅을 구현할 수 있습니다</span></label>
+  <label><input type="checkbox"><span>네 가지 황금 신호와 각각이 측정하는 것을 말할 수 있습니다</span></label>
+  <label><input type="checkbox"><span>SLI, SLO, SLA의 차이를 이해합니다</span></label>
+  <label><input type="checkbox"><span><code>@lru_cache</code>를 사용한 메모이제이션 방법을 알고 있습니다</span></label>
+  <label><input type="checkbox"><span>비난 없는 포스트모텀 프로세스를 설명할 수 있습니다</span></label>
+  <label><input type="checkbox"><span>원인(CPU 사용률)이 아닌 증상(오류율)에 대해 알림을 설정할 것입니다</span></label>
+</div>
+
+</section>
+
+
+<!-- ===== CH 37 ===== -->
+<section id="ch37" data-ch="37">
+<h2><span class="ch-label">Chapter 37</span> 대규모 코드베이스 탐색과 발전 &mdash; 실제 세계에서 일하기</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">지금 이것이 중요한 이유</div>
+<p>지금까지의 모든 튜토리얼, 연습, 프로젝트는 처음부터 시작했습니다. 하지만 현실 세계에서는 거의 그렇지 않습니다. 경력의 대부분은 이미 존재하는 코드베이스&mdash;다른 사람이 작성한, 때로는 몇 년 전에 만든, 종종 불완전한 문서만 있는 코드베이스&mdash;에서 작업하게 됩니다. 낯선 코드를 읽고, 이해하고, 안전하게 발전시키는 능력은 전문 엔지니어가 개발할 수 있는 가장 중요한 실전 스킬입니다. 이 챕터는 그것을 위한 체계적인 접근법을 가르칩니다.</p>
+</div>
+
+<h3>낯선 코드 읽기: 체계적인 접근 방식</h3>
+
+<p>100,000줄의 코드베이스를 처음 열면 압도감을 느낍니다. 핵심은 교과서를 외우려는 학생이 아닌 미지의 영역을 지도로 만드는 탐험가처럼 접근하는 것입니다. 모든 것을 이해할 필요는 없습니다 &mdash; 중요한 부분의 정신적 지도를 구축해야 합니다.</p>
+
+<p><strong>전략 1: 진입점 찾기.</strong> 모든 프로그램에는 시작점이 있습니다. 웹 서버의 경우 HTTP 요청 수신을 시작하는 파일입니다. CLI 도구의 경우 <code>if __name__ == "__main__"</code> 블록입니다. 라이브러리의 경우 <code>__init__.py</code>의 공개 API입니다. 이 앵커를 찾으면 추적을 시작할 위치가 생깁니다.</p>
+
+<p><strong>전략 2: 해피 패스(happy path) 추적.</strong> 가장 일반적인 사용자 작업 (예: "태스크 생성")을 선택하고 HTTP 라우트 핸들러에서 서비스 레이어를 거쳐 데이터베이스로 들어갔다가 돌아오는 코드를 따라가십시오. 오류 처리, 엣지 케이스, 유틸리티 모듈에 의해 산만해지지 마십시오. 정상 경로를 먼저 이해하십시오.</p>
+
+<p><strong>전략 3: 의존성 그래프 그리기.</strong> 어떤 모듈이 어떤 다른 모듈을 가져오는지 스케치하십시오. 이것은 아키텍처를 드러냅니다: 어떤 모듈이 중심적인지 (많은 곳에서 가져옴), 어떤 것이 주변부인지 (적은 곳에서 가져옴), 어떤 것이 고립되었는지 (아무데서도 가져오지 않음 &mdash; 데드 코드일 가능성).</p>
+
+<p><strong>전략 4: 하향식 vs. 상향식.</strong> 하향식(top-down)은 <code>main()</code>에서 시작하여 함수 호출로 파고듭니다. 이는 큰 그림을 빠르게 제공합니다. 상향식(bottom-up)은 테스트와 소규모 유틸리티 함수에서 시작하여 구체적인 예에서 이해를 구축합니다. 둘 다 사용하십시오: 아키텍처는 하향식으로 시작하고, 특정 모듈을 이해해야 할 때 상향식으로 전환하십시오.</p>
+
+<p><strong>전략 5: 솔기(seam) 찾기.</strong> <strong>솔기(seam)</strong>는 모듈 사이의 경계 &mdash; 한 모듈이 정의된 인터페이스를 통해 다른 모듈과 상호작용하는 장소입니다. 솔기를 이해하면 어디서 안전하게 변경을 할 수 있는지 (모듈 내부, 솔기 뒤에서)와 변경이 코드베이스 전반에 파급될 곳 (솔기에서, 모든 소비자에게 영향)을 알 수 있습니다.</p>
+
+<pre style="overflow-x:auto"><code># A practical code-reading session for a Python project:
+# 1. Check the README and any docs/ directory
+# 2. Look at pyproject.toml or setup.py for dependencies and entry points
+# 3. Find the main entry point:
+#    grep -r "if __name__" src/
+#    grep -r "def main" src/
+# 4. Look at the test directory structure - it mirrors the source
+# 5. Read the most recent tests - they show current behavior
+# 6. Use git log --oneline -20 to see recent changes
+# 7. Draw a quick sketch of the module dependencies</code></pre>
+
+<h3>레거시 시스템 이해: 고고학적 접근 방식</h3>
+
+<p><strong>레거시 코드(legacy code)</strong>는 비하적인 표현이 아닙니다 &mdash; 여전히 실행될 만큼 가치 있는 코드입니다. 도전 과제는 왜 그렇게 작성되었는지 이해하는 것입니다. 답은 보통 역사에 있습니다.</p>
+
+<p><strong><code>git blame</code></strong>은 파일의 각 줄을 마지막으로 누가 언제 수정했는지 보여줍니다. 더 중요한 것은 <em>왜</em> 그 변경이 이루어졌는지 설명하는 커밋 메시지를 검사할 수 있는 커밋 해시를 보여준다는 것입니다. "왜 이 코드가 이상한가?"라는 많은 질문들이 이를 도입한 커밋을 찾음으로써 답해집니다.</p>
+
+<pre style="overflow-x:auto"><code># Who changed this confusing line, and why?
+git blame src/task_service.py
+
+# Read the full commit message for that change
+git show abc123f
+
+# Search the commit history for when a function was introduced
+git log --all -S "def calculate_priority" --oneline
+
+# Look at pull requests (on GitHub) for discussion context
+# PR comments often contain design decisions and alternatives considered</code></pre>
+
+<p><strong>하중 지지 벽 식별.</strong> 건물에서 일부 벽은 지붕을 지탱합니다 &mdash; 구조물이 무너지지 않고는 제거할 수 없습니다. 코드베이스에서 일부 모듈은 <em>모든 것</em>에 의해 가져오고 의존됩니다. 이를 변경하는 것은 고위험입니다. 코드를 수정하기 전에 무엇이 그것에 의존하는지 이해하십시오.</p>
+
+<p><strong>발견한 것을 문서화하십시오.</strong> 이해를 구축하면서 적어두십시오. 대략적인 메모라도 ("TaskService는 인증을 위해 UserService를 호출한다; 태스크 목록 캐싱에 Redis를 사용한다; calculate_priority 함수는 14곳에서 호출된다") 이 코드를 읽는 다음 사람 &mdash; 미래의 자신 포함 &mdash; 에게 매우 귀중합니다.</p>
+
+<h3>안전한 변경: 깨지지 않고 수정하는 방법</h3>
+
+<p>코드베이스에서 가장 위험한 순간은 모든 영향을 이해하지 못한 채 무언가를 변경할 때입니다. 안전하게 변경하는 검증된 기술들이 있습니다.</p>
+
+<p><strong>특성화 테스트(characterization test)</strong>(또는 "골든 마스터(golden master)" 테스트라고도 함)는 그 동작이 올바른지 여부에 관계없이 코드의 <em>현재</em> 동작을 캡처합니다. 리팩터링 전에 코드가 <em>실제로 하는</em> 것을 단언하는 테스트를 작성합니다 &mdash; 코드가 <em>해야</em> 한다고 생각하는 것이 아니라. 그런 다음 리팩터링하고, 테스트가 여전히 통과하면 동작이 보존되었음을 알 수 있습니다.</p>
+
+<pre style="overflow-x:auto"><code># Step 1: Write characterization tests for existing behavior
+def test_calculate_priority_characterization():
+    """Captures current behavior - may or may not be 'correct'."""
+    # These assertions describe what the code DOES, not what it SHOULD do
+    assert calculate_priority(urgent=True, due_days=1) == 95
+    assert calculate_priority(urgent=True, due_days=30) == 70
+    assert calculate_priority(urgent=False, due_days=1) == 60
+    assert calculate_priority(urgent=False, due_days=30) == 10
+    # Edge case: negative due_days (overdue) - what does it actually return?
+    assert calculate_priority(urgent=False, due_days=-5) == 80  # Discovered!
+
+# Step 2: Refactor the code
+# Step 3: Run characterization tests - they must all still pass</code></pre>
+
+<p><strong>스트랭글러 피그 패턴(strangler fig pattern)</strong>은 레거시 시스템을 점진적으로 교체하는 전략입니다. 기존 나무를 감싸며 자라다가 결국 대체하는 무화과나무에서 이름을 따왔습니다. 패턴의 작동 방식:</p>
+
+<ol>
+<li>오래된 시스템 앞에 <strong>파사드(facade)</strong>(프록시)를 배치합니다.</li>
+<li>동일한 파사드 뒤의 새 시스템에 새 기능을 구현합니다.</li>
+<li>오래된 시스템에서 새 시스템으로 더 많은 트래픽을 점진적으로 라우팅합니다.</li>
+<li>모든 트래픽이 새 시스템에 있으면 오래된 것을 폐기합니다.</li>
+</ol>
+
+<p>모든 단계에서 두 시스템이 실행 중이며 트래픽을 오래된 시스템으로 되돌려 즉시 롤백할 수 있습니다.</p>
+
+<!-- SVG Diagram: Strangler Fig Pattern -->
+<svg viewBox="0 0 780 350" aria-label="Strangler Fig pattern diagram showing a facade routing requests gradually from an old system to a new system growing alongside it" style="width:100%;max-width:780px;margin:2rem auto;display:block">
+  <!-- Title -->
+  <text x="390" y="25" text-anchor="middle" class="label-text" font-size="15" font-weight="bold">The Strangler Fig Pattern</text>
+
+  <!-- Phase 1: Before -->
+  <text x="130" y="60" text-anchor="middle" class="sub-text" font-size="12" font-weight="bold">Phase 1: Before</text>
+  <rect x="70" y="70" width="120" height="36" rx="6" class="node-accent" stroke="var(--accent)" stroke-width="2"/>
+  <text x="130" y="93" text-anchor="middle" class="label-text" font-size="12" fill="var(--bg)">Facade</text>
+  <line x1="130" y1="106" x2="130" y2="130" class="arrow" marker-end="url(#arrowhead)"/>
+  <rect x="50" y="133" width="160" height="80" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="130" y="165" text-anchor="middle" class="label-text" font-size="12">Old System</text>
+  <text x="130" y="185" text-anchor="middle" class="sub-text" font-size="10" fill="var(--a5)">100% traffic</text>
+
+  <!-- Phase 2: During -->
+  <text x="390" y="60" text-anchor="middle" class="sub-text" font-size="12" font-weight="bold">Phase 2: Migration</text>
+  <rect x="330" y="70" width="120" height="36" rx="6" class="node-accent" stroke="var(--accent)" stroke-width="2"/>
+  <text x="390" y="93" text-anchor="middle" class="label-text" font-size="12" fill="var(--bg)">Facade</text>
+
+  <!-- Old system (smaller) -->
+  <line x1="365" y1="106" x2="340" y2="130" class="arrow" marker-end="url(#arrowhead)"/>
+  <rect x="280" y="133" width="120" height="80" rx="8" class="node-fill" stroke="var(--a5)" stroke-width="1.5"/>
+  <text x="340" y="165" text-anchor="middle" class="label-text" font-size="11">Old System</text>
+  <text x="340" y="185" text-anchor="middle" class="sub-text" font-size="10" fill="var(--a5)">30% traffic</text>
+
+  <!-- New system (growing) -->
+  <line x1="415" y1="106" x2="440" y2="130" class="arrow" marker-end="url(#arrowhead)"/>
+  <rect x="400" y="133" width="130" height="80" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="465" y="165" text-anchor="middle" class="label-text" font-size="11">New System</text>
+  <text x="465" y="185" text-anchor="middle" class="sub-text" font-size="10" fill="var(--a5)">70% traffic</text>
+
+  <!-- Phase 3: After -->
+  <text x="650" y="60" text-anchor="middle" class="sub-text" font-size="12" font-weight="bold">Phase 3: Complete</text>
+  <rect x="590" y="70" width="120" height="36" rx="6" class="node-accent" stroke="var(--accent)" stroke-width="2"/>
+  <text x="650" y="93" text-anchor="middle" class="label-text" font-size="12" fill="var(--bg)">Facade</text>
+  <line x1="650" y1="106" x2="650" y2="130" class="arrow" marker-end="url(#arrowhead)"/>
+  <rect x="570" y="133" width="160" height="80" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="650" y="165" text-anchor="middle" class="label-text" font-size="12">New System</text>
+  <text x="650" y="185" text-anchor="middle" class="sub-text" font-size="10" fill="var(--a5)">100% traffic</text>
+
+  <!-- Arrows between phases -->
+  <line x1="210" y1="170" x2="265" y2="170" stroke="var(--a5)" stroke-width="1.5" stroke-dasharray="6" marker-end="url(#arrowhead-muted)"/>
+  <line x1="545" y1="170" x2="558" y2="170" stroke="var(--a5)" stroke-width="1.5" stroke-dasharray="6" marker-end="url(#arrowhead-muted)"/>
+
+  <!-- Key point -->
+  <rect x="140" y="260" width="500" height="70" rx="8" fill="none" stroke="var(--a5)" stroke-width="1" stroke-dasharray="4"/>
+  <text x="390" y="285" text-anchor="middle" class="sub-text" font-size="12">Key: You can roll back at any point by routing traffic to the old system.</text>
+  <text x="390" y="305" text-anchor="middle" class="sub-text" font-size="12">The facade acts as a switch between old and new implementations.</text>
+  <text x="390" y="325" text-anchor="middle" class="sub-text" font-size="11" fill="var(--a5)">Feature flags control which system handles each request.</text>
+</svg>
+
+<p><strong>기능 플래그(feature flag)</strong>를 사용하면 사용자에게 배포하지 않고 코드를 배포할 수 있습니다. 새 동작을 조건부 검사로 감싸고 (<code>if feature_enabled("new_priority_algorithm")</code>) 배포합니다. 플래그가 처음에는 꺼져 있어 사용자가 변경 사항을 보지 못합니다. 그런 다음 1%의 사용자에게 활성화하고, 문제를 모니터링하고, 100%까지 점진적으로 롤아웃할 수 있습니다. 문제가 발생하면 즉시 플래그를 끄면 됩니다 &mdash; 배포가 필요 없습니다.</p>
+
+<h3>기술 부채: 실용적인 프레임워크</h3>
+
+<p><strong>기술 부채(technical debt)</strong>는 Ward Cunningham이 만든 은유입니다: 재정적 부채가 지금 무언가를 사고 나중에 (이자와 함께) 지불하게 하듯이, 기술적 지름길은 지금 더 빠르게 출시하게 해주지만 미래의 변경을 더 느리게 만듭니다 (이자). 모든 기술 부채가 나쁜 것은 아닙니다 &mdash; 때로는 빠르게 출시하는 것이 올바른 비즈니스 결정입니다. 문제는 부채가 너무 많이 쌓이고 상환을 멈출 때 발생합니다.</p>
+
+<p>기술 부채를 측정하는 실용적인 방법들:</p>
+
+<ul>
+<li><strong>새 개발자가 생산적이 되는 데 얼마나 걸립니까?</strong> 3일 대신 3주가 걸린다면 온보딩 부채가 있습니다.</li>
+<li><strong>한 영역의 변경이 다른 영역을 얼마나 자주 깨뜨립니까?</strong> 자주 그렇다면 결합 부채가 있습니다.</li>
+<li><strong>테스트 스위트는 얼마나 걸립니까?</strong> 45분이 걸린다면 개발자들이 건너뛰고 버그가 출시됩니다. 이것이 테스트 인프라 부채입니다.</li>
+<li><strong>코드의 얼마나 많은 부분이 한 사람만 이해합니까?</strong> 이것이 지식 부채입니다 &mdash; 버스 팩터(bus factor)가 1인 것입니다.</li>
+</ul>
+
+<p>부채를 포괄적으로가 아닌 <strong>전략적으로</strong> 상환하십시오. 아무도 건드리지 않는 코드를 리팩터링하는 것은 시간 낭비입니다. 변경 빈도가 높고 결함률이 높은 모듈에 집중하십시오 &mdash; 이것이 부채가 실제로 비용을 초래하는 영역입니다.</p>
+
+<h3>시니어 기술로서의 코드 리뷰</h3>
+
+<p>코드 리뷰는 버그를 찾는 것만이 아닙니다. 좋은 코드 리뷰는 코드를 개선하고 <em>동시에</em> 작성자를 성장시킵니다. 경험 많은 리뷰어가 집중하는 것들:</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>코드 리뷰 우선순위와 피드백 예시</caption>
+<thead><tr><th>우선순위</th><th>확인 사항</th><th>피드백 예시</th></tr></thead>
+<tbody>
+<tr><td>1. 정확성</td><td>주장하는 것을 하는가? 엣지 케이스? 레이스 컨디션?</td><td>&ldquo;여기서 <code>user_id</code>가 None이면 어떻게 됩니까?&rdquo;</td></tr>
+<tr><td>2. 가독성</td><td>코드에 익숙하지 않은 사람이 이해할 수 있는가?</td><td>&ldquo;이것을 이름 있는 함수로 추출할 수 있습니까? 의도가 명확하지 않습니다.&rdquo;</td></tr>
+<tr><td>3. 테스트 가능성</td><td>코드가 테스트 가능한가? 테스트가 있는가? 올바른 것을 테스트하는가?</td><td>&ldquo;이 테스트는 동작이 아닌 구현 세부 사항을 검증합니다.&rdquo;</td></tr>
+<tr><td>4. 설계</td><td>기존 아키텍처에 맞는가? 올바른 추상화 수준인가?</td><td>&ldquo;이 서비스 함수가 HTTP 요청에 직접 접근합니다. 필요한 데이터만 전달할 수 있습니까?&rdquo;</td></tr>
+<tr><td>5. 성능</td><td>명백한 비효율? N+1 쿼리? 불필요한 할당?</td><td>&ldquo;이 루프가 반복마다 데이터베이스를 조회합니다. 이것을 배치로 처리할 수 있습니까?&rdquo;</td></tr>
+</tbody>
+</table>
+</div>
+
+<p><strong>자전거 창고 토론(bikeshedding)</strong>을 피하십시오 &mdash; 구조적 문제를 무시하면서 사소한 문제(변수 이름, 형식)에 불균형적인 시간을 소비하는 것. 팀에 린터와 포맷터가 있다면 스타일은 도구가 처리하게 두십시오. 리뷰 시간은 로직, 설계, 엣지 케이스에 사용하십시오.</p>
+
+<h3>대규모 팀과 함께 일하기</h3>
+
+<p>코드베이스가 성장함에 따라 <strong>컨벤션(convention)</strong>이 필수적이 됩니다. 스타일 가이드와 린터는 일관성을 강제하여 서로 다른 사람이 작성한 코드가 마치 같은 사람이 작성한 것처럼 보이게 합니다. 이는 코드를 읽을 때 인지 부하를 크게 줄입니다.</p>
+
+<p><strong>아키텍처 결정 기록(ADR, Architecture Decision Record)</strong>은 중요한 기술 결정과 그 이유를 문서화합니다. ADR은 일반적으로 다음을 포함합니다:</p>
+
+<pre style="overflow-x:auto"><code># ADR-007: Use PostgreSQL for Task Storage
+
+## Status: Accepted
+
+## Context
+TaskForge needs a relational database. We considered PostgreSQL, MySQL,
+and SQLite. We need concurrent write support, full-text search, and
+JSONB columns for flexible task metadata.
+
+## Decision
+We will use PostgreSQL.
+
+## Consequences
+- Positive: Native JSONB support, excellent concurrent performance,
+  strong community, good tooling.
+- Negative: More complex to set up than SQLite; team needs PostgreSQL
+  expertise. We accept this trade-off because SQLite cannot handle
+  our concurrency requirements.
+
+## Alternatives Considered
+- MySQL: Lacks native JSONB; full-text search requires plugins.
+- SQLite: Cannot handle concurrent writes from multiple workers.</code></pre>
+
+<p>ADR은 <em>무엇</em>이 결정되었는지뿐만 아니라 <em>왜</em>와 <em>어떤 대안이 고려되었는지</em>도 기록하기 때문에 매우 가치 있습니다. 6개월 후에 누군가 "왜 SQLite를 사용하지 않나요?"라고 물을 때, ADR은 원래 토론을 기억할 필요 없이 답을 제공합니다.</p>
+
+<p><strong>RFC 프로세스(Request for Comments, 의견 요청)</strong>는 더 큰 변경에 대해 유사한 목적을 제공합니다. 주요 기능이나 아키텍처 변경을 구현하기 전에 설계 문서를 작성하고, 피드백을 위해 순환시키고, 반복합니다. 이는 비용이 많이 드는 놀라움을 방지하고 팀 간 조율을 보장합니다.</p>
+
+<div role="note" class="callout warn">
+<div class="callout-title">주의: &ldquo;좋은 코드는 문서가 필요 없다&rdquo;</div>
+<p>좋은 코드는 <em>무엇</em>을 하고 <em>어떻게</em> 하는지에 대해 자체 문서화됩니다. 하지만 코드는 결정이 <em>왜</em> 내려졌는지, 어떤 대안이 고려되었는지, 또는 당시 어떤 제약이 있었는지를 결코 알려줄 수 없습니다. 문서화가 이 간극을 채웁니다. 가장 유용한 문서는 의도, 트레이드오프, 맥락 &mdash; 코드가 표현할 수 없는 것들 &mdash; 을 설명합니다.</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">TaskForge 연결: 레거시 구조 작전</div>
+<p>다음 문제가 있는 "레거시" 버전의 TaskForge를 상속받았다고 상상해 보십시오:</p>
+<ul>
+<li><strong>갓 클래스(god class):</strong> 단일 <code>TaskManager</code> 클래스가 라우팅, 비즈니스 로직, 데이터베이스 쿼리, 이메일 발송을 모두 처리합니다.</li>
+<li><strong>테스트 없음:</strong> 자동화 테스트가 전혀 없습니다. 변경에 대한 안전망이 없습니다.</li>
+<li><strong>하드코딩된 설정:</strong> 데이터베이스 URL, API 키, 이메일 자격 증명이 코드 전체에 문자열 리터럴로 흩어져 있습니다.</li>
+<li><strong>SQL 인젝션:</strong> 사용자 입력이 SQL 쿼리에 직접 연결됩니다.</li>
+</ul>
+<p>접근 방식: (1) 현재 동작을 캡처하는 특성화 테스트 작성. (2) 설정을 환경 변수로 추출. (3) SQL 인젝션 수정 (가장 위험한 항목). (4) 스트랭글러 피그 패턴을 사용하여 갓 클래스를 점진적으로 분해 &mdash; 데이터베이스 접근을 위한 <code>TaskRepository</code>, 알림을 위한 <code>EmailService</code>를 도입하고 <code>TaskManager</code>가 이들에 위임하도록 합니다. 각 단계는 작고, 테스트되고, 되돌릴 수 있습니다.</p>
+</div>
+
+<!-- Micro-Exercise -->
+<div role="note" class="callout ok">
+<div class="callout-title">직접 해보기: ADR 작성하기</div>
+<p>이 시나리오에 대한 간략한 아키텍처 결정 기록을 작성하십시오: 팀이 TaskForge에 Redis 캐시를 추가할지 결정하고 있습니다. 현재 태스크 목록 페이지는 매번 데이터베이스를 조회하기 때문에 800ms가 걸립니다. Redis를 사용하면 캐시된 결과에 5ms가 걸립니다. 트레이드오프는 운영 복잡성 (유지할 또 다른 서비스)과 오래된 데이터를 제공할 위험입니다. 팀은 30초 TTL을 사용하여 Redis를 진행하기로 했습니다.</p>
+<p>위에 표시된 ADR 형식 (상태, 맥락, 결정, 결과, 고려된 대안)을 사용하십시오. 트레이드오프를 명확하게 표현하는 연습을 하십시오.</p>
+</div>
+
+<!-- Pyodide Exercise: Characterization Tests and Refactoring -->
+<div class="exercise" data-type="pyodide" data-ch="37" data-ex="characterization-refactor">
+  <div class="exercise-header">
+    <h4>연습문제: 특성화, 그 다음 리팩터링</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">아래는 너무 많은 일을 하는 지저분한 함수 <code>process_task_data</code>입니다: 유효성 검사, 변환, 우선순위 계산, 출력 형식화를 하나의 덩어리로 처리합니다. 먼저 동작을 연구하십시오. 그런 다음 원본과 동일한 결과를 생성하는 세 개의 깔끔한 함수 &mdash; <code>validate_task</code>, <code>calculate_priority</code>, <code>format_task_summary</code> &mdash; 를 구현하십시오. 특성화 테스트가 리팩터링된 코드가 원본 동작과 정확히 일치하는지 검증합니다.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def process_task_data(title, assignee, days_until_due, is_urgent):
+    """Legacy function - messy but working. DO NOT MODIFY."""
+    result = {}
+    # Validation
+    if not title or not isinstance(title, str):
+        return {"error": "invalid title"}
+    if len(title) > 100:
+        return {"error": "title too long"}
+    if not assignee or not isinstance(assignee, str):
+        return {"error": "invalid assignee"}
+    # Title transformation
+    clean_title = title.strip().upper()
+    # Priority calculation
+    priority = 0
+    if is_urgent:
+        priority += 50
+    if days_until_due < 0:
+        priority += 40  # overdue
+    elif days_until_due <= 3:
+        priority += 30
+    elif days_until_due <= 7:
+        priority += 20
+    elif days_until_due <= 30:
+        priority += 10
+    if len(title) > 50:
+        priority -= 5  # long titles penalized (quirky legacy logic)
+    if priority > 100:
+        priority = 100
+    if priority < 0:
+        priority = 0
+    # Format output
+    if priority >= 80:
+        urgency_label = "CRITICAL"
+    elif priority >= 50:
+        urgency_label = "HIGH"
+    elif priority >= 30:
+        urgency_label = "MEDIUM"
+    else:
+        urgency_label = "LOW"
+    result["title"] = clean_title
+    result["assignee"] = assignee.strip()
+    result["priority"] = priority
+    result["label"] = urgency_label
+    result["summary"] = f"[{urgency_label}] {clean_title} (assigned to {assignee.strip()})"
+    return result
+
+
+def validate_task(title, assignee):
+    """Validate task inputs.
+
+    Returns:
+        None if valid, or a dict with an "error" key if invalid.
+    """
+    # TODO: Implement validation matching the original behavior
+    pass
+
+
+def calculate_priority(days_until_due, is_urgent, title_length):
+    """Calculate task priority score (0-100).
+
+    Args:
+        days_until_due: int, days until task is due (negative = overdue)
+        is_urgent: bool, whether task is marked urgent
+        title_length: int, length of the title string
+
+    Returns:
+        int: priority score between 0 and 100
+    """
+    # TODO: Implement priority calculation matching the original behavior
+    pass
+
+
+def format_task_summary(clean_title, assignee, priority):
+    """Format a task into the output dictionary.
+
+    Args:
+        clean_title: str, uppercased and stripped title
+        assignee: str, stripped assignee name
+        priority: int, calculated priority score
+
+    Returns:
+        dict with keys: title, assignee, priority, label, summary
+    """
+    # TODO: Implement formatting matching the original behavior
+    pass
+
+
+def process_task_refactored(title, assignee, days_until_due, is_urgent):
+    """Refactored version using the three clean functions above."""
+    # TODO: Compose validate_task, calculate_priority, format_task_summary
+    # to produce the same output as process_task_data
+    pass
+    </script>
+    <script type="text/plain" class="test-code">
+# Characterization tests: refactored version must match original exactly
+
+# Test 1: Normal task
+original_1 = process_task_data("Fix login bug", "Alice", 5, True)
+refactored_1 = process_task_refactored("Fix login bug", "Alice", 5, True)
+assert original_1 == refactored_1, f"Mismatch on normal task:\n  original:   {original_1}\n  refactored: {refactored_1}"
+
+# Test 2: Urgent overdue task
+original_2 = process_task_data("Deploy hotfix", "Bob", -2, True)
+refactored_2 = process_task_refactored("Deploy hotfix", "Bob", -2, True)
+assert original_2 == refactored_2, f"Mismatch on urgent overdue:\n  original:   {original_2}\n  refactored: {refactored_2}"
+
+# Test 3: Non-urgent, far-out task
+original_3 = process_task_data("Update docs", "Carol", 45, False)
+refactored_3 = process_task_refactored("Update docs", "Carol", 45, False)
+assert original_3 == refactored_3, f"Mismatch on non-urgent:\n  original:   {original_3}\n  refactored: {refactored_3}"
+
+# Test 4: Invalid title (empty)
+original_4 = process_task_data("", "Dave", 10, False)
+refactored_4 = process_task_refactored("", "Dave", 10, False)
+assert original_4 == refactored_4, f"Mismatch on empty title:\n  original:   {original_4}\n  refactored: {refactored_4}"
+
+# Test 5: Invalid assignee
+original_5 = process_task_data("Task", "", 10, False)
+refactored_5 = process_task_refactored("Task", "", 10, False)
+assert original_5 == refactored_5, f"Mismatch on empty assignee:\n  original:   {original_5}\n  refactored: {refactored_5}"
+
+# Test 6: Title too long
+long_title = "A" * 101
+original_6 = process_task_data(long_title, "Eve", 5, False)
+refactored_6 = process_task_refactored(long_title, "Eve", 5, False)
+assert original_6 == refactored_6, f"Mismatch on long title:\n  original:   {original_6}\n  refactored: {refactored_6}"
+
+# Test 7: Long title (51 chars) with penalty
+title_51 = "A" * 51
+original_7 = process_task_data(title_51, "Frank", 1, False)
+refactored_7 = process_task_refactored(title_51, "Frank", 1, False)
+assert original_7 == refactored_7, f"Mismatch on 51-char title:\n  original:   {original_7}\n  refactored: {refactored_7}"
+
+# Test 8: Whitespace handling
+original_8 = process_task_data("  padded title  ", "  Gina  ", 7, False)
+refactored_8 = process_task_refactored("  padded title  ", "  Gina  ", 7, False)
+assert original_8 == refactored_8, f"Mismatch on whitespace:\n  original:   {original_8}\n  refactored: {refactored_8}"
+
+# Verify individual functions exist and work
+assert validate_task("Valid", "Person") is None, "validate_task should return None for valid input"
+assert validate_task("", "Person") == {"error": "invalid title"}, "validate_task should catch empty title"
+assert 0 <= calculate_priority(5, True, 10) <= 100, "calculate_priority should return 0-100"
+
+print("All characterization tests passed! Refactored code matches original behavior exactly.")
+    </script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">실행</button>
+    <button class="ex-check">확인</button>
+    <button class="ex-hint" data-level="0">힌트</button>
+    <button class="ex-reset">초기화</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">validate_task부터 시작하십시오: 원본과 동일한 조건을 확인하십시오 (빈/비문자열 제목, 100자 초과 제목, 빈/비문자열 담당자). 유효하면 None을 반환하고, 그렇지 않으면 {"error": "..."}를 반환하십시오.</p>
+    <p class="hint">calculate_priority: 0에서 시작하고, 긴급하면 50 추가, days_until_due 범위에 따라 추가, title_length > 50이면 5 빼기, 0과 100 사이로 클램프하십시오.</p>
+    <p class="hint">format_task_summary: 우선순위에서 긴급 레이블을 결정하고 (>=80 CRITICAL, >=50 HIGH, >=30 MEDIUM, 그 외 LOW), 다섯 개의 키로 결과 딕셔너리를 구성하십시오.</p>
+    <p class="hint">process_task_refactored에서: validate_task를 먼저 호출하고 (None이 아니면 오류 딕셔너리 반환), 제목을 정리하고 (strip + upper), title_length에 len(title)을 사용하여 우선순위를 계산하고, 형식화하십시오.</p>
+  </div>
+</div>
+
+<!-- Quiz -->
+<div class="quiz" data-ch="37" data-ex="quiz-strangler-fig">
+  <h4>핵심 개념 확인</h4>
+  <p>"빅뱅" 재작성 대비 스트랭글러 피그 패턴의 핵심 장점은 무엇입니까?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">완료가 더 빠름</button>
+    <button class="quiz-option" data-correct="true">두 시스템이 동시에 실행되므로 어느 지점에서든 롤백 가능</button>
+    <button class="quiz-option" data-correct="false">테스트가 필요 없음</button>
+    <button class="quiz-option" data-correct="false">데이터베이스를 자동으로 마이그레이션함</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Quiz 2 -->
+<div class="quiz" data-ch="37" data-ex="quiz-characterization-tests">
+  <h4>핵심 개념 확인</h4>
+  <p>특성화 테스트(characterization test)는 무엇을 검증합니까?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">코드가 원래 사양을 충족하는지</button>
+    <button class="quiz-option" data-correct="false">코드에 버그가 없는지</button>
+    <button class="quiz-option" data-correct="true">변경 후 코드의 현재 동작이 보존되는지</button>
+    <button class="quiz-option" data-correct="false">코드가 성능 벤치마크를 통과하는지</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Checklist -->
+<div class="checklist" data-ch="37" data-ex="checklist-large-codebases">
+  <h4>대규모 코드베이스 탐색 체크리스트</h4>
+  <label><input type="checkbox"><span>낯선 코드베이스에서 진입점을 찾고 해피 패스를 추적할 수 있습니다</span></label>
+  <label><input type="checkbox"><span><code>git blame</code>과 커밋 히스토리를 사용하여 코드가 특정 방식으로 작성된 이유를 이해할 수 있습니다</span></label>
+  <label><input type="checkbox"><span>리팩터링 전에 기존 동작을 캡처하는 특성화 테스트를 작성할 수 있습니다</span></label>
+  <label><input type="checkbox"><span>점진적 교체를 위한 스트랭글러 피그 패턴을 설명할 수 있습니다</span></label>
+  <label><input type="checkbox"><span>기능 플래그와 배포와 릴리스를 분리하는 방법을 이해합니다</span></label>
+  <label><input type="checkbox"><span>기술 부채를 평가하고 어떤 부채를 먼저 상환할지 우선순위를 정할 수 있습니다</span></label>
+  <label><input type="checkbox"><span>아키텍처 결정 기록(ADR)을 작성했거나 작성할 수 있습니다</span></label>
+  <label><input type="checkbox"><span>코드 리뷰에서 집중할 것 (정확성, 가독성, 테스트 가능성)과 린터에 맡길 것 (스타일)을 알고 있습니다</span></label>
+</div>
+
+</section>
+
+
+<!-- ===== PHASE 8 GATE ===== -->
+<section id="gate8">
+<h2><span class="ch-label">Phase 8 Gate</span> 체크포인트 &amp; 대규모 TaskForge</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">최소 역량</div>
+<p>Phase 8을 완료한 후 다음을 할 수 있어야 합니다: 확장을 위한 시스템 아키텍처 설계 (구성 요소, 트레이드오프, 병목 식별), 분산 시스템 제약에 대한 추론 (CAP 정리, 최종 일관성, 사가 패턴), 관측 가능성을 위한 애플리케이션 계측 (구조화된 로깅, 메트릭, 트레이스), 기존 코드베이스를 안전하게 탐색하고 발전 (특성화 테스트, 스트랭글러 피그, 기능 플래그).</p>
+</div>
+
+<h3>결과물: 대규모 TaskForge</h3>
+
+<p>TaskForge 프로젝트에 대해 다음 결과물을 만드십시오:</p>
+
+<ol>
+<li><strong>시스템 설계 문서</strong> &mdash; 10,000명 동시 사용자 기준 TaskForge 아키텍처 다이어그램. 현재 아키텍처의 최소 3가지 병목을 식별하고 각각에 대한 해결책을 제안하십시오 (트레이드오프 분석 포함).</li>
+<li><strong>구조화된 로깅 구현</strong> &mdash; TaskForge에 상관 관계 ID가 있는 JSON 형식의 구조화된 로깅 추가. 모든 API 요청은 메서드, 경로, 상태 코드, 지속 시간, 사용자 ID와 함께 기록되어야 합니다.</li>
+<li><strong>성능 프로파일</strong> &mdash; 느린 엔드포인트를 프로파일링하십시오 (예: 필터링과 정렬이 있는 태스크 목록). 발견한 병목과 적용한 최적화를 문서화하십시오. 최소 10배 개선을 보여주십시오.</li>
+<li><strong>레거시 코드 리팩터링</strong> &mdash; TaskForge 모듈의 "지저분한 버전"을 가져오십시오. 먼저 특성화 테스트를 작성한 다음 깔끔하고 잘 구조화된 코드로 리팩터링하십시오. 모든 특성화 테스트는 리팩터링 전후 모두 통과해야 합니다.</li>
+</ol>
+
+<h3>검증</h3>
+
+<div style="overflow-x:auto">
+<table>
+<caption>아티팩트별 Phase 8 검증 기준</caption>
+<thead><tr><th>아티팩트</th><th>검증 기준</th></tr></thead>
+<tbody>
+<tr><td>아키텍처 다이어그램</td><td>제안된 해결책과 트레이드오프 분석이 있는 최소 3가지 병목을 식별</td></tr>
+<tr><td>구조화된 로깅</td><td>로그가 상관 관계 ID와 함께 JSON 형식; 모든 요청이 기록됨</td></tr>
+<tr><td>성능 프로파일</td><td>전/후 측정값으로 최소 10배 개선 표시</td></tr>
+<tr><td>레거시 리팩터링</td><td>특성화 테스트가 전후 모두 통과; 코드가 명확한 모듈로 분해됨</td></tr>
+</tbody>
+</table>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">Phase 9로의 연결: AI 지원 개발</div>
+<p>이제 완전한 엔지니어링 툴킷을 갖추었습니다. 알고리즘에서 아키텍처까지, 데이터베이스에서 분산 시스템까지, 프로파일링에서 관측 가능성까지, 레거시 코드를 읽는 것에서 안전하게 발전시키는 것까지 &mdash; 전문 소프트웨어 엔지니어가 매일 의존하는 지식과 판단력을 갖추었습니다.</p>
+<p>Phase&nbsp;9는 AI 기반 개발 도구를 소개합니다. Phase 1~8에 걸쳐 구축한 엔지니어링 판단력이 AI와 함께 <em>효과적</em>으로 일할 수 있게 해줍니다. AI가 생성하는 것을 평가하고, 놓친 것을 잡아내고, 더 나은 솔루션으로 이끌 수 있습니다. 이 기초 없이 AI 도구는 장인 기술을 배운 적 없는 사람의 손에 든 전동 공구와 같습니다 &mdash; 빠르지만 위험합니다. 이 기초와 함께 AI는 이미 갖춘 기술의 힘을 증폭시키는 도구가 됩니다.</p>
+</div>
+
+</section>
+
+<nav class="phase-nav">
+  <a href="phase-7.html" class="phase-nav-link prev"><span class="phase-nav-label">이전 단계</span>&larr; Phase 7: 엔지니어링 기술</a>
+  <a href="phase-9.html" class="phase-nav-link next"><span class="phase-nav-label">다음 단계</span>Phase 9: AI 지원 개발 &rarr;</a>
+</nav>
+
+</div>
+</div>
+
+<footer>
+<p>제로 투 히어로: 프로그래밍에서 멀티 에이전트 Claude Code까지 &middot; 2026년 3월</p>
+</footer>
+
+<script src="../js/progress.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ace-builds@1.36.5/src-min-noconflict/ace.js"></script>
+<script src="../js/theme.js"></script>
+<script src="../js/sidebar.js"></script>
+<script src="../js/shared.js"></script>
+<script src="../js/ace-init.js"></script>
+<script src="../js/pyodide-runner.js"></script>
+<script src="../js/quiz.js"></script>
+<script src="../js/exercise-runner.js"></script>
+</body>
+</html>

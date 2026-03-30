@@ -1,0 +1,2287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Phase 6: Algorithms — searching, sorting, recursion, dynamic programming, algorithm patterns, and graph algorithms. Chapters 24–27.">
+<title>Phase 6: Algorithms — Zero to Hero</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/design-system.css">
+<script>try{if(localStorage.getItem('zth-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+<script>try{var z=localStorage.getItem('zth-zoom');if(z&&+z>=50&&+z<=200)document.documentElement.style.zoom=+z/100}catch(e){}</script>
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+<marker id="arrowhead-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--a5)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo"><span>Zero to Hero</span>Programming &rarr; Multi-Agent AI</a>
+  <div class="toc-group">
+    <div class="toc-group-title">Foundations</div>
+    <a href="phase-1.html#ch01" class="toc-link"><span class="toc-num">01</span>What Programming Actually Is</a>
+    <a href="phase-1.html#ch02" class="toc-link"><span class="toc-num">02</span>How Computers Execute Code</a>
+    <a href="phase-1.html#ch03" class="toc-link"><span class="toc-num">03</span>Setting Up Your Environment</a>
+    <a href="phase-1.html#ch04" class="toc-link"><span class="toc-num">04</span>Reading Code Before Writing It</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Python</div>
+    <a href="phase-2.html#ch05" class="toc-link"><span class="toc-num">05</span>Functions, Logic &amp; Control Flow</a>
+    <a href="phase-2.html#ch06" class="toc-link"><span class="toc-num">06</span>Data Structures</a>
+    <a href="phase-2.html#ch07" class="toc-link"><span class="toc-num">07</span>Classes &amp; OOP Basics</a>
+    <a href="phase-2.html#ch08" class="toc-link"><span class="toc-num">08</span>Files, Modules &amp; Standard Library</a>
+    <a href="phase-2.html#ch09" class="toc-link"><span class="toc-num">09</span>Error Handling, Debugging &amp; Testing</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Development Tools</div>
+    <a href="phase-3.html#ch10" class="toc-link"><span class="toc-num">10</span>The Terminal &amp; Shell</a>
+    <a href="phase-3.html#ch11" class="toc-link"><span class="toc-num">11</span>Git Fundamentals</a>
+    <a href="phase-3.html#ch12" class="toc-link"><span class="toc-num">12</span>Git Remote &amp; GitHub</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Building &amp; Deploying</div>
+    <a href="phase-4.html#ch13" class="toc-link"><span class="toc-num">13</span>APIs &amp; HTTP</a>
+    <a href="phase-4.html#ch14" class="toc-link"><span class="toc-num">14</span>Building APIs with Flask</a>
+    <a href="phase-4.html#ch15" class="toc-link"><span class="toc-num">15</span>Database Basics</a>
+    <a href="phase-4.html#ch16" class="toc-link"><span class="toc-num">16</span>Docker &amp; Containers</a>
+    <a href="phase-4.html#ch17" class="toc-link"><span class="toc-num">17</span>CI/CD &amp; GitHub Actions</a>
+    <a href="phase-4.html#ch18" class="toc-link"><span class="toc-num">18</span>Project Architecture</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Data Structures</div>
+    <a href="phase-5.html#ch19" class="toc-link"><span class="toc-num">19</span>Complexity &amp; Big-O</a>
+    <a href="phase-5.html#ch20" class="toc-link"><span class="toc-num">20</span>Stacks &amp; Queues</a>
+    <a href="phase-5.html#ch21" class="toc-link"><span class="toc-num">21</span>Hash Tables</a>
+    <a href="phase-5.html#ch22" class="toc-link"><span class="toc-num">22</span>Trees &amp; Heaps</a>
+    <a href="phase-5.html#ch23" class="toc-link"><span class="toc-num">23</span>Graphs</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Algorithms</div>
+    <a href="#ch24" class="toc-link"><span class="toc-num">24</span>Searching &amp; Sorting</a>
+    <a href="#ch25" class="toc-link"><span class="toc-num">25</span>Recursion &amp; Dynamic Programming</a>
+    <a href="#ch26" class="toc-link"><span class="toc-num">26</span>Algorithm Patterns</a>
+    <a href="#ch27" class="toc-link"><span class="toc-num">27</span>Graph Algorithms &amp; Problem Solving</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Engineering Craft</div>
+    <a href="phase-7.html#ch28" class="toc-link"><span class="toc-num">28</span>Design Patterns</a>
+    <a href="phase-7.html#ch29" class="toc-link"><span class="toc-num">29</span>Database Optimization</a>
+    <a href="phase-7.html#ch30" class="toc-link"><span class="toc-num">30</span>Networking</a>
+    <a href="phase-7.html#ch31" class="toc-link"><span class="toc-num">31</span>Concurrency</a>
+    <a href="phase-7.html#ch32" class="toc-link"><span class="toc-num">32</span>Security Fundamentals</a>
+    <a href="phase-7.html#ch33" class="toc-link"><span class="toc-num">33</span>Performance &amp; Profiling</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Systems &amp; Scale</div>
+    <a href="phase-8.html#ch34" class="toc-link"><span class="toc-num">34</span>System Design Basics</a>
+    <a href="phase-8.html#ch35" class="toc-link"><span class="toc-num">35</span>Distributed Systems</a>
+    <a href="phase-8.html#ch36" class="toc-link"><span class="toc-num">36</span>Observability</a>
+    <a href="phase-8.html#ch37" class="toc-link"><span class="toc-num">37</span>Reliability Engineering</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AI Levels 1&ndash;5</div>
+    <a href="phase-9.html#ch38" class="toc-link"><span class="toc-num">38</span>Evaluating &amp; Directing AI Code</a>
+    <a href="phase-9.html#ch39" class="toc-link"><span class="toc-num">39</span>Levels 1 &amp; 2 &mdash; Tab Complete &amp; Agent IDE</a>
+    <a href="phase-9.html#ch40" class="toc-link"><span class="toc-num">40</span>Level 3 &mdash; Context Engineering</a>
+    <a href="phase-9.html#ch41" class="toc-link"><span class="toc-num">41</span>Level 4 &mdash; Compounding Engineering</a>
+    <a href="phase-9.html#ch42" class="toc-link"><span class="toc-num">42</span>Level 5 &mdash; MCP, Skills &amp; Capabilities</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AI Levels 6&ndash;8</div>
+    <a href="phase-10.html#ch43" class="toc-link"><span class="toc-num">43</span>Level 6 &mdash; Harness Engineering</a>
+    <a href="phase-10.html#ch44" class="toc-link"><span class="toc-num">44</span>Level 7 &mdash; Background Agents</a>
+    <a href="phase-10.html#ch45" class="toc-link"><span class="toc-num">45</span>Claude Code in Docker</a>
+    <a href="phase-10.html#ch46" class="toc-link"><span class="toc-num">46</span>Level 8 &mdash; Autonomous Agent Teams</a>
+    <a href="phase-10.html#ch47" class="toc-link"><span class="toc-num">47</span>The Multiplayer Effect</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Reference</div>
+    <a href="appendices.html#glossary" class="toc-link"><span class="toc-num">&oplus;</span>Glossary</a>
+    <a href="appendices.html#prompt-library" class="toc-link"><span class="toc-num">&oplus;</span>Prompt Library</a>
+    <a href="appendices.html#self-assessment" class="toc-link"><span class="toc-num">&oplus;</span>Self-Assessment</a>
+    <a href="appendices.html#common-mistakes" class="toc-link"><span class="toc-num">&oplus;</span>Common Mistakes</a>
+    <a href="appendices.html#appendix-d" class="toc-link"><span class="toc-num">&oplus;</span>Troubleshooting</a>
+    <a href="appendices.html#appendix-e" class="toc-link"><span class="toc-num">&oplus;</span>Resources</a>
+  </div>
+</aside>
+
+<div class="main">
+<section class="hero hero-sm">
+  <div class="hero-badge">Phase 6 &mdash; Algorithms</div>
+  <h1><em>Algorithms</em></h1>
+  <p class="hero-sub">Searching, sorting, recursion, dynamic programming, and the problem-solving patterns that let you evaluate any solution&mdash;human or AI-generated.</p>
+  <div class="hero-meta"><span>Chapters 24&ndash;27</span><span>Phase Gate + TaskForge</span></div>
+</section>
+<div class="content-wrap">
+
+<div role="note" class="callout info">
+<div class="callout-title">Before You Begin Phase 6</div>
+<p>This phase assumes you can: analyze time and space complexity of code (Ch 19), implement and use stacks, queues, hash tables, trees, and graphs (Ch 20&ndash;23), and reason about when one data structure outperforms another.</p>
+</div>
+
+<!-- ===== CH 24 ===== -->
+<section id="ch24" data-ch="24">
+<h2><span class="ch-label">Chapter 24</span> Searching &amp; Sorting</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>Every database query uses searching. Every sorted display uses sorting. AI generates sorting code constantly&mdash;you need to evaluate whether it chose the right algorithm. A poor choice can mean the difference between a response in 10 milliseconds and one in 10 seconds. This chapter gives you the vocabulary and understanding to make that judgment call every time.</p>
+</div>
+
+<h3>Linear Search</h3>
+<p><strong>Linear search</strong> is the simplest search algorithm: start at the beginning, check every element, stop when you find the target or run out of elements. Its time complexity is <strong>O(n)</strong>&mdash;in the worst case, you examine every item.</p>
+
+<pre style="overflow-x:auto"><code>def linear_search(arr, target):
+    """Return the index of target in arr, or -1 if not found."""
+    for i in range(len(arr)):      # Walk through every index
+        if arr[i] == target:       # Found it?
+            return i               # Return the position
+    return -1                      # Exhausted the list without finding target
+
+# Usage
+tasks = ["buy groceries", "write tests", "deploy app", "review PR"]
+idx = linear_search(tasks, "deploy app")
+print(idx)  # 2</code></pre>
+
+<p>When is linear search the <em>right</em> choice? More often than you might think:</p>
+<ul>
+<li><strong>Unsorted data</strong>&mdash;you cannot binary search unsorted collections. If the data arrives in random order and you search it once, linear search is your only option.</li>
+<li><strong>Small collections</strong>&mdash;for fewer than ~50 elements, the overhead of maintaining a sorted structure or building a hash table exceeds the cost of just scanning. Python&rsquo;s <code>in</code> operator on lists uses linear search internally.</li>
+<li><strong>Search-once scenarios</strong>&mdash;if you search a collection exactly once, sorting it first (O(n log n)) and then binary searching (O(log n)) is slower than a single linear scan (O(n)).</li>
+</ul>
+
+<p>Python&rsquo;s <code>in</code> operator on lists performs a linear search under the hood:</p>
+<pre style="overflow-x:auto"><code>tasks = ["buy groceries", "write tests", "deploy app"]
+print("write tests" in tasks)  # True — scans left to right, O(n)</code></pre>
+
+<h3>Binary Search</h3>
+<p><strong>Binary search</strong> requires <em>sorted</em> data. It repeatedly cuts the search space in half: compare the target with the middle element, then discard the half that cannot contain the target. This gives <strong>O(log n)</strong> time&mdash;searching one million elements takes at most 20 comparisons.</p>
+
+<p>The algorithm, step by step:</p>
+<ol>
+<li>Set <code>lo = 0</code> and <code>hi = len(arr) - 1</code>.</li>
+<li>While <code>lo &lt;= hi</code>:
+  <ol>
+  <li>Compute <code>mid = (lo + hi) // 2</code>.</li>
+  <li>If <code>arr[mid] == target</code>, return <code>mid</code>.</li>
+  <li>If <code>arr[mid] &lt; target</code>, the target is in the right half: set <code>lo = mid + 1</code>.</li>
+  <li>If <code>arr[mid] &gt; target</code>, the target is in the left half: set <code>hi = mid - 1</code>.</li>
+  </ol>
+</li>
+<li>If the loop ends without returning, the target is not in the array. Return <code>-1</code>.</li>
+</ol>
+
+<pre style="overflow-x:auto"><code>def binary_search(arr, target):
+    """Return the index of target in sorted arr, or -1 if not found."""
+    lo, hi = 0, len(arr) - 1           # 1. Initialize boundaries
+
+    while lo <= hi:                     # 2. Loop while search space is non-empty
+        mid = (lo + hi) // 2           #    Find the midpoint
+        if arr[mid] == target:         #    2a. Exact match
+            return mid
+        elif arr[mid] < target:        #    2b. Target is in the right half
+            lo = mid + 1               #         Discard left half including mid
+        else:                          #    2c. Target is in the left half
+            hi = mid - 1              #         Discard right half including mid
+
+    return -1                          # 3. Not found
+
+# Usage
+sorted_ids = [2, 5, 8, 12, 16, 23, 38, 56, 72, 91]
+print(binary_search(sorted_ids, 23))   # 5
+print(binary_search(sorted_ids, 24))   # -1</code></pre>
+
+<div role="note" class="callout warn">
+<div class="callout-title">Off-by-One Pitfalls</div>
+<p>Binary search is famously easy to get wrong. The most common bugs:</p>
+<ul>
+<li><strong><code>lo &lt;= hi</code> vs <code>lo &lt; hi</code></strong>&mdash;using <code>&lt;</code> instead of <code>&lt;=</code> skips the case where <code>lo == hi</code>, which means you never check the last remaining element.</li>
+<li><strong><code>mid + 1</code> / <code>mid - 1</code> vs <code>mid</code></strong>&mdash;setting <code>lo = mid</code> instead of <code>lo = mid + 1</code> can create an infinite loop when <code>lo == mid</code> (which happens when <code>hi - lo == 1</code>).</li>
+<li><strong>Integer overflow</strong>&mdash;in languages like C++ or Java, <code>(lo + hi)</code> can overflow. Python handles arbitrary-precision integers, so this is not a problem in Python, but be aware of it if you work in other languages.</li>
+</ul>
+</div>
+
+<h4>Binary Search on a Search Space</h4>
+<p>Binary search is not limited to finding elements in arrays. Any problem where you can answer &ldquo;is X large enough?&rdquo; with a yes/no can be solved with binary search on the answer space. This is one of the most powerful algorithmic techniques, and it appears constantly in real engineering.</p>
+
+<p><strong>Problem:</strong> You have a list of task durations and a number of workers. Each worker processes tasks sequentially. You want to split the tasks among workers so that the maximum time any single worker spends is minimized. What is that minimum maximum time?</p>
+
+<p>The insight: if you guess a time limit <code>T</code>, you can greedily check whether <code>T</code> is feasible&mdash;assign tasks to workers one by one, starting a new worker whenever the current one would exceed <code>T</code>. If you need more than the available workers, <code>T</code> is too small. If you need fewer or exactly enough, <code>T</code> is feasible. The answer is the smallest feasible <code>T</code>.</p>
+
+<pre style="overflow-x:auto"><code>def min_max_time(durations, num_workers):
+    """Find the minimum possible maximum time per worker."""
+
+    def is_feasible(max_time):
+        """Can we assign all tasks using <= num_workers if each handles <= max_time?"""
+        workers_needed = 1
+        current_load = 0
+        for d in durations:
+            if current_load + d > max_time:
+                workers_needed += 1        # Start a new worker
+                current_load = d           # This task goes to the new worker
+            else:
+                current_load += d          # Add task to current worker
+        return workers_needed <= num_workers
+
+    lo = max(durations)          # Lower bound: at least the longest single task
+    hi = sum(durations)          # Upper bound: one worker does everything
+
+    while lo < hi:
+        mid = (lo + hi) // 2
+        if is_feasible(mid):
+            hi = mid             # mid works — try to find something smaller
+        else:
+            lo = mid + 1         # mid is too small — need more time
+
+    return lo
+
+# Example: 5 tasks, 3 workers
+print(min_max_time([10, 20, 30, 40, 50], 3))  # 60</code></pre>
+
+<p>Notice the slight difference from element-search binary search: here we use <code>lo &lt; hi</code> (not <code>&lt;=</code>) and converge <code>lo</code> and <code>hi</code> to the same value. This is the standard &ldquo;minimize the maximum&rdquo; binary search template.</p>
+
+<h3>Insertion Sort</h3>
+<p><strong>Insertion sort</strong> builds a sorted portion of the array one element at a time. For each new element, it shifts larger elements rightward to make room, then inserts the element in its correct position.</p>
+
+<pre style="overflow-x:auto"><code>def insertion_sort(arr):
+    """Sort arr in-place using insertion sort."""
+    for i in range(1, len(arr)):       # Start from the second element
+        key = arr[i]                   # The element to insert
+        j = i - 1                      # Start comparing with the element to its left
+
+        # Shift elements that are larger than key one position to the right
+        while j >= 0 and arr[j] > key:
+            arr[j + 1] = arr[j]        # Shift right
+            j -= 1                     # Move comparison pointer left
+
+        arr[j + 1] = key               # Insert key in the correct position
+
+    return arr
+
+print(insertion_sort([5, 2, 8, 1, 9, 3]))  # [1, 2, 3, 5, 8, 9]</code></pre>
+
+<p><strong>Complexity:</strong> O(n&sup2;) worst case (reverse-sorted input), but <strong>O(n) best case</strong> when data is already nearly sorted. This makes insertion sort excellent for small arrays or arrays that are &ldquo;almost sorted&rdquo;&mdash;which is surprisingly common in practice. Python&rsquo;s own Timsort uses insertion sort for small runs.</p>
+
+<h3>Merge Sort</h3>
+<p><strong>Merge sort</strong> is a <strong>divide-and-conquer</strong> algorithm. It recursively splits the array in half until each piece has one element (which is trivially sorted), then merges the sorted halves back together. It guarantees <strong>O(n log n)</strong> time regardless of input order, and it is <strong>stable</strong>&mdash;equal elements keep their original relative order.</p>
+
+<pre style="overflow-x:auto"><code>def merge_sort(arr):
+    """Return a new sorted list using merge sort."""
+    if len(arr) <= 1:                  # Base case: 0 or 1 elements are already sorted
+        return arr
+
+    mid = len(arr) // 2                # Find the midpoint
+    left = merge_sort(arr[:mid])       # Recursively sort the left half
+    right = merge_sort(arr[mid:])      # Recursively sort the right half
+
+    return merge(left, right)          # Merge the two sorted halves
+
+def merge(left, right):
+    """Merge two sorted lists into one sorted list."""
+    result = []
+    i = j = 0                         # Pointers into left and right
+
+    while i < len(left) and j < len(right):
+        if left[i] <= right[j]:        # <= preserves stability
+            result.append(left[i])
+            i += 1
+        else:
+            result.append(right[j])
+            j += 1
+
+    # One of the halves may have remaining elements
+    result.extend(left[i:])
+    result.extend(right[j:])
+    return result
+
+print(merge_sort([38, 27, 43, 3, 9, 82, 10]))  # [3, 9, 10, 27, 38, 43, 82]</code></pre>
+
+<p><strong>The recursion tree:</strong> An 8-element array splits into two 4-element arrays, which split into four 2-element arrays, which split into eight 1-element arrays. That&rsquo;s <strong>log&#8322; n</strong> levels of splitting. At each level, the merge step touches every element once, so each level costs O(n). Total: <strong>O(n log n)</strong>.</p>
+
+<p><strong>Space complexity:</strong> O(n)&mdash;the merge function creates new lists at each level. This is the trade-off versus in-place sorts like quicksort.</p>
+
+<div class="diagram">
+<svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" aria-label="Merge sort divides the array recursively then merges sorted halves">
+  <!-- Title -->
+  <text class="label-text" x="360" y="22" text-anchor="middle">Merge Sort: Divide and Conquer</text>
+
+  <!-- Level 0: Full array -->
+  <rect class="node-accent" x="180" y="35" width="360" height="32" rx="6"/>
+  <text class="sub-text" x="202" y="56" text-anchor="middle">38</text>
+  <text class="sub-text" x="247" y="56" text-anchor="middle">27</text>
+  <text class="sub-text" x="292" y="56" text-anchor="middle">43</text>
+  <text class="sub-text" x="337" y="56" text-anchor="middle">3</text>
+  <text class="sub-text" x="382" y="56" text-anchor="middle">9</text>
+  <text class="sub-text" x="427" y="56" text-anchor="middle">82</text>
+  <text class="sub-text" x="472" y="56" text-anchor="middle">10</text>
+  <text class="sub-text" x="517" y="56" text-anchor="middle">7</text>
+
+  <!-- Divide arrows L0->L1 -->
+  <line x1="270" y1="67" x2="180" y2="90" class="arrow"/>
+  <line x1="450" y1="67" x2="540" y2="90" class="arrow"/>
+
+  <!-- Level 1: Two halves -->
+  <rect class="node-fill" x="80" y="92" width="200" height="28" rx="5"/>
+  <text class="sub-text" x="115" y="111" text-anchor="middle">38</text>
+  <text class="sub-text" x="155" y="111" text-anchor="middle">27</text>
+  <text class="sub-text" x="195" y="111" text-anchor="middle">43</text>
+  <text class="sub-text" x="235" y="111" text-anchor="middle">3</text>
+
+  <rect class="node-fill" x="440" y="92" width="200" height="28" rx="5"/>
+  <text class="sub-text" x="475" y="111" text-anchor="middle">9</text>
+  <text class="sub-text" x="515" y="111" text-anchor="middle">82</text>
+  <text class="sub-text" x="555" y="111" text-anchor="middle">10</text>
+  <text class="sub-text" x="595" y="111" text-anchor="middle">7</text>
+
+  <!-- Divide arrows L1->L2 -->
+  <line x1="135" y1="120" x2="95" y2="145" class="arrow"/>
+  <line x1="225" y1="120" x2="265" y2="145" class="arrow"/>
+  <line x1="495" y1="120" x2="455" y2="145" class="arrow"/>
+  <line x1="585" y1="120" x2="625" y2="145" class="arrow"/>
+
+  <!-- Level 2: Four quarters -->
+  <rect class="node-fill" x="30" y="147" width="100" height="26" rx="4"/>
+  <text class="sub-text" x="60" y="165" text-anchor="middle">38</text>
+  <text class="sub-text" x="100" y="165" text-anchor="middle">27</text>
+
+  <rect class="node-fill" x="220" y="147" width="100" height="26" rx="4"/>
+  <text class="sub-text" x="250" y="165" text-anchor="middle">43</text>
+  <text class="sub-text" x="290" y="165" text-anchor="middle">3</text>
+
+  <rect class="node-fill" x="400" y="147" width="100" height="26" rx="4"/>
+  <text class="sub-text" x="430" y="165" text-anchor="middle">9</text>
+  <text class="sub-text" x="470" y="165" text-anchor="middle">82</text>
+
+  <rect class="node-fill" x="590" y="147" width="100" height="26" rx="4"/>
+  <text class="sub-text" x="620" y="165" text-anchor="middle">10</text>
+  <text class="sub-text" x="660" y="165" text-anchor="middle">7</text>
+
+  <!-- Divide arrows L2->L3 (single elements) -->
+  <line x1="55" y1="173" x2="30" y2="195" stroke="var(--a5)" stroke-width="1"/>
+  <line x1="105" y1="173" x2="110" y2="195" stroke="var(--a5)" stroke-width="1"/>
+  <line x1="245" y1="173" x2="230" y2="195" stroke="var(--a5)" stroke-width="1"/>
+  <line x1="295" y1="173" x2="300" y2="195" stroke="var(--a5)" stroke-width="1"/>
+  <line x1="425" y1="173" x2="410" y2="195" stroke="var(--a5)" stroke-width="1"/>
+  <line x1="475" y1="173" x2="490" y2="195" stroke="var(--a5)" stroke-width="1"/>
+  <line x1="615" y1="173" x2="600" y2="195" stroke="var(--a5)" stroke-width="1"/>
+  <line x1="665" y1="173" x2="680" y2="195" stroke="var(--a5)" stroke-width="1"/>
+
+  <!-- Level 3: Single elements -->
+  <rect x="14" y="197" width="36" height="22" rx="3" fill="var(--bg)" stroke="var(--border-accent)" stroke-width="1"/>
+  <text class="sub-text" x="32" y="212" text-anchor="middle">38</text>
+  <rect x="94" y="197" width="36" height="22" rx="3" fill="var(--bg)" stroke="var(--border-accent)" stroke-width="1"/>
+  <text class="sub-text" x="112" y="212" text-anchor="middle">27</text>
+  <rect x="214" y="197" width="36" height="22" rx="3" fill="var(--bg)" stroke="var(--border-accent)" stroke-width="1"/>
+  <text class="sub-text" x="232" y="212" text-anchor="middle">43</text>
+  <rect x="284" y="197" width="36" height="22" rx="3" fill="var(--bg)" stroke="var(--border-accent)" stroke-width="1"/>
+  <text class="sub-text" x="302" y="212" text-anchor="middle">3</text>
+  <rect x="394" y="197" width="36" height="22" rx="3" fill="var(--bg)" stroke="var(--border-accent)" stroke-width="1"/>
+  <text class="sub-text" x="412" y="212" text-anchor="middle">9</text>
+  <rect x="474" y="197" width="36" height="22" rx="3" fill="var(--bg)" stroke="var(--border-accent)" stroke-width="1"/>
+  <text class="sub-text" x="492" y="212" text-anchor="middle">82</text>
+  <rect x="584" y="197" width="36" height="22" rx="3" fill="var(--bg)" stroke="var(--border-accent)" stroke-width="1"/>
+  <text class="sub-text" x="602" y="212" text-anchor="middle">10</text>
+  <rect x="664" y="197" width="36" height="22" rx="3" fill="var(--bg)" stroke="var(--border-accent)" stroke-width="1"/>
+  <text class="sub-text" x="682" y="212" text-anchor="middle">7</text>
+
+  <!-- MERGE label -->
+  <text fill="var(--accent)" font-size="11" font-weight="600" x="360" y="242" text-anchor="middle">MERGE PHASE</text>
+  <line x1="140" y1="238" x2="290" y2="238" stroke="var(--accent)" stroke-width="1" stroke-dasharray="4"/>
+  <line x1="430" y1="238" x2="580" y2="238" stroke="var(--accent)" stroke-width="1" stroke-dasharray="4"/>
+
+  <!-- Merge Level 2: Sorted pairs -->
+  <rect class="node-accent" x="30" y="252" width="100" height="26" rx="4"/>
+  <text class="sub-text" x="60" y="270" text-anchor="middle" fill="var(--bg)">27</text>
+  <text class="sub-text" x="100" y="270" text-anchor="middle" fill="var(--bg)">38</text>
+
+  <rect class="node-accent" x="220" y="252" width="100" height="26" rx="4"/>
+  <text class="sub-text" x="250" y="270" text-anchor="middle" fill="var(--bg)">3</text>
+  <text class="sub-text" x="290" y="270" text-anchor="middle" fill="var(--bg)">43</text>
+
+  <rect class="node-accent" x="400" y="252" width="100" height="26" rx="4"/>
+  <text class="sub-text" x="430" y="270" text-anchor="middle" fill="var(--bg)">9</text>
+  <text class="sub-text" x="470" y="270" text-anchor="middle" fill="var(--bg)">82</text>
+
+  <rect class="node-accent" x="590" y="252" width="100" height="26" rx="4"/>
+  <text class="sub-text" x="620" y="270" text-anchor="middle" fill="var(--bg)">7</text>
+  <text class="sub-text" x="660" y="270" text-anchor="middle" fill="var(--bg)">10</text>
+
+  <!-- Merge arrows L2->L1 -->
+  <line x1="95" y1="278" x2="135" y2="300" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="265" y1="278" x2="225" y2="300" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="455" y1="278" x2="495" y2="300" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="635" y1="278" x2="585" y2="300" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Merge Level 1: Sorted fours -->
+  <rect class="node-accent" x="80" y="302" width="200" height="28" rx="5"/>
+  <text class="sub-text" x="115" y="321" text-anchor="middle" fill="var(--bg)">3</text>
+  <text class="sub-text" x="155" y="321" text-anchor="middle" fill="var(--bg)">27</text>
+  <text class="sub-text" x="195" y="321" text-anchor="middle" fill="var(--bg)">38</text>
+  <text class="sub-text" x="235" y="321" text-anchor="middle" fill="var(--bg)">43</text>
+
+  <rect class="node-accent" x="440" y="302" width="200" height="28" rx="5"/>
+  <text class="sub-text" x="475" y="321" text-anchor="middle" fill="var(--bg)">7</text>
+  <text class="sub-text" x="515" y="321" text-anchor="middle" fill="var(--bg)">9</text>
+  <text class="sub-text" x="555" y="321" text-anchor="middle" fill="var(--bg)">10</text>
+  <text class="sub-text" x="595" y="321" text-anchor="middle" fill="var(--bg)">82</text>
+
+  <!-- Final merge arrows -->
+  <line x1="225" y1="330" x2="300" y2="348" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="495" y1="330" x2="420" y2="348" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Final sorted array -->
+  <rect class="node-accent" x="180" y="350" width="360" height="28" rx="6"/>
+  <text class="sub-text" x="202" y="369" text-anchor="middle" fill="var(--bg)">3</text>
+  <text class="sub-text" x="247" y="369" text-anchor="middle" fill="var(--bg)">7</text>
+  <text class="sub-text" x="292" y="369" text-anchor="middle" fill="var(--bg)">9</text>
+  <text class="sub-text" x="337" y="369" text-anchor="middle" fill="var(--bg)">10</text>
+  <text class="sub-text" x="382" y="369" text-anchor="middle" fill="var(--bg)">27</text>
+  <text class="sub-text" x="427" y="369" text-anchor="middle" fill="var(--bg)">38</text>
+  <text class="sub-text" x="472" y="369" text-anchor="middle" fill="var(--bg)">43</text>
+  <text class="sub-text" x="517" y="369" text-anchor="middle" fill="var(--bg)">82</text>
+</svg>
+<div class="diagram-caption">Merge sort splits the array recursively (top half), then merges sorted sub-arrays back together (bottom half). Each level of merging touches every element once, giving O(n log n) total work.</div>
+</div>
+
+<h3>Quicksort</h3>
+<p><strong>Quicksort</strong> is another divide-and-conquer algorithm, but instead of splitting at the midpoint, it <strong>partitions</strong> the array around a <strong>pivot</strong> element. All elements smaller than the pivot go to its left; all elements larger go to its right. Then it recursively sorts the left and right partitions.</p>
+
+<pre style="overflow-x:auto"><code>def quicksort(arr):
+    """Return a new sorted list using quicksort."""
+    if len(arr) <= 1:
+        return arr
+
+    pivot = arr[len(arr) // 2]                # Choose middle element as pivot
+    left = [x for x in arr if x < pivot]      # Elements smaller than pivot
+    middle = [x for x in arr if x == pivot]    # Elements equal to pivot
+    right = [x for x in arr if x > pivot]     # Elements larger than pivot
+
+    return quicksort(left) + middle + quicksort(right)
+
+print(quicksort([10, 7, 8, 9, 1, 5]))  # [1, 5, 7, 8, 9, 10]</code></pre>
+
+<p>This is the &ldquo;Lomuto-style&rdquo; list-comprehension version&mdash;clear but uses extra space. The in-place Hoare partition scheme is more memory-efficient but harder to read:</p>
+
+<pre style="overflow-x:auto"><code>def quicksort_inplace(arr, lo=0, hi=None):
+    """Sort arr in-place using quicksort with Hoare partition."""
+    if hi is None:
+        hi = len(arr) - 1
+    if lo >= hi:
+        return
+
+    # Partition
+    pivot = arr[(lo + hi) // 2]
+    i, j = lo, hi
+    while i <= j:
+        while arr[i] < pivot:
+            i += 1
+        while arr[j] > pivot:
+            j -= 1
+        if i <= j:
+            arr[i], arr[j] = arr[j], arr[i]
+            i += 1
+            j -= 1
+
+    quicksort_inplace(arr, lo, j)
+    quicksort_inplace(arr, i, hi)
+
+data = [10, 7, 8, 9, 1, 5]
+quicksort_inplace(data)
+print(data)  # [1, 5, 7, 8, 9, 10]</code></pre>
+
+<p><strong>Complexity:</strong> O(n log n) average case, but <strong>O(n&sup2;) worst case</strong>&mdash;this happens when the pivot is always the smallest or largest element (e.g., already-sorted input with first-element pivot). Pivot selection strategies to avoid this:</p>
+<ul>
+<li><strong>Random pivot</strong>&mdash;pick a random element. Worst case becomes astronomically unlikely.</li>
+<li><strong>Median-of-three</strong>&mdash;take the median of the first, middle, and last elements. Handles sorted input well.</li>
+<li><strong>Middle element</strong>&mdash;what we used above. Simple and usually effective.</li>
+</ul>
+
+<h3>Heapsort</h3>
+<p><strong>Heapsort</strong> builds a max-heap from the array (as covered in Ch 22), then repeatedly extracts the maximum element and places it at the end. It achieves <strong>O(n log n)</strong> guaranteed time and is <strong>in-place</strong>&mdash;no extra arrays needed.</p>
+
+<pre style="overflow-x:auto"><code>def heapsort(arr):
+    """Sort arr in-place using heapsort."""
+    n = len(arr)
+
+    def sift_down(start, end):
+        """Restore the max-heap property from start down to end."""
+        root = start
+        while 2 * root + 1 <= end:
+            child = 2 * root + 1        # Left child
+            if child + 1 <= end and arr[child] < arr[child + 1]:
+                child += 1              # Right child is larger
+            if arr[root] < arr[child]:
+                arr[root], arr[child] = arr[child], arr[root]
+                root = child
+            else:
+                return
+
+    # Phase 1: Build a max-heap (heapify)
+    for i in range(n // 2 - 1, -1, -1):
+        sift_down(i, n - 1)
+
+    # Phase 2: Extract max repeatedly
+    for end in range(n - 1, 0, -1):
+        arr[0], arr[end] = arr[end], arr[0]   # Move max to sorted position
+        sift_down(0, end - 1)                  # Restore heap on reduced array
+
+    return arr
+
+data = [4, 10, 3, 5, 1]
+print(heapsort(data))  # [1, 3, 4, 5, 10]</code></pre>
+
+<p>Heapsort is useful when you need guaranteed O(n log n) with no extra memory. In practice, quicksort is often faster due to better cache locality, but heapsort&rsquo;s worst case is strictly O(n log n)&mdash;no unlucky pivots.</p>
+
+<h3>Non-Comparison Sorts</h3>
+<p>All the sorts above compare pairs of elements. A mathematical result called the <strong>comparison lower bound</strong> proves that no comparison-based sort can do better than O(n log n). But if your data consists of integers within a known range, you can break this barrier.</p>
+
+<p><strong>Counting sort</strong> counts occurrences of each value, then reconstructs the sorted array from the counts. Time: <strong>O(n + k)</strong> where k is the range of values.</p>
+
+<pre style="overflow-x:auto"><code>def counting_sort(arr, max_val):
+    """Sort non-negative integers using counting sort. O(n + k)."""
+    counts = [0] * (max_val + 1)        # One counter per possible value
+    for x in arr:
+        counts[x] += 1                  # Count occurrences
+
+    result = []
+    for val, count in enumerate(counts):
+        result.extend([val] * count)    # Emit each value 'count' times
+    return result
+
+print(counting_sort([4, 2, 2, 8, 3, 3, 1], 8))  # [1, 2, 2, 3, 3, 4, 8]</code></pre>
+
+<p><strong>Radix sort</strong> sorts integers digit by digit, from least significant to most significant, using a stable sort (like counting sort) at each digit. Time: <strong>O(d &times; (n + k))</strong> where d is the number of digits and k is the base (usually 10). For fixed-size integers, this is effectively O(n).</p>
+
+<h3>Stability</h3>
+<p>A sort is <strong>stable</strong> if elements with equal keys maintain their original relative order. This matters when sorting by multiple keys.</p>
+
+<p>Example: you have tasks sorted by creation date. Now you sort by priority. With a stable sort, tasks of the same priority remain in creation-date order. With an unstable sort, their order within a priority level is unpredictable.</p>
+
+<table>
+<caption>Sorting algorithm comparison by time, space, and stability</caption>
+<tr><th>Algorithm</th><th>Time (Worst)</th><th>Time (Average)</th><th>Space</th><th>Stable?</th></tr>
+<tr><td>Insertion sort</td><td>O(n&sup2;)</td><td>O(n&sup2;)</td><td>O(1)</td><td>Yes</td></tr>
+<tr><td>Merge sort</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n)</td><td>Yes</td></tr>
+<tr><td>Quicksort</td><td>O(n&sup2;)</td><td>O(n log n)</td><td>O(log n)</td><td>No</td></tr>
+<tr><td>Heapsort</td><td>O(n log n)</td><td>O(n log n)</td><td>O(1)</td><td>No</td></tr>
+<tr><td>Counting sort</td><td>O(n + k)</td><td>O(n + k)</td><td>O(k)</td><td>Yes</td></tr>
+</table>
+
+<h3>Timsort: What Python Actually Uses</h3>
+<p>When you call <code>sorted()</code> or <code>list.sort()</code> in Python, you get <strong>Timsort</strong>&mdash;a hybrid algorithm invented by Tim Peters in 2002 specifically for Python. Timsort combines merge sort and insertion sort, and it is designed to exploit patterns that appear in real-world data:</p>
+<ul>
+<li>It finds existing sorted &ldquo;runs&rdquo; (ascending or descending sequences) in the input.</li>
+<li>Short runs are extended to a minimum length using insertion sort.</li>
+<li>Runs are merged pairwise using a modified merge sort with a &ldquo;galloping&rdquo; mode for unbalanced merges.</li>
+</ul>
+<p>Timsort is <strong>O(n log n)</strong> worst case, <strong>O(n)</strong> on already-sorted data, and stable. It is so effective that Java, Rust, and Swift adopted it for their standard libraries.</p>
+
+<p>The practical takeaway: <strong>use Python&rsquo;s built-in <code>sorted()</code></strong>. It is almost certainly faster than anything you write by hand, because it is implemented in C and uses Timsort&rsquo;s real-world optimizations. Write your own sort only to learn, or when working in a constrained environment.</p>
+
+<h3>Engineering Angle</h3>
+<div role="note" class="callout info">
+<div class="callout-title">Engineering Angle</div>
+<p><code>sorted()</code> with a custom <code>key</code> parameter handles 99% of real sorting needs. Need to sort tasks by priority? <code>sorted(tasks, key=lambda t: t["priority"])</code>. Need descending order? Add <code>reverse=True</code>. Need a secondary sort key? Return a tuple: <code>key=lambda t: (t["priority"], t["due_date"])</code>.</p>
+<p>Database <code>ORDER BY</code> clauses use B-tree index scans to return sorted results without actually sorting&mdash;the data is already organized by the index. When you need to search sorted data repeatedly, sort once and binary search each time: one O(n log n) sort plus k O(log n) searches beats k O(n) linear scans whenever k &gt; log n.</p>
+</div>
+
+<h3>TaskForge Connection</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">TaskForge: Multi-Key Sorting</div>
+<p>Implement multi-key sorting for TaskForge: sort tasks by priority first (highest priority first), then by due date within the same priority (earliest due date first), then by creation date as a tiebreaker. This is exactly how <code>sorted()</code> with a tuple key works:</p>
+<pre style="overflow-x:auto"><code># TaskForge multi-key sort
+tasks = [
+    {"title": "Deploy v2", "priority": 1, "due": "2026-03-20", "created": "2026-03-10"},
+    {"title": "Write docs", "priority": 2, "due": "2026-03-22", "created": "2026-03-11"},
+    {"title": "Fix bug #42", "priority": 1, "due": "2026-03-18", "created": "2026-03-12"},
+    {"title": "Code review", "priority": 2, "due": "2026-03-22", "created": "2026-03-09"},
+]
+
+# Sort: priority ascending (1=highest), due date ascending, created ascending
+sorted_tasks = sorted(tasks, key=lambda t: (t["priority"], t["due"], t["created"]))
+for t in sorted_tasks:
+    print(f"[P{t['priority']}] {t['due']} - {t['title']}")
+# [P1] 2026-03-18 - Fix bug #42
+# [P1] 2026-03-20 - Deploy v2
+# [P2] 2026-03-22 - Code review   (earlier created date wins)
+# [P2] 2026-03-22 - Write docs</code></pre>
+<p>This relies on Timsort&rsquo;s stability and Python&rsquo;s tuple comparison. No custom sort algorithm needed&mdash;the built-in does the work.</p>
+</div>
+
+<h3>Interactive Exercises</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="24" data-ex="binary-search">
+  <div class="exercise-header">
+    <h4>Binary Search: Elements and Search Spaces</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Implement two functions: (1) <code>binary_search(arr, target)</code> returns the index of <code>target</code> in a sorted list, or <code>-1</code> if not found. (2) <code>min_workers_time(durations, num_workers)</code> uses binary search on a search space to find the minimum possible maximum time per worker.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def binary_search(arr, target):
+    """Return the index of target in sorted arr, or -1 if not found."""
+    # Your code here
+    pass
+
+def min_workers_time(durations, num_workers):
+    """Find the minimum possible max time per worker using binary search."""
+    # Your code here
+    pass
+
+# Test
+print(binary_search([1, 3, 5, 7, 9, 11], 7))  # Expected: 3
+print(binary_search([1, 3, 5, 7, 9, 11], 4))  # Expected: -1
+print(min_workers_time([10, 20, 30, 40, 50], 3))  # Expected: 60
+</script>
+    <script type="text/plain" class="test-code">
+# Test binary_search
+assert binary_search([1, 3, 5, 7, 9, 11], 7) == 3, "Should find 7 at index 3"
+assert binary_search([1, 3, 5, 7, 9, 11], 1) == 0, "Should find 1 at index 0"
+assert binary_search([1, 3, 5, 7, 9, 11], 11) == 5, "Should find 11 at index 5"
+assert binary_search([1, 3, 5, 7, 9, 11], 4) == -1, "Should return -1 for missing element"
+assert binary_search([], 5) == -1, "Empty array returns -1"
+assert binary_search([42], 42) == 0, "Single-element array, found"
+
+# Test min_workers_time
+assert min_workers_time([10, 20, 30, 40, 50], 3) == 60, "3 workers: [10,20,30], [40], [50] -> max 60"
+assert min_workers_time([10, 20, 30, 40, 50], 1) == 150, "1 worker does everything"
+assert min_workers_time([10, 20, 30, 40, 50], 5) == 50, "5 workers: one task each, max is 50"
+assert min_workers_time([7, 2, 5, 10, 8], 2) == 18, "2 workers optimal split"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">For binary_search: set lo=0, hi=len(arr)-1, and loop while lo &lt;= hi. Compare arr[mid] to target and adjust lo or hi.</p>
+    <p class="hint">For min_workers_time: binary search between max(durations) and sum(durations). Write a helper that checks if a given time limit is feasible by greedily assigning tasks to workers.</p>
+  </div>
+</div>
+
+<div class="quiz" data-ch="24" data-ex="quiz-sort">
+  <h4>Knowledge Check</h4>
+  <p>You need to sort 50 nearly-sorted elements. Which algorithm is likely fastest in practice?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">Merge sort</button>
+    <button class="quiz-option" data-correct="false">Quicksort</button>
+    <button class="quiz-option" data-correct="true">Insertion sort</button>
+    <button class="quiz-option" data-correct="false">Heapsort</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="pq">The right sorting algorithm depends on the data, not the textbook. Knowing all the options means you can choose&mdash;or evaluate whether an AI chose well.</div>
+
+</section>
+
+<!-- ===== CH 25 ===== -->
+<section id="ch25" data-ch="25">
+<h2><span class="ch-label">Chapter 25</span> Recursion &amp; Dynamic Programming</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>Many problems have elegant recursive solutions. But naive recursion can be astronomically slow&mdash;computing Fibonacci(50) recursively makes over a trillion function calls. Dynamic programming transforms these exponential algorithms into polynomial ones. AI loves generating recursive code. You need to know when it is efficient and when it is a trap that will crash your production system.</p>
+</div>
+
+<h3>Recursive Thinking</h3>
+<p>A <strong>recursive function</strong> calls itself with a smaller version of the same problem. Every recursion needs two parts:</p>
+<ol>
+<li><strong>Base case</strong>&mdash;a condition that stops the recursion. Without it, the function calls itself forever.</li>
+<li><strong>Recursive case</strong>&mdash;the function calls itself with a smaller input that moves toward the base case.</li>
+</ol>
+
+<p>The simplest example is factorial:</p>
+<pre style="overflow-x:auto"><code>def factorial(n):
+    """Compute n! = n * (n-1) * ... * 1."""
+    if n <= 1:             # Base case: 0! = 1! = 1
+        return 1
+    return n * factorial(n - 1)  # Recursive case: n! = n * (n-1)!
+
+print(factorial(5))  # 120 = 5 * 4 * 3 * 2 * 1</code></pre>
+
+<p>Walk through the execution:</p>
+<pre style="overflow-x:auto"><code>factorial(5)
+  = 5 * factorial(4)
+  = 5 * (4 * factorial(3))
+  = 5 * (4 * (3 * factorial(2)))
+  = 5 * (4 * (3 * (2 * factorial(1))))
+  = 5 * (4 * (3 * (2 * 1)))           # Base case reached
+  = 5 * (4 * (3 * 2))
+  = 5 * (4 * 6)
+  = 5 * 24
+  = 120</code></pre>
+
+<p>Now Fibonacci&mdash;each number is the sum of the two before it: 0, 1, 1, 2, 3, 5, 8, 13, 21, ...</p>
+<pre style="overflow-x:auto"><code>def fib(n):
+    """Return the nth Fibonacci number (naive recursive)."""
+    if n <= 1:             # Base cases: fib(0) = 0, fib(1) = 1
+        return n
+    return fib(n - 1) + fib(n - 2)  # Recursive case
+
+print(fib(10))  # 55</code></pre>
+
+<p>This works, but it is <em>catastrophically</em> slow for large n. Why? Because it recomputes the same subproblems over and over. <code>fib(5)</code> calls <code>fib(3)</code> twice, <code>fib(2)</code> three times, and <code>fib(1)</code> five times. The total calls grow exponentially: <strong>O(2&#8319;)</strong>.</p>
+
+<h3>The Call Stack</h3>
+<p>Each recursive call adds a <strong>stack frame</strong>&mdash;a block of memory that stores the function&rsquo;s local variables and return address. The frames stack up as recursion goes deeper, then unwind as each call returns.</p>
+
+<pre style="overflow-x:auto"><code># Visualizing the call stack for factorial(4):
+#
+# Frame 4: factorial(1) -> returns 1         [TOP]
+# Frame 3: factorial(2) -> waiting for frame 4
+# Frame 2: factorial(3) -> waiting for frame 3
+# Frame 1: factorial(4) -> waiting for frame 2  [BOTTOM]
+#
+# After factorial(1) returns, frames unwind from top to bottom.</code></pre>
+
+<p>Python imposes a default <strong>recursion limit of 1000</strong>. You can check and change it:</p>
+<pre style="overflow-x:auto"><code>import sys
+print(sys.getrecursionlimit())  # 1000
+sys.setrecursionlimit(5000)     # Increase it</code></pre>
+
+<div role="note" class="callout warn">
+<div class="callout-title">setrecursionlimit Is Usually the Wrong Fix</div>
+<p>If your recursion hits the limit, the real problem is usually that your algorithm has exponential depth, not that the limit is too low. Increasing the limit just delays the crash and risks consuming all available memory. The right fix is to convert to iteration or add memoization.</p>
+</div>
+
+<h3>Stack Overflow</h3>
+<p>When recursion goes too deep, you get a <strong>RecursionError</strong> (Python&rsquo;s version of a stack overflow). This happens when:</p>
+<ul>
+<li>You forgot the base case</li>
+<li>The base case is wrong and never triggers</li>
+<li>The problem is too large for recursive depth (e.g., processing a linked list of 100,000 elements recursively)</li>
+</ul>
+
+<p><strong>Tail recursion</strong> is a pattern where the recursive call is the very last operation in the function. Some languages (Scheme, Scala) optimize this into a loop automatically, eliminating stack growth. <strong>Python does not do tail-call optimization.</strong> In Python, if you need deep recursion, convert to an explicit loop with a stack data structure.</p>
+
+<pre style="overflow-x:auto"><code># Recursive (limited by call stack):
+def sum_list_recursive(lst, i=0):
+    if i == len(lst):
+        return 0
+    return lst[i] + sum_list_recursive(lst, i + 1)
+
+# Iterative (no stack limit):
+def sum_list_iterative(lst):
+    total = 0
+    for x in lst:
+        total += x
+    return total</code></pre>
+
+<h3>Memoization</h3>
+<p><strong>Memoization</strong> caches the results of expensive function calls so that if the function is called again with the same arguments, it returns the cached result instead of recomputing. This transforms our O(2&#8319;) Fibonacci into <strong>O(n)</strong>.</p>
+
+<pre style="overflow-x:auto"><code>def fib_memo(n, cache={}):
+    """Fibonacci with manual memoization."""
+    if n in cache:             # Already computed? Return cached result.
+        return cache[n]
+    if n <= 1:
+        return n
+    cache[n] = fib_memo(n - 1, cache) + fib_memo(n - 2, cache)
+    return cache[n]
+
+print(fib_memo(50))  # 12586269025 — instant, not heat-death-of-the-universe</code></pre>
+
+<p>Python provides a built-in decorator that does this automatically:</p>
+<pre style="overflow-x:auto"><code>from functools import lru_cache
+
+@lru_cache(maxsize=None)    # Cache all results (no eviction)
+def fib_cached(n):
+    if n <= 1:
+        return n
+    return fib_cached(n - 1) + fib_cached(n - 2)
+
+print(fib_cached(100))  # 354224848179261915075</code></pre>
+
+<p>The difference is dramatic. Let&rsquo;s time it:</p>
+<pre style="overflow-x:auto"><code>import time
+
+# Naive recursive — try n=35 (anything higher may freeze your machine)
+start = time.time()
+fib(35)
+print(f"Naive: {time.time() - start:.2f}s")  # ~3-5 seconds
+
+# Memoized — same n but now try n=500
+start = time.time()
+fib_cached(500)
+print(f"Memoized: {time.time() - start:.6f}s")  # ~0.000 seconds</code></pre>
+
+<h3>Bottom-Up Tabulation</h3>
+<p>Memoization is &ldquo;top-down&rdquo;&mdash;you start from the big problem and recurse down. <strong>Tabulation</strong> is &ldquo;bottom-up&rdquo;&mdash;you build a table starting from the base cases and work upward. No recursion, no stack overhead.</p>
+
+<pre style="overflow-x:auto"><code>def fib_table(n):
+    """Fibonacci using bottom-up tabulation."""
+    if n <= 1:
+        return n
+
+    table = [0] * (n + 1)     # table[i] will hold fib(i)
+    table[0] = 0               # Base case
+    table[1] = 1               # Base case
+
+    for i in range(2, n + 1):
+        table[i] = table[i - 1] + table[i - 2]   # Build from smaller subproblems
+
+    return table[n]
+
+print(fib_table(100))  # 354224848179261915075</code></pre>
+
+<p>You can even optimize space to O(1) since you only need the previous two values:</p>
+<pre style="overflow-x:auto"><code>def fib_optimal(n):
+    """Fibonacci with O(1) space."""
+    if n <= 1:
+        return n
+    prev2, prev1 = 0, 1
+    for _ in range(2, n + 1):
+        prev2, prev1 = prev1, prev2 + prev1
+    return prev1
+
+print(fib_optimal(100))  # 354224848179261915075</code></pre>
+
+<h3>Classic DP Patterns</h3>
+
+<h4>Coin Change: Minimum Coins to Make a Target Amount</h4>
+<p><strong>Problem:</strong> Given coin denominations (e.g., [1, 5, 10, 25]) and a target amount, find the minimum number of coins needed.</p>
+<p>This is the canonical DP problem. The key insight: the minimum coins for amount <code>a</code> is 1 + the minimum over all coins <code>c</code> of the answer for amount <code>a - c</code>.</p>
+
+<pre style="overflow-x:auto"><code>def coin_change(coins, amount):
+    """Return minimum coins to make amount, or -1 if impossible."""
+    # dp[i] = minimum coins needed to make amount i
+    dp = [float('inf')] * (amount + 1)
+    dp[0] = 0                          # Base case: 0 coins for amount 0
+
+    for a in range(1, amount + 1):     # For each amount from 1 to target
+        for c in coins:                # Try each coin denomination
+            if c <= a:                 # Coin must not exceed the current amount
+                dp[a] = min(dp[a], dp[a - c] + 1)
+
+    return dp[amount] if dp[amount] != float('inf') else -1
+
+print(coin_change([1, 5, 10, 25], 36))  # 3 (25 + 10 + 1)
+print(coin_change([3, 7], 5))            # -1 (impossible)</code></pre>
+
+<p><strong>Complexity:</strong> O(amount &times; len(coins)). Each cell in the table is computed once, using a constant amount of work per coin.</p>
+
+<h4>Longest Common Subsequence (LCS)</h4>
+<p><strong>Problem:</strong> Given two strings, find the length of their longest common subsequence&mdash;the longest sequence of characters that appears in both strings in the same order (but not necessarily contiguously).</p>
+
+<p>This is the foundation of diff algorithms (like <code>git diff</code>): they find the LCS of two files, and everything not in the LCS is a change.</p>
+
+<pre style="overflow-x:auto"><code>def lcs(s1, s2):
+    """Return the length of the longest common subsequence."""
+    m, n = len(s1), len(s2)
+    # dp[i][j] = LCS length of s1[:i] and s2[:j]
+    dp = [[0] * (n + 1) for _ in range(m + 1)]
+
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if s1[i - 1] == s2[j - 1]:          # Characters match
+                dp[i][j] = dp[i - 1][j - 1] + 1  # Extend the LCS
+            else:                                  # Characters differ
+                dp[i][j] = max(dp[i - 1][j],      # Skip char from s1
+                               dp[i][j - 1])      # Skip char from s2
+
+    return dp[m][n]
+
+print(lcs("ABCBDAB", "BDCAB"))  # 4 ("BCAB")</code></pre>
+
+<h4>0/1 Knapsack: Maximize Value Within a Weight Limit</h4>
+<p><strong>Problem:</strong> You have items with weights and values. You have a knapsack with a weight capacity. Maximize the total value without exceeding the capacity. Each item can be taken at most once.</p>
+
+<pre style="overflow-x:auto"><code>def knapsack(values, weights, capacity):
+    """Return maximum value achievable within capacity."""
+    n = len(values)
+    # dp[i][w] = max value using items 0..i-1 with capacity w
+    dp = [[0] * (capacity + 1) for _ in range(n + 1)]
+
+    for i in range(1, n + 1):
+        for w in range(capacity + 1):
+            dp[i][w] = dp[i - 1][w]               # Don't take item i
+            if weights[i - 1] <= w:                 # Can we take item i?
+                take = dp[i - 1][w - weights[i - 1]] + values[i - 1]
+                dp[i][w] = max(dp[i][w], take)     # Take it if better
+
+    return dp[n][capacity]
+
+# Items: (value, weight)
+values  = [60, 100, 120]
+weights = [10,  20,  30]
+capacity = 50
+print(knapsack(values, weights, capacity))  # 220 (items 2 and 3)</code></pre>
+
+<p><strong>Complexity:</strong> O(n &times; capacity). This is called <strong>pseudo-polynomial</strong>&mdash;it depends on the numeric value of capacity, not just the input size.</p>
+
+<h3>Recognizing DP Problems</h3>
+<p>Not every problem benefits from DP. Two properties must hold:</p>
+<ol>
+<li><strong>Overlapping subproblems</strong>&mdash;the same subproblem is solved multiple times. If every subproblem is unique (like merge sort), DP adds overhead without benefit.</li>
+<li><strong>Optimal substructure</strong>&mdash;the optimal solution to the whole problem can be built from optimal solutions to subproblems. If changing a sub-decision doesn&rsquo;t affect other sub-decisions, the problem has optimal substructure.</li>
+</ol>
+
+<p><strong>Quick test:</strong> Can you write a recursive solution? Does it recompute the same subproblems? If yes to both, add memoization. If you can identify the subproblem table dimensions, write the bottom-up version.</p>
+
+<div class="diagram">
+<svg viewBox="0 0 720 400" xmlns="http://www.w3.org/2000/svg" aria-label="Fibonacci recursive call tree showing repeated subproblems that memoization eliminates">
+  <!-- Title -->
+  <text class="label-text" x="360" y="20" text-anchor="middle">Fibonacci Call Tree: Naive vs. Memoized</text>
+
+  <!-- Left side: Naive -->
+  <text fill="var(--accent)" font-size="12" font-weight="600" x="185" y="42" text-anchor="middle">Naive Recursion</text>
+
+  <!-- fib(6) -->
+  <circle cx="185" cy="65" r="16" fill="var(--bg)" stroke="var(--accent)" stroke-width="2"/>
+  <text class="sub-text" x="185" y="70" text-anchor="middle">f(6)</text>
+
+  <!-- Level 1 -->
+  <line x1="172" y1="78" x2="115" y2="100" stroke="var(--accent)" stroke-width="1.2"/>
+  <line x1="198" y1="78" x2="255" y2="100" stroke="var(--accent)" stroke-width="1.2"/>
+  <circle cx="115" cy="112" r="14" fill="var(--bg)" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="sub-text" x="115" y="117" text-anchor="middle">f(5)</text>
+  <circle cx="255" cy="112" r="14" fill="var(--bg)" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="sub-text" x="255" y="117" text-anchor="middle">f(4)</text>
+
+  <!-- Level 2 from f(5) -->
+  <line x1="104" y1="124" x2="65" y2="148" stroke="var(--accent)" stroke-width="1"/>
+  <line x1="126" y1="124" x2="155" y2="148" stroke="var(--accent)" stroke-width="1"/>
+  <circle cx="65" cy="158" r="13" fill="var(--bg)" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="sub-text" x="65" y="163" text-anchor="middle">f(4)</text>
+  <circle cx="155" cy="158" r="13" fill="var(--bg)" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="sub-text" x="155" y="163" text-anchor="middle">f(3)</text>
+
+  <!-- Level 2 from f(4) right -->
+  <line x1="244" y1="124" x2="215" y2="148" stroke="var(--accent)" stroke-width="1"/>
+  <line x1="266" y1="124" x2="295" y2="148" stroke="var(--accent)" stroke-width="1"/>
+  <circle cx="215" cy="158" r="13" fill="var(--bg)" stroke="var(--text-muted)" stroke-width="1.5" stroke-dasharray="3"/>
+  <text class="sub-text" x="215" y="163" text-anchor="middle" fill="var(--text-muted)">f(3)</text>
+  <circle cx="295" cy="158" r="13" fill="var(--bg)" stroke="var(--text-muted)" stroke-width="1.5" stroke-dasharray="3"/>
+  <text class="sub-text" x="295" y="163" text-anchor="middle" fill="var(--text-muted)">f(2)</text>
+
+  <!-- Level 3 from f(4) left -->
+  <line x1="55" y1="170" x2="30" y2="192" stroke="var(--accent)" stroke-width="1"/>
+  <line x1="75" y1="170" x2="100" y2="192" stroke="var(--accent)" stroke-width="1"/>
+  <circle cx="30" cy="202" r="12" fill="var(--bg)" stroke="var(--text-muted)" stroke-width="1.5" stroke-dasharray="3"/>
+  <text class="sub-text" x="30" y="207" text-anchor="middle" fill="var(--text-muted)">f(3)</text>
+  <circle cx="100" cy="202" r="12" fill="var(--bg)" stroke="var(--text-muted)" stroke-width="1.5" stroke-dasharray="3"/>
+  <text class="sub-text" x="100" y="207" text-anchor="middle" fill="var(--text-muted)">f(2)</text>
+
+  <!-- Level 3 from f(3) -->
+  <line x1="145" y1="170" x2="125" y2="192" stroke="var(--accent)" stroke-width="1"/>
+  <line x1="165" y1="170" x2="185" y2="192" stroke="var(--accent)" stroke-width="1"/>
+  <circle cx="125" cy="202" r="12" fill="var(--bg)" stroke="var(--text-muted)" stroke-width="1.5" stroke-dasharray="3"/>
+  <text class="sub-text" x="125" y="207" text-anchor="middle" fill="var(--text-muted)">f(2)</text>
+  <circle cx="185" cy="202" r="12" fill="var(--bg)" stroke="var(--border-accent)" stroke-width="1.5"/>
+  <text class="sub-text" x="185" y="207" text-anchor="middle">f(1)</text>
+
+  <!-- Repeated indicator -->
+  <text fill="var(--text-muted)" font-size="9" x="185" y="240" text-anchor="middle">Dashed = repeated computation</text>
+  <text fill="var(--text-muted)" font-size="9" x="185" y="252" text-anchor="middle">f(3) computed 3 times, f(2) computed 5 times</text>
+
+  <!-- Divider -->
+  <line x1="365" y1="38" x2="365" y2="260" stroke="var(--border-accent)" stroke-width="1" stroke-dasharray="6"/>
+
+  <!-- Right side: Memoized -->
+  <text fill="var(--accent)" font-size="12" font-weight="600" x="545" y="42" text-anchor="middle">With Memoization</text>
+
+  <!-- fib(6) -->
+  <circle cx="545" cy="65" r="16" fill="var(--bg)" stroke="var(--accent)" stroke-width="2"/>
+  <text class="sub-text" x="545" y="70" text-anchor="middle">f(6)</text>
+
+  <!-- Level 1 -->
+  <line x1="532" y1="78" x2="480" y2="100" stroke="var(--accent)" stroke-width="1.5"/>
+  <line x1="558" y1="78" x2="610" y2="100" stroke="var(--accent)" stroke-width="1.5"/>
+  <circle cx="480" cy="112" r="14" fill="var(--bg)" stroke="var(--accent)" stroke-width="2"/>
+  <text class="sub-text" x="480" y="117" text-anchor="middle">f(5)</text>
+  <rect x="596" y="99" width="28" height="24" rx="4" fill="var(--accent)" opacity="0.2" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="sub-text" x="610" y="116" text-anchor="middle" fill="var(--accent)">f(4)</text>
+
+  <!-- Level 2 from f(5) -->
+  <line x1="468" y1="124" x2="420" y2="148" stroke="var(--accent)" stroke-width="1.5"/>
+  <line x1="492" y1="124" x2="540" y2="148" stroke="var(--accent)" stroke-width="1.5"/>
+  <circle cx="420" cy="158" r="14" fill="var(--bg)" stroke="var(--accent)" stroke-width="2"/>
+  <text class="sub-text" x="420" y="163" text-anchor="middle">f(4)</text>
+  <rect x="526" y="145" width="28" height="24" rx="4" fill="var(--accent)" opacity="0.2" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="sub-text" x="540" y="162" text-anchor="middle" fill="var(--accent)">f(3)</text>
+
+  <!-- Level 3 from f(4) -->
+  <line x1="408" y1="170" x2="370" y2="192" stroke="var(--accent)" stroke-width="1.5"/>
+  <line x1="432" y1="170" x2="470" y2="192" stroke="var(--accent)" stroke-width="1.5"/>
+  <circle cx="370" cy="202" r="13" fill="var(--bg)" stroke="var(--accent)" stroke-width="2"/>
+  <text class="sub-text" x="370" y="207" text-anchor="middle">f(3)</text>
+  <rect x="456" y="190" width="28" height="24" rx="4" fill="var(--accent)" opacity="0.2" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="sub-text" x="470" y="207" text-anchor="middle" fill="var(--accent)">f(2)</text>
+
+  <!-- Level 4 from f(3) -->
+  <line x1="360" y1="214" x2="340" y2="234" stroke="var(--accent)" stroke-width="1.5"/>
+  <line x1="380" y1="214" x2="400" y2="234" stroke="var(--accent)" stroke-width="1.5"/>
+  <circle cx="340" cy="246" r="12" fill="var(--bg)" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="sub-text" x="340" y="251" text-anchor="middle">f(2)</text>
+  <circle cx="400" cy="246" r="12" fill="var(--bg)" stroke="var(--border-accent)" stroke-width="1.5"/>
+  <text class="sub-text" x="400" y="251" text-anchor="middle">f(1)</text>
+
+  <!-- Level 5 from f(2) -->
+  <line x1="332" y1="258" x2="315" y2="276" stroke="var(--accent)" stroke-width="1"/>
+  <line x1="348" y1="258" x2="365" y2="276" stroke="var(--accent)" stroke-width="1"/>
+  <circle cx="315" cy="288" r="11" fill="var(--bg)" stroke="var(--border-accent)" stroke-width="1.5"/>
+  <text class="sub-text" x="315" y="293" text-anchor="middle">f(1)</text>
+  <circle cx="365" cy="288" r="11" fill="var(--bg)" stroke="var(--border-accent)" stroke-width="1.5"/>
+  <text class="sub-text" x="365" y="293" text-anchor="middle">f(0)</text>
+
+  <!-- Cache hit legend -->
+  <rect x="475" y="270" width="16" height="12" rx="3" fill="var(--accent)" opacity="0.2" stroke="var(--accent)" stroke-width="1"/>
+  <text class="sub-text" x="498" y="280" text-anchor="start" fill="var(--accent)">= Cache hit (O(1) lookup)</text>
+  <text fill="var(--text-muted)" font-size="9" x="545" y="300" text-anchor="middle">Only n unique calls instead of 2&#8319;</text>
+
+  <!-- Bottom comparison -->
+  <rect x="50" y="330" width="280" height="55" rx="6" fill="var(--bg)" stroke="var(--text-muted)" stroke-width="1"/>
+  <text class="label-text" x="190" y="350" text-anchor="middle">Naive: O(2&#8319;) calls</text>
+  <text class="sub-text" x="190" y="368" text-anchor="middle">fib(50) ~ 10&#185;&#8309; operations</text>
+  <text class="sub-text" x="190" y="380" text-anchor="middle" fill="var(--text-muted)">Would take years to compute</text>
+
+  <rect x="390" y="330" width="280" height="55" rx="6" fill="var(--bg)" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="label-text" x="530" y="350" text-anchor="middle">Memoized: O(n) calls</text>
+  <text class="sub-text" x="530" y="368" text-anchor="middle">fib(50) = 50 operations</text>
+  <text class="sub-text" x="530" y="380" text-anchor="middle" fill="var(--accent)">Instant</text>
+</svg>
+<div class="diagram-caption">Left: naive recursive Fibonacci recomputes subproblems exponentially. Right: memoized version caches results (shaded boxes), reducing to O(n) unique computations.</div>
+</div>
+
+<h3>Engineering Angle</h3>
+<div role="note" class="callout info">
+<div class="callout-title">Engineering Angle</div>
+<p>DP appears in production more than you might expect. Text diff algorithms (<code>git diff</code>, code review tools) use the Longest Common Subsequence. Spell checkers use <strong>edit distance</strong> (a DP variant that counts the minimum insertions, deletions, and substitutions to transform one word into another). Resource allocation systems use knapsack-style optimization. Route planners use DP for shortest paths.</p>
+<p>When AI generates a recursive solution, your first check should be: <strong>does it recompute subproblems?</strong> If yes, wrap it with <code>@lru_cache</code> and you may get a 10,000x speedup. If the recursion depth is too large, convert to bottom-up tabulation.</p>
+</div>
+
+<h3>TaskForge Connection</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">TaskForge: Optimal Task Selection (Knapsack)</div>
+<p>You have a set of TaskForge tasks, each with a time cost and a value (priority score). You have a time budget for the sprint. Which tasks should you select to maximize total value within the time budget? This is the 0/1 knapsack problem.</p>
+<pre style="overflow-x:auto"><code>def select_tasks(tasks, time_budget):
+    """Select tasks to maximize total value within time_budget.
+    Each task is a dict with 'title', 'time', and 'value' keys.
+    Returns list of selected task titles.
+    """
+    n = len(tasks)
+    dp = [[0] * (time_budget + 1) for _ in range(n + 1)]
+
+    for i in range(1, n + 1):
+        t = tasks[i - 1]
+        for w in range(time_budget + 1):
+            dp[i][w] = dp[i - 1][w]              # Don't take this task
+            if t["time"] <= w:
+                take = dp[i - 1][w - t["time"]] + t["value"]
+                dp[i][w] = max(dp[i][w], take)
+
+    # Backtrack to find which tasks were selected
+    selected = []
+    w = time_budget
+    for i in range(n, 0, -1):
+        if dp[i][w] != dp[i - 1][w]:
+            selected.append(tasks[i - 1]["title"])
+            w -= tasks[i - 1]["time"]
+
+    return selected
+
+sprint_tasks = [
+    {"title": "Auth system",     "time": 8,  "value": 90},
+    {"title": "Search feature",  "time": 5,  "value": 60},
+    {"title": "Fix CSS bug",     "time": 1,  "value": 20},
+    {"title": "API pagination",  "time": 3,  "value": 45},
+    {"title": "Dark mode",       "time": 4,  "value": 30},
+]
+print(select_tasks(sprint_tasks, 10))
+# ['API pagination', 'Search feature', 'Fix CSS bug'] — value 125 in 9 hours</code></pre>
+</div>
+
+<h3>Interactive Exercises</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="25" data-ex="coin-change">
+  <div class="exercise-header">
+    <h4>Coin Change: Three Approaches</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Implement <code>coin_change(coins, amount)</code> using bottom-up dynamic programming. Given coin denominations and a target amount, return the minimum number of coins needed (or -1 if impossible).</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def coin_change(coins, amount):
+    """Return minimum coins to make amount, or -1 if impossible.
+    Use bottom-up DP (tabulation).
+    """
+    # Your code here
+    pass
+
+# Test
+print(coin_change([1, 5, 10, 25], 36))  # Expected: 3 (25 + 10 + 1)
+print(coin_change([1, 5, 10, 25], 30))  # Expected: 2 (25 + 5)
+print(coin_change([3, 7], 5))            # Expected: -1
+</script>
+    <script type="text/plain" class="test-code">
+assert coin_change([1, 5, 10, 25], 36) == 3, "36 cents = 25 + 10 + 1"
+assert coin_change([1, 5, 10, 25], 30) == 2, "30 cents = 25 + 5"
+assert coin_change([1, 5, 10, 25], 0) == 0, "0 cents = 0 coins"
+assert coin_change([3, 7], 5) == -1, "Can't make 5 with 3s and 7s"
+assert coin_change([1], 7) == 7, "7 cents = 7 x 1-cent coins"
+assert coin_change([2], 3) == -1, "Can't make 3 with only 2-cent coins"
+assert coin_change([1, 3, 4], 6) == 2, "6 = 3 + 3 (not 4+1+1)"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">Create a dp array of size amount+1, initialized to infinity (except dp[0]=0). For each amount from 1 to target, try each coin and take the minimum.</p>
+    <p class="hint">dp[a] = min(dp[a], dp[a - c] + 1) for each coin c where c &lt;= a. If dp[amount] is still infinity, return -1.</p>
+  </div>
+</div>
+
+<div class="quiz" data-ch="25" data-ex="quiz-dp">
+  <h4>Knowledge Check</h4>
+  <p>A problem can be broken into subproblems that overlap. What technique transforms an O(2&#8319;) recursive solution into O(n&sup2;) or better?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">Greedy algorithm</button>
+    <button class="quiz-option" data-correct="false">Binary search</button>
+    <button class="quiz-option" data-correct="true">Dynamic programming</button>
+    <button class="quiz-option" data-correct="false">Divide and conquer</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="pq">The gap between a naive recursive solution and a memoized one can be the difference between &ldquo;won&rsquo;t finish before the sun burns out&rdquo; and &ldquo;done in a millisecond.&rdquo;</div>
+
+</section>
+
+<!-- ===== CH 26 ===== -->
+<section id="ch26" data-ch="26">
+<h2><span class="ch-label">Chapter 26</span> Algorithm Patterns</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>Most algorithmic problems fit a small number of patterns. Recognizing the pattern is 80% of the solution. These are not just interview tricks&mdash;they are the building blocks of real engineering solutions. Rate limiters use sliding windows. Schedulers use greedy algorithms. Configuration validators use backtracking. Once you see the patterns, you see them everywhere.</p>
+</div>
+
+<h3>Two Pointers</h3>
+<p>The <strong>two-pointer</strong> technique uses two indices that move through an array, either toward each other from opposite ends or in the same direction at different speeds. It turns many O(n&sup2;) brute-force solutions into O(n).</p>
+
+<h4>Pattern 1: Converging Pointers (Opposite Ends)</h4>
+<p><strong>Problem:</strong> Given a sorted array and a target sum, find a pair of elements that adds up to the target.</p>
+
+<pre style="overflow-x:auto"><code>def two_sum_sorted(arr, target):
+    """Find two numbers in sorted arr that sum to target. Return their indices."""
+    left, right = 0, len(arr) - 1
+
+    while left < right:
+        current_sum = arr[left] + arr[right]
+        if current_sum == target:
+            return (left, right)
+        elif current_sum < target:
+            left += 1          # Need a bigger sum — move left pointer right
+        else:
+            right -= 1         # Need a smaller sum — move right pointer left
+
+    return None                # No pair found
+
+print(two_sum_sorted([1, 3, 5, 7, 11, 15], 16))  # (2, 4) — 5 + 11</code></pre>
+
+<p><strong>Why it works:</strong> Since the array is sorted, moving the left pointer right increases the sum, and moving the right pointer left decreases it. We never need to check pairs we&rsquo;ve already ruled out.</p>
+
+<h4>Pattern 2: Palindrome Check</h4>
+<pre style="overflow-x:auto"><code>def is_palindrome(s):
+    """Check if string is a palindrome, ignoring case and non-alphanumeric chars."""
+    left, right = 0, len(s) - 1
+
+    while left < right:
+        while left < right and not s[left].isalnum():
+            left += 1
+        while left < right and not s[right].isalnum():
+            right -= 1
+        if s[left].lower() != s[right].lower():
+            return False
+        left += 1
+        right -= 1
+
+    return True
+
+print(is_palindrome("A man, a plan, a canal: Panama"))  # True</code></pre>
+
+<h4>Pattern 3: Remove Duplicates In-Place</h4>
+<pre style="overflow-x:auto"><code>def remove_duplicates(arr):
+    """Remove duplicates from sorted arr in-place. Return new length."""
+    if not arr:
+        return 0
+
+    write = 1                          # Position to write next unique element
+    for read in range(1, len(arr)):    # Scan through the array
+        if arr[read] != arr[read - 1]: # Found a new value
+            arr[write] = arr[read]     # Write it
+            write += 1
+
+    return write
+
+data = [1, 1, 2, 2, 2, 3, 4, 4, 5]
+new_len = remove_duplicates(data)
+print(data[:new_len])  # [1, 2, 3, 4, 5]</code></pre>
+
+<h3>Sliding Window</h3>
+<p>The <strong>sliding window</strong> technique maintains a &ldquo;window&rdquo; (a contiguous subarray or substring) and slides it across the data. There are two types:</p>
+
+<h4>Fixed-Size Window: Maximum Sum of k Consecutive Elements</h4>
+<pre style="overflow-x:auto"><code>def max_sum_k(arr, k):
+    """Return the maximum sum of k consecutive elements."""
+    if len(arr) < k:
+        return None
+
+    # Compute the sum of the first window
+    window_sum = sum(arr[:k])
+    max_sum = window_sum
+
+    # Slide: add the next element, remove the leftmost element
+    for i in range(k, len(arr)):
+        window_sum += arr[i] - arr[i - k]   # Slide the window
+        max_sum = max(max_sum, window_sum)
+
+    return max_sum
+
+print(max_sum_k([2, 1, 5, 1, 3, 2], 3))  # 9 (5 + 1 + 3)</code></pre>
+
+<p>Instead of recomputing the sum of k elements at each position (O(n &times; k)), we adjust by one element (O(1)), giving O(n) total.</p>
+
+<h4>Variable-Size Window: Longest Substring Without Repeating Characters</h4>
+<pre style="overflow-x:auto"><code>def longest_unique_substring(s):
+    """Return the length of the longest substring without repeating characters."""
+    seen = {}                  # Map character -> its most recent index
+    max_len = 0
+    start = 0                  # Left edge of the window
+
+    for end in range(len(s)):  # Right edge expands
+        if s[end] in seen and seen[s[end]] >= start:
+            start = seen[s[end]] + 1   # Shrink: jump past the duplicate
+        seen[s[end]] = end
+        max_len = max(max_len, end - start + 1)
+
+    return max_len
+
+print(longest_unique_substring("abcabcbb"))  # 3 ("abc")
+print(longest_unique_substring("pwwkew"))    # 3 ("wke")</code></pre>
+
+<h4>Variable-Size Window: Smallest Subarray with Sum &ge; Target</h4>
+<pre style="overflow-x:auto"><code>def min_subarray_sum(arr, target):
+    """Return the length of the smallest subarray with sum >= target, or 0."""
+    min_len = float('inf')
+    window_sum = 0
+    start = 0
+
+    for end in range(len(arr)):
+        window_sum += arr[end]             # Expand window
+
+        while window_sum >= target:        # Shrink while condition holds
+            min_len = min(min_len, end - start + 1)
+            window_sum -= arr[start]
+            start += 1
+
+    return min_len if min_len != float('inf') else 0
+
+print(min_subarray_sum([2, 3, 1, 2, 4, 3], 7))  # 2 ([4, 3])</code></pre>
+
+<div class="diagram">
+<svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" aria-label="Sliding window technique showing a window moving across an array tracking the maximum sum">
+  <!-- Title -->
+  <text class="label-text" x="360" y="20" text-anchor="middle">Sliding Window (k=3): Maximum Sum</text>
+
+  <!-- Array boxes -->
+  <rect x="80" y="40" width="70" height="40" rx="4" fill="var(--bg)" stroke="var(--border-accent)" stroke-width="1.5"/>
+  <text class="label-text" x="115" y="66" text-anchor="middle">2</text>
+  <rect x="150" y="40" width="70" height="40" rx="4" fill="var(--bg)" stroke="var(--border-accent)" stroke-width="1.5"/>
+  <text class="label-text" x="185" y="66" text-anchor="middle">1</text>
+  <rect x="220" y="40" width="70" height="40" rx="4" fill="var(--bg)" stroke="var(--border-accent)" stroke-width="1.5"/>
+  <text class="label-text" x="255" y="66" text-anchor="middle">5</text>
+  <rect x="290" y="40" width="70" height="40" rx="4" fill="var(--bg)" stroke="var(--border-accent)" stroke-width="1.5"/>
+  <text class="label-text" x="325" y="66" text-anchor="middle">1</text>
+  <rect x="360" y="40" width="70" height="40" rx="4" fill="var(--bg)" stroke="var(--border-accent)" stroke-width="1.5"/>
+  <text class="label-text" x="395" y="66" text-anchor="middle">3</text>
+  <rect x="430" y="40" width="70" height="40" rx="4" fill="var(--bg)" stroke="var(--border-accent)" stroke-width="1.5"/>
+  <text class="label-text" x="465" y="66" text-anchor="middle">2</text>
+
+  <!-- Window position 1: [2,1,5] = 8 -->
+  <rect x="78" y="95" width="214" height="30" rx="5" fill="none" stroke="var(--accent)" stroke-width="2"/>
+  <text class="sub-text" x="185" y="115" text-anchor="middle" fill="var(--accent)">sum = 8</text>
+  <text class="sub-text" x="550" y="115" text-anchor="middle">Window 1</text>
+
+  <!-- Window position 2: [1,5,1] = 7 -->
+  <rect x="148" y="130" width="214" height="30" rx="5" fill="none" stroke="var(--text-muted)" stroke-width="1.5" stroke-dasharray="4"/>
+  <text class="sub-text" x="255" y="150" text-anchor="middle" fill="var(--text-muted)">sum = 7</text>
+  <text class="sub-text" x="550" y="150" text-anchor="middle" fill="var(--text-muted)">Window 2</text>
+
+  <!-- Window position 3: [5,1,3] = 9 — MAX -->
+  <rect x="218" y="165" width="214" height="30" rx="5" fill="var(--accent)" fill-opacity="0.15" stroke="var(--accent)" stroke-width="2.5"/>
+  <text class="sub-text" x="325" y="185" text-anchor="middle" fill="var(--accent)">sum = 9 (MAX)</text>
+  <text class="sub-text" x="550" y="185" text-anchor="middle" fill="var(--accent)">Window 3</text>
+
+  <!-- Window position 4: [1,3,2] = 6 -->
+  <rect x="288" y="200" width="214" height="30" rx="5" fill="none" stroke="var(--text-muted)" stroke-width="1.5" stroke-dasharray="4"/>
+  <text class="sub-text" x="395" y="220" text-anchor="middle" fill="var(--text-muted)">sum = 6</text>
+  <text class="sub-text" x="550" y="220" text-anchor="middle" fill="var(--text-muted)">Window 4</text>
+
+  <!-- Explanation -->
+  <text class="sub-text" x="360" y="260" text-anchor="middle">Each slide: add the new right element, subtract the old left element. O(n) total.</text>
+</svg>
+<div class="diagram-caption">A fixed-size sliding window (k=3) moves across the array. At each position, the sum is updated in O(1) by adding the new element and subtracting the element that left the window. The maximum sum window is highlighted.</div>
+</div>
+
+<h3>Greedy</h3>
+<p>A <strong>greedy</strong> algorithm makes the locally optimal choice at each step, hoping to find the global optimum. Greedy works when the problem has the <strong>greedy choice property</strong>&mdash;a locally optimal choice leads to a globally optimal solution.</p>
+
+<h4>When Greedy Works: Interval Scheduling</h4>
+<p><strong>Problem:</strong> Given a set of intervals (start, end), find the maximum number of non-overlapping intervals.</p>
+<p><strong>Strategy:</strong> Always pick the interval that ends earliest. This leaves the most room for future intervals.</p>
+
+<pre style="overflow-x:auto"><code>def max_non_overlapping(intervals):
+    """Return max number of non-overlapping intervals.
+    Each interval is (start, end).
+    """
+    # Sort by end time
+    intervals.sort(key=lambda x: x[1])
+
+    count = 0
+    last_end = float('-inf')
+
+    for start, end in intervals:
+        if start >= last_end:      # No overlap with previous selection
+            count += 1
+            last_end = end         # Update the end boundary
+
+    return count
+
+meetings = [(1, 3), (2, 5), (3, 6), (5, 7), (8, 10), (6, 9)]
+print(max_non_overlapping(meetings))  # 3: (1,3), (5,7), (8,10)</code></pre>
+
+<h4>When Greedy Fails: Coin Change with Weird Denominations</h4>
+<p>Greedy works for US coin denominations (25, 10, 5, 1): always pick the largest coin that fits. But consider denominations [1, 3, 4] and amount 6:</p>
+<ul>
+<li><strong>Greedy:</strong> 4 + 1 + 1 = 3 coins</li>
+<li><strong>Optimal:</strong> 3 + 3 = 2 coins</li>
+</ul>
+<p>The greedy approach picks the biggest coin first, but that blocks the better solution. This is why we needed DP for the general coin change problem in Ch 25.</p>
+
+<div role="note" class="callout warn">
+<div class="callout-title">When Greedy Seems to Work but Doesn&rsquo;t</div>
+<p>The danger of greedy algorithms is that they <em>almost</em> work on many inputs. You might test with several examples and get correct results, then hit a counterexample in production. Always prove that greedy is correct for your problem, or use DP if you are unsure. AI-generated solutions often use greedy when DP is required&mdash;watch for this.</p>
+</div>
+
+<h3>Divide and Conquer</h3>
+<p><strong>Divide and conquer</strong> splits a problem into independent subproblems, solves each recursively, and combines the results. You already know merge sort (Ch 24). The pattern applies beyond sorting:</p>
+
+<ul>
+<li><strong>Closest pair of points</strong>&mdash;split the points by x-coordinate, find closest pair in each half, then check across the divide.</li>
+<li><strong>Counting inversions</strong>&mdash;a modified merge sort that counts how many pairs are out of order.</li>
+<li><strong>Karatsuba multiplication</strong>&mdash;multiply large numbers by splitting them into halves, reducing from O(n&sup2;) to O(n&#185;&#183;&#8309;&#8312;).</li>
+</ul>
+
+<p>The key distinction from DP: divide and conquer subproblems are <em>independent</em> (no overlapping). DP subproblems <em>overlap</em>.</p>
+
+<h3>Backtracking</h3>
+<p><strong>Backtracking</strong> explores all possible choices, but prunes branches that cannot lead to a valid solution. It is a systematic way to try everything without wasting time on dead ends.</p>
+
+<p>The pattern: make a choice, recurse, undo the choice (backtrack), try the next option.</p>
+
+<h4>Example: Generate All Subsets</h4>
+<pre style="overflow-x:auto"><code>def subsets(nums):
+    """Generate all subsets of nums."""
+    result = []
+
+    def backtrack(start, current):
+        result.append(current[:])          # Add a copy of the current subset
+
+        for i in range(start, len(nums)):
+            current.append(nums[i])        # Choose
+            backtrack(i + 1, current)      # Explore
+            current.pop()                  # Un-choose (backtrack)
+
+    backtrack(0, [])
+    return result
+
+print(subsets([1, 2, 3]))
+# [[], [1], [1,2], [1,2,3], [1,3], [2], [2,3], [3]]</code></pre>
+
+<h4>Example: N-Queens (Determine if n queens can be placed on an n&times;n board)</h4>
+<pre style="overflow-x:auto"><code>def solve_n_queens(n):
+    """Return the number of ways to place n queens on an n x n board
+    so that no two queens attack each other."""
+    solutions = 0
+    cols = set()          # Columns with queens
+    diag1 = set()         # "row - col" diagonals with queens
+    diag2 = set()         # "row + col" diagonals with queens
+
+    def backtrack(row):
+        nonlocal solutions
+        if row == n:               # All queens placed successfully
+            solutions += 1
+            return
+
+        for col in range(n):
+            if col in cols or (row - col) in diag1 or (row + col) in diag2:
+                continue           # Prune: this position is attacked
+
+            # Place queen
+            cols.add(col)
+            diag1.add(row - col)
+            diag2.add(row + col)
+
+            backtrack(row + 1)     # Try next row
+
+            # Remove queen (backtrack)
+            cols.remove(col)
+            diag1.remove(row - col)
+            diag2.remove(row + col)
+
+    backtrack(0)
+    return solutions
+
+print(solve_n_queens(8))  # 92 solutions</code></pre>
+
+<h3>Pattern Decision Framework</h3>
+<p>When you encounter a problem, use this decision framework to identify which pattern applies:</p>
+
+<table>
+<caption>Matching problem shapes to algorithmic patterns</caption>
+<tr><th>Problem Shape</th><th>Pattern</th><th>Example</th></tr>
+<tr><td>Sorted array, find pair/triplet</td><td>Two Pointers</td><td>Two sum, 3-sum, palindrome check</td></tr>
+<tr><td>Contiguous subarray/substring</td><td>Sliding Window</td><td>Max sum of k elements, longest unique substring</td></tr>
+<tr><td>Local choice is globally optimal</td><td>Greedy</td><td>Interval scheduling, Huffman coding</td></tr>
+<tr><td>Problem splits cleanly into independent halves</td><td>Divide and Conquer</td><td>Merge sort, closest pair of points</td></tr>
+<tr><td>Overlapping subproblems</td><td>Dynamic Programming</td><td>Coin change, knapsack, LCS</td></tr>
+<tr><td>Explore all valid configurations</td><td>Backtracking</td><td>N-queens, subset generation, permutations</td></tr>
+</table>
+
+<h3>Engineering Angle</h3>
+<div role="note" class="callout info">
+<div class="callout-title">Engineering Angle</div>
+<p>These patterns show up in production systems constantly:</p>
+<ul>
+<li><strong>Sliding window</strong> for rate limiters&mdash;count requests in the last N seconds. If the count exceeds the limit, reject the request.</li>
+<li><strong>Greedy</strong> for scheduling&mdash;cron job prioritization, task queue ordering, cache eviction (LRU is a greedy policy).</li>
+<li><strong>Backtracking</strong> for configuration validation&mdash;do these settings conflict? Generate all valid combinations and check.</li>
+<li><strong>Two pointers</strong> for merging sorted streams&mdash;combining sorted log files from multiple servers.</li>
+</ul>
+<p>When you see an AI-generated solution that uses nested loops (O(n&sup2;)), ask: &ldquo;Could this be a two-pointer or sliding-window problem?&rdquo; The answer is often yes.</p>
+</div>
+
+<h3>TaskForge Connection</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">TaskForge: Rolling 7-Day Completion Window</div>
+<p>Implement a sliding window to compute &ldquo;tasks completed per rolling 7-day window.&rdquo; Given a sorted list of task completion timestamps (as day numbers), compute the maximum number of tasks completed in any 7-day period.</p>
+<pre style="overflow-x:auto"><code>def max_completions_in_window(completion_days, window_size=7):
+    """Return the maximum number of tasks completed in any window_size-day period.
+    completion_days is a sorted list of day numbers when tasks were completed.
+    """
+    if not completion_days:
+        return 0
+
+    max_count = 0
+    start = 0
+
+    for end in range(len(completion_days)):
+        # Shrink window: remove tasks outside the window
+        while completion_days[end] - completion_days[start] >= window_size:
+            start += 1
+        # All tasks from start to end are within the window
+        max_count = max(max_count, end - start + 1)
+
+    return max_count
+
+# Task completions on these days:
+days = [1, 2, 3, 5, 8, 9, 10, 11, 15, 16]
+print(max_completions_in_window(days, 7))  # 5 (days 5,8,9,10,11)</code></pre>
+</div>
+
+<h3>Interactive Exercises</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="26" data-ex="sliding-window">
+  <div class="exercise-header">
+    <h4>Sliding Window: Two Problems</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Implement two functions: (1) <code>max_sum_k(arr, k)</code> returns the maximum sum of k consecutive elements, (2) <code>longest_unique(s)</code> returns the length of the longest substring without repeating characters. Both must run in O(n).</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def max_sum_k(arr, k):
+    """Maximum sum of k consecutive elements. O(n)."""
+    # Your code here
+    pass
+
+def longest_unique(s):
+    """Length of longest substring without repeating characters. O(n)."""
+    # Your code here
+    pass
+
+# Test
+print(max_sum_k([2, 1, 5, 1, 3, 2], 3))    # Expected: 9
+print(longest_unique("abcabcbb"))             # Expected: 3
+print(longest_unique("pwwkew"))               # Expected: 3
+</script>
+    <script type="text/plain" class="test-code">
+# max_sum_k tests
+assert max_sum_k([2, 1, 5, 1, 3, 2], 3) == 9, "Window [5,1,3]"
+assert max_sum_k([1, 2, 3, 4, 5], 2) == 9, "Window [4,5]"
+assert max_sum_k([5], 1) == 5, "Single element"
+assert max_sum_k([1, 1, 1, 1], 4) == 4, "Entire array"
+
+# longest_unique tests
+assert longest_unique("abcabcbb") == 3, "abc"
+assert longest_unique("bbbbb") == 1, "Single repeated char"
+assert longest_unique("pwwkew") == 3, "wke"
+assert longest_unique("") == 0, "Empty string"
+assert longest_unique("abcdef") == 6, "All unique"
+assert longest_unique("dvdf") == 3, "vdf"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">For max_sum_k: compute the first window's sum, then slide by adding arr[i] and subtracting arr[i-k]. For longest_unique: use a dict to track the latest index of each character, and move the start pointer past any duplicate.</p>
+    <p class="hint">For longest_unique: maintain a 'start' variable. When you see a character that's already in the window (its stored index >= start), jump start to stored_index + 1. Update max_len at each step.</p>
+  </div>
+</div>
+
+<div class="quiz" data-ch="26" data-ex="quiz-pattern">
+  <h4>Knowledge Check</h4>
+  <p>A problem asks you to find the shortest contiguous subarray with sum &ge; target. Which pattern fits best?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">Two pointers</button>
+    <button class="quiz-option" data-correct="true">Sliding window</button>
+    <button class="quiz-option" data-correct="false">Greedy</button>
+    <button class="quiz-option" data-correct="false">Dynamic programming</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="pq">Patterns are not tricks&mdash;they are the vocabulary of problem solving. Once you recognize the shape of a problem, the solution follows naturally.</div>
+
+</section>
+
+<!-- ===== CH 27 ===== -->
+<section id="ch27" data-ch="27">
+<h2><span class="ch-label">Chapter 27</span> Graph Algorithms &amp; Problem Solving</h2>
+
+<div role="note" class="callout warn">
+<div class="callout-title">Recall: Ch 23 Graphs</div>
+<p>This chapter builds on the Graph class from Ch 23. If you haven&rsquo;t completed that chapter&rsquo;s exercises, do so first&mdash;you will need to understand adjacency lists, directed vs. undirected graphs, and weighted edges.</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>Graphs model relationships: cities connected by roads, users connected by friendships, tasks connected by dependencies. Graph algorithms solve real problems: shortest routes, dependency ordering, network connectivity. This chapter gives you the core algorithms and a framework for choosing the right one.</p>
+</div>
+
+<h3>BFS (Breadth-First Search)</h3>
+<p><strong>Breadth-first search</strong> explores a graph level by level, visiting all neighbors of the current node before moving to the next level. It uses a <strong>queue</strong> (FIFO)&mdash;the data structure from Ch 20. BFS finds the <strong>shortest path in unweighted graphs</strong> because it discovers nodes in order of their distance from the start.</p>
+
+<pre style="overflow-x:auto"><code>from collections import deque
+
+def bfs(graph, start):
+    """Perform BFS from start node. Return dict of {node: distance}.
+    graph: dict of {node: [neighbors]}
+    """
+    visited = {start: 0}              # node -> distance from start
+    queue = deque([start])
+
+    while queue:
+        node = queue.popleft()         # Dequeue the front node
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                visited[neighbor] = visited[node] + 1
+                queue.append(neighbor) # Enqueue unvisited neighbor
+
+    return visited
+
+# Example graph:
+#   A -- B -- D
+#   |         |
+#   C -- E -- F
+graph = {
+    'A': ['B', 'C'],
+    'B': ['A', 'D'],
+    'C': ['A', 'E'],
+    'D': ['B', 'F'],
+    'E': ['C', 'F'],
+    'F': ['D', 'E'],
+}
+distances = bfs(graph, 'A')
+print(distances)
+# {'A': 0, 'B': 1, 'C': 1, 'D': 2, 'E': 2, 'F': 3}</code></pre>
+
+<p><strong>Complexity:</strong> O(V + E) where V is vertices and E is edges. Each node is visited once, and each edge is examined once.</p>
+
+<h4>BFS Shortest Path (Reconstructing the Path)</h4>
+<pre style="overflow-x:auto"><code>from collections import deque
+
+def bfs_path(graph, start, end):
+    """Return the shortest path from start to end, or None."""
+    if start == end:
+        return [start]
+
+    visited = {start}
+    queue = deque([(start, [start])])  # (node, path_so_far)
+
+    while queue:
+        node, path = queue.popleft()
+        for neighbor in graph[node]:
+            if neighbor == end:
+                return path + [neighbor]
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append((neighbor, path + [neighbor]))
+
+    return None  # No path exists
+
+print(bfs_path(graph, 'A', 'F'))  # ['A', 'B', 'D', 'F'] or ['A', 'C', 'E', 'F']</code></pre>
+
+<h3>DFS (Depth-First Search)</h3>
+<p><strong>Depth-first search</strong> explores as deep as possible along each branch before backtracking. It uses a <strong>stack</strong> (LIFO)&mdash;either the call stack (via recursion) or an explicit stack data structure.</p>
+
+<h4>Recursive DFS</h4>
+<pre style="overflow-x:auto"><code>def dfs_recursive(graph, node, visited=None):
+    """Perform DFS from node. Return list of visited nodes in order."""
+    if visited is None:
+        visited = []
+    visited.append(node)
+
+    for neighbor in graph[node]:
+        if neighbor not in visited:
+            dfs_recursive(graph, neighbor, visited)
+
+    return visited
+
+print(dfs_recursive(graph, 'A'))  # ['A', 'B', 'D', 'F', 'E', 'C']</code></pre>
+
+<h4>Iterative DFS</h4>
+<pre style="overflow-x:auto"><code>def dfs_iterative(graph, start):
+    """Perform DFS from start using an explicit stack."""
+    visited = []
+    stack = [start]
+
+    while stack:
+        node = stack.pop()
+        if node not in visited:
+            visited.append(node)
+            # Add neighbors in reverse to visit them in order
+            for neighbor in reversed(graph[node]):
+                if neighbor not in visited:
+                    stack.append(neighbor)
+
+    return visited
+
+print(dfs_iterative(graph, 'A'))  # ['A', 'B', 'D', 'F', 'E', 'C']</code></pre>
+
+<p><strong>DFS applications:</strong></p>
+<ul>
+<li><strong>Cycle detection</strong>&mdash;during DFS on a directed graph, if you encounter a node currently in the recursion stack (not just visited), there is a cycle.</li>
+<li><strong>Topological sort</strong>&mdash;covered below.</li>
+<li><strong>Connected components</strong>&mdash;run DFS from each unvisited node; each DFS discovers one component.</li>
+<li><strong>Path finding</strong>&mdash;DFS finds <em>a</em> path but not necessarily the shortest.</li>
+</ul>
+
+<div class="diagram">
+<svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" aria-label="BFS explores nodes level by level while DFS explores as deep as possible before backtracking">
+  <!-- Title -->
+  <text class="label-text" x="360" y="20" text-anchor="middle">BFS vs. DFS: Visit Order</text>
+
+  <!-- Divider -->
+  <line x1="360" y1="30" x2="360" y2="310" stroke="var(--border-accent)" stroke-width="1" stroke-dasharray="6"/>
+
+  <!-- === LEFT: BFS === -->
+  <text fill="var(--accent)" font-size="13" font-weight="600" x="180" y="48" text-anchor="middle">BFS (Queue)</text>
+
+  <!-- Graph nodes -->
+  <circle cx="180" cy="80" r="20" fill="var(--accent)" stroke="var(--accent)" stroke-width="2"/>
+  <text x="180" y="86" text-anchor="middle" fill="var(--bg)" font-size="12" font-weight="600">A:1</text>
+
+  <circle cx="110" cy="140" r="18" fill="var(--accent)" stroke="var(--accent)" stroke-width="2" opacity="0.85"/>
+  <text x="110" y="146" text-anchor="middle" fill="var(--bg)" font-size="11" font-weight="500">B:2</text>
+
+  <circle cx="250" cy="140" r="18" fill="var(--accent)" stroke="var(--accent)" stroke-width="2" opacity="0.85"/>
+  <text x="250" y="146" text-anchor="middle" fill="var(--bg)" font-size="11" font-weight="500">C:3</text>
+
+  <circle cx="70" cy="210" r="17" fill="var(--accent)" stroke="var(--accent)" stroke-width="2" opacity="0.7"/>
+  <text x="70" y="216" text-anchor="middle" fill="var(--bg)" font-size="11" font-weight="500">D:4</text>
+
+  <circle cx="150" cy="210" r="17" fill="var(--accent)" stroke="var(--accent)" stroke-width="2" opacity="0.7"/>
+  <text x="150" y="216" text-anchor="middle" fill="var(--bg)" font-size="11" font-weight="500">E:5</text>
+
+  <circle cx="290" cy="210" r="17" fill="var(--accent)" stroke="var(--accent)" stroke-width="2" opacity="0.55"/>
+  <text x="290" y="216" text-anchor="middle" fill="var(--bg)" font-size="11" font-weight="500">F:6</text>
+
+  <!-- BFS edges -->
+  <line x1="166" y1="96" x2="120" y2="124" stroke="var(--accent)" stroke-width="1.5"/>
+  <line x1="194" y1="96" x2="240" y2="124" stroke="var(--accent)" stroke-width="1.5"/>
+  <line x1="98" y1="155" x2="80" y2="195" stroke="var(--accent)" stroke-width="1.5"/>
+  <line x1="122" y1="155" x2="140" y2="195" stroke="var(--accent)" stroke-width="1.5"/>
+  <line x1="262" y1="155" x2="280" y2="195" stroke="var(--accent)" stroke-width="1.5"/>
+
+  <!-- Level markers -->
+  <text class="sub-text" x="330" y="85" text-anchor="end" fill="var(--text-muted)">Level 0</text>
+  <text class="sub-text" x="330" y="145" text-anchor="end" fill="var(--text-muted)">Level 1</text>
+  <text class="sub-text" x="330" y="215" text-anchor="end" fill="var(--text-muted)">Level 2</text>
+
+  <!-- BFS visit order -->
+  <text class="sub-text" x="180" y="268" text-anchor="middle">Visit order: A, B, C, D, E, F</text>
+  <text class="sub-text" x="180" y="283" text-anchor="middle" fill="var(--accent)">Layer by layer (breadth first)</text>
+
+  <!-- === RIGHT: DFS === -->
+  <text fill="var(--accent)" font-size="13" font-weight="600" x="540" y="48" text-anchor="middle">DFS (Stack)</text>
+
+  <!-- Graph nodes -->
+  <circle cx="540" cy="80" r="20" fill="var(--accent)" stroke="var(--accent)" stroke-width="2"/>
+  <text x="540" y="86" text-anchor="middle" fill="var(--bg)" font-size="12" font-weight="600">A:1</text>
+
+  <circle cx="470" cy="140" r="18" fill="var(--accent)" stroke="var(--accent)" stroke-width="2" opacity="0.85"/>
+  <text x="470" y="146" text-anchor="middle" fill="var(--bg)" font-size="11" font-weight="500">B:2</text>
+
+  <circle cx="610" cy="140" r="18" fill="var(--accent)" stroke="var(--accent)" stroke-width="2" opacity="0.55"/>
+  <text x="610" y="146" text-anchor="middle" fill="var(--bg)" font-size="11" font-weight="500">C:5</text>
+
+  <circle cx="430" cy="210" r="17" fill="var(--accent)" stroke="var(--accent)" stroke-width="2" opacity="0.7"/>
+  <text x="430" y="216" text-anchor="middle" fill="var(--bg)" font-size="11" font-weight="500">D:3</text>
+
+  <circle cx="510" cy="210" r="17" fill="var(--accent)" stroke="var(--accent)" stroke-width="2" opacity="0.55"/>
+  <text x="510" y="216" text-anchor="middle" fill="var(--bg)" font-size="11" font-weight="500">E:4</text>
+
+  <circle cx="650" cy="210" r="17" fill="var(--accent)" stroke="var(--accent)" stroke-width="2" opacity="0.4"/>
+  <text x="650" y="216" text-anchor="middle" fill="var(--bg)" font-size="11" font-weight="500">F:6</text>
+
+  <!-- DFS edges — highlighted path -->
+  <line x1="526" y1="96" x2="480" y2="124" stroke="var(--accent)" stroke-width="2"/>
+  <line x1="458" y1="155" x2="440" y2="195" stroke="var(--accent)" stroke-width="2"/>
+  <line x1="482" y1="155" x2="500" y2="195" stroke="var(--accent)" stroke-width="2"/>
+  <line x1="554" y1="96" x2="600" y2="124" stroke="var(--accent)" stroke-width="1.2" stroke-dasharray="4"/>
+  <line x1="622" y1="155" x2="640" y2="195" stroke="var(--accent)" stroke-width="1.2" stroke-dasharray="4"/>
+
+  <!-- DFS visit order -->
+  <text class="sub-text" x="540" y="268" text-anchor="middle">Visit order: A, B, D, E, C, F</text>
+  <text class="sub-text" x="540" y="283" text-anchor="middle" fill="var(--accent)">Deep first, then backtrack</text>
+
+  <!-- Bottom note -->
+  <text class="sub-text" x="360" y="308" text-anchor="middle">Same graph, same start node, different traversal order and use cases.</text>
+</svg>
+<div class="diagram-caption">BFS (left) visits nodes level by level&mdash;all distance-1 nodes before distance-2 nodes. DFS (right) dives deep along one branch before backtracking. Numbers show visit order.</div>
+</div>
+
+<h3>Dijkstra&rsquo;s Algorithm</h3>
+<p><strong>Dijkstra&rsquo;s algorithm</strong> finds the shortest path in a <strong>weighted graph with non-negative weights</strong>. It uses a <strong>priority queue</strong> (min-heap from Ch 22) to always process the closest unvisited node first.</p>
+
+<p>Walk through the algorithm:</p>
+<ol>
+<li>Set the distance to the start node to 0, and all other distances to infinity.</li>
+<li>Add the start node to a priority queue with distance 0.</li>
+<li>While the priority queue is not empty:
+  <ol>
+  <li>Extract the node with the smallest distance.</li>
+  <li>For each neighbor, calculate the distance through the current node.</li>
+  <li>If this distance is shorter than the neighbor&rsquo;s current distance, update it and add the neighbor to the queue.</li>
+  </ol>
+</li>
+</ol>
+
+<pre style="overflow-x:auto"><code>import heapq
+
+def dijkstra(graph, start):
+    """Find shortest distances from start to all nodes.
+    graph: dict of {node: [(neighbor, weight), ...]}
+    Returns: dict of {node: shortest_distance}
+    """
+    distances = {node: float('inf') for node in graph}
+    distances[start] = 0
+    pq = [(0, start)]             # (distance, node)
+    visited = set()
+
+    while pq:
+        dist, node = heapq.heappop(pq)
+
+        if node in visited:        # Already processed with a shorter distance
+            continue
+        visited.add(node)
+
+        for neighbor, weight in graph[node]:
+            new_dist = dist + weight
+            if new_dist < distances[neighbor]:
+                distances[neighbor] = new_dist
+                heapq.heappush(pq, (new_dist, neighbor))
+
+    return distances
+
+# Weighted graph:
+#   A --4-- B --2-- D
+#   |       |       |
+#   1       3       1
+#   |       |       |
+#   C --5-- E --1-- F
+weighted = {
+    'A': [('B', 4), ('C', 1)],
+    'B': [('A', 4), ('D', 2), ('E', 3)],
+    'C': [('A', 1), ('E', 5)],
+    'D': [('B', 2), ('F', 1)],
+    'E': [('B', 3), ('C', 5), ('F', 1)],
+    'F': [('D', 1), ('E', 1)],
+}
+print(dijkstra(weighted, 'A'))
+# {'A': 0, 'B': 4, 'C': 1, 'D': 6, 'E': 6, 'F': 7}</code></pre>
+
+<p><strong>Complexity:</strong> O((V + E) log V) with a binary heap. The log V factor comes from heap operations.</p>
+
+<div role="note" class="callout warn">
+<div class="callout-title">Dijkstra Requires Non-Negative Weights</div>
+<p>If your graph has negative edge weights, Dijkstra produces incorrect results. Use the Bellman-Ford algorithm instead (O(V &times; E)). Negative weights appear in financial arbitrage detection and some game mechanics, but most real-world graphs (road distances, network latencies) have non-negative weights.</p>
+</div>
+
+<h4>Reconstructing the Shortest Path</h4>
+<pre style="overflow-x:auto"><code>import heapq
+
+def dijkstra_path(graph, start, end):
+    """Find the shortest path and its distance from start to end."""
+    distances = {node: float('inf') for node in graph}
+    distances[start] = 0
+    previous = {node: None for node in graph}  # Track the path
+    pq = [(0, start)]
+    visited = set()
+
+    while pq:
+        dist, node = heapq.heappop(pq)
+        if node in visited:
+            continue
+        visited.add(node)
+
+        if node == end:
+            break
+
+        for neighbor, weight in graph[node]:
+            new_dist = dist + weight
+            if new_dist < distances[neighbor]:
+                distances[neighbor] = new_dist
+                previous[neighbor] = node
+                heapq.heappush(pq, (new_dist, neighbor))
+
+    # Reconstruct path
+    path = []
+    current = end
+    while current is not None:
+        path.append(current)
+        current = previous[current]
+    path.reverse()
+
+    return path, distances[end]
+
+path, dist = dijkstra_path(weighted, 'A', 'F')
+print(f"Path: {path}, Distance: {dist}")
+# Path: ['A', 'B', 'D', 'F'], Distance: 7</code></pre>
+
+<h3>Topological Sort</h3>
+<p><strong>Topological sort</strong> produces a linear ordering of nodes in a <strong>directed acyclic graph (DAG)</strong> such that for every edge u &rarr; v, u appears before v. This is the algorithm that resolves dependencies: build systems, package managers, course prerequisites, and task scheduling.</p>
+
+<h4>Kahn&rsquo;s Algorithm (BFS-Based)</h4>
+<p>Kahn&rsquo;s algorithm uses <strong>in-degree</strong> tracking: start with nodes that have no incoming edges (in-degree 0), process them, reduce the in-degree of their neighbors, and repeat.</p>
+
+<pre style="overflow-x:auto"><code>from collections import deque
+
+def topological_sort_kahn(graph):
+    """Return a topological ordering of the DAG, or None if a cycle exists.
+    graph: dict of {node: [dependents]} (edges point from dependency to dependent)
+    """
+    # Step 1: Compute in-degrees
+    in_degree = {node: 0 for node in graph}
+    for node in graph:
+        for neighbor in graph[node]:
+            in_degree[neighbor] = in_degree.get(neighbor, 0) + 1
+
+    # Step 2: Start with all nodes that have in-degree 0
+    queue = deque([node for node in graph if in_degree[node] == 0])
+    result = []
+
+    # Step 3: Process nodes
+    while queue:
+        node = queue.popleft()
+        result.append(node)
+
+        for neighbor in graph[node]:
+            in_degree[neighbor] -= 1       # One dependency satisfied
+            if in_degree[neighbor] == 0:   # All dependencies satisfied
+                queue.append(neighbor)
+
+    # Step 4: Check for cycles
+    if len(result) != len(graph):
+        return None  # Cycle detected! Not all nodes were processed.
+
+    return result
+
+# TaskForge dependency DAG:
+#   "setup" -> "backend" -> "deploy"
+#   "setup" -> "frontend" -> "deploy"
+#   "backend" -> "tests"
+deps = {
+    "setup":    ["backend", "frontend"],
+    "backend":  ["tests", "deploy"],
+    "frontend": ["deploy"],
+    "tests":    [],
+    "deploy":   [],
+}
+print(topological_sort_kahn(deps))
+# ['setup', 'backend', 'frontend', 'tests', 'deploy']</code></pre>
+
+<h4>DFS-Based Topological Sort</h4>
+<pre style="overflow-x:auto"><code>def topological_sort_dfs(graph):
+    """Topological sort using DFS (post-order reverse)."""
+    visited = set()
+    stack = []         # Will contain the reverse post-order
+    in_progress = set()  # For cycle detection
+
+    def dfs(node):
+        if node in in_progress:
+            return False           # Cycle detected
+        if node in visited:
+            return True
+
+        in_progress.add(node)
+        for neighbor in graph[node]:
+            if not dfs(neighbor):
+                return False
+        in_progress.remove(node)
+        visited.add(node)
+        stack.append(node)         # Post-order: add after all descendants
+        return True
+
+    for node in graph:
+        if node not in visited:
+            if not dfs(node):
+                return None        # Cycle
+
+    stack.reverse()                # Reverse post-order = topological order
+    return stack
+
+print(topological_sort_dfs(deps))
+# ['setup', 'frontend', 'backend', 'tests', 'deploy']</code></pre>
+
+<p><strong>Complexity:</strong> Both algorithms run in O(V + E).</p>
+
+<h3>Union-Find (Disjoint Set)</h3>
+<p><strong>Union-Find</strong> tracks connected components efficiently. It supports two operations:</p>
+<ul>
+<li><strong>find(x)</strong>&mdash;returns the root representative of x&rsquo;s component.</li>
+<li><strong>union(x, y)</strong>&mdash;merges the components containing x and y.</li>
+</ul>
+
+<p>With <strong>path compression</strong> (flatten the tree during find) and <strong>union by rank</strong> (attach the smaller tree under the larger), both operations run in near-constant time: O(&alpha;(n)) amortized, where &alpha; is the inverse Ackermann function&mdash;effectively O(1) for all practical purposes.</p>
+
+<pre style="overflow-x:auto"><code>class UnionFind:
+    """Disjoint Set with path compression and union by rank."""
+
+    def __init__(self, n):
+        self.parent = list(range(n))   # Each node is its own parent initially
+        self.rank = [0] * n            # Rank (approximate tree height)
+        self.components = n            # Number of distinct components
+
+    def find(self, x):
+        """Return the root of x's component (with path compression)."""
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])  # Flatten the tree
+        return self.parent[x]
+
+    def union(self, x, y):
+        """Merge the components of x and y. Return True if they were separate."""
+        rx, ry = self.find(x), self.find(y)
+        if rx == ry:
+            return False               # Already in the same component
+
+        # Attach smaller tree under larger tree
+        if self.rank[rx] < self.rank[ry]:
+            self.parent[rx] = ry
+        elif self.rank[rx] > self.rank[ry]:
+            self.parent[ry] = rx
+        else:
+            self.parent[ry] = rx
+            self.rank[rx] += 1
+
+        self.components -= 1
+        return True
+
+    def connected(self, x, y):
+        """Check if x and y are in the same component."""
+        return self.find(x) == self.find(y)
+
+# Example: network of 6 servers
+uf = UnionFind(6)
+uf.union(0, 1)   # Connect server 0 and 1
+uf.union(2, 3)   # Connect server 2 and 3
+uf.union(1, 3)   # Connect the two clusters
+
+print(uf.connected(0, 3))  # True — all four are connected
+print(uf.connected(0, 4))  # False — server 4 is isolated
+print(uf.components)        # 3 (cluster {0,1,2,3}, isolated 4, isolated 5)</code></pre>
+
+<p><strong>Use cases:</strong> detecting whether adding an edge creates a cycle (Kruskal&rsquo;s MST algorithm), checking network connectivity, grouping related items (e.g., duplicate photo detection).</p>
+
+<h3>Problem-Solving Framework</h3>
+<p>When you encounter a graph problem, use this systematic approach:</p>
+<ol>
+<li><strong>Understand the problem</strong>&mdash;what are the nodes? What are the edges? Are they directed? Weighted? What are you looking for?</li>
+<li><strong>Identify the shape:</strong>
+  <ul>
+  <li>Shortest path in unweighted graph &rarr; <strong>BFS</strong></li>
+  <li>Shortest path in weighted graph (non-negative) &rarr; <strong>Dijkstra</strong></li>
+  <li>Dependency ordering &rarr; <strong>Topological sort</strong></li>
+  <li>Component connectivity &rarr; <strong>Union-Find</strong> or <strong>BFS/DFS</strong></li>
+  <li>Cycle detection (directed) &rarr; <strong>DFS</strong> with in-progress tracking</li>
+  <li>Cycle detection (undirected) &rarr; <strong>Union-Find</strong></li>
+  <li>All paths / explore all possibilities &rarr; <strong>DFS + backtracking</strong></li>
+  </ul>
+</li>
+<li><strong>Implement and verify</strong>&mdash;test with edge cases: empty graph, single node, disconnected components, cycles.</li>
+</ol>
+
+<h3>Engineering Angle</h3>
+<div role="note" class="callout info">
+<div class="callout-title">Engineering Angle</div>
+<p>Graph algorithms power the software you use every day:</p>
+<ul>
+<li><strong>pip</strong> and <strong>npm</strong> resolve package dependencies using topological sort on a dependency DAG. A cycle means an invalid dependency chain.</li>
+<li><strong>GPS routing</strong> (Google Maps, Waze) uses Dijkstra&rsquo;s algorithm (or its extension A*) to find shortest paths between locations.</li>
+<li><strong>Social media</strong> &ldquo;people you may know&rdquo; features use BFS to find friends-of-friends within 2&ndash;3 hops.</li>
+<li><strong>Network monitoring</strong> uses Union-Find to quickly determine if all servers are connected, or if a failure has split the network.</li>
+<li><strong>Build systems</strong> (Make, Bazel, GitHub Actions) use topological sort to determine which tasks to run in which order.</li>
+</ul>
+</div>
+
+<h3>TaskForge Connection</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">TaskForge: Dependency Resolution with Topological Sort</div>
+<p>Given TaskForge tasks with dependencies, implement topological sort to find a valid execution order. If no valid order exists (a cycle in the dependency graph), report the error.</p>
+<pre style="overflow-x:auto"><code>from collections import deque
+
+def resolve_task_order(tasks):
+    """Given a dict of {task: [dependencies]}, return a valid execution order.
+    Raises ValueError if there is a circular dependency.
+    """
+    # Build the forward graph and compute in-degrees
+    graph = {t: [] for t in tasks}
+    in_degree = {t: 0 for t in tasks}
+
+    for task, deps in tasks.items():
+        for dep in deps:
+            graph[dep].append(task)    # dep must come before task
+            in_degree[task] += 1
+
+    # Kahn's algorithm
+    queue = deque([t for t in tasks if in_degree[t] == 0])
+    order = []
+
+    while queue:
+        task = queue.popleft()
+        order.append(task)
+        for dependent in graph[task]:
+            in_degree[dependent] -= 1
+            if in_degree[dependent] == 0:
+                queue.append(dependent)
+
+    if len(order) != len(tasks):
+        raise ValueError("Circular dependency detected! Cannot determine order.")
+
+    return order
+
+# TaskForge sprint tasks with dependencies
+sprint = {
+    "Set up database":    [],
+    "Build API":          ["Set up database"],
+    "Build frontend":     ["Build API"],
+    "Write tests":        ["Build API"],
+    "Deploy":             ["Build frontend", "Write tests"],
+}
+
+print(resolve_task_order(sprint))
+# ['Set up database', 'Build API', 'Build frontend', 'Write tests', 'Deploy']
+
+# Detect circular dependency
+try:
+    circular = {
+        "A": ["B"],
+        "B": ["C"],
+        "C": ["A"],  # Cycle!
+    }
+    resolve_task_order(circular)
+except ValueError as e:
+    print(e)  # "Circular dependency detected! Cannot determine order."</code></pre>
+</div>
+
+<h3>Interactive Exercises</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="27" data-ex="topo-sort">
+  <div class="exercise-header">
+    <h4>Topological Sort with Cycle Detection</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Implement <code>topo_sort(graph)</code> using Kahn&rsquo;s algorithm. The graph is a dict of <code>{node: [neighbors]}</code> representing directed edges. Return a list in topological order, or <code>None</code> if the graph contains a cycle.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+from collections import deque
+
+def topo_sort(graph):
+    """Return topological order of DAG, or None if cycle exists.
+    graph: {node: [nodes this node points to]}
+    """
+    # Your code here
+    pass
+
+# Test with valid DAG
+dag = {
+    "A": ["B", "C"],
+    "B": ["D"],
+    "C": ["D"],
+    "D": [],
+}
+print(topo_sort(dag))  # ['A', 'B', 'C', 'D'] or ['A', 'C', 'B', 'D']
+
+# Test with cycle
+cyclic = {
+    "X": ["Y"],
+    "Y": ["Z"],
+    "Z": ["X"],
+}
+print(topo_sort(cyclic))  # None
+</script>
+    <script type="text/plain" class="test-code">
+# Valid DAG
+dag = {"A": ["B", "C"], "B": ["D"], "C": ["D"], "D": []}
+result = topo_sort(dag)
+assert result is not None, "DAG should have a valid ordering"
+assert len(result) == 4, "Should contain all 4 nodes"
+assert result.index("A") < result.index("B"), "A before B"
+assert result.index("A") < result.index("C"), "A before C"
+assert result.index("B") < result.index("D"), "B before D"
+assert result.index("C") < result.index("D"), "C before D"
+
+# Cycle detection
+cyclic = {"X": ["Y"], "Y": ["Z"], "Z": ["X"]}
+assert topo_sort(cyclic) is None, "Should detect cycle"
+
+# Single node
+single = {"A": []}
+assert topo_sort(single) == ["A"], "Single node"
+
+# Linear chain
+chain = {"A": ["B"], "B": ["C"], "C": []}
+result2 = topo_sort(chain)
+assert result2 == ["A", "B", "C"], "Linear chain"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">Start by computing the in-degree of each node. Nodes with in-degree 0 have no prerequisites and can go first. Use a queue (deque).</p>
+    <p class="hint">After processing all nodes, if the result list is shorter than the number of nodes, there must be a cycle (some nodes could never reach in-degree 0).</p>
+  </div>
+</div>
+
+<div class="quiz" data-ch="27" data-ex="quiz-algo">
+  <h4>Knowledge Check</h4>
+  <p>You need to find the shortest path between two cities on a map where roads have different distances. Which algorithm is appropriate?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">BFS (only works for unweighted graphs)</button>
+    <button class="quiz-option" data-correct="false">DFS</button>
+    <button class="quiz-option" data-correct="true">Dijkstra&rsquo;s algorithm</button>
+    <button class="quiz-option" data-correct="false">Topological sort</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="pq">Graphs are everywhere&mdash;dependencies, networks, maps, relationships. The algorithms in this chapter are the tools that make sense of those connections.</div>
+
+</section>
+
+<!-- ===== PHASE 6 GATE ===== -->
+<section id="phase6-gate" data-ch="gate6">
+<h2><span class="ch-label">Phase Gate 6</span> Algorithms Checkpoint</h2>
+
+<h3>What You Can Do Now</h3>
+<div class="card">
+<ul>
+<li>Choose the right search algorithm for any dataset&mdash;linear for unsorted, binary for sorted, binary on search spaces for optimization</li>
+<li>Implement and analyze five sorting algorithms and explain when each is appropriate</li>
+<li>Recognize when a recursive solution recomputes subproblems and apply memoization or bottom-up DP to fix it</li>
+<li>Solve problems using two pointers, sliding window, greedy, divide and conquer, and backtracking</li>
+<li>Traverse graphs with BFS and DFS, find shortest paths with Dijkstra, order dependencies with topological sort, and track connectivity with Union-Find</li>
+<li>Evaluate AI-generated algorithmic code for correctness, efficiency, and appropriate algorithm choice</li>
+</ul>
+</div>
+
+<h3>TaskForge Checkpoint</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">Phase 6 Integration Challenge</div>
+<p>Given a set of TaskForge tasks with dependencies (a DAG), priorities, and time estimates:</p>
+<ol>
+<li><strong>Topological sort</strong> (Ch 27)&mdash;find a valid execution order respecting all dependencies. Report an error if circular dependencies exist.</li>
+<li><strong>Knapsack DP</strong> (Ch 25)&mdash;given the topologically sorted tasks, apply the 0/1 knapsack approach to select the highest-value subset of tasks that fits within a time budget.</li>
+<li><strong>Binary search on search space</strong> (Ch 24)&mdash;find the minimum number of parallel workers needed to complete all selected tasks within a deadline.</li>
+</ol>
+<p>This exercise combines three chapters into one pipeline: dependency resolution, optimization under constraints, and resource allocation. It mirrors how real sprint planning works&mdash;order the work, pick what fits, and figure out the staffing.</p>
+</div>
+
+<div role="note" class="callout critical">
+<div class="callout-title">Failure Signal</div>
+<p>If your topological sort crashes on cyclic inputs, or your knapsack returns items that exceed the budget, or your binary search off-by-one means it needs one more worker than necessary&mdash;revisit the specific chapter.</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">Bridge to Phase 7</div>
+<p>You now have the algorithmic toolkit. Phase 7 applies it to real engineering: design patterns that make code maintainable, database optimization that makes queries fast, networking that makes systems communicate, concurrency that makes them fast, and security that makes them safe. The algorithms you learned here&mdash;sorting, searching, graph traversal, dynamic programming&mdash;are the foundation those engineering practices are built on.</p>
+</div>
+
+</section>
+
+<nav class="phase-nav">
+  <a href="phase-5.html" class="phase-nav-link prev"><span class="phase-nav-label">Previous Phase</span>&larr; Phase 5: Data Structures</a>
+  <a href="phase-7.html" class="phase-nav-link next"><span class="phase-nav-label">Next Phase</span>Phase 7: Engineering Craft &rarr;</a>
+</nav>
+
+</div>
+</div>
+
+<footer>
+<p>Zero to Hero: Programming to Multi-Agent Claude Code &middot; March 2026</p>
+</footer>
+
+<script src="js/progress.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ace-builds@1.36.5/src-min-noconflict/ace.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/shared.js"></script>
+<script src="js/ace-init.js"></script>
+<script src="js/pyodide-runner.js"></script>
+<script src="js/quiz.js"></script>
+<script src="js/exercise-runner.js"></script>
+</body>
+</html>

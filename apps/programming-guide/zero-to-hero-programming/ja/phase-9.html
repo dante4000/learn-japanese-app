@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="フェーズ9: AIを活用した開発 — AIの出力を評価し、Claude Codeを使い、コンテキストエンジニアリング、複合ルール、MCPとカスタムスキルを学ぶ。第38〜42章。">
+<title>フェーズ9: AIを活用した開発 — Zero to Hero</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/design-system.css">
+<script>try{if(localStorage.getItem('zth-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+<script>try{var z=localStorage.getItem('zth-zoom');if(z&&+z>=50&&+z<=200)document.documentElement.style.zoom=+z/100}catch(e){}</script>
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+<marker id="arrowhead-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--a5)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<button class="toggle" id="themeToggle" aria-label="テーマを切り替える">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo"><span>Zero to Hero</span>プログラミング &rarr; マルチエージェントAI</a>
+  <div class="toc-group">
+    <div class="toc-group-title">基礎</div>
+    <a href="phase-1.html#ch01" class="toc-link"><span class="toc-num">01</span>プログラミングとは何か</a>
+    <a href="phase-1.html#ch02" class="toc-link"><span class="toc-num">02</span>コンピュータはどうコードを実行するか</a>
+    <a href="phase-1.html#ch03" class="toc-link"><span class="toc-num">03</span>環境のセットアップ</a>
+    <a href="phase-1.html#ch04" class="toc-link"><span class="toc-num">04</span>書く前にコードを読む</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Python</div>
+    <a href="phase-2.html#ch05" class="toc-link"><span class="toc-num">05</span>関数・ロジック・制御フロー</a>
+    <a href="phase-2.html#ch06" class="toc-link"><span class="toc-num">06</span>データ構造</a>
+    <a href="phase-2.html#ch07" class="toc-link"><span class="toc-num">07</span>クラスとOOPの基礎</a>
+    <a href="phase-2.html#ch08" class="toc-link"><span class="toc-num">08</span>ファイル・モジュール・標準ライブラリ</a>
+    <a href="phase-2.html#ch09" class="toc-link"><span class="toc-num">09</span>エラー処理・デバッグ・テスト</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">開発ツール</div>
+    <a href="phase-3.html#ch10" class="toc-link"><span class="toc-num">10</span>ターミナルとシェル</a>
+    <a href="phase-3.html#ch11" class="toc-link"><span class="toc-num">11</span>Gitの基礎</a>
+    <a href="phase-3.html#ch12" class="toc-link"><span class="toc-num">12</span>Gitリモートと GitHub</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">構築とデプロイ</div>
+    <a href="phase-4.html#ch13" class="toc-link"><span class="toc-num">13</span>APIとHTTP</a>
+    <a href="phase-4.html#ch14" class="toc-link"><span class="toc-num">14</span>FlaskでAPIを作る</a>
+    <a href="phase-4.html#ch15" class="toc-link"><span class="toc-num">15</span>データベースの基礎</a>
+    <a href="phase-4.html#ch16" class="toc-link"><span class="toc-num">16</span>Dockerとコンテナ</a>
+    <a href="phase-4.html#ch17" class="toc-link"><span class="toc-num">17</span>CI/CDとGitHub Actions</a>
+    <a href="phase-4.html#ch18" class="toc-link"><span class="toc-num">18</span>プロジェクトアーキテクチャ</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">データ構造</div>
+    <a href="phase-5.html#ch19" class="toc-link"><span class="toc-num">19</span>計算量解析</a>
+    <a href="phase-5.html#ch20" class="toc-link"><span class="toc-num">20</span>線形構造</a>
+    <a href="phase-5.html#ch21" class="toc-link"><span class="toc-num">21</span>ハッシュテーブルとマップ</a>
+    <a href="phase-5.html#ch22" class="toc-link"><span class="toc-num">22</span>木構造</a>
+    <a href="phase-5.html#ch23" class="toc-link"><span class="toc-num">23</span>グラフ</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">アルゴリズム</div>
+    <a href="phase-6.html#ch24" class="toc-link"><span class="toc-num">24</span>探索とソート</a>
+    <a href="phase-6.html#ch25" class="toc-link"><span class="toc-num">25</span>再帰と動的プログラミング</a>
+    <a href="phase-6.html#ch26" class="toc-link"><span class="toc-num">26</span>アルゴリズムパターン</a>
+    <a href="phase-6.html#ch27" class="toc-link"><span class="toc-num">27</span>グラフアルゴリズム</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">エンジニアリングの技術</div>
+    <a href="phase-7.html#ch28" class="toc-link"><span class="toc-num">28</span>デザインパターンとSOLID</a>
+    <a href="phase-7.html#ch29" class="toc-link"><span class="toc-num">29</span>SQLとクエリの習熟</a>
+    <a href="phase-7.html#ch30" class="toc-link"><span class="toc-num">30</span>トランザクションとNoSQL</a>
+    <a href="phase-7.html#ch31" class="toc-link"><span class="toc-num">31</span>ネットワークとインターネット</a>
+    <a href="phase-7.html#ch32" class="toc-link"><span class="toc-num">32</span>並行処理と並列処理</a>
+    <a href="phase-7.html#ch33" class="toc-link"><span class="toc-num">33</span>セキュリティエンジニアリング</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">システムとスケール</div>
+    <a href="phase-8.html#ch34" class="toc-link"><span class="toc-num">34</span>システム設計</a>
+    <a href="phase-8.html#ch35" class="toc-link"><span class="toc-num">35</span>分散システム</a>
+    <a href="phase-8.html#ch36" class="toc-link"><span class="toc-num">36</span>パフォーマンスと可観測性</a>
+    <a href="phase-8.html#ch37" class="toc-link"><span class="toc-num">37</span>大規模コードベースのナビゲーション</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AIレベル1〜5</div>
+    <a href="#ch38" class="toc-link"><span class="toc-num">38</span>AIコードの評価と指示</a>
+    <a href="#ch39" class="toc-link"><span class="toc-num">39</span>レベル1・2 &mdash; tab completionとAgent IDE</a>
+    <a href="#ch40" class="toc-link"><span class="toc-num">40</span>レベル3 &mdash; context engineering</a>
+    <a href="#ch41" class="toc-link"><span class="toc-num">41</span>レベル4 &mdash; 複合エンジニアリング</a>
+    <a href="#ch42" class="toc-link"><span class="toc-num">42</span>レベル5 &mdash; MCP・スキル・ケイパビリティ</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AIレベル6〜8</div>
+    <a href="phase-10.html#ch43" class="toc-link"><span class="toc-num">43</span>レベル6 &mdash; ハーネスエンジニアリング</a>
+    <a href="phase-10.html#ch44" class="toc-link"><span class="toc-num">44</span>レベル7 &mdash; バックグラウンドエージェント</a>
+    <a href="phase-10.html#ch45" class="toc-link"><span class="toc-num">45</span>DockerのClaude Code</a>
+    <a href="phase-10.html#ch46" class="toc-link"><span class="toc-num">46</span>レベル8 &mdash; 自律型エージェントチーム</a>
+    <a href="phase-10.html#ch47" class="toc-link"><span class="toc-num">47</span>マルチプレイヤー効果</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">リファレンス</div>
+    <a href="appendices.html#glossary" class="toc-link"><span class="toc-num">&oplus;</span>用語集</a>
+    <a href="appendices.html#prompt-library" class="toc-link"><span class="toc-num">&oplus;</span>プロンプトライブラリ</a>
+    <a href="appendices.html#self-assessment" class="toc-link"><span class="toc-num">&oplus;</span>自己評価</a>
+    <a href="appendices.html#common-mistakes" class="toc-link"><span class="toc-num">&oplus;</span>よくある間違い</a>
+    <a href="appendices.html#appendix-d" class="toc-link"><span class="toc-num">&oplus;</span>トラブルシューティング</a>
+    <a href="appendices.html#appendix-e" class="toc-link"><span class="toc-num">&oplus;</span>リソース</a>
+  </div>
+</aside>
+
+<div class="main">
+<section class="hero hero-sm">
+  <div class="hero-badge">フェーズ9 &mdash; AIを活用した開発</div>
+  <h1><em>エージェントエンジニアリング</em>のレベル1〜5</h1>
+  <p class="hero-sub">AIの出力を評価することから、カスタムスキルとMCPまで。「AIのコードを判断できる」から「AIに自分が与えたケイパビリティがある」への進化。</p>
+  <div class="hero-meta"><span>第38〜42章</span><span>フェーズゲート + TaskForge</span></div>
+</section>
+<div class="content-wrap">
+
+<div role="note" class="callout info">
+<div class="callout-title">フェーズ9を始める前に</div>
+<p>このフェーズはフェーズ1〜8を完了していることを前提としています。具体的には: Python を自信を持って読み書きできる（フェーズ2）、バージョン管理にGitを使える（フェーズ3）、Flask・SQLite・Dockerを使った動作するWebアプリケーションを構築できる（フェーズ4）、データ構造（フェーズ5）、アルゴリズム（フェーズ6）、エンジニアリングの技術（フェーズ7）、システム設計（フェーズ8）をしっかり理解している。フェーズ5〜8は、AIが生成したコードを評価する能力を強化するための深みを提供します。</p>
+</div>
+
+<!-- ===== BRIDGE: What an LLM Actually Is ===== -->
+<div role="note" class="callout critical">
+<div class="callout-title">重要な概念: LLMとは何か</div>
+<p>AIコーディングツールを使い始める前に、それが何であるか&mdash;そして何でないか&mdash;を正確に理解しておきましょう。</p>
+<p><strong>大規模言語モデル</strong>（LLM）は、膨大なテキストから学習したパターンに基づいて、最も可能性の高い次の単語を予測します。人間のエンジニアのようにあなたのプロジェクトを「理解」しているわけではありません。セッション間のメモリはありません。自分の出力を検証することもできません。パターンに基づいて正しく見えるテキストを生成します&mdash;多くの場合、本当に役立ちますが&mdash;同時に、自信に満ちた、もっともらしいナンセンスを生成することもあります。</p>
+<p>何百万ものコードベースを読んだことがある優秀なリサーチアシスタントのようなものですが、<em>あなたの</em>プロジェクトは見たことがありません。流暢なコードを書くことはできますが、アーキテクチャを誤解したり、存在しないAPIを発明したり、表面上はパスするが、エッジケースで失敗するロジックを生成したりすることがあります。</p>
+<p><strong>エージェント（agent）</strong>は魔法の存在ではありません。モデル呼び出しを中心に構築されたワークフローです: プロンプトが入力され、レスポンスが出力され、ツールがアクションを実行し、ルールが動作を制約します。エージェントが「インテリジェント」なことを行うすべては、あなたが提供したコンテキスト、設定したツール、設定した制約に遡ります。セットアップが優れているほど、エージェントのパフォーマンスも向上します。</p>
+<p>これは2つのことを意味します: (1) あなたの判断がクオリティのゲートであり、(2) フェーズ1〜4で学んだすべてのこと&mdash;コードを読むこと、データフローを理解すること、テストを書くこと&mdash;がその判断を可能にするものです。</p>
+</div>
+
+<!-- ===== CH 19 ===== -->
+<section id="ch38" data-ch="38">
+<h2><span class="ch-label">第38章</span> AIが生成したコードの評価と指示</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">なぜ今これが重要か</div>
+<p>AIツールはコードを素早く生成します。しかし、判断力のないスピードは危険です。この章では、クオリティのゲートになる方法を学びます&mdash;AIの出力がコードベースに入る前に、それが正確で、完全で、安全かどうかを判断する人になるために。</p>
+</div>
+
+<p><strong>これはフェーズ9で最も重要な章です。</strong>このスキルなしに続く各章を読んでも、出力を評価する判断力なしにAIツールを使うだけの読者になってしまいます。</p>
+
+<h3>核心的な問題: 非決定性</h3>
+<p>これまで学んできたすべてのプログラミングの概念は<strong>決定論的</strong>です。<code>2 + 2</code>を百万回実行しても、毎回<code>4</code>が得られます。<code>sorted([3,1,2])</code>を呼び出すと、結果は常に<code>[1,2,3]</code>です。関数には入力と出力があります。テストはパスするか失敗するかのどちらかです。この予測可能性がソフトウェアエンジニアリングの全基盤です。</p>
+
+<p>大規模言語モデル（LLM）は<strong>根本的に非決定論的</strong>です。同じ質問を2回聞いても、異なる答えが返ってくる場合があります。関数を書くように頼むと、変数名、構造、エッジケースの処理、さらにはアルゴリズムの選択も実行間で異なる場合があります。これはバグではありません&mdash;テクノロジーの動作原理です。LLMはトークンの確率分布からサンプリングします; 小さな浮動小数点の差が異なる出力にカスケードします。</p>
+
+<div role="note" class="callout critical">
+<div class="callout-title">重要な概念</div>
+<p>計算機を使うとき、出力を信頼します。LLMを使うとき、出力を<strong>検証</strong>します。これは哲学的な立場ではありません&mdash;エンジニアリングの要件です。AIを活用した開発という分野全体は、LLMの出力がデフォルトでは信頼できないために存在します。</p>
+</div>
+
+<p>これはパラドックスを生み出します: <em>信頼性の高いソフトウェア</em>を<em>信頼性の低いジェネレータ</em>から得たいのです。非決定論的なシステムを決定論的であるかのように動作させる唯一の方法は、<strong>極めて堅牢なガードレール</strong>で囲むことです:</p>
+
+<ul>
+<li><strong>テスト</strong> &mdash; コードはパスするかしないか、生成方法に関係なく</li>
+<li><strong>仕様</strong> &mdash; 正確な指示は可能な出力の空間を狭める</li>
+<li><strong>コンテキストドキュメント</strong>（CLAUDE.md、ルールファイル）&mdash; モデルの選択をプロジェクトのパターンに合わせるよう制約する</li>
+<li><strong>レビューパイプライン</strong> &mdash; diff、リンティング、型チェックがモデルの見逃しをキャッチする</li>
+<li><strong>決定論的バリデーション</strong> &mdash; CI/CD、自動チェック、判断に依存しない受け入れ基準</li>
+</ul>
+
+<p>フェーズ5〜6のすべてのテクニック&mdash;context engineering、複合ルール、ハーネスエンジニアリング、Docker分離&mdash;は<em>非決定論的な出力を決定論的な境界に制約する</em>ために存在します。ガードレールはオプションの追加機能ではありません。それが核心的な目的です。ガードレールなしでは、宝くじを出荷していることになります。</p>
+
+<div class="pq">AIが生成する。あなたが検証する。ガードレールが強制する。それが契約です。ここから先の各章は、より良いガードレールを構築することを教えます。</div>
+
+<h3>diffを読む</h3>
+<p><strong>diff</strong>は行ごとの変更を示します: <code>+</code>=追加、<code>-</code>=削除。Claude Codeが変更を加えると、受け入れる前にdiffをレビューします。チェック: 変更は自分が求めたものと一致しているか? 無関係な変更はないか? 誤った削除はないか?</p>
+
+<h3>実例: 実際のdiffのレビュー</h3>
+<p>経験豊富な開発者がdiffをどのようにレビューするかを示します。Claudeに「<code>load_tasks</code>関数にエラー処理を追加して」と頼んだとします。diffは次のようになります:</p>
+<pre><code> def load_tasks(filepath):
+-    with open(filepath) as f:
+-        data = json.load(f)
+-    return data
++    if not isinstance(filepath, str) or not filepath.strip():
++        raise ValueError("filepath must be a non-empty string")
++    try:
++        with open(filepath) as f:
++            data = json.load(f)
++    except:
++        return []
++    if not isinstance(data, list):
++        raise TypeError(f"Expected list, got {type(data).__name__}")
+-    import os
+     return data</code></pre>
+<p>行ごとのアノテーション:</p>
+<ul>
+<li><strong>1〜2行目（追加）:</strong> 良い&mdash;<code>filepath</code>の入力バリデーションを追加。<code>None</code>や空文字列が<code>open()</code>に到達することによる不明なエラーを防ぐ。</li>
+<li><strong>5行目（<code>except:</code>）:</strong> 問題&mdash;これは<code>KeyboardInterrupt</code>や<code>SystemExit</code>を含む<em>すべての</em>例外をキャッチするベアの<code>except</code>です。予想される失敗のみをキャッチするために<code>except (FileNotFoundError, json.JSONDecodeError):</code>にすべきです。</li>
+<li><strong>6行目（<code>return []</code>）:</strong> 疑問&mdash;空のリストを静かに返すとエラーが隠れます。これは意図的ですか、それとも警告をログに記録すべきですか? プロジェクトのエラーポリシーによります。</li>
+<li><strong>8〜9行目（<code>data</code>の型チェック）:</strong> 良い&mdash;返す前にJSON構造を検証。破損したファイルを早期にキャッチ。</li>
+<li><strong>10行目（<code>import os</code>の削除）:</strong> 疑問&mdash;なぜこのインポートが削除されたのか? 他に<code>os</code>を使うものがなければ、これは適切なクリーンアップです。しかし、まずファイルの残りの部分を確認してください。</li>
+</ul>
+<p><strong>判定:</strong> 修正が必要。ベアの<code>except</code>は本物のバグ&mdash;特定の例外をキャッチするようClaudeに求めてください。残りの部分はしっかりしています。</p>
+
+<h3>実装仕様を書く</h3>
+<p>平凡なAI出力と優れたAI出力の違いは、仕様の質にあります:</p>
+<div class="pe">
+<div class="pb"><div class="ph">曖昧なリクエスト</div><div class="pp">「ログインページを作って」</div></div>
+<div class="pg"><div class="ph">実装仕様</div><div class="pp"><strong>何を:</strong> メール/パスワードのログインページ<br><strong>入力:</strong> email（文字列）、password（文字列）<br><strong>出力:</strong> 成功時はJWTトークン、失敗時はエラーメッセージ<br><strong>制約:</strong> レート制限: 5回/分。平文パスワードの保存なし。<br><strong>エッジケース:</strong> 空フィールド、SQLインジェクション試行、セッション期限切れ<br><strong>受け入れ基準:</strong> 5つのテストケースすべてがパス</div></div>
+</div>
+
+<h3>AIの失敗を見分ける</h3>
+<table>
+<caption>AIコード生成の一般的な失敗タイプとキャッチ方法</caption>
+<tr><th>失敗タイプ</th><th>見た目</th><th>キャッチ方法</th></tr>
+<tr><td>ハルシネーション（幻想）インポート</td><td><code>from nonexistent import magic</code></td><td><code>pip install</code>が404で失敗する</td></tr>
+<tr><td>古いパターン</td><td>非推奨のAPI使用</td><td>現在のバージョンのライブラリドキュメントを確認</td></tr>
+<tr><td>過剰設計</td><td>10行の問題に200行</td><td>「もっとシンプルにできないか?」と聞く</td></tr>
+<tr><td>ハッピーパスのみ</td><td>エラー処理なし</td><td>不正な入力でテスト</td></tr>
+<tr><td>自信ある誤り</td><td>完全な自信で不正確</td><td>ドキュメントに対してクレームを検証</td></tr>
+</table>
+
+<div class="diagram">
+<svg viewBox="0 0 700 90" xmlns="http://www.w3.org/2000/svg" aria-label="AI出力レビューパイプライン: AI出力受信、diff確認、仕様チェック、エッジケース、テスト実行、承認">
+  <rect class="node-fill" x="5" y="20" width="100" height="50" rx="6"/>
+  <text class="label-text" x="55" y="42" text-anchor="middle">受信</text>
+  <text class="sub-text" x="55" y="56" text-anchor="middle">AI出力</text>
+  <line class="arrow" x1="105" y1="45" x2="125" y2="45"/>
+  <rect class="node-fill" x="125" y="20" width="100" height="50" rx="6"/>
+  <text class="label-text" x="175" y="42" text-anchor="middle">diff確認</text>
+  <line class="arrow" x1="225" y1="45" x2="245" y2="45"/>
+  <rect class="node-accent" x="245" y="20" width="100" height="50" rx="6"/>
+  <text class="label-text" x="295" y="42" text-anchor="middle">仕様チェック</text>
+  <line class="arrow" x1="345" y1="45" x2="365" y2="45"/>
+  <rect class="node-fill" x="365" y="20" width="100" height="50" rx="6"/>
+  <text class="label-text" x="415" y="42" text-anchor="middle">エッジケース</text>
+  <line class="arrow" x1="465" y1="45" x2="485" y2="45"/>
+  <rect class="node-accent" x="485" y="20" width="100" height="50" rx="6"/>
+  <text class="label-text" x="535" y="42" text-anchor="middle">テスト実行</text>
+  <line class="arrow" x1="585" y1="45" x2="605" y2="45"/>
+  <rect class="node-fill" x="605" y="20" width="90" height="50" rx="6"/>
+  <text class="label-text" x="650" y="42" text-anchor="middle">承認?</text>
+</svg>
+<div class="diagram-caption">すべてのAI出力はこのパイプラインを通過します。パイプラインはモデルが見逃したものをキャッチします。</div>
+</div>
+
+<h3>TaskForgeとの関連</h3>
+<p>以下の演習では、AIコード生成の対象としてTaskForgeを使用します。プロジェクトについて十分なコンテキストがあるので、AI出力が正確かどうかを判断できます。</p>
+
+<h3>マイクロ演習</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">1: ハルシネーションをキャッチする</div>
+<p>AIに聞いてみましょう: 「XQVZフォーマットファイルの解析に最適なPythonパッケージは何ですか?」もし自信を持ってパッケージを推薦したら、PyPIで検索してください。ほぼ確実に存在しません&mdash;フォーマットは作り話です。</p>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">2: AI出力を評価する</div>
+<p>AIに<code>is_valid_email</code>を書かせましょう。チェック: 空文字列を処理できるか? 複数の@は? スペースは? 欠けているものがあれば、AIは失敗しました&mdash;そしてあなたはキャッチしました。</p>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう</div>
+<p>AIに任意の関数を生成させてみましょう。評価パイプラインを適用してみます: (1) 出力を読む。(2) 求めたものと照合する。(3) 正しい点を1つ特定する。(4) 間違い/欠落している点を1つ特定する。(5) 判定: 承認、修正、または却下。評価を3〜5文で書いてみましょう。</p>
+<p><strong>確認:</strong> 評価には特定の正しい要素と特定の問題点の両方が含まれています。</p>
+<p><strong>うまくいかない場合:</strong> 問題が見つからない場合は、もっと難しいものを求めてください&mdash;エッジケースが5つ以上ある関数。</p>
+</div>
+
+<div class="pq">AIが生成したコードを評価して本物の問題を見つけました。それは粗探しではありません&mdash;AIを<em>使う</em>人とAIを<em>監督する</em>人を分けるスキルです。</div>
+
+<h3>インタラクティブ演習</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="38" data-ex="ai-bugs">
+  <div class="exercise-header">
+    <h4>AIのバグを見つける</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">この関数はAIによって生成されました。一見正しく見えますが、微妙なバグがあります。すべてのテストがパスするように見つけて修正してください。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">def remove_duplicates(items):
+    """AI生成: 順序を保持しながら重複を削除する。"""
+    seen = []
+    result = []
+    for item in items:
+        if item not in seen:
+            seen.append(item)
+            result.append(item)
+        return result
+
+# テスト:
+print(remove_duplicates([1, 2, 2, 3, 1, 4]))  # [1, 2, 3, 4] と表示されるはず</script>
+    <script type="text/plain" class="test-code">assert remove_duplicates([1, 2, 2, 3, 1, 4]) == [1, 2, 3, 4], "Basic dedup"
+assert remove_duplicates([]) == [], "Empty list"
+assert remove_duplicates([1, 1, 1]) == [1], "All same"
+assert remove_duplicates(["a", "b", "a"]) == ["a", "b"], "Strings work too"</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">チェック</button>
+    <button class="ex-hint" data-level="0">ヒント</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">`return result` のインデントを見てください — ループの中にありますか?</p>
+    <p class="hint">関数は最初のアイテムを処理した後に戻ります。</p>
+    <p class="hint">修正: `return result` をforループの外側になるようにインデントを減らします。</p>
+  </div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="38" data-ex="over-engineered">
+  <div class="exercise-header">
+    <h4>過剰設計を見つける</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">AIに「文字列が回文かどうかをチェックする関数を書いて」と頼んだところ、25行が出力されました。同じことを正しく3行以下（<code>def</code>行を除く）でできる<code>is_palindrome_simple(s)</code>というシンプルなバージョンを書いてください。次に、<code>"problem"</code>（AIバージョンの問題を説明する文字列）と<code>"lines_saved"</code>（整数）を持つdictを返す<code>evaluate()</code>を書いてください。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+# AI生成バージョン（25行）:
+import re
+from functools import lru_cache
+
+def is_palindrome_ai(s):
+    """完全なUnicodeサポートで文字列が回文かチェックする。"""
+    if not isinstance(s, str):
+        raise TypeError(f"Expected str, got {type(s).__name__}")
+    cleaned = re.sub(r'[^a-zA-Z0-9]', '', s)
+    cleaned = cleaned.lower()
+    @lru_cache(maxsize=None)
+    def _check(left, right):
+        if left >= right:
+            return True
+        if cleaned[left] != cleaned[right]:
+            return False
+        return _check(left + 1, right - 1)
+    if len(cleaned) == 0:
+        return True
+    return _check(0, len(cleaned) - 1)
+
+# シンプルなバージョン:
+def is_palindrome_simple(s):
+    pass
+
+def evaluate():
+    return {"problem": "", "lines_saved": 0}
+</script>
+    <script type="text/plain" class="test-code">
+assert is_palindrome_simple("racecar") == True, "Basic palindrome"
+assert is_palindrome_simple("hello") == False, "Not a palindrome"
+assert is_palindrome_simple("A man a plan a canal Panama".replace(" ", "").lower()) == True, "Classic"
+assert is_palindrome_simple("") == True, "Empty string is palindrome"
+e = evaluate()
+assert "over" in e["problem"].lower() or "complex" in e["problem"].lower() or "simple" in e["problem"].lower(), "Identify the over-engineering"
+assert e["lines_saved"] >= 10, "Simple version saves significant lines"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">チェック</button>
+    <button class="ex-hint" data-level="0">ヒント</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">回文は前から読んでも後ろから読んでも同じです。Pythonは<code>s[::-1]</code>で文字列を逆順にできます。</p>
+    <p class="hint">関数全体は: 文字列をクリーン、小文字化、逆順と比較、の3ステップです。</p>
+    <p class="hint">AIは<code>re</code>、<code>functools</code>をインポートし、メモ化付きの再帰を使い、型チェックを追加しました&mdash;シンプルな回文チェックには何も必要ありませんでした。</p>
+  </div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="38" data-ex="happy-path">
+  <div class="exercise-header">
+    <h4>欠けているエッジケースを見つける</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">AIが<code>KEY=VALUE</code>形式の設定ファイルを解析する<code>parse_config(text)</code>を書きました。有効な入力には動作しますが、3つの一般的なエッジケースでクラッシュします。3つの異なる不正な入力で<code>parse_config</code>を呼び出し、失敗をキャッチする<code>test_edge_cases()</code>を書いてください。次に、クラッシュする代わりに合理的な結果を返すように関数を修正してください。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+# AI生成:
+def parse_config(text):
+    """KEY=VALUE設定をdictに解析する。"""
+    result = {}
+    for line in text.split("\n"):
+        key, value = line.split("=")
+        result[key.strip()] = value.strip()
+    return result
+
+# 有効な入力では正常に動作:
+print(parse_config("host=localhost\nport=8080"))
+
+# TODO: 3つのクラッシュを露わにするtest_edge_cases()を書き、
+# その後parse_configを修正してそれらを処理する。
+def test_edge_cases():
+    pass  # テスト対象: 空文字列、コメント行、=のない行
+</script>
+    <script type="text/plain" class="test-code">
+assert parse_config("host=localhost\nport=8080") == {"host": "localhost", "port": "8080"}, "Valid input still works"
+assert parse_config("") == {}, "Empty string returns empty dict"
+assert parse_config("# comment\nhost=localhost") == {"host": "localhost"}, "Comment lines skipped"
+assert parse_config("host=localhost\n\nport=8080") == {"host": "localhost", "port": "8080"}, "Blank lines skipped"
+assert parse_config("host=local=host") == {"host": "local=host"}, "Values can contain ="
+test_edge_cases()
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">チェック</button>
+    <button class="ex-hint" data-level="0">ヒント</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint"><code>parse_config("")</code>を試してください&mdash;<code>""</code>を<code>=</code>で分割しようとして<code>[""]</code>が得られ、<code>["key", "value"]</code>ではありません。</p>
+    <p class="hint"><code>=</code>で分割する前に、空行と<code>#</code>で始まる行をスキップします。</p>
+    <p class="hint"><code>line.split("=", 1)</code>を使って最初の<code>=</code>だけで分割し、値に<code>=</code>が含まれていても壊れないようにします。</p>
+  </div>
+</div>
+
+<div class="quiz" data-ch="38" data-ex="quiz-first">
+  <h4>知識チェック</h4>
+  <p>AIが生成したコードを受け取ったとき、最初にすべきことは何ですか?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">すぐに実行する</button>
+    <button class="quiz-option" data-correct="true">実行する前に注意深く読む</button>
+    <button class="quiz-option" data-correct="false">AIに説明してもらう</button>
+    <button class="quiz-option" data-correct="false">本番環境にコピーする</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz" data-ch="38" data-ex="quiz-hallucination">
+  <h4>知識チェック</h4>
+  <p>AIが生成したコードの文脈で「ハルシネーション（幻覚）」とは何ですか?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">UIの視覚的なバグ</button>
+    <button class="quiz-option" data-correct="false">AIが構文的に無効なコードを生成するとき</button>
+    <button class="quiz-option" data-correct="true">AIが誤ったことを自信を持って述べるとき</button>
+    <button class="quiz-option" data-correct="false">AIが回答を拒否するとき</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+</section>
+
+<!-- ===== CH 20 ===== -->
+<section id="ch39" data-ch="39">
+<h2><span class="ch-label">第39章</span> レベル1・2 &mdash; tab completionとAgent IDE</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">なぜ今これが重要か</div>
+<p>この章でAIコーディングツールを実際に使い始めます。レベル1と2はあなたのエントリーポイントです&mdash;シンプルなオートコンプリートから完全な会話型コーディングまで。すべての上位レベルはこれらのインタラクションの上に構築されます。</p>
+</div>
+
+<h3>レベル1: tab completion</h3>
+<p><strong>概念:</strong> タイピングしながらのインラインコード提案。Tabを押して承認。</p>
+<div role="note" class="callout info">
+<div class="callout-title">現在のツール（2026年3月）</div>
+<p>GitHub Copilot（VS Codeエクステンション）、Codeium（無料）、Supermaven（最速）。</p>
+</div>
+
+<h3>レベル2: Agent IDE</h3>
+<p><strong>概念:</strong> コードベースに接続されたチャット。自然言語で説明すると、AIが複数ファイルの編集を生成。</p>
+<div role="note" class="callout info">
+<div class="callout-title">現在のツール（2026年3月）</div>
+<p>Cursor（cursor.com）、Windsurf（windsurf.com）、VS Code + Copilot Chat、Claude Code（ターミナル: <code>npm install -g @anthropic-ai/claude-code</code>、Node.js v18以上が必要）。</p>
+</div>
+
+<h3>プランモード</h3>
+<p>説明する &rarr; AIが計画する &rarr; あなたがレビューする &rarr; 承認する &rarr; 実行する &rarr; diffをレビューする &rarr; テスト。Boris Cherny（Claude Codeの作成者）はタスクの80%をプランモードで開始します。各モデル世代とともに、ワンショットの成功率が上昇します。プランモードが適切なエントリーポイントです。</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 80" xmlns="http://www.w3.org/2000/svg" aria-label="AIコーディングツールのレベル: L1 tab completionからL8チームまで、現在位置はL2 Agent IDE">
+  <rect class="node-accent" x="5" y="15" width="75" height="50" rx="6"/>
+  <text class="label-text" x="42" y="36" text-anchor="middle">L1</text>
+  <text class="sub-text" x="42" y="52" text-anchor="middle">Tab</text>
+  <line class="arrow" x1="80" y1="40" x2="95" y2="40"/>
+  <rect class="node-accent" x="95" y="15" width="75" height="50" rx="6"/>
+  <text class="label-text" x="132" y="36" text-anchor="middle">L2</text>
+  <text class="sub-text" x="132" y="52" text-anchor="middle">Agent IDE</text>
+  <line class="arrow" x1="170" y1="40" x2="185" y2="40"/>
+  <rect class="node-fill" x="185" y="15" width="75" height="50" rx="6"/>
+  <text class="label-text" x="222" y="36" text-anchor="middle">L3</text>
+  <text class="sub-text" x="222" y="52" text-anchor="middle">Context</text>
+  <line class="arrow" x1="260" y1="40" x2="275" y2="40"/>
+  <rect class="node-fill" x="275" y="15" width="75" height="50" rx="6"/>
+  <text class="label-text" x="312" y="36" text-anchor="middle">L4</text>
+  <text class="sub-text" x="312" y="52" text-anchor="middle">Compound</text>
+  <line class="arrow" x1="350" y1="40" x2="365" y2="40"/>
+  <rect class="node-fill" x="365" y="15" width="75" height="50" rx="6"/>
+  <text class="label-text" x="402" y="36" text-anchor="middle">L5</text>
+  <text class="sub-text" x="402" y="52" text-anchor="middle">MCP</text>
+  <line class="arrow" x1="440" y1="40" x2="455" y2="40"/>
+  <rect class="node-fill" x="455" y="15" width="75" height="50" rx="6"/>
+  <text class="label-text" x="492" y="36" text-anchor="middle">L6</text>
+  <text class="sub-text" x="492" y="52" text-anchor="middle">Harness</text>
+  <line class="arrow" x1="530" y1="40" x2="545" y2="40"/>
+  <rect class="node-fill" x="545" y="15" width="75" height="50" rx="6"/>
+  <text class="label-text" x="582" y="36" text-anchor="middle">L7</text>
+  <text class="sub-text" x="582" y="52" text-anchor="middle">Background</text>
+  <line class="arrow" x1="620" y1="40" x2="635" y2="40"/>
+  <rect class="node-fill" x="635" y="15" width="60" height="50" rx="6"/>
+  <text class="label-text" x="665" y="36" text-anchor="middle">L8</text>
+  <text class="sub-text" x="665" y="52" text-anchor="middle">Teams</text>
+  <!-- You are here -->
+  <text class="sub-text" x="115" y="10" text-anchor="middle" fill="var(--a3)" style="font-weight:700">現在地</text>
+</svg>
+<div class="diagram-caption">各レベルが次のレベルを解放します。スキップはできません&mdash;レベル3〜5はレベル6〜8の前提条件です。</div>
+</div>
+
+<h3>TaskForgeとの関連</h3>
+<p>この章の演習で初めてTaskForgeにClaude Codeを使用します。</p>
+
+<h3>マイクロ演習</h3>
+<div role="note" class="callout ok"><div class="callout-title">1: Claude Codeをインストールする</div><pre><code>npm install -g @anthropic-ai/claude-code
+claude --version</code></pre></div>
+<p>期待される出力:</p>
+<pre><code>$ npm install -g @anthropic-ai/claude-code
+
+added 1 package in 8s
+</code></pre>
+<p>インストールを確認する:</p>
+<pre><code>$ claude --version
+claude v1.x.x
+</code></pre>
+<p><code>npm</code>が見つからない場合は、フェーズ1の第3章に戻ってNode.jsをインストールしてください。権限エラーが発生した場合は、<code>sudo npm install -g @anthropic-ai/claude-code</code>（macOS/Linux）を試すか、管理者としてターミナルを実行してください（Windows）。</p>
+<div role="note" class="callout ok"><div class="callout-title">2: 最初の会話</div><p>TaskForgeに移動して<code>claude</code>を実行してください。「このプロジェクトのアーキテクチャを1段落で説明してください」と聞いてみましょう。正確ですか?</p></div>
+
+<div class="pq"><blockquote>"プログラムの最も重要な特性は、それがユーザーの意図を達成しているかどうかだ。"<br>&mdash;C.A.R. Hoare、チューリング賞講演、1980年</blockquote></div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう</div>
+<p>TaskForgeプロジェクトで、Claude Codeに尋ねてみましょう: 「IDでタスクを削除する<code>delete_task(task_id)</code>関数を追加してください。まず計画を立て、承認後に実装してください。」計画をレビューし、承認し、<code>git diff</code>を確認し、テストを実行してみましょう。</p>
+<p><strong>確認:</strong> diffに新しい関数が表示されます。既存のテストはパスします。新しい関数は存在しないIDを適切に処理します。</p>
+<p><strong>うまくいかない場合:</strong> (1) <code>claude: command not found</code> &rarr; <code>node --version</code>を確認。(2) 認証エラー &rarr; 認証フローに従う。(3) 不要な変更 &rarr; <code>git checkout .</code>で元に戻す。</p>
+</div>
+
+<div class="pq">AIエージェントを使って機能を計画・実装し、git diffとテストで結果を検証しました。これがレベル2のワークフローです&mdash;そしてあなたはすでに出力を評価する判断力を持っています。</div>
+
+<h3>インタラクティブ演習</h3>
+
+<div class="quiz" data-ch="39" data-ex="quiz-levels">
+  <h4>知識チェック</h4>
+  <p>レベル1（tab completion）とレベル2（Agent IDE）の主な違いは何ですか?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">レベル1は異なるモデルを使う</button>
+    <button class="quiz-option" data-correct="true">レベル1はインライン提案; レベル2は会話型エージェントインタラクション</button>
+    <button class="quiz-option" data-correct="false">レベル2はAPIキーが必要</button>
+    <button class="quiz-option" data-correct="false">実質的な違いはない</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz" data-ch="39" data-ex="quiz-gitdiff">
+  <h4>知識チェック</h4>
+  <p>エージェントが変更を加えた後に`git diff`をレビューすべき理由は何ですか?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">gitが正常に動作しているか確認するため</button>
+    <button class="quiz-option" data-correct="true">エージェントが期待通りのものを変更し、それ以外は変更していないことを確認するため</button>
+    <button class="quiz-option" data-correct="false">コミット前にgit diffが必要</button>
+    <button class="quiz-option" data-correct="false">変更した行数を数えるため</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="checklist" data-ch="39" data-ex="agent-check">
+  <h4>最初のエージェントインタラクション</h4>
+  <label><input type="checkbox"><span>Claude Codeがインストール済み — `claude --version`が動作する</span></label>
+  <label><input type="checkbox"><span>TaskForgeディレクトリでClaude Codeを開いた</span></label>
+  <label><input type="checkbox"><span>Claudeにファイルを説明させ、正確性を確認した</span></label>
+  <label><input type="checkbox"><span>Claudeに小さな機能を実装させた</span></label>
+  <label><input type="checkbox"><span>エージェントの変更後に`git diff`をレビューした</span></label>
+  <label><input type="checkbox"><span>テストを実行して機能が動作することを確認した</span></label>
+</div>
+
+</section>
+
+<!-- ===== CH 21 ===== -->
+<section id="ch40" data-ch="40">
+<h2><span class="ch-label">第40章</span> レベル3 &mdash; context engineering</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">なぜ今これが重要か</div>
+<p>平凡なAI出力と優れた出力の違いは、ほとんどの場合モデルではありません&mdash;コンテキストです。モデルはどのファイルを見るか? どんな指示がガイドするか? どんな制約が悪い出力を防ぐか? context engineeringはAIを活用した開発で最も高い効果をもたらすスキルです。</p>
+</div>
+
+<p><strong>context engineering</strong>とは、モデルが見るものを制御して、すべてのトークンが有用な仕事をするようにすることです。「すべてのトークンはプロンプト（prompt）の中で自分の居場所を勝ち取る必要がある。」</p>
+
+<h3>コンテキストウィンドウ（context window）</h3>
+<p>コンテキストウィンドウ（context window）をモデルの<strong>作業メモリ予算</strong>と考えてください。モデルが一度に考慮できるすべてのもの&mdash;プロンプト（prompt）、システム指示、ファイルの内容、会話履歴&mdash;はこの予算に収まる必要があります。いっぱいになると、古い情報が押し出されます。この予算を管理することがcontext engineeringの核心スキルです。</p>
+
+<h3>4つのサーフェス</h3>
+<div class="pr"><div class="pn">1</div><div class="pb2"><h5>CLAUDE.md</h5><p>毎セッション開始時に読まれる永続的な指示。200行以下、具体的、実行可能。</p></div></div>
+<div class="pr"><div class="pn">2</div><div class="pb2"><h5>ツールの説明</h5><p>モデルはこれを読んでどのツールを呼び出すかを決定します。明確な説明=より良いツール使用。</p></div></div>
+<div class="pr"><div class="pn">3</div><div class="pb2"><h5>会話管理</h5><p>コンテキストの約50%で<code>/compact</code>。探索にはサブエージェント。タスク切り替えには<code>/clear</code>。</p></div></div>
+<div class="pr"><div class="pn">4</div><div class="pb2"><h5>選択的コンテキスト</h5><p>コードベース全体ではなく、関連ファイルのみを含める。ノイズが少ない=より良い出力。</p></div></div>
+
+<h3>TaskForge用CLAUDE.mdの例</h3>
+<pre><code># TaskForge
+Command-line task manager with JSON persistence and Flask API.
+
+## Commands
+- `python3 -m pytest` — run tests
+- `python3 -m flask run` — start API server
+- `python3 src/taskforge/main.py` — run CLI
+
+## Architecture
+- src/taskforge/ — core logic (main.py, models.py, api.py)
+- tests/ — pytest test files
+- data/ — JSON storage (gitignored)
+
+## Code Style
+- Type hints on all function signatures
+- Docstrings on all public functions
+- No bare try/except — always catch specific exceptions
+
+## Gotchas
+- Task IDs are auto-incrementing integers, NOT UUIDs
+- JSON file is the single source of truth
+- Flask API mirrors CLI functionality exactly</code></pre>
+
+<h3>前後比較: コンテキストの品質</h3>
+<p>異なるコンテキストを持つ同じモデルは劇的に異なる結果を生成します:</p>
+
+<div class="pe">
+<div class="pb"><div class="ph">曖昧なプロンプト</div><div class="pp">「TaskForgeに検索を追加して」</div></div>
+<div class="pg"><div class="ph">制約付きプロンプト</div><div class="pp">「説明に対して大文字小文字を区別せずにマッチングする<code>search_tasks(keyword: str) -> list[dict]</code>をTaskForgeに追加してください。マッチなしの場合は空リストを返します。3つのテストを追加: マッチ有り、マッチなし、空キーワード。」<br><br><strong>なぜ良いか:</strong> 型が指定されている。動作が定義されている。エッジケースがリストされている。モデルが間違いを推測する余地が少ない。</div></div>
+</div>
+
+<div class="pe">
+<div class="pb"><div class="ph">ノイズの多いコンテキスト</div><div class="pp">2,000行のコードベース全体、無関係なREADMEテキスト、古い変更履歴をプロンプトに貼り付ける。</div></div>
+<div class="pg"><div class="ph">選択的コンテキスト</div><div class="pp"><code>models.py</code>（関数が入る場所）と<code>test_models.py</code>（テストが入る場所）だけを含める。モデルに他のファイルを必要に応じて探させる。<br><br><strong>なぜ良いか:</strong> ノイズが少ないということは、モデルがcontext windowを無関係なテキストではなく、関連するコードに費やすことを意味します。</div></div>
+</div>
+
+<div class="pe">
+<div class="pb"><div class="ph">弱いCLAUDE.md</div><div class="pp">「これはPythonプロジェクトです。良いコードを書いてください。ベストプラクティスに従ってください。」</div></div>
+<div class="pg"><div class="ph">実行可能なCLAUDE.md</div><div class="pp">「テストはpytestを使う。すべてのシグネチャに型ヒント。ベアexceptなし。タスクIDは整数であり、UUIDではない。JSONファイルは真実の単一ソース。」<br><br><strong>なぜ良いか:</strong> すべての行はモデルが従える具体的な制約です。推測は不要です。</div></div>
+</div>
+
+<div class="dw">
+<svg viewBox="0 0 700 80" xmlns="http://www.w3.org/2000/svg" aria-label="context window予算レイアウト: System/CLAUDE.md、会話履歴、ツールスキーマ、アクティブファイル、レスポンス空間">
+  <rect class="node-accent" x="10" y="20" width="120" height="40" rx="6"/>
+  <text class="sub-text" x="70" y="36" text-anchor="middle">System/CLAUDE.md</text>
+  <text class="sub-text" x="70" y="50" text-anchor="middle" fill="var(--accent)">重要な情報</text>
+  <rect class="node-fill" x="140" y="20" width="160" height="40" rx="6"/>
+  <text class="sub-text" x="220" y="36" text-anchor="middle">会話履歴</text>
+  <rect class="node-fill" x="310" y="20" width="100" height="40" rx="6"/>
+  <text class="sub-text" x="360" y="36" text-anchor="middle">ツールスキーマ</text>
+  <rect class="node-fill" x="420" y="20" width="130" height="40" rx="6"/>
+  <text class="sub-text" x="485" y="36" text-anchor="middle">アクティブファイル</text>
+  <rect x="560" y="20" width="130" height="40" rx="6" fill="var(--border)" stroke="var(--border-accent)"/>
+  <text class="sub-text" x="625" y="36" text-anchor="middle">レスポンス空間</text>
+  <text class="sub-text" x="625" y="50" text-anchor="middle" fill="var(--text-muted)">20〜30%残す</text>
+</svg>
+<div class="diagram-caption">context windowには予算があります。重要な情報を最初と最後に配置します。レスポンスのために20〜30%を残します。</div>
+</div>
+
+<h3>指示スキャフォールドを作る</h3>
+<p>小規模プロジェクトのCLAUDE.mdは簡単です。しかし、目標がより大きい場合—たとえばClaude Codeに<em>環境全体をゼロから設定させる</em>場合はどうでしょうか? ここで<strong>指示スキャフォールド</strong>を構築します: 非決定論的なモデルがほぼ毎回同じ正しい出力を生成するほど精密なドキュメント。</p>
+
+<p>第38章の核心的な問題を覚えていますか: LLMは非決定論的です。「このプロジェクトにDockerをセットアップして」とClaudeに5回頼むと、5つの異なるDockerfile、異なるcomposeの設定、異なる認証アプローチが得られます。いくつかは動作します。いくつかは動作しません。このバリエーションが敵です。</p>
+
+<p>解決策は、すべての決定ポイントで曖昧さを排除するスキャフォールドです:</p>
+
+<div class="pr"><div class="pn">1</div><div class="pb2"><h5>目標を一文で述べる</h5><p>「Dockerをセットアップして」ではなく「1つのコンテナ。execすると、リポジトリを指すClaude Codeが得られる。CMDはsleep infinity。以上。」</p></div></div>
+<div class="pr"><div class="pn">2</div><div class="pb2"><h5>正確なバージョンとコマンドを指定する</h5><p>「Claude Codeをインストールして」ではなく<code>curl -fsSL https://claude.ai/install.sh | bash</code>。「Debianを使って」ではなく<code>FROM debian:bookworm-slim</code>。すべての未指定の選択はモデルが半分の確率で間違える硬貨投げです。</p></div></div>
+<div class="pr"><div class="pn">3</div><div class="pb2"><h5>間違ったアプローチを明示的に禁止する</h5><p>「npmインストールは絶対に使わないこと&mdash;認証/PATHの破損を引き起こす。」「CLAUDE_MODELを環境ブロックに追加しないこと&mdash;実際の環境変数ではない。」ネガティブな制約はポジティブなものと同様に重要です。モデルのトレーニングデータにはすべての間違ったアプローチも含まれているからです。</p></div></div>
+<div class="pr"><div class="pn">4</div><div class="pb2"><h5>正確なファイル内容を提供する</h5><p>Dockerfileに何が含まれるべきかを説明しないで&mdash;Dockerfileを書いてください。モデルはコピーすべきであり、即興すべきではありません。モデルがゼロから生成するすべての行は、実行間で変わる可能性のある行です。</p></div></div>
+<div class="pr"><div class="pn">5</div><div class="pb2"><h5>バリデーションチェックリストを追加する</h5><p>出力が正しいことを確認するyes/noチェックのリスト。「ベースイメージはdebian:bookworm-slimか?」「CMDはsleep infinityか?」「.envにはすべての既存行が含まれているか?」これらが非決定論的な出力を囲む決定論的なガードレールです。</p></div></div>
+<div class="pr"><div class="pn">6</div><div class="pb2"><h5>既存ファイルを保護する</h5><p>「.envを絶対に上書きしないこと&mdash;追記のみ。」「プロジェクトの既存のDockerfileに触れないこと。」破壊は不可逆的です。スキャフォールドは正しいことをすることより物事を壊すことを難しくする必要があります。</p></div></div>
+
+<div role="note" class="callout critical">
+<div class="callout-title">重要な概念: なぜこのレベルの精度が重要か</div>
+<p>「このプロジェクト用にDockerをセットアップして」のような曖昧な指示は、モデルに数千の解釈の可能性を与えます。正確なファイル内容、禁止されたアプローチ、バリデーションチェックリストを持つ精密なスキャフォールドは、それを本質的に1つに絞ります。明確化の質問をできる人間の同僚への指示を書いているのではありません&mdash;解釈の余地を残すと自信を持って間違ったことをするシステムへの制約を書いています。ガードレールが厳密なほど、出力はより決定論的になります。</p>
+</div>
+
+<p>第43章（ハーネス（harness）エンジニアリング）では、これらの原則すべてをClaude Code用のDocker環境のセットアップに適用した完全なスキャフォールドを見ることになります。300行以上あります&mdash;そして各行は実際に欠落が失敗を引き起こしたから存在します。</p>
+
+<h3>マイクロ演習</h3>
+<div role="note" class="callout ok"><div class="callout-title">1: CLAUDE.mdを監査する</div><p>TaskForgeで<code>/init</code>を実行します。生成されたCLAUDE.mdを読みます。Claudeがコードから把握できる行を数えます。それらを削除します。</p></div>
+<div role="note" class="callout ok"><div class="callout-title">2: 注意事項を追加する</div><p>Claudeが犯した間違いについての「Gotcha」を1つ追加します。新しいセッションを開始します。Claudeがそれを避けるか確認します。</p></div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう: コンテキストありとなし</div>
+<p>この演習でcontext engineeringの影響を実感できます。まったく同じプロンプトを2回実行して結果を比較します。</p>
+<ol>
+<li><strong>コンテキストなし:</strong> CLAUDE.mdの名前を変えるか削除（または空のものを作成）します。TaskForgeで新鮮なClaude Codeセッションを開始します。このプロンプトを実行します: <code>Add input validation to the add_task function in TaskForge</code>。出力をどこかに保存します。</li>
+<li><strong>コンテキストあり:</strong> CLAUDE.mdを復元します（上の例のもの、または自分のもの）。<code>/clear</code>で新しいセッションを開始します。まったく同じプロンプトを実行します: <code>Add input validation to the add_task function in TaskForge</code>。</li>
+<li><strong>比較:</strong> 両方の出力を並べて確認します。チェック: 2番目のバージョンはコードスタイルに従ったか? 正しいテストフレームワークを使ったか? プロジェクト固有の制約（整数ID、UUIDではない）を尊重したか?</li>
+</ol>
+<p><strong>確認:</strong> 「CLAUDE.mdあり」の出力は、「なし」のバージョンがしなかった少なくとも3つの具体的な点でプロジェクトの慣習に従っています。</p>
+<p><strong>うまくいかない場合:</strong> 両方の出力が同じに見える場合、CLAUDE.mdが一般的すぎる可能性があります。より多くのプロジェクト固有の制約を追加して再試行してください。</p>
+</div>
+
+<div class="pq"><blockquote>"視点の変化は80のIQポイントに値する。"<br>&mdash;Alan Kay</blockquote></div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう</div>
+<p>TaskForge用のCLAUDE.mdを書いてみましょう（50行以下）。Claude Codeセッションを開始して、「<code>search_tasks(keyword)</code>関数を追加してください」と聞いてみましょう。Claudeはコードスタイルのルールに従いましたか?</p>
+<p><strong>確認:</strong> 生成されたコードには（ルールに従って）型ヒントとdocstringがあります。</p>
+<p><strong>うまくいかない場合:</strong> (1) Claudeがルールを無視する &rarr; CLAUDE.mdが長すぎるか曖昧。短くする。(2) 間違った場所 &rarr; CLAUDE.mdはプロジェクトのルートにある必要があります。</p>
+</div>
+
+<div class="pq">コンテキストを制御することでAI出力を形作りました&mdash;より良いコードを書くことではなく、より良い指示を書くことで。これがcontext engineeringであり、AIを活用した開発で最も高い効果をもたらすスキルです。</div>
+
+<h3>インタラクティブ演習</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="40" data-ex="claudemd">
+  <div class="exercise-header">
+    <h4>CLAUDE.mdリンター</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">CLAUDE.mdファイルの品質をチェックする`lint_claude_md(text)`関数を書いてください。問題の文字列リストを返します。50行を超えるファイル、'be careful'または'write good code'を含む行（曖昧）、テストコマンドの欠如（'pytest'または'test'を含む行がない）をフラグ立てします。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">def lint_claude_md(text):
+    issues = []
+    # ここにコードを書く
+    return issues</script>
+    <script type="text/plain" class="test-code">good = "# Project\nPython CLI tool.\n## Testing\nRun pytest\n## Rules\n- Use type hints"
+assert lint_claude_md(good) == [], "Good CLAUDE.md has no issues"
+long_text = "\n".join(["line"] * 51)
+assert any("50 lines" in i or "too long" in i.lower() for i in lint_claude_md(long_text)), "Should flag >50 lines"
+vague = "# Rules\nBe careful with edge cases\nRun pytest"
+assert any("vague" in i.lower() or "careful" in i.lower() for i in lint_claude_md(vague)), "Should flag vague instructions"
+no_test = "# Project\nA tool\n## Rules\n- Use type hints"
+assert any("test" in i.lower() for i in lint_claude_md(no_test)), "Should flag missing test command"</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">チェック</button>
+    <button class="ex-hint" data-level="0">ヒント</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">`text.split('\n')`で行を数える — lenが50より大きければフラグ。</p>
+    <p class="hint">曖昧なフレーズを確認: `if 'be careful' in text.lower()`。</p>
+    <p class="hint">テストコマンドの確認: `if 'pytest' not in text.lower() and 'test' not in text.lower()`。</p>
+  </div>
+</div>
+
+<div class="quiz" data-ch="40" data-ex="quiz-claudemd">
+  <h4>知識チェック</h4>
+  <p>どちらのCLAUDE.md指示が優れていますか?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">良い、きれいなコードを書く</button>
+    <button class="quiz-option" data-correct="true">4スペースのインデント、すべてのパブリック関数に型ヒント、テストにpytestを使う</button>
+    <button class="quiz-option" data-correct="false">エッジケースに注意する</button>
+    <button class="quiz-option" data-correct="false">ベストプラクティスに従う</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="checklist" data-ch="40" data-ex="context-check">
+  <h4>コンテキストの設定</h4>
+  <label><input type="checkbox"><span>TaskForgeのルートにCLAUDE.mdを作成した</span></label>
+  <label><input type="checkbox"><span>CLAUDE.mdは50行以下</span></label>
+  <label><input type="checkbox"><span>具体的なテストコマンドが含まれている</span></label>
+  <label><input type="checkbox"><span>検証可能なコードスタイルルールが少なくとも3つ含まれている</span></label>
+  <label><input type="checkbox"><span>テスト済み: 新しいセッションを開始してClaudeがルールに従うことを確認した</span></label>
+</div>
+
+</section>
+
+<!-- ===== CH 22 ===== -->
+<section id="ch41" data-ch="41">
+<h2><span class="ch-label">第41章</span> レベル4 &mdash; 複合エンジニアリング</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">なぜ今これが重要か</div>
+<p>複合なしには、毎セッション同じ問題を解決することになります。Claudeは同じ間違いをし、あなたは同じ問題を修正し、進歩が定着しません。複合エンジニアリングはすべての修正を永続的な改善に変えます&mdash;その場で走ることと勢いを作ることの違いです。</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">補足: この章のカバー範囲</div>
+<p>この章では2つの主要トピックを扱います: <strong>複合エンジニアリング</strong>（永続的なルールとコンテキストに教訓を成文化することでAIを時間をかけて改善していくこと）と<strong>仕様駆動開発ワークフロー</strong>（AIを活用したソフトウェア開発へのプロフェッショナルなアプローチで、ブレインストーミング、仕様の作成、プロンプト計画の作成、そしてステップバイステップの実行という流れ）です。</p>
+</div>
+
+<p>複合エンジニアリングは現在のセッション後のすべてのセッションを改善します。ループ: <strong>計画 &rarr; 委任 &rarr; 評価 &rarr; 成文化</strong>。成文化のステップが複合化を生み出します。</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" aria-label="複合エンジニアリングサイクル: 計画、委任、評価、成文化をループ">
+  <rect class="node-fill" x="260" y="10" width="120" height="44" rx="8"/>
+  <text class="label-text" x="320" y="37" text-anchor="middle">計画</text>
+  <rect class="node-fill" x="450" y="70" width="120" height="44" rx="8"/>
+  <text class="label-text" x="510" y="97" text-anchor="middle">委任</text>
+  <rect class="node-fill" x="260" y="140" width="120" height="44" rx="8"/>
+  <text class="label-text" x="320" y="167" text-anchor="middle">評価</text>
+  <rect class="node-accent" x="70" y="70" width="120" height="44" rx="8"/>
+  <text class="label-text" x="130" y="97" text-anchor="middle">成文化</text>
+  <!-- 矢印 -->
+  <line class="arrow" x1="380" y1="32" x2="450" y2="75"/>
+  <line class="arrow" x1="510" y1="114" x2="380" y2="155"/>
+  <line class="arrow" x1="260" y1="162" x2="190" y2="110"/>
+  <line class="arrow" x1="130" y1="70" x2="260" y2="32"/>
+</svg>
+<div class="diagram-caption">成文化のステップが複合エンジニアと他の全員を分けます。それなしには、同じ問題を繰り返し解決することになります。</div>
+</div>
+
+<h3>成文化する場所</h3>
+<table>
+<caption>繰り返しのエージェントの間違いを成文化する場所</caption>
+<tr><th>何が起きたか</th><th>成文化する場所</th></tr>
+<tr><td>削除された依存関係を再導入する</td><td>CLAUDE.md: "Do NOT use [X]."</td></tr>
+<tr><td>命名規則を無視する</td><td><code>.claude/rules/naming.md</code></td></tr>
+<tr><td>間違ったテストスタイル</td><td>CLAUDE.md: "Tests use pytest, not unittest."</td></tr>
+<tr><td>特別な処理が必要な複雑なモジュール</td><td>サブディレクトリCLAUDE.md</td></tr>
+<tr><td>繰り返しのワークフロー</td><td><code>.claude/skills/[name]/SKILL.md</code></td></tr>
+</table>
+
+<div role="note" class="callout warn">
+<div class="callout-title">注意</div>
+<p>LLMが確実に従える指示の数は150〜200程度が上限です。それを超えると、従う率が低下します。CLAUDE.mdを簡潔な目次として保ちましょう。詳細なドキュメントは別の場所に置きます。</p>
+</div>
+
+<h3>TaskForgeとの関連</h3>
+<p>TaskForgeの<code>docs/architecture.md</code>を作成し、CLAUDE.mdからリンクします。これが複合化です: 将来のClaudeセッションがアーキテクチャドキュメントを見つけ、より良いコードを生成します。</p>
+
+<h3>マイクロ演習</h3>
+<div role="note" class="callout ok"><div class="callout-title">1: ルールを書く</div><p>Claudeが望まないことをした最後の時を思い出してください。それを防ぐための一行のCLAUDE.mdルールを書いてください。</p></div>
+<div role="note" class="callout ok"><div class="callout-title">2: アーキテクチャドキュメントを作成する</div><p>TaskForgeの<code>docs/architecture.md</code>を作成します: システム概要、データフロー、主要な決定事項。CLAUDE.mdからそれを指示します。</p></div>
+
+<div class="pq"><blockquote>"文明は、考えなくてもできる重要な操作の数を増やすことで進歩する。"<br>&mdash;Alfred North Whitehead、『数学入門』</blockquote></div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう</div>
+<p>ClaudeにTaskForgeの機能を実装させてみましょう。間違えた点を1つ記録し、その修正をCLAUDE.mdルールまたは<code>.claude/rules/*.md</code>ファイルとして書いてみましょう。<strong>新しい</strong>セッションを開始して、同様の機能を求めてみましょう。Claudeはその間違いを避けましたか?</p>
+<p><strong>確認:</strong> 2番目のセッションの出力が最初のセッションの間違いを繰り返さない。</p>
+<p><strong>うまくいかない場合:</strong> (1) 同じ間違いをする &rarr; ルールが曖昧すぎる。具体的にする。(2) ルールが読み込まれない &rarr; CLAUDE.mdがプロジェクトのルートにあることを確認。</p>
+</div>
+
+<div class="pq">将来のすべてのAIセッションを永続的に改善しました。一度書いたルールが、同じ間違いを永遠に防ぎます。これが複合化です&mdash;その場で走ることと勢いを作ることの違いです。</div>
+
+<h3>インタラクティブ演習</h3>
+
+<div class="quiz" data-ch="41" data-ex="quiz-compound">
+  <h4>知識チェック</h4>
+  <p>何がセッションをまたいでエンジニアリングを「複合」させますか?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">毎回同じAIモデルを使う</button>
+    <button class="quiz-option" data-correct="true">将来の出力を自動的に改善する永続的なルールとドキュメント</button>
+    <button class="quiz-option" data-correct="false">より多くのエージェントを並行して実行する</button>
+    <button class="quiz-option" data-correct="false">より長いプロンプトを書く</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="checklist" data-ch="41" data-ex="compound-check">
+  <h4>複合ループ</h4>
+  <label><input type="checkbox"><span>TaskForgeでClaudeが犯した間違いを特定した</span></label>
+  <label><input type="checkbox"><span>それを防ぐための具体的なCLAUDE.mdルールを書いた</span></label>
+  <label><input type="checkbox"><span>新しいセッションを開始して同様の作業を依頼した</span></label>
+  <label><input type="checkbox"><span>Claudeがその間違いを避けたことを確認した</span></label>
+</div>
+
+<h3>仕様駆動ワークフロー</h3>
+<p>AIを活用した開発で最も効果的なワークフローです。コードに直接飛び込む代わりに: <strong>ブレインストーミング &rarr; 仕様 &rarr; 計画 &rarr; 実行</strong>という流れで進みます。</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 80" xmlns="http://www.w3.org/2000/svg" aria-label="仕様駆動開発ワークフロー: ブレインストーミング、仕様、計画、実行の4ステップ">
+<rect class="node-accent" x="10" y="20" width="90" height="40" rx="6"/>
+<text class="label-text" x="55" y="45" text-anchor="middle">アイデア</text>
+<line x1="100" y1="40" x2="130" y2="40" class="arrow"/>
+<rect class="node-fill" x="133" y="20" width="100" height="40" rx="6"/>
+<text class="label-text" x="183" y="45" text-anchor="middle">ブレスト</text>
+<line x1="233" y1="40" x2="263" y2="40" class="arrow"/>
+<rect class="node-fill" x="266" y="20" width="90" height="40" rx="6"/>
+<text class="label-text" x="311" y="45" text-anchor="middle">spec.md</text>
+<line x1="356" y1="40" x2="386" y2="40" class="arrow"/>
+<rect class="node-fill" x="389" y="20" width="100" height="40" rx="6"/>
+<text class="label-text" x="439" y="38" text-anchor="middle">prompt_</text>
+<text class="label-text" x="439" y="52" text-anchor="middle">plan.md</text>
+<line x1="489" y1="40" x2="519" y2="40" class="arrow"/>
+<rect class="node-accent" x="522" y="20" width="90" height="40" rx="6"/>
+<text class="label-text" x="567" y="38" text-anchor="middle">実行</text>
+<text class="sub-text" x="567" y="52" text-anchor="middle">ステップごと</text>
+</svg>
+<div class="diagram-caption">仕様駆動ワークフロー: コードから始めない。理解から始め、書き留め、ステップに分け、実行する。</div>
+</div>
+
+<h4>ステップ1: ブレインストーミング</h4>
+<p>コードではなく、会話から始めます。AIに<em>あなたに</em>質問するよう求めます:</p>
+<pre><code>I want to build [feature]. Before we write any code, ask me clarifying questions
+one at a time to understand: what problem this solves, who uses it, what the core
+features are, what it should NOT do, and what edge cases matter.</code></pre>
+<p>AIが明確化の質問をします。あなたが答えます。出力: 問題の共通理解。</p>
+
+<h4>ステップ2: 仕様を書く（spec.md）</h4>
+<p>ブレインストーミングを書面仕様に変換します:</p>
+<ul>
+<li>システムが何をするか（要件）</li>
+<li>システムが何をしないか（明示的なスコープ境界）</li>
+<li>データモデル（何を保存するか）</li>
+<li>APIまたはインターフェース設計（入力、出力、エラー）</li>
+<li>エッジケースとエラー処理</li>
+<li>受け入れ基準（完了の判断方法）</li>
+</ul>
+
+<h4>ステップ3: 計画を生成する（prompt_plan.md）</h4>
+<p>仕様を順序付きの実装ステップに分解します。各ステップはAIに与えるプロンプトであり、5分以内にレビューできるほど小さいもの。</p>
+
+<h4>ステップ4: ステップごとに実行する</h4>
+<p>計画から各プロンプトを一つずつ渡します。出力をレビューします。テストを実行します。次に進む前に問題を修正します。<strong>レビューを省略しない。複数のステップをまとめない。</strong></p>
+
+<p><strong>なぜこれが機能するか:</strong> 仕様はAIのメモリではなく、真実のソースです。計画がチェックポイントを作ります。何か問題が発生した場合、正確にどこかがわかります。そして複合化します — 仕様の品質はプロジェクトごとに向上します。</p>
+
+<div role="note" class="callout info">
+<div class="callout-title">補足: 仕様駆動アプローチの参考資料</div>
+<p>このワークフローは、毎日AIを使って本番ソフトウェアを構築している実践者から適応しています:</p>
+<ul>
+<li><a href="https://harper.blog/2025/02/16/my-llm-codegen-workflow-atm/">Harper Reed: My LLM Codegen Workflow</a> &mdash; 元の仕様駆動ワークフロー。</li>
+<li><a href="https://harper.blog/2025/05/08/basic-claude-code/">Harper Reed: Basic Claude Code</a> &mdash; Claude Codeで作業するための実践的なパターン。</li>
+</ul>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="41" data-ex="spec-analysis">
+  <div class="exercise-header">
+    <h4>演習: 悪い仕様を分析する</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">悪く書かれた仕様を与えられた場合、問題を特定してください。欠けているセクションを持つdictを返します。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def analyze_spec(spec_text):
+    """仕様を分析して欠けているものを返す。
+
+    以下のキーを持つdictを返す:
+    - "has_requirements": bool
+    - "has_non_requirements": bool
+    - "has_data_model": bool
+    - "has_edge_cases": bool
+    - "has_acceptance_criteria": bool
+    - "problems": 問題を説明する文字列のリスト
+    """
+    # 仕様テキストに各セクションが存在するかチェック
+    result = {
+        "has_requirements": False,
+        "has_non_requirements": False,
+        "has_data_model": False,
+        "has_edge_cases": False,
+        "has_acceptance_criteria": False,
+        "problems": []
+    }
+    # 分析をここに書く
+    pass
+    return result
+
+# 分析する悪い仕様:
+bad_spec = """
+TaskForge Priority Feature
+- Add priorities to tasks
+- Should work well
+- Make it nice
+"""
+</script>
+    <script type="text/plain" class="test-code">
+result = analyze_spec(bad_spec)
+assert result["has_requirements"] == False or len(result["problems"]) >= 2, "Should find at least 2 problems"
+assert result["has_non_requirements"] == False, "Bad spec has no non-requirements"
+assert result["has_data_model"] == False, "Bad spec has no data model"
+assert result["has_edge_cases"] == False, "Bad spec has no edge cases"
+assert result["has_acceptance_criteria"] == False, "Bad spec has no acceptance criteria"
+assert len(result["problems"]) >= 2, "Should identify multiple problems"
+print("All tests passed!")
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">チェック</button>
+    <button class="ex-hint" data-level="0">ヒント</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">テキストに「requirements」「data model」「edge case」「acceptance」などのキーワードが含まれているか確認します（大文字小文字を区別しない）。</p>
+    <p class="hint">「should work well」や「make it nice」のような曖昧なフレーズを探します — テスト可能ではないため問題です。</p>
+    <p class="hint">各セクションのキーワードを確認します。「No explicit requirements list」「No data model defined」「Contains vague requirement: 'should work well'」などの問題を追加します。</p>
+  </div>
+</div>
+
+</section>
+
+<!-- ===== CH 23 ===== -->
+<section id="ch42" data-ch="42">
+<h2><span class="ch-label">第42章</span> レベル5 &mdash; MCP・スキル・ケイパビリティ</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">なぜ今これが重要か</div>
+<p>レベル1〜4はツールをそのまま使います。レベル5はツールを拡張し始めるところです。MCPはClaude Codeをデータベース、ブラウザ、外部サービスに接続します。スキルは再利用可能なワークフローを与えます。サブエージェントは特化した役割を与えます。あなたはユーザーからアーキテクトへと移行しています。</p>
+</div>
+
+<h3>MCP（Model Context Protocol）</h3>
+<p><strong>概念:</strong> Claude Codeが外部ツールやサービスと対話できるようにする標準化されたコネクタ。</p>
+<div role="note" class="callout info">
+<div class="callout-title">現在のセットアップ（2026年3月）</div>
+<pre><code>// .mcp.json (project root)
+{
+  "mcpServers": {
+    "postgres": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres"],
+      "env": { "DATABASE_URL": "postgresql://..." }
+    }
+  }
+}</code></pre>
+</div>
+
+<h3>カスタムスキル（skill）</h3>
+<p><strong>概念:</strong> 要求に応じて読み込まれる再利用可能な指示セット。スキル（skill）はワークフロー、ツールの制限、モデルの選択を定義します。</p>
+<pre><code># .claude/skills/pr-review/SKILL.md
+---
+name: pr-review
+description: Reviews PRs for bugs, security, performance, style.
+tools: Read, Glob, Grep, Bash
+model: opus
+---
+You are a senior code reviewer. Check:
+## Security — hardcoded secrets, injection, XSS
+## Performance — N+1 queries, missing indexes
+## Output — BLOCKING, SUGGESTION, or APPROVED</code></pre>
+
+<h3>カスタムサブエージェント（sub-agent）</h3>
+<p><strong>概念:</strong> ツールが制限された特化した役割。各サブエージェントは必要なツールにのみアクセスできます。</p>
+<pre><code># .claude/agents/test-writer.md
+---
+name: test-writer
+description: Writes tests. Can read source and write test files only.
+tools: Read, Glob, Write
+model: sonnet
+---
+Write comprehensive tests. Cover: happy path, edge cases, error cases.</code></pre>
+
+<div class="diagram">
+<svg viewBox="0 0 700 180" xmlns="http://www.w3.org/2000/svg" aria-label="PRレビュースキルが4つの特化したサブエージェントを生成: セキュリティ、パフォーマンス、スタイル、インテグレーション">
+  <rect class="node-accent" x="260" y="10" width="180" height="44" rx="8"/>
+  <text class="label-text" x="350" y="37" text-anchor="middle">PRレビュースキル</text>
+  <rect class="node-fill" x="40" y="100" width="130" height="44" rx="8"/>
+  <text class="label-text" x="105" y="127" text-anchor="middle">セキュリティ</text>
+  <rect class="node-fill" x="200" y="100" width="130" height="44" rx="8"/>
+  <text class="label-text" x="265" y="127" text-anchor="middle">パフォーマンス</text>
+  <rect class="node-fill" x="370" y="100" width="130" height="44" rx="8"/>
+  <text class="label-text" x="435" y="127" text-anchor="middle">スタイル</text>
+  <rect class="node-fill" x="530" y="100" width="130" height="44" rx="8"/>
+  <text class="label-text" x="595" y="127" text-anchor="middle">インテグレーション</text>
+  <line class="arrow" x1="300" y1="54" x2="105" y2="100"/>
+  <line class="arrow" x1="330" y1="54" x2="265" y2="100"/>
+  <line class="arrow" x1="370" y1="54" x2="435" y2="100"/>
+  <line class="arrow" x1="400" y1="54" x2="595" y2="100"/>
+</svg>
+<div class="diagram-caption">1つのスキルが特化したサブエージェントを生成でき、各エージェントが異なる観点をチェックします。結果は統合されたレビューに収束します。</div>
+</div>
+
+<h3>フック</h3>
+<p>ライフサイクルポイントでの自動化スクリプト:</p>
+<pre><code>// .claude/settings.json
+{ "hooks": { "preCommit": [{ "command": "npm run lint && npm test" }] } }</code></pre>
+
+<h3>TaskForgeとの関連</h3>
+<p>テスト付きで新機能を追加するTaskForge用スキルと、結果をレビューするサブエージェントを作成します。</p>
+
+<h3>マイクロ演習</h3>
+<div role="note" class="callout ok"><div class="callout-title">1: スキルを作る</div><p><code>.claude/skills/explain/SKILL.md</code>を任意のファイルを説明するプロンプトで作成します。<code>/explain</code>でテストします。</p></div>
+<div role="note" class="callout ok"><div class="callout-title">2: サブエージェントを作る</div><p>ツールをReadとGrepに制限した<code>.claude/agents/security-check.md</code>を作成します。</p></div>
+
+<div class="pq"><blockquote>"未来を予測する最善の方法は、それを発明することだ。"<br>&mdash;Alan Kay</blockquote></div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう</div>
+<p>テスト付きで新機能を追加するTaskForge用スキルを作成してみましょう。結果をレビューするサブエージェントも作成します。両方を実行してみましょう。</p>
+<p><strong>確認:</strong> スキルがエラーなく読み込まれる。サブエージェントが読み込まれる。両方が出力を生成する。</p>
+<p><strong>うまくいかない場合:</strong> (1) スキルが認識されない &rarr; ファイルは<code>.claude/skills/[name]/SKILL.md</code>でなければならない。(2) サブエージェントが読み込まれない &rarr; セッションを再起動。(3) フロントマターエラー &rarr; YAMLのインデントを確認。</p>
+</div>
+
+<div class="pq">AIエージェントをカスタムケイパビリティで拡張しました。エージェントは今やあなたが与えたスキルのおかげで、すぐに使えるものでは出来なかったことができます。あなたはユーザーからアーキテクトへと移行しました。</div>
+
+<h3>インタラクティブ演習</h3>
+
+<div class="quiz" data-ch="42" data-ex="quiz-mcp">
+  <h4>知識チェック</h4>
+  <p>MCPサーバーとは何ですか?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">クラウドホスティングプラットフォーム</button>
+    <button class="quiz-option" data-correct="true">agentのケイパビリティを拡張する外部ツールサーバー</button>
+    <button class="quiz-option" data-correct="false">データベース管理システム</button>
+    <button class="quiz-option" data-correct="false">CI/CDパイプラインランナー</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz" data-ch="42" data-ex="quiz-skill">
+  <h4>知識チェック</h4>
+  <p>スキルとサブエージェントの違いは何ですか?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">スキルはサブエージェントより速い</button>
+    <button class="quiz-option" data-correct="true">スキルは再利用可能なプロンプトテンプレートを定義する; サブエージェントはツールアクセスが制限された自律的なエージェント</button>
+    <button class="quiz-option" data-correct="false">違いはない</button>
+    <button class="quiz-option" data-correct="false">サブエージェントはファイルの読み込みしかできない</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="checklist" data-ch="42" data-ex="tooling-check">
+  <h4>カスタムツーリング</h4>
+  <label><input type="checkbox"><span>`.claude/skills/`にカスタムスキルを作成した</span></label>
+  <label><input type="checkbox"><span>スキルがエラーなく読み込まれ実行される</span></label>
+  <label><input type="checkbox"><span>`.claude/agents/`にサブエージェントを作成した</span></label>
+  <label><input type="checkbox"><span>サブエージェントがタスクを正常に完了する</span></label>
+</div>
+
+</section>
+
+<!-- ===== PHASE 5 GATE ===== -->
+<section id="gate9">
+<h2><span class="ch-label">フェーズ9ゲート</span> チェックポイント &amp; TaskForge AIインテグレーション</h2>
+<div class="card">
+<h4>最低限の能力</h4>
+<p>100行以下のCLAUDE.mdを書く。スキルを作成する。サブエージェントを作成する。Claude Codeを使ってテスト検証付きの機能を実装する。モデルの出力がなぜ間違っているかを説明できる。</p>
+</div>
+<div class="card">
+<h4>成果物</h4>
+<p>TaskForgeに: CLAUDE.md、<code>.claude/skills/</code>のカスタムスキル1つ、<code>.claude/agents/</code>のサブエージェント1つ、テストで検証されたAI実装機能を示すgitログ。</p>
+</div>
+<div class="card">
+<h4>確認</h4>
+<p>スキルとサブエージェントが読み込まれる。CLAUDE.mdに曖昧な指示がない。gitログにテスト検証済みのAI機能が示されている。</p>
+</div>
+<div role="note" class="callout critical">
+<div class="callout-title">注意: 失敗のシグナル</div>
+<p>CLAUDE.mdが曖昧な指示で300行ある場合、またはClaudeの出力がなぜ間違っているかを説明できない場合 &rarr; 第38〜40章に戻ってください。</p>
+</div>
+<h3>TaskForgeチェックポイント</h3>
+<p>TaskForgeにはAIが読めるコンフィグレーション、カスタムツーリング、そして少なくとも1つのAI実装機能が追加されました。マルチエージェント作業の準備ができています。</p>
+
+<h3>今できること</h3>
+<div class="card">
+<ul>
+<li>AIが生成したコードを評価する: diffを読み、ハルシネーションをキャッチし、エッジケースの失敗を特定する</li>
+<li>プランモードで機能開発にClaude Codeを使う</li>
+<li>効果的なCLAUDE.mdファイルを書き、コンテキストを意図的に管理する</li>
+<li>各セッションが次のセッションを改善するよう教訓を成文化する</li>
+<li>カスタムスキル、サブエージェント、MCPコネクションを作成する</li>
+</ul>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">フェーズ10へのブリッジ</div>
+<p>これまでは1つのAIエージェントを同時に使ってきました。しかし、いくつかのタスクは1つのセッションには大きすぎるか、変化に富みすぎています。コードを書くエージェント、レビューするエージェント、ドキュメントを更新するエージェントが並行して動作する複数のエージェントを派遣できたらどうでしょうか? フェーズ10ではマルチエージェントパターンを紹介します。注意: エージェントが増えるほど調整のオーバーヘッドも増えます。このフェーズのハーネスエンジニアリングスキルなしには、エージェントが増えるだけで混乱が増えます。だからこそ、レベル1〜5が先に来るのです。</p>
+</div>
+</section>
+
+<nav class="phase-nav">
+  <a href="phase-8.html" class="phase-nav-link prev"><span class="phase-nav-label">前のフェーズ</span>&larr; フェーズ8: システムとスケール</a>
+  <a href="phase-10.html" class="phase-nav-link next"><span class="phase-nav-label">次のフェーズ</span>フェーズ10: AIオーケストレーション &rarr;</a>
+</nav>
+
+</div>
+</div>
+
+<footer>
+<p>Zero to Hero: プログラミングからマルチエージェントClaude Codeへ &middot; 2026年3月</p>
+</footer>
+
+<script src="../js/progress.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ace-builds@1.36.5/src-min-noconflict/ace.js"></script>
+<script src="../js/theme.js"></script>
+<script src="../js/sidebar.js"></script>
+<script src="../js/shared.js"></script>
+<script src="../js/ace-init.js"></script>
+<script src="../js/pyodide-runner.js"></script>
+<script src="../js/quiz.js"></script>
+<script src="../js/exercise-runner.js"></script>
+</body>
+</html>

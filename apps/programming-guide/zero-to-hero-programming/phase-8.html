@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Phase 8: Systems and Scale — system design, distributed systems, performance and observability, and navigating large codebases. Chapters 34–37.">
+<title>Phase 8: Systems &amp; Scale — Zero to Hero</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/design-system.css">
+<script>try{if(localStorage.getItem('zth-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+<script>try{var z=localStorage.getItem('zth-zoom');if(z&&+z>=50&&+z<=200)document.documentElement.style.zoom=+z/100}catch(e){}</script>
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+<marker id="arrowhead-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--a5)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo"><span>Zero to Hero</span>Programming &rarr; Multi-Agent AI</a>
+  <div class="toc-group">
+    <div class="toc-group-title">Foundations</div>
+    <a href="phase-1.html#ch01" class="toc-link"><span class="toc-num">01</span>What Programming Actually Is</a>
+    <a href="phase-1.html#ch02" class="toc-link"><span class="toc-num">02</span>How Computers Execute Code</a>
+    <a href="phase-1.html#ch03" class="toc-link"><span class="toc-num">03</span>Setting Up Your Environment</a>
+    <a href="phase-1.html#ch04" class="toc-link"><span class="toc-num">04</span>Reading Code Before Writing It</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Python</div>
+    <a href="phase-2.html#ch05" class="toc-link"><span class="toc-num">05</span>Functions, Logic &amp; Control Flow</a>
+    <a href="phase-2.html#ch06" class="toc-link"><span class="toc-num">06</span>Data Structures</a>
+    <a href="phase-2.html#ch07" class="toc-link"><span class="toc-num">07</span>Classes &amp; OOP Basics</a>
+    <a href="phase-2.html#ch08" class="toc-link"><span class="toc-num">08</span>Files, Modules &amp; Standard Library</a>
+    <a href="phase-2.html#ch09" class="toc-link"><span class="toc-num">09</span>Error Handling, Debugging &amp; Testing</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Development Tools</div>
+    <a href="phase-3.html#ch10" class="toc-link"><span class="toc-num">10</span>The Terminal &amp; Shell</a>
+    <a href="phase-3.html#ch11" class="toc-link"><span class="toc-num">11</span>Git Fundamentals</a>
+    <a href="phase-3.html#ch12" class="toc-link"><span class="toc-num">12</span>Git Remote &amp; GitHub</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Building &amp; Deploying</div>
+    <a href="phase-4.html#ch13" class="toc-link"><span class="toc-num">13</span>APIs &amp; HTTP</a>
+    <a href="phase-4.html#ch14" class="toc-link"><span class="toc-num">14</span>Building APIs with Flask</a>
+    <a href="phase-4.html#ch15" class="toc-link"><span class="toc-num">15</span>Database Basics</a>
+    <a href="phase-4.html#ch16" class="toc-link"><span class="toc-num">16</span>Docker &amp; Containers</a>
+    <a href="phase-4.html#ch17" class="toc-link"><span class="toc-num">17</span>CI/CD &amp; GitHub Actions</a>
+    <a href="phase-4.html#ch18" class="toc-link"><span class="toc-num">18</span>Project Architecture</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Data Structures</div>
+    <a href="phase-5.html#ch19" class="toc-link"><span class="toc-num">19</span>Complexity Analysis</a>
+    <a href="phase-5.html#ch20" class="toc-link"><span class="toc-num">20</span>Linear Structures</a>
+    <a href="phase-5.html#ch21" class="toc-link"><span class="toc-num">21</span>Hash Tables &amp; Maps</a>
+    <a href="phase-5.html#ch22" class="toc-link"><span class="toc-num">22</span>Trees</a>
+    <a href="phase-5.html#ch23" class="toc-link"><span class="toc-num">23</span>Graphs</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Algorithms</div>
+    <a href="phase-6.html#ch24" class="toc-link"><span class="toc-num">24</span>Searching &amp; Sorting</a>
+    <a href="phase-6.html#ch25" class="toc-link"><span class="toc-num">25</span>Recursion &amp; DP</a>
+    <a href="phase-6.html#ch26" class="toc-link"><span class="toc-num">26</span>Algorithm Patterns</a>
+    <a href="phase-6.html#ch27" class="toc-link"><span class="toc-num">27</span>Graph Algorithms</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Engineering Craft</div>
+    <a href="phase-7.html#ch28" class="toc-link"><span class="toc-num">28</span>Design Patterns &amp; SOLID</a>
+    <a href="phase-7.html#ch29" class="toc-link"><span class="toc-num">29</span>SQL &amp; Query Mastery</a>
+    <a href="phase-7.html#ch30" class="toc-link"><span class="toc-num">30</span>Transactions &amp; NoSQL</a>
+    <a href="phase-7.html#ch31" class="toc-link"><span class="toc-num">31</span>Networking &amp; the Internet</a>
+    <a href="phase-7.html#ch32" class="toc-link"><span class="toc-num">32</span>Concurrency &amp; Parallelism</a>
+    <a href="phase-7.html#ch33" class="toc-link"><span class="toc-num">33</span>Security Engineering</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Systems &amp; Scale</div>
+    <a href="#ch34" class="toc-link"><span class="toc-num">34</span>System Design</a>
+    <a href="#ch35" class="toc-link"><span class="toc-num">35</span>Distributed Systems</a>
+    <a href="#ch36" class="toc-link"><span class="toc-num">36</span>Performance &amp; Observability</a>
+    <a href="#ch37" class="toc-link"><span class="toc-num">37</span>Navigating Large Codebases</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AI Levels 1&ndash;5</div>
+    <a href="phase-9.html#ch38" class="toc-link"><span class="toc-num">38</span>Evaluating &amp; Directing AI Code</a>
+    <a href="phase-9.html#ch39" class="toc-link"><span class="toc-num">39</span>Levels 1 &amp; 2 &mdash; Tab Complete &amp; Agent IDE</a>
+    <a href="phase-9.html#ch40" class="toc-link"><span class="toc-num">40</span>Level 3 &mdash; Context Engineering</a>
+    <a href="phase-9.html#ch41" class="toc-link"><span class="toc-num">41</span>Level 4 &mdash; Compounding Engineering</a>
+    <a href="phase-9.html#ch42" class="toc-link"><span class="toc-num">42</span>Level 5 &mdash; MCP, Skills &amp; Capabilities</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AI Levels 6&ndash;8</div>
+    <a href="phase-10.html#ch43" class="toc-link"><span class="toc-num">43</span>Level 6 &mdash; Harness Engineering</a>
+    <a href="phase-10.html#ch44" class="toc-link"><span class="toc-num">44</span>Level 7 &mdash; Background Agents</a>
+    <a href="phase-10.html#ch45" class="toc-link"><span class="toc-num">45</span>Claude Code in Docker</a>
+    <a href="phase-10.html#ch46" class="toc-link"><span class="toc-num">46</span>Level 8 &mdash; Autonomous Agent Teams</a>
+    <a href="phase-10.html#ch47" class="toc-link"><span class="toc-num">47</span>The Multiplayer Effect</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Reference</div>
+    <a href="appendices.html#glossary" class="toc-link"><span class="toc-num">&oplus;</span>Glossary</a>
+    <a href="appendices.html#prompt-library" class="toc-link"><span class="toc-num">&oplus;</span>Prompt Library</a>
+    <a href="appendices.html#self-assessment" class="toc-link"><span class="toc-num">&oplus;</span>Self-Assessment</a>
+    <a href="appendices.html#common-mistakes" class="toc-link"><span class="toc-num">&oplus;</span>Common Mistakes</a>
+    <a href="appendices.html#appendix-d" class="toc-link"><span class="toc-num">&oplus;</span>Troubleshooting</a>
+    <a href="appendices.html#appendix-e" class="toc-link"><span class="toc-num">&oplus;</span>Resources</a>
+  </div>
+</aside>
+
+<!-- ================================================================== -->
+<!--  MAIN CONTENT                                                       -->
+<!-- ================================================================== -->
+<div class="main">
+<section class="hero hero-sm">
+  <div class="hero-badge">Phase 8 &mdash; Systems &amp; Scale</div>
+  <h1>Systems &amp; <em>Scale</em></h1>
+  <p class="hero-sub">System design, distributed architectures, performance engineering, and navigating real-world codebases. Thinking beyond a single machine and a single developer.</p>
+  <div class="hero-meta"><span>Chapters 34&ndash;37</span><span>Phase Gate + TaskForge</span></div>
+</section>
+<div class="content-wrap">
+
+<div role="note" class="callout info">
+<div class="callout-title">Before You Begin Phase 8</div>
+<p>This phase assumes you can: apply design patterns to structure code (Ch&nbsp;28), write optimized SQL queries (Ch&nbsp;29&ndash;30), understand networking fundamentals (Ch&nbsp;31), reason about concurrency (Ch&nbsp;32), and implement security practices (Ch&nbsp;33). If any of these feel shaky, revisit the relevant chapter first.</p>
+</div>
+
+
+<!-- ===== CH 34 ===== -->
+<section id="ch34" data-ch="34">
+<h2><span class="ch-label">Chapter 34</span> System Design Fundamentals &mdash; Building for Scale</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>Every program you have written so far runs on a single machine, serving a single user. That is enough for learning, but real-world software serves thousands &mdash; sometimes millions &mdash; of users simultaneously. System design is the discipline of choosing <em>how</em> to arrange servers, databases, caches, and queues so that your application stays fast, reliable, and affordable as demand grows. These decisions are among the most consequential an engineer makes: a poor architecture choice can cost months of rework, while a good one can carry a product for years.</p>
+</div>
+
+<h3>Scale Thinking: Vertical vs. Horizontal</h3>
+
+<p>When your application starts slowing down under load, you have two fundamental options for making it faster. <strong>Vertical scaling</strong> (also called &ldquo;scaling up&rdquo;) means giving your existing server more resources &mdash; more CPU cores, more RAM, faster disks. It is the simplest strategy: you do not change your code at all; you just move it to a bigger machine. The problem is that vertical scaling has hard ceilings. The largest single server you can rent costs thousands of dollars per hour, and even it will eventually be overwhelmed.</p>
+
+<p><strong>Horizontal scaling</strong> (also called &ldquo;scaling out&rdquo;) means running your application on <em>multiple</em> machines and splitting the traffic between them. This is how every major web application works. There is no theoretical ceiling &mdash; you can keep adding machines. But horizontal scaling introduces complexity that vertical scaling avoids: how do you split traffic? How do machines share data? What happens when one machine crashes?</p>
+
+<p>The key concept that makes horizontal scaling possible is <strong>statelessness</strong>. A <strong>stateless service</strong> does not store any user-specific data between requests. Every request arrives with all the information needed to process it (often via a token in the HTTP header). Because no single server &ldquo;remembers&rdquo; anything, any server can handle any request, and you can add or remove servers freely.</p>
+
+<p>A <strong>stateful service</strong>, by contrast, keeps data in memory between requests &mdash; for example, a game server tracking player positions. Stateful services are harder to scale because you must route each user to the same server (called &ldquo;sticky sessions&rdquo;) or replicate state across machines, which is expensive and error-prone.</p>
+
+<div class="pq">&ldquo;Make things stateless wherever possible. Push state to databases and caches that are designed to manage it.&rdquo;</div>
+
+<h3>Load Balancing</h3>
+
+<p>Once you have multiple servers, you need something to distribute incoming requests among them. That something is a <strong>load balancer</strong> &mdash; a specialized component that sits between users and your servers. Users connect to the load balancer, and the load balancer forwards each request to one of your application servers.</p>
+
+<p>There are several strategies a load balancer can use to decide <em>which</em> server gets each request:</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>Load balancing strategies</caption>
+<thead><tr><th>Strategy</th><th>How It Works</th><th>Best For</th></tr></thead>
+<tbody>
+<tr><td><strong>Round Robin</strong></td><td>Sends requests to servers in rotation: A, B, C, A, B, C&hellip;</td><td>Servers with identical capacity</td></tr>
+<tr><td><strong>Least Connections</strong></td><td>Sends each request to whichever server currently has the fewest active connections</td><td>Varying request durations</td></tr>
+<tr><td><strong>Consistent Hashing</strong></td><td>Hashes a key (e.g., user ID) to determine which server handles it; adding/removing a server only redistributes a fraction of keys</td><td>Caching layers, sticky routing</td></tr>
+<tr><td><strong>Weighted Round Robin</strong></td><td>Like round robin, but servers with more capacity get proportionally more requests</td><td>Mixed hardware fleet</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>Every production load balancer also performs <strong>health checks</strong> &mdash; periodic pings to each server to verify it is alive and responding. If a server fails a health check, the load balancer stops sending it traffic until it recovers. This is how your application survives individual server failures without users noticing.</p>
+
+<div role="note" class="callout warn">
+<div class="callout-title">Myth: &ldquo;Load balancers eliminate all single points of failure&rdquo;</div>
+<p>The load balancer <em>itself</em> is a single point of failure. In production, you run load balancers in pairs (active/standby) with a floating IP address that switches to the standby if the active one dies. Always ask: &ldquo;What happens if <em>this</em> component fails?&rdquo;</p>
+</div>
+
+<h3>Caching: The Fastest Request Is the One You Never Make</h3>
+
+<p><strong>Caching</strong> stores the result of an expensive operation so that future requests for the same data can be served instantly. A well-placed cache can turn a 200ms database query into a 1ms memory lookup. Caching exists at multiple layers:</p>
+
+<ul>
+<li><strong>Browser cache</strong> &mdash; the user&rsquo;s browser stores static files (CSS, JS, images) locally. Controlled by HTTP headers like <code>Cache-Control</code>.</li>
+<li><strong>CDN cache</strong> &mdash; a Content Delivery Network caches copies of your static assets at edge locations around the world, reducing latency for distant users.</li>
+<li><strong>Application cache</strong> &mdash; your server keeps frequently accessed data in an in-memory store (like Redis or Memcached) so it does not hit the database every time.</li>
+<li><strong>Database query cache</strong> &mdash; the database itself caches the results of recent queries.</li>
+</ul>
+
+<p>The hard problem with caching is <strong>cache invalidation</strong> &mdash; knowing when cached data is stale and needs to be refreshed. There are three primary strategies:</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>Cache invalidation strategies and their trade-offs</caption>
+<thead><tr><th>Strategy</th><th>How It Works</th><th>Trade-off</th></tr></thead>
+<tbody>
+<tr><td><strong>TTL (Time-To-Live)</strong></td><td>Cached data expires after a fixed duration (e.g., 60 seconds)</td><td>Simple but data can be stale for up to the TTL period</td></tr>
+<tr><td><strong>Write-Through</strong></td><td>Every write goes to both the cache and the database simultaneously</td><td>Data is always consistent, but writes are slower</td></tr>
+<tr><td><strong>Write-Behind</strong></td><td>Writes go to the cache first, then asynchronously propagate to the database</td><td>Writes are fast, but you risk data loss if the cache crashes before propagation</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>A particularly nasty problem is the <strong>cache stampede</strong> (also called &ldquo;thundering herd&rdquo;). Imagine a popular cache entry expires, and 10,000 requests arrive simultaneously for that data. All 10,000 hit the database at once, potentially overwhelming it. Solutions include locking (only one request regenerates the cache while others wait), probabilistic early expiration (randomly refresh before the TTL actually expires), and stale-while-revalidate (serve the stale data while regenerating in the background).</p>
+
+<h3>Content Delivery Networks (CDNs)</h3>
+
+<p>A <strong>CDN</strong> is a network of servers distributed across many geographic locations (&ldquo;edge locations&rdquo; or &ldquo;points of presence&rdquo;). When a user in Tokyo requests an image from your application hosted in Virginia, the CDN serves that image from a server in Tokyo instead. The result: dramatically lower latency for static assets.</p>
+
+<p>CDNs are most effective for content that does not change frequently &mdash; images, CSS, JavaScript bundles, fonts, and videos. Some CDNs also support &ldquo;edge compute,&rdquo; running small pieces of your application logic at edge locations for even lower latency on dynamic content.</p>
+
+<h3>Message Queues: Decoupling Work</h3>
+
+<p>Not every task needs to be completed before you respond to the user. When a user signs up, you need to create their account immediately &mdash; but sending a welcome email can happen a few seconds later. A <strong>message queue</strong> lets you decouple these operations. Your application server puts a message (&ldquo;send welcome email to user@example.com&rdquo;) onto the queue and immediately responds to the user. A separate <strong>worker</strong> process picks up the message and sends the email asynchronously.</p>
+
+<p>This pattern &mdash; <strong>producers</strong> writing messages and <strong>consumers</strong> reading them &mdash; provides several benefits: your API stays fast because it is not waiting for slow operations; producers and consumers can scale independently; and if a consumer crashes, messages stay in the queue until another consumer picks them up.</p>
+
+<p>Two important delivery guarantees to understand:</p>
+<ul>
+<li><strong>At-least-once delivery</strong> &mdash; the queue guarantees every message will be delivered, but some messages might be delivered more than once (if a consumer crashes after processing but before acknowledging). Your consumer must be <strong>idempotent</strong> &mdash; processing the same message twice should produce the same result.</li>
+<li><strong>Exactly-once delivery</strong> &mdash; the queue guarantees each message is delivered and processed exactly once. This is much harder to implement and most systems settle for at-least-once with idempotent consumers.</li>
+</ul>
+
+<p>When a message cannot be processed after several retries (perhaps due to malformed data), it goes to a <strong>dead letter queue</strong> (DLQ) &mdash; a holding area where engineers can inspect failed messages and decide what to do with them.</p>
+
+<h3>Rate Limiting: Protecting Your System</h3>
+
+<p><strong>Rate limiting</strong> restricts how many requests a client can make within a time window. APIs need rate limits to prevent abuse (accidental or malicious), ensure fair usage among clients, and protect backend systems from being overwhelmed.</p>
+
+<p>The <strong>token bucket algorithm</strong> is the most common implementation. Imagine a bucket that holds a fixed number of tokens (say, 100). Each request consumes one token. Tokens are added to the bucket at a steady rate (say, 10 per second). If the bucket is empty, the request is rejected (usually with HTTP 429 &ldquo;Too Many Requests&rdquo;). This allows short bursts of traffic while enforcing a long-term average rate.</p>
+
+<p>The <strong>sliding window</strong> algorithm counts requests in a rolling time window (e.g., the last 60 seconds) rather than fixed intervals. It is more precise than fixed-window counting, which can allow up to 2x the intended rate at window boundaries.</p>
+
+<h3>Trade-off Analysis: The Core Skill</h3>
+
+<p>Every design decision in system architecture involves trade-offs. There is no &ldquo;best&rdquo; architecture &mdash; only architectures that are better or worse <em>for a given set of requirements</em>. The ability to articulate these trade-offs clearly is the most valuable skill in system design.</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>Common system design trade-offs</caption>
+<thead><tr><th>Trade-off</th><th>Option A</th><th>Option B</th></tr></thead>
+<tbody>
+<tr><td><strong>Consistency vs. Availability</strong></td><td>Always return the latest data, even if some requests fail</td><td>Always respond, even if the data might be slightly stale</td></tr>
+<tr><td><strong>Latency vs. Throughput</strong></td><td>Respond to each request as fast as possible</td><td>Process as many requests as possible per second (batching helps throughput but hurts individual latency)</td></tr>
+<tr><td><strong>Complexity vs. Maintainability</strong></td><td>Build a sophisticated system that handles every edge case</td><td>Build a simpler system that is easier to understand, debug, and modify</td></tr>
+<tr><td><strong>Cost vs. Performance</strong></td><td>Throw more hardware at the problem</td><td>Optimize the code to work within existing resources</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="pq">&ldquo;Junior engineers ask &lsquo;Which is better?&rsquo; Senior engineers ask &lsquo;What are we optimizing for, and what are we willing to give up?&rsquo;&rdquo;</div>
+
+<!-- SVG Diagram: System Architecture -->
+<svg viewBox="0 0 780 440" aria-label="System architecture diagram showing a load balancer distributing requests to multiple app servers, connected to a cache layer, a database, and a message queue with worker processes" style="width:100%;max-width:780px;margin:2rem auto;display:block">
+  <!-- Users -->
+  <rect x="320" y="10" width="140" height="40" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="390" y="36" text-anchor="middle" class="label-text" font-size="14">Users</text>
+
+  <!-- Arrow: Users -> LB -->
+  <line x1="390" y1="50" x2="390" y2="85" class="arrow" marker-end="url(#arrowhead)"/>
+
+  <!-- Load Balancer -->
+  <rect x="290" y="88" width="200" height="44" rx="8" class="node-accent" stroke="var(--accent)" stroke-width="2"/>
+  <text x="390" y="115" text-anchor="middle" class="label-text" font-size="14" fill="var(--bg)">Load Balancer</text>
+
+  <!-- Arrows: LB -> App Servers -->
+  <line x1="340" y1="132" x2="160" y2="185" class="arrow" marker-end="url(#arrowhead)"/>
+  <line x1="390" y1="132" x2="390" y2="185" class="arrow" marker-end="url(#arrowhead)"/>
+  <line x1="440" y1="132" x2="620" y2="185" class="arrow" marker-end="url(#arrowhead)"/>
+
+  <!-- App Server 1 -->
+  <rect x="80" y="188" width="160" height="44" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="160" y="215" text-anchor="middle" class="label-text" font-size="13">App Server 1</text>
+
+  <!-- App Server 2 -->
+  <rect x="310" y="188" width="160" height="44" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="390" y="215" text-anchor="middle" class="label-text" font-size="13">App Server 2</text>
+
+  <!-- App Server 3 -->
+  <rect x="540" y="188" width="160" height="44" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="620" y="215" text-anchor="middle" class="label-text" font-size="13">App Server 3</text>
+
+  <!-- Arrows: App Servers -> Cache -->
+  <line x1="160" y1="232" x2="270" y2="295" class="arrow" marker-end="url(#arrowhead)"/>
+  <line x1="390" y1="232" x2="320" y2="295" class="arrow" marker-end="url(#arrowhead)"/>
+
+  <!-- Cache -->
+  <rect x="220" y="298" width="150" height="44" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="295" y="318" text-anchor="middle" class="label-text" font-size="13">Cache (Redis)</text>
+  <text x="295" y="333" text-anchor="middle" class="sub-text" font-size="10">fast lookups</text>
+
+  <!-- Arrow: Cache -> DB -->
+  <line x1="295" y1="342" x2="295" y2="385" class="arrow" marker-end="url(#arrowhead)"/>
+
+  <!-- Database -->
+  <rect x="220" y="388" width="150" height="44" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="295" y="415" text-anchor="middle" class="label-text" font-size="13">Database</text>
+
+  <!-- Arrow: App Server 3 -> Message Queue -->
+  <line x1="620" y1="232" x2="620" y2="295" class="arrow" marker-end="url(#arrowhead)"/>
+
+  <!-- Message Queue -->
+  <rect x="540" y="298" width="160" height="44" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="620" y="318" text-anchor="middle" class="label-text" font-size="13">Message Queue</text>
+  <text x="620" y="333" text-anchor="middle" class="sub-text" font-size="10">async tasks</text>
+
+  <!-- Arrow: MQ -> Workers -->
+  <line x1="620" y1="342" x2="620" y2="385" class="arrow" marker-end="url(#arrowhead)"/>
+
+  <!-- Workers -->
+  <rect x="540" y="388" width="160" height="44" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="620" y="408" text-anchor="middle" class="label-text" font-size="13">Workers</text>
+  <text x="620" y="423" text-anchor="middle" class="sub-text" font-size="10">emails, reports</text>
+
+  <!-- Labels -->
+  <text x="40" y="325" class="sub-text" font-size="11" fill="var(--a5)">read path</text>
+  <line x1="68" y1="330" x2="218" y2="318" stroke="var(--a5)" stroke-width="1" stroke-dasharray="4"/>
+  <text x="500" y="275" class="sub-text" font-size="11" fill="var(--a5)">write path</text>
+</svg>
+
+<div role="note" class="callout warn">
+<div class="callout-title">Engineering Angle: Start Simple, Scale When Needed</div>
+<p>A common mistake is over-engineering from day one. You do not need microservices, a message queue, and three caching layers for an application with 50 users. Start with a monolith on a single server. Add a cache when the database becomes a bottleneck. Add a load balancer when one server cannot keep up. Add a message queue when synchronous processing slows your API. Scale decisions should be driven by measured problems, not anticipated ones.</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">TaskForge Connection: Designing for 10,000 Users</div>
+<p>Imagine TaskForge suddenly goes viral and you need to support 10,000 concurrent users. Your single Flask server with SQLite will not survive. Here is how you would evolve the architecture:</p>
+<ol>
+<li><strong>Database:</strong> Migrate from SQLite to PostgreSQL (handles concurrent writes).</li>
+<li><strong>Application:</strong> Run 4 stateless app servers behind a load balancer. Store sessions in Redis, not in server memory.</li>
+<li><strong>Caching:</strong> Cache frequently read task lists in Redis with a 30-second TTL.</li>
+<li><strong>Async work:</strong> Move email notifications and report generation to a message queue with worker processes.</li>
+<li><strong>CDN:</strong> Serve static assets (CSS, JS, images) through a CDN.</li>
+</ol>
+<p>Each change addresses a specific bottleneck. The order matters &mdash; you tackle the biggest bottleneck first.</p>
+</div>
+
+<!-- Micro-Exercise -->
+<div role="note" class="callout ok">
+<div class="callout-title">Try This Now: Identify the Bottleneck</div>
+<p>Your TaskForge API has the following response times under load: listing tasks takes 800ms (400ms is database queries), creating a task takes 50ms, and sending a notification email takes 3 seconds (blocking the response). Which problem do you fix first, and how? Write your answer before reading on.</p>
+<p><strong>Answer:</strong> Fix the email notification first &mdash; it is the most impactful bottleneck (3 seconds blocking a user request). Move it to a message queue so the API responds immediately. Then address the slow task listing by adding a cache for recent queries.</p>
+</div>
+
+<!-- Quiz 1 -->
+<div class="quiz" data-ch="34" data-ex="quiz-caching-strategy">
+  <h4>Knowledge Check</h4>
+  <p>Which caching strategy writes to both the cache and the database simultaneously?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">TTL-based expiration</button>
+    <button class="quiz-option" data-correct="true">Write-through</button>
+    <button class="quiz-option" data-correct="false">Write-behind (write-back)</button>
+    <button class="quiz-option" data-correct="false">Cache-aside (lazy loading)</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Quiz 2 -->
+<div class="quiz" data-ch="34" data-ex="quiz-consistent-hashing">
+  <h4>Knowledge Check</h4>
+  <p>What problem does consistent hashing solve that simple round-robin does not?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">It makes all servers handle equal load</button>
+    <button class="quiz-option" data-correct="false">It eliminates the need for health checks</button>
+    <button class="quiz-option" data-correct="true">It minimizes key redistribution when servers are added or removed</button>
+    <button class="quiz-option" data-correct="false">It guarantees the fastest server always gets the request</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Quiz 3 -->
+<div class="quiz" data-ch="34" data-ex="quiz-rate-limiting">
+  <h4>Knowledge Check</h4>
+  <p>In the token bucket algorithm, what happens when the bucket is empty and a request arrives?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">The request is queued until tokens are available</button>
+    <button class="quiz-option" data-correct="false">A new token is created immediately</button>
+    <button class="quiz-option" data-correct="true">The request is rejected (HTTP 429)</button>
+    <button class="quiz-option" data-correct="false">The request is forwarded to a different server</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Checklist -->
+<div class="checklist" data-ch="34" data-ex="checklist-system-design">
+  <h4>System Design Fundamentals Checklist</h4>
+  <label><input type="checkbox"><span>I can explain the difference between vertical and horizontal scaling</span></label>
+  <label><input type="checkbox"><span>I understand why stateless services are easier to scale</span></label>
+  <label><input type="checkbox"><span>I can name three load balancing strategies and when to use each</span></label>
+  <label><input type="checkbox"><span>I can describe cache invalidation strategies (TTL, write-through, write-behind)</span></label>
+  <label><input type="checkbox"><span>I understand what a cache stampede is and how to prevent it</span></label>
+  <label><input type="checkbox"><span>I can explain when to use a message queue vs. synchronous processing</span></label>
+  <label><input type="checkbox"><span>I understand the token bucket algorithm for rate limiting</span></label>
+  <label><input type="checkbox"><span>I can articulate trade-offs (consistency vs. availability, latency vs. throughput)</span></label>
+</div>
+
+</section>
+
+
+<!-- ===== CH 35 ===== -->
+<section id="ch35" data-ch="35">
+<h2><span class="ch-label">Chapter 35</span> Distributed Systems &amp; Architecture &mdash; Beyond One Machine</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>In Chapter&nbsp;34 you learned how to scale a system with load balancers, caches, and queues. But what happens when your application is so large that a single team cannot own it all? When different features need to scale at different rates? When your data is so critical that it must survive entire data center failures? These questions lead to distributed systems &mdash; architectures where multiple independent services collaborate over a network. Distributed systems power every major technology product, and understanding their constraints will fundamentally change how you think about software.</p>
+</div>
+
+<h3>Monolith vs. Microservices: An Honest Comparison</h3>
+
+<p>A <strong>monolith</strong> is a single deployable unit containing all of your application&rsquo;s functionality. All your code lives in one repository, one process, one deployment pipeline. Monoliths get a bad reputation, but they have genuine advantages:</p>
+
+<ul>
+<li><strong>Simpler to develop</strong> &mdash; function calls between modules are fast and type-checked at compile time.</li>
+<li><strong>Simpler to deploy</strong> &mdash; one build, one artifact, one deployment.</li>
+<li><strong>Simpler to debug</strong> &mdash; a stack trace tells you the entire story; no network hops to trace.</li>
+<li><strong>Simpler to test</strong> &mdash; integration tests run in a single process without mocking network calls.</li>
+<li><strong>Transactional consistency</strong> &mdash; a single database transaction can atomically update multiple tables.</li>
+</ul>
+
+<p><strong>Microservices</strong> split an application into multiple small, independently deployable services, each responsible for one business capability. Each service has its own database, its own deployment pipeline, and its own team. Advantages include:</p>
+
+<ul>
+<li><strong>Independent scaling</strong> &mdash; your search service gets 100x more traffic than your billing service; scale them independently.</li>
+<li><strong>Independent deployment</strong> &mdash; deploy the notification service without risking the payment service.</li>
+<li><strong>Technology flexibility</strong> &mdash; each service can use the language and database best suited to its needs.</li>
+<li><strong>Team autonomy</strong> &mdash; small teams own small services end-to-end.</li>
+</ul>
+
+<p>But microservices introduce <em>enormous</em> complexity:</p>
+
+<ul>
+<li><strong>Network is unreliable</strong> &mdash; calls between services can fail, time out, or return garbled data. You must handle all of these.</li>
+<li><strong>Distributed data consistency</strong> &mdash; you cannot use a single database transaction across services. You need sagas, eventual consistency, or other patterns (covered below).</li>
+<li><strong>Operational overhead</strong> &mdash; monitoring, deploying, and debugging 20 services is fundamentally harder than monitoring one.</li>
+<li><strong>Integration testing</strong> &mdash; testing the interaction between services requires either expensive end-to-end tests or contract tests.</li>
+</ul>
+
+<div class="pq">&ldquo;If you cannot build a well-structured monolith, what makes you think microservices are the answer?&rdquo; &mdash; Simon Brown</div>
+
+<p><strong>When to split:</strong> Start with a monolith. Split a piece out into a service only when you have a clear reason &mdash; a module needs independent scaling, a team needs deployment autonomy, or a technology constraint requires a different runtime. Split along natural business boundaries (users, orders, notifications), not technical layers.</p>
+
+<h3>The CAP Theorem</h3>
+
+<p>The <strong>CAP theorem</strong> states that in the presence of a network partition, a distributed system can provide either <strong>Consistency</strong> or <strong>Availability</strong>, but not both. Let us define these precisely:</p>
+
+<ul>
+<li><strong>Consistency (C)</strong> &mdash; every read returns the most recent write. All nodes see the same data at the same time.</li>
+<li><strong>Availability (A)</strong> &mdash; every request receives a response (not an error), even if some nodes are down.</li>
+<li><strong>Partition Tolerance (P)</strong> &mdash; the system continues to function even if network communication between some nodes is lost.</li>
+</ul>
+
+<p>In any distributed system, network partitions <em>will</em> happen (cables get cut, switches fail, data centers lose power). So partition tolerance is not optional &mdash; you always need P. The real choice is between C and A when a partition occurs:</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>CAP theorem: choosing consistency or availability during a partition</caption>
+<thead><tr><th>Choice</th><th>Behavior During Partition</th><th>Example</th></tr></thead>
+<tbody>
+<tr><td><strong>CP (Consistency + Partition Tolerance)</strong></td><td>Refuse requests to nodes that might have stale data. Some requests fail, but no stale reads.</td><td>Banking systems &mdash; you must never show a wrong balance</td></tr>
+<tr><td><strong>AP (Availability + Partition Tolerance)</strong></td><td>Always respond, but some responses might have stale data. Reconcile later.</td><td>Social media &mdash; a &ldquo;like&rdquo; count being briefly wrong is acceptable</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>Note that CAP is about behavior <em>during</em> a partition. When the network is healthy, you can have all three. The theorem forces you to think about what matters most to your users when things go wrong.</p>
+
+<h3>Event-Driven Architecture</h3>
+
+<p>In a traditional architecture, services communicate by directly calling each other: Service A sends a request to Service B and waits for a response. In an <strong>event-driven architecture</strong>, services communicate by publishing and subscribing to events. When something important happens, a service emits an event (&ldquo;task was created&rdquo;, &ldquo;payment succeeded&rdquo;), and any interested service can react to it.</p>
+
+<p>The distinction between <strong>events</strong> and <strong>commands</strong> is important. A command says &ldquo;do this&rdquo; (send email, charge card) &mdash; it is directed at a specific service. An event says &ldquo;this happened&rdquo; (order placed, user signed up) &mdash; it is broadcast for anyone who cares. Events create looser coupling because the publisher does not know or care who is listening.</p>
+
+<p><strong>Event sourcing</strong> takes this further: instead of storing the <em>current state</em> of an entity, you store the sequence of <em>events</em> that produced that state. A bank account is not &ldquo;balance: $500&rdquo; &mdash; it is the complete history: opened with $1000, withdrew $200, deposited $100, withdrew $400. You can always reconstruct the current state by replaying events, and you have a complete audit trail for free.</p>
+
+<p><strong>CQRS</strong> (Command Query Responsibility Segregation) separates the read model from the write model. Writes go through the command side (which might use event sourcing), while reads are served from a separate, optimized read model (which might be a denormalized database view). This lets you optimize reads and writes independently.</p>
+
+<h3>API Design at Scale</h3>
+
+<p>When multiple services and teams share APIs, design decisions that seem minor become critical. Here are the key concerns:</p>
+
+<p><strong>Versioning:</strong> Your API will change. You need a strategy for evolving it without breaking existing clients.</p>
+
+<pre style="overflow-x:auto"><code># URL path versioning (most common, most visible)
+GET /api/v1/tasks
+GET /api/v2/tasks
+
+# Header versioning (cleaner URLs, harder to test in browser)
+GET /api/tasks
+Accept: application/vnd.taskforge.v2+json
+
+# Query parameter versioning
+GET /api/tasks?version=2</code></pre>
+
+<p><strong>Pagination:</strong> Never return unbounded lists. Two approaches:</p>
+
+<pre style="overflow-x:auto"><code># Offset pagination (simple, but slow for large offsets)
+GET /api/tasks?offset=100&amp;limit=20
+
+# Cursor pagination (efficient, stable under inserts/deletes)
+GET /api/tasks?cursor=eyJpZCI6MTAwfQ&amp;limit=20
+# Response includes: "next_cursor": "eyJpZCI6MTIwfQ"</code></pre>
+
+<p><strong>Idempotency keys:</strong> When a client retries a failed request (maybe the response was lost in transit), you need to ensure the operation is not performed twice. The client sends a unique <code>Idempotency-Key</code> header with each request. Your server stores the result keyed by this value and returns the stored result on retries.</p>
+
+<p><strong>Backward compatibility:</strong> Adding fields to a response is safe. Removing fields or changing their types breaks clients. Always add, never remove.</p>
+
+<h3>Service Communication Patterns</h3>
+
+<p>Services can communicate <strong>synchronously</strong> (request/response) or <strong>asynchronously</strong> (via message queues). Synchronous is simpler but creates tight coupling &mdash; if Service B is down, Service A&rsquo;s request fails. Asynchronous is more resilient but harder to reason about.</p>
+
+<p>The <strong>circuit breaker pattern</strong> protects against cascade failures in synchronous communication. Like an electrical circuit breaker, it has three states:</p>
+
+<ol>
+<li><strong>Closed</strong> (normal) &mdash; requests pass through. If failures exceed a threshold, the breaker &ldquo;trips.&rdquo;</li>
+<li><strong>Open</strong> &mdash; all requests fail immediately without calling the downstream service. This prevents overwhelming an already-struggling service.</li>
+<li><strong>Half-Open</strong> &mdash; after a timeout, a single test request is allowed through. If it succeeds, the breaker closes. If it fails, the breaker reopens.</li>
+</ol>
+
+<p><strong>Retry with exponential backoff</strong> is another essential pattern. When a request fails, do not retry immediately &mdash; wait 1 second, then 2 seconds, then 4 seconds, then 8 seconds. Add a small random &ldquo;jitter&rdquo; to prevent many clients from retrying at the same instant.</p>
+
+<pre style="overflow-x:auto"><code>import random
+import time
+
+def retry_with_backoff(operation, max_retries=5):
+    """Retry an operation with exponential backoff and jitter."""
+    for attempt in range(max_retries):
+        try:
+            return operation()
+        except Exception as e:
+            if attempt == max_retries - 1:
+                raise  # Final attempt failed; propagate the error
+            wait = (2 ** attempt) + random.uniform(0, 1)
+            print(f"Attempt {attempt + 1} failed: {e}. Retrying in {wait:.1f}s")
+            time.sleep(wait)</code></pre>
+
+<h3>Data Consistency in Distributed Systems</h3>
+
+<p>When each microservice owns its own database, you cannot wrap a cross-service operation in a single transaction. The <strong>saga pattern</strong> is the standard solution: a saga is a sequence of local transactions, each in a different service, where each step has a <strong>compensating action</strong> that undoes it if a later step fails.</p>
+
+<p>Example: Creating an order might involve (1) reserve inventory, (2) charge payment, (3) create shipping label. If step 3 fails, the saga runs compensating actions: refund payment (undo step 2), release inventory (undo step 1).</p>
+
+<p><strong>Eventual consistency</strong> means that after a write, not all readers will immediately see the new data &mdash; but given enough time without new writes, all readers will <em>eventually</em> see the same value. Many systems that seem to require strong consistency actually work fine with eventual consistency. Does it matter if a user&rsquo;s friend list takes 2 seconds to reflect a new friend? Usually not.</p>
+
+<p><strong>Distributed transactions</strong> (two-phase commit) <em>do</em> provide strong consistency across services, but at a severe cost: they are slow, they lock resources during the protocol, and if the coordinator crashes, all participants are stuck. Avoid distributed transactions in microservices architectures unless absolutely necessary.</p>
+
+<!-- SVG Diagram: Microservices Architecture -->
+<svg viewBox="0 0 780 460" aria-label="Microservices architecture diagram showing an API Gateway routing to three services each with its own database, connected by a message bus, with a circuit breaker between services" style="width:100%;max-width:780px;margin:2rem auto;display:block">
+  <!-- API Gateway -->
+  <rect x="290" y="10" width="200" height="44" rx="8" class="node-accent" stroke="var(--accent)" stroke-width="2"/>
+  <text x="390" y="37" text-anchor="middle" class="label-text" font-size="14" fill="var(--bg)">API Gateway</text>
+
+  <!-- Arrows from Gateway -->
+  <line x1="330" y1="54" x2="140" y2="105" class="arrow" marker-end="url(#arrowhead)"/>
+  <line x1="390" y1="54" x2="390" y2="105" class="arrow" marker-end="url(#arrowhead)"/>
+  <line x1="450" y1="54" x2="640" y2="105" class="arrow" marker-end="url(#arrowhead)"/>
+
+  <!-- Task Service -->
+  <rect x="50" y="108" width="180" height="44" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="140" y="135" text-anchor="middle" class="label-text" font-size="13">Task Service</text>
+
+  <!-- User Service -->
+  <rect x="300" y="108" width="180" height="44" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="390" y="135" text-anchor="middle" class="label-text" font-size="13">User Service</text>
+
+  <!-- Notification Service -->
+  <rect x="550" y="108" width="180" height="44" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="640" y="135" text-anchor="middle" class="label-text" font-size="13">Notification Service</text>
+
+  <!-- Databases -->
+  <line x1="140" y1="152" x2="140" y2="195" class="arrow" marker-end="url(#arrowhead)"/>
+  <rect x="70" y="198" width="140" height="38" rx="6" class="node-fill" stroke="var(--a5)" stroke-width="1.5"/>
+  <text x="140" y="222" text-anchor="middle" class="sub-text" font-size="12">Tasks DB</text>
+
+  <line x1="390" y1="152" x2="390" y2="195" class="arrow" marker-end="url(#arrowhead)"/>
+  <rect x="320" y="198" width="140" height="38" rx="6" class="node-fill" stroke="var(--a5)" stroke-width="1.5"/>
+  <text x="390" y="222" text-anchor="middle" class="sub-text" font-size="12">Users DB</text>
+
+  <line x1="640" y1="152" x2="640" y2="195" class="arrow" marker-end="url(#arrowhead)"/>
+  <rect x="570" y="198" width="140" height="38" rx="6" class="node-fill" stroke="var(--a5)" stroke-width="1.5"/>
+  <text x="640" y="222" text-anchor="middle" class="sub-text" font-size="12">Notifications DB</text>
+
+  <!-- Message Bus -->
+  <rect x="140" y="290" width="500" height="44" rx="8" class="node-accent" stroke="var(--accent)" stroke-width="2"/>
+  <text x="390" y="317" text-anchor="middle" class="label-text" font-size="14" fill="var(--bg)">Message Bus (Event Stream)</text>
+
+  <!-- Connections to Message Bus -->
+  <line x1="140" y1="236" x2="240" y2="288" class="arrow" marker-end="url(#arrowhead)"/>
+  <line x1="390" y1="236" x2="390" y2="288" class="arrow" marker-end="url(#arrowhead)"/>
+  <line x1="640" y1="236" x2="540" y2="288" class="arrow" marker-end="url(#arrowhead)"/>
+
+  <!-- Pub/Sub labels -->
+  <text x="170" y="268" class="sub-text" font-size="10" fill="var(--a5)">publish</text>
+  <text x="402" y="268" class="sub-text" font-size="10" fill="var(--a5)">pub/sub</text>
+  <text x="580" y="268" class="sub-text" font-size="10" fill="var(--a5)">subscribe</text>
+
+  <!-- Circuit Breaker between Task Service and User Service -->
+  <line x1="230" y1="130" x2="268" y2="130" stroke="var(--accent)" stroke-width="2"/>
+  <circle cx="280" cy="130" r="12" fill="var(--warn)" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="280" y="134" text-anchor="middle" font-size="10" fill="var(--bg)" font-weight="bold">CB</text>
+  <line x1="292" y1="130" x2="298" y2="130" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Circuit Breaker label -->
+  <text x="280" y="115" text-anchor="middle" class="sub-text" font-size="9" fill="var(--a5)">Circuit Breaker</text>
+
+  <!-- Event examples -->
+  <text x="390" y="365" text-anchor="middle" class="sub-text" font-size="11" fill="var(--a5)">Events: task.created &middot; user.updated &middot; notification.sent</text>
+
+  <!-- Legend box -->
+  <rect x="180" y="395" width="420" height="55" rx="6" fill="none" stroke="var(--a5)" stroke-width="1" stroke-dasharray="4"/>
+  <text x="390" y="415" text-anchor="middle" class="sub-text" font-size="11">Each service owns its data &middot; Services communicate via events</text>
+  <text x="390" y="435" text-anchor="middle" class="sub-text" font-size="11">Circuit breaker prevents cascade failures on sync calls</text>
+</svg>
+
+<div role="note" class="callout warn">
+<div class="callout-title">Myth: &ldquo;Microservices are always better than monoliths&rdquo;</div>
+<p>Many successful companies run monoliths at enormous scale. Shopify, Stack Overflow, and Basecamp all use monolithic architectures. Microservices solve organizational problems (many teams working on one product) more than they solve technical problems. If you have a small team, a monolith is almost certainly the right choice. The best architecture is the one that lets your team ship reliably.</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">TaskForge Connection: Service Decomposition</div>
+<p>If TaskForge grew to require a microservices architecture, here is one sensible decomposition:</p>
+<ul>
+<li><strong>Task Service</strong> &mdash; CRUD for tasks, task status transitions, assignment logic. Owns the tasks database.</li>
+<li><strong>User Service</strong> &mdash; authentication, authorization, user profiles. Owns the users database.</li>
+<li><strong>Notification Service</strong> &mdash; subscribes to events like <code>task.assigned</code> and <code>task.overdue</code>, sends emails and push notifications.</li>
+</ul>
+<p>The Task Service calls the User Service (with a circuit breaker) to validate user IDs on task assignment. When a task is created, the Task Service publishes a <code>task.created</code> event to the message bus. The Notification Service subscribes to this event and sends a notification. If the Notification Service is down, messages accumulate in the queue and are processed when it recovers &mdash; no tasks are lost.</p>
+</div>
+
+<!-- Micro-Exercise -->
+<div role="note" class="callout ok">
+<div class="callout-title">Micro-Exercise: CAP Trade-off Analysis</div>
+<p>For each scenario, decide whether you would choose CP (consistency over availability) or AP (availability over consistency), and explain why:</p>
+<ol>
+<li>A medical records system</li>
+<li>A social media &ldquo;trending topics&rdquo; feature</li>
+<li>An airline seat reservation system</li>
+<li>A product recommendation engine</li>
+</ol>
+<p><strong>Answers:</strong> (1) CP &mdash; wrong medical data could be dangerous. (2) AP &mdash; slightly stale trending topics are harmless. (3) CP &mdash; double-booking a seat is unacceptable. (4) AP &mdash; a slightly outdated recommendation is fine.</p>
+</div>
+
+<!-- Quiz 1 -->
+<div class="quiz" data-ch="35" data-ex="quiz-cap-theorem">
+  <h4>Knowledge Check</h4>
+  <p>In the CAP theorem, what does a banking system typically sacrifice during a network partition?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">Consistency &mdash; it shows stale balances</button>
+    <button class="quiz-option" data-correct="true">Availability &mdash; it refuses requests rather than risk showing wrong data</button>
+    <button class="quiz-option" data-correct="false">Partition tolerance &mdash; it prevents network splits</button>
+    <button class="quiz-option" data-correct="false">All three &mdash; banking systems do not use CAP</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Quiz 2 -->
+<div class="quiz" data-ch="35" data-ex="quiz-circuit-breaker">
+  <h4>Knowledge Check</h4>
+  <p>What does a circuit breaker do in a microservices architecture?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">Encrypts traffic between services</button>
+    <button class="quiz-option" data-correct="false">Balances load across service instances</button>
+    <button class="quiz-option" data-correct="true">Stops calling a failing service to prevent cascade failures</button>
+    <button class="quiz-option" data-correct="false">Validates API request schemas</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Quiz 3 -->
+<div class="quiz" data-ch="35" data-ex="quiz-saga-pattern">
+  <h4>Knowledge Check</h4>
+  <p>In the saga pattern, what happens when step 3 of a 4-step saga fails?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">The entire saga retries from step 1</button>
+    <button class="quiz-option" data-correct="true">Compensating actions undo steps 2, then 1 (in reverse order)</button>
+    <button class="quiz-option" data-correct="false">Steps 1 and 2 are automatically rolled back by the database</button>
+    <button class="quiz-option" data-correct="false">The saga is marked as partial and left in an inconsistent state</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Checklist -->
+<div class="checklist" data-ch="35" data-ex="checklist-architecture">
+  <h4>Architecture Decision Checklist</h4>
+  <label><input type="checkbox"><span>I can explain the real trade-offs between monolith and microservices</span></label>
+  <label><input type="checkbox"><span>I can apply the CAP theorem to decide between CP and AP for a given system</span></label>
+  <label><input type="checkbox"><span>I understand events vs. commands and when to use event-driven architecture</span></label>
+  <label><input type="checkbox"><span>I can design API versioning and pagination strategies</span></label>
+  <label><input type="checkbox"><span>I can explain the circuit breaker pattern and exponential backoff</span></label>
+  <label><input type="checkbox"><span>I understand the saga pattern for distributed data consistency</span></label>
+  <label><input type="checkbox"><span>I know when eventual consistency is acceptable and when it is not</span></label>
+  <label><input type="checkbox"><span>I would start with a monolith and split only when needed</span></label>
+</div>
+
+</section>
+
+
+<!-- ===== CH 36 ===== -->
+<section id="ch36" data-ch="36">
+<h2><span class="ch-label">Chapter 36</span> Performance &amp; Observability &mdash; Seeing Inside Your System</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>You can design the most elegant architecture in the world, but if you cannot <em>see</em> what is happening inside it, you are flying blind. When your application is slow, you need to know <em>where</em> and <em>why</em>. When it breaks at 3&nbsp;AM, you need tools that tell you what went wrong without you guessing. Performance engineering and observability are the disciplines that give you eyes and ears inside your running systems. They turn &ldquo;it feels slow&rdquo; into &ldquo;this function takes 400ms because of a missing index.&rdquo;</p>
+</div>
+
+<h3>Profiling: Finding the Bottleneck</h3>
+
+<p><strong>Profiling</strong> means measuring exactly where your program spends its time (or memory). It is the difference between guessing and knowing. A common mistake is optimizing code that does not matter &mdash; spending hours making a function 10x faster when it accounts for 0.1% of total runtime. Profiling tells you which 5% of your code is responsible for 95% of the slowness.</p>
+
+<p><strong>CPU profiling</strong> measures how much time is spent in each function. Python&rsquo;s built-in <code>cProfile</code> module is the standard tool:</p>
+
+<pre style="overflow-x:auto"><code>import cProfile
+
+def slow_function():
+    total = 0
+    for i in range(1_000_000):
+        total += i ** 2
+    return total
+
+def fast_function():
+    return sum(i ** 2 for i in range(1_000_000))
+
+def main():
+    slow_function()
+    fast_function()
+
+# Profile the main function
+cProfile.run('main()')
+# Output shows: function name, call count, time per call, cumulative time</code></pre>
+
+<p>The profile output shows you exactly which functions are consuming time. Look at the &ldquo;cumulative time&rdquo; column first &mdash; it tells you the total time spent in a function <em>including</em> all functions it calls. Then look at &ldquo;time per call&rdquo; to find functions that are individually slow.</p>
+
+<p><strong>Memory profiling</strong> tracks how much memory your program allocates. This is critical for long-running server processes where memory leaks cause crashes over hours or days. Tools like <code>memory_profiler</code> can show memory usage line-by-line.</p>
+
+<p><strong>Flame graphs</strong> are visual representations of profiling data. The x-axis shows the proportion of time spent in each function, and the y-axis shows the call stack. Wide bars at the top of the graph are your bottlenecks. They are one of the most powerful tools for quickly understanding where time is being spent in a complex application.</p>
+
+<h3>Caching in Practice</h3>
+
+<p>In Chapter&nbsp;34 we discussed caching architecture. Now let us look at the code-level implementation. Python&rsquo;s <code>functools.lru_cache</code> decorator provides <strong>memoization</strong> &mdash; caching the return value of a function based on its arguments:</p>
+
+<pre style="overflow-x:auto"><code>from functools import lru_cache
+
+@lru_cache(maxsize=128)
+def fibonacci(n):
+    """Without caching, this is O(2^n). With caching, it is O(n)."""
+    if n &lt; 2:
+        return n
+    return fibonacci(n - 1) + fibonacci(n - 2)
+
+# First call: computes and caches
+print(fibonacci(100))  # Instant, thanks to caching
+
+# Check cache statistics
+print(fibonacci.cache_info())
+# CacheInfo(hits=98, misses=101, maxsize=128, currsize=101)</code></pre>
+
+<p>The <strong>cache-aside pattern</strong> (also called &ldquo;lazy loading&rdquo;) is the most common application-level caching strategy. Your code first checks the cache; on a miss, it reads from the database, stores the result in the cache, and returns it:</p>
+
+<pre style="overflow-x:auto"><code>def get_task(task_id, cache, database):
+    """Cache-aside pattern: check cache first, fall back to database."""
+    # 1. Check cache
+    cached = cache.get(f"task:{task_id}")
+    if cached is not None:
+        return cached  # Cache hit!
+
+    # 2. Cache miss - read from database
+    task = database.query("SELECT * FROM tasks WHERE id = %s", (task_id,))
+
+    # 3. Store in cache for next time (with 60-second TTL)
+    cache.set(f"task:{task_id}", task, ttl=60)
+
+    return task</code></pre>
+
+<p><strong>Redis</strong> is the most widely used application cache. It is an in-memory key-value store that supports strings, lists, sets, hashes, and sorted sets. Common uses include session storage, rate limiting counters, leaderboards (using sorted sets), and general-purpose caching.</p>
+
+<h3>The Three Pillars of Observability</h3>
+
+<p><strong>Observability</strong> is the ability to understand what is happening inside your system by examining its outputs. The three pillars are <strong>logs</strong>, <strong>metrics</strong>, and <strong>traces</strong>. Each answers different questions, and you need all three for a complete picture.</p>
+
+<!-- SVG Diagram: Three Pillars of Observability -->
+<svg viewBox="0 0 780 380" aria-label="Three pillars of observability diagram showing Logs, Metrics, and Traces as columns with examples and the questions each answers" style="width:100%;max-width:780px;margin:2rem auto;display:block">
+  <!-- Title -->
+  <text x="390" y="30" text-anchor="middle" class="label-text" font-size="16" font-weight="bold">Three Pillars of Observability</text>
+
+  <!-- Pillar 1: Logs -->
+  <rect x="30" y="50" width="220" height="290" rx="10" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <rect x="30" y="50" width="220" height="44" rx="10" class="node-accent" stroke="var(--accent)" stroke-width="2"/>
+  <text x="140" y="78" text-anchor="middle" class="label-text" font-size="15" fill="var(--bg)" font-weight="bold">Logs</text>
+
+  <text x="140" y="118" text-anchor="middle" class="sub-text" font-size="11" font-weight="bold">What happened?</text>
+  <text x="50" y="145" class="sub-text" font-size="11">Discrete events with</text>
+  <text x="50" y="160" class="sub-text" font-size="11">timestamps and context</text>
+
+  <text x="140" y="190" text-anchor="middle" class="sub-text" font-size="10" fill="var(--a5)">Examples:</text>
+  <text x="50" y="210" class="sub-text" font-size="10" fill="var(--a5)">- User login failed</text>
+  <text x="50" y="228" class="sub-text" font-size="10" fill="var(--a5)">- Payment processed</text>
+  <text x="50" y="246" class="sub-text" font-size="10" fill="var(--a5)">- Database timeout</text>
+  <text x="50" y="264" class="sub-text" font-size="10" fill="var(--a5)">- Request details</text>
+
+  <text x="140" y="300" text-anchor="middle" class="sub-text" font-size="10" font-style="italic">High detail, high volume</text>
+  <text x="140" y="318" text-anchor="middle" class="sub-text" font-size="10" font-style="italic">Best for debugging</text>
+
+  <!-- Pillar 2: Metrics -->
+  <rect x="280" y="50" width="220" height="290" rx="10" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <rect x="280" y="50" width="220" height="44" rx="10" class="node-accent" stroke="var(--accent)" stroke-width="2"/>
+  <text x="390" y="78" text-anchor="middle" class="label-text" font-size="15" fill="var(--bg)" font-weight="bold">Metrics</text>
+
+  <text x="390" y="118" text-anchor="middle" class="sub-text" font-size="11" font-weight="bold">How is it performing?</text>
+  <text x="300" y="145" class="sub-text" font-size="11">Numeric measurements</text>
+  <text x="300" y="160" class="sub-text" font-size="11">over time (aggregates)</text>
+
+  <text x="390" y="190" text-anchor="middle" class="sub-text" font-size="10" fill="var(--a5)">Examples:</text>
+  <text x="300" y="210" class="sub-text" font-size="10" fill="var(--a5)">- Request latency (p50, p99)</text>
+  <text x="300" y="228" class="sub-text" font-size="10" fill="var(--a5)">- Error rate (5xx / total)</text>
+  <text x="300" y="246" class="sub-text" font-size="10" fill="var(--a5)">- CPU usage (%)</text>
+  <text x="300" y="264" class="sub-text" font-size="10" fill="var(--a5)">- Queue depth</text>
+
+  <text x="390" y="300" text-anchor="middle" class="sub-text" font-size="10" font-style="italic">Low detail, low volume</text>
+  <text x="390" y="318" text-anchor="middle" class="sub-text" font-size="10" font-style="italic">Best for alerting and trends</text>
+
+  <!-- Pillar 3: Traces -->
+  <rect x="530" y="50" width="220" height="290" rx="10" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <rect x="530" y="50" width="220" height="44" rx="10" class="node-accent" stroke="var(--accent)" stroke-width="2"/>
+  <text x="640" y="78" text-anchor="middle" class="label-text" font-size="15" fill="var(--bg)" font-weight="bold">Traces</text>
+
+  <text x="640" y="118" text-anchor="middle" class="sub-text" font-size="11" font-weight="bold">Where is time spent?</text>
+  <text x="550" y="145" class="sub-text" font-size="11">End-to-end request path</text>
+  <text x="550" y="160" class="sub-text" font-size="11">across services</text>
+
+  <text x="640" y="190" text-anchor="middle" class="sub-text" font-size="10" fill="var(--a5)">Examples:</text>
+  <text x="550" y="210" class="sub-text" font-size="10" fill="var(--a5)">- API to Auth to DB to Cache</text>
+  <text x="550" y="228" class="sub-text" font-size="10" fill="var(--a5)">- 200ms in auth service</text>
+  <text x="550" y="246" class="sub-text" font-size="10" fill="var(--a5)">- 50ms in database</text>
+  <text x="550" y="264" class="sub-text" font-size="10" fill="var(--a5)">- 10ms in cache lookup</text>
+
+  <text x="640" y="300" text-anchor="middle" class="sub-text" font-size="10" font-style="italic">Medium detail, medium vol.</text>
+  <text x="640" y="318" text-anchor="middle" class="sub-text" font-size="10" font-style="italic">Best for latency analysis</text>
+
+  <!-- Connecting arrows at bottom -->
+  <line x1="250" y1="360" x2="280" y2="360" stroke="var(--a5)" stroke-width="1.5" marker-end="url(#arrowhead-muted)"/>
+  <line x1="500" y1="360" x2="530" y2="360" stroke="var(--a5)" stroke-width="1.5" marker-end="url(#arrowhead-muted)"/>
+  <text x="265" y="375" text-anchor="middle" class="sub-text" font-size="9" fill="var(--a5)">correlate</text>
+  <text x="515" y="375" text-anchor="middle" class="sub-text" font-size="9" fill="var(--a5)">correlate</text>
+</svg>
+
+<h3>Structured Logging</h3>
+
+<p>Traditional text logs look like this:</p>
+
+<pre style="overflow-x:auto"><code>2026-03-18 14:23:05 ERROR Failed to create task for user 42: database timeout</code></pre>
+
+<p>They are human-readable but machine-hostile. Searching for &ldquo;all errors for user 42&rdquo; requires fragile regex parsing. <strong>Structured logging</strong> emits logs as JSON objects with consistent fields:</p>
+
+<pre style="overflow-x:auto"><code>import json
+import time
+import uuid
+
+class StructuredLogger:
+    """Logger that outputs JSON-formatted log entries."""
+
+    def __init__(self, service_name):
+        self.service_name = service_name
+
+    def log(self, level, message, **context):
+        entry = {
+            "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+            "level": level,
+            "service": self.service_name,
+            "message": message,
+            **context
+        }
+        print(json.dumps(entry))
+
+logger = StructuredLogger("taskforge-api")
+
+# Usage with correlation ID for request tracing
+correlation_id = str(uuid.uuid4())
+logger.log("INFO", "Task created",
+    correlation_id=correlation_id,
+    user_id=42,
+    task_id=1001,
+    duration_ms=45
+)
+# Output:
+# {"timestamp":"2026-03-18T14:23:05Z","level":"INFO","service":"taskforge-api",
+#  "message":"Task created","correlation_id":"a1b2c3...","user_id":42,
+#  "task_id":1001,"duration_ms":45}</code></pre>
+
+<p>A <strong>correlation ID</strong> (sometimes called a &ldquo;request ID&rdquo; or &ldquo;trace ID&rdquo;) is a unique identifier generated when a request enters your system. Every service includes this ID in its logs, allowing you to filter all log entries for a single request across every service it touched.</p>
+
+<p>Standard <strong>log levels</strong> communicate severity:</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>Standard log levels and when to use each</caption>
+<thead><tr><th>Level</th><th>When to Use</th><th>Example</th></tr></thead>
+<tbody>
+<tr><td><code>DEBUG</code></td><td>Detailed diagnostic info for developers</td><td>Variable values, query parameters</td></tr>
+<tr><td><code>INFO</code></td><td>Normal operations worth recording</td><td>User logged in, task created</td></tr>
+<tr><td><code>WARNING</code></td><td>Something unexpected but not broken</td><td>Cache miss rate above threshold</td></tr>
+<tr><td><code>ERROR</code></td><td>Something failed for this request</td><td>Database query timeout</td></tr>
+<tr><td><code>CRITICAL</code></td><td>System is in danger of going down</td><td>Disk full, out of memory</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>Monitoring &amp; Alerting: The Golden Signals</h3>
+
+<p>Google&rsquo;s Site Reliability Engineering book defines four <strong>golden signals</strong> that every service should monitor:</p>
+
+<ol>
+<li><strong>Latency</strong> &mdash; how long requests take. Track percentiles (p50, p95, p99), not just averages. An average of 100ms might hide the fact that 1% of requests take 5 seconds.</li>
+<li><strong>Traffic</strong> &mdash; how much demand is hitting your system. Requests per second, concurrent users, or data throughput.</li>
+<li><strong>Errors</strong> &mdash; the rate of failed requests. Both explicit failures (HTTP 500) and implicit failures (HTTP 200 but wrong content).</li>
+<li><strong>Saturation</strong> &mdash; how &ldquo;full&rdquo; your system is. CPU utilization, memory usage, queue depth, disk I/O. Saturation predicts future problems before they happen.</li>
+</ol>
+
+<p>These signals connect to <strong>SLIs, SLOs, and SLAs</strong>:</p>
+
+<ul>
+<li><strong>SLI (Service Level Indicator)</strong> &mdash; a quantitative measurement. Example: &ldquo;99.2% of requests complete in under 200ms.&rdquo;</li>
+<li><strong>SLO (Service Level Objective)</strong> &mdash; the target you set internally. Example: &ldquo;We aim for 99.5% of requests under 200ms.&rdquo;</li>
+<li><strong>SLA (Service Level Agreement)</strong> &mdash; a contractual promise to customers with consequences if broken. Example: &ldquo;We guarantee 99.9% uptime or you get a credit.&rdquo;</li>
+</ul>
+
+<p>Good alerting is based on <em>symptoms</em> (error rate above 5%), not <em>causes</em> (CPU above 80%). High CPU is only a problem if it causes user-visible impact. Alert on what users experience, then use dashboards and logs to find the cause.</p>
+
+<h3>Distributed Tracing</h3>
+
+<p>When a single user request passes through five services, and the total response time is 2 seconds, which service is the bottleneck? <strong>Distributed tracing</strong> answers this by tracking the request across service boundaries.</p>
+
+<p>Each service creates a <strong>span</strong> &mdash; a record of the work it did, how long it took, and its parent span. Together, the spans form a <strong>trace</strong> tree that shows the complete lifecycle of a request. A trace ID is passed between services (usually as an HTTP header) to tie all spans together.</p>
+
+<pre style="overflow-x:auto"><code># Conceptual trace structure (simplified)
+trace = {
+    "trace_id": "abc-123",
+    "spans": [
+        {"service": "api-gateway",    "duration_ms": 1950, "parent": None},
+        {"service": "auth-service",   "duration_ms": 150,  "parent": "api-gateway"},
+        {"service": "task-service",   "duration_ms": 1700, "parent": "api-gateway"},
+        {"service": "database",       "duration_ms": 1500, "parent": "task-service"},
+    ]
+}
+# Diagnosis: 1500ms in the database query - that is the bottleneck!</code></pre>
+
+<h3>Debugging Production: The Investigation Mindset</h3>
+
+<p>Production debugging is fundamentally different from debugging during development. You cannot attach a debugger, you cannot add print statements, and the problem might be intermittent. The approach is systematic:</p>
+
+<ol>
+<li><strong>Observe</strong> &mdash; what are the symptoms? Check dashboards, error rates, and recent logs. When did it start? What changed recently (deployments, config changes, traffic spikes)?</li>
+<li><strong>Hypothesize</strong> &mdash; form a theory about the cause. &ldquo;The new deployment introduced a slow query.&rdquo; &ldquo;The database is overloaded from a traffic spike.&rdquo;</li>
+<li><strong>Test</strong> &mdash; verify your hypothesis. Check the query performance metrics. Look at database connection counts. Compare error rates before and after the deployment.</li>
+<li><strong>Act</strong> &mdash; fix the immediate problem (rollback the deployment, scale up the database), then address the root cause.</li>
+</ol>
+
+<p>After resolving an incident, conduct a <strong>postmortem</strong>. A good postmortem is <strong>blameless</strong> &mdash; it focuses on systemic causes (&ldquo;the code review process did not catch this&rdquo;), not individual blame (&ldquo;Bob wrote a bad query&rdquo;). It produces concrete action items: &ldquo;Add a load test for the task listing endpoint&rdquo;, &ldquo;Add an alert when database latency exceeds 500ms.&rdquo;</p>
+
+<div class="pq">&ldquo;Every incident is a gift &mdash; an opportunity to learn about weaknesses you did not know your system had.&rdquo;</div>
+
+<div role="note" class="callout warn">
+<div class="callout-title">Engineering Angle: Observability Is Not Optional</div>
+<p>Many developers treat logging and monitoring as afterthoughts &mdash; something to add &ldquo;later.&rdquo; In practice, the first production incident without adequate observability will cost more engineering time than setting up observability from the start. Build it in from day one. Structured logging, basic metrics (the four golden signals), and correlation IDs should be standard in every service you build.</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">TaskForge Connection: Instrumenting for Production</div>
+<p>Here is what production-ready observability looks like for TaskForge:</p>
+<ul>
+<li><strong>Structured logging:</strong> Every API request logs its method, path, status code, duration, user ID, and correlation ID.</li>
+<li><strong>Metrics:</strong> Track request latency (p50, p95, p99), error rate (5xx responses / total), active task count (business metric), and database query duration.</li>
+<li><strong>Alerts:</strong> Trigger when error rate exceeds 5% for 5 minutes, when p99 latency exceeds 2 seconds, or when database connection pool is above 80% utilization.</li>
+<li><strong>Profile:</strong> Run <code>cProfile</code> on the task listing endpoint, discover that a missing index on <code>tasks.user_id</code> causes full table scans. Add the index, latency drops from 800ms to 15ms.</li>
+</ul>
+</div>
+
+<!-- Micro-Exercise -->
+<div role="note" class="callout ok">
+<div class="callout-title">Try This Now: Read a Structured Log</div>
+<p>Given this log entry, answer: What happened? Which user was affected? How long did it take? Which request was this part of?</p>
+<pre style="overflow-x:auto"><code>{"timestamp":"2026-03-18T09:15:22Z","level":"ERROR","service":"taskforge-api",
+ "message":"Failed to create task","correlation_id":"f47ac10b-58cc",
+ "user_id":87,"error":"database_timeout","duration_ms":5003}</code></pre>
+<p><strong>Answer:</strong> A task creation attempt failed due to a database timeout. User 87 was affected. The request took 5003ms (over 5 seconds). The correlation ID <code>f47ac10b-58cc</code> can be used to find all related log entries for this request across services.</p>
+</div>
+
+<!-- Pyodide Exercise: Profiling Comparison -->
+<div class="exercise" data-type="pyodide" data-ch="36" data-ex="profiling-comparison">
+  <div class="exercise-header">
+    <h4>Exercise: Profile and Compare</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Two functions compute the sum of squares from 1 to n. One is O(n&sup2;) and the other is O(1). Use Python&rsquo;s <code>time</code> module to profile both, and write a function <code>identify_faster</code> that returns the name of the faster approach. Then implement <code>sum_of_squares_fast</code> using the O(1) mathematical formula: n(n+1)(2n+1)/6.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+import time
+
+def sum_of_squares_slow(n):
+    """O(n^2) approach: compute each square by repeated addition."""
+    total = 0
+    for i in range(1, n + 1):
+        square = 0
+        for j in range(i):
+            square += i
+        total += square
+    return total
+
+def sum_of_squares_fast(n):
+    """O(1) approach: use the mathematical formula."""
+    # TODO: Return n*(n+1)*(2*n+1)//6
+    pass
+
+def identify_faster(n=5000):
+    """Time both functions and return the name of the faster one.
+
+    Returns:
+        str: Either "slow" or "fast"
+    """
+    # TODO: Time sum_of_squares_slow(n) and sum_of_squares_fast(n)
+    # Return "slow" or "fast" based on which is quicker
+    pass
+    </script>
+    <script type="text/plain" class="test-code">
+# Test correctness of fast implementation
+assert sum_of_squares_fast(1) == 1, "sum_of_squares_fast(1) should be 1"
+assert sum_of_squares_fast(5) == 55, "sum_of_squares_fast(5) should be 55 (1+4+9+16+25)"
+assert sum_of_squares_fast(10) == 385, "sum_of_squares_fast(10) should be 385"
+assert sum_of_squares_fast(100) == 338350, "sum_of_squares_fast(100) should be 338350"
+
+# Test that both functions produce the same result
+for test_n in [1, 5, 10, 50]:
+    slow_result = sum_of_squares_slow(test_n)
+    fast_result = sum_of_squares_fast(test_n)
+    assert slow_result == fast_result, f"Results differ for n={test_n}: slow={slow_result}, fast={fast_result}"
+
+# Test that identify_faster correctly identifies the fast version
+result = identify_faster(5000)
+assert result == "fast", f"identify_faster should return 'fast', got '{result}'"
+
+print("All profiling tests passed!")
+print(f"sum_of_squares_fast(1000) = {sum_of_squares_fast(1000)}")
+    </script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">The mathematical formula for sum of squares is: n * (n + 1) * (2 * n + 1) // 6. Use integer division (//) to keep the result as an integer.</p>
+    <p class="hint">To time a function, record time.time() before and after calling it. The difference is the elapsed time in seconds.</p>
+    <p class="hint">In identify_faster: start1 = time.time(); sum_of_squares_slow(n); time_slow = time.time() - start1. Do the same for fast. Return "fast" if time_fast &lt; time_slow, else "slow".</p>
+  </div>
+</div>
+
+<!-- Quiz -->
+<div class="quiz" data-ch="36" data-ex="quiz-golden-signals">
+  <h4>Knowledge Check</h4>
+  <p>Which of the four golden signals measures how full your system is?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">Latency</button>
+    <button class="quiz-option" data-correct="false">Traffic</button>
+    <button class="quiz-option" data-correct="false">Errors</button>
+    <button class="quiz-option" data-correct="true">Saturation</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Quiz 2 -->
+<div class="quiz" data-ch="36" data-ex="quiz-log-levels">
+  <h4>Knowledge Check</h4>
+  <p>A user reports that task creation is occasionally failing. You check the logs and see a &ldquo;database connection pool exhausted&rdquo; message. What log level should this message be?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">DEBUG &mdash; it is a technical detail</button>
+    <button class="quiz-option" data-correct="false">INFO &mdash; it is a normal operational event</button>
+    <button class="quiz-option" data-correct="false">WARNING &mdash; it is not actually failing yet</button>
+    <button class="quiz-option" data-correct="true">ERROR &mdash; it is causing request failures</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Checklist -->
+<div class="checklist" data-ch="36" data-ex="checklist-observability">
+  <h4>Performance &amp; Observability Checklist</h4>
+  <label><input type="checkbox"><span>I can profile a Python program to find performance bottlenecks</span></label>
+  <label><input type="checkbox"><span>I understand the three pillars of observability (logs, metrics, traces)</span></label>
+  <label><input type="checkbox"><span>I can implement structured logging with correlation IDs</span></label>
+  <label><input type="checkbox"><span>I can name the four golden signals and what each measures</span></label>
+  <label><input type="checkbox"><span>I understand the difference between SLIs, SLOs, and SLAs</span></label>
+  <label><input type="checkbox"><span>I know how to use memoization with <code>@lru_cache</code></span></label>
+  <label><input type="checkbox"><span>I can describe a blameless postmortem process</span></label>
+  <label><input type="checkbox"><span>I would alert on symptoms (error rate), not causes (CPU usage)</span></label>
+</div>
+
+</section>
+
+
+<!-- ===== CH 37 ===== -->
+<section id="ch37" data-ch="37">
+<h2><span class="ch-label">Chapter 37</span> Navigating &amp; Evolving Large Codebases &mdash; Working in the Real World</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>Every tutorial, exercise, and project you have built so far started from scratch. In the real world, that almost never happens. You will spend the vast majority of your career working in codebases that already exist &mdash; codebases written by other people, sometimes years ago, often with incomplete documentation. The ability to read, understand, and safely evolve unfamiliar code is arguably the most important practical skill a professional engineer can develop. This chapter teaches you systematic approaches to doing exactly that.</p>
+</div>
+
+<h3>Reading Unfamiliar Code: A Systematic Approach</h3>
+
+<p>Opening a 100,000-line codebase for the first time feels overwhelming. The key is to approach it like an explorer mapping unknown territory, not a student trying to memorize a textbook. You do not need to understand everything &mdash; you need to build a mental map of the important parts.</p>
+
+<p><strong>Strategy 1: Find the entry point.</strong> Every program has a starting point. For a web server, it is the file that starts listening for HTTP requests. For a CLI tool, it is the <code>if __name__ == "__main__"</code> block. For a library, it is the public API in <code>__init__.py</code>. Finding this anchor gives you a place to start tracing.</p>
+
+<p><strong>Strategy 2: Trace the happy path.</strong> Pick the most common user action (e.g., &ldquo;create a task&rdquo;) and follow the code from the HTTP route handler through the service layer, into the database, and back. Do not get distracted by error handling, edge cases, or utility modules. Understand the normal path first.</p>
+
+<p><strong>Strategy 3: Draw dependency graphs.</strong> Sketch which modules import which other modules. This reveals the architecture: which modules are central (imported by many), which are peripheral (imported by few), and which are isolated (imported by nothing &mdash; possibly dead code).</p>
+
+<p><strong>Strategy 4: Top-down vs. bottom-up.</strong> Top-down starts from <code>main()</code> and drills into function calls. This gives you the big picture quickly. Bottom-up starts from tests and small utility functions, building understanding from concrete examples. Use both: start top-down for architecture, switch to bottom-up when you need to understand a specific module.</p>
+
+<p><strong>Strategy 5: Find the seams.</strong> A <strong>seam</strong> is a boundary between modules &mdash; a place where one module interacts with another through a defined interface. Understanding seams tells you where you can make changes safely (within a module, behind a seam) versus where changes will ripple through the codebase (at a seam, affecting all consumers).</p>
+
+<pre style="overflow-x:auto"><code># A practical code-reading session for a Python project:
+# 1. Check the README and any docs/ directory
+# 2. Look at pyproject.toml or setup.py for dependencies and entry points
+# 3. Find the main entry point:
+#    grep -r "if __name__" src/
+#    grep -r "def main" src/
+# 4. Look at the test directory structure - it mirrors the source
+# 5. Read the most recent tests - they show current behavior
+# 6. Use git log --oneline -20 to see recent changes
+# 7. Draw a quick sketch of the module dependencies</code></pre>
+
+<h3>Understanding Legacy Systems: The Archaeological Approach</h3>
+
+<p><strong>Legacy code</strong> is not a pejorative &mdash; it is code that is valuable enough to still be running. The challenge is understanding <em>why</em> it was written the way it was. The answers are usually in the history.</p>
+
+<p><strong><code>git blame</code></strong> shows who last modified each line of a file and when. More importantly, it shows the commit hash, which you can inspect for the commit message explaining <em>why</em> the change was made. Many &ldquo;why is this code so weird?&rdquo; questions are answered by finding the commit that introduced it.</p>
+
+<pre style="overflow-x:auto"><code># Who changed this confusing line, and why?
+git blame src/task_service.py
+
+# Read the full commit message for that change
+git show abc123f
+
+# Search the commit history for when a function was introduced
+git log --all -S "def calculate_priority" --oneline
+
+# Look at pull requests (on GitHub) for discussion context
+# PR comments often contain design decisions and alternatives considered</code></pre>
+
+<p><strong>Identify the load-bearing walls.</strong> In a building, some walls hold up the roof &mdash; you cannot remove them without the structure collapsing. In a codebase, some modules are imported and depended on by <em>everything</em>. Changing them is high-risk. Before modifying any code, understand what depends on it.</p>
+
+<p><strong>Document what you find.</strong> As you build understanding, write it down. Even rough notes (&ldquo;TaskService calls UserService for authentication; uses Redis for caching task lists; the calculate_priority function is called from 14 places&rdquo;) are invaluable to the next person who reads this code &mdash; including your future self.</p>
+
+<h3>Safe Changes: How to Modify Without Breaking</h3>
+
+<p>The most dangerous moment in a codebase is when you change something without understanding all of its effects. Here are proven techniques for making changes safely.</p>
+
+<p><strong>Characterization tests</strong> (also called &ldquo;golden master&rdquo; tests) capture the <em>current</em> behavior of code, regardless of whether that behavior is correct. Before refactoring, you write tests that assert what the code <em>actually does</em>, not what you think it <em>should</em> do. Then you refactor, and if the tests still pass, you know you have preserved behavior.</p>
+
+<pre style="overflow-x:auto"><code># Step 1: Write characterization tests for existing behavior
+def test_calculate_priority_characterization():
+    """Captures current behavior - may or may not be 'correct'."""
+    # These assertions describe what the code DOES, not what it SHOULD do
+    assert calculate_priority(urgent=True, due_days=1) == 95
+    assert calculate_priority(urgent=True, due_days=30) == 70
+    assert calculate_priority(urgent=False, due_days=1) == 60
+    assert calculate_priority(urgent=False, due_days=30) == 10
+    # Edge case: negative due_days (overdue) - what does it actually return?
+    assert calculate_priority(urgent=False, due_days=-5) == 80  # Discovered!
+
+# Step 2: Refactor the code
+# Step 3: Run characterization tests - they must all still pass</code></pre>
+
+<p>The <strong>strangler fig pattern</strong> is a strategy for incrementally replacing a legacy system. Named after fig trees that grow around an existing tree and eventually replace it, the pattern works like this:</p>
+
+<ol>
+<li>Place a <strong>facade</strong> (proxy) in front of the old system.</li>
+<li>Implement new functionality in a new system behind the same facade.</li>
+<li>Gradually route more traffic from the old system to the new one.</li>
+<li>When all traffic is on the new system, decommission the old one.</li>
+</ol>
+
+<p>At every step, both systems are running and you can roll back instantly by routing traffic back to the old system.</p>
+
+<!-- SVG Diagram: Strangler Fig Pattern -->
+<svg viewBox="0 0 780 350" aria-label="Strangler Fig pattern diagram showing a facade routing requests gradually from an old system to a new system growing alongside it" style="width:100%;max-width:780px;margin:2rem auto;display:block">
+  <!-- Title -->
+  <text x="390" y="25" text-anchor="middle" class="label-text" font-size="15" font-weight="bold">The Strangler Fig Pattern</text>
+
+  <!-- Phase 1: Before -->
+  <text x="130" y="60" text-anchor="middle" class="sub-text" font-size="12" font-weight="bold">Phase 1: Before</text>
+  <rect x="70" y="70" width="120" height="36" rx="6" class="node-accent" stroke="var(--accent)" stroke-width="2"/>
+  <text x="130" y="93" text-anchor="middle" class="label-text" font-size="12" fill="var(--bg)">Facade</text>
+  <line x1="130" y1="106" x2="130" y2="130" class="arrow" marker-end="url(#arrowhead)"/>
+  <rect x="50" y="133" width="160" height="80" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="130" y="165" text-anchor="middle" class="label-text" font-size="12">Old System</text>
+  <text x="130" y="185" text-anchor="middle" class="sub-text" font-size="10" fill="var(--a5)">100% traffic</text>
+
+  <!-- Phase 2: During -->
+  <text x="390" y="60" text-anchor="middle" class="sub-text" font-size="12" font-weight="bold">Phase 2: Migration</text>
+  <rect x="330" y="70" width="120" height="36" rx="6" class="node-accent" stroke="var(--accent)" stroke-width="2"/>
+  <text x="390" y="93" text-anchor="middle" class="label-text" font-size="12" fill="var(--bg)">Facade</text>
+
+  <!-- Old system (smaller) -->
+  <line x1="365" y1="106" x2="340" y2="130" class="arrow" marker-end="url(#arrowhead)"/>
+  <rect x="280" y="133" width="120" height="80" rx="8" class="node-fill" stroke="var(--a5)" stroke-width="1.5"/>
+  <text x="340" y="165" text-anchor="middle" class="label-text" font-size="11">Old System</text>
+  <text x="340" y="185" text-anchor="middle" class="sub-text" font-size="10" fill="var(--a5)">30% traffic</text>
+
+  <!-- New system (growing) -->
+  <line x1="415" y1="106" x2="440" y2="130" class="arrow" marker-end="url(#arrowhead)"/>
+  <rect x="400" y="133" width="130" height="80" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="465" y="165" text-anchor="middle" class="label-text" font-size="11">New System</text>
+  <text x="465" y="185" text-anchor="middle" class="sub-text" font-size="10" fill="var(--a5)">70% traffic</text>
+
+  <!-- Phase 3: After -->
+  <text x="650" y="60" text-anchor="middle" class="sub-text" font-size="12" font-weight="bold">Phase 3: Complete</text>
+  <rect x="590" y="70" width="120" height="36" rx="6" class="node-accent" stroke="var(--accent)" stroke-width="2"/>
+  <text x="650" y="93" text-anchor="middle" class="label-text" font-size="12" fill="var(--bg)">Facade</text>
+  <line x1="650" y1="106" x2="650" y2="130" class="arrow" marker-end="url(#arrowhead)"/>
+  <rect x="570" y="133" width="160" height="80" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="650" y="165" text-anchor="middle" class="label-text" font-size="12">New System</text>
+  <text x="650" y="185" text-anchor="middle" class="sub-text" font-size="10" fill="var(--a5)">100% traffic</text>
+
+  <!-- Arrows between phases -->
+  <line x1="210" y1="170" x2="265" y2="170" stroke="var(--a5)" stroke-width="1.5" stroke-dasharray="6" marker-end="url(#arrowhead-muted)"/>
+  <line x1="545" y1="170" x2="558" y2="170" stroke="var(--a5)" stroke-width="1.5" stroke-dasharray="6" marker-end="url(#arrowhead-muted)"/>
+
+  <!-- Key point -->
+  <rect x="140" y="260" width="500" height="70" rx="8" fill="none" stroke="var(--a5)" stroke-width="1" stroke-dasharray="4"/>
+  <text x="390" y="285" text-anchor="middle" class="sub-text" font-size="12">Key: You can roll back at any point by routing traffic to the old system.</text>
+  <text x="390" y="305" text-anchor="middle" class="sub-text" font-size="12">The facade acts as a switch between old and new implementations.</text>
+  <text x="390" y="325" text-anchor="middle" class="sub-text" font-size="11" fill="var(--a5)">Feature flags control which system handles each request.</text>
+</svg>
+
+<p><strong>Feature flags</strong> let you deploy code without releasing it to users. You wrap new behavior in a conditional check (<code>if feature_enabled("new_priority_algorithm")</code>) and deploy. The flag is initially off, so no user sees the change. You can then enable it for 1% of users, monitor for problems, and gradually roll out to 100%. If something goes wrong, flip the flag off instantly &mdash; no deployment needed.</p>
+
+<h3>Technical Debt: A Practical Framework</h3>
+
+<p><strong>Technical debt</strong> is a metaphor coined by Ward Cunningham: just as financial debt lets you buy something now and pay later (with interest), technical shortcuts let you ship faster now but make future changes slower (the interest). Not all technical debt is bad &mdash; sometimes shipping fast is the right business decision. The problems come when you accumulate too much debt and stop paying it down.</p>
+
+<p>Practical ways to measure technical debt:</p>
+
+<ul>
+<li><strong>How long does it take a new developer to become productive?</strong> If it takes three weeks instead of three days, you have onboarding debt.</li>
+<li><strong>How often do changes in one area break another?</strong> If frequently, you have coupling debt.</li>
+<li><strong>How long does the test suite take?</strong> If it takes 45 minutes, developers skip it, and bugs ship. That is test infrastructure debt.</li>
+<li><strong>How much of the code is understood by only one person?</strong> That is knowledge debt &mdash; a bus factor of one.</li>
+</ul>
+
+<p>Pay down debt <strong>strategically</strong>, not comprehensively. Refactoring code that nobody touches is a waste of time. Focus on modules with high change frequency and high defect rates &mdash; these are the areas where debt is actively costing you.</p>
+
+<h3>Code Review as a Senior Skill</h3>
+
+<p>Code review is not just about finding bugs. A good code review improves the code <em>and</em> develops the author. Here is what experienced reviewers focus on:</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>Code review priorities and example feedback</caption>
+<thead><tr><th>Priority</th><th>What to Look For</th><th>Example Feedback</th></tr></thead>
+<tbody>
+<tr><td>1. Correctness</td><td>Does it do what it claims? Edge cases? Race conditions?</td><td>&ldquo;What happens if <code>user_id</code> is None here?&rdquo;</td></tr>
+<tr><td>2. Readability</td><td>Can someone unfamiliar with the code understand it?</td><td>&ldquo;Could you extract this into a named function? The intent is not clear.&rdquo;</td></tr>
+<tr><td>3. Testability</td><td>Is the code testable? Are there tests? Do they test the right things?</td><td>&ldquo;This test verifies implementation details, not behavior.&rdquo;</td></tr>
+<tr><td>4. Design</td><td>Does it fit the existing architecture? Right abstraction level?</td><td>&ldquo;This service function accesses the HTTP request directly. Could we pass just the data it needs?&rdquo;</td></tr>
+<tr><td>5. Performance</td><td>Obvious inefficiencies? N+1 queries? Unnecessary allocations?</td><td>&ldquo;This loop queries the database on every iteration. Could we batch this?&rdquo;</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>Avoid <strong>bikeshedding</strong> &mdash; spending disproportionate time on trivial issues (variable naming, formatting) while glossing over structural problems. If your team has a linter and formatter, let the tools handle style. Spend your review time on logic, design, and edge cases.</p>
+
+<h3>Working with Large Teams</h3>
+
+<p>As a codebase grows, <strong>conventions</strong> become essential. Style guides and linters enforce consistency so that code written by different people looks like it was written by the same person. This dramatically reduces cognitive load when reading code.</p>
+
+<p><strong>Architecture Decision Records (ADRs)</strong> document significant technical decisions and their reasoning. An ADR typically includes:</p>
+
+<pre style="overflow-x:auto"><code># ADR-007: Use PostgreSQL for Task Storage
+
+## Status: Accepted
+
+## Context
+TaskForge needs a relational database. We considered PostgreSQL, MySQL,
+and SQLite. We need concurrent write support, full-text search, and
+JSONB columns for flexible task metadata.
+
+## Decision
+We will use PostgreSQL.
+
+## Consequences
+- Positive: Native JSONB support, excellent concurrent performance,
+  strong community, good tooling.
+- Negative: More complex to set up than SQLite; team needs PostgreSQL
+  expertise. We accept this trade-off because SQLite cannot handle
+  our concurrency requirements.
+
+## Alternatives Considered
+- MySQL: Lacks native JSONB; full-text search requires plugins.
+- SQLite: Cannot handle concurrent writes from multiple workers.</code></pre>
+
+<p>ADRs are incredibly valuable because they record not just <em>what</em> was decided, but <em>why</em> and <em>what alternatives were considered</em>. Six months later, when someone asks &ldquo;why don&rsquo;t we just use SQLite?&rdquo; the ADR provides the answer without requiring anyone to remember the original discussion.</p>
+
+<p><strong>RFC processes</strong> (Request for Comments) serve a similar purpose for larger changes. Before implementing a major feature or architectural change, you write a design document, circulate it for feedback, and iterate. This prevents expensive surprises and ensures alignment across teams.</p>
+
+<div role="note" class="callout warn">
+<div class="callout-title">Myth: &ldquo;Good code does not need documentation&rdquo;</div>
+<p>Good code is self-documenting for <em>what</em> it does and <em>how</em> it does it. But code can never tell you <em>why</em> a decision was made, what alternatives were considered, or what constraints existed at the time. Documentation fills this gap. The most useful documentation explains intent, trade-offs, and context &mdash; things that code cannot express.</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">TaskForge Connection: Legacy Rescue Mission</div>
+<p>Imagine inheriting a &ldquo;legacy&rdquo; version of TaskForge with these problems:</p>
+<ul>
+<li><strong>God class:</strong> A single <code>TaskManager</code> class handles routing, business logic, database queries, and email sending.</li>
+<li><strong>No tests:</strong> Zero automated tests. You have no safety net for changes.</li>
+<li><strong>Hardcoded config:</strong> Database URLs, API keys, and email credentials are scattered as string literals throughout the code.</li>
+<li><strong>SQL injection:</strong> User input is concatenated directly into SQL queries.</li>
+</ul>
+<p>Your approach: (1) Write characterization tests that capture current behavior. (2) Extract configuration into environment variables. (3) Fix the SQL injection (highest-risk item). (4) Gradually decompose the god class using the strangler fig pattern &mdash; introduce a <code>TaskRepository</code> for database access, an <code>EmailService</code> for notifications, and have <code>TaskManager</code> delegate to them. Each step is small, tested, and reversible.</p>
+</div>
+
+<!-- Micro-Exercise -->
+<div role="note" class="callout ok">
+<div class="callout-title">Try This Now: Write an ADR</div>
+<p>Write a brief Architecture Decision Record for this scenario: Your team is deciding whether to add a Redis cache to TaskForge. Currently, the task listing page takes 800ms because it queries the database every time. With Redis, it would take 5ms for cached results. The trade-off is operational complexity (another service to maintain) and the risk of serving stale data. Your team has chosen to proceed with Redis using a 30-second TTL.</p>
+<p>Use the ADR format shown above (Status, Context, Decision, Consequences, Alternatives Considered). Practice articulating trade-offs clearly.</p>
+</div>
+
+<!-- Pyodide Exercise: Characterization Tests and Refactoring -->
+<div class="exercise" data-type="pyodide" data-ch="37" data-ex="characterization-refactor">
+  <div class="exercise-header">
+    <h4>Exercise: Characterize, Then Refactor</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Below is a messy function <code>process_task_data</code> that does too much: it validates, transforms, calculates priority, and formats output all in one blob. First, study its behavior. Then implement three clean functions &mdash; <code>validate_task</code>, <code>calculate_priority</code>, and <code>format_task_summary</code> &mdash; that together produce the same results as the original. The characterization tests verify your refactored code matches the original behavior exactly.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def process_task_data(title, assignee, days_until_due, is_urgent):
+    """Legacy function - messy but working. DO NOT MODIFY."""
+    result = {}
+    # Validation
+    if not title or not isinstance(title, str):
+        return {"error": "invalid title"}
+    if len(title) > 100:
+        return {"error": "title too long"}
+    if not assignee or not isinstance(assignee, str):
+        return {"error": "invalid assignee"}
+    # Title transformation
+    clean_title = title.strip().upper()
+    # Priority calculation
+    priority = 0
+    if is_urgent:
+        priority += 50
+    if days_until_due < 0:
+        priority += 40  # overdue
+    elif days_until_due <= 3:
+        priority += 30
+    elif days_until_due <= 7:
+        priority += 20
+    elif days_until_due <= 30:
+        priority += 10
+    if len(title) > 50:
+        priority -= 5  # long titles penalized (quirky legacy logic)
+    if priority > 100:
+        priority = 100
+    if priority < 0:
+        priority = 0
+    # Format output
+    if priority >= 80:
+        urgency_label = "CRITICAL"
+    elif priority >= 50:
+        urgency_label = "HIGH"
+    elif priority >= 30:
+        urgency_label = "MEDIUM"
+    else:
+        urgency_label = "LOW"
+    result["title"] = clean_title
+    result["assignee"] = assignee.strip()
+    result["priority"] = priority
+    result["label"] = urgency_label
+    result["summary"] = f"[{urgency_label}] {clean_title} (assigned to {assignee.strip()})"
+    return result
+
+
+def validate_task(title, assignee):
+    """Validate task inputs.
+
+    Returns:
+        None if valid, or a dict with an "error" key if invalid.
+    """
+    # TODO: Implement validation matching the original behavior
+    pass
+
+
+def calculate_priority(days_until_due, is_urgent, title_length):
+    """Calculate task priority score (0-100).
+
+    Args:
+        days_until_due: int, days until task is due (negative = overdue)
+        is_urgent: bool, whether task is marked urgent
+        title_length: int, length of the title string
+
+    Returns:
+        int: priority score between 0 and 100
+    """
+    # TODO: Implement priority calculation matching the original behavior
+    pass
+
+
+def format_task_summary(clean_title, assignee, priority):
+    """Format a task into the output dictionary.
+
+    Args:
+        clean_title: str, uppercased and stripped title
+        assignee: str, stripped assignee name
+        priority: int, calculated priority score
+
+    Returns:
+        dict with keys: title, assignee, priority, label, summary
+    """
+    # TODO: Implement formatting matching the original behavior
+    pass
+
+
+def process_task_refactored(title, assignee, days_until_due, is_urgent):
+    """Refactored version using the three clean functions above."""
+    # TODO: Compose validate_task, calculate_priority, format_task_summary
+    # to produce the same output as process_task_data
+    pass
+    </script>
+    <script type="text/plain" class="test-code">
+# Characterization tests: refactored version must match original exactly
+
+# Test 1: Normal task
+original_1 = process_task_data("Fix login bug", "Alice", 5, True)
+refactored_1 = process_task_refactored("Fix login bug", "Alice", 5, True)
+assert original_1 == refactored_1, f"Mismatch on normal task:\n  original:   {original_1}\n  refactored: {refactored_1}"
+
+# Test 2: Urgent overdue task
+original_2 = process_task_data("Deploy hotfix", "Bob", -2, True)
+refactored_2 = process_task_refactored("Deploy hotfix", "Bob", -2, True)
+assert original_2 == refactored_2, f"Mismatch on urgent overdue:\n  original:   {original_2}\n  refactored: {refactored_2}"
+
+# Test 3: Non-urgent, far-out task
+original_3 = process_task_data("Update docs", "Carol", 45, False)
+refactored_3 = process_task_refactored("Update docs", "Carol", 45, False)
+assert original_3 == refactored_3, f"Mismatch on non-urgent:\n  original:   {original_3}\n  refactored: {refactored_3}"
+
+# Test 4: Invalid title (empty)
+original_4 = process_task_data("", "Dave", 10, False)
+refactored_4 = process_task_refactored("", "Dave", 10, False)
+assert original_4 == refactored_4, f"Mismatch on empty title:\n  original:   {original_4}\n  refactored: {refactored_4}"
+
+# Test 5: Invalid assignee
+original_5 = process_task_data("Task", "", 10, False)
+refactored_5 = process_task_refactored("Task", "", 10, False)
+assert original_5 == refactored_5, f"Mismatch on empty assignee:\n  original:   {original_5}\n  refactored: {refactored_5}"
+
+# Test 6: Title too long
+long_title = "A" * 101
+original_6 = process_task_data(long_title, "Eve", 5, False)
+refactored_6 = process_task_refactored(long_title, "Eve", 5, False)
+assert original_6 == refactored_6, f"Mismatch on long title:\n  original:   {original_6}\n  refactored: {refactored_6}"
+
+# Test 7: Long title (51 chars) with penalty
+title_51 = "A" * 51
+original_7 = process_task_data(title_51, "Frank", 1, False)
+refactored_7 = process_task_refactored(title_51, "Frank", 1, False)
+assert original_7 == refactored_7, f"Mismatch on 51-char title:\n  original:   {original_7}\n  refactored: {refactored_7}"
+
+# Test 8: Whitespace handling
+original_8 = process_task_data("  padded title  ", "  Gina  ", 7, False)
+refactored_8 = process_task_refactored("  padded title  ", "  Gina  ", 7, False)
+assert original_8 == refactored_8, f"Mismatch on whitespace:\n  original:   {original_8}\n  refactored: {refactored_8}"
+
+# Verify individual functions exist and work
+assert validate_task("Valid", "Person") is None, "validate_task should return None for valid input"
+assert validate_task("", "Person") == {"error": "invalid title"}, "validate_task should catch empty title"
+assert 0 <= calculate_priority(5, True, 10) <= 100, "calculate_priority should return 0-100"
+
+print("All characterization tests passed! Refactored code matches original behavior exactly.")
+    </script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">Start with validate_task: check the same conditions as the original (empty/non-string title, title > 100 chars, empty/non-string assignee). Return None if valid, or {"error": "..."} if not.</p>
+    <p class="hint">For calculate_priority: start at 0, add 50 if urgent, add based on days_until_due ranges, subtract 5 if title_length > 50, clamp between 0 and 100.</p>
+    <p class="hint">For format_task_summary: determine the urgency label from priority (>=80 CRITICAL, >=50 HIGH, >=30 MEDIUM, else LOW), then build the result dict with all five keys.</p>
+    <p class="hint">In process_task_refactored: call validate_task first (return its error dict if not None), then clean the title (strip + upper), calculate priority using len(title) for title_length, and format.</p>
+  </div>
+</div>
+
+<!-- Quiz -->
+<div class="quiz" data-ch="37" data-ex="quiz-strangler-fig">
+  <h4>Knowledge Check</h4>
+  <p>What is the key advantage of the strangler fig pattern over a &ldquo;big bang&rdquo; rewrite?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">It is faster to complete</button>
+    <button class="quiz-option" data-correct="true">You can roll back at any point because both systems run simultaneously</button>
+    <button class="quiz-option" data-correct="false">It requires no testing</button>
+    <button class="quiz-option" data-correct="false">It automatically migrates the database</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Quiz 2 -->
+<div class="quiz" data-ch="37" data-ex="quiz-characterization-tests">
+  <h4>Knowledge Check</h4>
+  <p>What do characterization tests verify?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">That the code meets the original specification</button>
+    <button class="quiz-option" data-correct="false">That the code has no bugs</button>
+    <button class="quiz-option" data-correct="true">That the code&rsquo;s current behavior is preserved after changes</button>
+    <button class="quiz-option" data-correct="false">That the code passes performance benchmarks</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Checklist -->
+<div class="checklist" data-ch="37" data-ex="checklist-large-codebases">
+  <h4>Navigating Large Codebases Checklist</h4>
+  <label><input type="checkbox"><span>I can find the entry point and trace the happy path in an unfamiliar codebase</span></label>
+  <label><input type="checkbox"><span>I can use <code>git blame</code> and commit history to understand why code was written a certain way</span></label>
+  <label><input type="checkbox"><span>I can write characterization tests to capture existing behavior before refactoring</span></label>
+  <label><input type="checkbox"><span>I can explain the strangler fig pattern for incremental replacement</span></label>
+  <label><input type="checkbox"><span>I understand feature flags and how they decouple deployment from release</span></label>
+  <label><input type="checkbox"><span>I can assess technical debt and prioritize which debt to pay down</span></label>
+  <label><input type="checkbox"><span>I have written (or can write) an Architecture Decision Record</span></label>
+  <label><input type="checkbox"><span>I know what to focus on in code review (correctness, readability, testability) and what to leave to linters (style)</span></label>
+</div>
+
+</section>
+
+
+<!-- ===== PHASE 8 GATE ===== -->
+<section id="gate8">
+<h2><span class="ch-label">Phase 8 Gate</span> Checkpoint &amp; TaskForge at Scale</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Minimum Competency</div>
+<p>After completing Phase 8, you should be able to: design a system architecture for scale (identifying components, trade-offs, and bottlenecks), reason about distributed system constraints (CAP theorem, eventual consistency, saga pattern), instrument applications for observability (structured logging, metrics, traces), and navigate and evolve existing codebases safely (characterization tests, strangler fig, feature flags).</p>
+</div>
+
+<h3>Your Artifact: TaskForge at Scale</h3>
+
+<p>Create the following deliverables for your TaskForge project:</p>
+
+<ol>
+<li><strong>System design document</strong> &mdash; an architecture diagram for TaskForge at 10,000 concurrent users. Identify at least 3 bottlenecks in the current architecture and propose solutions for each (with trade-off analysis).</li>
+<li><strong>Structured logging implementation</strong> &mdash; add JSON-formatted structured logging to TaskForge with correlation IDs. Every API request should be logged with method, path, status code, duration, and user ID.</li>
+<li><strong>Performance profile</strong> &mdash; profile a slow endpoint (e.g., task listing with filtering and sorting). Document the bottleneck you found and the optimization you applied. Show at least a 10x improvement.</li>
+<li><strong>Legacy code refactoring</strong> &mdash; take the &ldquo;messy version&rdquo; of a TaskForge module. Write characterization tests first, then refactor into clean, well-structured code. All characterization tests must pass before and after refactoring.</li>
+</ol>
+
+<h3>Verification</h3>
+
+<div style="overflow-x:auto">
+<table>
+<caption>Phase 8 verification criteria by artifact</caption>
+<thead><tr><th>Artifact</th><th>Verification Criteria</th></tr></thead>
+<tbody>
+<tr><td>Architecture diagram</td><td>Identifies at least 3 bottlenecks with proposed solutions and trade-off analysis</td></tr>
+<tr><td>Structured logging</td><td>Logs are JSON-formatted with correlation IDs; every request is logged</td></tr>
+<tr><td>Performance profile</td><td>Shows at least 10x improvement with before/after measurements</td></tr>
+<tr><td>Legacy refactoring</td><td>Characterization tests pass before and after; code is decomposed into clear modules</td></tr>
+</tbody>
+</table>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">Bridge to Phase 9: AI-Assisted Development</div>
+<p>You now have the full engineering toolkit. From algorithms to architecture, from databases to distributed systems, from profiling to observability, from reading legacy code to evolving it safely &mdash; you have the knowledge and judgment that professional software engineers rely on every day.</p>
+<p>Phase&nbsp;9 introduces AI-powered development tools. The engineering judgment you have built across Phases 1&ndash;8 is what makes you <em>effective</em> with AI. You can evaluate what AI produces, catch what it misses, and direct it toward better solutions. Without this foundation, AI tools are like power tools in the hands of someone who has never learned the craft &mdash; fast, but dangerous. With it, AI becomes a force multiplier for the skills you already have.</p>
+</div>
+
+</section>
+
+<nav class="phase-nav">
+  <a href="phase-7.html" class="phase-nav-link prev"><span class="phase-nav-label">Previous Phase</span>&larr; Phase 7: Engineering Craft</a>
+  <a href="phase-9.html" class="phase-nav-link next"><span class="phase-nav-label">Next Phase</span>Phase 9: AI-Assisted Development &rarr;</a>
+</nav>
+
+</div>
+</div>
+
+<footer>
+<p>Zero to Hero: Programming to Multi-Agent Claude Code &middot; March 2026</p>
+</footer>
+
+<script src="js/progress.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ace-builds@1.36.5/src-min-noconflict/ace.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/shared.js"></script>
+<script src="js/ace-init.js"></script>
+<script src="js/pyodide-runner.js"></script>
+<script src="js/quiz.js"></script>
+<script src="js/exercise-runner.js"></script>
+</body>
+</html>

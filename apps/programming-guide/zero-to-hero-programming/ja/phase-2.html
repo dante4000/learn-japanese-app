@@ -1,0 +1,2103 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="フェーズ2: Python を書く — 関数、データ構造、クラス、ファイル入出力、エラー処理、テスト。AI支援開発のための実践的な習熟。章05〜09。">
+<title>フェーズ2: Python を書く — Zero to Hero</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/design-system.css">
+<script>try{if(localStorage.getItem('zth-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+<script>try{var z=localStorage.getItem('zth-zoom');if(z&&+z>=50&&+z<=200)document.documentElement.style.zoom=+z/100}catch(e){}</script>
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+<marker id="arrowhead-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--a5)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<button class="toggle" id="themeToggle" aria-label="テーマを切り替える">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="../index.html" class="sidebar-logo"><span>Zero to Hero</span>Programming &rarr; Multi-Agent AI</a>
+  <div class="toc-group">
+    <div class="toc-group-title">基礎</div>
+    <a href="../phase-1.html#ch01" class="toc-link"><span class="toc-num">01</span>プログラミングとは何か</a>
+    <a href="../phase-1.html#ch02" class="toc-link"><span class="toc-num">02</span>コンピュータはどのようにコードを実行するか</a>
+    <a href="../phase-1.html#ch03" class="toc-link"><span class="toc-num">03</span>環境のセットアップ</a>
+    <a href="../phase-1.html#ch04" class="toc-link"><span class="toc-num">04</span>書く前にコードを読む</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Python</div>
+    <a href="#ch05" class="toc-link"><span class="toc-num">05</span>関数、論理、制御フロー</a>
+    <a href="#ch06" class="toc-link"><span class="toc-num">06</span>データ構造</a>
+    <a href="#ch07" class="toc-link"><span class="toc-num">07</span>クラスとオブジェクト指向の基礎</a>
+    <a href="#ch08" class="toc-link"><span class="toc-num">08</span>ファイル、モジュール、標準ライブラリ</a>
+    <a href="#ch09" class="toc-link"><span class="toc-num">09</span>エラー処理、デバッグ、テスト</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">開発ツール</div>
+    <a href="../phase-3.html#ch10" class="toc-link"><span class="toc-num">10</span>ターミナルとシェル</a>
+    <a href="../phase-3.html#ch11" class="toc-link"><span class="toc-num">11</span>Git の基礎</a>
+    <a href="../phase-3.html#ch12" class="toc-link"><span class="toc-num">12</span>Git リモートと GitHub</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">構築とデプロイ</div>
+    <a href="../phase-4.html#ch13" class="toc-link"><span class="toc-num">13</span>API と HTTP</a>
+    <a href="../phase-4.html#ch14" class="toc-link"><span class="toc-num">14</span>Flask で API を構築する</a>
+    <a href="../phase-4.html#ch15" class="toc-link"><span class="toc-num">15</span>データベースの基礎</a>
+    <a href="../phase-4.html#ch16" class="toc-link"><span class="toc-num">16</span>Docker とコンテナ</a>
+    <a href="../phase-4.html#ch17" class="toc-link"><span class="toc-num">17</span>CI/CD と GitHub Actions</a>
+    <a href="../phase-4.html#ch18" class="toc-link"><span class="toc-num">18</span>プロジェクトアーキテクチャ</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">データ構造</div>
+    <a href="../phase-5.html#ch19" class="toc-link"><span class="toc-num">19</span>計算量解析</a>
+    <a href="../phase-5.html#ch20" class="toc-link"><span class="toc-num">20</span>線形構造</a>
+    <a href="../phase-5.html#ch21" class="toc-link"><span class="toc-num">21</span>ハッシュテーブルとマップ</a>
+    <a href="../phase-5.html#ch22" class="toc-link"><span class="toc-num">22</span>木構造</a>
+    <a href="../phase-5.html#ch23" class="toc-link"><span class="toc-num">23</span>グラフ</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">アルゴリズム</div>
+    <a href="../phase-6.html#ch24" class="toc-link"><span class="toc-num">24</span>探索とソート</a>
+    <a href="../phase-6.html#ch25" class="toc-link"><span class="toc-num">25</span>再帰と動的計画法</a>
+    <a href="../phase-6.html#ch26" class="toc-link"><span class="toc-num">26</span>アルゴリズムパターン</a>
+    <a href="../phase-6.html#ch27" class="toc-link"><span class="toc-num">27</span>グラフアルゴリズム</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">エンジニアリングの技術</div>
+    <a href="../phase-7.html#ch28" class="toc-link"><span class="toc-num">28</span>デザインパターンと SOLID</a>
+    <a href="../phase-7.html#ch29" class="toc-link"><span class="toc-num">29</span>SQL とクエリの習熟</a>
+    <a href="../phase-7.html#ch30" class="toc-link"><span class="toc-num">30</span>トランザクションと NoSQL</a>
+    <a href="../phase-7.html#ch31" class="toc-link"><span class="toc-num">31</span>ネットワークとインターネット</a>
+    <a href="../phase-7.html#ch32" class="toc-link"><span class="toc-num">32</span>並行性と並列性</a>
+    <a href="../phase-7.html#ch33" class="toc-link"><span class="toc-num">33</span>セキュリティエンジニアリング</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">システムとスケール</div>
+    <a href="../phase-8.html#ch34" class="toc-link"><span class="toc-num">34</span>システム設計</a>
+    <a href="../phase-8.html#ch35" class="toc-link"><span class="toc-num">35</span>分散システム</a>
+    <a href="../phase-8.html#ch36" class="toc-link"><span class="toc-num">36</span>パフォーマンスと可観測性</a>
+    <a href="../phase-8.html#ch37" class="toc-link"><span class="toc-num">37</span>大規模コードベースの探索</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AIレベル1〜5</div>
+    <a href="../phase-9.html#ch38" class="toc-link"><span class="toc-num">38</span>AI コードの評価と指示</a>
+    <a href="../phase-9.html#ch39" class="toc-link"><span class="toc-num">39</span>レベル1 &amp; 2 &mdash; タブ補完とエージェント IDE</a>
+    <a href="../phase-9.html#ch40" class="toc-link"><span class="toc-num">40</span>レベル3 &mdash; コンテキストエンジニアリング</a>
+    <a href="../phase-9.html#ch41" class="toc-link"><span class="toc-num">41</span>レベル4 &mdash; 複合エンジニアリング</a>
+    <a href="../phase-9.html#ch42" class="toc-link"><span class="toc-num">42</span>レベル5 &mdash; MCP、スキル、ケイパビリティ</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AIレベル6〜8</div>
+    <a href="../phase-10.html#ch43" class="toc-link"><span class="toc-num">43</span>レベル6 &mdash; ハーネスエンジニアリング</a>
+    <a href="../phase-10.html#ch44" class="toc-link"><span class="toc-num">44</span>レベル7 &mdash; バックグラウンドエージェント</a>
+    <a href="../phase-10.html#ch45" class="toc-link"><span class="toc-num">45</span>Docker での Claude Code</a>
+    <a href="../phase-10.html#ch46" class="toc-link"><span class="toc-num">46</span>レベル8 &mdash; 自律エージェントチーム</a>
+    <a href="../phase-10.html#ch47" class="toc-link"><span class="toc-num">47</span>マルチプレイヤー効果</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">リファレンス</div>
+    <a href="../appendices.html#glossary" class="toc-link"><span class="toc-num">&oplus;</span>用語集</a>
+    <a href="../appendices.html#prompt-library" class="toc-link"><span class="toc-num">&oplus;</span>プロンプトライブラリ</a>
+    <a href="../appendices.html#self-assessment" class="toc-link"><span class="toc-num">&oplus;</span>自己評価</a>
+    <a href="../appendices.html#common-mistakes" class="toc-link"><span class="toc-num">&oplus;</span>よくあるミス</a>
+    <a href="../appendices.html#appendix-d" class="toc-link"><span class="toc-num">&oplus;</span>トラブルシューティング</a>
+    <a href="../appendices.html#appendix-e" class="toc-link"><span class="toc-num">&oplus;</span>リソース</a>
+  </div>
+</aside>
+
+<div class="main">
+<section class="hero hero-sm">
+  <div class="hero-badge">フェーズ2 &mdash; Python</div>
+  <h1><em>Python</em> を書く</h1>
+  <p class="hero-sub">フェーズ2が終わるころには、テスト付きの関数を書いて失敗時にデバッグできるようになります。正確なテストはフェーズ2ゲートを参照してください。</p>
+  <div class="hero-meta"><span>章 05〜09</span><span>フェーズゲート + TaskForge</span></div>
+</section>
+
+<div class="content-wrap">
+
+<div role="note" class="callout info">
+<div class="callout-title">補足：フェーズ2を始める前に</div>
+<p>このフェーズでは、次のことができることを前提としています：ターミナルを開いてコマンドを実行する（章03）、短い Python 関数を読んで出力を予測する（章04）、変数・型・基本演算子の役割を説明できる（章02）。これらのどれかが不安なら、まず該当するフェーズ1の章に戻ってください。</p>
+</div>
+
+<!-- ===== CH 05 ===== -->
+<section id="ch05" data-ch="05">
+<h2><span class="ch-label">章 05</span> 関数、論理、制御フロー</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念</div>
+<p>関数、条件分岐、ループは、事実上あらゆるプログラムに登場する3つのパターンです。Claude Code が200行の関数を生成したとき、ロジックが正しいかどうかを判断するにはこれらのパターンを認識できなければなりません。読めないものは監督できません。</p>
+</div>
+
+<p>フェーズ1ではコードを<em>読む</em>ことを学びました。今度は書きます。この章では、すべてのプログラムに登場する3つの構成要素を扱います：<strong>関数（function）</strong>（再利用可能なブロック）、<strong>条件分岐</strong>（判断ポイント）、<strong>ループ（loop）</strong>（繰り返し）。</p>
+
+<h3>関数</h3>
+<p><strong>関数</strong>はキッチンのレシピカードのようなものです：名前、材料のリスト（パラメータ）、手順が書かれています。一度レシピを書けば、その料理が必要なときはいつでも使えます。コードでいえば：一度定義して、必要なときに呼び出す。一つの関数、一つの仕事。</p>
+<pre><code>def greet(name):
+    return f"Hello, {name}!"
+
+print(greet("World"))  # Hello, World!</code></pre>
+<p><code>def</code> は関数を定義します。<code>name</code> は<strong>パラメータ</strong>&mdash;入力です。<code>return</code> は値を返します。関数を定義してもそれは実行されません；<em>呼び出す</em>ことで実行されます。</p>
+
+<h3>比較演算子とブール演算子</h3>
+<p>プログラムが判断を下すには、はい・いいえの質問をする方法が必要です。<strong>比較演算子</strong>は2つの値を比較してブール値（<code>True</code> または <code>False</code>）を生成します：</p>
+<table>
+<caption>Python の比較演算子とその結果</caption>
+<tr><th>演算子</th><th>意味</th><th>例</th><th>結果</th></tr>
+<tr><td><code>==</code></td><td>等しい</td><td><code>5 == 5</code></td><td><code>True</code></td></tr>
+<tr><td><code>!=</code></td><td>等しくない</td><td><code>5 != 3</code></td><td><code>True</code></td></tr>
+<tr><td><code>&lt;</code></td><td>より小さい</td><td><code>3 &lt; 10</code></td><td><code>True</code></td></tr>
+<tr><td><code>&gt;</code></td><td>より大きい</td><td><code>10 &gt; 20</code></td><td><code>False</code></td></tr>
+<tr><td><code>&lt;=</code></td><td>以下</td><td><code>5 &lt;= 5</code></td><td><code>True</code></td></tr>
+<tr><td><code>&gt;=</code></td><td>以上</td><td><code>7 &gt;= 10</code></td><td><code>False</code></td></tr>
+</table>
+
+<div role="note" class="callout warn">
+<div class="callout-title">注意：= と == の違い</div>
+<p><code>=</code> は<strong>代入</strong>（値をボックスに入れる）です。<code>==</code> は<strong>比較</strong>（この2つの値は等しいか？）です。<code>if x == 5:</code> と書くべきところを <code>if x = 5:</code> と書くのは、初心者が犯す最もよくあるミスの一つです&mdash;AI が生成したコードではほぼ見られません。</p>
+</div>
+
+<p><strong>ブール演算子</strong>は True/False の値を組み合わせます：</p>
+<table>
+<caption>条件を組み合わせる Python のブール演算子</caption>
+<tr><th>演算子</th><th>意味</th><th>例</th><th>結果</th></tr>
+<tr><td><code>and</code></td><td>両方が True でなければならない</td><td><code>True and False</code></td><td><code>False</code></td></tr>
+<tr><td><code>or</code></td><td>少なくとも一方が True でなければならない</td><td><code>True or False</code></td><td><code>True</code></td></tr>
+<tr><td><code>not</code></td><td>値を反転する</td><td><code>not True</code></td><td><code>False</code></td></tr>
+</table>
+<pre><code>age = 25
+has_license = True
+can_drive = age >= 16 and has_license  # True</code></pre>
+
+<p><code>in</code> 演算子はメンバーシップをテストします&mdash;コレクション内に値が存在するかどうか：</p>
+<pre><code>print("a" in "apple")     # True
+print(3 in [1, 2, 3])     # True
+print("quit" in "quilts") # True &mdash; 部分文字列もチェックする</code></pre>
+<p>TaskForge では <code>if command == "add":</code> のような比較演算子のパターンや、<code>for task in tasks:</code> のように <code>in</code> を使ったイテレーションが見られます。これらの演算子はデータと判断をつなぐ接着剤であり、以下の条件分岐の前提条件です。</p>
+
+<h3>条件分岐</h3>
+<p><code>if</code>/<code>elif</code>/<code>else</code> を使うと、プログラムがパスを選択できます。プログラムは<strong>最初の</strong>真のブランチを実行し、残りをスキップします。</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" aria-label="if/elif/else の分岐を示すフローチャート：入力値がチェックされ、プログラムは3つのパスのうち1つを進む">
+  <rect class="node-accent" x="260" y="5" width="180" height="36" rx="8"/>
+  <text class="label-text" x="350" y="28" text-anchor="middle">入力値</text>
+  <!-- Diamond -->
+  <polygon points="350,60 420,95 350,130 280,95" class="node-fill"/>
+  <text class="label-text" x="350" y="99" text-anchor="middle">チェック</text>
+  <line class="arrow" x1="350" y1="41" x2="350" y2="60"/>
+  <!-- Three branches -->
+  <line class="arrow" x1="280" y1="95" x2="140" y2="95"/>
+  <rect class="node-fill" x="40" y="75" width="100" height="40" rx="6"/>
+  <text class="label-text" x="90" y="99" text-anchor="middle">パス A</text>
+  <line class="arrow" x1="350" y1="130" x2="350" y2="150"/>
+  <rect class="node-fill" x="300" y="150" width="100" height="40" rx="6"/>
+  <text class="label-text" x="350" y="174" text-anchor="middle">パス B</text>
+  <line class="arrow" x1="420" y1="95" x2="560" y2="95"/>
+  <rect class="node-fill" x="560" y="75" width="100" height="40" rx="6"/>
+  <text class="label-text" x="610" y="99" text-anchor="middle">パス C</text>
+</svg>
+<div class="diagram-caption">プログラムは1つのパスを進みます。一度ブランチに入ると、他のブランチはすべてスキップされます。</div>
+</div>
+
+<h3>ループ</h3>
+<p><code>for</code> ループはコレクションの各アイテムを処理します。<code>while</code> ループは条件が変わるまで繰り返します。</p>
+
+<div class="dw">
+<svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" aria-label="5つの数値に対する for ループのトレース表。各イテレーションで累計が0から150に積み上がる様子を示す">
+  <text class="label-text" x="10" y="20">for item in [10, 20, 30, 40, 50]:  total += item</text>
+  <!-- Table header -->
+  <text class="sub-text" x="80" y="55" text-anchor="middle">イテレーション</text>
+  <text class="sub-text" x="230" y="55" text-anchor="middle">item</text>
+  <text class="sub-text" x="380" y="55" text-anchor="middle">total（前）</text>
+  <text class="sub-text" x="560" y="55" text-anchor="middle">total（後）</text>
+  <line x1="10" y1="62" x2="690" y2="62" stroke="var(--border)" stroke-width="1"/>
+  <!-- Rows -->
+  <text class="sub-text" x="80" y="82" text-anchor="middle">1</text>
+  <text class="label-text" x="230" y="82" text-anchor="middle">10</text>
+  <text class="sub-text" x="380" y="82" text-anchor="middle">0</text>
+  <text class="label-text" x="560" y="82" text-anchor="middle">10</text>
+  <text class="sub-text" x="80" y="102" text-anchor="middle">2</text>
+  <text class="label-text" x="230" y="102" text-anchor="middle">20</text>
+  <text class="sub-text" x="380" y="102" text-anchor="middle">10</text>
+  <text class="label-text" x="560" y="102" text-anchor="middle">30</text>
+  <text class="sub-text" x="80" y="122" text-anchor="middle">3</text>
+  <text class="label-text" x="230" y="122" text-anchor="middle">30</text>
+  <text class="sub-text" x="380" y="122" text-anchor="middle">30</text>
+  <text class="label-text" x="560" y="122" text-anchor="middle">60</text>
+  <text class="sub-text" x="80" y="142" text-anchor="middle">4</text>
+  <text class="label-text" x="230" y="142" text-anchor="middle">40</text>
+  <text class="sub-text" x="380" y="142" text-anchor="middle">60</text>
+  <text class="label-text" x="560" y="142" text-anchor="middle">100</text>
+  <text class="sub-text" x="80" y="162" text-anchor="middle">5</text>
+  <text class="label-text" x="230" y="162" text-anchor="middle">50</text>
+  <text class="sub-text" x="380" y="162" text-anchor="middle">100</text>
+  <text class="label-text" x="560" y="162" text-anchor="middle">150</text>
+  <rect x="520" y="150" width="80" height="20" rx="4" class="node-accent" style="fill-opacity:.3"/>
+</svg>
+<div class="diagram-caption">ループは1アイテムずつ処理します。アキュムレータが実行中の結果を記憶します。</div>
+</div>
+
+<h3>スコープ</h3>
+<p>関数の<em>内側</em>で定義された変数は外からは見えません。これを<strong>スコープ</strong>といいます。AI が生成したコードでよくあるバグの原因です&mdash;AI は別の関数の内部にしか存在しない変数を参照することがあります。</p>
+
+<p>具体的な例です。この関数はカウンタを更新しているように<em>見えます</em>が、実際にはしていません：</p>
+<pre><code># バグ: 外側の変数を変更しない
+count = 0
+
+def increment():
+    count = count + 1  # UnboundLocalError!
+
+increment()
+print(count)  # ここには到達しない</code></pre>
+<p>Python は関数内の <code>count = ...</code> を見て、<code>count</code> を<em>ローカル</em>変数として扱います。しかし右辺でローカルに代入される前に <code>count</code> を読もうとしています&mdash;そのためエラーになります。修正方法：値を渡して結果を返す。</p>
+<pre><code># 修正: 渡して、返す
+count = 0
+
+def increment(current):
+    return current + 1
+
+count = increment(count)
+print(count)  # 1</code></pre>
+
+<div role="note" class="callout warn">
+<div class="callout-title">注意：スコープと AI 生成コード</div>
+<p>AI が生成したコードはグローバル状態を操作することがあります。スコープの問題を認識することで、これらのバグを発見できます。関数がパラメータでも関数内で定義されてもいない変数を読み書きしているのは危険信号です。</p>
+</div>
+
+<h3>マイクロ演習</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">1: 関数を書く</div>
+<pre><code>def greet(name):
+    return f"Hello, {name}!"
+
+print(greet("World"))</code></pre>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">2: 条件分岐を書く</div>
+<pre><code>def is_positive(n):
+    if n > 0:
+        return True
+    return False</code></pre>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">3: ループを書く</div>
+<pre><code>for num in [1, 2, 3, 4, 5]:
+    print(num * 10)</code></pre>
+</div>
+
+<h3>TaskForge との関連</h3>
+<p>TaskForge の <code>complete_task</code> を見てください：関数の中に <code>if</code> 条件分岐を含む <code>for</code> ループが使われています。この章のすべての概念がその1つの関数に登場します。</p>
+
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう</div>
+<p><code>analyze_signal(value, threshold)</code> を書いてください。value &gt; threshold なら <code>'CRITICAL'</code>、value &gt; threshold * 0.9 なら <code>'WARNING'</code>、それ以外は <code>'NORMAL'</code> を返します。</p>
+<div class="prompt-block"><span class="label">analyze_signal.py</span>def analyze_signal(value, threshold):
+    if value > threshold:
+        return 'CRITICAL'
+    elif value > threshold * 0.9:
+        return 'WARNING'
+    else:
+        return 'NORMAL'
+
+print(analyze_signal(95, 100))   # WARNING
+print(analyze_signal(105, 100))  # CRITICAL
+print(analyze_signal(50, 100))   # NORMAL</div>
+<p><strong>確認：</strong>3つのテストケースすべてが期待値を返します。</p>
+<p><strong>うまくいかない場合：</strong>（1）すべての結果が <code>'CRITICAL'</code> になる &rarr; 順序を確認：最初に CRITICAL、次に WARNING。（2）<code>NameError</code> &rarr; <code>def</code> を忘れたか関数名のスペルミスです。（3）何も返らない &rarr; <code>return</code> の代わりに <code>print()</code> を使っています。</p>
+</div>
+
+<div class="pq">パラメータ、条件分岐、戻り値を持つ関数を書きました。これは TaskForge のすべてのコマンドと Claude Code が生成するすべての関数の背後にある構造です。</div>
+
+<h3>文字列メソッド</h3>
+<p>文字列はどこにでもあります&mdash;ユーザー入力、ファイルパス、API レスポンス、ログメッセージ。Python にはスライス、クリーン、再構成するための組み込みメソッドがあります。テキストデータの処理や AI 出力の解析で常に使います。</p>
+
+<h4>f 文字列</h4>
+<p>f 文字列を使うと、式を文字列内に直接埋め込めます。文字列の前に <code>f</code> を付け、変数や式を波括弧で囲みます：</p>
+<pre><code>name = "Alice"
+tasks = 5
+print(f"{name} has {tasks} tasks")  # Alice has 5 tasks
+print(f"Double: {tasks * 2}")       # Double: 10</code></pre>
+
+<h4>必須の文字列メソッド</h4>
+<table>
+<caption>例付き必須 Python 文字列メソッド</caption>
+<tr><th>メソッド</th><th>例</th><th>結果</th></tr>
+<tr><td><code>split(sep)</code></td><td><code>"a,b,c".split(",")</code></td><td><code>["a", "b", "c"]</code></td></tr>
+<tr><td><code>strip()</code></td><td><code>"  hello  ".strip()</code></td><td><code>"hello"</code></td></tr>
+<tr><td><code>join(list)</code></td><td><code>", ".join(["a", "b"])</code></td><td><code>"a, b"</code></td></tr>
+<tr><td><code>replace(old, new)</code></td><td><code>"hello".replace("l", "r")</code></td><td><code>"herro"</code></td></tr>
+<tr><td><code>startswith(s)</code></td><td><code>"hello".startswith("he")</code></td><td><code>True</code></td></tr>
+<tr><td><code>endswith(s)</code></td><td><code>"file.py".endswith(".py")</code></td><td><code>True</code></td></tr>
+</table>
+
+<p>これらのメソッドは<strong>新しい文字列を返します</strong>&mdash;元の文字列を変更しません。Python の文字列はイミュータブルです。</p>
+
+<div role="note" class="callout ok">
+<div class="callout-title">マイクロ演習: 文字列パイプライン</div>
+<p>文字列 <code>'  alice,bob,charlie  '</code> を使って文字列メソッドで <code>['Alice', 'Bob', 'Charlie']</code> を作ってください。</p>
+<pre><code>raw = '  alice,bob,charlie  '
+names = [name.strip().capitalize() for name in raw.strip().split(",")]
+print(names)  # ['Alice', 'Bob', 'Charlie']</code></pre>
+<p>これは <code>strip()</code> で外側の空白を除去し、<code>split(",")</code> でカンマで分割し、各部分に <code>capitalize()</code> を適用します。データのクリーニング時にこのパターンを常に使います。</p>
+</div>
+
+<h3>インタラクティブ演習</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="05" data-ex="fizzbuzz">
+  <div class="exercise-header">
+    <h4>デザインチャレンジ：「FizzBuzz」</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">1 から n までの文字列のリストを返す <code>fizzbuzz(n)</code> を書いてください。3の倍数 &rarr; 'Fizz'、5の倍数 &rarr; 'Buzz'、両方の倍数 &rarr; 'FizzBuzz'、それ以外は数字を文字列として返します。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def fizzbuzz(n):
+    # ここにコードを書いてください
+    pass
+</script>
+    <script type="text/plain" class="test-code">
+assert fizzbuzz(1) == ['1'], "fizzbuzz(1) should return ['1']"
+assert fizzbuzz(3) == ['1', '2', 'Fizz'], "fizzbuzz(3)"
+assert fizzbuzz(5) == ['1', '2', 'Fizz', '4', 'Buzz'], "fizzbuzz(5)"
+assert fizzbuzz(15)[-1] == 'FizzBuzz', "15 should be FizzBuzz"
+assert fizzbuzz(0) == [], "fizzbuzz(0) should be empty"
+assert len(fizzbuzz(15)) == 15, "fizzbuzz(15) should have 15 items"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">確認</button>
+    <button class="ex-hint" data-level="0">ヒント</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">モジュロ演算子（%）を使って割り切れるかチェックしてください。</p>
+    <p class="hint">3 や 5 を個別にチェックする前に、15 で割り切れるかを先にチェックしてください。</p>
+    <p class="hint">for ループでリストを構築してください：<code>for i in range(1, n+1)</code></p>
+  </div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="05" data-ex="palindrome">
+  <div class="exercise-header">
+    <h4>デザインチャレンジ：「回文チェッカー」</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">文字列が回文なら True を返す <code>is_palindrome(s)</code> を書いてください。大文字小文字と英数字以外の文字は無視します。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def is_palindrome(s):
+    # ここにコードを書いてください
+    pass
+</script>
+    <script type="text/plain" class="test-code">
+assert is_palindrome("racecar") == True, "racecar is a palindrome"
+assert is_palindrome("hello") == False, "hello is not a palindrome"
+assert is_palindrome("A man a plan a canal Panama") == True, "Ignore spaces and case"
+assert is_palindrome("") == True, "Empty string is a palindrome"
+assert is_palindrome("a") == True, "Single char is a palindrome"
+assert is_palindrome("Was it a car or a cat I saw?") == True, "Ignore punctuation"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">確認</button>
+    <button class="ex-hint" data-level="0">ヒント</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">まず正規化：小文字にして英数字のみに絞り込んでください。</p>
+    <p class="hint">文字が英数字かどうかは <code>c.isalnum()</code> でチェックします。</p>
+    <p class="hint">クリーンにした文字列を逆順と比較します：<code>cleaned == cleaned[::-1]</code></p>
+  </div>
+</div>
+
+<div class="quiz" data-ch="05" data-ex="quiz-scope">
+  <h4>知識チェック</h4>
+  <p>関数内で定義された変数を関数の外で使おうとするとどうなりますか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">問題なく動作する</button>
+    <button class="quiz-option" data-correct="true">NameError — 変数は関数の外には存在しない</button>
+    <button class="quiz-option" data-correct="false">None を返す</button>
+    <button class="quiz-option" data-correct="false">プログラムが静かにクラッシュする</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<h3>値としての関数：高階関数とクロージャ</h3>
+<p>Python では、関数は<strong>ファーストクラスの値</strong>です — 変数に代入したり、引数として渡したり、他の関数から返したりできます。AI はこれらのパターンを常に生成します。</p>
+
+<h4>組み込み高階関数</h4>
+<p><code>map()</code>、<code>filter()</code>、<code>key</code> 関数付きの <code>sorted()</code> が最も一般的です。それぞれ関数を引数にとります：</p>
+<pre><code># map: 全要素に関数を適用する
+names = ["alice", "bob", "charlie"]
+upper_names = list(map(str.upper, names))  # ["ALICE", "BOB", "CHARLIE"]
+
+# filter: 関数が True を返す要素のみ残す
+numbers = [1, 2, 3, 4, 5, 6]
+evens = list(filter(lambda x: x % 2 == 0, numbers))  # [2, 4, 6]
+
+# key 付き sorted: カスタム基準でソートする
+tasks = [{"title": "B task", "priority": 2}, {"title": "A task", "priority": 1}]
+by_priority = sorted(tasks, key=lambda t: t["priority"])</code></pre>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念：map/filter とリスト内包表記</div>
+<p>AI は <code>map()</code> と <code>filter()</code> を頻繁に生成します。Python では通常リスト内包表記の方が読みやすいです：<code>list(map(str.upper, names))</code> より <code>[x.upper() for x in names]</code> の方が明快です。両方を知っていれば AI のコードを読んで、文脈に合った方を選択できます。</p>
+</div>
+
+<h4>ラムダ式</h4>
+<p><code>lambda</code> は無名関数です — 短い使い捨ての引数として便利です：</p>
+<pre><code># Lambda: 一回限りの使用のための無名関数
+square = lambda x: x ** 2  # def square(x): return x ** 2 と同等
+
+# 高階関数の引数として最も便利
+sorted_tasks = sorted(tasks, key=lambda t: t["due_date"])</code></pre>
+<p><strong>目安：</strong>ラムダが1つ以上の式になるなら、代わりに名前付き関数を使ってください。簡潔さより可読性が重要です。</p>
+<p>実際には、PEP 8 は名前付き関数には def の使用を推奨しています。ラムダはインライン引数として輝きます：<code>sorted(names, key=lambda n: len(n))</code>。</p>
+
+<h4>クロージャ</h4>
+<p><strong>クロージャ（closure）</strong>は、定義されたスコープの変数を記憶する関数です：</p>
+<pre><code>def make_multiplier(n):
+    def multiplier(x):
+        return x * n  # 'n' は外側のスコープから記憶される
+    return multiplier
+
+double = make_multiplier(2)
+triple = make_multiplier(3)
+print(double(5))  # 10
+print(triple(5))  # 15</code></pre>
+<p>AI はコールバック、イベントハンドラ、ファクトリパターンでクロージャを生成します。理解していれば、これらのパターンが登場したときに読んでデバッグできます。</p>
+
+<div class="exercise" data-type="pyodide" data-ch="05" data-ex="higher-order">
+  <div class="exercise-header">
+    <h4>演習：高階関数</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">全要素に関数を適用する <code>apply_to_all(func, lst)</code>（<code>map</code> のように）と、func が True を返す要素のみ残す <code>keep_if(func, lst)</code>（<code>filter</code> のように）を実装してください。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def apply_to_all(func, lst):
+    """全要素に func を適用する。新しいリストを返す。"""
+    pass
+
+def keep_if(func, lst):
+    """func が True を返す要素のみ残す。新しいリストを返す。"""
+    pass
+</script>
+    <script type="text/plain" class="test-code">
+assert apply_to_all(str.upper, ["a", "b", "c"]) == ["A", "B", "C"], "Should uppercase all"
+assert apply_to_all(lambda x: x * 2, [1, 2, 3]) == [2, 4, 6], "Should double all"
+assert keep_if(lambda x: x > 3, [1, 2, 3, 4, 5]) == [4, 5], "Should keep > 3"
+assert keep_if(lambda x: len(x) > 3, ["hi", "hello", "hey"]) == ["hello"], "Should keep long strings"
+print("All tests passed!")
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">確認</button>
+    <button class="ex-hint" data-level="0">ヒント</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">apply_to_all：新しいリストを作り、lst をループして各アイテムに func(item) を append します。</p>
+    <p class="hint">keep_if：新しいリストを作り、lst をループして func(item) が True のときだけ append します。</p>
+    <p class="hint">apply_to_all: return [func(x) for x in lst]。keep_if: return [x for x in lst if func(x)]。</p>
+  </div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="05" data-ex="closure">
+  <div class="exercise-header">
+    <h4>演習：クロージャ — バリデータを作る</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">文字列の長さが範囲内かどうかをチェックする関数を返す <code>make_validator(min_len, max_len)</code> を実装してください。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def make_validator(min_len, max_len):
+    """文字列の長さが min_len 以上 max_len 以下かチェックする関数を返す。"""
+    pass
+</script>
+    <script type="text/plain" class="test-code">
+check_username = make_validator(3, 20)
+assert check_username("alice") == True, "5 chars is valid"
+assert check_username("ab") == False, "2 chars too short"
+assert check_username("a" * 21) == False, "21 chars too long"
+check_password = make_validator(8, 128)
+assert check_password("short") == False, "5 chars too short for password"
+assert check_password("long_enough_password") == True, "20 chars is valid"
+print("All tests passed!")
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">確認</button>
+    <button class="ex-hint" data-level="0">ヒント</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">文字列を受け取り min_len &lt;= len(s) &lt;= max_len をチェックする内部関数を返してください。</p>
+    <p class="hint">内部関数は外側のスコープから min_len と max_len を「閉じ込めます」。</p>
+    <p class="hint">def make_validator(min_len, max_len): def check(s): return min_len &lt;= len(s) &lt;= max_len; return check</p>
+  </div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="05" data-ex="solve-compare-wordfreq">
+  <div class="exercise-header">
+    <h4>解いて比べる：単語頻度カウンター</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt"><strong>ステップ1：</strong>自分でこの問題を解いてください。<strong>ステップ2：</strong>「ヒント」を3回クリックしてAIの解法を見てください。<strong>ステップ3：</strong>比較してコメントに評価の質問に答えてください。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+# 自分の解法：単語頻度カウンター
+# word -> count の辞書を返す word_freq(text) を書いてください。
+# 大文字小文字を区別しない。基本的な句読点（.,!?;:）を除去する。
+# 例：word_freq("The cat and the dog") -> {"the": 2, "cat": 1, "and": 1, "dog": 1}
+# 解法を書いて実行し、ヒントを3回クリックしてAIのバージョンを見てください。
+
+def word_freq(text):
+    pass
+
+# 比較後、これらの質問にコメントで答えてください：
+# 1. AIは何を違うやり方でしましたか？
+# 2. AIのアプローチはより良い、悪い、または単に異なりますか？なぜ？
+# 3. AIのバージョンに問題はありましたか？
+</script>
+    <script type="text/plain" class="test-code">
+result = word_freq("The cat and the dog")
+assert isinstance(result, dict), "Should return a dict"
+assert result["the"] == 2, "Should count 'the' twice (case-insensitive)"
+assert result["cat"] == 1, "Should count 'cat' once"
+result2 = word_freq("Hello, world! Hello.")
+assert result2["hello"] == 2, "Should strip punctuation and be case-insensitive"
+assert result2["world"] == 1, "Should count 'world' once"
+result3 = word_freq("")
+assert result3 == {}, "Empty string should return empty dict"
+print("All tests passed!")
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">確認</button>
+    <button class="ex-hint" data-level="0">ヒント</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">まず自分で解いてください &mdash; <code>.lower()</code> と <code>.split()</code> を使い、単語をループして辞書でカウントします。</p>
+    <p class="hint">句読点を除去するには、分割後の各単語に <code>word.strip(".,!?;:")</code> を使います。</p>
+    <p class="hint"><strong>AIの解法：</strong><br><code>from collections import Counter<br>def word_freq(text):<br>&nbsp;&nbsp;&nbsp;&nbsp;words = text.lower().split()<br>&nbsp;&nbsp;&nbsp;&nbsp;cleaned = [w.strip(".,!?;:") for w in words]<br>&nbsp;&nbsp;&nbsp;&nbsp;return dict(Counter(w for w in cleaned if w))</code><br><br><strong>評価：</strong>AIは <code>collections</code> の <code>Counter</code> を使いました &mdash; あなたのループがすることをワンライナーでやっています。手動のアプローチも完全に機能します。しかしこれで <code>Counter</code> が存在することを知りました &mdash; 語彙に加えてください。TaskForge では、タスクのステータスを数えるのに使えるかもしれません。</p>
+  </div>
+</div>
+
+</section>
+
+<!-- ===== CH 06 ===== -->
+<section id="ch06" data-ch="06">
+<h2><span class="ch-label">章 06</span> データ構造 &mdash; リスト、辞書、データの格納方法</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念</div>
+<p>すべての API レスポンス、すべての設定ファイル、すべての AI ツール出力は構造化データです&mdash;通常は JSON で、それはネストされたリストと辞書にすぎません。ネストされたデータを操作できないと、API を使ったり、AI 出力を読んだり、データの問題をデバッグしたりできません。</p>
+</div>
+
+<p>関数はデータを処理します。ではデータは<em>どこに</em>あるのでしょうか？<strong>データ構造</strong>&mdash;情報を整理するコンテナです。Python と AI ツールで支配的な2つの構造：<strong>リスト（list）</strong>（順序付きシーケンス）と<strong>辞書（dictionary）</strong>（キーと値のペア）。</p>
+
+<h3>リスト</h3>
+<p><strong>リスト</strong>は 0 から始まるインデックスで管理された順序付きコレクションです：</p>
+<pre><code>signals = ["speed", "rpm", "fuel"]
+print(signals[0])   # "speed"
+print(signals[-1])  # "fuel"（最後の要素）
+signals.append("temp")  # 末尾に追加</code></pre>
+
+<h3>辞書</h3>
+<p><strong>辞書</strong>はキーを値にマッピングします。JSON（ユニバーサルデータ形式）は本質的にネストされた辞書なので、API と AI ツールにとって最も重要な構造です。</p>
+<pre><code>warning = {"level": "critical", "system": "brakes"}
+print(warning["level"])  # "critical"</code></pre>
+
+<h3>ネスト構造</h3>
+<p>実際のデータはほぼ常にネストされています&mdash;辞書の中にリスト、その中に辞書：</p>
+<pre><code>vehicles = [
+    {"name": "eCanter", "type": "EV", "range_km": 200},
+    {"name": "Super Great", "type": "diesel", "range_km": 800}
+]
+print(vehicles[0]["name"])  # "eCanter"</code></pre>
+
+<div class="dw">
+<svg viewBox="0 0 700 150" xmlns="http://www.w3.org/2000/svg" aria-label="リスト、辞書、ネストされたデータ構造の比較。各構造がどのようにデータを格納・アクセスするかを示す">
+  <!-- List -->
+  <rect class="node-fill" x="10" y="10" width="200" height="120" rx="8"/>
+  <text class="label-text" x="110" y="32" text-anchor="middle">リスト</text>
+  <text class="sub-text" x="110" y="52" text-anchor="middle">[0] = "a"</text>
+  <text class="sub-text" x="110" y="68" text-anchor="middle">[1] = "b"</text>
+  <text class="sub-text" x="110" y="84" text-anchor="middle">[2] = "c"</text>
+  <text class="sub-text" x="110" y="118" text-anchor="middle" fill="var(--accent)">位置で順序付け</text>
+  <!-- Dict -->
+  <rect class="node-fill" x="250" y="10" width="200" height="120" rx="8"/>
+  <text class="label-text" x="350" y="32" text-anchor="middle">辞書</text>
+  <text class="sub-text" x="350" y="52" text-anchor="middle">"name" &rarr; "Alice"</text>
+  <text class="sub-text" x="350" y="68" text-anchor="middle">"age" &rarr; 30</text>
+  <text class="sub-text" x="350" y="118" text-anchor="middle" fill="var(--accent)">キー名でアクセス</text>
+  <!-- Nested -->
+  <rect class="node-accent" x="490" y="10" width="200" height="120" rx="8"/>
+  <text class="label-text" x="590" y="32" text-anchor="middle">ネスト</text>
+  <text class="sub-text" x="590" y="52" text-anchor="middle">"tasks" &rarr; [</text>
+  <text class="sub-text" x="590" y="68" text-anchor="middle">&nbsp;&nbsp;{id:1, ...},</text>
+  <text class="sub-text" x="590" y="84" text-anchor="middle">&nbsp;&nbsp;{id:2, ...}</text>
+  <text class="sub-text" x="590" y="98" text-anchor="middle">]</text>
+  <text class="sub-text" x="590" y="118" text-anchor="middle" fill="var(--accent)">これが実世界のデータ</text>
+</svg>
+<div class="diagram-caption">リストは順序付きアイテムを保持します。辞書は名前付きアイテムを保持します。実際のデータは通常、辞書のリストを含むネストされた辞書です。</div>
+</div>
+
+<h3>適切な構造の選択</h3>
+<table>
+<caption>ユースケース別のデータ構造の選び方</caption>
+<tr><th>目的</th><th>使うもの</th><th>例</th></tr>
+<tr><td>順序付きシーケンス</td><td>リスト</td><td>タスクのキュー</td></tr>
+<tr><td>名前による検索</td><td>辞書</td><td>設定項目</td></tr>
+<tr><td>一意なアイテムのみ</td><td>セット（set）</td><td>重複のないタグ</td></tr>
+<tr><td>変更不可のシーケンス</td><td>タプル（tuple）</td><td>データベース行の座標</td></tr>
+</table>
+
+<h3>TaskForge との関連</h3>
+<p>TaskForge はタスクを<strong>辞書のリスト</strong>として格納します：<code>tasks = [{"id": 1, "description": "...", "status": "pending"}, ...]</code>。これはすべての API レスポンスとすべての JSON ファイルで見られるパターンです。</p>
+
+<h3>マイクロ演習</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">1: リストアクセス</div>
+<p>5つの数値のリストを作成して3番目の要素（インデックス2）を表示してください。</p>
+<pre><code>nums = [10, 20, 30, 40, 50]
+print(nums[2])  # 30</code></pre>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">2: 辞書アクセス</div>
+<pre><code>person = {"name": "Alice", "age": 30, "city": "Tokyo"}
+print(person["city"])  # Tokyo</code></pre>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう</div>
+<p>プロジェクトを表す辞書を作成してください：<code>name</code>（文字列）、<code>features</code>（3つの文字列のリスト）、<code>tech_stack</code>（'language'、'framework'、'database' を持つ辞書）、<code>status</code>（文字列）。<code>project['tech_stack']['framework']</code> を表示してください。</p>
+<div class="prompt-block"><span class="label">project.py</span>project = {
+    "name": "TaskForge",
+    "features": ["add tasks", "complete tasks", "list tasks"],
+    "tech_stack": {"language": "Python", "framework": "Flask", "database": "JSON"},
+    "status": "in progress"
+}
+print(project["tech_stack"]["framework"])  # Flask</div>
+<p><strong>確認：</strong>ネストされたアクセスでフレームワークの値が表示されます。</p>
+<p><strong>うまくいかない場合：</strong>（1）<code>KeyError</code> &rarr; キー名は大文字小文字が区別されます。（2）<code>TypeError: string indices</code> &rarr; <code>tech_stack</code> を辞書ではなく文字列として定義しています。</p>
+</div>
+
+<div class="pq">JSON を使いました&mdash;API と AI ツールが情報交換に使うデータ形式です。Claude Code があなたのプロンプトを Anthropic API に送るとき、あなたが今書いたものとまったく同じような JSON として送られます。</div>
+
+<h3>リスト内包表記</h3>
+<p><strong>リスト内包表記</strong>は1行で新しいリストを構築します。リストに append する <code>for</code> ループのコンパクトな代替手段です。AI が生成する Python では内包表記を多用するので、流暢に読めるようになる必要があります。</p>
+
+<h4>基本構文</h4>
+<pre><code>[expression for item in iterable]</code></pre>
+<p>これは「イテラブルの各 <code>item</code> に対して <code>expression</code> を評価し、結果をリストに収める」と読みます。</p>
+
+<h4>条件付き</h4>
+<pre><code>[expression for item in iterable if condition]</code></pre>
+<p>これはフィルタを追加します：<code>condition</code> が真のアイテムのみが含まれます。</p>
+
+<h4>ループと内包表記の比較</h4>
+<p>同じロジックをループと内包表記で書いた例：</p>
+<pre><code># ループバージョン
+squares = []
+for n in range(5):
+    squares.append(n ** 2)
+
+# 内包表記バージョン
+squares = [n ** 2 for n in range(5)]
+# どちらも生成するのは: [0, 1, 4, 9, 16]</code></pre>
+
+<pre><code># フィルタ付きループ
+evens = []
+for n in range(10):
+    if n % 2 == 0:
+        evens.append(n)
+
+# フィルタ付き内包表記
+evens = [n for n in range(10) if n % 2 == 0]
+# どちらも生成するのは: [0, 2, 4, 6, 8]</code></pre>
+
+<div role="note" class="callout warn">
+<div class="callout-title">注意：AI コードレビューにとって重要な理由</div>
+<p>AI が生成したコードは内包表記を常に使います。読めなければ AI の出力をレビューできません。<code>[task for task in tasks if task["status"] == "pending"]</code> を見たとき、「保留中のタスクのみにタスクリストをフィルタする」と即座に認識できる必要があります。</p>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">マイクロ演習：内包表記変換</div>
+<p><strong>パートA：</strong>このループを内包表記に書き換えてください：</p>
+<pre><code>names = ["alice", "bob", "charlie"]
+upper = []
+for name in names:
+    upper.append(name.upper())</code></pre>
+<pre><code># 答え
+upper = [name.upper() for name in names]</code></pre>
+<p><strong>パートB：</strong>この内包表記をループに書き換えてください：</p>
+<pre><code>short = [w for w in ["hi", "hello", "hey", "greetings"] if len(w) <= 3]</code></pre>
+<pre><code># 答え
+short = []
+for w in ["hi", "hello", "hey", "greetings"]:
+    if len(w) <= 3:
+        short.append(w)
+# どちらも生成するのは: ["hi", "hey"]</code></pre>
+</div>
+
+<h3>インタラクティブ演習</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="06" data-ex="groupby">
+  <div class="exercise-header">
+    <h4>デザインチャレンジ：「グループ化」</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">各アイテムに key_fn を呼び出した結果でリストをグループ化する <code>group_by(items, key_fn)</code> を書いてください。キーをリストにマッピングする辞書を返します。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def group_by(items, key_fn):
+    # ここにコードを書いてください
+    pass
+</script>
+    <script type="text/plain" class="test-code">
+assert group_by(["hi", "hey", "hello", "ha"], len) == {2: ["hi", "ha"], 3: ["hey"], 5: ["hello"]}, "Group by length"
+assert group_by([1,2,3,4,5,6], str) == {"1": [1], "2": [2], "3": [3], "4": [4], "5": [5], "6": [6]}, "Group by string form"
+assert group_by([], len) == {}, "Empty list returns empty dict"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">確認</button>
+    <button class="ex-hint" data-level="0">ヒント</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">空の辞書から始めます。各アイテムについてキーを計算します。</p>
+    <p class="hint"><code>dict.setdefault(key, []).append(item)</code> を使ってアイテムを追加します。</p>
+    <p class="hint">または <code>result[key] = result.get(key, []) + [item]</code> を使います。</p>
+  </div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="06" data-ex="flatten">
+  <div class="exercise-header">
+    <h4>デザインチャレンジ：「フラット化」</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">任意の深さにネストされたリストを1つのフラットなリストに変換する <code>flatten(nested)</code> を書いてください。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def flatten(nested):
+    # ここにコードを書いてください
+    pass
+</script>
+    <script type="text/plain" class="test-code">
+assert flatten([1, [2, [3, 4], 5], 6]) == [1, 2, 3, 4, 5, 6], "Nested lists"
+assert flatten([1, 2, 3]) == [1, 2, 3], "Already flat"
+assert flatten([]) == [], "Empty list"
+assert flatten([[[[1]]]]) == [1], "Deeply nested"
+assert flatten([1, [2], [3, [4, [5]]]]) == [1, 2, 3, 4, 5], "Mixed nesting"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">確認</button>
+    <button class="ex-hint" data-level="0">ヒント</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">各要素をループします。要素自体がリストなら、<em>そのリスト</em>もフラット化する必要があります。一つのアプローチ：自分自身の関数を内部で呼ぶ（これを<strong>再帰</strong>といいます&mdash;より小さな入力で自分自身を呼ぶ関数）。</p>
+    <p class="hint">何かがリストかどうかは <code>isinstance(item, list)</code> でチェックします。</p>
+    <p class="hint">パターン：<code>result = []</code> を作成。各アイテムがリストなら <code>flatten(item)</code> で result を extend。そうでなければアイテムを直接 append します。</p>
+  </div>
+</div>
+
+<div class="quiz" data-ch="06" data-ex="quiz-dict">
+  <h4>知識チェック</h4>
+  <p><code>my_dict['missing']</code> で存在しないキーにアクセスするとどうなりますか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">None を返す</button>
+    <button class="quiz-option" data-correct="false">空文字列を返す</button>
+    <button class="quiz-option" data-correct="true">KeyError が発生する</button>
+    <button class="quiz-option" data-correct="false">False を返す</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念：Big O — このコードはどれくらい速いか？</div>
+<p>Big O 記法は、データが増えるにつれて操作にかかる時間がどう増えるかを表します。数学的に導出する必要はありません — AI が生成したコードを読むときに<em>認識</em>できればよいのです：</p>
+<table>
+<caption>一般的な Big O の計算量とその実際的な意味</caption>
+<tr><th>記法</th><th>名前</th><th>例</th><th>感覚</th></tr>
+<tr><td><code>O(1)</code></td><td>定数</td><td>キーによる辞書検索</td><td>サイズに関わらず即座</td></tr>
+<tr><td><code>O(log n)</code></td><td>対数</td><td>二分探索</td><td>データ2倍でステップ1つ増える</td></tr>
+<tr><td><code>O(n)</code></td><td>線形</td><td>リストのループ</td><td>データ10倍で時間10倍</td></tr>
+<tr><td><code>O(n log n)</code></td><td>線形対数</td><td>ソート（良いアルゴリズム）</td><td>線形よりわずかに悪い</td></tr>
+<tr><td><code>O(n&sup2;)</code></td><td>二乗</td><td>ネストされたループ</td><td>データ10倍で時間100倍</td></tr>
+<tr><td><code>O(2&#x207F;)</code></td><td>指数</td><td>全部分集合の力任せ探索</td><td>約30アイテムで使い物にならない</td></tr>
+</table>
+<p><strong>実際的なルール：</strong>AI がリストのネストされたループを生成したら「これは O(n&sup2;) か？辞書で O(n) にできないか？」と聞いてください。この1つの質問で AI が生成したコードの最も一般的なパフォーマンスミスを発見できます。</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">注意：データ構造の内部構造について深く学ぶ</div>
+<p>この章ではリスト、辞書、集合の<em>使い方</em>を学びました。<a href="../phase-5.html">フェーズ5</a>ではそれらが内部でどのように<em>動くか</em>を学びます&mdash;ハッシュテーブル、連結リスト、木構造、グラフ。内部構造を理解することが重要なのは、AI が生成したコードが間違ったデータ構造を選ぶことがあり、それを発見するための語彙が必要だからです。</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念：アルゴリズム — コードの背後にあるレシピ</div>
+<p>データ構造はデータを<em>格納する方法</em>です。アルゴリズムはデータを<em>処理する方法</em>です。AI がソート、探索、または経路探索の解法を生成するとき、それはアルゴリズムを適用しています。<a href="../phase-6.html">フェーズ6</a>では必須のアルゴリズムを教えますので、AI が正しいアプローチを選んだかどうか評価できます。</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">ヒント：データ構造の問題を練習する</div>
+<p>もっと練習したいですか？<a href="https://neetcode.io">NeetCode</a> の Arrays &amp; Hashing セクションで演習してください。「Two Sum」と「Group Anagrams」から始めてください&mdash;どちらもリストだと遅い問題を辞書を使って解きます。</p>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="06" data-ex="solve-compare-flatten">
+  <div class="exercise-header">
+    <h4>解いて比べる：ネストリストのフラット化</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt"><strong>ステップ1：</strong>自分でこの問題を解いてください。<strong>ステップ2：</strong>「ヒント」を3回クリックしてAIの解法を見てください。<strong>ステップ3：</strong>評価の質問に答えてください。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+# 自分の解法：ネストリストのフラット化
+# 任意のネストリストをフラット化する flatten(lst) を書いてください。
+# 例：flatten([1, [2, [3, 4]], 5]) -> [1, 2, 3, 4, 5]
+# 解法を書いて実行し、ヒントを3回クリックしてください。
+
+def flatten(lst):
+    pass
+
+# 比較後、答えてください：
+# 1. AIは何を違うやり方でしましたか？
+# 2. AIのアプローチはより良い、悪い、または単に異なりますか？
+# 3. AIのバージョンに問題はありましたか？
+</script>
+    <script type="text/plain" class="test-code">
+assert flatten([1, [2, [3, 4]], 5]) == [1, 2, 3, 4, 5], "Should flatten nested lists"
+assert flatten([1, 2, 3]) == [1, 2, 3], "Already flat list should stay flat"
+assert flatten([[1], [2], [3]]) == [1, 2, 3], "Should flatten one level of nesting"
+assert flatten([]) == [], "Empty list should return empty list"
+assert flatten([1, [2, [], [3, [4]]]]) == [1, 2, 3, 4], "Should handle empty inner lists"
+print("All tests passed!")
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">確認</button>
+    <button class="ex-hint" data-level="0">ヒント</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">各アイテムをチェックする必要があります：リストか普通の値か？<code>isinstance(item, list)</code> を使います。</p>
+    <p class="hint">アイテムがリストなら、それもフラット化する必要があります &mdash; これは再帰的な問題です。サブリストに対して <code>flatten()</code> を呼びます。</p>
+    <p class="hint"><strong>AIの解法：</strong><br><code>def flatten(lst):<br>&nbsp;&nbsp;&nbsp;&nbsp;result = []<br>&nbsp;&nbsp;&nbsp;&nbsp;for item in lst:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if isinstance(item, list):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result.extend(flatten(item))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result.append(item)<br>&nbsp;&nbsp;&nbsp;&nbsp;return result</code><br><br><strong>評価：</strong>AIは <code>isinstance</code> を使った再帰を使いました &mdash; あなたも同様でしたか？スタックを使ったループを使ったなら、それも有効で深い再帰の制限を回避できます。注意：AIは <code>[[]]</code>（空の内部リスト）を正しく処理します。TaskForge では、タスクにサブタスクがある場合にネスト構造が登場します &mdash; フラット化は実際に必要になる操作です。</p>
+  </div>
+</div>
+
+</section>
+
+<!-- ===== CH 07: CLASSES AND OOP BASICS ===== -->
+<section id="ch07" data-ch="07">
+<h2><span class="ch-label">章 07</span> クラスとオブジェクト指向の基礎</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念</div>
+<p>AI が生成する Python コードは頻繁にクラスを使います。Claude が <code>class Task:</code> と <code>self.tasks</code> を書いたとき、あなたは何を読んでいるか理解する必要があります。</p>
+</div>
+
+<p>これまでデータを辞書に格納して関数で処理してきました。これは機能します&mdash;データとそれを操作する関数がコードベース全体に散らばり始めるまでは。<strong>クラス</strong>はデータと振る舞いを<strong>オブジェクト</strong>と呼ばれる単一のユニットにまとめることでこの問題を解決します。</p>
+
+<h3>クラスとは？</h3>
+<p><strong>クラス</strong>はオブジェクトを作るための設計図です。クッキーの型抜きのように考えてください：クラスは形を定義し、型抜きで作る各クッキーが<strong>インスタンス</strong>&mdash;その設計図から作られた個別のオブジェクトです。クッキーの型抜き自体はクッキーではありません；それはクッキーを作るテンプレートです。すべてのクッキーは同じ形ですが、それぞれ異なるフロスティング（異なるデータ）を持てます。</p>
+
+<p>プログラミング用語では：クラスはすべてのインスタンスが持つ属性（データ）とメソッド（振る舞い）を定義します。各インスタンスはデータの独自コピーを持ちますが、すべて同じメソッドを共有します。</p>
+
+<h3>クラスの定義</h3>
+<p>最もシンプルな便利なクラスです：</p>
+<pre><code>class Task:
+    def __init__(self, title):
+        self.title = title
+        self.done = False</code></pre>
+
+<p>これを一つずつ分解してみましょう：</p>
+<ul>
+<li><code>class Task:</code> &mdash; <code>Task</code> という名前の新しいクラスを宣言します。クラス名は慣習として（関数のような <code>snake_case</code> ではなく）<strong>CamelCase</strong> を使います。</li>
+<li><code>__init__</code> &mdash; <strong>イニシャライザ</strong>（コンストラクタとも呼ばれます）。Python は新しいインスタンスを作るときにこれを自動的に呼び出します。二重のアンダースコア（「ダンダー」と呼ばれます）は特殊メソッドであることを示します。</li>
+<li><code>self</code> &mdash; 作成される<em>特定のインスタンス</em>への参照。<code>self.title = title</code> と書くとき、「この特定のオブジェクトのタイトルは渡されたものです」という意味です。クラスのすべてのメソッドは最初のパラメータとして <code>self</code> を受け取ります。</li>
+<li><code>self.title</code> と <code>self.done</code> &mdash; これらは<strong>インスタンス属性</strong>です。各 <code>Task</code> オブジェクトは独自の <code>title</code> と <code>done</code> を持ちます。</li>
+</ul>
+
+<h3>メソッドと関数の違い</h3>
+<p><strong>メソッド</strong>はクラスに属する関数です。唯一の構文的な違い：メソッドは最初のパラメータとして <code>self</code> を取り、インスタンスのデータにアクセスできます。通常の関数は独立しています；メソッドはオブジェクトに付属し、そのオブジェクトのデータを操作します。</p>
+<pre><code># 通常の関数 — 独立している
+def mark_done(task_dict):
+    task_dict["done"] = True
+
+# メソッド — クラスに属し、self を操作する
+class Task:
+    def __init__(self, title):
+        self.title = title
+        self.done = False
+
+    def mark_done(self):
+        self.done = True</code></pre>
+<p><code>task.mark_done()</code> を呼ぶとき、Python は自動的にインスタンスを <code>self</code> として渡します。<code>task.mark_done(task)</code> とは書きません&mdash;Python が処理します。</p>
+
+<h3>インスタンスの作成</h3>
+<p>クラスを関数のように呼び出してインスタンスを作ります：</p>
+<pre><code>task = Task("Buy groceries")
+print(task.title)  # Buy groceries
+print(task.done)   # False</code></pre>
+<p><code>"Buy groceries"</code> は渡しますが <code>self</code> は渡しません。Python が自動的に <code>self</code> を補填します。<code>Task(...)</code> を呼ぶたびに新しい独立したオブジェクトが作られます。</p>
+
+<h3>インスタンス属性</h3>
+<p>各インスタンスは独自のデータを持ちます。一方のオブジェクトを変更しても他方には影響しません：</p>
+<pre><code>task1 = Task("Buy groceries")
+task2 = Task("Write report")
+
+task1.mark_done()
+print(task1.done)  # True
+print(task2.done)  # False — 完全に独立している</code></pre>
+<p>属性にはドット記法でアクセスします：<code>task.title</code>、<code>task.done</code>。これは文字列（<code>"hello".upper()</code>）やリスト（<code>my_list.append(x)</code>）で使ってきた構文と同じです&mdash;文字列やリストもオブジェクトだからです。</p>
+
+<h3>完全な例</h3>
+<p>イニシャライザ、振る舞いメソッド、文字列表現を持つ <code>Task</code> クラスです：</p>
+<pre><code>class Task:
+    def __init__(self, title):
+        self.title = title
+        self.done = False
+
+    def mark_done(self):
+        self.done = True
+
+    def __str__(self):
+        status = "done" if self.done else "pending"
+        return f"[{status}] {self.title}"
+
+# 使用例
+task = Task("Buy groceries")
+print(task)          # [pending] Buy groceries
+task.mark_done()
+print(task)          # [done] Buy groceries</code></pre>
+<p><code>__str__</code> は別のダンダーメソッドです。オブジェクトを <code>print()</code> したり文字列に変換したりすると Python が自動的にこれを呼びます。これがなければ <code>Task</code> を表示したとき <code>&lt;__main__.Task object at 0x...&gt;</code> のような役に立たない表示になります。</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg" aria-label="Task クラスの UML クラス図。名前、属性（title, done, id）、メソッド（init, mark_done, str）の3つのコンパートメントを持つ">
+  <!-- Class box outer -->
+  <rect class="node-accent" x="200" y="10" width="300" height="260" rx="10"/>
+  <!-- Title section -->
+  <rect x="200" y="10" width="300" height="44" rx="10" fill="var(--accent)" opacity="0.15" stroke="none"/>
+  <text class="label-text" x="350" y="38" text-anchor="middle" font-size="14" fill="var(--accent)">Task</text>
+  <!-- Divider 1 -->
+  <line x1="200" y1="54" x2="500" y2="54" stroke="var(--accent)" stroke-width="1" opacity="0.4"/>
+  <!-- Attributes section -->
+  <text class="label-text" x="220" y="78" font-size="10" fill="var(--text-muted)">属性</text>
+  <text class="sub-text" x="240" y="100">title : str</text>
+  <text class="sub-text" x="240" y="120">done : bool</text>
+  <text class="sub-text" x="240" y="140">id : int</text>
+  <!-- Divider 2 -->
+  <line x1="200" y1="156" x2="500" y2="156" stroke="var(--accent)" stroke-width="1" opacity="0.4"/>
+  <!-- Methods section -->
+  <text class="label-text" x="220" y="180" font-size="10" fill="var(--text-muted)">メソッド</text>
+  <text class="sub-text" x="240" y="202">__init__(self, title)</text>
+  <text class="sub-text" x="240" y="222">mark_done(self)</text>
+  <text class="sub-text" x="240" y="242">__str__(self)</text>
+  <!-- Labels on the left -->
+  <text class="label-text" x="180" y="120" text-anchor="end" fill="var(--accent)">データ</text>
+  <line x1="185" y1="116" x2="198" y2="116" stroke="var(--accent)" stroke-width="1"/>
+  <text class="label-text" x="180" y="222" text-anchor="end" fill="var(--accent)">振る舞い</text>
+  <line x1="185" y1="218" x2="198" y2="218" stroke="var(--accent)" stroke-width="1"/>
+</svg>
+<div class="diagram-caption">クラスは3つのコンパートメントを持つボックスです：上に名前、中にデータ（属性）、下に振る舞い（メソッド）。これが UML クラス図のパターンです。</div>
+</div>
+
+<h3>継承の基礎</h3>
+<p>既存のクラスとほぼ同じだが、いくつか追加がある新しいクラスが必要なことがあります。<strong>継承</strong>を使えば、既存のクラスをベースにした新しいクラスを作れます。新しいクラス（<strong>子クラス</strong>または<strong>サブクラス</strong>）は既存のクラス（<strong>親クラス</strong>または<strong>スーパークラス</strong>）のすべての属性とメソッドを継承し、それらに追加したり上書きしたりできます。</p>
+
+<p>優先度フィールドを追加した <code>Task</code> を拡張した <code>PriorityTask</code> の例です：</p>
+<pre><code>class PriorityTask(Task):
+    def __init__(self, title, priority="medium"):
+        super().__init__(title)
+        self.priority = priority
+
+    def __str__(self):
+        status = "done" if self.done else "pending"
+        return f"[{status}] ({self.priority}) {self.title}"</code></pre>
+
+<p><code>class PriorityTask(Task)</code> のカッコは「PriorityTask は Task を継承する」という意味です。<code>super().__init__(title)</code> の呼び出しは親の <code>__init__</code> を実行するので、子はコードを複製することなく <code>self.title</code> と <code>self.done</code> を得ます。そして子は自身の <code>self.priority</code> を追加します。</p>
+
+<p><code>PriorityTask</code> は <code>mark_done()</code> を無償で得ます&mdash;<code>Task</code> から継承します。しかし優先度を含む独自バージョンで <code>__str__</code> を<strong>上書き</strong>します。これが核心的なアイデアです：機能するものを再利用し、異なるものだけを変える。</p>
+
+<pre><code>task = PriorityTask("Fix login bug", "high")
+print(task)          # [pending] (high) Fix login bug
+task.mark_done()
+print(task)          # [done] (high) Fix login bug
+print(task.done)     # True — Task から継承</code></pre>
+
+<h3>クラスと辞書：どちらを使うか</h3>
+<p>クラスと辞書はどちらもデータを格納します。問題は：データに<em>振る舞い</em>が必要かどうかです？</p>
+
+<table>
+<caption>辞書とクラスのどちらを使うかのガイド</caption>
+<tr><th>シナリオ</th><th>辞書を使う</th><th>クラスを使う</th></tr>
+<tr><td>既知のキーを持つシンプルなデータ</td><td><code>{"name": "Alice", "age": 30}</code></td><td>やりすぎ</td></tr>
+<tr><td>JSON との入出力</td><td>自然な選択&mdash;辞書は JSON に直接マッピング</td><td>必要なら <code>to_dict()</code> を追加</td></tr>
+<tr><td>データと振る舞いをまとめて</td><td>関数がファイル全体に散らばる</td><td><code>task.mark_done()</code> でまとめて管理</td></tr>
+<tr><td>複数の関連する型</td><td>継承の仕組みがない</td><td><code>PriorityTask(Task)</code></td></tr>
+<tr><td>クイックプロトタイピング</td><td>最も速く書ける</td><td>セットアップが多く、構造が増える</td></tr>
+</table>
+
+<p><strong>目安：</strong>辞書から始めてください。同じ辞書を最初の引数として取る複数の関数を書いていることに気づいたら、データと振る舞いをクラスにまとめたいサインです。</p>
+
+<h3>よくある誤解</h3>
+
+<div role="note" class="callout warn">
+<div class="callout-title">注意：「クラスは常に辞書より優れている」という誤解</div>
+<p>そうではありません。辞書はシンプルで書くのが速く、JSON に直接マッピングされます。データがキーと値のペアで振る舞いがないなら、辞書が正しいツールです。クラスが価値を発揮するのは、データを操作する<em>メソッド</em>、作成時の<em>バリデーション</em>、関連する型の<em>継承</em>が必要なときです。正しいツールを選んでください。</p>
+</div>
+
+<div role="note" class="callout warn">
+<div class="callout-title">注意：「self はキーワードである」という誤解</div>
+<p><code>self</code> はキーワード<strong>ではありません</strong>&mdash;慣習です。技術的には <code>this</code> や <code>potato</code> と名付けても Python は文句を言いません。しかしすべての Python プログラマーが <code>self</code> を使い、すべての AI が <code>self</code> を生成し、すべてのリンターが <code>self</code> を期待します。技術的には任意ですが、必須として扱ってください。</p>
+</div>
+
+<h3>TaskForge との関連</h3>
+<p>TaskForge v0.1 はタスクをリストの中の辞書として格納します。これは機能しますが、<code>complete_task</code> と <code>add_task</code> のような関数がすべて同じ辞書構造を操作していることに気づきます。これはクラスの方が適しているサインかもしれません。ビフォーアフターを並べて見てみましょう：</p>
+
+<div class="pe">
+<div class="pb"><div class="ph">ビフォー &mdash; 辞書</div>
+<div class="pp"><pre><code># TaskForge v0.1 — 辞書ベース
+task = {
+    "id": 1,
+    "title": "Buy groceries",
+    "status": "pending"
+}
+
+def complete_task(tasks, task_id):
+    for t in tasks:
+        if t["id"] == task_id:
+            t["status"] = "done"
+            return True
+    return False</code></pre></div>
+</div>
+<div class="pg"><div class="ph">アフター &mdash; クラス</div>
+<div class="pp"><pre><code># TaskForge リファクタリング — クラスベース
+class Task:
+    def __init__(self, task_id, title):
+        self.id = task_id
+        self.title = title
+        self.status = "pending"
+
+    def complete(self):
+        self.status = "done"
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "status": self.status
+        }
+
+# 使用例
+task = Task(1, "Buy groceries")
+task.complete()
+print(task.to_dict())
+# {"id": 1, "title": "Buy groceries", "status": "done"}</code></pre></div>
+</div>
+</div>
+
+<p>クラスバージョンはデータと振る舞いをまとめます。<code>complete_task(tasks, task_id)</code> より <code>task.complete()</code> の方が明確です。なぜならタスク自体が自分を完了としてマークする方法を知っているからです。<code>to_dict()</code> メソッドにより JSON シリアライズが引き続き機能します&mdash;両方の長所を活かせます。</p>
+
+<h3>マイクロ演習</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">1: Dog クラスを定義する</div>
+<p><code>name</code> と <code>breed</code> 属性と文字列を返す <code>bark()</code> メソッドを持つ <code>Dog</code> クラスを定義してください。</p>
+<pre><code>class Dog:
+    def __init__(self, name, breed):
+        self.name = name
+        self.breed = breed
+
+    def bark(self):
+        return f"{self.name} says Woof!"
+
+dog = Dog("Rex", "Labrador")
+print(dog.bark())   # Rex says Woof!
+print(dog.breed)    # Labrador</code></pre>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">2: BankAccount クラスを作る</div>
+<p>残高を管理する <code>deposit()</code> と <code>withdraw()</code> メソッドを持つ <code>BankAccount</code> クラスを作ってください。</p>
+<pre><code>class BankAccount:
+    def __init__(self, owner, balance=0):
+        self.owner = owner
+        self.balance = balance
+
+    def deposit(self, amount):
+        self.balance += amount
+        return self.balance
+
+    def withdraw(self, amount):
+        if amount > self.balance:
+            return "Insufficient funds"
+        self.balance -= amount
+        return self.balance
+
+account = BankAccount("Alice", 100)
+print(account.deposit(50))    # 150
+print(account.withdraw(30))   # 120
+print(account.withdraw(200))  # Insufficient funds</code></pre>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう</div>
+<p>TaskForge のタスク辞書を <code>Task</code> クラスにリファクタリングしてください。JSON シリアライズが引き続き機能するように <code>to_dict()</code> メソッドを追加してください。</p>
+<div class="prompt-block"><span class="label">task_class.py</span>import json
+
+class Task:
+    def __init__(self, task_id, title):
+        self.id = task_id
+        self.title = title
+        self.status = "pending"
+
+    def complete(self):
+        self.status = "done"
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "status": self.status
+        }
+
+    def __str__(self):
+        return f"[{self.status}] {self.title}"
+
+# テスト
+task = Task(1, "Buy groceries")
+print(task)                    # [pending] Buy groceries
+task.complete()
+print(task)                    # [done] Buy groceries
+print(json.dumps(task.to_dict(), indent=2))
+# {"id": 1, "title": "Buy groceries", "status": "done"}</div>
+<p><strong>確認：</strong><code>Task</code> クラスがオブジェクトを作成し、<code>to_dict()</code> が元のフォーマットに一致する辞書を返します。</p>
+<p><strong>うまくいかない場合：</strong>（1）<code>TypeError: __init__() takes 2 positional arguments</code> &rarr; 最初のパラメータとして <code>self</code> を忘れています。（2）<code>AttributeError: 'Task' has no attribute 'title'</code> &rarr; <code>__init__</code> で <code>self.title = title</code> を設定しているか確認してください。（3）<code>to_dict()</code> が <code>None</code> を返す &rarr; <code>return</code> 文を忘れています。</p>
+</div>
+
+<div class="pq">辞書と関数のバラバラなコレクションを一貫したクラスに変えました。これは Claude Code がモデルクラス、API ハンドラ、データ構造を生成するときと同じパターンです。そのコードを読んで何が起きているか正確に理解できます。</div>
+
+<h3>インタラクティブ演習</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="07" data-ex="bank">
+  <div class="exercise-header">
+    <h4>デザインチャレンジ：「銀行口座」</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt"><code>deposit(amount)</code>、<code>withdraw(amount)</code>、<code>get_balance()</code> メソッドを持つ <code>BankAccount</code> クラスを作ってください。残高がマイナスになる引き出しは <code>ValueError</code> を発生させてください。初期残高は 0 です。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+class BankAccount:
+    def __init__(self):
+        # ここにコードを書いてください
+        pass
+
+    def deposit(self, amount):
+        pass
+
+    def withdraw(self, amount):
+        pass
+
+    def get_balance(self):
+        pass
+</script>
+    <script type="text/plain" class="test-code">
+acct = BankAccount()
+assert acct.get_balance() == 0, "Initial balance should be 0"
+acct.deposit(100)
+assert acct.get_balance() == 100, "After depositing 100"
+acct.withdraw(30)
+assert acct.get_balance() == 70, "After withdrawing 30"
+try:
+    acct.withdraw(200)
+    assert False, "Should have raised ValueError"
+except ValueError:
+    pass
+assert acct.get_balance() == 70, "Balance unchanged after failed withdrawal"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">確認</button>
+    <button class="ex-hint" data-level="0">ヒント</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint"><code>__init__</code> で <code>self.balance</code> に残高を格納してください。</p>
+    <p class="hint">withdraw で引く前に <code>if amount > self.balance</code> をチェックしてください。</p>
+    <p class="hint">過剰引き出し時に <code>raise ValueError('Insufficient funds')</code> を発生させます。</p>
+  </div>
+</div>
+
+<div class="quiz" data-ch="07" data-ex="quiz-self">
+  <h4>知識チェック</h4>
+  <p>Python のメソッドにおいて <code>self</code> は何を指しますか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">クラス自体</button>
+    <button class="quiz-option" data-correct="true">メソッドが呼ばれた特定のインスタンス</button>
+    <button class="quiz-option" data-correct="false">親クラス</button>
+    <button class="quiz-option" data-correct="false">クラスが定義されているモジュール</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="07" data-ex="counter">
+  <div class="exercise-header">
+    <h4>デザインチャレンジ：「カウンタークラス」</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt"><code>WordCounter</code> クラスを作ってください。コンストラクタは文字列を受け取ります。メソッド：<code>count(word)</code> はその単語が何回登場するかを返す（大文字小文字を区別しない）、<code>most_common(n)</code> は最も頻繁な n 単語を (単語, 回数) のタプルのリストとして返す。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+class WordCounter:
+    def __init__(self, text):
+        # ここにコードを書いてください
+        pass
+
+    def count(self, word):
+        pass
+
+    def most_common(self, n):
+        pass
+</script>
+    <script type="text/plain" class="test-code">
+wc = WordCounter("the cat sat on the mat the cat")
+assert wc.count("the") == 3, "the appears 3 times"
+assert wc.count("cat") == 2, "cat appears 2 times"
+assert wc.count("dog") == 0, "dog not in text"
+assert wc.count("The") == 3, "Case insensitive"
+top = wc.most_common(2)
+assert top[0] == ("the", 3), "Most common is 'the'"
+assert top[1] == ("cat", 2), "Second most common is 'cat'"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">確認</button>
+    <button class="ex-hint" data-level="0">ヒント</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint"><code>__init__</code> でテキストを単語に分割して頻度辞書を構築します。</p>
+    <p class="hint">格納と検索の両方で大文字小文字の区別をなくすために <code>.lower()</code> を使います。</p>
+    <p class="hint">most_common では、アイテムを数で降順ソートしてスライスします。</p>
+  </div>
+</div>
+
+<h3>デコレータ：関数を修正する関数</h3>
+<p><strong>デコレータ（decorator）</strong>は関数を受け取って修正されたバージョンを返す関数です。<code>@decorator</code> 構文は省略記法です：</p>
+<pre><code># これは：
+@app.route("/tasks")
+def get_tasks():
+    pass
+
+# これと同等：
+def get_tasks():
+    pass
+get_tasks = app.route("/tasks")(get_tasks)</code></pre>
+
+<p>デコレータは以降の章で常に登場します — Flask の <code>@app.route()</code>、クラスの <code>@staticmethod</code>、テストの <code>@pytest.fixture</code>。AI はデコレータ付き関数を常に生成します。構築方法を見てみましょう：</p>
+
+<pre><code>import time
+
+def timer(func):
+    """関数にかかる時間を表示するデコレータ。"""
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = func(*args, **kwargs)
+        elapsed = time.time() - start
+        print(f"{func.__name__} took {elapsed:.4f}s")
+        return result
+    return wrapper
+
+@timer
+def slow_function():
+    time.sleep(0.1)
+    return "done"
+
+slow_function()  # 表示: slow_function took 0.1001s</code></pre>
+
+<p>本番のデコレータは元の関数の名前とドキュメント文字列を保持するために <code>@functools.wraps(func)</code> も使うべきです。ここでは簡略化のために省略します。</p>
+
+<div class="exercise" data-type="pyodide" data-ch="07" data-ex="decorator">
+  <div class="exercise-header">
+    <h4>演習：ロギングデコレータを作る</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">呼び出されるたびに関数名と引数を表示する <code>@log_calls</code> デコレータを実装してください。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def log_calls(func):
+    """各呼び出し時に関数名と引数を表示するデコレータ。"""
+    def wrapper(*args, **kwargs):
+        # 関数名と引数を表示する
+        # 元の関数を呼び出して返す
+        pass
+    return wrapper
+
+@log_calls
+def add(a, b):
+    return a + b
+
+@log_calls
+def greet(name):
+    return f"Hello, {name}!"
+</script>
+    <script type="text/plain" class="test-code">
+import io, sys
+old_stdout = sys.stdout
+sys.stdout = buffer = io.StringIO()
+result1 = add(3, 4)
+result2 = greet("Alice")
+sys.stdout = old_stdout
+output = buffer.getvalue()
+assert result1 == 7, "add should return 7"
+assert result2 == "Hello, Alice!", "greet should return greeting"
+assert "add" in output, "Should print function name 'add'"
+assert "greet" in output, "Should print function name 'greet'"
+print("All tests passed!")
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">確認</button>
+    <button class="ex-hint" data-level="0">ヒント</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">wrapper の内部：<code>f"Calling {func.__name__} with args={args}, kwargs={kwargs}"</code> のように表示します。</p>
+    <p class="hint">次に <code>result = func(*args, **kwargs)</code> を呼び出して result を返します。</p>
+    <p class="hint">wrapper の本体：print(f"Calling {func.__name__}({args}, {kwargs})"); result = func(*args, **kwargs); return result</p>
+  </div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="07" data-ex="solve-compare-bank">
+  <div class="exercise-header">
+    <h4>解いて比べる：銀行口座クラス</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt"><strong>ステップ1：</strong>自分でこの問題を解いてください。<strong>ステップ2：</strong>「ヒント」を3回クリックしてAIの解法を見てください。<strong>ステップ3：</strong>2つのアプローチを比較してください。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+# 自分の解法：銀行口座クラス
+# 以下を持つ BankAccount クラスを書いてください：
+# - __init__(self, owner, balance=0)
+# - deposit(amount) — 残高に追加、新しい残高を返す
+# - withdraw(amount) — 十分な資金があれば引く、新しい残高を返す
+#   不十分な場合は ValueError を発生させる
+# - get_balance() — 現在の残高を返す
+
+class BankAccount:
+    pass
+
+# 比較後、答えてください：
+# 1. AIは何を違うやり方でしましたか？
+# 2. AIのアプローチはより良い、悪い、または単に異なりますか？
+# 3. AIのバージョンに問題はありましたか？
+</script>
+    <script type="text/plain" class="test-code">
+acct = BankAccount("Alice", 100)
+assert acct.get_balance() == 100, "Initial balance should be 100"
+assert acct.deposit(50) == 150, "Deposit should return new balance"
+assert acct.withdraw(30) == 120, "Withdraw should return new balance"
+try:
+    acct.withdraw(200)
+    assert False, "Should raise ValueError for overdraft"
+except ValueError:
+    pass
+assert acct.get_balance() == 120, "Balance unchanged after failed withdrawal"
+acct2 = BankAccount("Bob")
+assert acct2.get_balance() == 0, "Default balance should be 0"
+print("All tests passed!")
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">確認</button>
+    <button class="ex-hint" data-level="0">ヒント</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint"><code>__init__</code> から始めます：<code>self.owner</code> と <code>self.balance</code> を格納します。deposit と withdraw で <code>amount &gt; 0</code> を確認します。</p>
+    <p class="hint"><code>withdraw</code> で <code>if amount &gt; self.balance: raise ValueError("Insufficient funds")</code> をチェックします。</p>
+    <p class="hint"><strong>AIの解法：</strong><br><code>from datetime import datetime<br><br>class BankAccount:<br>&nbsp;&nbsp;&nbsp;&nbsp;def __init__(self, owner, balance=0):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.owner = owner<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.balance = balance<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.transactions = []<br><br>&nbsp;&nbsp;&nbsp;&nbsp;def deposit(self, amount):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.balance += amount<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.transactions.append({"type": "deposit", "amount": amount, "time": str(datetime.now())})<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return self.balance<br><br>&nbsp;&nbsp;&nbsp;&nbsp;def withdraw(self, amount):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if amount &gt; self.balance:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raise ValueError("Insufficient funds")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.balance -= amount<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.transactions.append({"type": "withdraw", "amount": amount, "time": str(datetime.now())})<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return self.balance<br><br>&nbsp;&nbsp;&nbsp;&nbsp;def get_balance(self):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return self.balance<br><br>&nbsp;&nbsp;&nbsp;&nbsp;def __repr__(self):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return f"BankAccount({self.owner}, balance={self.balance})"</code><br><br><strong>評価：</strong>AIは要求していない機能を追加しました &mdash; 取引履歴、タイムスタンプ、<code>__repr__</code> メソッド。これは<em>過剰エンジニアリング</em>で、最も一般的な AI の失敗モードの一つです。シンプルなあなたのバージョンの方がこの要件には適しています。TaskForge では「念のため」機能を追加したい衝動に抵抗してください &mdash; 仕様が求めるものを構築してください。</p>
+  </div>
+</div>
+
+</section>
+
+<!-- ===== CH 08 ===== -->
+<section id="ch08" data-ch="08">
+<h2><span class="ch-label">章 08</span> ファイル、モジュール、標準ライブラリ</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念</div>
+<p>実際のプロジェクトには数十のファイルがあります。Claude Code が <code>src/models.py</code> を編集するとき、そのファイルが <code>src/api.py</code> と <code>tests/test_models.py</code> にどう接続しているか知る必要があります。モジュールはコードが複数ファイルにまたがって整理される方法です。これがないと実際のコードベースを操作できません。</p>
+</div>
+
+<p>これまでプログラムが終わるとデータは消えていました。<strong>ファイル</strong>によってデータが永続します。<strong>モジュール</strong>によってコードを複数ファイルにまたがって整理できます。<strong>標準ライブラリ</strong>は数百の事前構築されたツールを提供します。</p>
+
+<h3>ファイルの読み書き</h3>
+<pre><code># 書き込み
+with open("data.txt", "w") as f:
+    f.write("Hello, file!")
+
+# 読み込み
+with open("data.txt", "r") as f:
+    content = f.read()
+    print(content)  # Hello, file!</code></pre>
+<p><code>with</code> 文（<strong>コンテキストマネージャ</strong>）は終了時に自動的にファイルを閉じます。常にこれを使ってください。</p>
+
+<h3>JSON：ユニバーサルデータフォーマット</h3>
+<p><strong>JSON</strong>（JavaScript Object Notation）は AI ツールと API がデータを交換する方法です。Python の辞書とほぼ同じです：</p>
+<pre><code>import json
+
+# 辞書を JSON 文字列に変換
+data = {"name": "TaskForge", "version": "0.1"}
+json_string = json.dumps(data, indent=2)
+
+# JSON 文字列を辞書に変換
+parsed = json.loads(json_string)
+
+# 辞書を JSON ファイルに保存
+with open("config.json", "w") as f:
+    json.dump(data, f, indent=2)
+
+# JSON ファイルを辞書に読み込む
+with open("config.json", "r") as f:
+    loaded = json.load(f)</code></pre>
+
+<div class="dw">
+<svg viewBox="0 0 700 140" xmlns="http://www.w3.org/2000/svg" aria-label="4つのファイルフォーマットを並べて比較：.txt（非構造化）、.csv（表形式）、.json（API 標準）、Python 辞書（ネイティブ）">
+  <rect class="node-fill" x="10" y="10" width="155" height="110" rx="8"/>
+  <text class="label-text" x="87" y="32" text-anchor="middle">.txt</text>
+  <text class="sub-text" x="87" y="52" text-anchor="middle">name: Alice</text>
+  <text class="sub-text" x="87" y="66" text-anchor="middle">age: 30</text>
+  <text class="sub-text" x="87" y="108" text-anchor="middle" fill="var(--text-muted)">非構造化</text>
+  <rect class="node-fill" x="185" y="10" width="155" height="110" rx="8"/>
+  <text class="label-text" x="262" y="32" text-anchor="middle">.csv</text>
+  <text class="sub-text" x="262" y="52" text-anchor="middle">name,age</text>
+  <text class="sub-text" x="262" y="66" text-anchor="middle">Alice,30</text>
+  <text class="sub-text" x="262" y="108" text-anchor="middle" fill="var(--text-muted)">表形式</text>
+  <rect class="node-accent" x="360" y="10" width="155" height="110" rx="8"/>
+  <text class="label-text" x="437" y="32" text-anchor="middle">.json</text>
+  <text class="sub-text" x="437" y="52" text-anchor="middle">{"name": "Alice",</text>
+  <text class="sub-text" x="437" y="66" text-anchor="middle">&nbsp;"age": 30}</text>
+  <text class="sub-text" x="437" y="108" text-anchor="middle" fill="var(--accent)">AI &amp; API 標準</text>
+  <rect class="node-fill" x="535" y="10" width="155" height="110" rx="8"/>
+  <text class="label-text" x="612" y="32" text-anchor="middle">.py dict</text>
+  <text class="sub-text" x="612" y="52" text-anchor="middle">{"name": "Alice",</text>
+  <text class="sub-text" x="612" y="66" text-anchor="middle">&nbsp;"age": 30}</text>
+  <text class="sub-text" x="612" y="108" text-anchor="middle" fill="var(--text-muted)">Python ネイティブ</text>
+</svg>
+<div class="diagram-caption">異なるフォーマットは同じデータを異なる方法で格納します。JSON は AI ツールと API が使うフォーマットです。よく理解してください。</div>
+</div>
+
+<h3>モジュールとインポート</h3>
+<p><strong>モジュール（module）</strong>は関数を含む <code>.py</code> ファイルです&mdash;ツールボックスのようなものです。すべてのツールをどこにでも持ち運ぶ代わりに、現在の作業に必要なツールボックスだけを <code>import</code> します：</p>
+<pre><code>import json          # モジュール全体
+from pathlib import Path  # モジュールから1つだけ</code></pre>
+<p><code>if __name__ == "__main__":</code> パターン（TaskForge で見た）は「このブロックはファイルが直接実行された時のみ実行し、インポートされた時は実行しない」という意味です。</p>
+
+<h3>TaskForge との関連</h3>
+<p>フェーズ2のゲート演習では、<code>json.dump</code> と <code>json.load</code> を使って TaskForge に <code>save_tasks(filepath)</code> と <code>load_tasks(filepath)</code> を追加します。タスクはセッション間で保持されます。</p>
+
+<h3>マイクロ演習</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">1: ファイルを書いて読む</div>
+<pre><code>with open("hello.txt", "w") as f:
+    f.write("Hello!")
+
+with open("hello.txt", "r") as f:
+    print(f.read())  # Hello!</code></pre>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">2: 辞書を JSON に変換する</div>
+<pre><code>import json
+data = {"name": "test", "count": 5}
+print(json.dumps(data, indent=2))</code></pre>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう</div>
+<p><code>{"project": "my-app", "version": "0.1", "features": ["auth", "dashboard"]}</code> を含む <code>config.json</code> を作ってください。このファイルを読み込み、features リストに <code>"api"</code> を追加して書き戻す Python スクリプトを書いてください。</p>
+<div class="prompt-block"><span class="label">update_config.py</span>import json
+
+with open("config.json", "r") as f:
+    config = json.load(f)
+
+config["features"].append("api")
+
+with open("config.json", "w") as f:
+    json.dump(config, f, indent=2)</div>
+<p><strong>確認：</strong>実行後、<code>config.json</code> に <code>["auth", "dashboard", "api"]</code> が含まれます。</p>
+<p><strong>うまくいかない場合：</strong>（1）<code>FileNotFoundError</code> &rarr; まず JSON ファイルを作成してください。（2）<code>JSONDecodeError</code> &rarr; 末尾のカンマや引用符の欠如を確認してください。（3）ファイルが変わらない &rarr; <code>json.dump()</code> で書き戻すのを忘れています。</p>
+</div>
+
+<div class="pq">JSON ファイルを読み込み、変更して、書き戻しました&mdash;これは TaskForge が永続化に使う、そしてすべての API がデータ交換に使うワークフローそのものです。</div>
+
+<h3>インタラクティブ演習</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="08" data-ex="csv">
+  <div class="exercise-header">
+    <h4>デザインチャレンジ：「CSV パーサー」</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">CSV 文字列（最初の行がヘッダー）を受け取り辞書のリストを返す <code>parse_csv(text)</code> を書いてください。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def parse_csv(text):
+    # ここにコードを書いてください
+    pass
+</script>
+    <script type="text/plain" class="test-code">
+result = parse_csv("name,age
+Alice,30
+Bob,25")
+assert len(result) == 2, "Should have 2 rows"
+assert result[0] == {"name": "Alice", "age": "30"}, "First row"
+assert result[1] == {"name": "Bob", "age": "25"}, "Second row"
+assert parse_csv("a,b
+1,2") == [{"a": "1", "b": "2"}], "Simple case"
+assert parse_csv("x
+1
+2") == [{"x": "1"}, {"x": "2"}], "Single column"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">確認</button>
+    <button class="ex-hint" data-level="0">ヒント</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">改行で分割して行を取得し、各行をカンマで分割します。</p>
+    <p class="hint">最初の行がヘッダー（キー）を与えます。残りの行がデータです。</p>
+    <p class="hint"><code>zip(headers, values)</code> から <code>dict()</code> で各行の辞書を作ります。</p>
+  </div>
+</div>
+
+<div class="quiz" data-ch="08" data-ex="quiz-json">
+  <h4>知識チェック</h4>
+  <p><code>json.loads(text)</code> は何をしますか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">JSON をファイルに書く</button>
+    <button class="quiz-option" data-correct="true">JSON 文字列を Python オブジェクトに解析する</button>
+    <button class="quiz-option" data-correct="false">Python を JSON 文字列に変換する</button>
+    <button class="quiz-option" data-correct="false">ディスクから JSON ファイルを読み込む</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="08" data-ex="solve-compare-csv">
+  <div class="exercise-header">
+    <h4>解いて比べる：CSV レポートジェネレーター</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt"><strong>ステップ1：</strong>自分でこの問題を解いてください。<strong>ステップ2：</strong>「ヒント」を3回クリックしてAIのバージョンを見てください。<strong>ステップ3：</strong>違いを評価してください。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+# 自分の解法：CSV レポートジェネレーター
+# 辞書のリストを受け取り CSV フォーマットの文字列を返す generate_report(data) を書いてください。
+# 最初の行はヘッダー（辞書のキーから）。
+# CSV 文字列を返す（ファイルには書かない — Pyodide にはファイルシステムがない）。
+# 例：generate_report([{"name": "Alice", "score": 95}])
+# -> "name,score
+Alice,95"
+
+def generate_report(data):
+    pass
+
+# 比較後、答えてください：
+# 1. AIは何を違うやり方でしましたか？
+# 2. AIのアプローチはより良い、悪い、または単に異なりますか？
+# 3. AIのバージョンに問題はありましたか？
+</script>
+    <script type="text/plain" class="test-code">
+data = [{"name": "Alice", "score": 95}, {"name": "Bob", "score": 87}]
+result = generate_report(data)
+lines = result.strip().split("
+")
+assert len(lines) == 3, "Should have header + 2 data rows"
+assert "name" in lines[0] and "score" in lines[0], "First line should be headers"
+assert "Alice" in lines[1], "Should contain Alice's data"
+assert "Bob" in lines[2], "Should contain Bob's data"
+assert generate_report([]) == "", "Empty data should return empty string"
+mixed = [{"a": 1, "b": 2}, {"a": 3, "b": 4, "c": 5}]
+mixed_result = generate_report(mixed)
+assert "c" in mixed_result, "Should handle dicts with different keys"
+print("All tests passed!")
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">確認</button>
+    <button class="ex-hint" data-level="0">ヒント</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">ヘッダー用にすべての辞書のユニークなキーを収集します：<code>headers = list(data[0].keys())</code> はすべての辞書が同じなら機能します。</p>
+    <p class="hint">各行の辞書に対して、欠けているキーを処理するため <code>str(row.get(h, ""))</code> を使います。カンマで結合します。</p>
+    <p class="hint"><strong>AIの解法：</strong><br><code>def generate_report(data):<br>&nbsp;&nbsp;&nbsp;&nbsp;if not data:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return ""<br>&nbsp;&nbsp;&nbsp;&nbsp;headers = list(data[0].keys())<br>&nbsp;&nbsp;&nbsp;&nbsp;lines = [",".join(headers)]<br>&nbsp;&nbsp;&nbsp;&nbsp;for row in data:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lines.append(",".join(str(row[h]) for h in headers))<br>&nbsp;&nbsp;&nbsp;&nbsp;return "
+".join(lines)</code><br><br><strong>評価：</strong>AIは最初の辞書のキーからのみヘッダーをハードコードしました。後の辞書に追加のキー（<code>"c"</code> など）がある場合、それらの列は黙って無視されます &mdash; そして最初の辞書にないキーを持つ行に対して <code>row[h]</code> は <code>KeyError</code> でクラッシュします。あなたのバージョンは混在するキーを処理できましたか？TaskForge では、オプションフィールドを持つタスクの CSV エクスポートでまさにこのバグに遭遇します。注意：AIの解法は実際に上記の混在キーテストに失敗します。これが要点です &mdash; 常にテストを実行してください。</p>
+  </div>
+</div>
+
+</section>
+
+<!-- ===== CH 09 ===== -->
+<section id="ch09" data-ch="09">
+<h2><span class="ch-label">章 09</span> エラー処理、デバッグ、テスト</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念</div>
+<p>AI が生成したコードは正しく見えても微妙なバグがあることが多いです。テストなしでは機能することを証明できません。エラー処理なしでは不正な入力の1つがプログラムをクラッシュさせます。この章ではコード&mdash;あなたのものも AI のものも&mdash;を<em>検証する</em>ツールを提供します。</p>
+</div>
+
+<p>コードは壊れます。それは普通です。プロとビギナーを分けるのは壊れを<em>どう扱い</em>、<em>どう防ぐ</em>かです。この章では3つのツールを扱います：<strong>try/except</strong>（エラーを穏やかに処理）、<strong>デバッグ</strong>（何が悪いかを見つける）、<strong>テスト</strong>（コードが正しいことを証明する）。</p>
+
+<h3>Try/Except</h3>
+<pre><code>try:
+    task_id = int(input("Task ID: "))
+except ValueError:
+    print("Please enter a number.")</code></pre>
+<p><code>try/except</code> なしでは不正な入力でプログラムがクラッシュします。これで穏やかにエラーを処理できます。常に<strong>特定の</strong>例外を補足してください&mdash;裸の <code>except:</code> は絶対に書かないでください。</p>
+
+<h3>デバッグ</h3>
+<p>何かが間違っているとき、<strong>スタックトレース</strong>を<em>下から上に</em>読んでください。最後の行にエラーの種類とメッセージがあります。上の行にどこで起きたかが示されます。</p>
+
+<h3>アサーションによるテスト</h3>
+<p><strong>アサーション</strong>は真でなければならない文です。偽なら、プログラムはクラッシュします&mdash;これはテストでまさに欲しい動作です。</p>
+<pre><code>assert 2 + 2 == 4      # 静かに通過する
+assert 2 + 2 == 5      # AssertionError!</code></pre>
+
+<div class="diagram">
+<svg viewBox="0 0 700 100" xmlns="http://www.w3.org/2000/svg" aria-label="テスト駆動型 AI ワークフロー：テストを書く、意図を AI に伝える、AI がコードを生成する、テストを実行して正しさを検証する">
+  <rect class="node-accent" x="10" y="25" width="140" height="50" rx="8"/>
+  <text class="label-text" x="80" y="46" text-anchor="middle">テストを書く</text>
+  <text class="sub-text" x="80" y="62" text-anchor="middle">あなたが正解を定義</text>
+  <line class="arrow" x1="150" y1="50" x2="185" y2="50"/>
+  <rect class="node-fill" x="185" y="25" width="140" height="50" rx="8"/>
+  <text class="label-text" x="255" y="46" text-anchor="middle">AIに伝える</text>
+  <text class="sub-text" x="255" y="62" text-anchor="middle">何が欲しいか</text>
+  <line class="arrow" x1="325" y1="50" x2="360" y2="50"/>
+  <rect class="node-fill" x="360" y="25" width="140" height="50" rx="8"/>
+  <text class="label-text" x="430" y="46" text-anchor="middle">AIが生成する</text>
+  <text class="sub-text" x="430" y="62" text-anchor="middle">コード出力</text>
+  <line class="arrow" x1="500" y1="50" x2="535" y2="50"/>
+  <rect class="node-accent" x="535" y="25" width="155" height="50" rx="8"/>
+  <text class="label-text" x="612" y="46" text-anchor="middle">テストを実行する</text>
+  <text class="sub-text" x="612" y="62" text-anchor="middle">合格 = 証拠</text>
+</svg>
+<div class="diagram-caption">AI に依頼する前にテストを書いてください。テストが契約を定義します。AI はそれに基づいて実装します。</div>
+</div>
+
+<div role="note" class="callout critical">
+<div class="callout-title">重要な概念：テスト駆動型 AI 開発</div>
+<p>AI にコードを書かせる前にテストを書いてください。これは最も高いレバレッジを持つ AI コーディングワークフローです。あなたのテストが「正解」を定義します。AI はそれに通るコードを書きます。失敗したら繰り返します。</p>
+</div>
+
+<div role="note" class="callout warn">
+<div class="callout-title">注意：テストなしで何が起きるか</div>
+<p>AI に <code>calculate_tax(income)</code> を書かせました。正しく見える関数を返します。デプロイします。1ヶ月後、正しいブラケットベースの率ではなく 15% で計算していたことを発見します&mdash;すべての請求書が間違っていました。テストがあれば秒で発見できたはずです。テストなしでは AI の出力を信仰で信頼しています。テストがあれば証拠があります。</p>
+</div>
+
+<h3>pytest</h3>
+<p>テストは <code>test_*.py</code> という名前のファイルに書きます。実行：<code>python3 -m pytest</code>。pytest はすべてのテスト関数を発見して実行します。</p>
+<pre><code># test_math.py
+def test_addition():
+    assert 2 + 2 == 4
+
+def test_string_concat():
+    assert "hello " + "world" == "hello world"</code></pre>
+
+<h3>TaskForge との関連</h3>
+<p>TaskForge v0.1 にはエラー処理がありません&mdash;<code>int(input("Task ID: "))</code> は数字以外の入力でクラッシュします。フェーズ2ゲートではこれを修正<em>し</em>、動作を証明するテストを書きます。</p>
+
+<h3>マイクロ演習</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">1: サイレントな成功</div>
+<p><code>assert 2 + 2 == 4</code> を実行してください。何も起きません&mdash;通過するアサーションは静かです。次に <code>assert 2 + 2 == 5</code> を実行してください。<code>AssertionError</code> が出ます。</p>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">2: 穏やかなエラー</div>
+<pre><code>try:
+    print(1 / 0)
+except ZeroDivisionError:
+    print("Cannot divide by zero")</code></pre>
+<p>プログラムはクラッシュする代わりにエラーを処理します。</p>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう</div>
+<p><code>is_valid_email(email)</code> という関数をテストする3つのアサーション文を書いてください&mdash;有効なメール1つ、無効（@なし）1つ、エッジケース（空文字列）1つ。<strong>関数は書かないでください。</strong><strong>claude.ai</strong> または <strong>chatgpt.com</strong>（無料）に行き「Python 関数 <code>is_valid_email</code> を書いてください。これらのテストに通るように：[アサーションを貼り付け]」と聞いてください。テストを実行してください。</p>
+<div class="prompt-block"><span class="label">test_email.py</span>assert is_valid_email("user@example.com") == True
+assert is_valid_email("invalid-email") == False
+assert is_valid_email("") == False</div>
+<p><strong>確認：</strong>AIの関数が3つのアサーションすべてに通ります。</p>
+<p><strong>注意：</strong>これはコード用の LLM との最初のやりとりです。AI コーディングツールについてまだ正式には学んでいません（それはフェーズ5から始まります）。これはプレビューです。</p>
+<p><strong>うまくいかない場合：</strong>（1）<code>NameError: is_valid_email</code> &rarr; AIの関数定義をアサーション文の<strong>上</strong>に貼り付けてください。（2）アサーションが失敗する &rarr; AIの実装にバグがあります。関数を読んでなぜか理解してください。これはまさにフェーズ5が教えるスキルです。</p>
+</div>
+
+<div class="pq">AIにコードを書かせて、テストで検証しました。これはフェーズ5で使うワークフローそのものです&mdash;ただしそこでは Claude Code を使って実際の機能に対して行います。</div>
+
+<h3>インタラクティブ演習</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="09" data-ex="debug-tests">
+  <div class="exercise-header">
+    <h4>デバッグチャレンジ：「テストスイートを修正する」</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">この関数とそのテストには4つのバグがあります — 関数に2つ、テストに2つ。すべてのアサーションが通るようにすべて修正してください。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def find_max(numbers):
+    if len(numbers) == 0:
+        return 0
+    max_val = 0
+    for n in numbers:
+        if n > max_val:
+            max_val = n
+    return max_val
+
+# テスト（2つは間違っている）：
+assert find_max([1, 5, 3]) == 5
+assert find_max([-2, -8, -1]) == -1
+assert find_max([42]) == 42
+assert find_max([]) == 0
+</script>
+    <script type="text/plain" class="test-code">
+assert find_max([1, 5, 3]) == 5, "Basic case"
+assert find_max([-2, -8, -1]) == -1, "All negatives"
+assert find_max([42]) == 42, "Single element"
+assert find_max([]) is None, "Empty should return None"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">確認</button>
+    <button class="ex-hint" data-level="0">ヒント</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint"><code>find_max([])</code> は何を返すべきか &mdash; 0 か None か？何が理にかなっているか考えてください。</p>
+    <p class="hint">すべての数が負の場合、<code>max_val = 0</code> から始めても置き換えられません。代わりに <code>numbers[0]</code> を使ってください。</p>
+    <p class="hint">空リストのテストは 0 を期待していますが、それが正しいでしょうか？そして関数は <code>numbers[0]</code> を使う前に空のケースを処理する必要があります。</p>
+  </div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="09" data-ex="ai-eval">
+  <div class="exercise-header">
+    <h4>AI 生成コードを評価する</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">AIに「数値リストの平均を計算する関数を書いて」と頼みました。下に生成したものがあります。3つの問題があります：空の入力でのクラッシュ、不正な戻り値の型、不要なインポート。すべて3つを見つけて修正してください。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+import math
+
+def calculate_average(numbers):
+    """AI 生成：数値リストの平均を計算する。"""
+    total = math.fsum(numbers)
+    average = total / len(numbers)
+    return str(round(average, 2))
+
+# テスト：
+print(calculate_average([10, 20, 30]))  # 20.0 と表示されるべき
+print(calculate_average([]))             # 空リストを処理すべき
+</script>
+    <script type="text/plain" class="test-code">
+assert calculate_average([10, 20, 30]) == 20.0, "Basic average"
+assert calculate_average([]) is None, "Empty list returns None"
+assert calculate_average([7]) == 7.0, "Single element"
+assert isinstance(calculate_average([1, 2]), float), "Must return float, not string"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">確認</button>
+    <button class="ex-hint" data-level="0">ヒント</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint"><code>numbers</code> が空の場合はどうなりますか？<code>len(numbers)</code> は 0 で、0で割るとクラッシュします。</p>
+    <p class="hint">関数は <code>str(...)</code> を返しますが、テストは <code>float</code> を期待しています。<code>str()</code> ラッパーを削除してください。</p>
+    <p class="hint"><code>math.fsum</code> は動作しますが、<code>sum()</code> の方がシンプルでインポートが不要です。AIはこれを過剰エンジニアリングしました。</p>
+  </div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="09" data-ex="retry">
+  <div class="exercise-header">
+    <h4>デザインチャレンジ：「リトライデコレータ」</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">fn() を呼び出す <code>retry(fn, max_attempts=3)</code> 関数を書いてください。例外が発生した場合、max_attempts 回までリトライします。成功した場合は結果を返し、すべての試みが失敗した場合は最後の例外を再発生させます。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def retry(fn, max_attempts=3):
+    # ここにコードを書いてください
+    pass
+</script>
+    <script type="text/plain" class="test-code">
+call_count = 0
+def flaky():
+    global call_count
+    call_count += 1
+    if call_count < 3:
+        raise ValueError("not yet")
+    return "success"
+call_count = 0
+assert retry(flaky) == "success", "Should succeed on 3rd try"
+call_count = 0
+def always_fail():
+    raise RuntimeError("nope")
+try:
+    retry(always_fail, max_attempts=2)
+    assert False, "Should have raised"
+except RuntimeError:
+    pass
+def always_works():
+    return 42
+assert retry(always_works) == 42, "Should work on first try"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">確認</button>
+    <button class="ex-hint" data-level="0">ヒント</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">for ループを使います：<code>for attempt in range(max_attempts)</code></p>
+    <p class="hint">ループの内側で fn() を try/except でラップします。成功したら即座に return します。</p>
+    <p class="hint">ループ後、最後の試みの except ブロックの内側で再発生させます：<code>raise</code></p>
+  </div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="09" data-ex="solve-compare-retry">
+  <div class="exercise-header">
+    <h4>解いて比べる：リトライデコレータ</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt"><strong>ステップ1：</strong>自分でこの問題を解いてください。<strong>ステップ2：</strong>「ヒント」を3回クリックしてAIのバージョンを見てください。<strong>ステップ3：</strong>AIのコードに潜む本物のバグを探してください。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+# 自分の解法：リトライデコレータ
+# retry(max_attempts) デコレータファクトリを書いてください。
+# 使い方：@retry(max_attempts=3) で関数が例外を出したとき最大3回リトライする
+# すべて失敗した場合は最後の例外を再発生させる
+
+def retry(max_attempts=3):
+    pass  # デコレータを返す
+
+# テスト：
+attempt_count = 0
+
+@retry(max_attempts=3)
+def flaky():
+    global attempt_count
+    attempt_count += 1
+    if attempt_count < 3:
+        raise RuntimeError("not yet")
+    return "success"
+
+# 比較後、答えてください：
+# 1. AIは何を違うやり方でしましたか？
+# 2. AIのバージョンのバグを発見できますか？
+# 3. そのバグは本番コードでなぜ重要ですか？
+</script>
+    <script type="text/plain" class="test-code">
+attempt_count = 0
+@retry(max_attempts=3)
+def flaky():
+    global attempt_count
+    attempt_count += 1
+    if attempt_count < 3:
+        raise RuntimeError("not yet")
+    return "success"
+assert flaky() == "success", "Should succeed on third attempt"
+
+@retry(max_attempts=1)
+def always_fail():
+    raise ValueError("nope")
+try:
+    always_fail()
+    assert False, "Should have raised ValueError"
+except ValueError:
+    pass
+
+@retry(max_attempts=2)
+def instant():
+    return 42
+assert instant() == 42, "Should return on first try"
+print("All tests passed!")
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">確認</button>
+    <button class="ex-hint" data-level="0">ヒント</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint"><code>retry(max_attempts)</code> はデコレータを返します。そのデコレータは関数を受け取りラッパーを返します。3段階のネストです。</p>
+    <p class="hint">ラッパーは <code>range(max_attempts)</code> をループし、try/except で <code>func()</code> を呼びます。成功したら return。最後の失敗で再発生させます。</p>
+    <p class="hint"><strong>AIの解法：</strong><br><code>def retry(max_attempts=3):<br>&nbsp;&nbsp;&nbsp;&nbsp;def decorator(func):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;def wrapper(*args, **kwargs):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for attempt in range(max_attempts):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;try:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return func(*args, **kwargs)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;except:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if attempt == max_attempts - 1:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raise<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return wrapper<br>&nbsp;&nbsp;&nbsp;&nbsp;return decorator</code><br><br><strong>評価：</strong>AIは <code>except Exception:</code> の代わりに裸の <code>except:</code> を使いました。これは <code>KeyboardInterrupt</code> と <code>SystemExit</code> も補足するので、リトライ中に Ctrl+C でプログラムを止められなくなります。これはエラー処理を理解している人だけが発見できる微妙なバグです。TaskForge では裸の <code>except</code> を持つリトライデコレータは CLI ツールを終了不可能にする恐れがあります。</p>
+  </div>
+</div>
+</section>
+
+<!-- ===== PHASE 2 GATE ===== -->
+<section id="gate2">
+<h2><span class="ch-label">フェーズ2ゲート</span> チェックポイント &amp; TaskForge 拡張</h2>
+
+<div class="card">
+<h4>最低限の能力</h4>
+<p>パラメータ、条件分岐、ループ、戻り値を持つ関数を書く。ネストされた辞書を作成・操作する。JSON を読み書きする。意味のあるテストアサーションを書く。</p>
+</div>
+
+<div class="card">
+<h4>成果物</h4>
+<p>以下を追加して TaskForge を拡張する：</p>
+<ul>
+<li><code>filter_tasks(status)</code> &mdash; 指定したステータスのタスクのみを返す</li>
+<li><code>save_tasks(filepath)</code> / <code>load_tasks(filepath)</code> &mdash; JSON による永続化</li>
+<li>5つの通過するテストアサーション（追加、完了、フィルタ、保存、読み込み）</li>
+</ul>
+</div>
+
+<div class="card">
+<h4>確認</h4>
+<p><code>python3 taskforge.py</code> が実行できる。<code>python3 -m pytest test_taskforge.py</code> が5つのアサーションに通る。</p>
+</div>
+
+<div role="note" class="callout critical">
+<div class="callout-title">注意：失敗のサイン</div>
+<p>リストを受け取ってフィルタした結果を返す関数を書けない場合 &rarr; 章05〜06に戻ってください。</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">ヒント &mdash; まずヒントなしで試してください</div>
+<p>ゲート演習で行き詰まったら、以下の手順に従ってください。ヒントを読む前に各ステップを自分でやってみてください。</p>
+<p><strong>ステップ1：<code>filter_tasks(tasks, status)</code></strong></p>
+<p>タスクリストとステータス文字列を受け取り、一致するタスクのみを返す関数を書きます。リスト内包表記を考えてください：<code>[task for task in tasks if ...]</code>。</p>
+<pre><code>def filter_tasks(tasks, status):
+    # task["status"] == status のタスクのリストを返す
+    pass  # 1行で置き換えてください</code></pre>
+<p><strong>ステップ2：<code>save_tasks(tasks, filepath)</code></strong></p>
+<p>タスクリストを JSON ファイルに書き込む関数を書きます。<code>import json</code> と <code>json.dump()</code> が必要です。章08 の <code>with open(filepath, "w")</code> パターンを思い出してください。</p>
+<pre><code>def save_tasks(tasks, filepath):
+    # filepath を書き込み用に開き、json.dump(tasks, f, indent=2) を実行
+    pass</code></pre>
+<p><strong>ステップ3：<code>load_tasks(filepath)</code></strong></p>
+<p>JSON ファイルからタスクを読み込む関数を書きます。<code>json.load()</code> を使います。ファイルがまだ存在しない場合を処理します&mdash;空のリストを返します。</p>
+<pre><code>def load_tasks(filepath):
+    # 開いて json.load() を試みる。FileNotFoundError なら [] を返す
+    pass</code></pre>
+<p><strong>ステップ4：メインループに組み込む</strong></p>
+<p>プログラム起動時に <code>load_tasks</code> を呼んでタスクリストを埋めます。変更（追加/完了）後に <code>save_tasks</code> を呼びます。ステータスによるフィルタリングのメニューオプションを追加します。</p>
+</div>
+
+<h3>TaskForge チェックポイント</h3>
+<p>TaskForge にフィルタリング、永続化（JSON）、テストが追加されました。まだ git なし、構造なしの単一ディレクトリです。フェーズ3でそれを修正します。</p>
+
+<h3>できるようになったこと</h3>
+<div class="card">
+<ul>
+<li>パラメータ、条件分岐、ループ、戻り値を持つ関数を書く</li>
+<li>ネストされたデータ構造（辞書のリスト）を作成・操作する</li>
+<li>JSON ファイルを読み込み、書き込み、操作する</li>
+<li>エラーを穏やかに処理して意味のあるテストアサーションを書く</li>
+<li>AIを使ってコードを生成してテストで検証する</li>
+</ul>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">補足：フェーズ3へのブリッジ</div>
+<p>Python を書けるようになりました。でも今のところコードは単一のフォルダにセーフティネットなしで存在しています。悪い編集をして元に戻せなくなったらどうしますか？チームや AI エージェントとコードを共有する必要があるときはどうしますか？フェーズ3では専門的な開発ツールを紹介します&mdash;ターミナルの習熟、Git の基礎、GitHub によるリモートコラボレーション&mdash;これによってコードが<em>管理可能</em>になり、実際のプロジェクトワークフローの基盤が整います。</p>
+</div>
+</section>
+
+<nav class="phase-nav">
+  <a href="../phase-1.html" class="phase-nav-link prev"><span class="phase-nav-label">前のフェーズ</span>&larr; フェーズ1：コードとは何か？</a>
+  <a href="../phase-3.html" class="phase-nav-link next"><span class="phase-nav-label">次のフェーズ</span>フェーズ3：開発ツール &rarr;</a>
+</nav>
+
+</div>
+</div>
+
+<footer>
+<p>Zero to Hero: プログラミングからマルチエージェントClaude Codeへ &middot; 2026年3月</p>
+<p>エージェントエンジニアリングの8つのレベルを軸に構成。</p>
+</footer>
+
+<script src="../js/progress.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ace-builds@1.36.5/src-min-noconflict/ace.js"></script>
+<script src="../js/theme.js"></script>
+<script src="../js/sidebar.js"></script>
+<script src="../js/shared.js"></script>
+<script src="../js/ace-init.js"></script>
+<script src="../js/pyodide-runner.js"></script>
+<script src="../js/quiz.js"></script>
+<script src="../js/exercise-runner.js"></script>
+</body>
+</html>

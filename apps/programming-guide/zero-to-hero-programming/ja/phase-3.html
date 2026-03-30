@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="フェーズ3：ターミナル、Gitバージョン管理、GitHubコラボレーションをマスターする — Claude Codeが使うプロの開発ツール。第10〜12章。">
+<title>フェーズ3：開発ツール — Zero to Hero</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/design-system.css">
+<script>try{if(localStorage.getItem('zth-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+<script>try{var z=localStorage.getItem('zth-zoom');if(z&&+z>=50&&+z<=200)document.documentElement.style.zoom=+z/100}catch(e){}</script>
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+<marker id="arrowhead-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--a5)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<button class="toggle" id="themeToggle" aria-label="テーマを切り替える">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo"><span>Zero to Hero</span>プログラミング &rarr; マルチエージェントAI</a>
+  <div class="toc-group">
+    <div class="toc-group-title">基礎</div>
+    <a href="phase-1.html#ch01" class="toc-link"><span class="toc-num">01</span>プログラミングとは何か</a>
+    <a href="phase-1.html#ch02" class="toc-link"><span class="toc-num">02</span>コンピュータはどのようにコードを実行するか</a>
+    <a href="phase-1.html#ch03" class="toc-link"><span class="toc-num">03</span>環境のセットアップ</a>
+    <a href="phase-1.html#ch04" class="toc-link"><span class="toc-num">04</span>書く前にコードを読む</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Python</div>
+    <a href="phase-2.html#ch05" class="toc-link"><span class="toc-num">05</span>関数、ロジック、制御フロー</a>
+    <a href="phase-2.html#ch06" class="toc-link"><span class="toc-num">06</span>データ構造</a>
+    <a href="phase-2.html#ch07" class="toc-link"><span class="toc-num">07</span>クラスとオブジェクト指向の基礎</a>
+    <a href="phase-2.html#ch08" class="toc-link"><span class="toc-num">08</span>ファイル、モジュール、標準ライブラリ</a>
+    <a href="phase-2.html#ch09" class="toc-link"><span class="toc-num">09</span>エラーハンドリング、デバッグ、テスト</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">開発ツール</div>
+    <a href="#ch10" class="toc-link"><span class="toc-num">10</span>ターミナルとシェルスクリプト</a>
+    <a href="#ch11" class="toc-link"><span class="toc-num">11</span>Gitの基礎</a>
+    <a href="#ch12" class="toc-link"><span class="toc-num">12</span>Gitリモートと GitHub</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">構築とデプロイ</div>
+    <a href="phase-4.html#ch13" class="toc-link"><span class="toc-num">13</span>APIとHTTP</a>
+    <a href="phase-4.html#ch14" class="toc-link"><span class="toc-num">14</span>Flask でAPIを作る</a>
+    <a href="phase-4.html#ch15" class="toc-link"><span class="toc-num">15</span>データベースの基礎</a>
+    <a href="phase-4.html#ch16" class="toc-link"><span class="toc-num">16</span>Dockerとコンテナ</a>
+    <a href="phase-4.html#ch17" class="toc-link"><span class="toc-num">17</span>CI/CDとGitHub Actions</a>
+    <a href="phase-4.html#ch18" class="toc-link"><span class="toc-num">18</span>プロジェクトアーキテクチャ</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">データ構造</div>
+    <a href="phase-5.html#ch19" class="toc-link"><span class="toc-num">19</span>計算量解析</a>
+    <a href="phase-5.html#ch20" class="toc-link"><span class="toc-num">20</span>線形構造</a>
+    <a href="phase-5.html#ch21" class="toc-link"><span class="toc-num">21</span>ハッシュテーブルとマップ</a>
+    <a href="phase-5.html#ch22" class="toc-link"><span class="toc-num">22</span>木構造</a>
+    <a href="phase-5.html#ch23" class="toc-link"><span class="toc-num">23</span>グラフ</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">アルゴリズム</div>
+    <a href="phase-6.html#ch24" class="toc-link"><span class="toc-num">24</span>探索とソート</a>
+    <a href="phase-6.html#ch25" class="toc-link"><span class="toc-num">25</span>再帰と動的計画法</a>
+    <a href="phase-6.html#ch26" class="toc-link"><span class="toc-num">26</span>アルゴリズムパターン</a>
+    <a href="phase-6.html#ch27" class="toc-link"><span class="toc-num">27</span>グラフアルゴリズム</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">エンジニアリングの技術</div>
+    <a href="phase-7.html#ch28" class="toc-link"><span class="toc-num">28</span>デザインパターンとSOLID</a>
+    <a href="phase-7.html#ch29" class="toc-link"><span class="toc-num">29</span>SQLとクエリの極意</a>
+    <a href="phase-7.html#ch30" class="toc-link"><span class="toc-num">30</span>トランザクションとNoSQL</a>
+    <a href="phase-7.html#ch31" class="toc-link"><span class="toc-num">31</span>ネットワークとインターネット</a>
+    <a href="phase-7.html#ch32" class="toc-link"><span class="toc-num">32</span>並行性と並列性</a>
+    <a href="phase-7.html#ch33" class="toc-link"><span class="toc-num">33</span>セキュリティエンジニアリング</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">システムとスケール</div>
+    <a href="phase-8.html#ch34" class="toc-link"><span class="toc-num">34</span>システム設計</a>
+    <a href="phase-8.html#ch35" class="toc-link"><span class="toc-num">35</span>分散システム</a>
+    <a href="phase-8.html#ch36" class="toc-link"><span class="toc-num">36</span>パフォーマンスとオブザーバビリティ</a>
+    <a href="phase-8.html#ch37" class="toc-link"><span class="toc-num">37</span>大規模コードベースのナビゲート</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AIレベル1〜5</div>
+    <a href="phase-9.html#ch38" class="toc-link"><span class="toc-num">38</span>AIコードの評価と指示</a>
+    <a href="phase-9.html#ch39" class="toc-link"><span class="toc-num">39</span>レベル1・2 — タブ補完とエージェントIDE</a>
+    <a href="phase-9.html#ch40" class="toc-link"><span class="toc-num">40</span>レベル3 — コンテキストエンジニアリング</a>
+    <a href="phase-9.html#ch41" class="toc-link"><span class="toc-num">41</span>レベル4 — 複利エンジニアリング</a>
+    <a href="phase-9.html#ch42" class="toc-link"><span class="toc-num">42</span>レベル5 — MCP、スキル、ケイパビリティ</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AIレベル6〜8</div>
+    <a href="phase-10.html#ch43" class="toc-link"><span class="toc-num">43</span>レベル6 — ハーネスエンジニアリング</a>
+    <a href="phase-10.html#ch44" class="toc-link"><span class="toc-num">44</span>レベル7 — バックグラウンドエージェント</a>
+    <a href="phase-10.html#ch45" class="toc-link"><span class="toc-num">45</span>DockerでのClaude Code</a>
+    <a href="phase-10.html#ch46" class="toc-link"><span class="toc-num">46</span>レベル8 — 自律エージェントチーム</a>
+    <a href="phase-10.html#ch47" class="toc-link"><span class="toc-num">47</span>マルチプレイヤー効果</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">リファレンス</div>
+    <a href="appendices.html#glossary" class="toc-link"><span class="toc-num">&oplus;</span>用語集</a>
+    <a href="appendices.html#prompt-library" class="toc-link"><span class="toc-num">&oplus;</span>プロンプトライブラリ</a>
+    <a href="appendices.html#self-assessment" class="toc-link"><span class="toc-num">&oplus;</span>自己評価</a>
+    <a href="appendices.html#common-mistakes" class="toc-link"><span class="toc-num">&oplus;</span>よくある間違い</a>
+    <a href="appendices.html#appendix-d" class="toc-link"><span class="toc-num">&oplus;</span>トラブルシューティング</a>
+    <a href="appendices.html#appendix-e" class="toc-link"><span class="toc-num">&oplus;</span>リソース</a>
+  </div>
+</aside>
+
+<div class="main">
+<section class="hero hero-sm">
+  <div class="hero-badge">フェーズ3 &mdash; 開発ツール</div>
+  <h1>開発<em>ツール</em></h1>
+  <p class="hero-sub">ターミナル（Terminal）、Gitバージョン管理、GitHubコラボレーションをマスターする&mdash;すべての開発者とAIエージェントが依存するインフラ。</p>
+  <div class="hero-meta"><span>第10〜12章</span><span>フェーズゲート + TaskForge</span></div>
+</section>
+<div class="content-wrap">
+
+<div role="note" class="callout info">
+<div class="callout-title">補足：フェーズ3を始める前に</div>
+<p>このフェーズでは以下を前提とします：パラメータと戻り値を持つ関数を書ける（第5章）、リストと辞書を使える（第6章）、try/exceptでエラーを処理できる（第9章）。また、第3章で構築した動作するPython環境が必要です。</p>
+</div>
+
+<!-- ===== CH 10 ===== -->
+<section id="ch10" data-ch="10">
+<h2><span class="ch-label">第10章</span> ターミナルとシェルスクリプト</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念</div>
+<p>Claude Codeは完全にターミナル上で動作します。実行するコマンド、読み込むファイル、実行するテスト&mdash;すべてがここで学ぶシェル（Shell）コマンドを通じて行われます。ターミナルの習熟は、AI支援開発においてオプションではありません。ターミナルこそがインターフェースそのものです。</p>
+</div>
+
+<p>第3章でPythonを実行するためにターミナルを使いました。今度は<strong>パワーツール</strong>として学びます。以下の約15のコマンドがプロが毎日使うものです。それ以外はその都度調べれば大丈夫です。</p>
+
+<h3>必須コマンド</h3>
+<table>
+<caption>日常使用のための必須ターミナルコマンド</caption>
+<tr><th>コマンド</th><th>機能</th><th>例</th></tr>
+<tr><td><code>cd</code></td><td>ディレクトリを移動する</td><td><code>cd ~/projects</code></td></tr>
+<tr><td><code>ls</code></td><td>ファイルを一覧表示する</td><td><code>ls -la</code></td></tr>
+<tr><td><code>pwd</code></td><td>現在のディレクトリを表示する</td><td><code>pwd</code></td></tr>
+<tr><td><code>mkdir</code></td><td>ディレクトリを作成する</td><td><code>mkdir src</code></td></tr>
+<tr><td><code>rm</code></td><td>ファイルを削除する</td><td><code>rm old.txt</code></td></tr>
+<tr><td><code>cp</code></td><td>コピーする</td><td><code>cp a.py b.py</code></td></tr>
+<tr><td><code>mv</code></td><td>移動・リネームする</td><td><code>mv old.py new.py</code></td></tr>
+<tr><td><code>cat</code></td><td>ファイルの内容を表示する</td><td><code>cat README.md</code></td></tr>
+<tr><td><code>grep</code></td><td>ファイル内のテキストを検索する</td><td><code>grep "def " *.py</code></td></tr>
+<tr><td><code>head</code></td><td>最初のN行を表示する</td><td><code>head -20 log.txt</code></td></tr>
+<tr><td><code>tail</code></td><td>最後のN行を表示する</td><td><code>tail -f server.log</code></td></tr>
+<tr><td><code>find</code></td><td>ファイルを探す</td><td><code>find . -name "*.py"</code></td></tr>
+</table>
+
+<h3>シェルスクリプト</h3>
+<p><strong>シェルスクリプト</strong>とは、順番に実行されるコマンドのファイルです。すべてのスクリプトは、OSにどのインタープリタを使うかを伝える<em>シバン</em>行から始めます：</p>
+<pre><code>#!/bin/bash
+echo "Running tests..."
+python3 -m pytest
+echo "Done."</code></pre>
+<p><code>run_tests.sh</code>として保存し、<code>chmod +x run_tests.sh</code>で実行可能にしてから<code>./run_tests.sh</code>で実行します。</p>
+
+<h3>パイプ：小さなツールを組み合わせる</h3>
+<p><code>|</code>演算子は、あるコマンドの出力を別のコマンドの入力として送ります。<code>&gt;</code>は出力をファイルに書き込みます。</p>
+
+<div class="dw">
+<svg viewBox="0 0 700 100" xmlns="http://www.w3.org/2000/svg" aria-label="パイプラインの図：cat access.logがgrep POST、grep 500、wc -lを通じてマッチする行数を数える">
+  <rect class="node-fill" x="10" y="25" width="140" height="50" rx="8"/>
+  <text class="label-text" x="80" y="46" text-anchor="middle">cat access.log</text>
+  <text class="sub-text" x="80" y="62" text-anchor="middle">10,000行</text>
+  <line class="arrow" x1="150" y1="50" x2="185" y2="50"/>
+  <rect class="node-fill" x="185" y="25" width="140" height="50" rx="8"/>
+  <text class="label-text" x="255" y="46" text-anchor="middle">grep "POST"</text>
+  <text class="sub-text" x="255" y="62" text-anchor="middle">2,400行</text>
+  <line class="arrow" x1="325" y1="50" x2="360" y2="50"/>
+  <rect class="node-fill" x="360" y="25" width="140" height="50" rx="8"/>
+  <text class="label-text" x="430" y="46" text-anchor="middle">grep "500"</text>
+  <text class="sub-text" x="430" y="62" text-anchor="middle">47行</text>
+  <line class="arrow" x1="500" y1="50" x2="535" y2="50"/>
+  <rect class="node-accent" x="535" y="25" width="140" height="50" rx="8"/>
+  <text class="label-text" x="605" y="46" text-anchor="middle">wc -l</text>
+  <text class="sub-text" x="605" y="62" text-anchor="middle">47</text>
+</svg>
+<div class="diagram-caption">パイプは小さなツールを強力なワークフローに組み合わせます。各ステージは次のステージのためにデータをフィルタリングまたは変換します。</div>
+</div>
+
+<h3>環境変数とPATH</h3>
+<p><strong>環境変数</strong>はシステム全体の設定です。<code>PATH</code>はシェルにコマンドの場所を伝えます。<code>command not found</code>エラーが出たときは、そのプログラムが<code>PATH</code>にリストされているどのディレクトリにも存在しないことを意味します。</p>
+<pre><code>export API_KEY="sk-abc123"   # 変数を設定する
+echo $PATH                    # PATHを確認する</code></pre>
+
+<h3>SSHの基礎</h3>
+<p><strong>SSH</strong>（Secure Shell）を使うと、ターミナル経由でリモートマシンに接続できます。コードをデプロイするときやクラウドサーバーにアクセスするときに使います。<code>ssh-keygen -t ed25519</code>でキーペアを生成し、公開鍵（<code>~/.ssh/id_ed25519.pub</code>）をリモートサービスに追加します（具体的なサービスへの設定は第12章で行います）。接続するには：<code>ssh user@hostname</code>。</p>
+
+<h3>tmux：ターミナルマルチプレクサ</h3>
+
+<p><strong>概念：</strong>ターミナルマルチプレクサを使うと、1つのターミナルウィンドウ内で複数の永続的なシェルセッションを実行できます。ペインを分割したり、タブを切り替えたり、完全にデタッチしたりして&mdash;すべてをバックグラウンドで動かし続けることができます。これは複数のプロセスを同時に監視する必要があるワークフローで不可欠であり、複数のAIエージェントをオーケストレーションするときに特に重要になります。</p>
+
+<div role="note" class="callout info">
+<div class="callout-title">補足：現在のツール（2026年3月）</div>
+<p><strong>tmux</strong>（全プラットフォーム、無料）。インストール：<code>brew install tmux</code>（macOS）または<code>sudo apt install tmux</code>（Linux）。フェーズ5のマルチエージェントワークフロー向けの標準ターミナルマルチプレクサです。</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念：tmuxがAI開発で欠かせない理由</div>
+<p>フェーズ5では、複数のClaude Codeエージェントを同時に実行します。各エージェントには独自のターミナルセッションが必要です。tmuxなしでは、複数のターミナルウィンドウが必要になり、ノートPCを閉じるとすべて終了してしまいます。tmuxを使えば、セッションはバックグラウンドで維持されます&mdash;切断して再接続しても、エージェントは動き続けます。tmuxはバックグラウンドエージェントを実現するインフラです。</p>
+</div>
+
+<h4>tmuxのインストール</h4>
+<div class="prompt-block"><span class="label">Terminal</span># macOS（Homebrewを使う）
+brew install tmux
+
+# Ubuntu/Debian
+sudo apt install tmux
+
+# バージョン確認
+tmux -V</div>
+
+<h4>コアコンセプト</h4>
+<p>tmuxには3つの層があります：</p>
+<table>
+<caption>tmuxの組織層：セッション、ウィンドウ、ペイン</caption>
+<tr><th>概念</th><th>説明</th><th>たとえ</th></tr>
+<tr><td><strong>セッション</strong></td><td>バックグラウンドで維持される名前付きワークスペース</td><td>部屋を離れても片付けたままになっているプロジェクトデスク</td></tr>
+<tr><td><strong>ウィンドウ</strong></td><td>セッション内のフルスクリーンタブ</td><td>同じデスクの別々のページ</td></tr>
+<tr><td><strong>ペイン</strong></td><td>ウィンドウ内の分割</td><td>1枚のページを左右の列に分ける</td></tr>
+</table>
+
+<h4>はじめかた</h4>
+<p>セッション内でのすべてのtmuxコマンドは<strong>プレフィックスキー</strong>から始まります：<code>Ctrl + B</code>。プレフィックスを押して離してから、次のキーを押します。これが最もよくつまずくポイントです&mdash;すべてを同時に押し続けるのではなく、2ステップのコンボを押すのです。</p>
+
+<div class="prompt-block"><span class="label">Terminal</span># 名前付きセッションを新規作成
+tmux new -s taskforge
+
+# これでtmuxの中にいます。下の緑のバーが確認します。
+
+# デタッチ（セッションをバックグラウンドで動かしたまま離れる）
+# 押す：Ctrl+B、その後d
+
+# 実行中のセッションを一覧表示
+tmux ls
+
+# セッションに再アタッチ
+tmux attach -t taskforge
+
+# 完了したらセッションを終了
+tmux kill-session -t taskforge</div>
+
+<h4>tmuxホットキーリファレンス</h4>
+<p>以下のすべてのホットキーは、最初に<code>Ctrl + B</code>（プレフィックス）を押して離してから、次のキーを押すことを前提とします。</p>
+
+<h5>セッション管理</h5>
+<table>
+<caption>セッション管理のtmuxホットキー</caption>
+<tr><th>プレフィックス +</th><th>アクション</th><th>使いどころ</th></tr>
+<tr><td><code>d</code></td><td>セッションからデタッチ</td><td>セッションをバックグラウンドで動かしたままにする。エージェントは作業を続けます。</td></tr>
+<tr><td><code>s</code></td><td>セッションを一覧・切り替え</td><td>インタラクティブなセッションピッカー。矢印キーでナビゲート、Enterで選択。</td></tr>
+<tr><td><code>$</code></td><td>現在のセッションをリネーム</td><td>意味のある名前をつける：<code>taskforge</code>、<code>api-server</code>、<code>agent-team</code>。</td></tr>
+<tr><td><code>(</code> / <code>)</code></td><td>前のセッション / 次のセッション</td><td>セッション間を素早く切り替える。</td></tr>
+</table>
+
+<h5>ウィンドウ管理（タブ）</h5>
+<table>
+<caption>ウィンドウ管理のtmuxホットキー</caption>
+<tr><th>プレフィックス +</th><th>アクション</th><th>使いどころ</th></tr>
+<tr><td><code>c</code></td><td>新しいウィンドウを作成</td><td>セッション内に新しいフルスクリーンターミナルを開く。</td></tr>
+<tr><td><code>n</code></td><td>次のウィンドウ</td><td>ウィンドウを前に進む。</td></tr>
+<tr><td><code>p</code></td><td>前のウィンドウ</td><td>ウィンドウを後ろに戻る。</td></tr>
+<tr><td><code>0-9</code></td><td>番号でウィンドウにジャンプ</td><td>直接ジャンプ：プレフィックス + <code>2</code>でウィンドウ2へ。</td></tr>
+<tr><td><code>,</code></td><td>現在のウィンドウをリネーム</td><td>目的別に名前をつける：<code>code</code>、<code>tests</code>、<code>logs</code>。</td></tr>
+<tr><td><code>w</code></td><td>ウィンドウ一覧（インタラクティブ）</td><td>すべてのセッションのすべてのウィンドウを表示するビジュアルピッカー。</td></tr>
+<tr><td><code>&amp;</code></td><td>現在のウィンドウを閉じる</td><td><code>y</code>で確認。ウィンドウ内のすべてのペインが閉じる。</td></tr>
+</table>
+
+<h5>ペイン管理（分割）</h5>
+<table>
+<caption>ペイン管理のtmuxホットキー</caption>
+<tr><th>プレフィックス +</th><th>アクション</th><th>使いどころ</th></tr>
+<tr><td><code>%</code></td><td>垂直分割（左右）</td><td>左にコード、右にテスト出力。</td></tr>
+<tr><td><code>"</code></td><td>水平分割（上下）</td><td>上にコマンド、下にログストリーム。</td></tr>
+<tr><td><code>矢印キー</code></td><td>隣接するペインに移動</td><td>方向を使って分割間をナビゲート。</td></tr>
+<tr><td><code>x</code></td><td>現在のペインを閉じる</td><td><code>y</code>で確認。このペインだけが閉じる。</td></tr>
+<tr><td><code>z</code></td><td>ペインのズームを切り替え（フルスクリーン）</td><td>1つのペインを一時的に最大化して詳細を確認。もう一度押すと元に戻る。</td></tr>
+<tr><td><code>o</code></td><td>ペインを順に切り替え</td><td>矢印キーなしで次のペインにすばやく移動。</td></tr>
+<tr><td><code>{</code> / <code>}</code></td><td>ペインを左右に入れ替え</td><td>再作成なしでペインの位置を並べ替える。</td></tr>
+<tr><td><code>Space</code></td><td>レイアウトを順に切り替え</td><td>均等水平、均等垂直、メイン水平などを切り替える。</td></tr>
+<tr><td><code>Ctrl + 矢印</code></td><td>ペインを1セル分リサイズ</td><td>ペインサイズを微調整。押し続けると連続リサイズ。</td></tr>
+</table>
+
+<h5>コピーモードとスクロールバック</h5>
+<table>
+<caption>コピーモードとスクロールバックのtmuxホットキー</caption>
+<tr><th>プレフィックス +</th><th>アクション</th><th>使いどころ</th></tr>
+<tr><td><code>[</code></td><td>コピーモードに入る</td><td>出力履歴をスクロール。矢印キーまたはPage Up/Downを使う。<code>q</code>で終了。</td></tr>
+<tr><td><code>]</code></td><td>tmuxバッファから貼り付け</td><td>コピーモードでコピーしたテキストを貼り付ける。</td></tr>
+</table>
+<p>コピーモードでは矢印キーでナビゲートします。<code>Space</code>で選択開始、移動してテキストを選択し、<code>Enter</code>でコピー。<code>q</code>でコピーモードを終了します。</p>
+
+<h4>推奨tmux設定</h4>
+<p><code>~/.tmux.conf</code>を以下の設定で作成して、tmuxをより使いやすくします：</p>
+<pre><code># ~/.tmux.conf
+
+# Ctrl+BのかわりにCtrl+Aをプレフィックスにする（押しやすい）
+unbind C-b
+set -g prefix C-a
+bind C-a send-prefix
+
+# | と - で分割（覚えやすい）
+bind | split-window -h -c "#{pane_current_path}"
+bind - split-window -v -c "#{pane_current_path}"
+
+# 新しいウィンドウは現在のディレクトリで開く
+bind c new-window -c "#{pane_current_path}"
+
+# Alt+矢印でペインをナビゲート（プレフィックス不要）
+bind -n M-Left select-pane -L
+bind -n M-Right select-pane -R
+bind -n M-Up select-pane -U
+bind -n M-Down select-pane -D
+
+# マウスサポートを有効にする（クリックでペイン選択、スクロールでスクロール）
+set -g mouse on
+
+# ウィンドウ番号を1から始める（0ではなく）
+set -g base-index 1
+setw -g pane-base-index 1
+
+# ウィンドウが閉じられたとき番号を振り直す
+set -g renumber-windows on
+
+# スクロールバックバッファを増やす
+set -g history-limit 50000
+
+# エスケープ遅延を減らす（vim/nanoユーザー向けに高速化）
+set -sg escape-time 10
+
+# ステータスバースタイリング
+set -g status-style bg=black,fg=white
+set -g status-left "[#S] "
+set -g status-right "%H:%M"</code></pre>
+<p>保存後は<code>tmux source-file ~/.tmux.conf</code>でリロード（または新しいセッションを開始）します。</p>
+
+<div role="note" class="callout warn">
+<div class="callout-title">注意：上記の設定を使った場合</div>
+<p>この設定はプレフィックスを<code>Ctrl + B</code>から<code>Ctrl + A</code>に変更し、分割を<code>%</code>と<code>"</code>のかわりに<code>|</code>と<code>-</code>で行います。上記のホットキー表はすべてデフォルトのバインディングを使っています。この設定を使う場合は、どこでも<code>Ctrl + B</code>のかわりに<code>Ctrl + A</code>を使い、分割には<code>|</code>/<code>-</code>を使ってください。</p>
+</div>
+
+<h4>実際のtmuxワークフロー</h4>
+<p>典型的なマルチエージェント開発セッションの例を示します：</p>
+<div class="prompt-block"><span class="label">Terminal</span># プロジェクト用のセッションを作成
+tmux new -s taskforge
+
+# ウィンドウ1（デフォルト）：Claude Codeのメインセッション
+claude
+
+# テスト用のウィンドウ2を作成（プレフィックス + c）
+# 名前を"tests"にする（プレフィックス + ,）
+python3 -m pytest --watch
+
+# サーバー用のウィンドウ3を作成（プレフィックス + c）
+# 名前を"server"にする（プレフィックス + ,）
+python3 -m flask run
+
+# git logを監視するためにウィンドウ1を分割（プレフィックス + %）
+# 右ペインで：
+watch -n 2 git log --oneline -10
+
+# デタッチして昼食へ（プレフィックス + d）
+# すべての作業は継続されます。
+
+# 戻ってきたら再アタッチ：
+tmux attach -t taskforge</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう：tmux練習ドリル</div>
+<p>3つのペインを持つセッションを実際に作ってみましょう。（1）<code>tmux new -s practice</code>でセッションを開始します（2）プレフィックス + <code>%</code>で垂直分割してみましょう（3）プレフィックス + <code>"</code>で右ペインを水平分割してみましょう（4）プレフィックス + 矢印キーで3つのペイン間を自由に移動してみましょう（5）プレフィックス + <code>z</code>で1つのペインをズームし、もう一度<code>z</code>でズームを戻してみましょう（6）プレフィックス + <code>d</code>でデタッチします（7）<code>tmux attach -t practice</code>で再アタッチしてみましょう。<strong>確認：</strong>再アタッチ後も3つのペインがコンテンツとともに残っていれば成功です。</p>
+</div>
+
+<h3>ターミナルの速度：高度なホットキー</h3>
+<p>第3章で基本的なシェルホットキーを学びました。以下は、1日中ターミナルで作業するときに本当に役立つ高度なホットキーです：</p>
+
+<table>
+<caption>編集とナビゲーションのための高度なターミナルホットキー</caption>
+<tr><th>ホットキー</th><th>アクション</th><th>例</th></tr>
+<tr><td><code>Ctrl + R</code></td><td>履歴を逆順検索</td><td>過去のコマンドの一部を入力し始める。<code>Ctrl + R</code>をもう一度押してマッチを順に表示。<code>Enter</code>で実行、<code>Ctrl + G</code>でキャンセル。</td></tr>
+<tr><td><code>Ctrl + X, Ctrl + E</code></td><td>現在のコマンドを$EDITORで開く</td><td>長く複雑なコマンド向け：フルエディタで編集して保存すると実行される。未設定なら<code>export EDITOR=nano</code>を設定。</td></tr>
+<tr><td><code>Alt + .</code></td><td>前のコマンドの最後の引数を挿入</td><td><code>mkdir -p src/components/auth</code>を実行した後？<code>cd</code>と入力して<code>Alt + .</code>を押すと<code>cd src/components/auth</code>になる。</td></tr>
+<tr><td><code>Ctrl + T</code></td><td>カーソル前の2文字を入れ替え</td><td><code>sl</code>&rarr;<code>ls</code>のようなタイポを再入力なしで修正。</td></tr>
+<tr><td><code>Alt + T</code></td><td>カーソル前の2単語を入れ替え</td><td>単語の順序ミスを修正。</td></tr>
+<tr><td><code>Ctrl + _</code></td><td>最後の編集を取り消す</td><td>削除しすぎた<code>Ctrl + W</code>や<code>Ctrl + U</code>を取り消す。</td></tr>
+<tr><td><code>fc</code></td><td>最後のコマンドをエディタで開く</td><td>複雑なコマンドを修正して再実行。保存して閉じると実行される。</td></tr>
+</table>
+
+<h4>履歴の活用テクニック</h4>
+<table>
+<caption>シェル履歴のショートカットと展開コマンド</caption>
+<tr><th>コマンド</th><th>アクション</th><th>例</th></tr>
+<tr><td><code>!!</code></td><td>最後のコマンド全体を繰り返す</td><td><code>sudo !!</code> &mdash; 直前のコマンドをsudoで再実行。</td></tr>
+<tr><td><code>!$</code></td><td>前のコマンドの最後の引数</td><td><code>cat file.py</code>の後に<code>vim !$</code>で同じファイルをvimで開く。</td></tr>
+<tr><td><code>!^</code></td><td>前のコマンドの最初の引数</td><td>あまり一般的ではないが利用可能。</td></tr>
+<tr><td><code>!:2</code></td><td>前のコマンドの2番目の引数</td><td>特定の位置の引数にアクセス。</td></tr>
+<tr><td><code>^old^new</code></td><td>置換して再実行</td><td><code>git diff mian</code>を実行した？<code>^mian^main</code>と入力してタイポを修正して再実行。</td></tr>
+<tr><td><code>history | grep pytest</code></td><td>パターンで履歴を検索</td><td>過去のpytestコマンドをすべて探す。</td></tr>
+</table>
+
+<h3>TaskForgeとの接続</h3>
+<p>パイプとgrepを使ってTaskForgeを調べます：<code>grep "def " taskforge.py</code>はすべての関数定義を一覧表示します。フェーズ5でエージェントを管理するとき、tmuxを使って複数のClaude Codeセッションを同時に実行します&mdash;エージェントごとに1つのtmuxウィンドウ、すべてを1つのセッション内で管理し、デタッチして再アタッチできます。</p>
+
+<h3>ミニ演習</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう：パイプで単語を数える</div>
+<pre><code>echo 'hello world' | wc -w</code></pre>
+<p>パイプはechoの出力を単語カウンターに送ります。結果：<code>2</code>。</p>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう：最初の5ファイルを一覧表示してみましょう</div>
+<pre><code>ls | head -5</code></pre>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう</div>
+<p>1行のコマンドで、<code>import</code>という単語を含むすべてのPythonファイルを探してその数を数えてみましょう：</p>
+<div class="prompt-block"><span class="label">Terminal</span>grep -rl 'import' . --include='*.py' | wc -l</div>
+<p><strong>確認：</strong>数字が表示されます（マッチするファイルの数）。</p>
+<p><strong>うまくいかない場合：</strong>（1）<code>grep: No such file or directory</code> &rarr; 空のディレクトリにいます。先にプロジェクトへ<code>cd</code>してください。（2）数が0 &rarr; 現在のディレクトリツリーにPythonファイルがありません。</p>
+</div>
+
+<div class="pq">複数のコマンドをパイプラインに組み合わせました&mdash;ログの調査、テスト出力のフィルタリング、AIエージェント活動の監視に使う技術と同じです。</div>
+
+<h3>インタラクティブ演習</h3>
+
+<div class="quiz" data-ch="10" data-ex="quiz-head">
+  <h4>知識チェック</h4>
+  <p>ファイルの最初の10行だけを表示するコマンドはどれですか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">tail file.txt</button>
+    <button class="quiz-option" data-correct="true">head file.txt</button>
+    <button class="quiz-option" data-correct="false">cat -n file.txt</button>
+    <button class="quiz-option" data-correct="false">less file.txt</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz" data-ch="10" data-ex="quiz-pipe">
+  <h4>知識チェック</h4>
+  <p><code>cat file.txt | grep error</code>のパイプ演算子<code>|</code>は何をしますか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">出力をファイルに書き込む</button>
+    <button class="quiz-option" data-correct="true">左のコマンドの出力を右のコマンドの入力として送る</button>
+    <button class="quiz-option" data-correct="false">両方のコマンドを同時に実行する</button>
+    <button class="quiz-option" data-correct="false">2つのファイルを結合する</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz" data-ch="10" data-ex="quiz-grep">
+  <h4>知識チェック</h4>
+  <p><code>grep</code>を大文字小文字を区別せずに検索するフラグはどれですか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">-r</button>
+    <button class="quiz-option" data-correct="true">-i</button>
+    <button class="quiz-option" data-correct="false">-n</button>
+    <button class="quiz-option" data-correct="false">-v</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="checklist" data-ch="10" data-ex="terminal-check">
+  <h4>ターミナル習熟度</h4>
+  <label><input type="checkbox"><span><code>cd</code>でディレクトリに移動し、<code>cd ..</code>で戻った</span></label>
+  <label><input type="checkbox"><span><code>ls -la</code>でファイルを一覧表示して出力を読んだ</span></label>
+  <label><input type="checkbox"><span><code>touch</code>または<code>echo &gt; file.txt</code>でファイルを作成した</span></label>
+  <label><input type="checkbox"><span><code>grep</code>を使ってファイル内のテキストを検索した</span></label>
+  <label><input type="checkbox"><span>パイプ<code>|</code>を使って2つのコマンドを連結した</span></label>
+</div>
+
+<div class="exercise" data-type="output-match" data-ch="10" data-ex="file-count" data-pattern="^total\s+\d+">
+  <div class="exercise-header">
+    <h4>ファイルカウント</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">TaskForgeディレクトリで<code>ls -la</code>を実行して出力を貼り付けてください。</p>
+  <textarea class="exercise-paste" placeholder="ここに出力を貼り付けてください..."></textarea>
+  <div class="exercise-controls">
+    <button class="ex-verify">確認</button>
+  </div>
+  <div class="exercise-feedback"></div>
+</div>
+
+</section>
+
+<!-- ===== CH 11 ===== -->
+<section id="ch11" data-ch="11">
+<h2><span class="ch-label">第11章</span> Gitによるバージョン管理</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念</div>
+<p>Gitはオプションではありません。Claude Codeはブランチ（branch）を作成し、コミット（commit）を作り、プロジェクト履歴を読んでコードベースを理解します。Gitなしでは、Claude Codeを効果的に使うことができません&mdash;そしてGitを理解せずには、Claude Codeがあなたのコードに何をしているか監督できません。</p>
+</div>
+
+<div role="note" class="callout warn">
+<div class="callout-title">注意：バージョン管理なしに何が起きるか</div>
+<p>ファイルのリファクタリングに3時間費やします。何かを壊してしまいます。動いていたバージョンがどんなものだったか思い出せません。手動で元に戻そうとしてさらに悪化させます。Gitがあれば、1つのコマンド（<code>git checkout -- file.py</code>）で最後の動作バージョンを復元できます。なければ、すべての編集でギャンブルをしています。</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">補足：現在のツール（2026年3月）</div>
+<p><strong>Git</strong>はユニバーサルなバージョン管理システムです。ほぼすべてのプロのプロジェクトで使われています。インストール：<code>brew install git</code>（macOS）、<code>apt install git</code>（Linux）、またはgit-scm.com（Windows）。</p>
+</div>
+
+<p><strong>Git</strong>はコードへのすべての変更を追跡します。プロジェクトのタイムマシンと考えてください&mdash;以前の任意の状態に戻ることができます。ブランチは平行したタイムラインのようなものです：メインのタイムラインを安定させたまま、新しい機能を別のタイムラインで作業できます。実験が失敗したら、そのタイムラインを破棄します。成功したら、メインに統合します。これが、AIエージェントが既存の動作を壊さずにコードを改善できる仕組みです。</p>
+
+<div role="note" class="callout warn">
+<div class="callout-title">注意：GitはClaude Codeの最重要前提条件</div>
+<p>Claude CodeはGitの履歴を読み、コミットを作り、ブランチを作成し、コンフリクトを解消します。Claude CodeがGitで何をしているか理解できなければ、適切に監督することができません。</p>
+</div>
+
+<h3>コアコマンド</h3>
+<table>
+<caption>バージョン管理のためのコアGitコマンド</caption>
+<tr><th>コマンド</th><th>機能</th></tr>
+<tr><td><code>git init</code></td><td>新しいリポジトリ（repository）を作成する</td></tr>
+<tr><td><code>git add .</code></td><td>すべての変更をステージする</td></tr>
+<tr><td><code>git commit -m "msg"</code></td><td>スナップショットを保存する</td></tr>
+<tr><td><code>git status</code></td><td>変更内容を確認する</td></tr>
+<tr><td><code>git log --oneline</code></td><td>コミット履歴を表示する</td></tr>
+<tr><td><code>git diff</code></td><td>ステージされていない変更を表示する</td></tr>
+<tr><td><code>git branch name</code></td><td>ブランチを作成する</td></tr>
+<tr><td><code>git switch name</code></td><td>ブランチを切り替える</td></tr>
+<tr><td><code>git merge name</code></td><td>ブランチを現在のブランチにマージ（merge）する</td></tr>
+</table>
+
+<div class="diagram">
+<svg viewBox="0 0 700 140" xmlns="http://www.w3.org/2000/svg" aria-label="Gitブランチングの図：フィーチャーブランチがmainから分岐し、コミットを追加した後にマージされる">
+  <!-- Main branch -->
+  <circle cx="80" cy="40" r="14" class="node-fill"/>
+  <text class="sub-text" x="80" y="44" text-anchor="middle">c1</text>
+  <line class="arrow" x1="94" y1="40" x2="146" y2="40"/>
+  <circle cx="160" cy="40" r="14" class="node-accent"/>
+  <text class="sub-text" x="160" y="44" text-anchor="middle">c2</text>
+  <line class="arrow" x1="174" y1="40" x2="226" y2="40"/>
+  <circle cx="240" cy="40" r="14" class="node-fill"/>
+  <text class="sub-text" x="240" y="44" text-anchor="middle">c3</text>
+  <line class="arrow" x1="254" y1="40" x2="386" y2="40"/>
+  <circle cx="400" cy="40" r="14" class="node-accent"/>
+  <text class="sub-text" x="400" y="44" text-anchor="middle">m</text>
+  <!-- Feature branch -->
+  <line x1="168" y1="52" x2="220" y2="95" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <circle cx="240" cy="100" r="14" class="node-fill"/>
+  <text class="sub-text" x="240" y="104" text-anchor="middle">f1</text>
+  <line class="arrow" x1="254" y1="100" x2="306" y2="100"/>
+  <circle cx="320" cy="100" r="14" class="node-fill"/>
+  <text class="sub-text" x="320" y="104" text-anchor="middle">f2</text>
+  <line x1="332" y1="92" x2="388" y2="52" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <!-- Labels -->
+  <text class="sub-text" x="460" y="44" fill="var(--accent)" style="font-weight:600">main</text>
+  <text class="sub-text" x="370" y="104" fill="var(--a2)" style="font-weight:600">feature</text>
+</svg>
+<div class="diagram-caption">ブランチを使うことでmainに影響を与えずに機能を開発できます。完成したらマージして作業をmainに取り込みます。これが複数のAIエージェントが並行して作業できる仕組みです。</div>
+</div>
+
+<h3>マージコンフリクト</h3>
+<p>2つのブランチが同じ行を変更したとき、Gitはどちらのバージョンを保持すべきか判断できません。コンフリクトを<code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>/<code>=======</code>/<code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code>マーカーで印します。正しいバージョンを選択し、マーカーを削除してコミットします。</p>
+
+<h3>ワークツリー</h3>
+<p><code>git worktree add ../feature-branch feature</code>はブランチ用に別の作業ディレクトリを作成します。Claude Codeのマルチエージェント設定では、各エージェントが独自のファイルシステムを持てるようにワークツリーを使います。</p>
+
+<h3>TaskForgeとの接続</h3>
+<p>フェーズ3ゲートでは、TaskForgeを3つ以上のコミットとマージされたブランチを持つgitリポジトリにします。これがすべてのプロのプロジェクトの管理方法です。</p>
+
+<h3>ミニ演習</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう：最初のリポジトリを作ってみましょう</div>
+<pre><code>git init
+echo "# My Project" > README.md
+git add README.md
+git commit -m "initial commit"
+git log --oneline</code></pre>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう：ブランチを作成して切り替えてみましょう</div>
+<pre><code>git branch feature
+git switch feature
+echo "new feature" > feature.txt
+git add feature.txt
+git commit -m "add feature"
+git switch main</code></pre>
+<p>ファイル<code>feature.txt</code>が消えます&mdash;それは別のブランチにあります。</p>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう</div>
+<p>以下の手順を実際に試してみましょう。リポジトリを初期化し、ファイルをコミットし、ブランチ<code>test</code>を作成します。<code>test</code>ブランチで1行目を変更し、<code>main</code>に切り替えて同じ1行目を別の内容に変更してから、<code>git merge test</code>を実行してみましょう。コンフリクトが発生します。ファイルを開いて解消し、コミットしてみましょう。</p>
+<p><strong>確認：</strong><code>git log --oneline</code>で少なくとも4つのコミットが表示される。コンフリクトマーカーが消えている。</p>
+<p><strong>うまくいかない場合：</strong>（1）<code>fatal: not a git repository</code> &rarr; <code>git init</code>を忘れています。（2）コンフリクトが発生しない &rarr; 同じ行ではなく別の行を変更しました。（3）<code>CONFLICT</code>メッセージが出るがファイルが正常に見える &rarr; エディタでファイルを開いてマーカーを確認してください。</p>
+</div>
+
+<div class="pq">ブランチを作成し、変更を加え、マージコンフリクトを発生させて解消しました。これは複数のAIエージェントが同じコードベースで作業するときにまさに起きることです&mdash;そして今、あなたはその対処方法を知っています。</div>
+
+<h3>インタラクティブ演習</h3>
+
+<div class="quiz" data-ch="11" data-ex="quiz-staging">
+  <h4>知識チェック</h4>
+  <p>Gitのステージングエリア（インデックス）とは何ですか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">最後のコミットのバックアップ</button>
+    <button class="quiz-option" data-correct="true">次のコミットに含めたい変更の一時保管場所</button>
+    <button class="quiz-option" data-correct="false">リモートリポジトリ</button>
+    <button class="quiz-option" data-correct="false">作業ディレクトリと同じもの</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz" data-ch="11" data-ex="quiz-diff">
+  <h4>知識チェック</h4>
+  <p><code>git diff --staged</code>は何を表示しますか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">最後のプッシュ以降のすべての変更</button>
+    <button class="quiz-option" data-correct="false">作業ディレクトリと最後のコミットの差分</button>
+    <button class="quiz-option" data-correct="true">次のコミットにステージされた変更</button>
+    <button class="quiz-option" data-correct="false">2つのブランチの差分</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="checklist" data-ch="11" data-ex="git-check">
+  <h4>Gitの基礎</h4>
+  <label><input type="checkbox"><span><code>git init</code>でgitリポジトリを初期化した</span></label>
+  <label><input type="checkbox"><span>説明的なメッセージで少なくとも3つのコミットを作成した</span></label>
+  <label><input type="checkbox"><span><code>git checkout -b</code>または<code>git switch -c</code>でブランチを作成した</span></label>
+  <label><input type="checkbox"><span>ブランチをmainにマージした</span></label>
+  <label><input type="checkbox"><span>マージコンフリクトを解消した（コンフリクトマーカーを編集してコミット）</span></label>
+</div>
+
+<div class="exercise" data-type="output-match" data-ch="11" data-ex="git-log" data-pattern="^[0-9a-f]{7,}">
+  <div class="exercise-header">
+    <h4>Git Log</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">TaskForgeリポジトリで<code>git log --oneline</code>を実行して出力を貼り付けてください。</p>
+  <textarea class="exercise-paste" placeholder="ここに出力を貼り付けてください..."></textarea>
+  <div class="exercise-controls">
+    <button class="ex-verify">確認</button>
+  </div>
+  <div class="exercise-feedback"></div>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">ヒント：インタラクティブなGit練習</div>
+<p><a href="https://learngitbranching.js.org">Learn Git Branching</a>の「Main」セクションを完了してください。ブランチとマージを、読書だけでは得られない形で視覚的に理解できるインタラクティブなビジュアルチュートリアルです。</p>
+</div>
+
+</section>
+
+<!-- ===== CH 12 ===== -->
+<section id="ch12" data-ch="12">
+<h2><span class="ch-label">第12章</span> Gitリモートと GitHub</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念</div>
+<p>すべてのプロのプロジェクトはリモートリポジトリにあります。後のフェーズのClaude Codeワークフローには、プルリクエスト、リモートブランチ、CIパイプラインが含まれます&mdash;これらはすべてリモートGitへの理解が土台になります。</p>
+</div>
+
+<h3>リモートとは何か？</h3>
+<p>これまでのGitの作業はすべて<strong>ローカル</strong>でした&mdash;コミット、ブランチ、マージがあなたのマシン上にのみ存在していました。<strong>リモート</strong>とは、別のサーバー（通常はGitHub）にホストされているリポジトリのコピーです。ローカルリポジトリは作業場所です。リモートリポジトリは共有、バックアップ、コラボレーションの場所です。イメージとして言えば、ローカルリポジトリはあなただけのノート、リモートリポジトリはチーム全員が見られる共有ホワイトボードです。</p>
+
+<p>プッシュすると、コミットをリモートにコピーします。プルすると、リモートのコミットをローカルリポジトリにコピーします。2つはこれらの明示的な操作によって同期を保ちます&mdash;何も自動的には起きません。</p>
+
+<h3>GitHubアカウントのセットアップ</h3>
+<p>GitHubアカウントをまだ持っていない場合：</p>
+<ol>
+<li><a href="https://github.com">github.com</a>にアクセスし、<strong>Sign up</strong>をクリックします。</li>
+<li>ユーザー名、メールアドレス、パスワードを設定します。</li>
+<li>ログインしたら、<strong>+</strong>アイコン（右上）&rarr;<strong>New repository</strong>をクリックします。</li>
+<li>名前を<code>taskforge</code>とし、公開のままにして、READMEで初期化は<strong>しない</strong>（ローカルに既にあります）。</li>
+<li>GitHubがローカルリポジトリを接続するコマンドを表示します。次にそれを使います。</li>
+</ol>
+
+<h3>ローカルとリモートを接続する</h3>
+<p>GitHubに空のリポジトリを作成した後、ローカルリポジトリを接続します：</p>
+<pre><code>git remote add origin https://github.com/YOUR-USERNAME/taskforge.git</code></pre>
+<p><code>origin</code>はプライマリリモートの慣例的な名前です。何でも名前をつけられますが、<code>origin</code>が普遍的です。接続を確認します：</p>
+<pre><code>git remote -v</code></pre>
+<p>2行表示されるはずです&mdash;<code>fetch</code>用と<code>push</code>用で、両方ともGitHubのURLを指しています。</p>
+
+<h3>プッシュとプル</h3>
+<p><strong>プッシュ</strong>はローカルのコミットをリモートに送ります。<strong>プル</strong>はリモートのコミットをフェッチしてローカルブランチにマージします。</p>
+<pre><code># コミットをGitHubに送る
+git push origin main
+
+# GitHubから新しいコミットを取得
+git pull origin main</code></pre>
+
+<p>新しいブランチを初めてプッシュするとき、トラッキングを設定するために<code>-u</code>を使います：</p>
+<pre><code>git push -u origin main</code></pre>
+<p>その後は、<code>git push</code>と<code>git pull</code>でリモートとブランチを毎回指定する必要がなくなります。</p>
+
+<div role="note" class="callout warn">
+<div class="callout-title">注意：「リモートに作業が含まれているため拒否されました」エラー</div>
+<p><code>! [rejected] main -&gt; main (fetch first)</code>が表示された場合、ローカルにないコミットがリモートにあることを意味します。修正方法：</p>
+<pre><code>git pull origin main    # リモートの変更をフェッチしてマージ
+git push origin main    # これでプッシュが成功</code></pre>
+<p>プルがマージコンフリクトを作成した場合は、第11章で学んだ方法で解消します：ファイルを編集し、コンフリクトマーカーを削除し、<code>git add</code>して<code>git commit</code>します。</p>
+</div>
+
+<h3>クローニング</h3>
+<p><code>git clone</code>はリモートからマシンに、すべてのファイル、全履歴、全ブランチを含むリポジトリ全体をダウンロードします：</p>
+<pre><code>git clone https://github.com/someone/their-project.git</code></pre>
+<p>これにより、内部に完全に機能するGitリポジトリを持つ<code>their-project/</code>という新しいディレクトリが作成されます。<code>origin</code>リモートは既にクローン元のURLを指すように設定されています。これが他の人のプロジェクトをあなたのマシンに取り込む方法です。</p>
+
+<h3>リモートのブランチ</h3>
+<p>ブランチはローカルマシンとリモートで独立して存在します。ローカルブランチをGitHubにプッシュするには：</p>
+<pre><code>git push origin feature-branch</code></pre>
+<p>存在しない場合はGitHubにブランチが作成されます。<strong>トラッキング</strong>を設定するには（ローカルブランチとリモートブランチが対応していることをGitに知らせる）：</p>
+<pre><code>git push -u origin feature-branch</code></pre>
+<p>トラッキングが設定されると、<code>git push</code>と<code>git pull</code>は使うリモートブランチを自動的に把握します。リモートのものを含むすべてのブランチを確認するには：</p>
+<pre><code>git branch -a</code></pre>
+
+<h3>.gitignore</h3>
+<p><code>.gitignore</code>ファイルはGitに<strong>追跡しない</strong>ファイルとディレクトリを伝えます。生成されたファイル、シークレット、環境固有のアーティファクトを除外してリポジトリをクリーンに保ちます。</p>
+
+<pre><code># バイトコンパイルされたPythonファイル
+*.pyc
+__pycache__/
+
+# 仮想環境
+.venv/
+venv/
+
+# 環境変数・シークレット
+.env
+
+# IDEの設定
+.vscode/
+.idea/
+
+# OSファイル
+.DS_Store
+
+# Node（該当する場合）
+node_modules/</code></pre>
+
+<p><strong>パターン構文：</strong></p>
+<table>
+<caption>.gitignoreのパターン構文とマッチングルール</caption>
+<tr><th>パターン</th><th>マッチするもの</th></tr>
+<tr><td><code>*.pyc</code></td><td>任意のディレクトリの<code>.pyc</code>で終わるすべてのファイル</td></tr>
+<tr><td><code>__pycache__/</code></td><td><code>__pycache__</code>という名前のディレクトリとその中のすべて</td></tr>
+<tr><td><code>.env</code></td><td>プロジェクトルートの<code>.env</code>というファイル</td></tr>
+<tr><td><code>.venv/</code></td><td><code>.venv</code>ディレクトリとそのすべての内容</td></tr>
+<tr><td><code>node_modules/</code></td><td><code>node_modules</code>ディレクトリ（JavaScriptの依存関係）</td></tr>
+</table>
+
+<div role="note" class="callout critical">
+<div class="callout-title">重要な概念：.gitignoreが必要な理由</div>
+<p><code>.gitignore</code>なしでは、シークレット（APIキーを含む<code>.env</code>ファイル）をコミットしてしまったり、依存関係（<code>node_modules/</code>、<code>.venv/</code>）で何百メガバイトもリポジトリが膨らんだり、OSのゴミ（<code>.DS_Store</code>）をプッシュしてすべての差分を汚したりするリスクがあります。最初のコミットの前に<code>.gitignore</code>を追加してください。</p>
+</div>
+
+<h3>プルリクエスト</h3>
+<p><strong>プルリクエスト</strong>（pull request、PR）は、あるブランチを別のブランチにマージする提案です。コードレビューの核心です：変更を表示し、チームメートがレビューし、承認されてはじめてコードが<code>main</code>にマージされます。ワークフロー：</p>
+<ol>
+<li><strong>ブランチ：</strong>ローカルにフィーチャーブランチを作成。<code>git switch -c add-delete-feature</code></li>
+<li><strong>作業：</strong>変更を加え、コミットする。</li>
+<li><strong>プッシュ：</strong><code>git push -u origin add-delete-feature</code></li>
+<li><strong>PRを開く：</strong>GitHubにアクセス。バナーが表示されます：「Compare &amp; pull request」。クリックして変更内容と理由の説明を書く。</li>
+<li><strong>レビュー：</strong>チームメートがコードを読み、コメントし、変更を要求する。</li>
+<li><strong>マージ：</strong>承認されたら、GitHubの「Merge pull request」をクリックする。</li>
+</ol>
+<p>個人開発者もPRを使います&mdash;何が変わったかとその理由の明確な記録を作り、後のフェーズでClaude Codeがあなたのレビュー用に作業を提出する方法です。</p>
+
+<h3>SSHキー</h3>
+<p>GitHubは2つの接続方法をサポートしています：<strong>HTTPS</strong>と<strong>SSH</strong>。HTTPSはプッシュのたびに認証情報を要求します。SSHはキーペアを使うので自動的に認証されます。</p>
+
+<p>SSHキーを生成します：</p>
+<pre><code>ssh-keygen -t ed25519 -C "your-email@example.com"</code></pre>
+<p>Enterを押してデフォルトの場所を承認します。パスフレーズを設定するか空のままにします。次に公開鍵をGitHubに追加します：</p>
+<ol>
+<li>公開鍵をコピー：<code>cat ~/.ssh/id_ed25519.pub</code></li>
+<li>GitHub &rarr; Settings &rarr; SSH and GPG keys &rarr; New SSH key</li>
+<li>キーを貼り付けて保存。</li>
+</ol>
+<p>接続をテストします：</p>
+<pre><code>ssh -T git@github.com</code></pre>
+<p>次のように表示されるはずです：<code>Hi username! You've successfully authenticated</code>。これでHTTPSのかわりにSSH URL（<code>git@github.com:user/repo.git</code>）を使えるようになります。</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg" aria-label="ローカルリポジトリ、GitHubリモート、新しいローカルコピー間のpush、pull、clone操作を示す図">
+  <!-- Local repo -->
+  <rect class="node-accent" x="30" y="30" width="200" height="70" rx="10"/>
+  <text class="label-text" x="130" y="58" text-anchor="middle">ローカルリポジトリ</text>
+  <text class="sub-text" x="130" y="78" text-anchor="middle">あなたのマシン</text>
+  <!-- GitHub remote -->
+  <rect class="node-fill" x="470" y="30" width="200" height="70" rx="10"/>
+  <text class="label-text" x="570" y="58" text-anchor="middle">GitHub</text>
+  <text class="sub-text" x="570" y="78" text-anchor="middle">リモートサーバー</text>
+  <!-- Push arrow (left to right) -->
+  <line x1="230" y1="52" x2="470" y2="52" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text class="sub-text" x="350" y="45" text-anchor="middle" fill="var(--accent)" style="font-weight:600">push</text>
+  <!-- Pull arrow (right to left) -->
+  <line x1="470" y1="80" x2="230" y2="80" stroke="var(--a3)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text class="sub-text" x="350" y="96" text-anchor="middle" fill="var(--a3)" style="font-weight:600">pull</text>
+  <!-- Clone target -->
+  <rect class="node-accent" x="30" y="150" width="200" height="50" rx="10"/>
+  <text class="label-text" x="130" y="172" text-anchor="middle">新しいローカルコピー</text>
+  <text class="sub-text" x="130" y="188" text-anchor="middle">別のマシン</text>
+  <!-- Clone arrow -->
+  <line x1="470" y1="100" x2="230" y2="158" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text class="sub-text" x="380" y="140" text-anchor="middle" fill="var(--accent)" style="font-weight:600">clone</text>
+</svg>
+<div class="diagram-caption">プッシュはローカルからGitHubにコミットを送ります。プルはGitHubからローカルにコミットをもたらします。クローンはリモートリポジトリから新しいローカルコピーを作成します。</div>
+</div>
+
+<h3>よくある誤解</h3>
+<div role="note" class="callout warn">
+<div class="callout-title">注意：「git pushでプロジェクト全体がアップロードされる」</div>
+<p>いいえ。<code>git push</code>はリモートがまだ持っていないコミットだけを送ります。100のコミットがあってリモートに98あれば、プッシュは新しい2つだけを送ります。Gitは効率的です&mdash;必要最小限のデータを転送します。</p>
+</div>
+
+<div role="note" class="callout warn">
+<div class="callout-title">注意：「ローカルでファイルを削除するとGitHubからも削除される」</div>
+<p>いいえ。マシン上のファイルを削除してもリモートには何も変わりません。削除がGitHubに到達するのは、<code>git add</code>で削除をステージし、<code>git commit</code>して、<code>git push</code>した後だけです。それまでは、ファイルはGitHub上に以前の状態のままで存在し続けます。</p>
+</div>
+
+<h3>TaskForgeとの接続</h3>
+<p>TaskForgeをGitHubリポジトリにプッシュします。<code>__pycache__/</code>、<code>.venv/</code>、<code>*.pyc</code>、<code>.env</code>を除外する<code>.gitignore</code>を作成します。フィーチャーブランチを作成し、GitHubにプッシュして、プルリクエストを開きます&mdash;あなたが唯一のレビュアーでも。これはフェーズ4でClaude Codeがブランチを作成しPRを提出するときに使うのと同じワークフローです。</p>
+
+<h3>ミニ演習</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう：TaskForgeをGitHubにプッシュしてみましょう</div>
+<p>新しいGitHubリポジトリを作成してTaskForgeをプッシュします：</p>
+<pre><code>git remote add origin https://github.com/YOUR-USERNAME/taskforge.git
+git push -u origin main</code></pre>
+<p>GitHubリポジトリのURLにアクセスして確認&mdash;ファイルとコミットが表示されるはずです。</p>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう：.gitignoreを追加してみましょう</div>
+<p>TaskForgeプロジェクトのルートに<code>.gitignore</code>ファイルを作成します：</p>
+<pre><code>__pycache__/
+.venv/
+*.pyc</code></pre>
+<p>ステージ、コミット、プッシュします：</p>
+<pre><code>git add .gitignore
+git commit -m "add .gitignore"
+git push</code></pre>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう：ブランチを作成してPRを開いてみましょう</div>
+<p>ブランチを作成し、プッシュして、GitHubでプルリクエストを開きます：</p>
+<pre><code>git switch -c add-delete-feature
+# 変更を加える（例：TaskForgeに削除コマンドを追加する）
+git add .
+git commit -m "add delete feature"
+git push -u origin add-delete-feature</code></pre>
+<p>次にGitHubにアクセス。「Compare &amp; pull request」をクリック。説明を書いて提出。自分でマージするとしても、これがPRです。</p>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう</div>
+<p>GitHubで公開Pythonリポジトリをフォークしてみましょう。フォークをクローンし、ブランチを作成して、小さな改善（タイポ修正、docstringの改善）を加えてみましょう。変更をプッシュしてプルリクエストを開いてみましょう。</p>
+<div class="prompt-block"><span class="label">Terminal</span># 1. GitHubでリポジトリをフォーク（リポジトリページの「Fork」をクリック）
+# 2. フォークをクローン
+git clone https://github.com/YOUR-USERNAME/forked-repo.git
+cd forked-repo
+
+# 3. ブランチを作成
+git switch -c fix-typo
+
+# 4. 小さな変更を加える（タイポ修正、docstringの改善）
+# エディタでファイルを編集
+
+# 5. コミットしてプッシュ
+git add .
+git commit -m "fix typo in README"
+git push -u origin fix-typo
+
+# 6. GitHubでプルリクエストを開く</div>
+<p><strong>確認：</strong>変更内容を含むPRがGitHubに表示されている。</p>
+<p><strong>うまくいかない場合：</strong>（1）プッシュが拒否された場合、先に<code>git pull --rebase origin main</code>を試みる。（2）SSHが失敗した場合、<code>ssh -T git@github.com</code>でキーが設定されているか確認。（3）Forkボタンが見つからない場合、GitHubにログインして他の人の公開リポジトリを表示しているか確認。</p>
+</div>
+
+<div class="pq">GitHubにコードをプッシュし、リモートにブランチを作成し、プルリクエストを開きました&mdash;プロのコラボレーションとClaude CodeによるAI支援開発を動かす、まさにそのワークフローです。</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念：差分を読む — AIの監督の予告編</div>
+<p>フェーズ5では、毎日AIエージェントからの<code>git diff</code>出力をレビューします。以下の形式は、<code>git diff</code>を実行したときにGitが使うものと同じです。<code>+</code>で始まる行は追加されたもの。<code>-</code>で始まる行は削除されたもの。<code>@@</code>の行はファイルのどこで変更が起きたかを示します。今これを練習してください&mdash;同じスキルで、コンテキストが違うだけです。</p>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="12" data-ex="diff-review">
+  <div class="exercise-header">
+    <h4>AIエージェントの差分をレビューする</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">AIエージェントが「<code>delete_task</code>関数にエラーハンドリングを追加する」と指示されました。以下がエージェントが生成した差分です。注意深く読んで、3つのキーを持つdictを返す<code>evaluate_diff()</code>関数を書いてください：<code>"correct_changes"</code>（有効なエラーハンドリング追加の行番号リスト）、<code>"unrelated_change"</code>（要求されていない変更の行番号）、<code>"missing"</code>（エージェントが処理し忘れたエラーケースを説明する文字列）。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+# AIの差分出力:
+DIFF = """
+@@ -10,12 +10,14 @@ def delete_task(task_id, tasks):
+-def delete_task(task_id, tasks):
+-    for i, task in enumerate(tasks):
+-        if task["id"] == task_id:
+-            return tasks.pop(i)
+-    return None
++def delete_task(task_id, tasks):
++    if not isinstance(task_id, int):
++        raise TypeError("task_id must be an integer")
++    for i, task in enumerate(tasks):
++        if task["id"] == task_id:
++            return tasks.pop(i)
++    return None
+
+-def list_tasks(tasks):
++def list_tasks(tasks, verbose=False):
+     return [t["title"] for t in tasks]
+"""
+
+def evaluate_diff():
+    return {
+        "correct_changes": [],       # 有効なエラーハンドリング追加の行番号
+        "unrelated_change": 0,       # 要求されていない変更の行番号
+        "missing": ""                # エージェントが忘れたエラーケースは？
+    }
+
+print(evaluate_diff())
+</script>
+    <script type="text/plain" class="test-code">
+result = evaluate_diff()
+assert isinstance(result, dict), "Must return a dict"
+assert 12 in result["correct_changes"] or 13 in result["correct_changes"], "The TypeError check IS valid error handling"
+assert result["unrelated_change"] == 19 or result["unrelated_change"] == 20, "list_tasks signature change was not requested"
+assert "empty" in result["missing"].lower() or "none" in result["missing"].lower() or "list" in result["missing"].lower(), "Agent didn't handle empty tasks list"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">確認</button>
+    <button class="ex-hint" data-level="0">ヒント</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint"><code>+</code>の行は追加です。<code>isinstance</code>チェックは関連するエラーハンドリングです。しかし<code>list_tasks</code>の変更は何でしょうか？</p>
+    <p class="hint">エージェントは<code>delete_task</code>にエラーハンドリングを追加するよう指示されただけです。<code>list_tasks</code>を変更することはスコープクリープ&mdash;要求されていない変更です。</p>
+    <p class="hint"><code>tasks</code>が<code>None</code>またはリストでない場合はどうなるでしょう？エージェントは<code>task_id</code>の型チェックを追加しましたが、<code>tasks</code>自体の検証を忘れました。</p>
+  </div>
+</div>
+
+<h3>インタラクティブ演習</h3>
+
+<div class="quiz" data-ch="12" data-ex="quiz-push">
+  <h4>知識チェック</h4>
+  <p><code>git push -u origin main</code>の<code>-u</code>フラグは何をしますか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">プッシュを強制する</button>
+    <button class="quiz-option" data-correct="false">リモートURLを更新する</button>
+    <button class="quiz-option" data-correct="true">今後のプッシュが引数なしで動くようにアップストリームトラッキングブランチを設定する</button>
+    <button class="quiz-option" data-correct="false">すべてのブランチをプッシュする</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz" data-ch="12" data-ex="quiz-pr">
+  <h4>知識チェック</h4>
+  <p>プルリクエストの主な目的は何ですか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">リモートからコードをダウンロードする</button>
+    <button class="quiz-option" data-correct="false">レビューなしに直接コードをマージする</button>
+    <button class="quiz-option" data-correct="true">マージ前に変更を提案してコードレビューを依頼する</button>
+    <button class="quiz-option" data-correct="false">ブランチのバックアップを作成する</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="checklist" data-ch="12" data-ex="github-check">
+  <h4>GitHubワークフロー</h4>
+  <label><input type="checkbox"><span>TaskForgeリポジトリがGitHubに表示されている</span></label>
+  <label><input type="checkbox"><span>少なくとも3つのコミットをリモートにプッシュした</span></label>
+  <label><input type="checkbox"><span>フィーチャーブランチを作成してプッシュした</span></label>
+  <label><input type="checkbox"><span>GitHubでプルリクエストを開いた</span></label>
+  <label><input type="checkbox"><span>.gitignoreファイルが存在して機能している</span></label>
+</div>
+
+<div class="exercise" data-type="output-match" data-ch="12" data-ex="remote-url" data-pattern="origin\s+.+(github|gitlab)">
+  <div class="exercise-header">
+    <h4>リモートURL</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">TaskForgeリポジトリで<code>git remote -v</code>を実行して出力を貼り付けてください。</p>
+  <textarea class="exercise-paste" placeholder="ここに出力を貼り付けてください..."></textarea>
+  <div class="exercise-controls">
+    <button class="ex-verify">確認</button>
+  </div>
+  <div class="exercise-feedback"></div>
+</div>
+
+</section>
+
+<!-- ===== PHASE 3 GATE ===== -->
+<section id="gate3">
+<h2><span class="ch-label">フェーズ3ゲート</span> チェックポイントとTaskForge on GitHub</h2>
+
+<div class="card">
+<h4>最低限の能力</h4>
+<p>ターミナルコマンドを流暢に使い、gitブランチを作成してコンフリクトを解消し、リモートリポジトリにプッシュし、プルリクエストでコラボレーションする。</p>
+</div>
+
+<div class="card">
+<h4>成果物</h4>
+<p><code>.gitignore</code>、少なくとも3つのコミット、プルリクエストでマージされたフィーチャーブランチを持つTaskForgeがGitHubにプッシュされている。</p>
+</div>
+
+<div class="card">
+<h4>確認方法</h4>
+<p>TaskForgeリポジトリがGitHubで表示される。<code>git log --oneline</code>で3つ以上のコミットが表示される。マージされたPRがPull Requestsタブに表示される。</p>
+</div>
+
+<div role="note" class="callout critical">
+<div class="callout-title">注意：失敗のサイン</div>
+<p>GitHubにプッシュできない、またはPRを作成できない場合は、焦らず第12章に戻って確認してみましょう。</p>
+</div>
+
+<h3>できるようになったこと</h3>
+<div class="card">
+<p>フェーズ3を完了した今、以下のスキルが身についています。</p>
+<ul>
+<li>ターミナルコマンドを流暢にナビゲートして組み合わせる</li>
+<li>Gitでバージョン管理：コミット、ブランチ、マージ、コンフリクトの解消</li>
+<li>コードをGitHubにプッシュしてリモートの変更をプルする</li>
+<li>プルリクエストとコードレビューでコラボレーションする</li>
+<li><code>.gitignore</code>でリポジトリをクリーンに保つ</li>
+</ul>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">補足：フェーズ4へのブリッジ</div>
+<p>プロのワークフローが依存する開発ツールを手に入れました。フェーズ4はこの基盤の上に、APIとHTTP、Flaskを使ったAPI構築、データベースの基礎、Dockerコンテナ、GitHub ActionsによるCI/CD、プロジェクトアーキテクチャを構築します。コードをGitHubにプッシュするところからフルアプリケーションのデプロイへと進みます。</p>
+</div>
+</section>
+
+<nav class="phase-nav">
+  <a href="phase-2.html" class="phase-nav-link prev"><span class="phase-nav-label">前のフェーズ</span>&larr; フェーズ2：Pythonを書く</a>
+  <a href="phase-4.html" class="phase-nav-link next"><span class="phase-nav-label">次のフェーズ</span>フェーズ4：構築とデプロイ &rarr;</a>
+</nav>
+
+</div>
+</div>
+
+<footer>
+<p>Zero to Hero: プログラミングからマルチエージェントClaude Codeへ &middot; 2026年3月</p>
+<p>エージェントエンジニアリングの8つのレベルに沿って構成されています。</p>
+</footer>
+
+<script src="../js/progress.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ace-builds@1.36.5/src-min-noconflict/ace.js"></script>
+<script src="../js/theme.js"></script>
+<script src="../js/sidebar.js"></script>
+<script src="../js/shared.js"></script>
+<script src="../js/ace-init.js"></script>
+<script src="../js/pyodide-runner.js"></script>
+<script src="../js/quiz.js"></script>
+<script src="../js/exercise-runner.js"></script>
+</body>
+</html>

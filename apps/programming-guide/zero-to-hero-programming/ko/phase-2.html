@@ -1,0 +1,2096 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="페이즈 2: Python 작성하기 — 함수, 자료 구조, 클래스, 파일 I/O, 에러 처리, 테스트. AI 보조 개발을 위한 실전 유창성을 쌓습니다. 챕터 05~09.">
+<title>페이즈 2: Python 작성하기 — 제로 투 히어로</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/design-system.css">
+<script>try{if(localStorage.getItem('zth-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+<script>try{var z=localStorage.getItem('zth-zoom');if(z&&+z>=50&&+z<=200)document.documentElement.style.zoom=+z/100}catch(e){}</script>
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+<marker id="arrowhead-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--a5)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo"><span>제로 투 히어로</span>프로그래밍 &rarr; 멀티 에이전트 AI</a>
+  <div class="toc-group">
+    <div class="toc-group-title">기초</div>
+    <a href="phase-1.html#ch01" class="toc-link"><span class="toc-num">01</span>프로그래밍이란 무엇인가</a>
+    <a href="phase-1.html#ch02" class="toc-link"><span class="toc-num">02</span>컴퓨터가 코드를 실행하는 방법</a>
+    <a href="phase-1.html#ch03" class="toc-link"><span class="toc-num">03</span>환경 설정하기</a>
+    <a href="phase-1.html#ch04" class="toc-link"><span class="toc-num">04</span>쓰기 전에 코드 읽기</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Python</div>
+    <a href="#ch05" class="toc-link"><span class="toc-num">05</span>함수, 논리, 제어 흐름</a>
+    <a href="#ch06" class="toc-link"><span class="toc-num">06</span>자료 구조</a>
+    <a href="#ch07" class="toc-link"><span class="toc-num">07</span>클래스와 객체 지향 프로그래밍</a>
+    <a href="#ch08" class="toc-link"><span class="toc-num">08</span>파일, 모듈, 표준 라이브러리</a>
+    <a href="#ch09" class="toc-link"><span class="toc-num">09</span>에러 처리, 디버깅, 테스트</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">개발 도구</div>
+    <a href="phase-3.html#ch10" class="toc-link"><span class="toc-num">10</span>터미널과 셸</a>
+    <a href="phase-3.html#ch11" class="toc-link"><span class="toc-num">11</span>Git 기초</a>
+    <a href="phase-3.html#ch12" class="toc-link"><span class="toc-num">12</span>Git 원격 저장소와 GitHub</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">구축과 배포</div>
+    <a href="phase-4.html#ch13" class="toc-link"><span class="toc-num">13</span>API와 HTTP</a>
+    <a href="phase-4.html#ch14" class="toc-link"><span class="toc-num">14</span>Flask로 API 구축하기</a>
+    <a href="phase-4.html#ch15" class="toc-link"><span class="toc-num">15</span>데이터베이스 기초</a>
+    <a href="phase-4.html#ch16" class="toc-link"><span class="toc-num">16</span>Docker와 컨테이너</a>
+    <a href="phase-4.html#ch17" class="toc-link"><span class="toc-num">17</span>CI/CD와 GitHub Actions</a>
+    <a href="phase-4.html#ch18" class="toc-link"><span class="toc-num">18</span>프로젝트 아키텍처</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">자료 구조</div>
+    <a href="phase-5.html#ch19" class="toc-link"><span class="toc-num">19</span>복잡도 분석</a>
+    <a href="phase-5.html#ch20" class="toc-link"><span class="toc-num">20</span>선형 구조</a>
+    <a href="phase-5.html#ch21" class="toc-link"><span class="toc-num">21</span>해시 테이블과 맵</a>
+    <a href="phase-5.html#ch22" class="toc-link"><span class="toc-num">22</span>트리</a>
+    <a href="phase-5.html#ch23" class="toc-link"><span class="toc-num">23</span>그래프</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">알고리즘</div>
+    <a href="phase-6.html#ch24" class="toc-link"><span class="toc-num">24</span>탐색과 정렬</a>
+    <a href="phase-6.html#ch25" class="toc-link"><span class="toc-num">25</span>재귀와 동적 프로그래밍</a>
+    <a href="phase-6.html#ch26" class="toc-link"><span class="toc-num">26</span>알고리즘 패턴</a>
+    <a href="phase-6.html#ch27" class="toc-link"><span class="toc-num">27</span>그래프 알고리즘</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">엔지니어링 기술</div>
+    <a href="phase-7.html#ch28" class="toc-link"><span class="toc-num">28</span>디자인 패턴과 SOLID</a>
+    <a href="phase-7.html#ch29" class="toc-link"><span class="toc-num">29</span>SQL과 쿼리 마스터</a>
+    <a href="phase-7.html#ch30" class="toc-link"><span class="toc-num">30</span>트랜잭션과 NoSQL</a>
+    <a href="phase-7.html#ch31" class="toc-link"><span class="toc-num">31</span>네트워킹과 인터넷</a>
+    <a href="phase-7.html#ch32" class="toc-link"><span class="toc-num">32</span>동시성과 병렬 처리</a>
+    <a href="phase-7.html#ch33" class="toc-link"><span class="toc-num">33</span>보안 엔지니어링</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">시스템과 확장</div>
+    <a href="phase-8.html#ch34" class="toc-link"><span class="toc-num">34</span>시스템 설계</a>
+    <a href="phase-8.html#ch35" class="toc-link"><span class="toc-num">35</span>분산 시스템</a>
+    <a href="phase-8.html#ch36" class="toc-link"><span class="toc-num">36</span>성능과 관측 가능성</a>
+    <a href="phase-8.html#ch37" class="toc-link"><span class="toc-num">37</span>대규모 코드베이스 탐색</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AI 레벨 1~5</div>
+    <a href="phase-9.html#ch38" class="toc-link"><span class="toc-num">38</span>AI 코드 평가와 지시</a>
+    <a href="phase-9.html#ch39" class="toc-link"><span class="toc-num">39</span>레벨 1&amp;2 — 탭 자동완성과 에이전트 IDE</a>
+    <a href="phase-9.html#ch40" class="toc-link"><span class="toc-num">40</span>레벨 3 — 컨텍스트 엔지니어링</a>
+    <a href="phase-9.html#ch41" class="toc-link"><span class="toc-num">41</span>레벨 4 — 복합 엔지니어링</a>
+    <a href="phase-9.html#ch42" class="toc-link"><span class="toc-num">42</span>레벨 5 — MCP, 스킬, 기능</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AI 레벨 6~8</div>
+    <a href="phase-10.html#ch43" class="toc-link"><span class="toc-num">43</span>레벨 6 — 하네스 엔지니어링</a>
+    <a href="phase-10.html#ch44" class="toc-link"><span class="toc-num">44</span>레벨 7 — 백그라운드 에이전트</a>
+    <a href="phase-10.html#ch45" class="toc-link"><span class="toc-num">45</span>Docker에서의 Claude Code</a>
+    <a href="phase-10.html#ch46" class="toc-link"><span class="toc-num">46</span>레벨 8 — 자율 에이전트 팀</a>
+    <a href="phase-10.html#ch47" class="toc-link"><span class="toc-num">47</span>멀티플레이어 효과</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">참고 자료</div>
+    <a href="appendices.html#glossary" class="toc-link"><span class="toc-num">&oplus;</span>용어집</a>
+    <a href="appendices.html#prompt-library" class="toc-link"><span class="toc-num">&oplus;</span>프롬프트 라이브러리</a>
+    <a href="appendices.html#self-assessment" class="toc-link"><span class="toc-num">&oplus;</span>자기 평가</a>
+    <a href="appendices.html#common-mistakes" class="toc-link"><span class="toc-num">&oplus;</span>흔한 실수</a>
+    <a href="appendices.html#appendix-d" class="toc-link"><span class="toc-num">&oplus;</span>문제 해결</a>
+    <a href="appendices.html#appendix-e" class="toc-link"><span class="toc-num">&oplus;</span>리소스</a>
+  </div>
+</aside>
+
+<div class="main">
+<section class="hero hero-sm">
+  <div class="hero-badge">페이즈 2 &mdash; Python</div>
+  <h1><em>Python</em> 작성하기</h1>
+  <p class="hero-sub">페이즈 2를 마치면 테스트가 포함된 함수를 작성하고, 실패했을 때 디버깅할 수 있게 됩니다. 정확한 테스트 기준은 페이즈 2 게이트를 확인하세요.</p>
+  <div class="hero-meta"><span>챕터 05~09</span><span>페이즈 게이트 + TaskForge</span></div>
+</section>
+
+<div class="content-wrap">
+
+<div role="note" class="callout info">
+<div class="callout-title">참고</div>
+<p>이 페이즈는 다음을 할 수 있다고 가정합니다: 터미널을 열고 명령어를 실행하기(챕터 03), 짧은 Python 함수를 읽고 출력 결과 예측하기(챕터 04), 변수·타입·기본 연산자 설명하기(챕터 02). 이 중 자신 없는 부분이 있다면 먼저 해당 페이즈 1 챕터를 복습하세요.</p>
+</div>
+
+<!-- ===== CH 05 ===== -->
+<section id="ch05" data-ch="05">
+<h2><span class="ch-label">챕터 05</span> 함수(Functions), 논리(Logic), 제어 흐름(Control Flow)</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">핵심 개념</div>
+<p>함수(functions), 조건문(conditionals), 반복문(loops)은 사실상 모든 프로그램에 등장하는 세 가지 패턴입니다. Claude Code가 200줄짜리 함수를 생성할 때, 로직이 올바른지 판단하려면 이 패턴들을 알아볼 수 있어야 합니다. 읽을 수 없는 것은 감독할 수 없습니다.</p>
+</div>
+
+<p>페이즈 1에서는 코드를 <em>읽는</em> 법을 배웠습니다. 이제 직접 작성할 차례입니다. 이 챕터에서는 모든 프로그램에 등장하는 세 가지 기본 구성 요소를 다룹니다: <strong>함수</strong>(재사용 가능한 블록), <strong>조건문</strong>(분기점), <strong>반복문</strong>(반복 실행).</p>
+
+<h3>함수(Functions)</h3>
+<p><strong>함수(function)</strong>는 주방의 레시피 카드와 같습니다. 이름, 재료 목록(매개변수), 단계별 지시 사항이 있습니다. 레시피를 한 번 작성해두면 그 요리가 필요할 때마다 사용할 수 있습니다. 코드로 말하면: 한 번 정의하고, 필요할 때마다 호출합니다. 함수 하나, 역할 하나.</p>
+<pre><code>def greet(name):
+    return f"Hello, {name}!"
+
+print(greet("World"))  # Hello, World!</code></pre>
+<p><code>def</code>는 함수를 정의합니다. <code>name</code>은 <strong>매개변수(parameter)</strong>&mdash;입력값입니다. <code>return</code>은 값을 돌려줍니다. 함수를 정의하는 것만으로는 실행되지 않습니다; <em>호출(call)</em>해야 실행됩니다.</p>
+
+<h3>비교 연산자(Comparison Operators)와 불리언 연산자(Boolean Operators)</h3>
+<p>프로그램이 결정을 내리려면 예/아니오 질문을 던질 방법이 필요합니다. <strong>비교 연산자(comparison operators)</strong>는 두 값을 비교하여 불리언(Boolean, <code>True</code> 또는 <code>False</code>)을 반환합니다.</p>
+<table>
+<caption>Python 비교 연산자와 결과</caption>
+<tr><th>연산자</th><th>의미</th><th>예시</th><th>결과</th></tr>
+<tr><td><code>==</code></td><td>같음</td><td><code>5 == 5</code></td><td><code>True</code></td></tr>
+<tr><td><code>!=</code></td><td>다름</td><td><code>5 != 3</code></td><td><code>True</code></td></tr>
+<tr><td><code>&lt;</code></td><td>보다 작음</td><td><code>3 &lt; 10</code></td><td><code>True</code></td></tr>
+<tr><td><code>&gt;</code></td><td>보다 큼</td><td><code>10 &gt; 20</code></td><td><code>False</code></td></tr>
+<tr><td><code>&lt;=</code></td><td>작거나 같음</td><td><code>5 &lt;= 5</code></td><td><code>True</code></td></tr>
+<tr><td><code>&gt;=</code></td><td>크거나 같음</td><td><code>7 &gt;= 10</code></td><td><code>False</code></td></tr>
+</table>
+
+<div role="note" class="callout warn">
+<div class="callout-title">주의: = 와 == 의 차이</div>
+<p><code>=</code>는 <strong>대입(assignment)</strong>(값을 상자에 넣기)입니다. <code>==</code>는 <strong>비교(comparison)</strong>(두 값이 같은가?)입니다. <code>if x == 5:</code>라고 써야 할 곳에 <code>if x = 5:</code>라고 쓰는 것은 초보자가 가장 자주 하는 실수 중 하나입니다. AI가 생성하는 코드는 거의 이 실수를 하지 않습니다.</p>
+</div>
+
+<p><strong>불리언 연산자(Boolean operators)</strong>는 True/False 값을 조합합니다:</p>
+<table>
+<caption>조건을 조합하는 Python 불리언 연산자</caption>
+<tr><th>연산자</th><th>의미</th><th>예시</th><th>결과</th></tr>
+<tr><td><code>and</code></td><td>둘 다 True여야 함</td><td><code>True and False</code></td><td><code>False</code></td></tr>
+<tr><td><code>or</code></td><td>하나 이상 True면 됨</td><td><code>True or False</code></td><td><code>True</code></td></tr>
+<tr><td><code>not</code></td><td>값을 뒤집음</td><td><code>not True</code></td><td><code>False</code></td></tr>
+</table>
+<pre><code>age = 25
+has_license = True
+can_drive = age >= 16 and has_license  # True</code></pre>
+
+<p><code>in</code> 연산자는 멤버십(membership)을 검사합니다&mdash;값이 컬렉션(collection) 안에 존재하는지 확인합니다:</p>
+<pre><code>print("a" in "apple")     # True
+print(3 in [1, 2, 3])     # True
+print("quit" in "quilts") # True &mdash; 부분 문자열도 검사합니다</code></pre>
+<p>TaskForge에서는 <code>if command == "add":</code> 처럼 비교 연산자를 사용하거나, <code>for task in tasks:</code> 처럼 <code>in</code>으로 순회하는 패턴을 보게 됩니다. 이 연산자들은 데이터와 결정을 연결하는 접착제이며, 아래의 조건문을 이해하는 데 필수적입니다.</p>
+
+<h3>조건문(Conditionals)</h3>
+<p><code>if</code>/<code>elif</code>/<code>else</code>는 프로그램이 경로를 선택할 수 있게 해줍니다. 프로그램은 <strong>첫 번째</strong> 참인 분기를 실행하고 나머지는 건너뜁니다.</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" aria-label="Flowchart showing if/elif/else branching: an input value is checked and the program follows exactly one of three paths">
+  <rect class="node-accent" x="260" y="5" width="180" height="36" rx="8"/>
+  <text class="label-text" x="350" y="28" text-anchor="middle">Input Value</text>
+  <!-- Diamond -->
+  <polygon points="350,60 420,95 350,130 280,95" class="node-fill"/>
+  <text class="label-text" x="350" y="99" text-anchor="middle">Check</text>
+  <line class="arrow" x1="350" y1="41" x2="350" y2="60"/>
+  <!-- Three branches -->
+  <line class="arrow" x1="280" y1="95" x2="140" y2="95"/>
+  <rect class="node-fill" x="40" y="75" width="100" height="40" rx="6"/>
+  <text class="label-text" x="90" y="99" text-anchor="middle">Path A</text>
+  <line class="arrow" x1="350" y1="130" x2="350" y2="150"/>
+  <rect class="node-fill" x="300" y="150" width="100" height="40" rx="6"/>
+  <text class="label-text" x="350" y="174" text-anchor="middle">Path B</text>
+  <line class="arrow" x1="420" y1="95" x2="560" y2="95"/>
+  <rect class="node-fill" x="560" y="75" width="100" height="40" rx="6"/>
+  <text class="label-text" x="610" y="99" text-anchor="middle">Path C</text>
+</svg>
+<div class="diagram-caption">프로그램은 하나의 경로만 선택합니다. 한 분기에 진입하면 나머지는 모두 건너뜁니다.</div>
+</div>
+
+<h3>반복문(Loops)</h3>
+<p><code>for</code> 반복문은 컬렉션의 각 항목을 처리합니다. <code>while</code> 반복문은 조건이 바뀔 때까지 반복합니다.</p>
+
+<div class="dw">
+<svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" aria-label="Table tracing a for loop over five numbers, showing how a running total accumulates from 0 to 150 across iterations">
+  <text class="label-text" x="10" y="20">for item in [10, 20, 30, 40, 50]:  total += item</text>
+  <!-- Table header -->
+  <text class="sub-text" x="80" y="55" text-anchor="middle">반복 횟수</text>
+  <text class="sub-text" x="230" y="55" text-anchor="middle">item</text>
+  <text class="sub-text" x="380" y="55" text-anchor="middle">이전 total</text>
+  <text class="sub-text" x="560" y="55" text-anchor="middle">이후 total</text>
+  <line x1="10" y1="62" x2="690" y2="62" stroke="var(--border)" stroke-width="1"/>
+  <!-- Rows -->
+  <text class="sub-text" x="80" y="82" text-anchor="middle">1</text>
+  <text class="label-text" x="230" y="82" text-anchor="middle">10</text>
+  <text class="sub-text" x="380" y="82" text-anchor="middle">0</text>
+  <text class="label-text" x="560" y="82" text-anchor="middle">10</text>
+  <text class="sub-text" x="80" y="102" text-anchor="middle">2</text>
+  <text class="label-text" x="230" y="102" text-anchor="middle">20</text>
+  <text class="sub-text" x="380" y="102" text-anchor="middle">10</text>
+  <text class="label-text" x="560" y="102" text-anchor="middle">30</text>
+  <text class="sub-text" x="80" y="122" text-anchor="middle">3</text>
+  <text class="label-text" x="230" y="122" text-anchor="middle">30</text>
+  <text class="sub-text" x="380" y="122" text-anchor="middle">30</text>
+  <text class="label-text" x="560" y="122" text-anchor="middle">60</text>
+  <text class="sub-text" x="80" y="142" text-anchor="middle">4</text>
+  <text class="label-text" x="230" y="142" text-anchor="middle">40</text>
+  <text class="sub-text" x="380" y="142" text-anchor="middle">60</text>
+  <text class="label-text" x="560" y="142" text-anchor="middle">100</text>
+  <text class="sub-text" x="80" y="162" text-anchor="middle">5</text>
+  <text class="label-text" x="230" y="162" text-anchor="middle">50</text>
+  <text class="sub-text" x="380" y="162" text-anchor="middle">100</text>
+  <text class="label-text" x="560" y="162" text-anchor="middle">150</text>
+  <rect x="520" y="150" width="80" height="20" rx="4" class="node-accent" style="fill-opacity:.3"/>
+</svg>
+<div class="diagram-caption">반복문은 한 번에 하나의 항목을 처리합니다. 누산기(accumulator)가 누적된 결과를 기억합니다.</div>
+</div>
+
+<h3>스코프(Scope)</h3>
+<p>함수 <em>내부</em>에서 정의된 변수는 외부에서 보이지 않습니다. 이를 <strong>스코프(scope)</strong>라고 합니다. AI가 생성한 코드에서 자주 발생하는 버그의 원인으로, AI가 다른 함수 내부에만 존재하는 변수를 참조하는 경우가 있습니다.</p>
+
+<p>구체적인 예시입니다. 이 함수는 카운터를 업데이트하는 것처럼 <em>보이지만</em>, 실제로는 그렇지 않습니다:</p>
+<pre><code># 버그: 외부 변수를 수정하지 않습니다
+count = 0
+
+def increment():
+    count = count + 1  # UnboundLocalError!
+
+increment()
+print(count)  # 여기에 도달하지 못합니다</code></pre>
+<p>Python은 함수 안의 <code>count = ...</code>를 보고 <code>count</code>를 <em>지역(local)</em> 변수로 취급합니다. 그런데 오른쪽에서 아직 로컬로 할당되지 않은 <code>count</code>를 읽으려 하기 때문에 오류가 발생합니다. 해결책: 값을 인수로 전달하고 결과를 반환합니다.</p>
+<pre><code># 해결: 인수로 전달하고, 결과를 반환합니다
+count = 0
+
+def increment(current):
+    return current + 1
+
+count = increment(count)
+print(count)  # 1</code></pre>
+
+<div role="note" class="callout warn">
+<div class="callout-title">주의</div>
+<p>AI가 생성한 코드는 전역 상태(global state)를 조작하는 경우가 있습니다. 스코프 문제를 인식하면 이런 버그를 잡는 데 도움이 됩니다. 함수의 매개변수도 아니고 함수 내부에서 정의되지도 않은 변수를 함수가 읽거나 쓰고 있다면, 그건 경고 신호입니다.</p>
+</div>
+
+<h3>미니 연습 문제</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">1: 함수 작성하기</div>
+<pre><code>def greet(name):
+    return f"Hello, {name}!"
+
+print(greet("World"))</code></pre>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">2: 조건문 작성하기</div>
+<pre><code>def is_positive(n):
+    if n > 0:
+        return True
+    return False</code></pre>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">3: 반복문 작성하기</div>
+<pre><code>for num in [1, 2, 3, 4, 5]:
+    print(num * 10)</code></pre>
+</div>
+
+<h3>TaskForge 연결</h3>
+<p>TaskForge의 <code>complete_task</code>를 살펴보세요: 함수 안에서 <code>if</code> 조건문이 포함된 <code>for</code> 반복문을 사용합니다. 이 챕터의 모든 개념이 그 하나의 함수에 담겨 있습니다.</p>
+
+<div role="note" class="callout ok">
+<div class="callout-title">직접 해보기</div>
+<p>value가 threshold보다 크면 <code>'CRITICAL'</code>, threshold * 0.9보다 크면 <code>'WARNING'</code>, 그 외에는 <code>'NORMAL'</code>을 반환하는 <code>analyze_signal(value, threshold)</code>를 작성하세요.</p>
+<div class="prompt-block"><span class="label">analyze_signal.py</span>def analyze_signal(value, threshold):
+    if value > threshold:
+        return 'CRITICAL'
+    elif value > threshold * 0.9:
+        return 'WARNING'
+    else:
+        return 'NORMAL'
+
+print(analyze_signal(95, 100))   # WARNING
+print(analyze_signal(105, 100))  # CRITICAL
+print(analyze_signal(50, 100))   # NORMAL</div>
+<p><strong>검증:</strong> 세 가지 테스트 케이스 모두 예상한 값을 반환합니다.</p>
+<p><strong>작동하지 않는다면:</strong> (1) 결과가 모두 <code>'CRITICAL'</code> &rarr; 순서를 확인하세요: CRITICAL 먼저, 그다음 WARNING. (2) <code>NameError</code> &rarr; <code>def</code>를 빠뜨렸거나 함수 이름을 잘못 입력했습니다. (3) 아무것도 반환되지 않음 &rarr; <code>return</code> 대신 <code>print()</code>를 사용했습니다.</p>
+</div>
+
+<div class="pq">매개변수, 조건문, 반환값이 있는 함수를 작성했습니다. 이것이 모든 TaskForge 명령과 Claude Code가 생성하는 모든 함수의 기본 구조입니다.</div>
+
+<h3>문자열 메서드(String Methods)</h3>
+<p>문자열(string)은 어디에나 있습니다&mdash;사용자 입력, 파일 경로, API 응답, 로그 메시지. Python은 문자열을 자르고, 정리하고, 재조합하는 내장 메서드를 제공합니다. 텍스트 데이터를 처리하거나 AI 출력을 파싱할 때 이것들을 끊임없이 사용하게 됩니다.</p>
+
+<h4>f-문자열(f-strings)</h4>
+<p>f-문자열을 사용하면 표현식을 문자열 안에 직접 삽입할 수 있습니다. 문자열 앞에 <code>f</code>를 붙이고 중괄호 안에 변수나 표현식을 넣으면 됩니다:</p>
+<pre><code>name = "Alice"
+tasks = 5
+print(f"{name} has {tasks} tasks")  # Alice has 5 tasks
+print(f"Double: {tasks * 2}")       # Double: 10</code></pre>
+
+<h4>필수 문자열 메서드</h4>
+<table>
+<caption>예시와 함께 보는 Python 필수 문자열 메서드</caption>
+<tr><th>메서드</th><th>예시</th><th>결과</th></tr>
+<tr><td><code>split(sep)</code></td><td><code>"a,b,c".split(",")</code></td><td><code>["a", "b", "c"]</code></td></tr>
+<tr><td><code>strip()</code></td><td><code>"  hello  ".strip()</code></td><td><code>"hello"</code></td></tr>
+<tr><td><code>join(list)</code></td><td><code>", ".join(["a", "b"])</code></td><td><code>"a, b"</code></td></tr>
+<tr><td><code>replace(old, new)</code></td><td><code>"hello".replace("l", "r")</code></td><td><code>"herro"</code></td></tr>
+<tr><td><code>startswith(s)</code></td><td><code>"hello".startswith("he")</code></td><td><code>True</code></td></tr>
+<tr><td><code>endswith(s)</code></td><td><code>"file.py".endswith(".py")</code></td><td><code>True</code></td></tr>
+</table>
+
+<p>이 메서드들은 <strong>새 문자열을 반환</strong>합니다&mdash;원본을 절대 수정하지 않습니다. Python의 문자열은 불변(immutable)입니다.</p>
+
+<div role="note" class="callout ok">
+<div class="callout-title">직접 해보기</div>
+<p><code>'  alice,bob,charlie  '</code> 문자열에서 문자열 메서드를 사용하여 <code>['Alice', 'Bob', 'Charlie']</code>를 만드세요.</p>
+<pre><code>raw = '  alice,bob,charlie  '
+names = [name.strip().capitalize() for name in raw.strip().split(",")]
+print(names)  # ['Alice', 'Bob', 'Charlie']</code></pre>
+<p><code>strip()</code>으로 양쪽 공백을 제거하고, <code>split(",")</code>로 쉼표 기준 분리 후, 각 조각에 <code>capitalize()</code>를 적용합니다. 데이터를 정제(cleaning)할 때 이 패턴을 끊임없이 보게 됩니다.</p>
+</div>
+
+<h3>인터랙티브 연습 문제</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="05" data-ex="fizzbuzz">
+  <div class="exercise-header">
+    <h4>설계 도전: "FizzBuzz"</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">1부터 n까지의 문자열 리스트를 반환하는 <code>fizzbuzz(n)</code>을 작성하세요. 3의 배수 &rarr; 'Fizz', 5의 배수 &rarr; 'Buzz', 둘 다 &rarr; 'FizzBuzz', 그 외에는 숫자를 문자열로.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def fizzbuzz(n):
+    # Your code here
+    pass
+</script>
+    <script type="text/plain" class="test-code">
+assert fizzbuzz(1) == ['1'], "fizzbuzz(1) should return ['1']"
+assert fizzbuzz(3) == ['1', '2', 'Fizz'], "fizzbuzz(3)"
+assert fizzbuzz(5) == ['1', '2', 'Fizz', '4', 'Buzz'], "fizzbuzz(5)"
+assert fizzbuzz(15)[-1] == 'FizzBuzz', "15 should be FizzBuzz"
+assert fizzbuzz(0) == [], "fizzbuzz(0) should be empty"
+assert len(fizzbuzz(15)) == 15, "fizzbuzz(15) should have 15 items"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">실행</button>
+    <button class="ex-check">확인</button>
+    <button class="ex-hint" data-level="0">힌트</button>
+    <button class="ex-reset">초기화</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">나머지 연산자(%)를 사용해 나눗셈 가능 여부를 확인하세요.</p>
+    <p class="hint">3과 5를 따로 확인하기 전에 15로 나누어 떨어지는지 먼저 확인하세요.</p>
+    <p class="hint">for 반복문으로 리스트를 만드세요: <code>for i in range(1, n+1)</code></p>
+  </div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="05" data-ex="palindrome">
+  <div class="exercise-header">
+    <h4>설계 도전: "팰린드롬 검사기"</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">문자열이 팰린드롬(palindrome, 앞뒤로 읽어도 같은 문자열)이면 True를 반환하는 <code>is_palindrome(s)</code>를 작성하세요. 대소문자와 영숫자가 아닌 문자는 무시합니다.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def is_palindrome(s):
+    # Your code here
+    pass
+</script>
+    <script type="text/plain" class="test-code">
+assert is_palindrome("racecar") == True, "racecar is a palindrome"
+assert is_palindrome("hello") == False, "hello is not a palindrome"
+assert is_palindrome("A man a plan a canal Panama") == True, "Ignore spaces and case"
+assert is_palindrome("") == True, "Empty string is a palindrome"
+assert is_palindrome("a") == True, "Single char is a palindrome"
+assert is_palindrome("Was it a car or a cat I saw?") == True, "Ignore punctuation"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">실행</button>
+    <button class="ex-check">확인</button>
+    <button class="ex-hint" data-level="0">힌트</button>
+    <button class="ex-reset">초기화</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">먼저 정규화: 소문자로 변환하고 영숫자(alphanumeric) 문자만 남기세요.</p>
+    <p class="hint"><code>c.isalnum()</code>으로 문자가 영숫자인지 확인하세요.</p>
+    <p class="hint">정제된 문자열과 뒤집은 버전을 비교하세요: <code>cleaned == cleaned[::-1]</code></p>
+  </div>
+</div>
+
+<div class="quiz" data-ch="05" data-ex="quiz-scope">
+  <h4>핵심 확인</h4>
+  <p>함수 내부에서 정의된 변수를 함수 바깥에서 사용하려 하면 어떻게 됩니까?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">정상적으로 작동한다</button>
+    <button class="quiz-option" data-correct="true">NameError — 변수가 함수 밖에 존재하지 않는다</button>
+    <button class="quiz-option" data-correct="false">None을 반환한다</button>
+    <button class="quiz-option" data-correct="false">프로그램이 조용히 충돌한다</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<h3>값으로서의 함수: 고차 함수(Higher-Order Functions)와 클로저(Closures)</h3>
+<p>Python에서 함수는 <strong>일급 값(first-class values)</strong>입니다 — 변수에 할당하거나, 인수로 전달하거나, 다른 함수에서 반환할 수 있습니다. AI는 이러한 패턴을 끊임없이 생성합니다.</p>
+
+<h4>내장 고차 함수(Built-in Higher-Order Functions)</h4>
+<p><code>key</code> 함수와 함께 사용하는 <code>map()</code>, <code>filter()</code>, <code>sorted()</code>가 가장 흔합니다. 각각 함수를 인수로 받습니다:</p>
+<pre><code># map: 모든 요소에 함수 적용
+names = ["alice", "bob", "charlie"]
+upper_names = list(map(str.upper, names))  # ["ALICE", "BOB", "CHARLIE"]
+
+# filter: 함수가 True를 반환하는 요소만 유지
+numbers = [1, 2, 3, 4, 5, 6]
+evens = list(filter(lambda x: x % 2 == 0, numbers))  # [2, 4, 6]
+
+# sorted with key: 사용자 정의 기준으로 정렬
+tasks = [{"title": "B task", "priority": 2}, {"title": "A task", "priority": 1}]
+by_priority = sorted(tasks, key=lambda t: t["priority"])</code></pre>
+
+<div role="note" class="callout info">
+<div class="callout-title">참고</div>
+<p>AI는 <code>map()</code>과 <code>filter()</code>를 자주 생성합니다. Python에서는 리스트 컴프리헨션(list comprehension)이 보통 더 읽기 쉽습니다: <code>list(map(str.upper, names))</code> vs <code>[x.upper() for x in names]</code>. 둘 다 알면 AI 코드를 읽고 어느 쪽이 상황에 더 명확한지 판단할 수 있습니다.</p>
+</div>
+
+<h4>람다 표현식(Lambda Expressions)</h4>
+<p><code>lambda</code>는 익명 함수(anonymous function)입니다 — 짧고 일회성 인수로 유용합니다:</p>
+<pre><code># Lambda: 일회성 익명 함수
+square = lambda x: x ** 2  # def square(x): return x ** 2 와 동일
+
+# 고차 함수의 인수로 가장 유용합니다
+sorted_tasks = sorted(tasks, key=lambda t: t["due_date"])</code></pre>
+<p><strong>경험 법칙:</strong> lambda가 표현식 하나를 초과하면 이름 있는 함수를 사용하세요. 간결함보다 가독성이 중요합니다.</p>
+<p>실제로 PEP 8은 이름 있는 함수에 def를 권장합니다. lambda는 인라인 인수로 빛납니다: <code>sorted(names, key=lambda n: len(n))</code>.</p>
+
+<h4>클로저(Closures)</h4>
+<p><strong>클로저(closure)</strong>는 정의된 스코프의 변수를 기억하는 함수입니다:</p>
+<pre><code>def make_multiplier(n):
+    def multiplier(x):
+        return x * n  # 'n'은 외부 스코프에서 기억됩니다
+    return multiplier
+
+double = make_multiplier(2)
+triple = make_multiplier(3)
+print(double(5))  # 10
+print(triple(5))  # 15</code></pre>
+<p>AI는 콜백(callback), 이벤트 핸들러(event handler), 팩토리 패턴(factory pattern)에서 클로저를 생성합니다. 이를 이해하면 이런 패턴이 나타났을 때 읽고 디버그할 수 있습니다.</p>
+
+<div class="exercise" data-type="pyodide" data-ch="05" data-ex="higher-order">
+  <div class="exercise-header">
+    <h4>연습: 고차 함수</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">모든 요소에 함수를 적용하는 <code>apply_to_all(func, lst)</code>(<code>map</code>처럼)와, func가 True를 반환하는 요소만 유지하는 <code>keep_if(func, lst)</code>(<code>filter</code>처럼)를 구현하세요.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def apply_to_all(func, lst):
+    """Apply func to every element. Return a new list."""
+    pass
+
+def keep_if(func, lst):
+    """Keep elements where func returns True. Return a new list."""
+    pass
+</script>
+    <script type="text/plain" class="test-code">
+assert apply_to_all(str.upper, ["a", "b", "c"]) == ["A", "B", "C"], "Should uppercase all"
+assert apply_to_all(lambda x: x * 2, [1, 2, 3]) == [2, 4, 6], "Should double all"
+assert keep_if(lambda x: x > 3, [1, 2, 3, 4, 5]) == [4, 5], "Should keep > 3"
+assert keep_if(lambda x: len(x) > 3, ["hi", "hello", "hey"]) == ["hello"], "Should keep long strings"
+print("All tests passed!")
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">실행</button>
+    <button class="ex-check">확인</button>
+    <button class="ex-hint" data-level="0">힌트</button>
+    <button class="ex-reset">초기화</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">apply_to_all: 새 리스트를 만들고, lst를 순회하며 각 항목에 func(item)을 추가하세요.</p>
+    <p class="hint">keep_if: 새 리스트를 만들고, lst를 순회하며 func(item)이 True일 때만 항목을 추가하세요.</p>
+    <p class="hint">apply_to_all: return [func(x) for x in lst]. keep_if: return [x for x in lst if func(x)].</p>
+  </div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="05" data-ex="closure">
+  <div class="exercise-header">
+    <h4>연습: 클로저 — 검증기 만들기</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">문자열 길이가 범위 내에 있는지 확인하는 함수를 반환하는 <code>make_validator(min_len, max_len)</code>를 구현하세요.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def make_validator(min_len, max_len):
+    """Return a function that checks if a string's length is between min_len and max_len (inclusive)."""
+    pass
+</script>
+    <script type="text/plain" class="test-code">
+check_username = make_validator(3, 20)
+assert check_username("alice") == True, "5 chars is valid"
+assert check_username("ab") == False, "2 chars too short"
+assert check_username("a" * 21) == False, "21 chars too long"
+check_password = make_validator(8, 128)
+assert check_password("short") == False, "5 chars too short for password"
+assert check_password("long_enough_password") == True, "20 chars is valid"
+print("All tests passed!")
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">실행</button>
+    <button class="ex-check">확인</button>
+    <button class="ex-hint" data-level="0">힌트</button>
+    <button class="ex-reset">초기화</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">문자열을 받아 min_len &lt;= len(s) &lt;= max_len을 확인하는 내부 함수를 반환하세요.</p>
+    <p class="hint">내부 함수는 외부 스코프의 min_len과 max_len을 "클로저"로 기억합니다.</p>
+    <p class="hint">def make_validator(min_len, max_len): def check(s): return min_len &lt;= len(s) &lt;= max_len; return check</p>
+  </div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="05" data-ex="solve-compare-wordfreq">
+  <div class="exercise-header">
+    <h4>풀고 비교하기: 단어 빈도 카운터</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt"><strong>1단계:</strong> 직접 문제를 풀어보세요. <strong>2단계:</strong> "힌트"를 세 번 클릭하면 AI의 풀이를 볼 수 있습니다. <strong>3단계:</strong> 비교하고 주석으로 평가 질문에 답하세요.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+# 나의 풀이: 단어 빈도 카운터
+# word_freq(text)를 작성하세요 — 단어 -> 개수 dict를 반환합니다.
+# 대소문자 구분 없음. 기본 문장 부호(.,!?;:)를 제거합니다.
+# 예: word_freq("The cat and the dog") -> {"the": 2, "cat": 1, "and": 1, "dog": 1}
+# 풀이 후 실행하고, 힌트를 3번 클릭해 AI 버전을 확인하세요.
+
+def word_freq(text):
+    pass
+
+# 비교 후 주석으로 답하세요:
+# 1. AI가 다르게 한 점은?
+# 2. AI의 접근법이 더 낫나요, 더 나쁜가요, 아니면 그냥 다른가요? 왜?
+# 3. AI 버전에서 문제를 발견했나요?
+</script>
+    <script type="text/plain" class="test-code">
+result = word_freq("The cat and the dog")
+assert isinstance(result, dict), "Should return a dict"
+assert result["the"] == 2, "Should count 'the' twice (case-insensitive)"
+assert result["cat"] == 1, "Should count 'cat' once"
+result2 = word_freq("Hello, world! Hello.")
+assert result2["hello"] == 2, "Should strip punctuation and be case-insensitive"
+assert result2["world"] == 1, "Should count 'world' once"
+result3 = word_freq("")
+assert result3 == {}, "Empty string should return empty dict"
+print("All tests passed!")
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">실행</button>
+    <button class="ex-check">확인</button>
+    <button class="ex-hint" data-level="0">힌트</button>
+    <button class="ex-reset">초기화</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">먼저 직접 풀어보세요 &mdash; <code>.lower()</code>와 <code>.split()</code>을 사용한 후, 단어를 순회하며 dict로 카운트하세요.</p>
+    <p class="hint">분리 후 각 단어에 <code>word.strip(".,!?;:")</code>를 적용해 문장 부호를 제거하세요.</p>
+    <p class="hint"><strong>AI의 풀이:</strong><br><code>from collections import Counter<br>def word_freq(text):<br>&nbsp;&nbsp;&nbsp;&nbsp;words = text.lower().split()<br>&nbsp;&nbsp;&nbsp;&nbsp;cleaned = [w.strip(".,!?;:") for w in words]<br>&nbsp;&nbsp;&nbsp;&nbsp;return dict(Counter(w for w in cleaned if w))</code><br><br><strong>평가:</strong> AI는 <code>collections</code>의 <code>Counter</code>를 사용했습니다 &mdash; 여러분의 반복문이 하는 일을 한 줄로 합니다. 직접 구현한 방법도 완벽하게 작동합니다. 하지만 이제 <code>Counter</code>가 있다는 것을 알았으니 어휘에 추가하세요. TaskForge에서는 작업 상태 카운트에 활용할 수 있습니다.</p>
+  </div>
+</div>
+
+</section>
+
+<!-- ===== CH 06 ===== -->
+<section id="ch06" data-ch="06">
+<h2><span class="ch-label">챕터 06</span> 자료 구조(Data Structures) &mdash; 리스트, 딕셔너리, 그리고 데이터가 사는 방식</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">핵심 개념</div>
+<p>모든 API 응답, 모든 설정 파일, 모든 AI 도구 출력은 구조화된 데이터입니다&mdash;보통 JSON 형식이며, 이는 중첩된 리스트와 딕셔너리입니다. 중첩 데이터를 탐색하지 못하면 API를 사용하거나, AI 출력을 읽거나, 데이터 문제를 디버그할 수 없습니다.</p>
+</div>
+
+<p>함수는 데이터를 처리합니다. 그런데 데이터는 어디에 <em>존재</em>할까요? <strong>자료 구조(data structures)</strong>&mdash;정보를 구성하는 컨테이너에 있습니다. Python과 AI 도구에서 두 가지 구조가 지배적입니다: <strong>리스트(list)</strong>(순서가 있는 시퀀스)와 <strong>딕셔너리(dictionary)</strong>(키-값 쌍).</p>
+
+<h3>리스트(Lists)</h3>
+<p><strong>리스트(list)</strong>는 0부터 인덱싱되는 순서가 있는 컬렉션입니다:</p>
+<pre><code>signals = ["speed", "rpm", "fuel"]
+print(signals[0])   # "speed"
+print(signals[-1])  # "fuel" (마지막 항목)
+signals.append("temp")  # 끝에 추가</code></pre>
+
+<h3>딕셔너리(Dictionaries)</h3>
+<p><strong>딕셔너리(dictionary)</strong>는 키를 값에 매핑합니다. API와 AI 도구에서 가장 중요한 구조입니다. 보편적 데이터 형식인 JSON은 본질적으로 중첩된 딕셔너리이기 때문입니다.</p>
+<pre><code>warning = {"level": "critical", "system": "brakes"}
+print(warning["level"])  # "critical"</code></pre>
+
+<h3>중첩 구조(Nested Structures)</h3>
+<p>실제 데이터는 거의 항상 중첩되어 있습니다&mdash;리스트를 포함하는 딕셔너리, 그 안에 또 딕셔너리:</p>
+<pre><code>vehicles = [
+    {"name": "eCanter", "type": "EV", "range_km": 200},
+    {"name": "Super Great", "type": "diesel", "range_km": 800}
+]
+print(vehicles[0]["name"])  # "eCanter"</code></pre>
+
+<div class="dw">
+<svg viewBox="0 0 700 150" xmlns="http://www.w3.org/2000/svg" aria-label="Comparison of list, dictionary, and nested data structures showing how each stores and accesses data differently">
+  <!-- List -->
+  <rect class="node-fill" x="10" y="10" width="200" height="120" rx="8"/>
+  <text class="label-text" x="110" y="32" text-anchor="middle">List</text>
+  <text class="sub-text" x="110" y="52" text-anchor="middle">[0] = "a"</text>
+  <text class="sub-text" x="110" y="68" text-anchor="middle">[1] = "b"</text>
+  <text class="sub-text" x="110" y="84" text-anchor="middle">[2] = "c"</text>
+  <text class="sub-text" x="110" y="118" text-anchor="middle" fill="var(--accent)">위치로 접근</text>
+  <!-- Dict -->
+  <rect class="node-fill" x="250" y="10" width="200" height="120" rx="8"/>
+  <text class="label-text" x="350" y="32" text-anchor="middle">딕셔너리</text>
+  <text class="sub-text" x="350" y="52" text-anchor="middle">"name" &rarr; "Alice"</text>
+  <text class="sub-text" x="350" y="68" text-anchor="middle">"age" &rarr; 30</text>
+  <text class="sub-text" x="350" y="118" text-anchor="middle" fill="var(--accent)">키 이름으로 접근</text>
+  <!-- Nested -->
+  <rect class="node-accent" x="490" y="10" width="200" height="120" rx="8"/>
+  <text class="label-text" x="590" y="32" text-anchor="middle">중첩</text>
+  <text class="sub-text" x="590" y="52" text-anchor="middle">"tasks" &rarr; [</text>
+  <text class="sub-text" x="590" y="68" text-anchor="middle">&nbsp;&nbsp;{id:1, ...},</text>
+  <text class="sub-text" x="590" y="84" text-anchor="middle">&nbsp;&nbsp;{id:2, ...}</text>
+  <text class="sub-text" x="590" y="98" text-anchor="middle">]</text>
+  <text class="sub-text" x="590" y="118" text-anchor="middle" fill="var(--accent)">실제 데이터의 형태</text>
+</svg>
+<div class="diagram-caption">리스트는 순서가 있는 항목을 담습니다. 딕셔너리는 이름이 있는 항목을 담습니다. 실제 데이터는 보통 딕셔너리 리스트를 포함하는 딕셔너리입니다.</div>
+</div>
+
+<h3>올바른 구조 선택하기</h3>
+<table>
+<caption>사용 사례별 올바른 자료 구조 선택</caption>
+<tr><th>필요</th><th>사용</th><th>예시</th></tr>
+<tr><td>순서 있는 시퀀스</td><td>리스트</td><td>작업 대기열</td></tr>
+<tr><td>이름으로 조회</td><td>딕셔너리</td><td>설정 값</td></tr>
+<tr><td>중복 없는 고유 항목</td><td>집합(Set)</td><td>중복 없는 태그</td></tr>
+<tr><td>변경 불가 시퀀스</td><td>튜플(Tuple)</td><td>데이터베이스 행 좌표</td></tr>
+</table>
+
+<h3>TaskForge 연결</h3>
+<p>TaskForge는 작업을 <strong>딕셔너리 리스트</strong>로 저장합니다: <code>tasks = [{"id": 1, "description": "...", "status": "pending"}, ...]</code>. 이것은 모든 API 응답과 모든 JSON 파일에서 보게 될 동일한 패턴입니다.</p>
+
+<h3>미니 연습 문제</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">1: 리스트 접근</div>
+<p>숫자 5개 리스트를 만드세요. 세 번째 항목(인덱스 2)을 출력하세요.</p>
+<pre><code>nums = [10, 20, 30, 40, 50]
+print(nums[2])  # 30</code></pre>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">2: 딕셔너리 접근</div>
+<pre><code>person = {"name": "Alice", "age": 30, "city": "Tokyo"}
+print(person["city"])  # Tokyo</code></pre>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">직접 해보기</div>
+<p>프로젝트를 나타내는 딕셔너리를 만드세요: <code>name</code>(문자열), <code>features</code>(문자열 3개 리스트), <code>tech_stack</code>('language', 'framework', 'database'가 있는 딕셔너리), <code>status</code>(문자열). <code>project['tech_stack']['framework']</code>를 출력하세요.</p>
+<div class="prompt-block"><span class="label">project.py</span>project = {
+    "name": "TaskForge",
+    "features": ["add tasks", "complete tasks", "list tasks"],
+    "tech_stack": {"language": "Python", "framework": "Flask", "database": "JSON"},
+    "status": "in progress"
+}
+print(project["tech_stack"]["framework"])  # Flask</div>
+<p><strong>검증:</strong> 중첩 접근이 framework 값을 출력합니다.</p>
+<p><strong>작동하지 않는다면:</strong> (1) <code>KeyError</code> &rarr; 키 이름은 대소문자를 구분합니다. (2) <code>TypeError: string indices</code> &rarr; <code>tech_stack</code>을 딕셔너리가 아닌 문자열로 정의했습니다.</p>
+</div>
+
+<div class="pq">방금 JSON을 사용했습니다&mdash;API와 AI 도구가 정보를 교환하는 데 사용하는 바로 그 데이터 형식입니다. Claude Code가 여러분의 프롬프트를 Anthropic API로 전송할 때, 방금 작성한 것과 똑같이 생긴 JSON으로 전송됩니다.</div>
+
+<h3>리스트 컴프리헨션(List Comprehensions)</h3>
+<p><strong>리스트 컴프리헨션(list comprehension)</strong>은 한 줄로 새 리스트를 만듭니다. 리스트에 추가하는 <code>for</code> 반복문의 간결한 대안입니다. AI가 생성하는 Python은 컴프리헨션을 많이 사용하므로 유창하게 읽을 수 있어야 합니다.</p>
+
+<h4>기본 문법</h4>
+<pre><code>[expression for item in iterable]</code></pre>
+<p>이렇게 읽힙니다: "이터러블(iterable)의 각 <code>item</code>에 대해 <code>expression</code>을 평가하고 결과를 리스트로 모읍니다."</p>
+
+<h4>조건 포함</h4>
+<pre><code>[expression for item in iterable if condition]</code></pre>
+<p>필터를 추가합니다: <code>condition</code>이 참인 항목만 포함됩니다.</p>
+
+<h4>전후 비교</h4>
+<p>동일한 로직을 반복문과 컴프리헨션으로 작성한 것입니다:</p>
+<pre><code># 반복문 버전
+squares = []
+for n in range(5):
+    squares.append(n ** 2)
+
+# 컴프리헨션 버전
+squares = [n ** 2 for n in range(5)]
+# 둘 다 결과: [0, 1, 4, 9, 16]</code></pre>
+
+<pre><code># 필터가 있는 반복문
+evens = []
+for n in range(10):
+    if n % 2 == 0:
+        evens.append(n)
+
+# 필터가 있는 컴프리헨션
+evens = [n for n in range(10) if n % 2 == 0]
+# 둘 다 결과: [0, 2, 4, 6, 8]</code></pre>
+
+<div role="note" class="callout warn">
+<div class="callout-title">주의</div>
+<p>AI가 생성한 코드는 컴프리헨션을 끊임없이 사용합니다. 읽지 못하면 AI 출력을 리뷰할 수 없습니다. <code>[task for task in tasks if task["status"] == "pending"]</code>를 보면 즉시 "작업 리스트를 pending 상태만 필터링한다"고 인식할 수 있어야 합니다.</p>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">직접 해보기</div>
+<p><strong>A 파트:</strong> 이 반복문을 컴프리헨션으로 다시 작성하세요:</p>
+<pre><code>names = ["alice", "bob", "charlie"]
+upper = []
+for name in names:
+    upper.append(name.upper())</code></pre>
+<pre><code># 정답
+upper = [name.upper() for name in names]</code></pre>
+<p><strong>B 파트:</strong> 이 컴프리헨션을 반복문으로 다시 작성하세요:</p>
+<pre><code>short = [w for w in ["hi", "hello", "hey", "greetings"] if len(w) <= 3]</code></pre>
+<pre><code># 정답
+short = []
+for w in ["hi", "hello", "hey", "greetings"]:
+    if len(w) <= 3:
+        short.append(w)
+# 둘 다 결과: ["hi", "hey"]</code></pre>
+</div>
+
+<h3>인터랙티브 연습 문제</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="06" data-ex="groupby">
+  <div class="exercise-header">
+    <h4>설계 도전: "그룹화"</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">각 항목에 key_fn을 호출한 결과를 기준으로 리스트를 그룹화하는 <code>group_by(items, key_fn)</code>를 작성하세요. 키를 리스트에 매핑하는 딕셔너리를 반환합니다.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def group_by(items, key_fn):
+    # Your code here
+    pass
+</script>
+    <script type="text/plain" class="test-code">
+assert group_by(["hi", "hey", "hello", "ha"], len) == {2: ["hi", "ha"], 3: ["hey"], 5: ["hello"]}, "Group by length"
+assert group_by([1,2,3,4,5,6], str) == {"1": [1], "2": [2], "3": [3], "4": [4], "5": [5], "6": [6]}, "Group by string form"
+assert group_by([], len) == {}, "Empty list returns empty dict"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">실행</button>
+    <button class="ex-check">확인</button>
+    <button class="ex-hint" data-level="0">힌트</button>
+    <button class="ex-reset">초기화</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">빈 딕셔너리로 시작하세요. 각 항목에 대해 키를 계산하세요.</p>
+    <p class="hint"><code>dict.setdefault(key, []).append(item)</code>으로 항목을 추가하세요.</p>
+    <p class="hint">또는 <code>result[key] = result.get(key, []) + [item]</code>를 사용하세요.</p>
+  </div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="06" data-ex="flatten">
+  <div class="exercise-header">
+    <h4>설계 도전: "평탄화"</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">임의로 중첩된 리스트를 단일 평탄 리스트로 펼치는 <code>flatten(nested)</code>를 작성하세요.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def flatten(nested):
+    # Your code here
+    pass
+</script>
+    <script type="text/plain" class="test-code">
+assert flatten([1, [2, [3, 4], 5], 6]) == [1, 2, 3, 4, 5, 6], "Nested lists"
+assert flatten([1, 2, 3]) == [1, 2, 3], "Already flat"
+assert flatten([]) == [], "Empty list"
+assert flatten([[[[1]]]]) == [1], "Deeply nested"
+assert flatten([1, [2], [3, [4, [5]]]]) == [1, 2, 3, 4, 5], "Mixed nesting"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">실행</button>
+    <button class="ex-check">확인</button>
+    <button class="ex-hint" data-level="0">힌트</button>
+    <button class="ex-reset">초기화</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">각 요소를 순회하세요. 요소가 리스트이면 <em>그것도</em> 평탄화해야 합니다. 한 가지 방법: 함수 안에서 자기 자신을 호출합니다(이것을 <strong>재귀(recursion)</strong>라고 합니다&mdash;더 작은 입력으로 자신을 호출하는 함수).</p>
+    <p class="hint"><code>isinstance(item, list)</code>로 항목이 리스트인지 일반 값인지 확인하세요.</p>
+    <p class="hint">패턴: <code>result = []</code>를 만드세요. 각 항목이 리스트이면 <code>flatten(item)</code>으로 result를 확장하고, 아니면 직접 추가합니다.</p>
+  </div>
+</div>
+
+<div class="quiz" data-ch="06" data-ex="quiz-dict">
+  <h4>핵심 확인</h4>
+  <p><code>my_dict['missing']</code>으로 존재하지 않는 키에 접근하면 어떻게 됩니까?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">None을 반환한다</button>
+    <button class="quiz-option" data-correct="false">빈 문자열을 반환한다</button>
+    <button class="quiz-option" data-correct="true">KeyError를 발생시킨다</button>
+    <button class="quiz-option" data-correct="false">False를 반환한다</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">참고</div>
+<p>Big O 표기법(Big O notation)은 데이터가 증가함에 따라 연산 시간이 어떻게 늘어나는지를 나타냅니다. 수학적으로 유도할 필요는 없습니다 — AI가 생성한 코드를 읽을 때 <em>인식</em>할 수 있으면 됩니다:</p>
+<table>
+<caption>일반적인 Big O 복잡도와 실제 의미</caption>
+<tr><th>표기</th><th>이름</th><th>예시</th><th>체감</th></tr>
+<tr><td><code>O(1)</code></td><td>상수(Constant)</td><td>키로 딕셔너리 조회</td><td>크기와 상관없이 즉각적</td></tr>
+<tr><td><code>O(log n)</code></td><td>로그(Logarithmic)</td><td>이진 탐색</td><td>데이터 2배? 한 단계 추가</td></tr>
+<tr><td><code>O(n)</code></td><td>선형(Linear)</td><td>리스트 순회</td><td>데이터 10배 = 시간 10배</td></tr>
+<tr><td><code>O(n log n)</code></td><td>선형 로그(Linearithmic)</td><td>정렬(좋은 알고리즘)</td><td>선형보다 약간 느림</td></tr>
+<tr><td><code>O(n&sup2;)</code></td><td>이차(Quadratic)</td><td>중첩 반복문</td><td>데이터 10배 = 시간 100배</td></tr>
+<tr><td><code>O(2&#x207F;)</code></td><td>지수(Exponential)</td><td>부분집합 전체 탐색</td><td>~30개 항목 이상이면 사용 불가</td></tr>
+</table>
+<p><strong>실용적 규칙:</strong> AI가 리스트에 대한 중첩 반복문을 생성하면, "이게 O(n&sup2;)인가? 딕셔너리를 쓰면 O(n)으로 줄일 수 있나?"라고 물어보세요. 이 질문 하나가 AI 생성 코드에서 가장 흔한 성능 실수를 잡아냅니다.</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">참고</div>
+<p>이 챕터에서는 리스트, 딕셔너리, 세트를 <em>사용하는</em> 법을 배웠습니다. <a href="phase-5.html">페이즈 5</a>에서는 이것들이 내부적으로 <em>어떻게 동작하는지</em>&mdash;해시 테이블, 연결 리스트, 트리, 그래프&mdash;를 배웁니다. 내부 구조를 이해하는 것이 중요한 이유는, AI가 생성한 코드가 때로 잘못된 자료 구조를 선택하기 때문이며, 이를 잡아내려면 관련 어휘가 필요합니다.</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">참고</div>
+<p>자료 구조는 데이터를 <em>저장하는 방법</em>입니다. 알고리즘(algorithm)은 데이터를 <em>처리하는 방법</em>입니다. AI가 정렬, 탐색, 경로 탐색 솔루션을 생성할 때 알고리즘을 적용하는 것입니다. <a href="phase-6.html">페이즈 6</a>에서 필수 알고리즘을 배워 AI가 올바른 접근법을 선택했는지 평가할 수 있게 됩니다.</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">팁</div>
+<p>더 많은 연습을 원하신다면? <a href="https://neetcode.io">NeetCode</a>의 Arrays &amp; Hashing 섹션을 풀어보세요. "Two Sum"과 "Group Anagrams"부터 시작하세요 &mdash; 둘 다 리스트만으로는 느릴 문제를 딕셔너리로 해결합니다.</p>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="06" data-ex="solve-compare-flatten">
+  <div class="exercise-header">
+    <h4>풀고 비교하기: 중첩 리스트 평탄화</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt"><strong>1단계:</strong> 직접 문제를 풀어보세요. <strong>2단계:</strong> "힌트"를 세 번 클릭하면 AI의 풀이를 볼 수 있습니다. <strong>3단계:</strong> 비교하고 평가 질문에 답하세요.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+# 나의 풀이: 중첩 리스트 평탄화
+# 임의로 중첩된 리스트를 평탄화하는 flatten(lst)를 작성하세요.
+# 예: flatten([1, [2, [3, 4]], 5]) -> [1, 2, 3, 4, 5]
+# 풀이 후 실행하고, 힌트를 3번 클릭하세요.
+
+def flatten(lst):
+    pass
+
+# 비교 후 답하세요:
+# 1. AI가 다르게 한 점은?
+# 2. AI의 접근법이 더 낫나요, 더 나쁜가요, 아니면 그냥 다른가요?
+# 3. AI 버전에서 문제를 발견했나요?
+</script>
+    <script type="text/plain" class="test-code">
+assert flatten([1, [2, [3, 4]], 5]) == [1, 2, 3, 4, 5], "Should flatten nested lists"
+assert flatten([1, 2, 3]) == [1, 2, 3], "Already flat list should stay flat"
+assert flatten([[1], [2], [3]]) == [1, 2, 3], "Should flatten one level of nesting"
+assert flatten([]) == [], "Empty list should return empty list"
+assert flatten([1, [2, [], [3, [4]]]]) == [1, 2, 3, 4], "Should handle empty inner lists"
+print("All tests passed!")
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">실행</button>
+    <button class="ex-check">확인</button>
+    <button class="ex-hint" data-level="0">힌트</button>
+    <button class="ex-reset">초기화</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">각 항목을 확인하세요: 리스트인가, 일반 값인가? <code>isinstance(item, list)</code>를 사용하세요.</p>
+    <p class="hint">항목이 리스트이면 그것도 평탄화해야 합니다 &mdash; 재귀(recursion) 문제입니다. 하위 리스트에 <code>flatten()</code>을 호출하세요.</p>
+    <p class="hint"><strong>AI의 풀이:</strong><br><code>def flatten(lst):<br>&nbsp;&nbsp;&nbsp;&nbsp;result = []<br>&nbsp;&nbsp;&nbsp;&nbsp;for item in lst:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if isinstance(item, list):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result.extend(flatten(item))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result.append(item)<br>&nbsp;&nbsp;&nbsp;&nbsp;return result</code><br><br><strong>평가:</strong> AI는 <code>isinstance</code>와 함께 재귀를 사용했습니다 &mdash; 여러분도 그렇게 했나요? 스택과 반복문을 사용했다면 그것도 유효하며 깊은 재귀 한계를 피할 수 있습니다. AI는 <code>[[]]</code>(빈 내부 리스트)도 올바르게 처리합니다. TaskForge에서는 하위 작업이 있는 경우 중첩 구조가 나타납니다 &mdash; 평탄화는 실제로 필요한 연산입니다.</p>
+  </div>
+</div>
+
+</section>
+
+<!-- ===== CH 07: CLASSES AND OOP BASICS ===== -->
+<section id="ch07" data-ch="07">
+<h2><span class="ch-label">챕터 07</span> 클래스(Classes)와 객체 지향 프로그래밍(OOP) 기초</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">핵심 개념</div>
+<p>AI가 생성한 Python 코드는 클래스를 자주 사용합니다. Claude가 <code>self.tasks</code>가 있는 <code>class Task:</code>를 작성하면, 무엇을 읽고 있는지 이해해야 합니다.</p>
+</div>
+
+<p>지금까지 딕셔너리에 데이터를 저장하고 함수로 처리했습니다. 이 방식은 효과적이지만&mdash;코드베이스 전반에 걸쳐 데이터와 이를 처리하는 함수가 점점 떨어지기 시작할 때까지만 그렇습니다. <strong>클래스(class)</strong>는 데이터와 동작을 <strong>객체(object)</strong>라는 단일 단위로 묶어 이 문제를 해결합니다.</p>
+
+<h3>클래스란 무엇인가?</h3>
+<p><strong>클래스(class)</strong>는 객체를 만드는 청사진입니다. 쿠키 커터와 같습니다: 클래스가 모양을 정의하고, 찍어낸 각 쿠키가 <strong>인스턴스(instance)</strong>&mdash;그 청사진으로 만들어진 개별 객체입니다. 쿠키 커터 자체는 쿠키가 아닙니다; 쿠키를 만드는 템플릿입니다. 모든 쿠키는 같은 모양이지만, 각각 다른 장식(다른 데이터)을 가질 수 있습니다.</p>
+
+<p>프로그래밍 용어로: 클래스는 모든 인스턴스가 가질 속성(attribute, 데이터)과 메서드(method, 동작)를 정의합니다. 각 인스턴스는 자체 데이터 복사본을 갖지만, 모두 같은 메서드를 공유합니다.</p>
+
+<h3>클래스 정의하기</h3>
+<p>가장 간단한 유용한 클래스입니다:</p>
+<pre><code>class Task:
+    def __init__(self, title):
+        self.title = title
+        self.done = False</code></pre>
+
+<p>하나씩 분해해 봅시다:</p>
+<ul>
+<li><code>class Task:</code> &mdash; <code>Task</code>라는 새 클래스를 선언합니다. 클래스 이름은 관례상 <strong>CamelCase</strong>를 사용합니다(함수의 <code>snake_case</code>와 다릅니다).</li>
+<li><code>__init__</code> &mdash; <strong>초기화자(initializer)</strong>(생성자(constructor)라고도 합니다). Python은 새 인스턴스를 만들 때 이것을 자동으로 호출합니다. 이중 밑줄("dunder"라고 부름)은 특수 메서드임을 나타냅니다.</li>
+<li><code>self</code> &mdash; 생성 중인 <em>특정 인스턴스</em>에 대한 참조입니다. <code>self.title = title</code>을 쓰면 "이 특정 객체의 title은 전달된 값이다"라고 말하는 것입니다. 클래스의 모든 메서드는 첫 번째 매개변수로 <code>self</code>를 받습니다.</li>
+<li><code>self.title</code>과 <code>self.done</code> &mdash; 이것들은 <strong>인스턴스 속성(instance attributes)</strong>입니다. 각 <code>Task</code> 객체는 자체 <code>title</code>과 <code>done</code>을 갖습니다.</li>
+</ul>
+
+<h3>메서드 vs 함수</h3>
+<p><strong>메서드(method)</strong>는 클래스에 속하는 함수입니다. 문법적 차이는 하나: 메서드는 첫 번째 매개변수로 <code>self</code>를 받아 인스턴스의 데이터에 접근합니다. 일반 함수는 독립적으로 존재하고; 메서드는 객체에 붙어 그 객체의 데이터를 조작합니다.</p>
+<pre><code># 일반 함수 — 독립적으로 존재
+def mark_done(task_dict):
+    task_dict["done"] = True
+
+# 메서드 — 클래스에 속하며 self에서 동작
+class Task:
+    def __init__(self, title):
+        self.title = title
+        self.done = False
+
+    def mark_done(self):
+        self.done = True</code></pre>
+<p><code>task.mark_done()</code>을 호출하면 Python이 자동으로 인스턴스를 <code>self</code>로 전달합니다. <code>task.mark_done(task)</code>라고 쓸 필요가 없습니다&mdash;Python이 처리합니다.</p>
+
+<h3>인스턴스 생성하기</h3>
+<p>클래스를 함수처럼 호출해서 인스턴스를 만듭니다:</p>
+<pre><code>task = Task("Buy groceries")
+print(task.title)  # Buy groceries
+print(task.done)   # False</code></pre>
+<p><code>"Buy groceries"</code>를 전달하지만 <code>self</code>는 전달하지 않습니다. Python이 <code>self</code>를 자동으로 채웁니다. <code>Task(...)</code>를 호출할 때마다 완전히 새로운, 독립적인 객체가 만들어집니다.</p>
+
+<h3>인스턴스 속성</h3>
+<p>모든 인스턴스는 자체 데이터를 갖습니다. 하나의 객체를 변경해도 다른 것에 영향을 미치지 않습니다:</p>
+<pre><code>task1 = Task("Buy groceries")
+task2 = Task("Write report")
+
+task1.mark_done()
+print(task1.done)  # True
+print(task2.done)  # False — 완전히 독립적</code></pre>
+<p>점 표기법(dot notation)으로 속성에 접근합니다: <code>task.title</code>, <code>task.done</code>. 이것은 문자열(<code>"hello".upper()</code>)과 리스트(<code>my_list.append(x)</code>)에서 사용해온 것과 같은 문법입니다&mdash;문자열과 리스트도 객체이기 때문입니다.</p>
+
+<h3>완성된 예시</h3>
+<p>초기화자, 동작 메서드, 문자열 표현이 있는 <code>Task</code> 클래스입니다:</p>
+<pre><code>class Task:
+    def __init__(self, title):
+        self.title = title
+        self.done = False
+
+    def mark_done(self):
+        self.done = True
+
+    def __str__(self):
+        status = "done" if self.done else "pending"
+        return f"[{status}] {self.title}"
+
+# 사용 예
+task = Task("Buy groceries")
+print(task)          # [pending] Buy groceries
+task.mark_done()
+print(task)          # [done] Buy groceries</code></pre>
+<p><code>__str__</code>은 또 다른 dunder 메서드입니다. Python은 객체를 <code>print()</code>하거나 문자열로 변환할 때 이것을 자동으로 호출합니다. 없으면 <code>Task</code>를 출력했을 때 <code>&lt;__main__.Task object at 0x...&gt;</code> 같은 도움이 안 되는 내용이 표시됩니다.</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg" aria-label="UML class diagram for Task class with three compartments: name, attributes (title, done, id), and methods (init, mark_done, str)">
+  <!-- Class box outer -->
+  <rect class="node-accent" x="200" y="10" width="300" height="260" rx="10"/>
+  <!-- Title section -->
+  <rect x="200" y="10" width="300" height="44" rx="10" fill="var(--accent)" opacity="0.15" stroke="none"/>
+  <text class="label-text" x="350" y="38" text-anchor="middle" font-size="14" fill="var(--accent)">Task</text>
+  <!-- Divider 1 -->
+  <line x1="200" y1="54" x2="500" y2="54" stroke="var(--accent)" stroke-width="1" opacity="0.4"/>
+  <!-- Attributes section -->
+  <text class="label-text" x="220" y="78" font-size="10" fill="var(--text-muted)">속성(ATTRIBUTES)</text>
+  <text class="sub-text" x="240" y="100">title : str</text>
+  <text class="sub-text" x="240" y="120">done : bool</text>
+  <text class="sub-text" x="240" y="140">id : int</text>
+  <!-- Divider 2 -->
+  <line x1="200" y1="156" x2="500" y2="156" stroke="var(--accent)" stroke-width="1" opacity="0.4"/>
+  <!-- Methods section -->
+  <text class="label-text" x="220" y="180" font-size="10" fill="var(--text-muted)">METHODS</text>
+  <text class="sub-text" x="240" y="202">__init__(self, title)</text>
+  <text class="sub-text" x="240" y="222">mark_done(self)</text>
+  <text class="sub-text" x="240" y="242">__str__(self)</text>
+  <!-- Labels on the left -->
+  <text class="label-text" x="180" y="120" text-anchor="end" fill="var(--accent)">Data</text>
+  <line x1="185" y1="116" x2="198" y2="116" stroke="var(--accent)" stroke-width="1"/>
+  <text class="label-text" x="180" y="222" text-anchor="end" fill="var(--accent)">Behavior</text>
+  <line x1="185" y1="218" x2="198" y2="218" stroke="var(--accent)" stroke-width="1"/>
+</svg>
+<div class="diagram-caption">클래스(class)는 세 칸으로 이루어진 상자입니다: 맨 위에 이름, 가운데에 데이터(속성), 아래에 동작(메서드). 이것이 UML 클래스 다이어그램 패턴입니다.</div>
+</div>
+
+<h3>상속(Inheritance)의 기초</h3>
+<p>기존 클래스와 <em>거의</em> 같지만 몇 가지만 추가해야 할 때가 있습니다. <strong>상속(inheritance)</strong>을 사용하면 기존 클래스를 기반으로 새 클래스를 만들 수 있습니다. 새 클래스(<strong>자식 클래스</strong> 또는 <strong>서브클래스(subclass)</strong>)는 기존 클래스(<strong>부모 클래스</strong> 또는 <strong>슈퍼클래스(superclass)</strong>)의 모든 속성과 메서드를 물려받으며, 추가하거나 재정의할 수 있습니다.</p>
+
+<p>다음은 <code>Task</code>에 우선순위 필드를 추가한 <code>PriorityTask</code> 예시입니다:</p>
+<pre><code>class PriorityTask(Task):
+    def __init__(self, title, priority="medium"):
+        super().__init__(title)
+        self.priority = priority
+
+    def __str__(self):
+        status = "done" if self.done else "pending"
+        return f"[{status}] ({self.priority}) {self.title}"</code></pre>
+
+<p><code>class PriorityTask(Task)</code>에서 괄호는 "PriorityTask가 Task를 상속한다"는 뜻입니다. <code>super().__init__(title)</code> 호출은 부모의 <code>__init__</code>을 실행하므로, 자식 클래스는 코드를 복제하지 않고도 <code>self.title</code>과 <code>self.done</code>을 가지게 됩니다. 그런 다음 자식 클래스가 자체적으로 <code>self.priority</code>를 추가합니다.</p>
+
+<p><code>PriorityTask</code>는 <code>mark_done()</code>을 무료로 얻습니다&mdash;<code>Task</code>로부터 상속받기 때문입니다. 하지만 <code>__str__</code>은 우선순위를 포함하는 자체 버전으로 <strong>재정의(override)</strong>합니다. 이것이 핵심 아이디어입니다: 잘 작동하는 것은 재사용하고, 다른 부분만 변경하는 것입니다.</p>
+
+<pre><code>task = PriorityTask("Fix login bug", "high")
+print(task)          # [pending] (high) Fix login bug
+task.mark_done()
+print(task)          # [done] (high) Fix login bug
+print(task.done)     # True — inherited from Task</code></pre>
+
+<h3>클래스 vs 딕셔너리: 언제 무엇을 사용할까</h3>
+<p>클래스와 딕셔너리는 모두 데이터를 저장합니다. 핵심 질문은: 데이터에 <em>동작</em>이 필요한가입니다.</p>
+
+<table>
+<caption>딕셔너리 vs 클래스: 언제 무엇을 사용할지</caption>
+<tr><th>상황</th><th>딕셔너리 사용</th><th>클래스 사용</th></tr>
+<tr><td>알려진 키를 가진 단순 데이터</td><td><code>{"name": "Alice", "age": 30}</code></td><td>과도한 설계</td></tr>
+<tr><td>JSON 입출력 데이터</td><td>자연스러운 적합&mdash;딕셔너리가 JSON에 직접 매핑</td><td>필요 시 <code>to_dict()</code> 추가</td></tr>
+<tr><td>데이터 + 동작을 함께</td><td>함수가 파일 곳곳에 흩어짐</td><td><code>task.mark_done()</code>으로 함께 유지</td></tr>
+<tr><td>여러 관련 타입</td><td>상속 메커니즘 없음</td><td><code>PriorityTask(Task)</code></td></tr>
+<tr><td>빠른 프로토타이핑</td><td>가장 빠르게 작성</td><td>설정이 더 필요하지만, 구조가 더 탄탄</td></tr>
+</table>
+
+<p><strong>경험 법칙:</strong> 딕셔너리부터 시작하세요. 같은 딕셔너리를 첫 번째 인자로 받는 함수를 여러 개 작성하고 있다면, 데이터와 동작이 하나의 클래스에 함께 있고 싶다는 신호입니다.</p>
+
+<h3>흔한 오해</h3>
+
+<div role="note" class="callout warn">
+<div class="callout-title">주의: "클래스가 항상 딕셔너리보다 낫다"는 오해</div>
+<p>사실이 아닙니다. 딕셔너리는 더 간단하고, 빠르게 작성할 수 있으며, JSON에 직접 매핑됩니다. 데이터가 동작 없이 키-값 쌍일 뿐이라면, 딕셔너리가 올바른 도구입니다. 클래스는 데이터에 작동하는 <em>메서드</em>, 생성 시 <em>검증(validation)</em>, 또는 관련 타입을 위한 <em>상속</em>이 필요할 때 가치를 더합니다. 작업에 맞는 도구를 사용하세요.</p>
+</div>
+
+<div role="note" class="callout warn">
+<div class="callout-title">주의: "self는 키워드다"라는 오해</div>
+<p><code>self</code>는 키워드가 <strong>아닙니다</strong>&mdash;관례입니다. 기술적으로 <code>this</code>나 <code>potato</code>라고 이름을 지어도 Python은 불평하지 않습니다. 하지만 모든 Python 프로그래머가 <code>self</code>를 사용하고, 모든 AI가 <code>self</code>를 생성하며, 모든 린터(linter)가 <code>self</code>를 기대합니다. 기술적으로 선택 사항이지만, 필수로 취급하세요.</p>
+</div>
+
+<h3>TaskForge 연결</h3>
+<p>TaskForge v0.1은 작업을 리스트 안의 딕셔너리로 저장합니다. 이것은 작동하지만, <code>complete_task</code>와 <code>add_task</code> 같은 함수들이 모두 같은 딕셔너리 구조에 대해 작동한다는 점에 주목하세요. 이는 클래스가 더 적합할 수 있다는 신호입니다. 다음은 변경 전과 후를 나란히 비교한 것입니다:</p>
+
+<div class="pe">
+<div class="pb"><div class="ph">이전 &mdash; 딕셔너리</div>
+<div class="pp"><pre><code># TaskForge v0.1 — dictionary-based
+task = {
+    "id": 1,
+    "title": "Buy groceries",
+    "status": "pending"
+}
+
+def complete_task(tasks, task_id):
+    for t in tasks:
+        if t["id"] == task_id:
+            t["status"] = "done"
+            return True
+    return False</code></pre></div>
+</div>
+<div class="pg"><div class="ph">이후 &mdash; 클래스</div>
+<div class="pp"><pre><code># TaskForge refactored — class-based
+class Task:
+    def __init__(self, task_id, title):
+        self.id = task_id
+        self.title = title
+        self.status = "pending"
+
+    def complete(self):
+        self.status = "done"
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "status": self.status
+        }
+
+# Usage
+task = Task(1, "Buy groceries")
+task.complete()
+print(task.to_dict())
+# {"id": 1, "title": "Buy groceries", "status": "done"}</code></pre></div>
+</div>
+</div>
+
+<p>클래스 버전은 데이터와 동작을 함께 유지합니다. <code>task.complete()</code>는 <code>complete_task(tasks, task_id)</code>보다 명확합니다. 작업 자체가 스스로를 완료하는 방법을 알고 있기 때문입니다. <code>to_dict()</code> 메서드 덕분에 JSON 직렬화(serialization)도 여전히 작동합니다&mdash;두 세계의 장점을 모두 얻게 됩니다.</p>
+
+<h3>미니 연습문제</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">직접 해보기 1: Dog 클래스 정의하기</div>
+<p><code>name</code>과 <code>breed</code> 속성, 그리고 문자열을 반환하는 <code>bark()</code> 메서드를 가진 <code>Dog</code> 클래스를 정의하세요.</p>
+<pre><code>class Dog:
+    def __init__(self, name, breed):
+        self.name = name
+        self.breed = breed
+
+    def bark(self):
+        return f"{self.name} says Woof!"
+
+dog = Dog("Rex", "Labrador")
+print(dog.bark())   # Rex says Woof!
+print(dog.breed)    # Labrador</code></pre>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">직접 해보기 2: BankAccount 클래스 만들기</div>
+<p>잔액을 추적하는 <code>deposit()</code>과 <code>withdraw()</code> 메서드를 가진 <code>BankAccount</code> 클래스를 만드세요.</p>
+<pre><code>class BankAccount:
+    def __init__(self, owner, balance=0):
+        self.owner = owner
+        self.balance = balance
+
+    def deposit(self, amount):
+        self.balance += amount
+        return self.balance
+
+    def withdraw(self, amount):
+        if amount > self.balance:
+            return "Insufficient funds"
+        self.balance -= amount
+        return self.balance
+
+account = BankAccount("Alice", 100)
+print(account.deposit(50))    # 150
+print(account.withdraw(30))   # 120
+print(account.withdraw(200))  # Insufficient funds</code></pre>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">직접 해보기</div>
+<p>TaskForge의 작업 딕셔너리를 <code>Task</code> 클래스로 리팩터링하세요. JSON 직렬화가 계속 작동하도록 <code>to_dict()</code> 메서드를 추가하세요.</p>
+<div class="prompt-block"><span class="label">task_class.py</span>import json
+
+class Task:
+    def __init__(self, task_id, title):
+        self.id = task_id
+        self.title = title
+        self.status = "pending"
+
+    def complete(self):
+        self.status = "done"
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "status": self.status
+        }
+
+    def __str__(self):
+        return f"[{self.status}] {self.title}"
+
+# Test it
+task = Task(1, "Buy groceries")
+print(task)                    # [pending] Buy groceries
+task.complete()
+print(task)                    # [done] Buy groceries
+print(json.dumps(task.to_dict(), indent=2))
+# {"id": 1, "title": "Buy groceries", "status": "done"}</div>
+<p><strong>검증:</strong> <code>Task</code> 클래스가 객체를 생성하고, <code>to_dict()</code>가 원래 형식과 일치하는 딕셔너리를 반환하면 성공입니다.</p>
+<p><strong>작동하지 않는 경우:</strong> <code>self</code> 에러가 나타나면, 모든 메서드의 첫 번째 매개변수가 <code>self</code>인지 확인하세요. (1) <code>TypeError: __init__() takes 2 positional arguments</code> &rarr; 첫 번째 매개변수로 <code>self</code>를 빠뜨렸습니다. (2) <code>AttributeError: 'Task' has no attribute 'title'</code> &rarr; <code>__init__</code>에서 <code>self.title = title</code>을 설정하는지 확인하세요. (3) <code>to_dict()</code>가 <code>None</code>을 반환한다면 &rarr; <code>return</code> 문을 빠뜨렸습니다.</p>
+</div>
+
+<div class="pq">방금 느슨한 딕셔너리와 함수 모음을 응집력 있는 클래스로 바꿨습니다. 이것은 Claude Code가 모델 클래스, API 핸들러, 데이터 구조를 생성할 때 사용하는 것과 동일한 패턴입니다. 이제 그 코드를 읽고 정확히 무슨 일이 일어나는지 이해할 수 있습니다.</div>
+
+<h3>인터랙티브 연습문제</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="07" data-ex="bank">
+  <div class="exercise-header">
+    <h4>설계 챌린지: "은행 계좌"</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt"><code>deposit(amount)</code>, <code>withdraw(amount)</code>, <code>get_balance()</code> 메서드를 가진 <code>BankAccount</code> 클래스를 만드세요. 출금 시 잔액이 음수가 되면 <code>ValueError</code>를 발생시켜야 합니다. 초기 잔액은 0입니다.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+class BankAccount:
+    def __init__(self):
+        # Your code here
+        pass
+
+    def deposit(self, amount):
+        pass
+
+    def withdraw(self, amount):
+        pass
+
+    def get_balance(self):
+        pass
+</script>
+    <script type="text/plain" class="test-code">
+acct = BankAccount()
+assert acct.get_balance() == 0, "Initial balance should be 0"
+acct.deposit(100)
+assert acct.get_balance() == 100, "After depositing 100"
+acct.withdraw(30)
+assert acct.get_balance() == 70, "After withdrawing 30"
+try:
+    acct.withdraw(200)
+    assert False, "Should have raised ValueError"
+except ValueError:
+    pass
+assert acct.get_balance() == 70, "Balance unchanged after failed withdrawal"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">실행</button>
+    <button class="ex-check">확인</button>
+    <button class="ex-hint" data-level="0">힌트</button>
+    <button class="ex-reset">초기화</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint"><code>__init__</code>에서 <code>self.balance</code>에 잔액을 저장하세요.</p>
+    <p class="hint">출금 시 차감하기 전에 <code>if amount > self.balance</code>를 확인하세요.</p>
+    <p class="hint">초과 출금 시 <code>raise ValueError('Insufficient funds')</code>를 사용하세요.</p>
+  </div>
+</div>
+
+<div class="quiz" data-ch="07" data-ex="quiz-self">
+  <h4>핵심 확인</h4>
+  <p>Python 메서드에서 <code>self</code>는 무엇을 가리킵니까?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">클래스 자체</button>
+    <button class="quiz-option" data-correct="true">메서드가 호출된 특정 인스턴스(instance)</button>
+    <button class="quiz-option" data-correct="false">부모 클래스</button>
+    <button class="quiz-option" data-correct="false">클래스가 정의된 모듈</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="07" data-ex="counter">
+  <div class="exercise-header">
+    <h4>설계 챌린지: "카운터 클래스"</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt"><code>WordCounter</code> 클래스를 만드세요. 생성자(constructor)는 문자열을 받습니다. 메서드: <code>count(word)</code>는 해당 단어가 몇 번 나타나는지 반환합니다(대소문자 구분 없음). <code>most_common(n)</code>은 가장 빈번한 n개의 단어를 (단어, 횟수) 튜플 리스트로 반환합니다.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+class WordCounter:
+    def __init__(self, text):
+        # Your code here
+        pass
+
+    def count(self, word):
+        pass
+
+    def most_common(self, n):
+        pass
+</script>
+    <script type="text/plain" class="test-code">
+wc = WordCounter("the cat sat on the mat the cat")
+assert wc.count("the") == 3, "the appears 3 times"
+assert wc.count("cat") == 2, "cat appears 2 times"
+assert wc.count("dog") == 0, "dog not in text"
+assert wc.count("The") == 3, "Case insensitive"
+top = wc.most_common(2)
+assert top[0] == ("the", 3), "Most common is 'the'"
+assert top[1] == ("cat", 2), "Second most common is 'cat'"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">실행</button>
+    <button class="ex-check">확인</button>
+    <button class="ex-hint" data-level="0">힌트</button>
+    <button class="ex-reset">초기화</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint"><code>__init__</code>에서 텍스트를 단어로 분리하고 빈도 딕셔너리를 만드세요.</p>
+    <p class="hint">저장과 조회 모두에서 대소문자 구분을 없애려면 <code>.lower()</code>를 사용하세요.</p>
+    <p class="hint"><code>most_common</code>의 경우, 항목을 횟수 기준 내림차순으로 정렬한 후 슬라이스하세요.</p>
+  </div>
+</div>
+
+<h3>데코레이터(Decorator): 함수를 수정하는 함수</h3>
+<p><strong>데코레이터(decorator)</strong>는 함수를 받아서 수정된 버전을 반환하는 함수입니다. <code>@decorator</code> 구문은 이것의 축약형입니다:</p>
+<pre><code># This:
+@app.route("/tasks")
+def get_tasks():
+    pass
+
+# Is equivalent to:
+def get_tasks():
+    pass
+get_tasks = app.route("/tasks")(get_tasks)</code></pre>
+
+<p>이후 챕터에서 데코레이터를 끊임없이 보게 될 것입니다 — Flask의 <code>@app.route()</code>, 클래스의 <code>@staticmethod</code>, 테스트의 <code>@pytest.fixture</code>. AI도 데코레이터가 적용된 함수를 지속적으로 생성합니다. 다음은 직접 만드는 방법입니다:</p>
+
+<pre><code>import time
+
+def timer(func):
+    """Decorator that prints how long a function takes."""
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = func(*args, **kwargs)
+        elapsed = time.time() - start
+        print(f"{func.__name__} took {elapsed:.4f}s")
+        return result
+    return wrapper
+
+@timer
+def slow_function():
+    time.sleep(0.1)
+    return "done"
+
+slow_function()  # Prints: slow_function took 0.1001s</code></pre>
+
+<p>프로덕션 데코레이터는 원래 함수의 이름과 독스트링(docstring)을 보존하기 위해 <code>@functools.wraps(func)</code>도 사용해야 합니다. 여기서는 간결함을 위해 생략합니다.</p>
+
+<div class="exercise" data-type="pyodide" data-ch="07" data-ex="decorator">
+  <div class="exercise-header">
+    <h4>연습: 로깅 데코레이터 만들기</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">함수가 호출될 때마다 함수 이름과 인자를 출력하는 <code>@log_calls</code> 데코레이터를 구현하세요.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def log_calls(func):
+    """Decorator that prints function name and args on each call."""
+    def wrapper(*args, **kwargs):
+        # Print the function name and arguments
+        # Then call and return the original function
+        pass
+    return wrapper
+
+@log_calls
+def add(a, b):
+    return a + b
+
+@log_calls
+def greet(name):
+    return f"Hello, {name}!"
+</script>
+    <script type="text/plain" class="test-code">
+import io, sys
+old_stdout = sys.stdout
+sys.stdout = buffer = io.StringIO()
+result1 = add(3, 4)
+result2 = greet("Alice")
+sys.stdout = old_stdout
+output = buffer.getvalue()
+assert result1 == 7, "add should return 7"
+assert result2 == "Hello, Alice!", "greet should return greeting"
+assert "add" in output, "Should print function name 'add'"
+assert "greet" in output, "Should print function name 'greet'"
+print("All tests passed!")
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">실행</button>
+    <button class="ex-check">확인</button>
+    <button class="ex-hint" data-level="0">힌트</button>
+    <button class="ex-reset">초기화</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">wrapper 안에서 다음과 같이 출력하세요: <code>f"Calling {func.__name__} with args={args}, kwargs={kwargs}"</code></p>
+    <p class="hint">그런 다음 <code>result = func(*args, **kwargs)</code>를 호출하고 result를 반환하세요.</p>
+    <p class="hint">wrapper 본문: <code>print(f"Calling {func.__name__}({args}, {kwargs})")</code>; <code>result = func(*args, **kwargs)</code>; <code>return result</code></p>
+  </div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="07" data-ex="solve-compare-bank">
+  <div class="exercise-header">
+    <h4>직접 풀고 비교하기: 은행 계좌 클래스</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt"><strong>1단계:</strong> 직접 문제를 풀어보세요. <strong>2단계:</strong> "힌트"를 세 번 클릭하여 AI가 어떻게 풀었는지 확인하세요. <strong>3단계:</strong> 두 접근 방식을 비교하세요.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+# 직접 풀어보기: 은행 계좌 클래스
+# 다음을 가진 BankAccount 클래스를 작성하세요:
+# - __init__(self, owner, balance=0)
+# - deposit(amount) — 잔액에 추가, 새 잔액 반환
+# - withdraw(amount) — 잔액 충분 시 차감, 새 잔액 반환
+#   잔액 부족 시 ValueError 발생
+# - get_balance() — 현재 잔액 반환
+
+class BankAccount:
+    pass
+
+# 비교 후 답해보세요:
+# 1. AI는 무엇을 다르게 했습니까?
+# 2. AI의 접근 방식이 더 나은가요, 더 못한가요, 아니면 단지 다른가요?
+# 3. AI 버전에서 문제점을 발견했습니까?
+</script>
+    <script type="text/plain" class="test-code">
+acct = BankAccount("Alice", 100)
+assert acct.get_balance() == 100, "Initial balance should be 100"
+assert acct.deposit(50) == 150, "Deposit should return new balance"
+assert acct.withdraw(30) == 120, "Withdraw should return new balance"
+try:
+    acct.withdraw(200)
+    assert False, "Should raise ValueError for overdraft"
+except ValueError:
+    pass
+assert acct.get_balance() == 120, "Balance unchanged after failed withdrawal"
+acct2 = BankAccount("Bob")
+assert acct2.get_balance() == 0, "Default balance should be 0"
+print("All tests passed!")
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">실행</button>
+    <button class="ex-check">확인</button>
+    <button class="ex-hint" data-level="0">힌트</button>
+    <button class="ex-reset">초기화</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint"><code>__init__</code>부터 시작하세요: <code>self.owner</code>와 <code>self.balance</code>를 저장합니다. deposit과 withdraw에서 <code>amount &gt; 0</code>을 확인하세요.</p>
+    <p class="hint"><code>withdraw</code>에서 <code>if amount &gt; self.balance: raise ValueError("Insufficient funds")</code>를 확인하세요.</p>
+    <p class="hint"><strong>AI의 풀이:</strong><br><code>from datetime import datetime<br><br>class BankAccount:<br>&nbsp;&nbsp;&nbsp;&nbsp;def __init__(self, owner, balance=0):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.owner = owner<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.balance = balance<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.transactions = []<br><br>&nbsp;&nbsp;&nbsp;&nbsp;def deposit(self, amount):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.balance += amount<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.transactions.append({"type": "deposit", "amount": amount, "time": str(datetime.now())})<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return self.balance<br><br>&nbsp;&nbsp;&nbsp;&nbsp;def withdraw(self, amount):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if amount &gt; self.balance:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raise ValueError("Insufficient funds")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.balance -= amount<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.transactions.append({"type": "withdraw", "amount": amount, "time": str(datetime.now())})<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return self.balance<br><br>&nbsp;&nbsp;&nbsp;&nbsp;def get_balance(self):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return self.balance<br><br>&nbsp;&nbsp;&nbsp;&nbsp;def __repr__(self):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return f"BankAccount({self.owner}, balance={self.balance})"</code><br><br><strong>평가:</strong> AI는 요청하지 않은 기능을 추가했습니다 &mdash; 거래 내역, 타임스탬프, <code>__repr__</code> 메서드. 이것은 <em>과도한 설계(over-engineering)</em>로, AI의 가장 흔한 실패 패턴 중 하나입니다. 이 요구사항에는 여러분의 더 간단한 버전이 더 낫습니다. TaskForge에서도 "혹시 몰라서" 기능을 추가하고 싶은 유혹에 저항하세요 &mdash; 명세가 요구하는 것만 만드세요.</p>
+  </div>
+</div>
+
+</section>
+
+<!-- ===== CH 08 ===== -->
+<section id="ch08" data-ch="08">
+<h2><span class="ch-label">Chapter 08</span> 파일, 모듈, 그리고 표준 라이브러리</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">핵심 개념</div>
+<p>실제 프로젝트에는 수십 개의 파일이 있습니다. Claude Code가 <code>src/models.py</code>를 편집할 때, 그 파일이 <code>src/api.py</code> 및 <code>tests/test_models.py</code>와 어떻게 연결되는지 알아야 합니다. 모듈(module)은 코드를 여러 파일에 걸쳐 구성하는 방법입니다. 이것 없이는 실제 코드베이스를 탐색할 수 없습니다.</p>
+</div>
+
+<p>지금까지 프로그램이 종료되면 데이터가 사라졌습니다. <strong>파일</strong>은 데이터를 영속적으로 만듭니다. <strong>모듈(module)</strong>은 코드를 여러 파일에 걸쳐 구성할 수 있게 합니다. <strong>표준 라이브러리(standard library)</strong>는 수백 가지의 미리 만들어진 도구를 제공합니다.</p>
+
+<h3>파일 읽기와 쓰기</h3>
+<pre><code># Write
+with open("data.txt", "w") as f:
+    f.write("Hello, file!")
+
+# Read
+with open("data.txt", "r") as f:
+    content = f.read()
+    print(content)  # Hello, file!</code></pre>
+<p><code>with</code> 문(<strong>컨텍스트 매니저(context manager)</strong>)은 작업이 끝나면 자동으로 파일을 닫아줍니다. 항상 사용하세요.</p>
+
+<h3>JSON: 범용 데이터 형식</h3>
+<p><strong>JSON</strong>(JavaScript Object Notation)은 AI 도구와 API가 데이터를 교환하는 방식입니다. Python 딕셔너리와 거의 동일하게 생겼습니다:</p>
+<pre><code>import json
+
+# Dict to JSON string
+data = {"name": "TaskForge", "version": "0.1"}
+json_string = json.dumps(data, indent=2)
+
+# JSON string to dict
+parsed = json.loads(json_string)
+
+# Dict to JSON file
+with open("config.json", "w") as f:
+    json.dump(data, f, indent=2)
+
+# JSON file to dict
+with open("config.json", "r") as f:
+    loaded = json.load(f)</code></pre>
+
+<div class="dw">
+<svg viewBox="0 0 700 140" xmlns="http://www.w3.org/2000/svg" aria-label="네 가지 파일 형식 비교: .txt (비구조적), .csv (표 형식), .json (API 표준), Python dict (네이티브)">
+  <rect class="node-fill" x="10" y="10" width="155" height="110" rx="8"/>
+  <text class="label-text" x="87" y="32" text-anchor="middle">.txt</text>
+  <text class="sub-text" x="87" y="52" text-anchor="middle">name: Alice</text>
+  <text class="sub-text" x="87" y="66" text-anchor="middle">age: 30</text>
+  <text class="sub-text" x="87" y="108" text-anchor="middle" fill="var(--text-muted)">비구조적</text>
+  <rect class="node-fill" x="185" y="10" width="155" height="110" rx="8"/>
+  <text class="label-text" x="262" y="32" text-anchor="middle">.csv</text>
+  <text class="sub-text" x="262" y="52" text-anchor="middle">name,age</text>
+  <text class="sub-text" x="262" y="66" text-anchor="middle">Alice,30</text>
+  <text class="sub-text" x="262" y="108" text-anchor="middle" fill="var(--text-muted)">표 형식</text>
+  <rect class="node-accent" x="360" y="10" width="155" height="110" rx="8"/>
+  <text class="label-text" x="437" y="32" text-anchor="middle">.json</text>
+  <text class="sub-text" x="437" y="52" text-anchor="middle">{"name": "Alice",</text>
+  <text class="sub-text" x="437" y="66" text-anchor="middle">&nbsp;"age": 30}</text>
+  <text class="sub-text" x="437" y="108" text-anchor="middle" fill="var(--accent)">AI &amp; API 표준</text>
+  <rect class="node-fill" x="535" y="10" width="155" height="110" rx="8"/>
+  <text class="label-text" x="612" y="32" text-anchor="middle">.py dict</text>
+  <text class="sub-text" x="612" y="52" text-anchor="middle">{"name": "Alice",</text>
+  <text class="sub-text" x="612" y="66" text-anchor="middle">&nbsp;"age": 30}</text>
+  <text class="sub-text" x="612" y="108" text-anchor="middle" fill="var(--text-muted)">Python 네이티브</text>
+</svg>
+<div class="diagram-caption">서로 다른 형식이 같은 데이터를 다르게 저장합니다. JSON은 AI 도구와 API가 사용하는 형식입니다. 잘 익혀두세요.</div>
+</div>
+
+<h3>모듈과 임포트</h3>
+<p><strong>모듈(module)</strong>은 함수가 들어 있는 <code>.py</code> 파일입니다&mdash;도구 상자라고 생각하세요. 모든 도구를 어디든 가지고 다니는 대신, 현재 작업에 필요한 도구 상자만 <code>import</code>합니다:</p>
+<pre><code>import json          # entire module
+from pathlib import Path  # one thing from a module</code></pre>
+<p><code>if __name__ == "__main__":</code> 패턴(TaskForge에서 이미 본 것)은 "이 블록은 파일이 직접 실행될 때만 실행하고, 임포트될 때는 실행하지 말라"는 뜻입니다.</p>
+
+<h3>TaskForge 연결</h3>
+<p>Phase 2의 게이트 연습에서 <code>json.dump</code>와 <code>json.load</code>를 사용하여 TaskForge에 <code>save_tasks(filepath)</code>와 <code>load_tasks(filepath)</code>를 추가하게 됩니다. 작업이 세션 간에 유지됩니다.</p>
+
+<h3>미니 연습문제</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">직접 해보기 1: 파일 쓰기와 읽기</div>
+<pre><code>with open("hello.txt", "w") as f:
+    f.write("Hello!")
+
+with open("hello.txt", "r") as f:
+    print(f.read())  # Hello!</code></pre>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">직접 해보기 2: 딕셔너리를 JSON으로 변환</div>
+<pre><code>import json
+data = {"name": "test", "count": 5}
+print(json.dumps(data, indent=2))</code></pre>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">직접 해보기</div>
+<p>다음 내용으로 <code>config.json</code>을 만드세요: <code>{"project": "my-app", "version": "0.1", "features": ["auth", "dashboard"]}</code>. 이 파일을 읽고, features 리스트에 <code>"api"</code>를 추가한 후, 다시 파일에 쓰는 Python 스크립트를 작성하세요.</p>
+<div class="prompt-block"><span class="label">update_config.py</span>import json
+
+with open("config.json", "r") as f:
+    config = json.load(f)
+
+config["features"].append("api")
+
+with open("config.json", "w") as f:
+    json.dump(config, f, indent=2)</div>
+<p><strong>검증:</strong> 실행 후 <code>config.json</code>에 <code>["auth", "dashboard", "api"]</code>가 포함되어 있으면 성공입니다.</p>
+<p><strong>작동하지 않는 경우:</strong> (1) <code>FileNotFoundError</code> &rarr; JSON 파일을 먼저 만드세요. (2) <code>JSONDecodeError</code> &rarr; 후행 쉼표나 누락된 따옴표를 확인하세요. (3) 파일이 변경되지 않았다면 &rarr; <code>json.dump()</code>로 다시 쓰는 것을 빠뜨렸습니다.</p>
+</div>
+
+<div class="pq">방금 JSON 파일을 읽고, 수정하고, 다시 썼습니다&mdash;TaskForge가 데이터 영속성을 위해 사용하고, 모든 API가 데이터 교환을 위해 사용하는 바로 그 워크플로우입니다.</div>
+
+<h3>인터랙티브 연습문제</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="08" data-ex="csv">
+  <div class="exercise-header">
+    <h4>설계 챌린지: "CSV 파서"</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">CSV 문자열(첫 번째 행이 헤더)을 받아서 딕셔너리 리스트를 반환하는 <code>parse_csv(text)</code>를 작성하세요.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def parse_csv(text):
+    # Your code here
+    pass
+</script>
+    <script type="text/plain" class="test-code">
+result = parse_csv("name,age\nAlice,30\nBob,25")
+assert len(result) == 2, "Should have 2 rows"
+assert result[0] == {"name": "Alice", "age": "30"}, "First row"
+assert result[1] == {"name": "Bob", "age": "25"}, "Second row"
+assert parse_csv("a,b\n1,2") == [{"a": "1", "b": "2"}], "Simple case"
+assert parse_csv("x\n1\n2") == [{"x": "1"}, {"x": "2"}], "Single column"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">실행</button>
+    <button class="ex-check">확인</button>
+    <button class="ex-hint" data-level="0">힌트</button>
+    <button class="ex-reset">초기화</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">줄바꿈으로 분리하여 행을 얻은 다음, 각 행을 쉼표로 분리하세요.</p>
+    <p class="hint">첫 번째 행이 헤더(키)를 제공합니다. 나머지 행은 데이터입니다.</p>
+    <p class="hint"><code>zip(headers, values)</code>를 사용한 후 <code>dict()</code>로 각 행의 딕셔너리를 만드세요.</p>
+  </div>
+</div>
+
+<div class="quiz" data-ch="08" data-ex="quiz-json">
+  <h4>핵심 확인</h4>
+  <p><code>json.loads(text)</code>는 무엇을 합니까?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">JSON을 파일에 쓴다</button>
+    <button class="quiz-option" data-correct="true">JSON 문자열을 Python 객체로 파싱한다</button>
+    <button class="quiz-option" data-correct="false">Python을 JSON 문자열로 변환한다</button>
+    <button class="quiz-option" data-correct="false">디스크에서 JSON 파일을 로드한다</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="08" data-ex="solve-compare-csv">
+  <div class="exercise-header">
+    <h4>직접 풀고 비교하기: CSV 리포트 생성기</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt"><strong>1단계:</strong> 직접 문제를 풀어보세요. <strong>2단계:</strong> "힌트"를 세 번 클릭하여 AI의 버전을 확인하세요. <strong>3단계:</strong> 차이점을 평가하세요.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+# 직접 풀어보기: CSV 리포트 생성기
+# 딕셔너리 리스트를 받아서 CSV 형식의 문자열을 반환하는
+# generate_report(data)를 작성하세요. 첫 번째 행은 헤더(딕셔너리 키에서).
+# CSV 문자열을 반환하세요 (파일 쓰기 아님 — Pyodide에는 파일 시스템이 없습니다).
+# 예시: generate_report([{"name": "Alice", "score": 95}])
+# -> "name,score\nAlice,95"
+
+def generate_report(data):
+    pass
+
+# 비교 후 답해보세요:
+# 1. AI는 무엇을 다르게 했습니까?
+# 2. AI의 접근 방식이 더 나은가요, 더 못한가요, 아니면 단지 다른가요?
+# 3. AI 버전에서 문제점을 발견했습니까?
+</script>
+    <script type="text/plain" class="test-code">
+data = [{"name": "Alice", "score": 95}, {"name": "Bob", "score": 87}]
+result = generate_report(data)
+lines = result.strip().split("\n")
+assert len(lines) == 3, "Should have header + 2 data rows"
+assert "name" in lines[0] and "score" in lines[0], "First line should be headers"
+assert "Alice" in lines[1], "Should contain Alice's data"
+assert "Bob" in lines[2], "Should contain Bob's data"
+assert generate_report([]) == "", "Empty data should return empty string"
+mixed = [{"a": 1, "b": 2}, {"a": 3, "b": 4, "c": 5}]
+mixed_result = generate_report(mixed)
+assert "c" in mixed_result, "Should handle dicts with different keys"
+print("All tests passed!")
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">실행</button>
+    <button class="ex-check">확인</button>
+    <button class="ex-hint" data-level="0">힌트</button>
+    <button class="ex-reset">초기화</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">모든 딕셔너리의 고유 키를 수집하여 헤더로 사용하세요: 모든 딕셔너리가 같다면 <code>headers = list(data[0].keys())</code>로 충분합니다.</p>
+    <p class="hint">각 행 딕셔너리에서 누락된 키를 처리하려면 <code>str(row.get(h, ""))</code>를 사용하세요. 쉼표로 합치세요.</p>
+    <p class="hint"><strong>AI의 풀이:</strong><br><code>def generate_report(data):<br>&nbsp;&nbsp;&nbsp;&nbsp;if not data:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return ""<br>&nbsp;&nbsp;&nbsp;&nbsp;headers = list(data[0].keys())<br>&nbsp;&nbsp;&nbsp;&nbsp;lines = [",".join(headers)]<br>&nbsp;&nbsp;&nbsp;&nbsp;for row in data:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lines.append(",".join(str(row[h]) for h in headers))<br>&nbsp;&nbsp;&nbsp;&nbsp;return "\n".join(lines)</code><br><br><strong>평가:</strong> AI는 첫 번째 딕셔너리의 키에서만 헤더를 하드코딩했습니다. 이후 딕셔너리에 추가 키(예: <code>"c"</code>)가 있으면, 해당 열은 조용히 무시됩니다 &mdash; 그리고 첫 번째 딕셔너리의 키가 다른 행에 없으면 <code>row[h]</code>가 <code>KeyError</code>로 크래시됩니다. 여러분의 버전은 혼합된 키를 처리했습니까? TaskForge에서 선택적 필드가 있는 작업의 CSV 내보내기가 정확히 이 버그에 걸립니다. 참고: AI의 풀이는 실제로 위의 혼합 키 테스트에서 실패합니다. 이것이 핵심입니다 &mdash; 항상 테스트를 실행하세요.</p>
+  </div>
+</div>
+
+</section>
+
+<!-- ===== CH 09 ===== -->
+<section id="ch09" data-ch="09">
+<h2><span class="ch-label">Chapter 09</span> 에러 처리, 디버깅, 그리고 테스트</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">핵심 개념</div>
+<p>AI가 생성한 코드는 종종 올바르게 보이지만 미묘한 버그가 있습니다. 테스트 없이는 코드가 동작한다는 것을 증명할 방법이 없습니다. 에러 처리 없이는 잘못된 입력 하나로 프로그램이 크래시됩니다. 이 챕터는 코드를&mdash;여러분의 코드든 AI의 코드든&mdash;<em>검증</em>하는 도구를 제공합니다.</p>
+</div>
+
+<p>코드는 깨집니다. 그것이 정상입니다. 전문가와 초보자를 구분하는 것은 깨짐을 어떻게 <em>처리</em>하고 <em>예방</em>하느냐입니다. 이 챕터는 세 가지 도구를 다룹니다: <strong>try/except</strong>(에러를 우아하게 처리), <strong>디버깅</strong>(무엇이 잘못됐는지 찾기), <strong>테스트</strong>(코드가 올바르다는 것을 증명).</p>
+
+<h3>Try/Except</h3>
+<pre><code>try:
+    task_id = int(input("Task ID: "))
+except ValueError:
+    print("Please enter a number.")</code></pre>
+<p><code>try/except</code> 없이는 잘못된 입력이 프로그램을 크래시시킵니다. 이것을 사용하면 에러를 우아하게 처리할 수 있습니다. 항상 <strong>구체적인</strong> 예외를 잡으세요&mdash;절대 맨 <code>except:</code>만 쓰지 마세요.</p>
+
+<h3>디버깅(Debugging)</h3>
+<p>무언가 잘못됐을 때, <strong>스택 트레이스(stack trace)</strong>를 <em>아래에서 위로</em> 읽으세요. 마지막 줄이 에러 타입과 메시지를 알려줍니다. 그 위의 줄들이 에러가 발생한 위치를 보여줍니다.</p>
+
+<h3>Assert로 테스트하기</h3>
+<p><strong>단언문(assertion)</strong>은 반드시 참이어야 하는 문장입니다. 거짓이면 프로그램이 크래시됩니다&mdash;테스트에서는 이것이 바로 원하는 동작입니다.</p>
+<pre><code>assert 2 + 2 == 4      # passes silently
+assert 2 + 2 == 5      # AssertionError!</code></pre>
+
+<div class="diagram">
+<svg viewBox="0 0 700 100" xmlns="http://www.w3.org/2000/svg" aria-label="테스트 주도 AI 워크플로우: 테스트 작성, AI에게 의도 설명, AI가 코드 생성, 테스트 실행으로 정확성 검증">
+  <rect class="node-accent" x="10" y="25" width="140" height="50" rx="8"/>
+  <text class="label-text" x="80" y="46" text-anchor="middle">테스트 작성</text>
+  <text class="sub-text" x="80" y="62" text-anchor="middle">여러분이 정의</text>
+  <line class="arrow" x1="150" y1="50" x2="185" y2="50"/>
+  <rect class="node-fill" x="185" y="25" width="140" height="50" rx="8"/>
+  <text class="label-text" x="255" y="46" text-anchor="middle">AI에게 설명</text>
+  <text class="sub-text" x="255" y="62" text-anchor="middle">원하는 것</text>
+  <line class="arrow" x1="325" y1="50" x2="360" y2="50"/>
+  <rect class="node-fill" x="360" y="25" width="140" height="50" rx="8"/>
+  <text class="label-text" x="430" y="46" text-anchor="middle">AI가 생성</text>
+  <text class="sub-text" x="430" y="62" text-anchor="middle">코드 출력</text>
+  <line class="arrow" x1="500" y1="50" x2="535" y2="50"/>
+  <rect class="node-accent" x="535" y="25" width="155" height="50" rx="8"/>
+  <text class="label-text" x="612" y="46" text-anchor="middle">테스트 실행</text>
+  <text class="sub-text" x="612" y="62" text-anchor="middle">통과 = 증거</text>
+</svg>
+<div class="diagram-caption">AI에게 요청하기 전에 테스트를 작성하세요. 테스트가 계약(contract)을 정의합니다. AI는 그에 맞춰 구현합니다.</div>
+</div>
+
+<div role="note" class="callout critical">
+<div class="callout-title">핵심 개념</div>
+<p>AI에게 코드를 요청하기 전에 테스트를 먼저 작성하세요. 이것이 가장 효과적인 AI 코딩 워크플로우입니다. 여러분의 테스트가 "올바름"을 정의합니다. AI는 그 테스트를 통과하려는 코드를 작성합니다. 실패하면 반복하세요.</p>
+</div>
+
+<div role="note" class="callout warn">
+<div class="callout-title">주의</div>
+<p>AI에게 <code>calculate_tax(income)</code>를 작성해 달라고 합니다. 올바르게 보이는 함수를 반환합니다. 배포합니다. 한 달 후, 올바른 구간별 세율 대신 15%로 계산하고 있었다는 것을 발견합니다&mdash;모든 청구서가 틀렸습니다. 테스트는 이것을 몇 초 만에 잡아냈을 것입니다. 테스트 없이는 AI의 출력을 믿음으로 신뢰하는 것입니다. 테스트가 있으면 증거가 있습니다.</p>
+</div>
+
+<h3>pytest</h3>
+<p>테스트를 <code>test_*.py</code> 이름의 파일에 넣으세요. 실행: <code>python3 -m pytest</code>. pytest가 모든 테스트 함수를 자동으로 발견하고 실행합니다.</p>
+<pre><code># test_math.py
+def test_addition():
+    assert 2 + 2 == 4
+
+def test_string_concat():
+    assert "hello " + "world" == "hello world"</code></pre>
+
+<h3>TaskForge 연결</h3>
+<p>TaskForge v0.1에는 에러 처리가 없습니다&mdash;<code>int(input("Task ID: "))</code>는 숫자가 아닌 입력에서 크래시됩니다. Phase 2 게이트에서 이것을 수정하고 작동을 증명하는 테스트를 <em>동시에</em> 작성하게 됩니다.</p>
+
+<h3>미니 연습문제</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">직접 해보기 1: 조용한 성공</div>
+<p><code>assert 2 + 2 == 4</code>를 실행하세요. 아무 일도 일어나지 않습니다&mdash;통과하는 단언문은 조용합니다. 이제 <code>assert 2 + 2 == 5</code>를 실행하세요. <code>AssertionError</code>가 발생합니다.</p>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">직접 해보기 2: 우아한 에러 처리</div>
+<pre><code>try:
+    print(1 / 0)
+except ZeroDivisionError:
+    print("Cannot divide by zero")</code></pre>
+<p>프로그램이 크래시 대신 에러를 처리합니다.</p>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">직접 해보기</div>
+<p><code>is_valid_email(email)</code>이라는 함수를 테스트하는 3개의 assert 문을 작성하세요&mdash;유효한 이메일 1개, 유효하지 않은 이메일(@ 없음) 1개, 엣지 케이스(빈 문자열) 1개. <strong>함수는 작성하지 마세요.</strong> <strong>claude.ai</strong> 또는 <strong>chatgpt.com</strong>(무료)에 가서 이렇게 요청하세요: "이 테스트를 통과하는 Python 함수 <code>is_valid_email</code>을 작성해 주세요: [assert문 붙여넣기]." 테스트를 실행하세요.</p>
+<div class="prompt-block"><span class="label">test_email.py</span>assert is_valid_email("user@example.com") == True
+assert is_valid_email("invalid-email") == False
+assert is_valid_email("") == False</div>
+<p><strong>검증:</strong> AI의 함수가 3개의 단언문을 모두 통과하면 성공입니다.</p>
+<p><strong>참고:</strong> 이것은 코드를 위한 LLM과의 첫 번째 상호작용입니다. AI 코딩 도구에 대해 아직 정식으로 배우지 않았습니다(Phase 5에서 시작). 이것은 미리보기입니다.</p>
+<p><strong>작동하지 않는 경우:</strong> (1) <code>NameError: is_valid_email</code> &rarr; AI의 함수 정의를 assert 문 위에 붙여넣으세요. (2) 단언이 실패하면 &rarr; AI의 구현에 버그가 있습니다. 함수를 읽고 이유를 파악하세요. 이것이 바로 Phase 5에서 가르치는 기술입니다.</p>
+</div>
+
+<div class="pq">방금 AI를 사용하여 코드를 작성하고, 테스트로 검증했습니다. 이것이 Phase 5에서 사용할 정확한 워크플로우입니다&mdash;다만 거기서는 Claude Code로 실제 기능을 구현하게 됩니다.</div>
+
+<h3>인터랙티브 연습문제</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="09" data-ex="debug-tests">
+  <div class="exercise-header">
+    <h4>디버그 챌린지: "테스트 모음 고치기"</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">이 함수와 테스트에는 4개의 버그가 있습니다 — 함수에 2개, 테스트에 2개. 모든 단언문이 통과하도록 전부 수정하세요.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def find_max(numbers):
+    if len(numbers) == 0:
+        return 0
+    max_val = 0
+    for n in numbers:
+        if n > max_val:
+            max_val = n
+    return max_val
+
+# Tests (2 of these are wrong):
+assert find_max([1, 5, 3]) == 5
+assert find_max([-2, -8, -1]) == -1
+assert find_max([42]) == 42
+assert find_max([]) == 0
+</script>
+    <script type="text/plain" class="test-code">
+assert find_max([1, 5, 3]) == 5, "Basic case"
+assert find_max([-2, -8, -1]) == -1, "All negatives"
+assert find_max([42]) == 42, "Single element"
+assert find_max([]) is None, "Empty should return None"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">실행</button>
+    <button class="ex-check">확인</button>
+    <button class="ex-hint" data-level="0">힌트</button>
+    <button class="ex-reset">초기화</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint"><code>find_max([])</code>는 무엇을 반환해야 할까요 — 0인가요, None인가요? 무엇이 맞는지 생각해 보세요.</p>
+    <p class="hint">모든 숫자가 음수이면, <code>max_val = 0</code>으로 시작하면 절대 대체되지 않습니다. 대신 <code>numbers[0]</code>을 사용하세요.</p>
+    <p class="hint">빈 리스트 테스트는 0을 기대하지만, 맞는 걸까요? 그리고 함수는 <code>numbers[0]</code>을 사용하기 전에 빈 경우를 처리해야 합니다.</p>
+  </div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="09" data-ex="ai-eval">
+  <div class="exercise-header">
+    <h4>AI 생성 코드 평가하기</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">AI에게 "숫자 리스트의 평균을 계산하는 함수를 작성하라"고 요청했습니다. 아래는 AI가 생성한 것입니다. 3가지 문제가 있습니다: 빈 입력에서 크래시, 잘못된 반환 타입, 불필요한 import. 세 가지를 모두 찾아서 수정하세요.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+import math
+
+def calculate_average(numbers):
+    """AI-generated: Calculate the average of a list of numbers."""
+    total = math.fsum(numbers)
+    average = total / len(numbers)
+    return str(round(average, 2))
+
+# Test it:
+print(calculate_average([10, 20, 30]))  # Should print 20.0
+print(calculate_average([]))             # Should handle empty list
+</script>
+    <script type="text/plain" class="test-code">
+assert calculate_average([10, 20, 30]) == 20.0, "Basic average"
+assert calculate_average([]) is None, "Empty list returns None"
+assert calculate_average([7]) == 7.0, "Single element"
+assert isinstance(calculate_average([1, 2]), float), "Must return float, not string"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">실행</button>
+    <button class="ex-check">확인</button>
+    <button class="ex-hint" data-level="0">힌트</button>
+    <button class="ex-reset">초기화</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint"><code>numbers</code>가 비어 있으면 어떻게 됩니까? <code>len(numbers)</code>가 0이므로, 0으로 나누면 크래시됩니다.</p>
+    <p class="hint">함수가 <code>str(...)</code>을 반환하지만, 테스트는 <code>float</code>을 기대합니다. <code>str()</code> 래퍼를 제거하세요.</p>
+    <p class="hint"><code>math.fsum</code>은 작동하지만, <code>sum()</code>이 더 간단하고 import가 필요 없습니다. AI가 과도하게 설계한 것입니다.</p>
+  </div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="09" data-ex="retry">
+  <div class="exercise-header">
+    <h4>설계 챌린지: "재시도 데코레이터"</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt"><code>retry(fn, max_attempts=3)</code> 함수를 작성하세요. fn()을 호출합니다. 예외가 발생하면 max_attempts 횟수까지 재시도합니다. 성공하면 결과를 반환하고, 모든 시도가 실패하면 마지막 예외를 다시 발생시킵니다.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def retry(fn, max_attempts=3):
+    # Your code here
+    pass
+</script>
+    <script type="text/plain" class="test-code">
+call_count = 0
+def flaky():
+    global call_count
+    call_count += 1
+    if call_count < 3:
+        raise ValueError("not yet")
+    return "success"
+call_count = 0
+assert retry(flaky) == "success", "Should succeed on 3rd try"
+call_count = 0
+def always_fail():
+    raise RuntimeError("nope")
+try:
+    retry(always_fail, max_attempts=2)
+    assert False, "Should have raised"
+except RuntimeError:
+    pass
+def always_works():
+    return 42
+assert retry(always_works) == 42, "Should work on first try"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">실행</button>
+    <button class="ex-check">확인</button>
+    <button class="ex-hint" data-level="0">힌트</button>
+    <button class="ex-reset">초기화</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">for 루프를 사용하세요: <code>for attempt in range(max_attempts)</code></p>
+    <p class="hint">루프 안에서 fn()을 try/except로 감싸세요. 성공하면 즉시 반환하세요.</p>
+    <p class="hint">마지막 시도의 except 블록에서 <code>raise</code>로 다시 발생시키세요.</p>
+  </div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="09" data-ex="solve-compare-retry">
+  <div class="exercise-header">
+    <h4>직접 풀고 비교하기: 재시도 데코레이터</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt"><strong>1단계:</strong> 직접 문제를 풀어보세요. <strong>2단계:</strong> "힌트"를 세 번 클릭하여 AI의 버전을 확인하세요. <strong>3단계:</strong> AI 코드에서 미묘하지만 실제적인 버그를 찾아보세요.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+# 직접 풀어보기: 재시도 데코레이터
+# retry(max_attempts) 데코레이터 팩토리를 작성하세요.
+# 사용법: @retry(max_attempts=3)은 예외 발생 시 함수를 최대 3번까지 재시도합니다.
+# 모두 실패하면 마지막 예외를 다시 발생시킵니다.
+
+def retry(max_attempts=3):
+    pass  # Return a decorator
+
+# Test it:
+attempt_count = 0
+
+@retry(max_attempts=3)
+def flaky():
+    global attempt_count
+    attempt_count += 1
+    if attempt_count < 3:
+        raise RuntimeError("not yet")
+    return "success"
+
+# 비교 후 답해보세요:
+# 1. AI는 무엇을 다르게 했습니까?
+# 2. AI 버전에서 버그를 찾을 수 있습니까?
+# 3. 그 버그가 프로덕션 코드에서 왜 중요합니까?
+</script>
+    <script type="text/plain" class="test-code">
+attempt_count = 0
+@retry(max_attempts=3)
+def flaky():
+    global attempt_count
+    attempt_count += 1
+    if attempt_count < 3:
+        raise RuntimeError("not yet")
+    return "success"
+assert flaky() == "success", "Should succeed on third attempt"
+
+@retry(max_attempts=1)
+def always_fail():
+    raise ValueError("nope")
+try:
+    always_fail()
+    assert False, "Should have raised ValueError"
+except ValueError:
+    pass
+
+@retry(max_attempts=2)
+def instant():
+    return 42
+assert instant() == 42, "Should return on first try"
+print("All tests passed!")
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">실행</button>
+    <button class="ex-check">확인</button>
+    <button class="ex-hint" data-level="0">힌트</button>
+    <button class="ex-reset">초기화</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint"><code>retry(max_attempts)</code>는 데코레이터를 반환합니다. 그 데코레이터는 함수를 받아서 래퍼(wrapper)를 반환합니다. 세 단계의 중첩입니다.</p>
+    <p class="hint">래퍼는 <code>range(max_attempts)</code>를 순회하며, try/except 안에서 <code>func()</code>를 호출합니다. 성공하면 반환하고, 마지막 실패 시 다시 발생시킵니다.</p>
+    <p class="hint"><strong>AI의 풀이:</strong><br><code>def retry(max_attempts=3):<br>&nbsp;&nbsp;&nbsp;&nbsp;def decorator(func):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;def wrapper(*args, **kwargs):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for attempt in range(max_attempts):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;try:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return func(*args, **kwargs)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;except:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if attempt == max_attempts - 1:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raise<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return wrapper<br>&nbsp;&nbsp;&nbsp;&nbsp;return decorator</code><br><br><strong>평가:</strong> AI는 <code>except Exception:</code> 대신 맨 <code>except:</code>를 사용했습니다. 이렇게 하면 <code>KeyboardInterrupt</code>와 <code>SystemExit</code>까지 잡아버려, 재시도 중에 Ctrl+C로 프로그램을 중단할 수 없게 됩니다. 이런 종류의 미묘한 버그는 에러 처리를 이해하는 사람만 잡을 수 있습니다. TaskForge에서 맨 <code>except</code>를 사용한 재시도 데코레이터는 CLI 도구를 종료 불가능하게 만들 수 있습니다.</p>
+  </div>
+</div>
+
+</section>
+
+<!-- ===== PHASE 2 GATE ===== -->
+<section id="gate2">
+<h2><span class="ch-label">Phase 2 Gate</span> 체크포인트 &amp; TaskForge 확장</h2>
+
+<div class="card">
+<h4>최소 역량</h4>
+<p>매개변수, 조건문, 반복문, 반환값을 가진 함수를 작성할 수 있어야 합니다. 중첩 딕셔너리를 생성하고 조작할 수 있어야 합니다. JSON을 읽고 쓸 수 있어야 합니다. 의미 있는 테스트 단언문을 작성할 수 있어야 합니다.</p>
+</div>
+
+<div class="card">
+<h4>제출물</h4>
+<p>다음 기능으로 확장된 TaskForge:</p>
+<ul>
+<li><code>filter_tasks(status)</code> &mdash; 상태와 일치하는 작업만 반환</li>
+<li><code>save_tasks(filepath)</code> / <code>load_tasks(filepath)</code> &mdash; JSON 영속성</li>
+<li>5개의 통과하는 테스트 단언문 (추가, 완료, 필터, 저장, 로드)</li>
+</ul>
+</div>
+
+<div class="card">
+<h4>검증</h4>
+<p><code>python3 taskforge.py</code>가 실행됩니다. <code>python3 -m pytest test_taskforge.py</code>가 5개의 단언문을 통과합니다.</p>
+</div>
+
+<div role="note" class="callout critical">
+<div class="callout-title">주의</div>
+<p>리스트를 받아서 필터링된 결과를 반환하는 함수를 작성할 수 없다면 &rarr; Chapter 05–06으로 돌아가세요.</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">팁 &mdash; 먼저 이것 없이 시도해 보세요</div>
+<p>게이트 연습에서 막혔다면, 다음 단계를 따르세요. 힌트를 읽기 전에 먼저 각 단계를 직접 시도해 보세요.</p>
+<p><strong>1단계: <code>filter_tasks(tasks, status)</code></strong></p>
+<p>작업 리스트와 상태 문자열을 받아서 일치하는 작업만 반환하는 함수를 작성하세요. 리스트 컴프리헨션을 떠올리세요: <code>[task for task in tasks if ...]</code></p>
+<pre><code>def filter_tasks(tasks, status):
+    # Return a list of tasks where task["status"] == status
+    pass  # replace with one line</code></pre>
+<p><strong>2단계: <code>save_tasks(tasks, filepath)</code></strong></p>
+<p>작업 리스트를 JSON 파일에 쓰는 함수를 작성하세요. <code>import json</code>과 <code>json.dump()</code>가 필요합니다. Chapter 08의 <code>with open(filepath, "w")</code> 패턴을 기억하세요.</p>
+<pre><code>def save_tasks(tasks, filepath):
+    # Open filepath for writing, then json.dump(tasks, f, indent=2)
+    pass</code></pre>
+<p><strong>3단계: <code>load_tasks(filepath)</code></strong></p>
+<p>JSON 파일에서 작업을 읽는 함수를 작성하세요. <code>json.load()</code>를 사용하세요. 파일이 아직 존재하지 않는 경우를 처리하세요&mdash;빈 리스트를 반환합니다.</p>
+<pre><code>def load_tasks(filepath):
+    # Try to open and json.load(). If FileNotFoundError, return []
+    pass</code></pre>
+<p><strong>4단계: 메인 루프에 연결하기</strong></p>
+<p>프로그램 시작 시 <code>load_tasks</code>를 호출하여 작업 리스트를 채우세요. 변경(추가/완료) 후에는 <code>save_tasks</code>를 호출하세요. 상태별 필터링을 위한 메뉴 옵션을 추가하세요.</p>
+</div>
+
+<h3>TaskForge 체크포인트</h3>
+<p>TaskForge에 이제 필터링, 영속성(JSON), 테스트가 있습니다. 아직 git도 없고 구조도 없는 단일 디렉터리입니다. Phase 3에서 이를 해결합니다.</p>
+
+<h3>이제 할 수 있는 것</h3>
+<div class="card">
+<ul>
+<li>매개변수, 조건문, 반복문, 반환값을 가진 함수 작성</li>
+<li>중첩 데이터 구조(딕셔너리의 리스트) 생성 및 탐색</li>
+<li>JSON 파일 읽기, 쓰기, 조작</li>
+<li>에러를 우아하게 처리하고 의미 있는 테스트 단언문 작성</li>
+<li>AI를 사용하여 코드를 생성하고 테스트로 검증</li>
+</ul>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">참고</div>
+<p>이제 Python을 작성할 수 있습니다. 하지만 현재 코드는 안전망 없이 단일 폴더에 있습니다. 잘못된 편집을 하고 되돌릴 수 없다면 어떻게 됩니까? 팀이나 AI 에이전트와 코드를 공유해야 한다면요? Phase 3에서는 전문적인 개발 도구들&mdash;터미널 활용, Git 기초, GitHub을 통한 원격 협업&mdash;을 소개하여 코드를 <em>관리 가능하게</em> 만들고, 실제 프로젝트 워크플로우의 기반을 마련합니다.</p>
+</div>
+</section>
+
+<nav class="phase-nav">
+  <a href="phase-1.html" class="phase-nav-link prev"><span class="phase-nav-label">이전 Phase</span>&larr; Phase 1: 코드란 무엇인가?</a>
+  <a href="phase-3.html" class="phase-nav-link next"><span class="phase-nav-label">다음 Phase</span>Phase 3: 개발 도구 &rarr;</a>
+</nav>
+
+</div>
+</div>
+
+<footer>
+<p>Zero to Hero: 프로그래밍에서 멀티 에이전트 Claude Code까지 &middot; 2026년 3월</p>
+<p>에이전틱 엔지니어링 8단계를 기반으로 구성되었습니다.</p>
+</footer>
+
+<script src="../js/progress.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ace-builds@1.36.5/src-min-noconflict/ace.js"></script>
+<script src="../js/theme.js"></script>
+<script src="../js/sidebar.js"></script>
+<script src="../js/shared.js"></script>
+<script src="../js/ace-init.js"></script>
+<script src="../js/pyodide-runner.js"></script>
+<script src="../js/quiz.js"></script>
+<script src="../js/exercise-runner.js"></script>
+</body>
+</html>

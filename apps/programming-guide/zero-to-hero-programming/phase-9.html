@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Phase 9: AI-assisted development — evaluate AI output, use Claude Code, context engineering, compounding rules, MCP and custom skills. Chapters 38–42.">
+<title>Phase 9: AI-Assisted Development — Zero to Hero</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/design-system.css">
+<script>try{if(localStorage.getItem('zth-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+<script>try{var z=localStorage.getItem('zth-zoom');if(z&&+z>=50&&+z<=200)document.documentElement.style.zoom=+z/100}catch(e){}</script>
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+<marker id="arrowhead-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--a5)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo"><span>Zero to Hero</span>Programming &rarr; Multi-Agent AI</a>
+  <div class="toc-group">
+    <div class="toc-group-title">Foundations</div>
+    <a href="phase-1.html#ch01" class="toc-link"><span class="toc-num">01</span>What Programming Actually Is</a>
+    <a href="phase-1.html#ch02" class="toc-link"><span class="toc-num">02</span>How Computers Execute Code</a>
+    <a href="phase-1.html#ch03" class="toc-link"><span class="toc-num">03</span>Setting Up Your Environment</a>
+    <a href="phase-1.html#ch04" class="toc-link"><span class="toc-num">04</span>Reading Code Before Writing It</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Python</div>
+    <a href="phase-2.html#ch05" class="toc-link"><span class="toc-num">05</span>Functions, Logic &amp; Control Flow</a>
+    <a href="phase-2.html#ch06" class="toc-link"><span class="toc-num">06</span>Data Structures</a>
+    <a href="phase-2.html#ch07" class="toc-link"><span class="toc-num">07</span>Classes &amp; OOP Basics</a>
+    <a href="phase-2.html#ch08" class="toc-link"><span class="toc-num">08</span>Files, Modules &amp; Standard Library</a>
+    <a href="phase-2.html#ch09" class="toc-link"><span class="toc-num">09</span>Error Handling, Debugging &amp; Testing</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Development Tools</div>
+    <a href="phase-3.html#ch10" class="toc-link"><span class="toc-num">10</span>The Terminal &amp; Shell</a>
+    <a href="phase-3.html#ch11" class="toc-link"><span class="toc-num">11</span>Git Fundamentals</a>
+    <a href="phase-3.html#ch12" class="toc-link"><span class="toc-num">12</span>Git Remote &amp; GitHub</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Building &amp; Deploying</div>
+    <a href="phase-4.html#ch13" class="toc-link"><span class="toc-num">13</span>APIs &amp; HTTP</a>
+    <a href="phase-4.html#ch14" class="toc-link"><span class="toc-num">14</span>Building APIs with Flask</a>
+    <a href="phase-4.html#ch15" class="toc-link"><span class="toc-num">15</span>Database Basics</a>
+    <a href="phase-4.html#ch16" class="toc-link"><span class="toc-num">16</span>Docker &amp; Containers</a>
+    <a href="phase-4.html#ch17" class="toc-link"><span class="toc-num">17</span>CI/CD &amp; GitHub Actions</a>
+    <a href="phase-4.html#ch18" class="toc-link"><span class="toc-num">18</span>Project Architecture</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Data Structures</div>
+    <a href="phase-5.html#ch19" class="toc-link"><span class="toc-num">19</span>Complexity Analysis</a>
+    <a href="phase-5.html#ch20" class="toc-link"><span class="toc-num">20</span>Linear Structures</a>
+    <a href="phase-5.html#ch21" class="toc-link"><span class="toc-num">21</span>Hash Tables &amp; Maps</a>
+    <a href="phase-5.html#ch22" class="toc-link"><span class="toc-num">22</span>Trees</a>
+    <a href="phase-5.html#ch23" class="toc-link"><span class="toc-num">23</span>Graphs</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Algorithms</div>
+    <a href="phase-6.html#ch24" class="toc-link"><span class="toc-num">24</span>Searching &amp; Sorting</a>
+    <a href="phase-6.html#ch25" class="toc-link"><span class="toc-num">25</span>Recursion &amp; DP</a>
+    <a href="phase-6.html#ch26" class="toc-link"><span class="toc-num">26</span>Algorithm Patterns</a>
+    <a href="phase-6.html#ch27" class="toc-link"><span class="toc-num">27</span>Graph Algorithms</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Engineering Craft</div>
+    <a href="phase-7.html#ch28" class="toc-link"><span class="toc-num">28</span>Design Patterns &amp; SOLID</a>
+    <a href="phase-7.html#ch29" class="toc-link"><span class="toc-num">29</span>SQL &amp; Query Mastery</a>
+    <a href="phase-7.html#ch30" class="toc-link"><span class="toc-num">30</span>Transactions &amp; NoSQL</a>
+    <a href="phase-7.html#ch31" class="toc-link"><span class="toc-num">31</span>Networking &amp; the Internet</a>
+    <a href="phase-7.html#ch32" class="toc-link"><span class="toc-num">32</span>Concurrency &amp; Parallelism</a>
+    <a href="phase-7.html#ch33" class="toc-link"><span class="toc-num">33</span>Security Engineering</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Systems &amp; Scale</div>
+    <a href="phase-8.html#ch34" class="toc-link"><span class="toc-num">34</span>System Design</a>
+    <a href="phase-8.html#ch35" class="toc-link"><span class="toc-num">35</span>Distributed Systems</a>
+    <a href="phase-8.html#ch36" class="toc-link"><span class="toc-num">36</span>Performance &amp; Observability</a>
+    <a href="phase-8.html#ch37" class="toc-link"><span class="toc-num">37</span>Navigating Large Codebases</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AI Levels 1&ndash;5</div>
+    <a href="#ch38" class="toc-link"><span class="toc-num">38</span>Evaluating &amp; Directing AI Code</a>
+    <a href="#ch39" class="toc-link"><span class="toc-num">39</span>Levels 1 &amp; 2 &mdash; Tab Complete &amp; Agent IDE</a>
+    <a href="#ch40" class="toc-link"><span class="toc-num">40</span>Level 3 &mdash; Context Engineering</a>
+    <a href="#ch41" class="toc-link"><span class="toc-num">41</span>Level 4 &mdash; Compounding Engineering</a>
+    <a href="#ch42" class="toc-link"><span class="toc-num">42</span>Level 5 &mdash; MCP, Skills &amp; Capabilities</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AI Levels 6&ndash;8</div>
+    <a href="phase-10.html#ch43" class="toc-link"><span class="toc-num">43</span>Level 6 &mdash; Harness Engineering</a>
+    <a href="phase-10.html#ch44" class="toc-link"><span class="toc-num">44</span>Level 7 &mdash; Background Agents</a>
+    <a href="phase-10.html#ch45" class="toc-link"><span class="toc-num">45</span>Claude Code in Docker</a>
+    <a href="phase-10.html#ch46" class="toc-link"><span class="toc-num">46</span>Level 8 &mdash; Autonomous Agent Teams</a>
+    <a href="phase-10.html#ch47" class="toc-link"><span class="toc-num">47</span>The Multiplayer Effect</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Reference</div>
+    <a href="appendices.html#glossary" class="toc-link"><span class="toc-num">&oplus;</span>Glossary</a>
+    <a href="appendices.html#prompt-library" class="toc-link"><span class="toc-num">&oplus;</span>Prompt Library</a>
+    <a href="appendices.html#self-assessment" class="toc-link"><span class="toc-num">&oplus;</span>Self-Assessment</a>
+    <a href="appendices.html#common-mistakes" class="toc-link"><span class="toc-num">&oplus;</span>Common Mistakes</a>
+    <a href="appendices.html#appendix-d" class="toc-link"><span class="toc-num">&oplus;</span>Troubleshooting</a>
+    <a href="appendices.html#appendix-e" class="toc-link"><span class="toc-num">&oplus;</span>Resources</a>
+  </div>
+</aside>
+
+<div class="main">
+<section class="hero hero-sm">
+  <div class="hero-badge">Phase 9 &mdash; AI-Assisted Development</div>
+  <h1>Levels 1–5 of <em>Agentic Engineering</em></h1>
+  <p class="hero-sub">From evaluating AI output to custom skills and MCPs. The progression from "I can judge AI code" to "the AI has capabilities I've given it."</p>
+  <div class="hero-meta"><span>Chapters 38–42</span><span>Phase Gate + TaskForge</span></div>
+</section>
+<div class="content-wrap">
+
+<div role="note" class="callout info">
+<div class="callout-title">Before You Begin Phase 9</div>
+<p>This phase assumes you have completed Phases 1&ndash;8. Specifically: you can read and write Python confidently (Phase 2), use Git for version control (Phase 3), build a working web application with Flask, SQLite, and Docker (Phase 4), and have a solid grasp of data structures (Phase 5), algorithms (Phase 6), engineering craft (Phase 7), and systems design (Phase 8). Phases 5&ndash;8 provide additional depth that strengthens your ability to evaluate AI-generated code.</p>
+</div>
+
+<!-- ===== BRIDGE: What an LLM Actually Is ===== -->
+<div role="note" class="callout critical">
+<div class="callout-title">Before You Begin: What an LLM Actually Is</div>
+<p>You're about to start using AI coding tools. Before you do, understand what they are&mdash;and what they are not.</p>
+<p>A <strong>large language model</strong> (LLM) predicts the most likely next words based on patterns learned from vast amounts of text. It does not "understand" your project the way a human engineer does. It has no memory between sessions. It cannot verify its own output. It generates text that <em>looks</em> correct based on patterns&mdash;and it's often genuinely useful&mdash;but it can also produce confident, plausible nonsense.</p>
+<p>Think of it like a brilliant research assistant who has read millions of codebases but has never seen <em>yours</em>. They can write fluent code, but they might misunderstand your architecture, invent APIs that don't exist, or produce logic that passes a surface read but fails on edge cases.</p>
+<p><strong>Agents</strong> are not magical beings. They are workflows built around model calls: a prompt goes in, a response comes out, tools execute actions, and rules constrain behavior. Every "intelligent" thing an agent does traces back to context you provided, tools you configured, and constraints you set. The better your setup, the better the agent performs.</p>
+<p>This means two things: (1) your judgment is the quality gate, and (2) everything you've learned in Phases 1-4&mdash;reading code, understanding data flow, writing tests&mdash;is what makes that judgment possible.</p>
+</div>
+
+<!-- ===== CH 19 ===== -->
+<section id="ch38" data-ch="38">
+<h2><span class="ch-label">Chapter 38</span> Evaluating and Directing AI-Generated Code</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>AI tools generate code fast. But speed without judgment is dangerous. This chapter teaches you to be the quality gate&mdash;the person who decides whether AI output is correct, complete, and safe before it enters your codebase.</p>
+</div>
+
+<p><strong>This is the most important chapter in Phase 9.</strong> Without these skills, every subsequent chapter produces a reader who uses AI tools without the judgment to evaluate their output.</p>
+
+<h3>The Core Problem: Non-Determinism</h3>
+<p>Every programming concept you've learned so far is <strong>deterministic</strong>. Run <code>2 + 2</code> a million times, you get <code>4</code> every time. Call <code>sorted([3,1,2])</code> and the result is always <code>[1,2,3]</code>. Functions have inputs and outputs. Tests pass or fail. This predictability is the entire foundation of software engineering.</p>
+
+<p>Large language models (LLMs) are <strong>fundamentally non-deterministic</strong>. Ask the same question twice and you may get different answers. Ask it to write a function and the variable names, structure, edge case handling, and even the algorithm choice can vary between runs. This isn't a bug&mdash;it's how the technology works. LLMs sample from probability distributions over tokens; small floating-point differences cascade into different outputs.</p>
+
+<div role="note" class="callout critical">
+<div class="callout-title">This Changes Everything</div>
+<p>When you use a calculator, you trust the output. When you use an LLM, you <strong>verify</strong> the output. This is not a philosophical position&mdash;it's an engineering requirement. The entire discipline of AI-assisted development exists because LLM output cannot be trusted by default.</p>
+</div>
+
+<p>This creates a paradox: you want <em>reliable software</em> from an <em>unreliable generator</em>. The only way to make a non-deterministic system behave as if it were deterministic is to surround it with <strong>extremely robust guardrails</strong>:</p>
+
+<ul>
+<li><strong>Tests</strong> &mdash; the code either passes or it doesn't, regardless of how it was generated</li>
+<li><strong>Specifications</strong> &mdash; precise instructions reduce the space of possible outputs</li>
+<li><strong>Context documents</strong> (CLAUDE.md, rules files) &mdash; constrain the model's choices to match your project's patterns</li>
+<li><strong>Review pipelines</strong> &mdash; diffs, linting, type checks catch what the model missed</li>
+<li><strong>Deterministic validation</strong> &mdash; CI/CD, automated checks, acceptance criteria that don't depend on judgment</li>
+</ul>
+
+<p>Every technique in Phases 5 and 6&mdash;context engineering, compounding rules, harness engineering, Docker isolation&mdash;exists to <em>constrain non-deterministic output into deterministic boundaries</em>. The guardrails aren't optional extras. They are the entire point. Without them, you're shipping lottery tickets.</p>
+
+<div class="pq">The AI generates. You verify. The guardrails enforce. That's the contract. Every chapter from here on teaches you to build better guardrails.</div>
+
+<h3>Reading Diffs</h3>
+<p>A <strong>diff</strong> shows line-by-line changes: <code>+</code> = added, <code>-</code> = removed. When Claude Code makes changes, you review the diff before accepting. Check: does the change match what I asked? Any unrelated changes? Any wrong deletions?</p>
+
+<h3>Worked Example: Reviewing a Real Diff</h3>
+<p>Here's how an experienced developer reviews a diff. Suppose you asked Claude to "add error handling to the <code>load_tasks</code> function." The diff looks like this:</p>
+<pre><code> def load_tasks(filepath):
+-    with open(filepath) as f:
+-        data = json.load(f)
+-    return data
++    if not isinstance(filepath, str) or not filepath.strip():
++        raise ValueError("filepath must be a non-empty string")
++    try:
++        with open(filepath) as f:
++            data = json.load(f)
++    except:
++        return []
++    if not isinstance(data, list):
++        raise TypeError(f"Expected list, got {type(data).__name__}")
+-    import os
+     return data</code></pre>
+<p>Now the annotation&mdash;line by line:</p>
+<ul>
+<li><strong>Lines 1-2 (added):</strong> Good&mdash;added input validation for <code>filepath</code>. Prevents cryptic errors from <code>None</code> or empty strings reaching <code>open()</code>.</li>
+<li><strong>Line 5 (<code>except:</code>):</strong> Problem&mdash;this is a bare <code>except</code> that catches <em>all</em> exceptions, including <code>KeyboardInterrupt</code> and <code>SystemExit</code>. It should be <code>except (FileNotFoundError, json.JSONDecodeError):</code> to catch only the expected failures.</li>
+<li><strong>Line 6 (<code>return []</code>):</strong> Question&mdash;silently returning an empty list hides errors. Is that intentional, or should it log a warning? Depends on the project's error philosophy.</li>
+<li><strong>Lines 8-9 (type check on <code>data</code>):</strong> Good&mdash;validates the JSON structure before returning. Catches corrupted files early.</li>
+<li><strong>Line 10 (<code>import os</code> removed):</strong> Question&mdash;why was this import removed? If nothing else uses <code>os</code>, this is a fine cleanup. But check the rest of the file first.</li>
+</ul>
+<p><strong>Verdict:</strong> Revise. The bare <code>except</code> is a real bug&mdash;ask Claude to catch specific exceptions. The rest is solid.</p>
+
+<h3>Writing Implementation Specs</h3>
+<p>The difference between getting mediocre AI output and great AI output is the quality of your specification:</p>
+<div class="pe">
+<div class="pb"><div class="ph">Vague Request</div><div class="pp">"Make a login page"</div></div>
+<div class="pg"><div class="ph">Implementation Spec</div><div class="pp"><strong>What:</strong> Login page with email/password<br><strong>Inputs:</strong> email (string), password (string)<br><strong>Outputs:</strong> JWT token on success, error message on failure<br><strong>Constraints:</strong> Rate limit: 5 attempts/minute. No plaintext password storage.<br><strong>Edge cases:</strong> Empty fields, SQL injection attempt, expired session<br><strong>Acceptance criteria:</strong> All 5 test cases pass</div></div>
+</div>
+
+<h3>Recognizing AI Failures</h3>
+<table>
+<caption>Common AI code-generation failure types and how to catch them</caption>
+<tr><th>Failure Type</th><th>What It Looks Like</th><th>How to Catch It</th></tr>
+<tr><td>Hallucinated imports</td><td><code>from nonexistent import magic</code></td><td><code>pip install</code> fails with 404</td></tr>
+<tr><td>Stale patterns</td><td>Deprecated API usage</td><td>Check library docs for current version</td></tr>
+<tr><td>Over-engineering</td><td>200 lines for a 10-line problem</td><td>Ask: "Could this be simpler?"</td></tr>
+<tr><td>Happy path only</td><td>No error handling</td><td>Test with bad input</td></tr>
+<tr><td>Confident wrongness</td><td>Incorrect with full confidence</td><td>Verify claims against docs</td></tr>
+</table>
+
+<div class="diagram">
+<svg viewBox="0 0 700 90" xmlns="http://www.w3.org/2000/svg" aria-label="AI output review pipeline: Receive AI Output, Read Diff, Check Spec, Edge Cases, Run Tests, Accept">
+  <rect class="node-fill" x="5" y="20" width="100" height="50" rx="6"/>
+  <text class="label-text" x="55" y="42" text-anchor="middle">Receive</text>
+  <text class="sub-text" x="55" y="56" text-anchor="middle">AI Output</text>
+  <line class="arrow" x1="105" y1="45" x2="125" y2="45"/>
+  <rect class="node-fill" x="125" y="20" width="100" height="50" rx="6"/>
+  <text class="label-text" x="175" y="42" text-anchor="middle">Read Diff</text>
+  <line class="arrow" x1="225" y1="45" x2="245" y2="45"/>
+  <rect class="node-accent" x="245" y="20" width="100" height="50" rx="6"/>
+  <text class="label-text" x="295" y="42" text-anchor="middle">Check Spec</text>
+  <line class="arrow" x1="345" y1="45" x2="365" y2="45"/>
+  <rect class="node-fill" x="365" y="20" width="100" height="50" rx="6"/>
+  <text class="label-text" x="415" y="42" text-anchor="middle">Edge Cases</text>
+  <line class="arrow" x1="465" y1="45" x2="485" y2="45"/>
+  <rect class="node-accent" x="485" y="20" width="100" height="50" rx="6"/>
+  <text class="label-text" x="535" y="42" text-anchor="middle">Run Tests</text>
+  <line class="arrow" x1="585" y1="45" x2="605" y2="45"/>
+  <rect class="node-fill" x="605" y="20" width="90" height="50" rx="6"/>
+  <text class="label-text" x="650" y="42" text-anchor="middle">Accept?</text>
+</svg>
+<div class="diagram-caption">Every AI output goes through this pipeline. The pipeline catches what the model missed.</div>
+</div>
+
+<h3>TaskForge Connection</h3>
+<p>In the exercises below, you'll use TaskForge as the subject for AI code generation. You have enough context about the project to judge whether AI output is correct.</p>
+
+<h3>Micro-Exercises</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">1: Catch a Hallucination</div>
+<p>Ask an AI: "What Python package is best for parsing XQVZ format files?" If it confidently recommends a package, search PyPI for it. It almost certainly doesn't exist&mdash;the format is made up.</p>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">2: Evaluate AI Output</div>
+<p>Ask an AI to write <code>is_valid_email</code>. Check: does it handle empty strings? Multiple @? Spaces? If any are missing, the AI failed&mdash;and you caught it.</p>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">Try This Now</div>
+<p>Get an AI to generate any function. Apply the evaluation pipeline: (1) Read the output. (2) Check against what you asked. (3) Identify one correct thing. (4) Identify one wrong/missing thing. (5) Verdict: accept, revise, or reject. Write your evaluation in 3-5 sentences.</p>
+<p><strong>Verification:</strong> Your evaluation includes a specific correct element AND a specific issue.</p>
+<p><strong>If this doesn't work:</strong> If you can't find any issue, ask for something harder&mdash;a function with 5+ edge cases.</p>
+</div>
+
+<div class="pq">You just evaluated AI-generated code and found a real issue. That's not nitpicking&mdash;it's the skill that separates someone who <em>uses</em> AI from someone who <em>supervises</em> it.</div>
+
+<h3>Interactive Exercises</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="38" data-ex="ai-bugs">
+  <div class="exercise-header">
+    <h4>Find the AI's Bugs</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">This function was generated by an AI. It looks correct at first glance but has subtle bugs. Find and fix them so all tests pass.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">def remove_duplicates(items):
+    """AI-generated: Remove duplicates while preserving order."""
+    seen = []
+    result = []
+    for item in items:
+        if item not in seen:
+            seen.append(item)
+            result.append(item)
+        return result
+
+# Test it:
+print(remove_duplicates([1, 2, 2, 3, 1, 4]))  # Should print [1, 2, 3, 4]</script>
+    <script type="text/plain" class="test-code">assert remove_duplicates([1, 2, 2, 3, 1, 4]) == [1, 2, 3, 4], "Basic dedup"
+assert remove_duplicates([]) == [], "Empty list"
+assert remove_duplicates([1, 1, 1]) == [1], "All same"
+assert remove_duplicates(["a", "b", "a"]) == ["a", "b"], "Strings work too"</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">Look at the indentation of `return result` — is it inside the loop?</p>
+    <p class="hint">The function returns after processing only the first item.</p>
+    <p class="hint">Fix: unindent `return result` so it's outside the for loop.</p>
+  </div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="38" data-ex="over-engineered">
+  <div class="exercise-header">
+    <h4>Spot the Over-Engineering</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">An AI was asked: "Write a function that checks if a string is a palindrome." It produced 25 lines. Write a simpler version called <code>is_palindrome_simple(s)</code> that does the same thing correctly in 3 lines or fewer (not counting the <code>def</code> line). Then write <code>evaluate()</code> returning a dict with <code>"problem"</code> (string describing what's wrong with the AI version) and <code>"lines_saved"</code> (integer).</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+# AI-generated version (25 lines):
+import re
+from functools import lru_cache
+
+def is_palindrome_ai(s):
+    """Check if string is palindrome with full Unicode support."""
+    if not isinstance(s, str):
+        raise TypeError(f"Expected str, got {type(s).__name__}")
+    cleaned = re.sub(r'[^a-zA-Z0-9]', '', s)
+    cleaned = cleaned.lower()
+    @lru_cache(maxsize=None)
+    def _check(left, right):
+        if left >= right:
+            return True
+        if cleaned[left] != cleaned[right]:
+            return False
+        return _check(left + 1, right - 1)
+    if len(cleaned) == 0:
+        return True
+    return _check(0, len(cleaned) - 1)
+
+# Your simpler version:
+def is_palindrome_simple(s):
+    pass
+
+def evaluate():
+    return {"problem": "", "lines_saved": 0}
+</script>
+    <script type="text/plain" class="test-code">
+assert is_palindrome_simple("racecar") == True, "Basic palindrome"
+assert is_palindrome_simple("hello") == False, "Not a palindrome"
+assert is_palindrome_simple("A man a plan a canal Panama".replace(" ", "").lower()) == True, "Classic"
+assert is_palindrome_simple("") == True, "Empty string is palindrome"
+e = evaluate()
+assert "over" in e["problem"].lower() or "complex" in e["problem"].lower() or "simple" in e["problem"].lower(), "Identify the over-engineering"
+assert e["lines_saved"] >= 10, "Simple version saves significant lines"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">A palindrome reads the same forwards and backwards. Python can reverse a string with <code>s[::-1]</code>.</p>
+    <p class="hint">The entire function can be: clean the string, lowercase it, compare to its reverse.</p>
+    <p class="hint">The AI imported <code>re</code>, <code>functools</code>, used recursion with memoization, and added type checking&mdash;none of which were needed for a simple palindrome check.</p>
+  </div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="38" data-ex="happy-path">
+  <div class="exercise-header">
+    <h4>Find the Missing Edge Cases</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">An AI wrote <code>parse_config(text)</code> to parse <code>KEY=VALUE</code> config files. It works for valid input but crashes on 3 common edge cases. Write <code>test_edge_cases()</code> that calls <code>parse_config</code> with 3 different bad inputs and catches the failures. Then fix the function so all edge cases return sensible results instead of crashing.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+# AI-generated:
+def parse_config(text):
+    """Parse KEY=VALUE config into a dict."""
+    result = {}
+    for line in text.split("\n"):
+        key, value = line.split("=")
+        result[key.strip()] = value.strip()
+    return result
+
+# Works fine for valid input:
+print(parse_config("host=localhost\nport=8080"))
+
+# TODO: Write test_edge_cases() that exposes 3 crashes,
+# then fix parse_config to handle them.
+def test_edge_cases():
+    pass  # Test with: empty string, comment lines, lines without =
+</script>
+    <script type="text/plain" class="test-code">
+assert parse_config("host=localhost\nport=8080") == {"host": "localhost", "port": "8080"}, "Valid input still works"
+assert parse_config("") == {}, "Empty string returns empty dict"
+assert parse_config("# comment\nhost=localhost") == {"host": "localhost"}, "Comment lines skipped"
+assert parse_config("host=localhost\n\nport=8080") == {"host": "localhost", "port": "8080"}, "Blank lines skipped"
+assert parse_config("host=local=host") == {"host": "local=host"}, "Values can contain ="
+test_edge_cases()
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">Try <code>parse_config("")</code>&mdash;it tries to split <code>""</code> on <code>=</code> and gets <code>[""]</code>, not <code>["key", "value"]</code>.</p>
+    <p class="hint">Skip empty lines and lines starting with <code>#</code> before splitting on <code>=</code>.</p>
+    <p class="hint">Use <code>line.split("=", 1)</code> to split on only the first <code>=</code>, so values containing <code>=</code> aren't broken.</p>
+  </div>
+</div>
+
+<div class="quiz" data-ch="38" data-ex="quiz-first">
+  <h4>Knowledge Check</h4>
+  <p>What should you do FIRST when you receive AI-generated code?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">Run it immediately</button>
+    <button class="quiz-option" data-correct="true">Read it carefully before running</button>
+    <button class="quiz-option" data-correct="false">Ask the AI to explain it</button>
+    <button class="quiz-option" data-correct="false">Copy it to production</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz" data-ch="38" data-ex="quiz-hallucination">
+  <h4>Knowledge Check</h4>
+  <p>What is a 'hallucination' in the context of AI-generated code?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">A visual bug in the UI</button>
+    <button class="quiz-option" data-correct="false">When the AI generates syntactically invalid code</button>
+    <button class="quiz-option" data-correct="true">When the AI confidently states something incorrect</button>
+    <button class="quiz-option" data-correct="false">When the AI refuses to answer</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+</section>
+
+<!-- ===== CH 20 ===== -->
+<section id="ch39" data-ch="39">
+<h2><span class="ch-label">Chapter 39</span> Levels 1 &amp; 2 &mdash; Tab Complete and the Agent IDE</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>This chapter is where you start using AI coding tools hands-on. Levels 1 and 2 are your entry points&mdash;from simple autocomplete to full conversational coding. Every higher level builds on these interactions.</p>
+</div>
+
+<h3>Level 1: Tab Complete</h3>
+<p><strong>Concept:</strong> Inline code suggestions as you type. Press Tab to accept.</p>
+<div role="note" class="callout info">
+<div class="callout-title">Current Tools (March 2026)</div>
+<p>GitHub Copilot (VS Code extension), Codeium (free), Supermaven (fastest).</p>
+</div>
+
+<h3>Level 2: Agent IDE</h3>
+<p><strong>Concept:</strong> Chat connected to your codebase. Describe in natural language, AI produces multi-file edits.</p>
+<div role="note" class="callout info">
+<div class="callout-title">Current Tools (March 2026)</div>
+<p>Cursor (cursor.com), Windsurf (windsurf.com), VS Code + Copilot Chat, Claude Code (terminal: <code>npm install -g @anthropic-ai/claude-code</code>, requires Node.js v18+).</p>
+</div>
+
+<h3>Plan Mode</h3>
+<p>Describe &rarr; AI plans &rarr; you review &rarr; approve &rarr; execute &rarr; review diff &rarr; test. Boris Cherny (Claude Code creator) starts 80% of tasks in plan mode. With each model generation, one-shot success climbs. Plan mode is the right entry point.</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 80" xmlns="http://www.w3.org/2000/svg" aria-label="AI coding tool levels from L1 Tab completion through L8 Teams, with current position at L2 Agent IDE">
+  <rect class="node-accent" x="5" y="15" width="75" height="50" rx="6"/>
+  <text class="label-text" x="42" y="36" text-anchor="middle">L1</text>
+  <text class="sub-text" x="42" y="52" text-anchor="middle">Tab</text>
+  <line class="arrow" x1="80" y1="40" x2="95" y2="40"/>
+  <rect class="node-accent" x="95" y="15" width="75" height="50" rx="6"/>
+  <text class="label-text" x="132" y="36" text-anchor="middle">L2</text>
+  <text class="sub-text" x="132" y="52" text-anchor="middle">Agent IDE</text>
+  <line class="arrow" x1="170" y1="40" x2="185" y2="40"/>
+  <rect class="node-fill" x="185" y="15" width="75" height="50" rx="6"/>
+  <text class="label-text" x="222" y="36" text-anchor="middle">L3</text>
+  <text class="sub-text" x="222" y="52" text-anchor="middle">Context</text>
+  <line class="arrow" x1="260" y1="40" x2="275" y2="40"/>
+  <rect class="node-fill" x="275" y="15" width="75" height="50" rx="6"/>
+  <text class="label-text" x="312" y="36" text-anchor="middle">L4</text>
+  <text class="sub-text" x="312" y="52" text-anchor="middle">Compound</text>
+  <line class="arrow" x1="350" y1="40" x2="365" y2="40"/>
+  <rect class="node-fill" x="365" y="15" width="75" height="50" rx="6"/>
+  <text class="label-text" x="402" y="36" text-anchor="middle">L5</text>
+  <text class="sub-text" x="402" y="52" text-anchor="middle">MCP</text>
+  <line class="arrow" x1="440" y1="40" x2="455" y2="40"/>
+  <rect class="node-fill" x="455" y="15" width="75" height="50" rx="6"/>
+  <text class="label-text" x="492" y="36" text-anchor="middle">L6</text>
+  <text class="sub-text" x="492" y="52" text-anchor="middle">Harness</text>
+  <line class="arrow" x1="530" y1="40" x2="545" y2="40"/>
+  <rect class="node-fill" x="545" y="15" width="75" height="50" rx="6"/>
+  <text class="label-text" x="582" y="36" text-anchor="middle">L7</text>
+  <text class="sub-text" x="582" y="52" text-anchor="middle">Background</text>
+  <line class="arrow" x1="620" y1="40" x2="635" y2="40"/>
+  <rect class="node-fill" x="635" y="15" width="60" height="50" rx="6"/>
+  <text class="label-text" x="665" y="36" text-anchor="middle">L8</text>
+  <text class="sub-text" x="665" y="52" text-anchor="middle">Teams</text>
+  <!-- You are here -->
+  <text class="sub-text" x="115" y="10" text-anchor="middle" fill="var(--a3)" style="font-weight:700">You are here</text>
+</svg>
+<div class="diagram-caption">Each level unlocks the next. You can't skip ahead&mdash;Levels 3-5 are prerequisites for 6-8.</div>
+</div>
+
+<h3>TaskForge Connection</h3>
+<p>You'll use Claude Code on TaskForge for the first time in this chapter's exercise.</p>
+
+<h3>Micro-Exercises</h3>
+<div role="note" class="callout ok"><div class="callout-title">1: Install Claude Code</div><pre><code>npm install -g @anthropic-ai/claude-code
+claude --version</code></pre></div>
+<p>Expected output:</p>
+<pre><code>$ npm install -g @anthropic-ai/claude-code
+
+added 1 package in 8s
+</code></pre>
+<p>Verify the installation:</p>
+<pre><code>$ claude --version
+claude v1.x.x
+</code></pre>
+<p>If <code>npm</code> is not found, return to Phase 1 Chapter 3 and install Node.js. If you get a permissions error, try <code>sudo npm install -g @anthropic-ai/claude-code</code> (macOS/Linux) or run your terminal as Administrator (Windows).</p>
+<div role="note" class="callout ok"><div class="callout-title">2: First Conversation</div><p>Navigate to TaskForge and run <code>claude</code>. Ask: "Explain the architecture of this project in one paragraph." Is it accurate?</p></div>
+
+<div class="pq"><blockquote>"The most important property of a program is whether it accomplishes the intention of its user."<br>&mdash;C.A.R. Hoare, Turing Award lecture, 1980</blockquote></div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">Try This Now</div>
+<p>In your TaskForge project, ask Claude Code: "Add a <code>delete_task(task_id)</code> function that removes a task by ID. Plan first, then implement after I approve." Review the plan. Approve. Check <code>git diff</code>. Run tests.</p>
+<p><strong>Verification:</strong> The diff shows a new function. Existing tests pass. The new function handles a non-existent ID gracefully.</p>
+<p><strong>If this doesn't work:</strong> (1) <code>claude: command not found</code> &rarr; check <code>node --version</code>. (2) Auth error &rarr; follow the auth flow. (3) Unwanted changes &rarr; <code>git checkout .</code> reverts.</p>
+</div>
+
+<div class="pq">You just used an AI agent to plan and implement a feature, then verified the result with git diff and tests. That's the Level 2 workflow&mdash;and you already have the judgment to evaluate the output.</div>
+
+<h3>Interactive Exercises</h3>
+
+<div class="quiz" data-ch="39" data-ex="quiz-levels">
+  <h4>Knowledge Check</h4>
+  <p>What is the key difference between Level 1 (Tab Complete) and Level 2 (Agent IDE)?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">Level 1 uses a different model</button>
+    <button class="quiz-option" data-correct="true">Level 1 is inline suggestions; Level 2 is conversational agent interaction</button>
+    <button class="quiz-option" data-correct="false">Level 2 requires an API key</button>
+    <button class="quiz-option" data-correct="false">There is no practical difference</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz" data-ch="39" data-ex="quiz-gitdiff">
+  <h4>Knowledge Check</h4>
+  <p>Why should you review `git diff` after an agent makes changes?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">To make sure git is working</button>
+    <button class="quiz-option" data-correct="true">To verify the agent changed what you expected and nothing else</button>
+    <button class="quiz-option" data-correct="false">Git diff is required before committing</button>
+    <button class="quiz-option" data-correct="false">To count the lines changed</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="checklist" data-ch="39" data-ex="agent-check">
+  <h4>First Agent Interaction</h4>
+  <label><input type="checkbox"><span>Claude Code installed — `claude --version` works</span></label>
+  <label><input type="checkbox"><span>Opened Claude Code in TaskForge directory</span></label>
+  <label><input type="checkbox"><span>Asked Claude to explain a file and verified accuracy</span></label>
+  <label><input type="checkbox"><span>Asked Claude to implement a small feature</span></label>
+  <label><input type="checkbox"><span>Reviewed `git diff` after the agent's changes</span></label>
+  <label><input type="checkbox"><span>Ran tests to verify the feature works</span></label>
+</div>
+
+</section>
+
+<!-- ===== CH 21 ===== -->
+<section id="ch40" data-ch="40">
+<h2><span class="ch-label">Chapter 40</span> Level 3 &mdash; Context Engineering</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>The difference between getting mediocre AI output and exceptional output is almost never the model&mdash;it's the context. What files does the model see? What instructions guide it? What constraints prevent bad output? Context engineering is the highest-leverage skill in AI-assisted development.</p>
+</div>
+
+<p><strong>Context engineering</strong> is controlling what the model sees so every token does useful work. "Every token needs to fight for its place in the prompt."</p>
+
+<h3>The Context Window</h3>
+<p>Think of the context window as the model's <strong>working memory budget</strong>. Everything the model can consider at once&mdash;your prompt, the system instructions, file contents, conversation history&mdash;must fit in this budget. When it fills up, older information gets pushed out. Managing this budget is the core skill of context engineering.</p>
+
+<h3>The Four Surfaces</h3>
+<div class="pr"><div class="pn">1</div><div class="pb2"><h5>CLAUDE.md</h5><p>Persistent instructions read at every session start. Under 200 lines, specific, actionable.</p></div></div>
+<div class="pr"><div class="pn">2</div><div class="pb2"><h5>Tool Descriptions</h5><p>Model reads these to decide which tools to call. Clear descriptions = better tool use.</p></div></div>
+<div class="pr"><div class="pn">3</div><div class="pb2"><h5>Conversation Management</h5><p><code>/compact</code> at ~50% context. Subagents for exploration. <code>/clear</code> for task switches.</p></div></div>
+<div class="pr"><div class="pn">4</div><div class="pb2"><h5>Selective Context</h5><p>Include relevant files only, not the entire codebase. Less noise = better output.</p></div></div>
+
+<h3>CLAUDE.md Example for TaskForge</h3>
+<pre><code># TaskForge
+Command-line task manager with JSON persistence and Flask API.
+
+## Commands
+- `python3 -m pytest` — run tests
+- `python3 -m flask run` — start API server
+- `python3 src/taskforge/main.py` — run CLI
+
+## Architecture
+- src/taskforge/ — core logic (main.py, models.py, api.py)
+- tests/ — pytest test files
+- data/ — JSON storage (gitignored)
+
+## Code Style
+- Type hints on all function signatures
+- Docstrings on all public functions
+- No bare try/except — always catch specific exceptions
+
+## Gotchas
+- Task IDs are auto-incrementing integers, NOT UUIDs
+- JSON file is the single source of truth
+- Flask API mirrors CLI functionality exactly</code></pre>
+
+<h3>Before/After: Context Quality</h3>
+<p>The same model with different context produces dramatically different results:</p>
+
+<div class="pe">
+<div class="pb"><div class="ph">Vague Prompt</div><div class="pp">"Add search to TaskForge"</div></div>
+<div class="pg"><div class="ph">Constrained Prompt</div><div class="pp">"Add <code>search_tasks(keyword: str) -> list[dict]</code> to TaskForge that matches against task descriptions, case-insensitive. Return empty list for no matches. Add 3 tests: match found, no match, empty keyword."<br><br><strong>Why it's better:</strong> Types specified. Behavior defined. Edge cases listed. The model has less room to guess wrong.</div></div>
+</div>
+
+<div class="pe">
+<div class="pb"><div class="ph">Noisy Context</div><div class="pp">Paste the entire 2,000-line codebase into the prompt, plus unrelated README text, plus old changelogs.</div></div>
+<div class="pg"><div class="ph">Selective Context</div><div class="pp">Include only <code>models.py</code> (where the function goes) and <code>test_models.py</code> (where the tests go). Let the model discover other files on demand.<br><br><strong>Why it's better:</strong> Less noise means the model spends its context window on relevant code, not irrelevant text.</div></div>
+</div>
+
+<div class="pe">
+<div class="pb"><div class="ph">Weak CLAUDE.md</div><div class="pp">"This is a Python project. Please write good code. Follow best practices."</div></div>
+<div class="pg"><div class="ph">Actionable CLAUDE.md</div><div class="pp">"Tests use pytest. Type hints on all signatures. No bare except. Task IDs are integers, not UUIDs. JSON file is single source of truth."<br><br><strong>Why it's better:</strong> Every line is a specific constraint the model can follow. No guessing required.</div></div>
+</div>
+
+<div class="dw">
+<svg viewBox="0 0 700 80" xmlns="http://www.w3.org/2000/svg" aria-label="Context window budget layout: System/CLAUDE.md, Conversation History, Tool Schemas, Active Files, and Response Space">
+  <rect class="node-accent" x="10" y="20" width="120" height="40" rx="6"/>
+  <text class="sub-text" x="70" y="36" text-anchor="middle">System/CLAUDE.md</text>
+  <text class="sub-text" x="70" y="50" text-anchor="middle" fill="var(--accent)">Critical info</text>
+  <rect class="node-fill" x="140" y="20" width="160" height="40" rx="6"/>
+  <text class="sub-text" x="220" y="36" text-anchor="middle">Conversation History</text>
+  <rect class="node-fill" x="310" y="20" width="100" height="40" rx="6"/>
+  <text class="sub-text" x="360" y="36" text-anchor="middle">Tool Schemas</text>
+  <rect class="node-fill" x="420" y="20" width="130" height="40" rx="6"/>
+  <text class="sub-text" x="485" y="36" text-anchor="middle">Active Files</text>
+  <rect x="560" y="20" width="130" height="40" rx="6" fill="var(--border)" stroke="var(--border-accent)"/>
+  <text class="sub-text" x="625" y="36" text-anchor="middle">Response Space</text>
+  <text class="sub-text" x="625" y="50" text-anchor="middle" fill="var(--text-muted)">Leave 20-30%</text>
+</svg>
+<div class="diagram-caption">The context window has a budget. Place critical info at the START and END. Leave 20-30% for the response.</div>
+</div>
+
+<h3>Building Instruction Scaffolds</h3>
+<p>A CLAUDE.md for a small project is straightforward. But what if your goal is bigger&mdash;like telling Claude Code how to <em>set up an entire environment</em> from scratch? This is where you build an <strong>instruction scaffold</strong>: a document so precise that a non-deterministic model produces the same correct output nearly every time.</p>
+
+<p>Remember the core problem from Chapter 38: LLMs are non-deterministic. Ask Claude to "set up Docker for this project" five times and you'll get five different Dockerfiles, different compose configs, different auth approaches. Some will work. Some won't. The variation is the enemy.</p>
+
+<p>The solution is a scaffold that eliminates ambiguity at every decision point:</p>
+
+<div class="pr"><div class="pn">1</div><div class="pb2"><h5>State the goal in one sentence</h5><p>Not "set up Docker" but "One container. When you exec into it, you get Claude Code pointed at your repo. CMD is sleep infinity. That's it."</p></div></div>
+<div class="pr"><div class="pn">2</div><div class="pb2"><h5>Specify exact versions and commands</h5><p>Not "install Claude Code" but <code>curl -fsSL https://claude.ai/install.sh | bash</code>. Not "use Debian" but <code>FROM debian:bookworm-slim</code>. Every unspecified choice is a coin flip the model will get wrong half the time.</p></div></div>
+<div class="pr"><div class="pn">3</div><div class="pb2"><h5>Explicitly forbid wrong approaches</h5><p>"NEVER use npm install&mdash;it causes auth/PATH corruption." "Do NOT add CLAUDE_MODEL to the environment block&mdash;it is not a real env var." Negative constraints are as important as positive ones, because the model's training data contains every wrong approach too.</p></div></div>
+<div class="pr"><div class="pn">4</div><div class="pb2"><h5>Provide the exact file content</h5><p>Don't describe what the Dockerfile should contain&mdash;write the Dockerfile. The model should copy, not improvise. Every line it generates from scratch is a line that could vary between runs.</p></div></div>
+<div class="pr"><div class="pn">5</div><div class="pb2"><h5>Add a validation checklist</h5><p>A list of yes/no checks that verify the output is correct. "Is the base image debian:bookworm-slim?" "Is CMD sleep infinity?" "Does .env still contain all pre-existing lines?" These are your deterministic guardrails around non-deterministic output.</p></div></div>
+<div class="pr"><div class="pn">6</div><div class="pb2"><h5>Protect existing files</h5><p>"NEVER overwrite .env&mdash;append only." "Do NOT touch the project's existing Dockerfile." Destruction is irreversible. The scaffold must make it harder to break things than to do the right thing.</p></div></div>
+
+<div role="note" class="callout critical">
+<div class="callout-title">Why This Level of Precision Matters</div>
+<p>A vague instruction like "set up Docker for Claude Code" gives the model thousands of possible interpretations. A precise scaffold with exact file contents, forbidden approaches, and validation checklists narrows it to essentially one. You're not writing instructions for a human colleague who can ask clarifying questions&mdash;you're writing constraints for a system that will confidently do the wrong thing if you leave room for interpretation. The tighter the guardrails, the more deterministic the output.</p>
+</div>
+
+<p>In Chapter 24 (Harness Engineering), you'll see a complete scaffold that applies every one of these principles to set up a Docker environment for Claude Code. It's over 300 lines&mdash;and every line exists because leaving it out caused a failure in practice.</p>
+
+<h3>Micro-Exercises</h3>
+<div role="note" class="callout ok"><div class="callout-title">1: Audit Your CLAUDE.md</div><p>Run <code>/init</code> in TaskForge. Read the generated CLAUDE.md. Count lines Claude could figure out from the code. Delete those.</p></div>
+<div role="note" class="callout ok"><div class="callout-title">2: Add a Gotcha</div><p>Add one "Gotcha" about a mistake Claude made. Start a new session. See if Claude avoids it.</p></div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">See the Difference: With and Without Context</div>
+<p>This exercise makes the impact of context engineering visceral. You'll run the exact same prompt twice and compare the results.</p>
+<ol>
+<li><strong>Without context:</strong> Rename or delete your CLAUDE.md (or create an empty one). Start a fresh Claude Code session in TaskForge. Run this prompt: <code>Add input validation to the add_task function in TaskForge</code>. Save the output somewhere.</li>
+<li><strong>With context:</strong> Restore your CLAUDE.md (the one from the example above, or your own). Start a new session with <code>/clear</code>. Run the exact same prompt: <code>Add input validation to the add_task function in TaskForge</code>.</li>
+<li><strong>Compare:</strong> Look at both outputs side by side. Check: Did the second version follow your code style? Did it use the right test framework? Did it respect project-specific constraints (e.g., integer IDs, not UUIDs)?</li>
+</ol>
+<p><strong>Verification:</strong> The "with CLAUDE.md" output matches your project conventions in at least 3 specific ways the "without" version did not.</p>
+<p><strong>If this doesn't work:</strong> If both outputs look the same, your CLAUDE.md may be too generic. Add more project-specific constraints and retry.</p>
+</div>
+
+<div class="pq"><blockquote>"A change in perspective is worth 80 IQ points."<br>&mdash;Alan Kay</blockquote></div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">Try This Now</div>
+<p>Write a CLAUDE.md for TaskForge (under 50 lines). Start a Claude Code session. Ask: "Add a <code>search_tasks(keyword)</code> function." Did Claude follow your code style rules?</p>
+<p><strong>Verification:</strong> Generated code has type hints and docstrings (per your rules).</p>
+<p><strong>If this doesn't work:</strong> (1) Claude ignores rules &rarr; your CLAUDE.md is too long or vague. Shorten. (2) Wrong location &rarr; CLAUDE.md must be in the project root.</p>
+</div>
+
+<div class="pq">You just shaped AI output by controlling context&mdash;not by writing better code, but by writing better instructions. That's context engineering, and it's the highest-leverage skill in AI-assisted development.</div>
+
+<h3>Interactive Exercises</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="40" data-ex="claudemd">
+  <div class="exercise-header">
+    <h4>CLAUDE.md Linter</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Write a function `lint_claude_md(text)` that checks a CLAUDE.md file for quality. Return a list of issue strings. Flag: files over 50 lines, lines containing 'be careful' or 'write good code' (vague), and missing a test command (no line containing 'pytest' or 'test').</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">def lint_claude_md(text):
+    issues = []
+    # Your code here
+    return issues</script>
+    <script type="text/plain" class="test-code">good = "# Project\nPython CLI tool.\n## Testing\nRun pytest\n## Rules\n- Use type hints"
+assert lint_claude_md(good) == [], "Good CLAUDE.md has no issues"
+long_text = "\n".join(["line"] * 51)
+assert any("50 lines" in i or "too long" in i.lower() for i in lint_claude_md(long_text)), "Should flag >50 lines"
+vague = "# Rules\nBe careful with edge cases\nRun pytest"
+assert any("vague" in i.lower() or "careful" in i.lower() for i in lint_claude_md(vague)), "Should flag vague instructions"
+no_test = "# Project\nA tool\n## Rules\n- Use type hints"
+assert any("test" in i.lower() for i in lint_claude_md(no_test)), "Should flag missing test command"</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">Count lines with `text.split('\n')` — flag if len > 50.</p>
+    <p class="hint">Check for vague phrases with `if 'be careful' in text.lower()`.</p>
+    <p class="hint">Check for test command: `if 'pytest' not in text.lower() and 'test' not in text.lower()`.</p>
+  </div>
+</div>
+
+<div class="quiz" data-ch="40" data-ex="quiz-claudemd">
+  <h4>Knowledge Check</h4>
+  <p>Which CLAUDE.md instruction is better?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">Write good, clean code</button>
+    <button class="quiz-option" data-correct="true">Use 4-space indentation, type hints on all public functions, pytest for tests</button>
+    <button class="quiz-option" data-correct="false">Be careful with edge cases</button>
+    <button class="quiz-option" data-correct="false">Follow best practices</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="checklist" data-ch="40" data-ex="context-check">
+  <h4>Context Setup</h4>
+  <label><input type="checkbox"><span>Created CLAUDE.md in TaskForge root</span></label>
+  <label><input type="checkbox"><span>CLAUDE.md is under 50 lines</span></label>
+  <label><input type="checkbox"><span>Includes specific testing command</span></label>
+  <label><input type="checkbox"><span>Includes at least 3 verifiable code style rules</span></label>
+  <label><input type="checkbox"><span>Tested: started new session and verified Claude follows the rules</span></label>
+</div>
+
+</section>
+
+<!-- ===== CH 22 ===== -->
+<section id="ch41" data-ch="41">
+<h2><span class="ch-label">Chapter 41</span> Level 4 &mdash; Compounding Engineering</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>Without compounding, you solve the same problems in every session. Claude makes the same mistakes, you correct the same issues, and progress doesn't stick. Compounding engineering turns every fix into a permanent improvement&mdash;the difference between running in place and building momentum.</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">What This Chapter Covers</div>
+<p>This chapter covers two key topics: <strong>compounding engineering</strong> (making AI more effective over time by codifying lessons into persistent rules and context) and the <strong>spec-driven development workflow</strong> (the professional approach to AI-assisted software development, where you brainstorm, write a spec, create a prompt plan, then execute step by step).</p>
+</div>
+
+<p>Compounding engineering improves every session after the current one. The loop: <strong>Plan &rarr; Delegate &rarr; Assess &rarr; Codify</strong>. The Codify step is what makes it compound.</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" aria-label="Compounding engineering cycle: Plan, Delegate, Assess, Codify, repeating as a loop">
+  <rect class="node-fill" x="260" y="10" width="120" height="44" rx="8"/>
+  <text class="label-text" x="320" y="37" text-anchor="middle">Plan</text>
+  <rect class="node-fill" x="450" y="70" width="120" height="44" rx="8"/>
+  <text class="label-text" x="510" y="97" text-anchor="middle">Delegate</text>
+  <rect class="node-fill" x="260" y="140" width="120" height="44" rx="8"/>
+  <text class="label-text" x="320" y="167" text-anchor="middle">Assess</text>
+  <rect class="node-accent" x="70" y="70" width="120" height="44" rx="8"/>
+  <text class="label-text" x="130" y="97" text-anchor="middle">Codify</text>
+  <!-- Arrows -->
+  <line class="arrow" x1="380" y1="32" x2="450" y2="75"/>
+  <line class="arrow" x1="510" y1="114" x2="380" y2="155"/>
+  <line class="arrow" x1="260" y1="162" x2="190" y2="110"/>
+  <line class="arrow" x1="130" y1="70" x2="260" y2="32"/>
+</svg>
+<div class="diagram-caption">The codify step is what separates compounding engineers from everyone else. Without it, you solve the same problems repeatedly.</div>
+</div>
+
+<h3>Where to Codify</h3>
+<table>
+<caption>Where to codify recurring agent mistakes</caption>
+<tr><th>What Happened</th><th>Where to Codify</th></tr>
+<tr><td>Re-introduces removed dependency</td><td>CLAUDE.md: "Do NOT use [X]."</td></tr>
+<tr><td>Ignores naming convention</td><td><code>.claude/rules/naming.md</code></td></tr>
+<tr><td>Wrong test style</td><td>CLAUDE.md: "Tests use pytest, not unittest."</td></tr>
+<tr><td>Complex module needs special handling</td><td>Subdirectory CLAUDE.md</td></tr>
+<tr><td>Recurring workflow</td><td><code>.claude/skills/[name]/SKILL.md</code></td></tr>
+</table>
+
+<div role="note" class="callout warn">
+<div class="callout-title">Anti-Pattern: Over-Codification</div>
+<p>LLMs follow ~150-200 instructions reliably. Beyond that, compliance degrades. Keep CLAUDE.md as a concise table of contents. Detailed docs go elsewhere.</p>
+</div>
+
+<h3>TaskForge Connection</h3>
+<p>You'll create a <code>docs/architecture.md</code> for TaskForge and link to it from CLAUDE.md. This is compounding: future Claude sessions will find the architecture doc and produce better code.</p>
+
+<h3>Micro-Exercises</h3>
+<div role="note" class="callout ok"><div class="callout-title">1: Write a Rule</div><p>Think of the last time Claude did something you didn't want. Write a one-line CLAUDE.md rule to prevent it.</p></div>
+<div role="note" class="callout ok"><div class="callout-title">2: Create Architecture Docs</div><p>Create <code>docs/architecture.md</code> for TaskForge: system overview, data flow, key decisions. Point to it from CLAUDE.md.</p></div>
+
+<div class="pq"><blockquote>"Civilization advances by extending the number of important operations which we can perform without thinking about them."<br>&mdash;Alfred North Whitehead, <em>An Introduction to Mathematics</em></blockquote></div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">Try This Now</div>
+<p>Ask Claude to implement a feature on TaskForge. Note one thing it does wrong. Write the correction as a CLAUDE.md rule or <code>.claude/rules/*.md</code> file. Start a NEW session and ask for a similar feature. Does Claude avoid the mistake?</p>
+<p><strong>Verification:</strong> The second session's output doesn't repeat the first session's mistake.</p>
+<p><strong>If this doesn't work:</strong> (1) Same mistake &rarr; rule is too vague. Be specific. (2) Rule not loaded &rarr; verify CLAUDE.md is in project root.</p>
+</div>
+
+<div class="pq">You just made a permanent improvement to every future AI session. One rule, written once, prevents the same mistake forever. That's compounding&mdash;the difference between running in place and building momentum.</div>
+
+<h3>Interactive Exercises</h3>
+
+<div class="quiz" data-ch="41" data-ex="quiz-compound">
+  <h4>Knowledge Check</h4>
+  <p>What makes engineering 'compound' across sessions?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">Using the same AI model each time</button>
+    <button class="quiz-option" data-correct="true">Persistent rules and documentation that improve future outputs automatically</button>
+    <button class="quiz-option" data-correct="false">Running more agents in parallel</button>
+    <button class="quiz-option" data-correct="false">Writing longer prompts</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="checklist" data-ch="41" data-ex="compound-check">
+  <h4>Compounding Loop</h4>
+  <label><input type="checkbox"><span>Identified a mistake Claude made in TaskForge</span></label>
+  <label><input type="checkbox"><span>Wrote a specific CLAUDE.md rule to prevent it</span></label>
+  <label><input type="checkbox"><span>Started a new session and asked for similar work</span></label>
+  <label><input type="checkbox"><span>Verified Claude avoided the mistake</span></label>
+</div>
+
+<h3>The Spec-Driven Workflow</h3>
+<p>The single most effective workflow for AI-assisted development. Instead of jumping straight to code, you go: <strong>brainstorm &rarr; spec &rarr; plan &rarr; execute</strong>.</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 80" xmlns="http://www.w3.org/2000/svg" aria-label="Spec-driven development workflow showing four steps: brainstorm, spec, plan, execute">
+<rect class="node-accent" x="10" y="20" width="90" height="40" rx="6"/>
+<text class="label-text" x="55" y="45" text-anchor="middle">Idea</text>
+<line x1="100" y1="40" x2="130" y2="40" class="arrow"/>
+<rect class="node-fill" x="133" y="20" width="100" height="40" rx="6"/>
+<text class="label-text" x="183" y="45" text-anchor="middle">Brainstorm</text>
+<line x1="233" y1="40" x2="263" y2="40" class="arrow"/>
+<rect class="node-fill" x="266" y="20" width="90" height="40" rx="6"/>
+<text class="label-text" x="311" y="45" text-anchor="middle">spec.md</text>
+<line x1="356" y1="40" x2="386" y2="40" class="arrow"/>
+<rect class="node-fill" x="389" y="20" width="100" height="40" rx="6"/>
+<text class="label-text" x="439" y="38" text-anchor="middle">prompt_</text>
+<text class="label-text" x="439" y="52" text-anchor="middle">plan.md</text>
+<line x1="489" y1="40" x2="519" y2="40" class="arrow"/>
+<rect class="node-accent" x="522" y="20" width="90" height="40" rx="6"/>
+<text class="label-text" x="567" y="38" text-anchor="middle">Execute</text>
+<text class="sub-text" x="567" y="52" text-anchor="middle">step by step</text>
+</svg>
+<div class="diagram-caption">The spec-driven workflow: never start with code. Start with understanding, write it down, break it into steps, then execute.</div>
+</div>
+
+<h4>Step 1: Brainstorm</h4>
+<p>Start with a conversation, not code. Ask the AI to ask <em>you</em> questions:</p>
+<pre><code>I want to build [feature]. Before we write any code, ask me clarifying questions
+one at a time to understand: what problem this solves, who uses it, what the core
+features are, what it should NOT do, and what edge cases matter.</code></pre>
+<p>The AI asks clarifying questions. You answer. Output: a shared understanding of the problem.</p>
+
+<h4>Step 2: Write a Spec (spec.md)</h4>
+<p>Turn the brainstorm into a written specification:</p>
+<ul>
+<li>What the system does (requirements)</li>
+<li>What it does NOT do (explicit scope boundaries)</li>
+<li>Data model (what gets stored)</li>
+<li>API or interface design (inputs, outputs, errors)</li>
+<li>Edge cases and error handling</li>
+<li>Acceptance criteria (how you know it's done)</li>
+</ul>
+
+<h4>Step 3: Generate a Plan (prompt_plan.md)</h4>
+<p>Break the spec into ordered implementation steps. Each step is a prompt you'll give the AI, small enough to review in under 5 minutes.</p>
+
+<h4>Step 4: Execute Step by Step</h4>
+<p>Give each prompt from the plan one at a time. Review the output. Run tests. Fix issues before moving on. <strong>Never skip review. Never batch multiple steps.</strong></p>
+
+<p><strong>Why this works:</strong> The spec is your source of truth, not the AI's memory. The plan creates checkpoints. If something goes wrong, you know exactly where. And it compounds — your spec quality improves with every project.</p>
+
+<div role="note" class="callout info">
+<div class="callout-title">Further Reading: The Spec-Driven Approach</div>
+<p>This workflow is adapted from practitioners who build production software with AI daily:</p>
+<ul>
+<li><a href="https://harper.blog/2025/02/16/my-llm-codegen-workflow-atm/">Harper Reed: My LLM Codegen Workflow</a> &mdash; The original spec-driven workflow.</li>
+<li><a href="https://harper.blog/2025/05/08/basic-claude-code/">Harper Reed: Basic Claude Code</a> &mdash; Practical patterns for working with Claude Code.</li>
+</ul>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="41" data-ex="spec-analysis">
+  <div class="exercise-header">
+    <h4>Exercise: Analyze a Bad Spec</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Given a badly-written spec, identify the problems. Return a dict with the missing sections.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def analyze_spec(spec_text):
+    """Analyze a spec and return what's missing.
+
+    Return a dict with:
+    - "has_requirements": bool
+    - "has_non_requirements": bool
+    - "has_data_model": bool
+    - "has_edge_cases": bool
+    - "has_acceptance_criteria": bool
+    - "problems": list of strings describing issues
+    """
+    # Check which sections exist in the spec text
+    result = {
+        "has_requirements": False,
+        "has_non_requirements": False,
+        "has_data_model": False,
+        "has_edge_cases": False,
+        "has_acceptance_criteria": False,
+        "problems": []
+    }
+    # Your analysis here
+    pass
+    return result
+
+# Bad spec to analyze:
+bad_spec = """
+TaskForge Priority Feature
+- Add priorities to tasks
+- Should work well
+- Make it nice
+"""
+</script>
+    <script type="text/plain" class="test-code">
+result = analyze_spec(bad_spec)
+assert result["has_requirements"] == False or len(result["problems"]) >= 2, "Should find at least 2 problems"
+assert result["has_non_requirements"] == False, "Bad spec has no non-requirements"
+assert result["has_data_model"] == False, "Bad spec has no data model"
+assert result["has_edge_cases"] == False, "Bad spec has no edge cases"
+assert result["has_acceptance_criteria"] == False, "Bad spec has no acceptance criteria"
+assert len(result["problems"]) >= 2, "Should identify multiple problems"
+print("All tests passed!")
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">Check if keywords like "requirements", "data model", "edge case", "acceptance" appear in the text (case-insensitive).</p>
+    <p class="hint">Look for vague phrases like "should work well" or "make it nice" — these are problems because they're not testable.</p>
+    <p class="hint">Check for each section keyword. Add problems like "No explicit requirements list", "No data model defined", "Contains vague requirement: 'should work well'".</p>
+  </div>
+</div>
+
+</section>
+
+<!-- ===== CH 23 ===== -->
+<section id="ch42" data-ch="42">
+<h2><span class="ch-label">Chapter 42</span> Level 5 &mdash; MCP, Skills, and Capabilities</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>Levels 1-4 use the tools as they come out of the box. Level 5 is where you start extending them. MCPs connect Claude Code to databases, browsers, and external services. Skills give it reusable workflows. Subagents give it specialized roles. You're moving from user to architect.</p>
+</div>
+
+<h3>MCP (Model Context Protocol)</h3>
+<p><strong>Concept:</strong> Standardized connectors letting Claude Code interact with external tools and services.</p>
+<div role="note" class="callout info">
+<div class="callout-title">Current Setup (March 2026)</div>
+<pre><code>// .mcp.json (project root)
+{
+  "mcpServers": {
+    "postgres": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres"],
+      "env": { "DATABASE_URL": "postgresql://..." }
+    }
+  }
+}</code></pre>
+</div>
+
+<h3>Custom Skills</h3>
+<p><strong>Concept:</strong> Reusable instruction sets loaded on demand. A skill defines a workflow, tool restrictions, and model choice.</p>
+<pre><code># .claude/skills/pr-review/SKILL.md
+---
+name: pr-review
+description: Reviews PRs for bugs, security, performance, style.
+tools: Read, Glob, Grep, Bash
+model: opus
+---
+You are a senior code reviewer. Check:
+## Security — hardcoded secrets, injection, XSS
+## Performance — N+1 queries, missing indexes
+## Output — BLOCKING, SUGGESTION, or APPROVED</code></pre>
+
+<h3>Custom Subagents</h3>
+<p><strong>Concept:</strong> Specialized roles with restricted tools. Each subagent only has access to the tools it needs.</p>
+<pre><code># .claude/agents/test-writer.md
+---
+name: test-writer
+description: Writes tests. Can read source and write test files only.
+tools: Read, Glob, Write
+model: sonnet
+---
+Write comprehensive tests. Cover: happy path, edge cases, error cases.</code></pre>
+
+<div class="diagram">
+<svg viewBox="0 0 700 180" xmlns="http://www.w3.org/2000/svg" aria-label="PR Review Skill spawning four specialized subagents: Security, Performance, Style, and Integration">
+  <rect class="node-accent" x="260" y="10" width="180" height="44" rx="8"/>
+  <text class="label-text" x="350" y="37" text-anchor="middle">PR Review Skill</text>
+  <rect class="node-fill" x="40" y="100" width="130" height="44" rx="8"/>
+  <text class="label-text" x="105" y="127" text-anchor="middle">Security</text>
+  <rect class="node-fill" x="200" y="100" width="130" height="44" rx="8"/>
+  <text class="label-text" x="265" y="127" text-anchor="middle">Performance</text>
+  <rect class="node-fill" x="370" y="100" width="130" height="44" rx="8"/>
+  <text class="label-text" x="435" y="127" text-anchor="middle">Style</text>
+  <rect class="node-fill" x="530" y="100" width="130" height="44" rx="8"/>
+  <text class="label-text" x="595" y="127" text-anchor="middle">Integration</text>
+  <line class="arrow" x1="300" y1="54" x2="105" y2="100"/>
+  <line class="arrow" x1="330" y1="54" x2="265" y2="100"/>
+  <line class="arrow" x1="370" y1="54" x2="435" y2="100"/>
+  <line class="arrow" x1="400" y1="54" x2="595" y2="100"/>
+</svg>
+<div class="diagram-caption">A single skill can spawn specialized subagents, each checking a different dimension. Results converge into a unified review.</div>
+</div>
+
+<h3>Hooks</h3>
+<p>Automated scripts at lifecycle points:</p>
+<pre><code>// .claude/settings.json
+{ "hooks": { "preCommit": [{ "command": "npm run lint && npm test" }] } }</code></pre>
+
+<h3>TaskForge Connection</h3>
+<p>You'll create a skill for TaskForge that adds a new feature with tests, and a subagent that reviews the result.</p>
+
+<h3>Micro-Exercises</h3>
+<div role="note" class="callout ok"><div class="callout-title">1: Create a Skill</div><p>Create <code>.claude/skills/explain/SKILL.md</code> with a prompt to explain any file. Test with <code>/explain</code>.</p></div>
+<div role="note" class="callout ok"><div class="callout-title">2: Create a Subagent</div><p>Create <code>.claude/agents/security-check.md</code> with tools restricted to Read and Grep.</p></div>
+
+<div class="pq"><blockquote>"The best way to predict the future is to invent it."<br>&mdash;Alan Kay</blockquote></div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">Try This Now</div>
+<p>Create a skill for TaskForge that adds a new feature with tests. Create a subagent that reviews the result. Run both.</p>
+<p><strong>Verification:</strong> Skill loads without error. Subagent loads. Both produce output.</p>
+<p><strong>If this doesn't work:</strong> (1) Skill not recognized &rarr; file must be <code>.claude/skills/[name]/SKILL.md</code>. (2) Subagent not loading &rarr; restart session. (3) Frontmatter error &rarr; check YAML indentation.</p>
+</div>
+
+<div class="pq">You just extended an AI agent with custom capabilities. The agent can now do things it couldn't do out of the box&mdash;because you gave it skills. You've moved from user to architect.</div>
+
+<h3>Interactive Exercises</h3>
+
+<div class="quiz" data-ch="42" data-ex="quiz-mcp">
+  <h4>Knowledge Check</h4>
+  <p>What is an MCP server?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">A cloud hosting platform</button>
+    <button class="quiz-option" data-correct="true">An external tool server that extends the agent's capabilities</button>
+    <button class="quiz-option" data-correct="false">A database management system</button>
+    <button class="quiz-option" data-correct="false">A CI/CD pipeline runner</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz" data-ch="42" data-ex="quiz-skill">
+  <h4>Knowledge Check</h4>
+  <p>What is the difference between a skill and a subagent?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">Skills are faster than subagents</button>
+    <button class="quiz-option" data-correct="true">Skills define reusable prompt templates; subagents are autonomous agents with restricted tool access</button>
+    <button class="quiz-option" data-correct="false">There is no difference</button>
+    <button class="quiz-option" data-correct="false">Subagents can only read files</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="checklist" data-ch="42" data-ex="tooling-check">
+  <h4>Custom Tooling</h4>
+  <label><input type="checkbox"><span>Created a custom skill in `.claude/skills/`</span></label>
+  <label><input type="checkbox"><span>Skill loads and runs without errors</span></label>
+  <label><input type="checkbox"><span>Created a subagent in `.claude/agents/`</span></label>
+  <label><input type="checkbox"><span>Subagent completes a task successfully</span></label>
+</div>
+
+</section>
+
+<!-- ===== PHASE 5 GATE ===== -->
+<section id="gate9">
+<h2><span class="ch-label">Phase 9 Gate</span> Checkpoint &amp; TaskForge AI Integration</h2>
+<div class="card">
+<h4>Minimum Competency</h4>
+<p>Write a CLAUDE.md under 100 lines. Create a skill. Create a subagent. Use Claude Code to implement a feature with test verification. Articulate why a model output is wrong.</p>
+</div>
+<div class="card">
+<h4>Your Artifact</h4>
+<p>TaskForge with: CLAUDE.md, one custom skill in <code>.claude/skills/</code>, one subagent in <code>.claude/agents/</code>, git log showing an AI-implemented feature with tests.</p>
+</div>
+<div class="card">
+<h4>Verification</h4>
+<p>Skill and subagent load. CLAUDE.md has no vague instructions. Git log shows test-verified AI feature.</p>
+</div>
+<div role="note" class="callout critical">
+<div class="callout-title">Failure Signal</div>
+<p>If your CLAUDE.md is 300 lines of vague instructions, or you can't explain why Claude's output was wrong &rarr; return to Chapters 38-40.</p>
+</div>
+<h3>TaskForge Checkpoint</h3>
+<p>TaskForge now has AI-readable configuration, custom tooling, and at least one AI-implemented feature. Ready for multi-agent work.</p>
+
+<h3>What You Can Now Do</h3>
+<div class="card">
+<ul>
+<li>Evaluate AI-generated code: read diffs, catch hallucinations, identify edge case failures</li>
+<li>Use Claude Code for feature development with Plan Mode</li>
+<li>Write effective CLAUDE.md files and manage context deliberately</li>
+<li>Codify lessons so each session improves the next</li>
+<li>Create custom skills, subagents, and MCP connections</li>
+</ul>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">Bridge to Phase 10</div>
+<p>So far, you've worked with one AI agent at a time. But some tasks are too large or too varied for a single session. What if you could dispatch multiple agents&mdash;one writing code, one reviewing it, one updating docs&mdash;working in parallel? Phase 10 introduces multi-agent patterns. The catch: more agents means more coordination overhead. Without the harness skills from this phase, more agents just means more mess. That's why Levels 1-5 come first.</p>
+</div>
+</section>
+
+<nav class="phase-nav">
+  <a href="phase-8.html" class="phase-nav-link prev"><span class="phase-nav-label">Previous Phase</span>&larr; Phase 8: Systems &amp; Scale</a>
+  <a href="phase-10.html" class="phase-nav-link next"><span class="phase-nav-label">Next Phase</span>Phase 10: AI Orchestration &rarr;</a>
+</nav>
+
+</div>
+</div>
+
+<footer>
+<p>Zero to Hero: Programming to Multi-Agent Claude Code &middot; March 2026</p>
+</footer>
+
+<script src="js/progress.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ace-builds@1.36.5/src-min-noconflict/ace.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/shared.js"></script>
+<script src="js/ace-init.js"></script>
+<script src="js/pyodide-runner.js"></script>
+<script src="js/quiz.js"></script>
+<script src="js/exercise-runner.js"></script>
+</body>
+</html>

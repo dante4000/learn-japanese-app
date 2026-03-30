@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Phase 1: Understand what code is, how computers execute it, set up your environment, and learn to read code before writing it. Chapters 01–04.">
+<title>Phase 1: What Is Code? — Zero to Hero</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/design-system.css">
+<script>try{if(localStorage.getItem('zth-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+<script>try{var z=localStorage.getItem('zth-zoom');if(z&&+z>=50&&+z<=200)document.documentElement.style.zoom=+z/100}catch(e){}</script>
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+<marker id="arrowhead-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--a5)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo"><span>Zero to Hero</span>Programming &rarr; Multi-Agent AI</a>
+  <div class="toc-group">
+    <div class="toc-group-title">Foundations</div>
+    <a href="#ch01" class="toc-link"><span class="toc-num">01</span>What Programming Actually Is</a>
+    <a href="#ch02" class="toc-link"><span class="toc-num">02</span>How Computers Execute Code</a>
+    <a href="#ch03" class="toc-link"><span class="toc-num">03</span>Setting Up Your Environment</a>
+    <a href="#ch04" class="toc-link"><span class="toc-num">04</span>Reading Code Before Writing It</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Python</div>
+    <a href="phase-2.html#ch05" class="toc-link"><span class="toc-num">05</span>Functions, Logic &amp; Control Flow</a>
+    <a href="phase-2.html#ch06" class="toc-link"><span class="toc-num">06</span>Data Structures</a>
+    <a href="phase-2.html#ch07" class="toc-link"><span class="toc-num">07</span>Classes &amp; OOP Basics</a>
+    <a href="phase-2.html#ch08" class="toc-link"><span class="toc-num">08</span>Files, Modules &amp; Standard Library</a>
+    <a href="phase-2.html#ch09" class="toc-link"><span class="toc-num">09</span>Error Handling, Debugging &amp; Testing</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Development Tools</div>
+    <a href="phase-3.html#ch10" class="toc-link"><span class="toc-num">10</span>The Terminal &amp; Shell</a>
+    <a href="phase-3.html#ch11" class="toc-link"><span class="toc-num">11</span>Git Fundamentals</a>
+    <a href="phase-3.html#ch12" class="toc-link"><span class="toc-num">12</span>Git Remote &amp; GitHub</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Building &amp; Deploying</div>
+    <a href="phase-4.html#ch13" class="toc-link"><span class="toc-num">13</span>APIs &amp; HTTP</a>
+    <a href="phase-4.html#ch14" class="toc-link"><span class="toc-num">14</span>Building APIs with Flask</a>
+    <a href="phase-4.html#ch15" class="toc-link"><span class="toc-num">15</span>Database Basics</a>
+    <a href="phase-4.html#ch16" class="toc-link"><span class="toc-num">16</span>Docker &amp; Containers</a>
+    <a href="phase-4.html#ch17" class="toc-link"><span class="toc-num">17</span>CI/CD &amp; GitHub Actions</a>
+    <a href="phase-4.html#ch18" class="toc-link"><span class="toc-num">18</span>Project Architecture</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Data Structures</div>
+    <a href="phase-5.html#ch19" class="toc-link"><span class="toc-num">19</span>Complexity Analysis</a>
+    <a href="phase-5.html#ch20" class="toc-link"><span class="toc-num">20</span>Linear Structures</a>
+    <a href="phase-5.html#ch21" class="toc-link"><span class="toc-num">21</span>Hash Tables &amp; Maps</a>
+    <a href="phase-5.html#ch22" class="toc-link"><span class="toc-num">22</span>Trees</a>
+    <a href="phase-5.html#ch23" class="toc-link"><span class="toc-num">23</span>Graphs</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Algorithms</div>
+    <a href="phase-6.html#ch24" class="toc-link"><span class="toc-num">24</span>Searching &amp; Sorting</a>
+    <a href="phase-6.html#ch25" class="toc-link"><span class="toc-num">25</span>Recursion &amp; DP</a>
+    <a href="phase-6.html#ch26" class="toc-link"><span class="toc-num">26</span>Algorithm Patterns</a>
+    <a href="phase-6.html#ch27" class="toc-link"><span class="toc-num">27</span>Graph Algorithms</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Engineering Craft</div>
+    <a href="phase-7.html#ch28" class="toc-link"><span class="toc-num">28</span>Design Patterns &amp; SOLID</a>
+    <a href="phase-7.html#ch29" class="toc-link"><span class="toc-num">29</span>SQL &amp; Query Mastery</a>
+    <a href="phase-7.html#ch30" class="toc-link"><span class="toc-num">30</span>Transactions &amp; NoSQL</a>
+    <a href="phase-7.html#ch31" class="toc-link"><span class="toc-num">31</span>Networking &amp; the Internet</a>
+    <a href="phase-7.html#ch32" class="toc-link"><span class="toc-num">32</span>Concurrency &amp; Parallelism</a>
+    <a href="phase-7.html#ch33" class="toc-link"><span class="toc-num">33</span>Security Engineering</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Systems &amp; Scale</div>
+    <a href="phase-8.html#ch34" class="toc-link"><span class="toc-num">34</span>System Design</a>
+    <a href="phase-8.html#ch35" class="toc-link"><span class="toc-num">35</span>Distributed Systems</a>
+    <a href="phase-8.html#ch36" class="toc-link"><span class="toc-num">36</span>Performance &amp; Observability</a>
+    <a href="phase-8.html#ch37" class="toc-link"><span class="toc-num">37</span>Navigating Large Codebases</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AI Levels 1&ndash;5</div>
+    <a href="phase-9.html#ch38" class="toc-link"><span class="toc-num">38</span>Evaluating &amp; Directing AI Code</a>
+    <a href="phase-9.html#ch39" class="toc-link"><span class="toc-num">39</span>Levels 1 &amp; 2 &mdash; Tab Complete &amp; Agent IDE</a>
+    <a href="phase-9.html#ch40" class="toc-link"><span class="toc-num">40</span>Level 3 &mdash; Context Engineering</a>
+    <a href="phase-9.html#ch41" class="toc-link"><span class="toc-num">41</span>Level 4 &mdash; Compounding Engineering</a>
+    <a href="phase-9.html#ch42" class="toc-link"><span class="toc-num">42</span>Level 5 &mdash; MCP, Skills &amp; Capabilities</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AI Levels 6&ndash;8</div>
+    <a href="phase-10.html#ch43" class="toc-link"><span class="toc-num">43</span>Level 6 &mdash; Harness Engineering</a>
+    <a href="phase-10.html#ch44" class="toc-link"><span class="toc-num">44</span>Level 7 &mdash; Background Agents</a>
+    <a href="phase-10.html#ch45" class="toc-link"><span class="toc-num">45</span>Claude Code in Docker</a>
+    <a href="phase-10.html#ch46" class="toc-link"><span class="toc-num">46</span>Level 8 &mdash; Autonomous Agent Teams</a>
+    <a href="phase-10.html#ch47" class="toc-link"><span class="toc-num">47</span>The Multiplayer Effect</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Reference</div>
+    <a href="appendices.html#glossary" class="toc-link"><span class="toc-num">&oplus;</span>Glossary</a>
+    <a href="appendices.html#prompt-library" class="toc-link"><span class="toc-num">&oplus;</span>Prompt Library</a>
+    <a href="appendices.html#self-assessment" class="toc-link"><span class="toc-num">&oplus;</span>Self-Assessment</a>
+    <a href="appendices.html#common-mistakes" class="toc-link"><span class="toc-num">&oplus;</span>Common Mistakes</a>
+    <a href="appendices.html#appendix-d" class="toc-link"><span class="toc-num">&oplus;</span>Troubleshooting</a>
+    <a href="appendices.html#appendix-e" class="toc-link"><span class="toc-num">&oplus;</span>Resources</a>
+  </div>
+</aside>
+
+<div class="main">
+<section class="hero hero-sm">
+  <div class="hero-badge">Phase 1 &mdash; Foundations</div>
+  <h1>What Is <em>Code?</em></h1>
+  <p class="hero-sub">By the end of Phase 1, you can read a 30-line Python function and explain what it does. See the Phase 1 Gate for the exact test.</p>
+  <div class="hero-meta"><span>Chapters 01–04</span><span>Phase Gate + TaskForge</span></div>
+</section>
+
+<div class="content-wrap">
+
+<!-- ===== CH 01 ===== -->
+<section id="ch01" data-ch="01">
+<h2><span class="ch-label">Chapter 01</span> What Programming Actually Is</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>Before you can judge whether AI-generated code is good or bad, you need to know what code <em>is</em>. This chapter gives you the mental model that makes everything else in the curriculum click.</p>
+</div>
+
+<p>Programming is writing instructions for a machine that has <strong>zero common sense</strong>. Imagine telling someone to make a peanut butter sandwich. A human grabs the jar, opens it, picks up a knife. A computer? It stares at the sealed jar because you didn't say "open the jar." Every instruction must be explicit, literal, and in order.</p>
+
+<p>A <strong>program</strong> is a text file containing these instructions. Not a mysterious binary blob&mdash;a plain text file you can open in any editor. An <strong>interpreter</strong> (for languages like Python) or a <strong>compiler</strong> (for languages like Rust) translates your human-readable text into instructions the machine's processor can execute.</p>
+
+<h3>Why Code Exists</h3>
+<p>Computers understand one thing: voltage patterns. High voltage = 1. Low voltage = 0. That's it. Programming languages exist so humans don't have to think in ones and zeros. Between the Python you write and the voltages flipping in the CPU, there are several translation layers&mdash;and you never need to touch the lower ones.</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg" aria-label="Translation layers from human thought to CPU: Python code, bytecode, machine code, and voltage switches">
+  <rect class="node-accent" x="230" y="10" width="240" height="42" rx="8"/>
+  <text class="label-text" x="350" y="36" text-anchor="middle">Human Thought</text>
+  <line class="arrow" x1="350" y1="52" x2="350" y2="72"/>
+  <rect class="node-accent" x="230" y="72" width="240" height="42" rx="8"/>
+  <text class="label-text" x="350" y="92" text-anchor="middle">Python Code</text>
+  <text class="sub-text" x="350" y="106" text-anchor="middle">speed = 85</text>
+  <line class="arrow" x1="350" y1="114" x2="350" y2="134"/>
+  <rect class="node-fill" x="230" y="134" width="240" height="42" rx="8"/>
+  <text class="label-text" x="350" y="154" text-anchor="middle">Bytecode</text>
+  <text class="sub-text" x="350" y="168" text-anchor="middle">LOAD_CONST 85 / STORE_NAME</text>
+  <line class="arrow" x1="350" y1="176" x2="350" y2="196"/>
+  <rect class="node-fill" x="230" y="196" width="240" height="42" rx="8"/>
+  <text class="label-text" x="350" y="216" text-anchor="middle">Machine Code</text>
+  <text class="sub-text" x="350" y="230" text-anchor="middle">MOV EAX, 0x55</text>
+  <line class="arrow" x1="350" y1="238" x2="350" y2="252"/>
+  <rect class="node-fill" x="230" y="252" width="240" height="24" rx="6"/>
+  <text class="label-text" x="350" y="268" text-anchor="middle">CPU Voltage Switches</text>
+</svg>
+<div class="diagram-caption">You write Python. Four translation layers later, the CPU flips switches. You never touch the lower layers.</div>
+</div>
+
+<h3>The Language Landscape</h3>
+<p>Different programming languages exist for different jobs, the same way you'd use a screwdriver for screws and a hammer for nails. Here are the major categories:</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 160" xmlns="http://www.w3.org/2000/svg" aria-label="Programming language categories: Web, Systems, Data/AI, Mobile, and Databases, with Python highlighted as your starting point">
+  <rect class="node-fill" x="10" y="10" width="120" height="70" rx="8"/>
+  <text class="label-text" x="70" y="32" text-anchor="middle">Web</text>
+  <text class="sub-text" x="70" y="48" text-anchor="middle">JavaScript</text>
+  <text class="sub-text" x="70" y="62" text-anchor="middle">HTML / CSS</text>
+  <rect class="node-fill" x="150" y="10" width="120" height="70" rx="8"/>
+  <text class="label-text" x="210" y="32" text-anchor="middle">Systems</text>
+  <text class="sub-text" x="210" y="48" text-anchor="middle">Rust · C · Go</text>
+  <rect class="node-accent" x="290" y="10" width="120" height="70" rx="8"/>
+  <text class="label-text" x="350" y="32" text-anchor="middle">Data / AI</text>
+  <text class="sub-text" x="350" y="48" text-anchor="middle">Python</text>
+  <text class="sub-text" x="350" y="62" text-anchor="middle">R</text>
+  <rect class="node-fill" x="430" y="10" width="120" height="70" rx="8"/>
+  <text class="label-text" x="490" y="32" text-anchor="middle">Mobile</text>
+  <text class="sub-text" x="490" y="48" text-anchor="middle">Swift · Kotlin</text>
+  <rect class="node-fill" x="570" y="10" width="120" height="70" rx="8"/>
+  <text class="label-text" x="630" y="32" text-anchor="middle">Databases</text>
+  <text class="sub-text" x="630" y="48" text-anchor="middle">SQL</text>
+  <text class="sub-text" x="350" y="110" text-anchor="middle" fill="var(--accent)" style="font-size:10px;font-weight:600">&#x2191; Your starting point</text>
+</svg>
+<div class="diagram-caption">Different languages for different jobs. Python is your starting point&mdash;it covers AI, scripting, and web backends.</div>
+</div>
+
+<h3>What Software Actually Looks Like</h3>
+<p>The diagram above shows language categories. But what are the <em>things</em> people build with them? Almost all software falls into a few major categories&mdash;and most real products combine several.</p>
+
+<h4>Web Systems (Frontend + Backend)</h4>
+<p>A <strong>web application</strong> is anything you use in a browser: Gmail, YouTube, GitHub, online banking. It has two halves:</p>
+<ul>
+<li><strong>Frontend</strong> &mdash; what you see. HTML structures the page, CSS styles it, JavaScript makes it interactive. When you click a button and a menu appears without the page reloading, that's JavaScript running in your browser.</li>
+<li><strong>Backend</strong> &mdash; what you don't see. A server (often written in Python, Node.js, Go, or Rust) processes requests, enforces business rules, and talks to a database. When you log in, the backend checks your password. When you post a comment, the backend saves it.</li>
+</ul>
+<p>The frontend and backend communicate over <strong>HTTP</strong>&mdash;the same protocol you'll learn in Chapter 13. Every URL you visit triggers an HTTP request to a backend somewhere.</p>
+<p><strong>Real example:</strong> Twitter/X. The frontend renders your timeline in the browser. The backend handles authentication, stores tweets in a database, runs the recommendation algorithm, and serves the timeline data as JSON over HTTP. Millions of users, thousands of backend servers, one seamless experience.</p>
+
+<h4>Mobile Applications</h4>
+<p>Apps on your phone. Two approaches:</p>
+<ul>
+<li><strong>Native apps</strong> &mdash; built specifically for one platform. Swift for iOS, Kotlin for Android. Best performance, full access to device hardware (camera, GPS, sensors). Instagram, the iOS Calculator, and Apple Health are native.</li>
+<li><strong>Cross-platform apps</strong> &mdash; one codebase, both platforms. React Native (JavaScript) or Flutter (Dart) generate iOS and Android versions from the same code. Faster to develop, slightly less polished. Many startups use this.</li>
+</ul>
+<p>Most mobile apps still need a backend&mdash;they're just a different frontend talking to the same kind of server over HTTP.</p>
+
+<h4>Databases</h4>
+<p>A <strong>database</strong> is organized, persistent storage. Without one, your data disappears when the program stops. There are two main families:</p>
+<ul>
+<li><strong>Relational (SQL)</strong> &mdash; data in tables with rows and columns, like a spreadsheet with strict rules. PostgreSQL, MySQL, SQLite. Best when data has clear relationships (users have orders, orders have items). You'll use SQLite in Chapter 15.</li>
+<li><strong>Non-relational (NoSQL)</strong> &mdash; flexible structures: documents (MongoDB), key-value pairs (Redis), or graphs (Neo4j). Best for unstructured data, caching, or relationships that don't fit neatly into tables.</li>
+</ul>
+<p><strong>Real example:</strong> An e-commerce site like Shopify uses a relational database for products, orders, and customers (structured, relational data). It might use Redis (NoSQL) for caching product pages so they load instantly, and a search engine like Elasticsearch for product search.</p>
+
+<h4>How They Fit Together</h4>
+<p>A modern application typically combines all three. Consider a ride-sharing app like Uber:</p>
+<ul>
+<li><strong>Mobile app</strong> (frontend) &mdash; shows the map, lets you request a ride, displays the driver's location in real time</li>
+<li><strong>Backend servers</strong> &mdash; match riders to drivers, calculate pricing, process payments, handle surge pricing logic</li>
+<li><strong>Databases</strong> &mdash; store user profiles, trip history, payment methods, driver ratings</li>
+<li><strong>Web dashboard</strong> &mdash; lets drivers manage their account, lets admins monitor the system</li>
+</ul>
+<p>This curriculum focuses on Python backends and SQLite databases because that's the foundation. Once you understand how a backend processes requests and stores data, everything else&mdash;frontends, mobile apps, cloud infrastructure&mdash;is a variation on the same patterns.</p>
+
+<h3>Common Misconceptions</h3>
+<div role="note" class="callout warn">
+<div class="callout-title">Myth: "You Need to Be Good at Math"</div>
+<p>Programming is closer to writing recipes than solving equations. Most code is about <em>organizing information</em> and <em>describing processes</em>, not calculus. The math-heavy work (machine learning, physics simulations) is a specialization, not a prerequisite.</p>
+</div>
+
+<div role="note" class="callout warn">
+<div class="callout-title">Myth: "Code Is Mysterious"</div>
+<p>A program is a text file. You can open <code>taskforge.py</code> (the project you'll build in this course) in Notepad and read every line. There's nothing hidden. Later, when AI generates code for you, remembering this keeps you grounded&mdash;it's just text you can read and judge.</p>
+</div>
+
+<h3>Micro-Exercise 1</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">Try It: Your First Instruction</div>
+<p>Open any browser. Press <strong>F12</strong> (or right-click &rarr; Inspect). Click the <strong>Console</strong> tab. Type the following and press Enter:</p>
+<div class="prompt-block"><span class="label">Browser Console</span>"hello" + " " + "world"</div>
+<p>The browser <strong>concatenated</strong> (joined) two text strings. You just gave the machine an instruction and it followed it literally. It didn't "understand" what hello and world mean&mdash;it glued two pieces of text together because you told it to.</p>
+</div>
+
+<h3>Micro-Exercise 2</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">Try It: Literal Interpretation</div>
+<p>In the same console, type <code>2 + 2</code> and press Enter. Now type <code>"2" + "2"</code> (with quotes). Why are the results different?</p>
+<p><strong>Answer:</strong> <code>2 + 2</code> adds numbers (result: <code>4</code>). <code>"2" + "2"</code> concatenates strings (result: <code>"22"</code>). The quotes change the <strong>data type</strong>&mdash;the machine takes you literally.</p>
+</div>
+
+<h3>Where TaskForge Fits</h3>
+<p>Throughout this course, you'll build <strong>TaskForge</strong>&mdash;a command-line task manager. It starts as a 40-line Python file and grows into a multi-agent project by Phase 5. Right now, just know: TaskForge is a text file containing instructions. By the end of this chapter, you already know what that means.</p>
+
+<div role="note" class="callout ok">
+<div class="callout-title">Try This Now</div>
+<p>Open any browser. Press F12. Click Console. Type the following two lines, pressing Enter after each:</p>
+<div class="prompt-block"><span class="label">Browser Console</span>2 + 2
+console.log('I wrote code')</div>
+<p><strong>Verification:</strong> If the console shows <code>4</code> and then <code>I wrote code</code>, you succeeded. You just executed a program that produces output.</p>
+<p><strong>If this doesn't work:</strong> If F12 doesn't open developer tools, try right-click &rarr; Inspect &rarr; Console tab. On Safari, enable the Developer menu first (Settings &rarr; Advanced &rarr; Show features for web developers).</p>
+</div>
+
+<div class="pq">You just executed code. Not in a tutorial sandbox&mdash;in the same environment professional developers use. That's how it starts.</div>
+
+<h3>Interactive Exercises</h3>
+
+<p>The exercises below run Python directly in your browser using a technology called <strong>Pyodide</strong> (Python compiled to run inside a web page). No extra install needed. Let's test it right now:</p>
+
+<div class="exercise" data-type="pyodide" data-ch="01" data-ex="hello">
+  <div class="exercise-header">
+    <h4>Hello Python in Your Browser</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Type <code>print(2 + 2)</code> on the first line and <code>print('Hello, world!')</code> on the second. Click <strong>Run</strong> to see the output, then <strong>Check</strong> to verify.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code"># Type your first Python here</script>
+    <script type="text/plain" class="test-code">assert '4' in __stdout, "Should print 4"
+assert 'Hello' in __stdout, "Should print Hello"</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+</div>
+
+<div role="note" class="callout warn">
+<div class="callout-title">Did the exercise above not load?</div>
+<p>If you clicked <strong>Run</strong> and nothing happened, or you see "Failed to load Python runtime," your browser is blocking Pyodide from loading. This happens in some browsers when you open an HTML file directly (when your address bar shows <code>file:///</code>). The fix is to serve these files through a <strong>local web server</strong>&mdash;a tiny program that runs on your computer and hands files to your browser the same way a real website would. It sounds complicated, but it's one terminal command. Follow the steps below, and every exercise in the entire guide will work.</p>
+
+<p>If the exercise <em>did</em> work, skip this section entirely and continue to the next exercise.</p>
+
+<details>
+<summary><strong>How to start a local server (click to expand)</strong></summary>
+
+<h4>Step 1: Open your terminal</h4>
+<ul>
+<li><strong>Mac:</strong> Press <strong>Cmd + Space</strong>, type <strong>Terminal</strong>, press Enter.</li>
+<li><strong>Windows:</strong> Press <strong>Win + R</strong>, type <strong>cmd</strong>, press Enter. (Or search for "Command Prompt" in the Start menu.)</li>
+<li><strong>Linux:</strong> Press <strong>Ctrl + Alt + T</strong>.</li>
+</ul>
+
+<h4>Step 2: Navigate to the folder containing these files</h4>
+<p>You need to tell the terminal where the HTML files are. Use the <code>cd</code> (change directory) command followed by the path to the <code>src</code> folder. For example:</p>
+<div class="prompt-block"><span class="label">Mac / Linux</span>cd ~/Desktop/zero-to-hero-programming/src</div>
+<div class="prompt-block"><span class="label">Windows</span>cd C:\Users\YourName\Desktop\zero-to-hero-programming\src</div>
+<p>Replace the path with wherever you actually saved these files. If you're not sure, find the <code>src</code> folder in your file explorer, then:</p>
+<ul>
+<li><strong>Mac:</strong> Right-click the <code>src</code> folder, hold <strong>Option</strong>, click "Copy &lsquo;src&rsquo; as Pathname." Then type <code>cd </code> in the terminal and paste.</li>
+<li><strong>Windows:</strong> Click the address bar in File Explorer, copy the path. Then type <code>cd </code> in the terminal and paste.</li>
+</ul>
+
+<h4>Step 3: Start the server</h4>
+<p>Type this command and press Enter:</p>
+<div class="prompt-block"><span class="label">Terminal</span>python3 -m http.server 8000</div>
+
+<p>Let's break down what each piece means, because nothing here should feel like magic:</p>
+<ul>
+<li><code>python3</code> &mdash; This runs the Python program you installed in Chapter 01. It's the same Python you'll write code in later.</li>
+<li><code>-m</code> &mdash; This flag tells Python: "run a built-in module (a mini-program that comes pre-installed with Python) by name." You don't need to download anything extra. Think of <code>-m</code> as "run <strong>m</strong>odule."</li>
+<li><code>http.server</code> &mdash; This is the name of the built-in module. It turns your computer into a tiny web server. A <strong>server</strong> is just a program that waits for requests and sends back files&mdash;the same thing that happens when you visit any website. The difference is that this server runs on <em>your</em> computer and only <em>you</em> can access it.</li>
+<li><code>8000</code> &mdash; This is the <strong>port number</strong>. Think of your computer as a building with thousands of numbered doors. Port 8000 is the door you're telling the server to listen on. The number 8000 is a common convention for local development&mdash;it could be almost any number, but 8000 is what most tutorials use, so we'll stick with it.</li>
+</ul>
+
+<p><strong>What you should see:</strong> After pressing Enter, the terminal will print something like:</p>
+<div class="prompt-block"><span class="label">Output</span>Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...</div>
+<p>This means the server is running and waiting. Your terminal will look like it's "stuck"&mdash;that's normal. It's not stuck; it's <em>listening</em> for requests. You won't be able to type more commands in that terminal window while the server is running. (That's expected. You'll stop it later with Ctrl + C.)</p>
+
+<p><strong>If <code>python3</code> doesn't work:</strong></p>
+<ul>
+<li><strong>Windows:</strong> Try <code>python -m http.server 8000</code> instead (Windows often installs Python as <code>python</code> without the <code>3</code>).</li>
+<li><strong>"command not found" error:</strong> Python isn't installed yet, or it's not in your system's PATH. Go back to the Python installation step at the start of this chapter and try again. On Mac, you can also try <code>python3 --version</code> to check if Python is installed.</li>
+<li><strong>"Address already in use" error:</strong> Another program is using port 8000. Try a different port number: <code>python3 -m http.server 8080</code>. If you use a different port, replace <code>8000</code> with your port number in Step 4.</li>
+</ul>
+
+<h4>Step 4: Open in your browser</h4>
+<p>Leave the terminal running (the server needs to stay on). Open a web browser&mdash;Chrome, Firefox, Safari, or Edge all work&mdash;and type this into the <strong>address bar</strong> (the bar at the very top where URLs go, not the search bar):</p>
+<div class="prompt-block"><span class="label">Browser Address Bar</span>http://localhost:8000</div>
+<p>Let's break this down too:</p>
+<ul>
+<li><code>http://</code> &mdash; This tells the browser to use the HTTP protocol (the same one every website uses).</li>
+<li><code>localhost</code> &mdash; This is a special name that means "this computer." Instead of going out to the internet, the browser talks to the server you just started on your own machine.</li>
+<li><code>:8000</code> &mdash; This is the port number from Step 3. It tells the browser which "door" to knock on.</li>
+</ul>
+<p><strong>What you should see:</strong> A plain-looking page listing all the files in the <code>src</code> folder (like <code>phase-1.html</code>, <code>phase-2.html</code>, etc.). Click <code>phase-1.html</code> to return to this page&mdash;now the interactive exercises will work.</p>
+
+<h4>How to tell it's working</h4>
+<p>Look at your browser's address bar. It should say <code>http://localhost:8000/phase-1.html</code>. If it still says <code>file:///...</code>, that means you opened the file directly instead of through the server&mdash;go back to Step 4 and type the <code>localhost</code> address.</p>
+
+<h4>When you're done</h4>
+<p>Go back to the terminal window where the server is running and press <strong>Ctrl + C</strong> (hold the Control key and press C). This sends a "stop" signal to the server. You'll see the terminal return to normal, ready for new commands. The exercises will stop working in the browser once the server is off&mdash;that's expected.</p>
+<p>Next time you want to use the exercises, repeat Steps 2&ndash;4. It takes about 10 seconds once you've done it a few times.</p>
+
+</details>
+</div>
+
+<div class="quiz" data-ch="01" data-ex="quiz-lang">
+  <h4>Knowledge Check</h4>
+  <p>Which of these is NOT a programming language?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">Python</button>
+    <button class="quiz-option" data-correct="true">HTML</button>
+    <button class="quiz-option" data-correct="false">JavaScript</button>
+    <button class="quiz-option" data-correct="false">C++</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+</section>
+
+<!-- ===== CH 02 ===== -->
+<section id="ch02" data-ch="02">
+<h2><span class="ch-label">Chapter 02</span> How Computers Execute Code</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>When Claude Code generates a function, you need to trace it in your head: what goes in, what changes, what comes out. This chapter teaches you how the machine thinks&mdash;literally, step by step.</p>
+</div>
+
+<p>Now that you know a program is a text file with instructions, let's see how the machine actually <em>runs</em> those instructions. The key idea: <strong>sequential execution</strong>&mdash;the computer reads your code top to bottom, one line at a time, in the exact order you wrote it.</p>
+
+<h3>Variables: Labeled Boxes</h3>
+<p>A <strong>variable</strong> is a labeled box that holds a value. Think of a row of mailboxes in an apartment building: each has a name on it, and you can swap out what's inside without changing the label. In Python, you create one with the <code>=</code> sign:</p>
+<pre><code># This is Python — the language we'll use throughout this guide
+speed = 85
+name = "TaskForge"
+running = True</code></pre>
+<p>The label (<code>speed</code>) stays. The value inside can be replaced. <code>speed = 90</code> puts a new value in the same box&mdash;the old <code>85</code> is gone.</p>
+
+<div class="dw">
+<svg viewBox="0 0 700 180" xmlns="http://www.w3.org/2000/svg" aria-label="Variables as labeled boxes: x holds 10, y holds hello, z holds True, and reassigning x = x + 5 changes its value to 15">
+  <!-- Variable boxes -->
+  <rect class="node-fill" x="50" y="20" width="140" height="60" rx="8"/>
+  <text class="sub-text" x="120" y="40" text-anchor="middle">x</text>
+  <text class="label-text" x="120" y="62" text-anchor="middle">10</text>
+  <rect class="node-fill" x="280" y="20" width="140" height="60" rx="8"/>
+  <text class="sub-text" x="350" y="40" text-anchor="middle">y</text>
+  <text class="label-text" x="350" y="62" text-anchor="middle">"hello"</text>
+  <rect class="node-fill" x="510" y="20" width="140" height="60" rx="8"/>
+  <text class="sub-text" x="580" y="40" text-anchor="middle">z</text>
+  <text class="label-text" x="580" y="62" text-anchor="middle">True</text>
+  <!-- Reassignment -->
+  <text class="sub-text" x="120" y="110" text-anchor="middle">x = x + 5</text>
+  <line class="arrow" x1="120" y1="116" x2="120" y2="130"/>
+  <rect class="node-accent" x="50" y="130" width="140" height="40" rx="8"/>
+  <text class="label-text" x="120" y="156" text-anchor="middle">15</text>
+</svg>
+<div class="diagram-caption">Variables are boxes with labels. Assignment puts a new value in the box. The old value is gone.</div>
+</div>
+
+<h3>Data Types: Box Shapes</h3>
+<p>The <strong>type</strong> of a value determines what operations are valid:</p>
+<table>
+<caption>Common Python data types</caption>
+<tr><th>Type</th><th>Example</th><th>What It Is</th></tr>
+<tr><td><strong>Integer</strong></td><td><code>42</code></td><td>Whole number</td></tr>
+<tr><td><strong>Float</strong></td><td><code>3.14</code></td><td>Decimal number</td></tr>
+<tr><td><strong>String</strong></td><td><code>"hello"</code></td><td>Text (always in quotes)</td></tr>
+<tr><td><strong>Boolean</strong></td><td><code>True</code> / <code>False</code></td><td>Yes or no</td></tr>
+</table>
+
+<h3>Operators and Expressions</h3>
+<p>Now that you have values in boxes, you need to <strong>combine</strong> them. An <strong>expression</strong> is any piece of code that produces a value. <code>2 + 3</code> is an expression that produces <code>5</code>.</p>
+
+<h4>Arithmetic Operators</h4>
+<table>
+<caption>Arithmetic operators in Python</caption>
+<tr><th>Operator</th><th>Meaning</th><th>Example</th><th>Result</th></tr>
+<tr><td><code>+</code></td><td>Add (or concatenate strings)</td><td><code>3 + 4</code></td><td><code>7</code></td></tr>
+<tr><td><code>-</code></td><td>Subtract</td><td><code>10 - 3</code></td><td><code>7</code></td></tr>
+<tr><td><code>*</code></td><td>Multiply</td><td><code>5 * 6</code></td><td><code>30</code></td></tr>
+<tr><td><code>/</code></td><td>Divide (always returns a float)</td><td><code>10 / 3</code></td><td><code>3.333...</code></td></tr>
+<tr><td><code>//</code></td><td>Integer division (rounds down)</td><td><code>10 // 3</code></td><td><code>3</code></td></tr>
+<tr><td><code>%</code></td><td>Remainder (modulo)</td><td><code>10 % 3</code></td><td><code>1</code></td></tr>
+<tr><td><code>**</code></td><td>Exponent (power)</td><td><code>2 ** 3</code></td><td><code>8</code></td></tr>
+</table>
+<pre><code>price = 29.99
+quantity = 3
+total = price * quantity  # 89.97
+print(total)</code></pre>
+<p>Note: <code>+</code> works differently depending on the type. <code>3 + 4</code> adds numbers. <code>"hello" + " world"</code> joins strings. Mixing types (<code>"3" + 4</code>) causes a <code>TypeError</code>&mdash;the machine takes you literally.</p>
+
+<h3>Micro-Exercise 3</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">Predict the Output</div>
+<p>Before running this, predict the value of <code>result</code>:</p>
+<pre><code>a = 17
+b = 5
+result = a // b
+remainder = a % b
+print(result, remainder)</code></pre>
+<p><strong>Answer:</strong> <code>3 2</code> &mdash; 17 divided by 5 is 3 with remainder 2. Integer division (<code>//</code>) drops the decimal, and modulo (<code>%</code>) gives the leftover.</p>
+</div>
+
+<h3>Errors as Feedback</h3>
+<p>When your code goes wrong, the computer tells you&mdash;if you know how to listen. There are three types of errors:</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 120" xmlns="http://www.w3.org/2000/svg" aria-label="Three types of programming errors: syntax errors caught before running, runtime errors that crash during execution, and logic errors that run but give wrong answers">
+  <rect x="10" y="15" width="200" height="90" rx="8" fill="var(--bg-card)" stroke="var(--a5)" stroke-width="2"/>
+  <text class="label-text" x="110" y="40" text-anchor="middle">Syntax Error</text>
+  <text class="sub-text" x="110" y="58" text-anchor="middle">Caught before running.</text>
+  <text class="sub-text" x="110" y="72" text-anchor="middle">Typo or bad grammar.</text>
+  <text class="sub-text" x="110" y="90" text-anchor="middle">print("hi"</text>
+  <rect x="250" y="15" width="200" height="90" rx="8" fill="var(--bg-card)" stroke="var(--a4)" stroke-width="2"/>
+  <text class="label-text" x="350" y="40" text-anchor="middle">Runtime Error</text>
+  <text class="sub-text" x="350" y="58" text-anchor="middle">Crashes during execution.</text>
+  <text class="sub-text" x="350" y="72" text-anchor="middle">Impossible operation.</text>
+  <text class="sub-text" x="350" y="90" text-anchor="middle">10 / 0</text>
+  <rect x="490" y="15" width="200" height="90" rx="8" fill="var(--bg-card)" stroke="var(--accent)" stroke-width="2"/>
+  <text class="label-text" x="590" y="40" text-anchor="middle">Logic Error</text>
+  <text class="sub-text" x="590" y="58" text-anchor="middle">Runs fine. Wrong answer.</text>
+  <text class="sub-text" x="590" y="72" text-anchor="middle">Hardest to find.</text>
+  <text class="sub-text" x="590" y="90" text-anchor="middle">total = price - tax</text>
+</svg>
+<div class="diagram-caption">AI-generated code almost never has syntax or runtime errors. Logic errors&mdash;code that runs but does the wrong thing&mdash;are where AI fails and where your review matters.</div>
+</div>
+
+<div role="note" class="callout critical">
+<div class="callout-title">Why This Matters for AI</div>
+<p>When AI tools like Claude Code generate code, they almost never produce syntax errors (Type 1) or runtime crashes (Type 2). The dangerous failures are <strong>logic errors</strong>&mdash;code that runs perfectly but produces the wrong result. This is why <em>you</em> need to understand what the code should do, so you can catch what the AI got wrong.</p>
+</div>
+
+<h3>Micro-Exercise 1</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">Predict the Output</div>
+<p>Before running this, write down what you think <code>b</code> will be:</p>
+<pre><code>a = 3
+b = a
+a = 7
+print(b)</code></pre>
+<p><strong>Answer:</strong> <code>3</code>, not <code>7</code>. When <code>b = a</code> ran, <code>b</code> got a <em>copy</em> of <code>a</code>'s value at that moment. Changing <code>a</code> later doesn't affect <code>b</code>.</p>
+</div>
+
+<h3>Micro-Exercise 2</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">Predict the Output</div>
+<pre><code>name = 'world'
+print('Hello, ' + name + '!')</code></pre>
+<p><strong>Answer:</strong> <code>Hello, world!</code> &mdash; string concatenation joins the three pieces.</p>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">Try This Now</div>
+<p>Predict the output of these three snippets <strong>before</strong> running them. Write your predictions down, then verify:</p>
+<div class="prompt-block"><span class="label">Snippet 1</span>x = 10
+x = x * 2
+print(x)</div>
+<div class="prompt-block"><span class="label">Snippet 2</span>a = 'py'
+b = 'thon'
+print(a + b)</div>
+<div class="prompt-block"><span class="label">Snippet 3</span>x = 5
+y = 0
+print(x / y)</div>
+<p><strong>Verification:</strong> If you predicted <code>20</code>, <code>python</code>, and an error (<code>ZeroDivisionError</code>), you understand sequential execution, string concatenation, and runtime errors.</p>
+<p><strong>If this doesn't work:</strong> If Python isn't installed yet, do Chapter 03 first, then return. Or use the browser console at <strong>replit.com</strong> (free, no install needed).</p>
+</div>
+
+<div class="pq">You just predicted program output before running it. That's the core skill of code review&mdash;the same skill you'll use to evaluate AI-generated code in Phase 4.</div>
+
+<h3>TaskForge Connection</h3>
+<p>In TaskForge v0.1, the line <code>task = {"id": len(tasks) + 1, "description": description, "status": "pending"}</code> uses every concept from this chapter: a variable (<code>task</code>), integers (<code>len(tasks) + 1</code>), strings (<code>"pending"</code>), and assignment (<code>=</code>). By the time you read that code in Chapter 04, these will be familiar patterns.</p>
+
+<h3>Interactive Exercises</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="02" data-ex="predict">
+  <div class="exercise-header">
+    <h4>Predict Then Verify</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Before clicking Run, predict what each line will print. Then run the code and compare your predictions.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">x = 10
+x = x + 5
+print(x)
+
+first = "Hello"
+last = "World"
+print(first + " " + last)
+
+a = 3
+b = a
+a = 7
+print(b)</script>
+    <script type="text/plain" class="test-code">assert '15' in __stdout, "x should be 15"
+assert 'Hello World' in __stdout, "Should print Hello World"
+assert '3' in __stdout, "b should still be 3"</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="02" data-ex="swap">
+  <div class="exercise-header">
+    <h4>Variable Swap</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">You have two variables <code>a</code> and <code>b</code>. Swap their values so that <code>a</code> ends up with <code>b</code>'s original value and vice versa. Use only variables and assignment&mdash;no functions, no built-in tricks.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">a = 10
+b = 25
+
+# Swap the values of a and b here:
+
+
+# Don't change these lines:
+print(a)
+print(b)</script>
+    <script type="text/plain" class="test-code">assert '25' in __stdout.split('\n')[0], "a should now be 25"
+assert '10' in __stdout.split('\n')[1], "b should now be 10"</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">If you just write <code>a = b</code>, you lose <code>a</code>'s original value. You need a temporary box to hold it first.</p>
+    <p class="hint">Create a third variable: <code>temp = a</code>, then <code>a = b</code>, then <code>b = temp</code>.</p>
+  </div>
+</div>
+
+<div class="quiz" data-ch="02" data-ex="quiz-var">
+  <h4>Knowledge Check</h4>
+  <p>After running <code>a = 3; b = a; a = 7</code>, what is the value of <code>b</code>?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">7</button>
+    <button class="quiz-option" data-correct="true">3</button>
+    <button class="quiz-option" data-correct="false">10</button>
+    <button class="quiz-option" data-correct="false">Error</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+</section>
+
+<!-- ===== CH 03 ===== -->
+<section id="ch03" data-ch="03">
+<h2><span class="ch-label">Chapter 03</span> Setting Up Your Environment</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>Every AI coding tool&mdash;Claude Code, Cursor, Copilot&mdash;runs in a development environment. If your environment isn't set up, nothing else in this curriculum works. This is the chapter that makes your machine ready.</p>
+</div>
+
+<p>Before you can run Python code, you need two things: a <strong>terminal</strong> (where you type commands) and <strong>Python</strong> (the interpreter that runs your code). This chapter gets both working.</p>
+
+<h3>The Terminal</h3>
+<p>The terminal is a text-based interface to your computer. Instead of clicking File &rarr; New Folder, you type <code>mkdir new_folder</code>. It's faster, scriptable, and&mdash;crucially&mdash;it's how every AI coding tool works. Claude Code runs entirely in the terminal.</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg" aria-label="Terminal window showing a command prompt, running python3 hello.py, and receiving Hello World output">
+  <!-- Terminal window frame -->
+  <rect class="node-fill" x="100" y="10" width="500" height="200" rx="10"/>
+  <!-- Title bar -->
+  <rect x="100" y="10" width="500" height="30" rx="10" fill="var(--border-accent)" stroke="var(--border-accent)"/>
+  <rect x="100" y="30" width="500" height="10" fill="var(--border-accent)"/>
+  <circle cx="122" cy="25" r="5" fill="var(--a5)" opacity=".6"/>
+  <circle cx="138" cy="25" r="5" fill="var(--a4)" opacity=".6"/>
+  <circle cx="154" cy="25" r="5" fill="var(--a3)" opacity=".6"/>
+  <!-- Prompt line -->
+  <text class="sub-text" x="120" y="62" style="font-size:11px" fill="var(--a3)">~/projects $</text>
+  <text class="sub-text" x="215" y="62" style="font-size:11px" fill="var(--heading)">python3 hello.py</text>
+  <!-- Output -->
+  <text class="sub-text" x="120" y="84" style="font-size:11px" fill="var(--text)">Hello, World!</text>
+  <!-- Next prompt -->
+  <text class="sub-text" x="120" y="106" style="font-size:11px" fill="var(--a3)">~/projects $</text>
+  <rect x="215" y="96" width="8" height="14" rx="2" fill="var(--accent)" class="anim-cursor"/>
+  <!-- Labels -->
+  <line x1="88" y1="55" x2="50" y2="55" stroke="var(--accent)" stroke-width="1"/>
+  <text class="sub-text" x="46" y="59" text-anchor="end" fill="var(--accent)" style="font-size:9px">Prompt</text>
+  <line x1="335" y1="55" x2="620" y2="55" stroke="var(--accent)" stroke-width="1"/>
+  <text class="sub-text" x="624" y="59" fill="var(--accent)" style="font-size:9px">Command</text>
+  <line x1="270" y1="84" x2="620" y2="84" stroke="var(--a3)" stroke-width="1"/>
+  <text class="sub-text" x="624" y="88" fill="var(--a3)" style="font-size:9px">Output</text>
+  <line x1="88" y1="99" x2="50" y2="99" stroke="var(--accent)" stroke-width="1"/>
+  <text class="sub-text" x="46" y="103" text-anchor="end" fill="var(--accent)" style="font-size:9px">Ready</text>
+</svg>
+<div class="diagram-caption">The terminal is a conversation. You type a command. The computer responds. The prompt tells you it's ready for the next one.</div>
+</div>
+
+<h3>Upgrading Your Terminal Emulator</h3>
+
+<div role="note" class="callout info">
+<div class="callout-title">Concept: Terminal Emulator</div>
+<p>A <strong>terminal emulator</strong> gives you a window into your shell. The shell is the program that interprets your commands (<code>bash</code>, <code>zsh</code>); the terminal emulator is the application that displays the shell and handles input. Every OS ships a default one, but third-party terminal emulators add features like split panes, search, and instant replay that make a meaningful difference once you're spending hours in the terminal daily.</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">Current Tool (March 2026)</div>
+<p><strong>macOS: iTerm2</strong> (free, from iterm2.com). Split panes, paste history, instant replay, infinite scrollback. The terminal upgrade that pays for itself within a week of daily use.</p>
+<p><strong>Windows: Windows Terminal</strong> (pre-installed on Windows 11, free from Microsoft Store on Windows 10). Supports tabs, split panes (<code>Alt + Shift + D</code>), and profiles. This is the modern default&mdash;do not use the legacy <code>cmd.exe</code>.</p>
+<p><strong>Linux: Alacritty or Kitty</strong> (both free, GPU-accelerated, config-file-based). Install via your package manager.</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why Bother?</div>
+<p>When you're running Claude Code in one pane, watching test output in another, and tailing a log in a third&mdash;all at the same time&mdash;you'll understand why a better terminal matters. iTerm2 handles this natively. The default Terminal does not.</p>
+</div>
+
+<h4>Installing iTerm2</h4>
+<div class="prompt-block"><span class="label">Terminal</span># Option 1: Homebrew (recommended)
+brew install --cask iterm2
+
+# Option 2: Download from iterm2.com
+# Click Download, drag to Applications, open from Applications</div>
+<p>After installing, open iTerm2 and make it your default: <strong>iTerm2 &rarr; Make iTerm2 Default Term</strong> (in the menu bar).</p>
+
+<h4>Essential iTerm2 Configuration</h4>
+<p>Open Preferences (<strong>Cmd + ,</strong>) and apply these settings:</p>
+<table>
+<caption>Essential iTerm2 configuration settings</caption>
+<tr><th>Setting</th><th>Where</th><th>What to Change</th></tr>
+<tr><td><strong>Infinite scrollback</strong></td><td>Profiles &rarr; Terminal</td><td>Check "Unlimited scrollback." Without this, long command output gets lost.</td></tr>
+<tr><td><strong>Reuse previous directory</strong></td><td>Profiles &rarr; General &rarr; Working Directory</td><td>Select "Reuse previous session's directory." New tabs open where you already are.</td></tr>
+<tr><td><strong>Natural text editing</strong></td><td>Profiles &rarr; Keys &rarr; Key Mappings</td><td>Click Presets &rarr; Natural Text Editing. This lets Option+Arrow move word-by-word, like every other macOS app.</td></tr>
+<tr><td><strong>Font</strong></td><td>Profiles &rarr; Text</td><td>Set to <strong>JetBrains Mono</strong> or <strong>MesloLGS NF</strong> at 13-14pt. Monospace fonts make code alignment visible.</td></tr>
+<tr><td><strong>Color scheme</strong></td><td>Profiles &rarr; Colors</td><td>Click Color Presets &rarr; choose Solarized Dark or Tango Dark. Default is too low-contrast.</td></tr>
+</table>
+
+<h4>iTerm2 Hotkeys You'll Use Daily</h4>
+<table>
+<caption>iTerm2 hotkeys for daily use</caption>
+<tr><th>Hotkey</th><th>Action</th><th>Why It Matters</th></tr>
+<tr><td><code>Cmd + D</code></td><td>Split pane vertically</td><td>Code on the left, tests on the right. Or Claude Code left, log output right.</td></tr>
+<tr><td><code>Cmd + Shift + D</code></td><td>Split pane horizontally</td><td>Stack panes top/bottom. Good for watching multiple logs.</td></tr>
+<tr><td><code>Cmd + ]</code> / <code>Cmd + [</code></td><td>Cycle between panes</td><td>Move focus without touching the mouse.</td></tr>
+<tr><td><code>Cmd + Option + Arrow</code></td><td>Move to specific pane</td><td>Jump directly left/right/up/down to the pane you want.</td></tr>
+<tr><td><code>Cmd + T</code></td><td>New tab</td><td>Separate contexts: one tab per project.</td></tr>
+<tr><td><code>Cmd + W</code></td><td>Close tab/pane</td><td>Clean up when done.</td></tr>
+<tr><td><code>Cmd + 1/2/3</code></td><td>Switch to tab 1/2/3</td><td>Jump between projects instantly.</td></tr>
+<tr><td><code>Cmd + Shift + H</code></td><td>Paste history</td><td>Browse everything you've copied. Searchable.</td></tr>
+<tr><td><code>Cmd + F</code></td><td>Find in terminal output</td><td>Search through scrollback for errors, URLs, or specific output.</td></tr>
+<tr><td><code>Cmd + Shift + Enter</code></td><td>Maximize/restore pane</td><td>Temporarily full-screen one pane, then restore the split.</td></tr>
+<tr><td><code>Cmd + /</code></td><td>Show cursor position</td><td>When you lose the cursor in a wall of text.</td></tr>
+<tr><td><code>Cmd + Option + B</code></td><td>Instant replay</td><td>Scrub back through terminal history like a video. See output that scrolled past.</td></tr>
+</table>
+
+<div role="note" class="callout warn">
+<div class="callout-title">Windows and Linux Users</div>
+<p><strong>Windows:</strong> Use <strong>Windows Terminal</strong> (pre-installed on Windows 11, free from Microsoft Store on Windows 10). It supports tabs, split panes (<code>Alt + Shift + D</code>), and profiles. <strong>Linux:</strong> Use <strong>Alacritty</strong> (GPU-accelerated, config-file-based) or <strong>Kitty</strong> (fast, with built-in splits). Both install via your package manager.</p>
+</div>
+
+<h3>Terminal Speed: Shell Hotkeys</h3>
+<p>These work in any terminal&mdash;iTerm2, default Terminal, Windows Terminal, Linux. They use <strong>readline</strong> keybindings, which are the same across bash and zsh. Learn these and you'll never reach for the mouse while typing commands.</p>
+
+<table>
+<caption>Shell readline hotkeys for terminal navigation</caption>
+<tr><th>Hotkey</th><th>Action</th><th>Example Use</th></tr>
+<tr><td><code>Ctrl + A</code></td><td>Jump to beginning of line</td><td>Typed a long command and need to add <code>sudo</code> at the start.</td></tr>
+<tr><td><code>Ctrl + E</code></td><td>Jump to end of line</td><td>Back to the end after editing the beginning.</td></tr>
+<tr><td><code>Ctrl + W</code></td><td>Delete word backwards</td><td>Erase the last argument without hitting backspace 20 times.</td></tr>
+<tr><td><code>Ctrl + U</code></td><td>Delete from cursor to start of line</td><td>Clear a half-typed command and start over.</td></tr>
+<tr><td><code>Ctrl + K</code></td><td>Delete from cursor to end of line</td><td>Keep the command name, erase all arguments.</td></tr>
+<tr><td><code>Ctrl + Y</code></td><td>Paste last deleted text</td><td>Restore what <code>Ctrl + U</code> or <code>Ctrl + W</code> deleted.</td></tr>
+<tr><td><code>Ctrl + R</code></td><td>Reverse search history</td><td>Type part of a past command and it autocompletes from history. <strong>The single biggest time saver.</strong></td></tr>
+<tr><td><code>Ctrl + C</code></td><td>Cancel current command</td><td>Kill a running process or abandon a half-typed line.</td></tr>
+<tr><td><code>Ctrl + D</code></td><td>Exit / send EOF</td><td>Close the current shell session (same as typing <code>exit</code>).</td></tr>
+<tr><td><code>Ctrl + L</code></td><td>Clear screen</td><td>Clean slate without losing history. Same as <code>clear</code> but faster.</td></tr>
+<tr><td><code>Ctrl + Z</code></td><td>Suspend process</td><td>Pause a running process. Resume with <code>fg</code>.</td></tr>
+<tr><td><code>Option + Left/Right</code></td><td>Move word by word</td><td>Navigate through arguments quickly (requires Natural Text Editing in iTerm2).</td></tr>
+<tr><td><code>!!</code></td><td>Repeat last command</td><td><code>sudo !!</code> re-runs the last command with sudo.</td></tr>
+<tr><td><code>!$</code></td><td>Last argument of previous command</td><td><code>mkdir new-dir && cd !$</code> creates and enters the directory.</td></tr>
+<tr><td><code>Tab</code></td><td>Autocomplete</td><td>Type the first few letters of any file/command and Tab completes it. Double-Tab shows all options.</td></tr>
+<tr><td><code>Up/Down Arrow</code></td><td>Navigate command history</td><td>Scroll through previous commands. Combine with <code>Ctrl + R</code> for power searching.</td></tr>
+</table>
+
+<div role="note" class="callout ok">
+<div class="callout-title">Practice Drill</div>
+<p>Type this long command but don't press Enter: <code>python3 -m pytest tests/ -v --tb=short</code>. Now practice: <code>Ctrl + A</code> (jump to start), <code>Ctrl + E</code> (jump to end), <code>Ctrl + W</code> (delete last word), <code>Ctrl + U</code> (delete everything), <code>Ctrl + Y</code> (paste it back). Do this 5 times until it's muscle memory.</p>
+</div>
+
+<h3>Installing Python</h3>
+<table>
+<caption>Python installation commands by operating system</caption>
+<tr><th>OS</th><th>Install Command</th><th>Verify</th></tr>
+<tr><td><strong>macOS</strong></td><td><code>brew install python3</code> or download from python.org</td><td><code>python3 --version</code></td></tr>
+<tr><td><strong>Windows</strong></td><td>Download from python.org &mdash; check "Add to PATH"</td><td><code>python --version</code></td></tr>
+<tr><td><strong>Linux</strong></td><td><code>sudo apt install python3</code></td><td><code>python3 --version</code></td></tr>
+</table>
+
+<h3>The REPL</h3>
+<p>Type <code>python3</code> in your terminal. The <code>&gt;&gt;&gt;</code> prompt appears&mdash;this is the <strong>REPL</strong> (Read-Eval-Print Loop). It's your sandbox: type any Python expression, see the result instantly. Type <code>exit()</code> to leave.</p>
+
+<h3>Your First File</h3>
+<p>Create a file called <code>hello.py</code> containing one line:</p>
+<pre><code>print("Hello, World!")</code></pre>
+<p>Run it: <code>python3 hello.py</code>. The terminal prints <code>Hello, World!</code>. That's it&mdash;you've written and executed a program.</p>
+
+<h3>Virtual Environments</h3>
+<p>Before you install any Python packages, you need to understand <strong>virtual environments</strong>. A virtual environment is a self-contained copy of Python for a specific project. Without one, every package you install goes into a single global location&mdash;and eventually, two projects will need different versions of the same package. Things break. Virtual environments prevent this entirely.</p>
+
+<div role="note" class="callout warn">
+<div class="callout-title">One Rule: Always Create a Venv Before <code>pip install</code></div>
+<p>Never run <code>pip install</code> outside a virtual environment. If you install packages globally, they pile up, conflict, and eventually something breaks in a way that's hard to diagnose. A virtual environment keeps each project's packages isolated.</p>
+</div>
+
+<h4>Creating a Virtual Environment</h4>
+<div class="prompt-block"><span class="label">Terminal</span># Navigate to your project directory first
+cd ~/my-project
+
+# Create a virtual environment called .venv
+python3 -m venv .venv</div>
+<p>This creates a <code>.venv</code> folder inside your project. It contains a private copy of Python and a clean, empty set of packages. The folder name <code>.venv</code> is a convention&mdash;the dot makes it a hidden folder so it doesn't clutter your file listing.</p>
+
+<h4>Activating the Virtual Environment</h4>
+<div class="prompt-block"><span class="label">macOS / Linux</span>source .venv/bin/activate</div>
+<div class="prompt-block"><span class="label">Windows</span>.venv\Scripts\activate</div>
+
+<h4>How to Tell You're in a Virtual Environment</h4>
+<p>Two clues tell you it worked:</p>
+<pre><code># 1. Your prompt changes &mdash; you'll see (.venv) at the beginning:
+(.venv) ~/my-project $
+
+# 2. which python points to the venv, not the global Python:
+(.venv) ~/my-project $ which python
+/Users/you/my-project/.venv/bin/python</code></pre>
+
+<h4>Deactivating</h4>
+<p>When you're done working on a project, type <code>deactivate</code> to return to the global Python:</p>
+<div class="prompt-block"><span class="label">Terminal</span>deactivate</div>
+<p>The <code>(.venv)</code> prefix disappears from your prompt, and <code>which python</code> points back to the system Python.</p>
+
+<h3>Micro-Exercise 3</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">Create and Activate a Virtual Environment</div>
+<p>Run each line one at a time. After each command, read what the terminal prints before moving on.</p>
+<div class="prompt-block"><span class="label">Terminal</span># 1. Create a throwaway folder to practice in
+mkdir venv-test
+cd venv-test
+
+# 2. Create a virtual environment (a private copy of Python for this folder)
+python3 -m venv .venv
+
+# 3. Activate it — your prompt should change to show (.venv)
+source .venv/bin/activate    # Windows: .venv\Scripts\activate
+
+# 4. Verify: "which python" should now point INSIDE the .venv/ folder
+which python
+
+# 5. Verify: "pip list" should show almost nothing (just pip and setuptools)
+pip list
+
+# 6. Deactivate — exit the virtual environment
+deactivate
+
+# 7. Verify: "which python" should now point back to your system Python
+which python</div>
+<p><strong>Verification:</strong> After step 4, the path should include <code>.venv/</code>. After step 5, you should see only <code>pip</code> and <code>setuptools</code>. After step 7, the path should be different from step 4 (it's your system Python again). If all three match, you've got it.</p>
+</div>
+
+<h3>Your Code Editor</h3>
+<p>You can write code in any text editor, but a <strong>code editor</strong> highlights syntax, catches typos, and integrates with the terminal. Start with <strong>VS Code</strong> (free, from code.visualstudio.com). AI-native editors like <strong>Cursor</strong> and <strong>Windsurf</strong> build AI assistance directly in&mdash;you'll use these in Phase 4.</p>
+
+<h4>VS Code Hotkeys That Save Real Time</h4>
+<p>These are the shortcuts professionals use constantly. On macOS, <code>Cmd</code> = <code>&#8984;</code>. On Windows/Linux, replace <code>Cmd</code> with <code>Ctrl</code>.</p>
+<table>
+<caption>VS Code keyboard shortcuts</caption>
+<tr><th>Hotkey</th><th>Action</th><th>Why It Matters</th></tr>
+<tr><td><code>Cmd + P</code></td><td>Quick Open file by name</td><td>Type part of a filename to open it instantly. Never use the file tree for known files.</td></tr>
+<tr><td><code>Cmd + Shift + P</code></td><td>Command Palette</td><td>Every VS Code action is searchable here. "Format document," "Toggle terminal," "Change language mode."</td></tr>
+<tr><td><code>Cmd + `</code></td><td>Toggle integrated terminal</td><td>Switch between editor and terminal without leaving VS Code.</td></tr>
+<tr><td><code>Cmd + B</code></td><td>Toggle sidebar</td><td>Hide/show the file explorer to get more editor space.</td></tr>
+<tr><td><code>Cmd + D</code></td><td>Select next occurrence</td><td>Select a word, hit <code>Cmd + D</code> repeatedly to select and edit all instances at once.</td></tr>
+<tr><td><code>Cmd + Shift + K</code></td><td>Delete entire line</td><td>Remove a line without selecting it first.</td></tr>
+<tr><td><code>Option + Up/Down</code></td><td>Move line up/down</td><td>Rearrange code without cut-and-paste.</td></tr>
+<tr><td><code>Cmd + Shift + F</code></td><td>Search across all files</td><td>Find every usage of a function or variable in the entire project.</td></tr>
+<tr><td><code>Cmd + /</code></td><td>Toggle comment</td><td>Comment/uncomment the current line or selection.</td></tr>
+<tr><td><code>Cmd + Shift + \\</code></td><td>Jump to matching bracket</td><td>Navigate nested code blocks quickly.</td></tr>
+<tr><td><code>Ctrl + G</code></td><td>Go to line number</td><td>Jump directly to line 142 when an error message says "line 142."</td></tr>
+<tr><td><code>F12</code></td><td>Go to Definition</td><td>Jump to where a function is defined. <code>Cmd + Click</code> does the same thing.</td></tr>
+<tr><td><code>Cmd + Z</code> / <code>Cmd + Shift + Z</code></td><td>Undo / Redo</td><td>Universal, but critical. Undo AI-generated changes you don't want.</td></tr>
+</table>
+
+<div role="note" class="callout ok">
+<div class="callout-title">Practice Drill</div>
+<p>Open any Python file in VS Code. Use <code>Cmd + P</code> to open another file. Use <code>Cmd + Shift + F</code> to search for "def." Use <code>Cmd + `</code> to open the terminal. Use <code>Ctrl + G</code> to jump to line 1. Do this 3 times without touching the mouse.</p>
+</div>
+
+<h3>Installing Packages</h3>
+<p><code>pip</code> installs packages&mdash;code other people wrote that you can use. Example: <code>pip install requests</code> installs a library for making web requests. You'll use this in Chapter 11.</p>
+
+<div role="note" class="callout info">
+<div class="callout-title">Node.js for Claude Code</div>
+<p>Claude Code requires Node.js in addition to Python. Install it now to avoid a second setup session: go to <strong>nodejs.org</strong> and download the LTS version. Verify: <code>node --version</code>.</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">Preview: What You're Building Toward</div>
+<p>You just installed Node.js. In Phase 5, you'll use it to run Claude Code — an AI assistant that lives in your terminal. Here's what a Claude Code session looks like:</p>
+<pre><code>$ claude
+╭──────────────────────────────────────╮
+│ Claude Code                          │
+│                                      │
+│ /home/you/taskforge                  │
+╰──────────────────────────────────────╯
+
+> Explain the architecture of this project in one paragraph.
+
+This project is a command-line task manager built in Python...
+</code></pre>
+<p>You're not ready to use this yet — you need to understand what code is and how to read it first. That's what the next 15 chapters are for. But when you get to Phase 5, setup will be one command: <code>npm install -g @anthropic-ai/claude-code</code>.</p>
+</div>
+
+<h3>Micro-Exercise 1</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">Navigate Your Filesystem</div>
+<p>Open your terminal. Type <code>pwd</code> (Mac/Linux) or <code>cd</code> (Windows) to see your current directory. Navigate to your Desktop: <code>cd ~/Desktop</code>.</p>
+</div>
+
+<h3>Micro-Exercise 2</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">Create and Run a File</div>
+<div class="prompt-block"><span class="label">Terminal</span># Create a new folder called "my-project"
+mkdir my-project
+
+# Move into that folder (cd = "change directory")
+cd my-project
+
+# Create a file called test.py containing one line of Python
+echo 'print(42)' > test.py
+
+# Run the file — Python reads it and executes the print statement
+python3 test.py</div>
+<p><strong>Verification:</strong> If <code>42</code> printed, everything works. You just created a folder, wrote a Python file into it, and ran it.</p>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">Try This Now</div>
+<p>Create <code>me.py</code> that prints your name, the year, and why you're learning programming (3 separate <code>print</code> statements). Run: <code>python3 me.py</code>.</p>
+<div class="prompt-block"><span class="label">Example: me.py</span>print("Alice")
+print("2026")
+print("I want to orchestrate AI coding agents")</div>
+<p><strong>Verification:</strong> If all three lines appear in the terminal, your environment works.</p>
+<p><strong>If this doesn't work:</strong> (1) <code>python3: command not found</code> &rarr; Python isn't installed or not in PATH. On Windows, try <code>python</code> without the <code>3</code>. On Mac, run <code>brew install python3</code>. (2) <code>SyntaxError</code> &rarr; check for missing quotes or parentheses. (3) File not found &rarr; make sure you're in the same directory as the file (<code>ls</code> to check).</p>
+</div>
+
+<div class="pq">You just created and ran a Python program from scratch. This is the same workflow every developer uses daily&mdash;write a file, run it, read the output.</div>
+
+<h3>TaskForge Connection</h3>
+<p>You now have everything needed to run TaskForge v0.1. After this chapter, the command <code>python3 taskforge.py</code> will work on your machine. You'll do exactly that in Chapter 04.</p>
+
+<h3>Interactive Exercises</h3>
+
+<div class="checklist" data-ch="03" data-ex="setup">
+  <h4>Environment Setup Complete</h4>
+  <label><input type="checkbox"><span>Python 3.10+ installed — <code>python3 --version</code> shows a version number</span></label>
+  <label><input type="checkbox"><span>VS Code (or another editor) installed and opens files</span></label>
+  <label><input type="checkbox"><span>Terminal opens and responds to commands</span></label>
+  <label><input type="checkbox"><span>Virtual environment created — <code>python3 -m venv venv</code> succeeded</span></label>
+  <label><input type="checkbox"><span>Virtual environment activated — prompt shows (venv)</span></label>
+</div>
+
+<div class="quiz" data-ch="03" data-ex="quiz-venv">
+  <h4>Knowledge Check</h4>
+  <p>What does <code>source venv/bin/activate</code> do?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">Installs Python on your system</button>
+    <button class="quiz-option" data-correct="false">Creates a new virtual environment</button>
+    <button class="quiz-option" data-correct="true">Activates the virtual environment so <code>pip install</code> goes there</button>
+    <button class="quiz-option" data-correct="false">Deletes the virtual environment</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+</section>
+
+<!-- ===== CH 04 ===== -->
+<section id="ch04" data-ch="04">
+<h2><span class="ch-label">Chapter 04</span> Reading Code Before Writing It</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>In the age of AI coding tools, you will <em>read</em> far more code than you write. When Claude Code generates 200 lines, your job is to evaluate them&mdash;not type them. This chapter teaches the skill that makes you a competent AI supervisor rather than a passive accepter.</p>
+</div>
+
+<p>Here's the paradigm shift: traditional education starts with <em>writing</em> code. AI-assisted work starts with <em>reading</em> code. When Claude Code generates 200 lines of Python for you, you won't write those lines&mdash;you'll <strong>read, evaluate, and decide</strong> whether to accept them. Reading code is your primary skill.</p>
+
+<h3>How to Read Code</h3>
+<p>Don't start at line 1 and grind forward. Use this three-pass approach:</p>
+<div class="pr"><div class="pn">1</div><div class="pb2"><h5>Structure Pass</h5><p>Scan for function definitions (<code>def</code>), classes, imports. What are the building blocks?</p></div></div>
+<div class="pr"><div class="pn">2</div><div class="pb2"><h5>Logic Pass</h5><p>Pick one function. Trace the data: what goes in, what comes out, what changes along the way?</p></div></div>
+<div class="pr"><div class="pn">3</div><div class="pb2"><h5>Edge Pass</h5><p>What happens with empty inputs? Huge inputs? Invalid data? This is where bugs hide&mdash;and where AI code most often fails.</p></div></div>
+
+<h3>Pattern Recognition</h3>
+<div role="note" class="callout info">
+<div class="callout-title">A Note on What's Ahead</div>
+<p>The table below shows patterns you haven't formally learned yet&mdash;functions, loops, conditionals, lists, and dictionaries all get their own chapters in Phase 2. That's intentional. Right now the goal is <strong>recognition, not writing</strong>. You should be able to look at a line like <code>for item in list:</code> and say "that's a loop&mdash;it repeats something." You don't need to write one from scratch yet. Think of it like reading a foreign language menu: you can recognize that <em>pollo</em> means chicken without knowing how to conjugate Spanish verbs.</p>
+</div>
+<p>You don't need to write code from memory. You need to <strong>recognize</strong> patterns when you see them:</p>
+<table>
+<caption>Common Python code patterns to recognize</caption>
+<tr><th>Pattern</th><th>What It Looks Like</th><th>What It Does</th></tr>
+<tr><td><strong>Function</strong></td><td><code>def name(params):</code></td><td>A reusable block of logic</td></tr>
+<tr><td><strong>Loop</strong></td><td><code>for item in list:</code></td><td>Repeats for each item</td></tr>
+<tr><td><strong>Conditional</strong></td><td><code>if condition:</code></td><td>Chooses a path</td></tr>
+<tr><td><strong>Import</strong></td><td><code>import json</code></td><td>Loads external code</td></tr>
+<tr><td><strong>Entry point</strong></td><td><code>if __name__ == "__main__":</code></td><td>Runs when file is executed directly</td></tr>
+</table>
+
+<h3>Before/After: Weak vs. Strong Reading</h3>
+<div class="pe">
+<div class="pb"><div class="ph">Weak Reading</div><div class="pp">"It does stuff with tasks."</div></div>
+<div class="pg"><div class="ph">Strong Reading</div><div class="pp">"This script manages a list of task dictionaries. <code>add_task</code> creates a dict with id, description, and 'pending' status. <code>complete_task</code> iterates the list to find a matching id and updates the status. The <code>main</code> function runs an input loop with 4 commands. Edge case: if you enter a non-integer for task ID in <code>done</code>, it crashes with <code>ValueError</code> because there's no <code>try/except</code>."</div></div>
+</div>
+
+<h3>Micro-Exercise 1</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">Read a One-Liner</div>
+<p>What does this function do? What does <code>double(5)</code> return? What does <code>double('hi')</code> return?</p>
+<pre><code>def double(x):
+    return x * 2</code></pre>
+<p><strong>Answers:</strong> It multiplies the input by 2. <code>double(5)</code> returns <code>10</code>. <code>double('hi')</code> returns <code>'hihi'</code>&mdash;because <code>*</code> on a string repeats it. The machine is literal.</p>
+</div>
+
+<h3>Micro-Exercise 2</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">Read a Loop</div>
+<pre><code>for item in ['a', 'b', 'c']:
+    print(item.upper())</code></pre>
+<p>How many times does the <code>print</code> run? What's the output?</p>
+<p><strong>Answer:</strong> 3 times. Output: <code>A</code>, <code>B</code>, <code>C</code> (each on a new line). The loop processes each item and <code>.upper()</code> converts to uppercase.</p>
+</div>
+
+<h3>TaskForge v0.1 &mdash; The Code</h3>
+<p>Here's the complete source code for TaskForge v0.1. This is the spine project you'll build on for the rest of the course. Read it now using the three-pass approach.</p>
+
+<pre><code># taskforge.py &mdash; v0.1
+# A minimal command-line task manager
+
+tasks = []
+
+def add_task(description):
+    task = {"id": len(tasks) + 1, "description": description, "status": "pending"}
+    tasks.append(task)
+    return task
+
+def complete_task(task_id):
+    for task in tasks:
+        if task["id"] == task_id:
+            task["status"] = "complete"
+            return task
+    return None
+
+def list_tasks():
+    return tasks
+
+def main():
+    while True:
+        command = input("\nTaskForge> ").strip().lower()
+        if command == "add":
+            desc = input("Description: ")
+            task = add_task(desc)
+            print(f"Added: #{task['id']} &mdash; {task['description']}")
+        elif command == "done":
+            task_id = int(input("Task ID: "))
+            result = complete_task(task_id)
+            if result:
+                print(f"Completed: #{result['id']}")
+            else:
+                print("Task not found.")
+        elif command == "list":
+            for t in list_tasks():
+                status = "&#10003;" if t["status"] == "complete" else " "
+                print(f"  [{status}] #{t['id']} &mdash; {t['description']}")
+        elif command == "quit":
+            break
+        else:
+            print("Commands: add, done, list, quit")
+
+if __name__ == "__main__":
+    main()</code></pre>
+
+<div role="note" class="callout info">
+<div class="callout-title">About <code>while True:</code></div>
+<p>You'll notice <code>while True:</code> creates an infinite loop that only stops when the user types "quit" (which triggers <code>break</code>). You'll learn about while loops formally in Chapter 5, but the pattern is simple: keep repeating this block forever until something causes a <code>break</code>. For now, just recognize the shape&mdash;<code>while True:</code> at the top, <code>break</code> somewhere inside.</p>
+</div>
+
+<h3>Run TaskForge Yourself</h3>
+<div role="note" class="callout critical">
+<div class="callout-title">This Is the First Code You've Actually Run Yourself</div>
+<p>Up until now, you've been reading code and predicting output. This is the moment you run a real program. Follow these steps exactly.</p>
+</div>
+
+<div class="pr"><div class="pn">1</div><div class="pb2"><h5>Create the File</h5><p>Open your terminal and create a new file called <code>taskforge.py</code>:</p>
+<div class="prompt-block"><span class="label">Terminal</span># Go to your Desktop (~ means your home folder)
+cd ~/Desktop
+
+# Create a folder for the project
+mkdir taskforge-project
+
+# Move into it — all files you create will go here
+cd taskforge-project</div>
+<p>Open <code>taskforge.py</code> in your editor (VS Code: <code>code taskforge.py</code>) and paste the entire TaskForge v0.1 source code shown above.</p></div></div>
+
+<div class="pr"><div class="pn">2</div><div class="pb2"><h5>Run It</h5>
+<div class="prompt-block"><span class="label">Terminal</span>python3 taskforge.py</div>
+<p>You should see the <code>TaskForge></code> prompt waiting for input.</p></div></div>
+
+<div class="pr"><div class="pn">3</div><div class="pb2"><h5>Add a Task</h5>
+<pre><code>TaskForge> add
+Description: Buy groceries
+Added: #1 &mdash; Buy groceries</code></pre></div></div>
+
+<div class="pr"><div class="pn">4</div><div class="pb2"><h5>List Tasks</h5>
+<pre><code>TaskForge> list
+  [ ] #1 &mdash; Buy groceries</code></pre></div></div>
+
+<div class="pr"><div class="pn">5</div><div class="pb2"><h5>Mark a Task Done</h5>
+<pre><code>TaskForge> done
+Task ID: 1
+Completed: #1</code></pre></div></div>
+
+<div class="pr"><div class="pn">6</div><div class="pb2"><h5>Verify It Worked</h5>
+<pre><code>TaskForge> list
+  [&#10003;] #1 &mdash; Buy groceries
+
+TaskForge> quit</code></pre>
+<p>The checkmark confirms the status changed from "pending" to "complete." Type <code>quit</code> to exit.</p></div></div>
+
+<div role="note" class="callout warn">
+<div class="callout-title">If Something Goes Wrong</div>
+<p><strong><code>python3: command not found</code></strong> &mdash; Python isn't installed. Return to the Installing Python section in Chapter 03. On Windows, try <code>python</code> instead of <code>python3</code>.</p>
+<p><strong><code>SyntaxError</code></strong> &mdash; Something went wrong when pasting. Make sure the indentation is consistent (all spaces, no tabs mixed in). Re-copy the code carefully.</p>
+<p><strong><code>FileNotFoundError</code></strong> &mdash; You're not in the same directory as <code>taskforge.py</code>. Run <code>ls</code> to check, then <code>cd</code> to the right folder.</p>
+</div>
+
+<h3>A Worked Three-Pass Reading</h3>
+<p>Before you analyze TaskForge on your own, here's the three-pass method applied to a short function. Watch how each pass reveals a different layer of understanding.</p>
+
+<pre><code>def find_max(numbers):
+    if len(numbers) == 0:
+        return None
+    biggest = numbers[0]
+    for num in numbers:
+        if num > biggest:
+            biggest = num
+    return biggest</code></pre>
+
+<div class="pr"><div class="pn">1</div><div class="pb2"><h5>Structure Pass</h5><p>One function called <code>find_max</code>. Takes one parameter: <code>numbers</code>. Has a loop inside. Returns something. 8 lines total.</p></div></div>
+<div class="pr"><div class="pn">2</div><div class="pb2"><h5>Logic Pass</h5><p>If the list is empty, return <code>None</code>. Otherwise, start by assuming the first element is the biggest. Walk through every number&mdash;if any number is bigger than the current biggest, update biggest. After checking all numbers, return the biggest one found.</p></div></div>
+<div class="pr"><div class="pn">3</div><div class="pb2"><h5>Edge Pass</h5><p>Empty list: returns <code>None</code> (handled explicitly). Single-element list: works fine&mdash;the loop runs once, <code>biggest</code> stays as the only element. All same values: works&mdash;<code>num > biggest</code> is never True, so the first value is returned. Negative numbers: works&mdash;nothing assumes positive values. Non-numeric input (e.g., strings): would crash on <code>></code> comparison if types are mixed. No validation on input type.</p></div></div>
+
+<p>Three passes, maybe 60 seconds total, and you understand the function completely. Apply this same method to TaskForge below.</p>
+
+<div class="pq"><blockquote>"Indeed, the ratio of time spent reading versus writing is well over 10 to 1. We are constantly reading old code as part of the effort to write new code."<br>&mdash;Robert C. Martin, <em>Clean Code</em></blockquote></div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">Try This Now</div>
+<p>Read the TaskForge v0.1 code above. Write a code analysis answering these four questions:</p>
+<ol>
+<li>What does this program do?</li>
+<li>What data structure stores the tasks?</li>
+<li>What happens if you enter <code>done</code> and type <code>abc</code> instead of a number?</li>
+<li>What happens if the list is empty and you type <code>list</code>?</li>
+</ol>
+<p><strong>Verification:</strong> Your analysis should identify: a command-line task manager, a list of dictionaries, a crash on non-integer input (<code>ValueError</code>), and an empty output for an empty list. If you got 3 of 4, you pass.</p>
+<p><strong>If this doesn't work:</strong> If the code looks completely alien, return to Chapter 02 and re-read the sections on variables and functions. The patterns in TaskForge are the same patterns from Chapter 02 at larger scale.</p>
+</div>
+
+<div class="pq">You just read and analyzed a 40-line program without writing a single line. That's not a warmup&mdash;it's the primary skill of AI-assisted development. You'll read far more code than you write.</div>
+
+<h3>Interactive Exercises</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="04" data-ex="debug">
+  <div class="exercise-header">
+    <h4>Fix the Bugs</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">This function is supposed to count how many words in a list are longer than a given length. It has 3 bugs. Find and fix all of them.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">def count_long_words(words, min_length):
+    count = 1
+    for word in words:
+        if len(word) > min_length:
+            count + 1
+    return counts
+
+# Test it:
+print(count_long_words(["hi", "hello", "hey", "wonderful"], 3))  # Should print 2</script>
+    <script type="text/plain" class="test-code">assert count_long_words(["hi", "hello", "hey", "wonderful"], 3) == 2, "Should find 2 words longer than 3"
+assert count_long_words([], 5) == 0, "Empty list should return 0"
+assert count_long_words(["a", "b"], 0) == 2, "All words longer than 0"
+assert count_long_words(["test"], 4) == 0, "Equal length should not count"</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">What should <code>count</code> start at — 0 or 1?</p>
+    <p class="hint"><code>count + 1</code> calculates but doesn't save the result. How do you update a variable?</p>
+    <p class="hint">Check the variable name on the return line — is it the same as what you defined?</p>
+  </div>
+</div>
+
+<div class="quiz" data-ch="04" data-ex="quiz-tf">
+  <h4>Knowledge Check</h4>
+  <p>In TaskForge v0.1, what data structure stores the list of tasks?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">A tuple of strings</button>
+    <button class="quiz-option" data-correct="false">A dictionary with task IDs as keys</button>
+    <button class="quiz-option" data-correct="true">A list of dictionaries</button>
+    <button class="quiz-option" data-correct="false">A class with Task objects</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+</section>
+
+<!-- ===== PHASE 1 GATE ===== -->
+<section id="gate1">
+<h2><span class="ch-label">Phase 1 Gate</span> Checkpoint &amp; TaskForge v0.1</h2>
+
+<div class="card">
+<h4>Minimum Competency</h4>
+<p>Read a 30-line Python function, explain what it does, identify inputs/outputs, and spot one edge case.</p>
+</div>
+
+<div class="card">
+<h4>Your Artifact</h4>
+<p>Your written TaskForge v0.1 analysis from Chapter 04's exercise. This IS your Phase 1 Gate proof.</p>
+</div>
+
+<div class="card">
+<h4>Verification</h4>
+<p>Your analysis identifies at least 3 of 4 elements: purpose, data structure, crash case, empty case.</p>
+</div>
+
+<div role="note" class="callout critical">
+<div class="callout-title">Failure Signal</div>
+<p>If you cannot predict the output of <code>x = 5; x = x + 1; print(x)</code> &rarr; return to Chapter 02.</p>
+</div>
+
+<h3>TaskForge Checkpoint</h3>
+<p>You have <strong>read and analyzed</strong> TaskForge v0.1. You have NOT modified it. The project exists as a single <code>.py</code> file with no tests, no git, no structure. This is your baseline. In Phase 2, you'll start writing code to extend it.</p>
+
+<h3>What You Can Now Do</h3>
+<div class="card">
+<ul>
+<li>Explain what a program is and how it executes</li>
+<li>Read variables, data types, functions, loops, and conditionals</li>
+<li>Set up and use a Python development environment</li>
+<li>Analyze a 40-line program and identify edge cases</li>
+</ul>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">Bridge to Phase 2</div>
+<p>You can read code. Now you need to <em>write</em> it. Why? Because when AI generates a function, you sometimes need to fix a bug, add a missing case, or write a test to verify it works. Phase 2 gives you writing fluency in Python&mdash;the language Claude Code operates in most often.</p>
+</div>
+
+<div class="pq">
+Phase 1 is complete. You can read code. That's not a small thing&mdash;it's the foundation for everything that follows. Every chapter from here builds on the patterns you just learned to recognize.
+</div>
+</section>
+
+<nav class="phase-nav">
+  <a href="index.html" class="phase-nav-link prev"><span class="phase-nav-label">Home</span>&larr; Landing Page</a>
+  <a href="phase-2.html" class="phase-nav-link next"><span class="phase-nav-label">Next Phase</span>Phase 2: Writing Python &rarr;</a>
+</nav>
+
+</div>
+</div>
+
+<footer>
+<p>Zero to Hero: Programming to Multi-Agent Claude Code &middot; March 2026</p>
+<p>Structured around the 8 Levels of Agentic Engineering.</p>
+</footer>
+
+<script src="js/progress.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ace-builds@1.36.5/src-min-noconflict/ace.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/shared.js"></script>
+<script src="js/ace-init.js"></script>
+<script src="js/pyodide-runner.js"></script>
+<script src="js/quiz.js"></script>
+<script src="js/exercise-runner.js"></script>
+</body>
+</html>

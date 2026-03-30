@@ -1,0 +1,1619 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="フェーズ8：システムとスケール — システム設計、分散システム、パフォーマンスと可観測性、大規模コードベースのナビゲーション。第34〜37章。">
+<title>フェーズ8：システムとスケール — ゼロからヒーロー</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&amp;family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/design-system.css">
+<script>try{if(localStorage.getItem('zth-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+<script>try{var z=localStorage.getItem('zth-zoom');if(z&&+z>=50&&+z<=200)document.documentElement.style.zoom=+z/100}catch(e){}</script>
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+<marker id="arrowhead-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--a5)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo"><span>ゼロからヒーロー</span>プログラミング &rarr; マルチエージェントAI</a>
+  <div class="toc-group">
+    <div class="toc-group-title">基礎</div>
+    <a href="phase-1.html#ch01" class="toc-link"><span class="toc-num">01</span>プログラミングとは何か</a>
+    <a href="phase-1.html#ch02" class="toc-link"><span class="toc-num">02</span>コンピュータがコードを実行する仕組み</a>
+    <a href="phase-1.html#ch03" class="toc-link"><span class="toc-num">03</span>環境のセットアップ</a>
+    <a href="phase-1.html#ch04" class="toc-link"><span class="toc-num">04</span>書く前にコードを読む</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Python</div>
+    <a href="phase-2.html#ch05" class="toc-link"><span class="toc-num">05</span>関数、ロジック、制御フロー</a>
+    <a href="phase-2.html#ch06" class="toc-link"><span class="toc-num">06</span>データ構造</a>
+    <a href="phase-2.html#ch07" class="toc-link"><span class="toc-num">07</span>クラスとオブジェクト指向プログラミング</a>
+    <a href="phase-2.html#ch08" class="toc-link"><span class="toc-num">08</span>ファイル、モジュール、標準ライブラリ</a>
+    <a href="phase-2.html#ch09" class="toc-link"><span class="toc-num">09</span>エラー処理、デバッグ、テスト</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">開発ツール</div>
+    <a href="phase-3.html#ch10" class="toc-link"><span class="toc-num">10</span>ターミナルとシェル</a>
+    <a href="phase-3.html#ch11" class="toc-link"><span class="toc-num">11</span>Gitの基礎</a>
+    <a href="phase-3.html#ch12" class="toc-link"><span class="toc-num">12</span>GitリモートとGitHub</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">構築とデプロイ</div>
+    <a href="phase-4.html#ch13" class="toc-link"><span class="toc-num">13</span>APIとHTTP</a>
+    <a href="phase-4.html#ch14" class="toc-link"><span class="toc-num">14</span>FlaskでAPIを構築する</a>
+    <a href="phase-4.html#ch15" class="toc-link"><span class="toc-num">15</span>データベースの基礎</a>
+    <a href="phase-4.html#ch16" class="toc-link"><span class="toc-num">16</span>Dockerとコンテナ</a>
+    <a href="phase-4.html#ch17" class="toc-link"><span class="toc-num">17</span>CI/CDとGitHub Actions</a>
+    <a href="phase-4.html#ch18" class="toc-link"><span class="toc-num">18</span>プロジェクトアーキテクチャ</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">データ構造</div>
+    <a href="phase-5.html#ch19" class="toc-link"><span class="toc-num">19</span>計算量分析</a>
+    <a href="phase-5.html#ch20" class="toc-link"><span class="toc-num">20</span>線形構造</a>
+    <a href="phase-5.html#ch21" class="toc-link"><span class="toc-num">21</span>ハッシュテーブルとマップ</a>
+    <a href="phase-5.html#ch22" class="toc-link"><span class="toc-num">22</span>木構造</a>
+    <a href="phase-5.html#ch23" class="toc-link"><span class="toc-num">23</span>グラフ</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">アルゴリズム</div>
+    <a href="phase-6.html#ch24" class="toc-link"><span class="toc-num">24</span>探索とソート</a>
+    <a href="phase-6.html#ch25" class="toc-link"><span class="toc-num">25</span>再帰と動的計画法</a>
+    <a href="phase-6.html#ch26" class="toc-link"><span class="toc-num">26</span>アルゴリズムパターン</a>
+    <a href="phase-6.html#ch27" class="toc-link"><span class="toc-num">27</span>グラフアルゴリズム</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">エンジニアリングの技術</div>
+    <a href="phase-7.html#ch28" class="toc-link"><span class="toc-num">28</span>デザインパターンとSOLID</a>
+    <a href="phase-7.html#ch29" class="toc-link"><span class="toc-num">29</span>SQLとクエリマスタリー</a>
+    <a href="phase-7.html#ch30" class="toc-link"><span class="toc-num">30</span>トランザクションとNoSQL</a>
+    <a href="phase-7.html#ch31" class="toc-link"><span class="toc-num">31</span>ネットワークとインターネット</a>
+    <a href="phase-7.html#ch32" class="toc-link"><span class="toc-num">32</span>並行性と並列処理</a>
+    <a href="phase-7.html#ch33" class="toc-link"><span class="toc-num">33</span>セキュリティエンジニアリング</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">システムとスケール</div>
+    <a href="phase-8.html#ch34" class="toc-link"><span class="toc-num">34</span>システム設計</a>
+    <a href="phase-8.html#ch35" class="toc-link"><span class="toc-num">35</span>分散システム</a>
+    <a href="phase-8.html#ch36" class="toc-link"><span class="toc-num">36</span>パフォーマンスと可観測性</a>
+    <a href="phase-8.html#ch37" class="toc-link"><span class="toc-num">37</span>大規模コードベースのナビゲーション</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AIレベル1〜5</div>
+    <a href="phase-9.html#ch38" class="toc-link"><span class="toc-num">38</span>AIコードの評価と指示</a>
+    <a href="phase-9.html#ch39" class="toc-link"><span class="toc-num">39</span>レベル1&amp;2 — タブ補完とエージェントIDE</a>
+    <a href="phase-9.html#ch40" class="toc-link"><span class="toc-num">40</span>レベル3 — コンテキストエンジニアリング</a>
+    <a href="phase-9.html#ch41" class="toc-link"><span class="toc-num">41</span>レベル4 — 複合エンジニアリング</a>
+    <a href="phase-9.html#ch42" class="toc-link"><span class="toc-num">42</span>レベル5 — MCP、スキル、機能</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AIレベル6〜8</div>
+    <a href="phase-10.html#ch43" class="toc-link"><span class="toc-num">43</span>レベル6 — ハーネスエンジニアリング</a>
+    <a href="phase-10.html#ch44" class="toc-link"><span class="toc-num">44</span>レベル7 — バックグラウンドエージェント</a>
+    <a href="phase-10.html#ch45" class="toc-link"><span class="toc-num">45</span>DockerでのClaude Code</a>
+    <a href="phase-10.html#ch46" class="toc-link"><span class="toc-num">46</span>レベル8 — 自律エージェントチーム</a>
+    <a href="phase-10.html#ch47" class="toc-link"><span class="toc-num">47</span>マルチプレイヤー効果</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">リファレンス</div>
+    <a href="appendices.html#glossary" class="toc-link"><span class="toc-num">&oplus;</span>用語集</a>
+    <a href="appendices.html#prompt-library" class="toc-link"><span class="toc-num">&oplus;</span>プロンプトライブラリ</a>
+    <a href="appendices.html#self-assessment" class="toc-link"><span class="toc-num">&oplus;</span>自己評価</a>
+    <a href="appendices.html#common-mistakes" class="toc-link"><span class="toc-num">&oplus;</span>よくある間違い</a>
+    <a href="appendices.html#appendix-d" class="toc-link"><span class="toc-num">&oplus;</span>トラブルシューティング</a>
+    <a href="appendices.html#appendix-e" class="toc-link"><span class="toc-num">&oplus;</span>リソース</a>
+  </div>
+</aside>
+</aside>
+
+<!-- ================================================================== -->
+<!--  MAIN CONTENT                                                       -->
+<!-- ================================================================== -->
+<div class="main">
+<section class="hero hero-sm">
+  <div class="hero-badge">フェーズ8 &mdash; システムとスケール</div>
+  <h1>システムと<em>スケール</em></h1>
+  <p class="hero-sub">システム設計、分散アーキテクチャ、パフォーマンスエンジニアリング、そして実際のコードベースのナビゲーション。単一のマシンと単一の開発者を超えた思考。</p>
+  <div class="hero-meta"><span>第34〜37章</span><span>フェーズゲート + TaskForge</span></div>
+</section>
+<div class="content-wrap">
+
+<div role="note" class="callout info">
+<div class="callout-title">フェーズ8を始める前に</div>
+<p>このフェーズでは、次のことができることを前提としています：デザインパターンを適用してコードを構造化する（第28章）、最適化されたSQLクエリを書く（第29〜30章）、ネットワークの基礎を理解する（第31章）、並行性について考察する（第32章）、セキュリティの実践を実装する（第33章）。これらのいずれかに不安がある場合は、先に該当する章を復習してください。</p>
+</div>
+
+
+<!-- ===== CH 34 ===== -->
+<section id="ch34" data-ch="34">
+<h2><span class="ch-label">第34章</span> システム設計（System Design）の基礎 &mdash; スケールに対応した構築</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念</div>
+<p>これまで書いてきたすべてのプログラムは、単一のマシン上で動作し、単一のユーザーにサービスを提供してきました。学習には十分ですが、実際のソフトウェアは数千人、時には数百万人のユーザーに同時にサービスを提供します。システム設計とは、需要の増大とともにアプリケーションを高速で、信頼性が高く、コスト効率よく保つために、サーバー、データベース、キャッシュ、キューをどのように配置するかを選択する規律です。これらの決定はエンジニアが行う中で最も重要なものの一つです：アーキテクチャの選択が悪ければ数ヶ月の手直しが必要になることもあり、良いものはプロダクトを何年も支えることができます。</p>
+</div>
+
+<h3>スケールの考え方：垂直スケーリング vs. 水平スケーリング</h3>
+
+<p>アプリケーションが負荷のもとで遅くなり始めたとき、高速化するための基本的な選択肢が2つあります。<strong>垂直スケーリング（Vertical scaling）</strong>（「スケールアップ」とも呼ばれます）とは、既存のサーバーにより多くのリソース（より多くのCPUコア、より多くのRAM、より高速なディスク）を割り当てることです。最もシンプルな戦略で、コードをまったく変更せず、単純に大きなマシンに移行するだけです。問題は、垂直スケーリングには物理的な上限があることです。借りられる最大の単一サーバーは1時間あたり数千ドルかかり、それでも最終的には処理しきれなくなります。</p>
+
+<p><strong>水平スケーリング（Horizontal scaling）</strong>（「スケールアウト」とも呼ばれます）とは、<em>複数の</em>マシンでアプリケーションを実行し、トラフィックを分散させることです。主要なWebアプリケーションはすべてこのように動作しています。理論的な上限はなく、マシンを追加し続けることができます。ただし、水平スケーリングは垂直スケーリングが回避する複雑さをもたらします：トラフィックをどのように分散させるか？マシン間でデータを共有するには？1台のマシンがクラッシュしたらどうなるか？</p>
+
+<p>水平スケーリングを可能にする重要な概念は<strong>ステートレス性（statelessness）</strong>です。<strong>ステートレスサービス（stateless service）</strong>は、リクエスト間でユーザー固有のデータを保存しません。すべてのリクエストは処理に必要なすべての情報を持って届きます（多くの場合、HTTPヘッダーのトークン経由で）。どのサーバーも何も「覚えて」いないため、どのサーバーもどのリクエストでも処理でき、サーバーを自由に追加・削除できます。</p>
+
+<p>一方、<strong>ステートフルサービス（stateful service）</strong>はリクエスト間でメモリにデータを保持します（例：プレイヤーの位置を追跡するゲームサーバー）。ステートフルサービスはスケーリングが難しく、各ユーザーを同じサーバーにルーティングする（「スティッキーセッション」と呼ばれます）か、マシン間で状態を複製する必要があります。これはコストがかかりエラーが発生しやすいです。</p>
+
+<div class="pq">&ldquo;可能な限りステートレスにすること。状態の管理のために設計されたデータベースやキャッシュに状態を任せること。&rdquo;</div>
+
+<h3>ロードバランシング（Load Balancing）</h3>
+
+<p>複数のサーバーを持つようになると、受信リクエストをサーバー間に分散させるものが必要になります。それが<strong>ロードバランサー（load balancer）</strong>です。ユーザーとサーバーの間に位置する専用コンポーネントで、ユーザーはロードバランサーに接続し、ロードバランサーが各リクエストをアプリケーションサーバーの1つに転送します。</p>
+
+<p>ロードバランサーが各リクエストを<em>どの</em>サーバーに送るかを決定するための戦略がいくつかあります：</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>ロードバランシング戦略</caption>
+<thead><tr><th>戦略</th><th>仕組み</th><th>最適な用途</th></tr></thead>
+<tbody>
+<tr><td><strong>ラウンドロビン（Round Robin）</strong></td><td>リクエストをサーバーに順番に送信：A、B、C、A、B、C…</td><td>同一キャパシティのサーバー群</td></tr>
+<tr><td><strong>最少接続数（Least Connections）</strong></td><td>現在アクティブな接続数が最も少ないサーバーに各リクエストを送信</td><td>リクエスト処理時間が変動する場合</td></tr>
+<tr><td><strong>一貫性ハッシュ（Consistent Hashing）</strong></td><td>キー（例：ユーザーID）をハッシュ化して担当サーバーを決定。サーバーの追加・削除時に再分散されるキーの割合が最小限</td><td>キャッシュ層、スティッキールーティング</td></tr>
+<tr><td><strong>重み付きラウンドロビン（Weighted Round Robin）</strong></td><td>ラウンドロビンと同様だが、キャパシティの大きいサーバーに比例してより多くのリクエストを割り当て</td><td>混在するハードウェア構成</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>すべての本番用ロードバランサーは<strong>ヘルスチェック（health checks）</strong>も実行します。各サーバーへの定期的なpingで、サーバーが稼働して応答しているかを確認します。サーバーがヘルスチェックに失敗すると、回復するまでロードバランサーはそのサーバーへのトラフィック送信を停止します。これにより、ユーザーが気づくことなく個々のサーバー障害を乗り越えることができます。</p>
+
+<div role="note" class="callout warn">
+<div class="callout-title">注意：「ロードバランサーはすべての単一障害点をなくす」という誤解</div>
+<p>ロードバランサー<em>自体</em>が単一障害点になります。本番環境では、ロードバランサーをペアで実行し（アクティブ/スタンバイ）、アクティブが停止した場合にスタンバイに切り替わるフローティングIPアドレスを使用します。常に問い続けてください：「<em>このコンポーネント</em>が障害を起こしたらどうなるか？」</p>
+</div>
+
+<h3>キャッシング（Caching）：最速のリクエストは発生しないリクエスト</h3>
+
+<p><strong>キャッシング（caching）</strong>とは、コストのかかる操作の結果を保存して、同じデータへの将来のリクエストを即座に提供できるようにすることです。うまく配置されたキャッシュは、200msのデータベースクエリを1msのメモリ参照に変えることができます。キャッシングは複数の層に存在します：</p>
+
+<ul>
+<li><strong>ブラウザキャッシュ（Browser cache）</strong> &mdash; ユーザーのブラウザが静的ファイル（CSS、JS、画像）をローカルに保存します。<code>Cache-Control</code>などのHTTPヘッダーで制御されます。</li>
+<li><strong>CDNキャッシュ（CDN cache）</strong> &mdash; コンテンツデリバリーネットワーク（CDN）が世界中のエッジロケーションに静的アセットのコピーをキャッシュし、遠隔地のユーザーのレイテンシを削減します。</li>
+<li><strong>アプリケーションキャッシュ（Application cache）</strong> &mdash; サーバーが頻繁にアクセスされるデータをインメモリストア（RedisやMemcachedなど）に保持し、毎回データベースにアクセスしなくて済むようにします。</li>
+<li><strong>データベースクエリキャッシュ（Database query cache）</strong> &mdash; データベース自体が最近のクエリ結果をキャッシュします。</li>
+</ul>
+
+<p>キャッシングの難しい問題は<strong>キャッシュ無効化（cache invalidation）</strong>です。キャッシュされたデータが古くなり更新が必要なタイミングを知ることです。主な戦略が3つあります：</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>キャッシュ無効化戦略とそのトレードオフ</caption>
+<thead><tr><th>戦略</th><th>仕組み</th><th>トレードオフ</th></tr></thead>
+<tbody>
+<tr><td><strong>TTL（Time-To-Live、有効期限）</strong></td><td>キャッシュデータは固定の期間（例：60秒）後に期限切れになります</td><td>シンプルですが、TTL期間中はデータが古くなる可能性があります</td></tr>
+<tr><td><strong>ライトスルー（Write-Through）</strong></td><td>すべての書き込みがキャッシュとデータベースに同時に行われます</td><td>データは常に一貫性がありますが、書き込みが遅くなります</td></tr>
+<tr><td><strong>ライトビハインド（Write-Behind）</strong></td><td>書き込みはまずキャッシュに行われ、その後非同期でデータベースに伝播します</td><td>書き込みは高速ですが、伝播前にキャッシュがクラッシュするとデータ損失のリスクがあります</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>特に厄介な問題は<strong>キャッシュスタンピード（cache stampede）</strong>（「サンダリングハード」とも呼ばれます）です。人気のあるキャッシュエントリが期限切れになり、10,000件のリクエストが同時にそのデータを要求する状況を想像してください。10,000件すべてが一度にデータベースにアクセスし、データベースを圧倒する可能性があります。解決策には、ロック（1つのリクエストのみがキャッシュを再生成し、他は待機）、確率的早期期限切れ（TTLが実際に切れる前にランダムにリフレッシュ）、stale-while-revalidate（バックグラウンドで再生成しながら古いデータを提供）などがあります。</p>
+
+<h3>コンテンツデリバリーネットワーク（CDN）</h3>
+
+<p><strong>CDN（Content Delivery Network）</strong>は、多くの地理的位置に分散されたサーバーのネットワークです（「エッジロケーション」または「ポイント・オブ・プレゼンス」と呼ばれます）。東京のユーザーがバージニアにホストされているアプリケーションから画像をリクエストすると、CDNは代わりに東京のサーバーからその画像を提供します。結果として、静的アセットのレイテンシが大幅に低下します。</p>
+
+<p>CDNは、頻繁に変更されないコンテンツ（画像、CSS、JavaScriptバンドル、フォント、動画）に最も効果的です。一部のCDNは「エッジコンピューティング」もサポートしており、動的コンテンツのレイテンシをさらに低下させるため、アプリケーションロジックの小さな部分をエッジロケーションで実行します。</p>
+
+<h3>メッセージキュー（Message Queue）：作業の分離</h3>
+
+<p>すべてのタスクをユーザーへの応答前に完了させる必要はありません。ユーザーがサインアップするとき、アカウントを即座に作成する必要はありますが、ウェルカムメールの送信は数秒後でも構いません。<strong>メッセージキュー（message queue）</strong>を使うと、これらの操作を切り離すことができます。アプリケーションサーバーはキューにメッセージ（「user@example.comにウェルカムメールを送信」）を追加し、即座にユーザーに応答します。別の<strong>ワーカー（worker）</strong>プロセスがメッセージを取り出し、非同期でメールを送信します。</p>
+
+<p>このパターン（<strong>プロデューサー（producer）</strong>がメッセージを書き込み、<strong>コンシューマー（consumer）</strong>がそれを読む）には複数の利点があります：APIは遅い操作を待たないため高速を維持できます。プロデューサーとコンシューマーは独立してスケールできます。コンシューマーがクラッシュしても、別のコンシューマーが取り出すまでメッセージはキューに残ります。</p>
+
+<p>理解すべき2つの重要な配信保証：</p>
+<ul>
+<li><strong>少なくとも1回の配信（At-least-once delivery）</strong> &mdash; キューはすべてのメッセージが配信されることを保証しますが、一部のメッセージは複数回配信される場合があります（コンシューマーが処理後、確認応答前にクラッシュした場合）。コンシューマーは<strong>冪等（idempotent）</strong>でなければなりません。同じメッセージを2回処理しても同じ結果になるようにします。</li>
+<li><strong>ちょうど1回の配信（Exactly-once delivery）</strong> &mdash; キューは各メッセージが正確に1回だけ配信・処理されることを保証します。実装がはるかに難しいため、ほとんどのシステムは冪等なコンシューマーを持つ少なくとも1回の配信で妥協します。</li>
+</ul>
+
+<p>複数回のリトライ後もメッセージを処理できない場合（おそらくデータが不正のため）、<strong>デッドレターキュー（dead letter queue、DLQ）</strong>に移動します。エンジニアが失敗したメッセージを調査して対応を決定するための保留エリアです。</p>
+
+<h3>レートリミット（Rate Limiting）：システムの保護</h3>
+
+<p><strong>レートリミット（rate limiting）</strong>は、クライアントが時間ウィンドウ内に行えるリクエスト数を制限します。APIには、乱用（偶発的または悪意のある）を防ぎ、クライアント間の公平な使用を保証し、バックエンドシステムが過負荷になるのを防ぐためにレートリミットが必要です。</p>
+
+<p><strong>トークンバケットアルゴリズム（token bucket algorithm）</strong>は最も一般的な実装です。固定数のトークン（例：100個）を保持するバケットを想像してください。各リクエストはトークンを1つ消費します。トークンは一定の速度でバケットに追加されます（例：1秒あたり10個）。バケットが空になると、リクエストは拒否されます（通常、HTTP 429「Too Many Requests」で）。これにより、長期的な平均レートを強制しながら短いバーストトラフィックを許可します。</p>
+
+<p><strong>スライディングウィンドウ（sliding window）</strong>アルゴリズムは、固定の間隔ではなく、ローリングタイムウィンドウ（例：過去60秒間）のリクエストをカウントします。ウィンドウ境界で意図したレートの最大2倍を許可してしまう固定ウィンドウカウントよりも精度が高いです。</p>
+
+<h3>トレードオフ分析：核心的なスキル</h3>
+
+<p>システムアーキテクチャにおけるすべての設計上の決定にはトレードオフが伴います。「最良の」アーキテクチャは存在しません。<em>特定の要件に対して</em>より良いまたは悪いアーキテクチャがあるだけです。これらのトレードオフを明確に表現できることがシステム設計で最も価値のあるスキルです。</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>よくあるシステム設計のトレードオフ</caption>
+<thead><tr><th>トレードオフ</th><th>選択肢A</th><th>選択肢B</th></tr></thead>
+<tbody>
+<tr><td><strong>一貫性 vs. 可用性</strong></td><td>一部のリクエストが失敗しても常に最新データを返す</td><td>データがわずかに古くなっていても常に応答する</td></tr>
+<tr><td><strong>レイテンシ vs. スループット</strong></td><td>各リクエストにできるだけ速く応答する</td><td>1秒あたりできるだけ多くのリクエストを処理する（バッチ処理はスループットを改善するが個別のレイテンシを悪化させる）</td></tr>
+<tr><td><strong>複雑性 vs. 保守性</strong></td><td>すべてのエッジケースに対応する洗練されたシステムを構築する</td><td>理解、デバッグ、修正がより簡単なシンプルなシステムを構築する</td></tr>
+<tr><td><strong>コスト vs. パフォーマンス</strong></td><td>より多くのハードウェアで問題に対処する</td><td>既存のリソース内で動作するようにコードを最適化する</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="pq">&ldquo;ジュニアエンジニアは『どちらが良いか？』と聞く。シニアエンジニアは『何を最適化しようとしているのか、そして何を犠牲にする覚悟があるのか？』と聞く。&rdquo;</div>
+
+<!-- SVG Diagram: System Architecture -->
+<svg viewBox="0 0 780 440" aria-label="System architecture diagram showing a load balancer distributing requests to multiple app servers, connected to a cache layer, a database, and a message queue with worker processes" style="width:100%;max-width:780px;margin:2rem auto;display:block">
+  <!-- Users -->
+  <rect x="320" y="10" width="140" height="40" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="390" y="36" text-anchor="middle" class="label-text" font-size="14">Users</text>
+
+  <!-- Arrow: Users -> LB -->
+  <line x1="390" y1="50" x2="390" y2="85" class="arrow" marker-end="url(#arrowhead)"/>
+
+  <!-- Load Balancer -->
+  <rect x="290" y="88" width="200" height="44" rx="8" class="node-accent" stroke="var(--accent)" stroke-width="2"/>
+  <text x="390" y="115" text-anchor="middle" class="label-text" font-size="14" fill="var(--bg)">Load Balancer</text>
+
+  <!-- Arrows: LB -> App Servers -->
+  <line x1="340" y1="132" x2="160" y2="185" class="arrow" marker-end="url(#arrowhead)"/>
+  <line x1="390" y1="132" x2="390" y2="185" class="arrow" marker-end="url(#arrowhead)"/>
+  <line x1="440" y1="132" x2="620" y2="185" class="arrow" marker-end="url(#arrowhead)"/>
+
+  <!-- App Server 1 -->
+  <rect x="80" y="188" width="160" height="44" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="160" y="215" text-anchor="middle" class="label-text" font-size="13">App Server 1</text>
+
+  <!-- App Server 2 -->
+  <rect x="310" y="188" width="160" height="44" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="390" y="215" text-anchor="middle" class="label-text" font-size="13">App Server 2</text>
+
+  <!-- App Server 3 -->
+  <rect x="540" y="188" width="160" height="44" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="620" y="215" text-anchor="middle" class="label-text" font-size="13">App Server 3</text>
+
+  <!-- Arrows: App Servers -> Cache -->
+  <line x1="160" y1="232" x2="270" y2="295" class="arrow" marker-end="url(#arrowhead)"/>
+  <line x1="390" y1="232" x2="320" y2="295" class="arrow" marker-end="url(#arrowhead)"/>
+
+  <!-- Cache -->
+  <rect x="220" y="298" width="150" height="44" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="295" y="318" text-anchor="middle" class="label-text" font-size="13">Cache (Redis)</text>
+  <text x="295" y="333" text-anchor="middle" class="sub-text" font-size="10">fast lookups</text>
+
+  <!-- Arrow: Cache -> DB -->
+  <line x1="295" y1="342" x2="295" y2="385" class="arrow" marker-end="url(#arrowhead)"/>
+
+  <!-- Database -->
+  <rect x="220" y="388" width="150" height="44" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="295" y="415" text-anchor="middle" class="label-text" font-size="13">Database</text>
+
+  <!-- Arrow: App Server 3 -> Message Queue -->
+  <line x1="620" y1="232" x2="620" y2="295" class="arrow" marker-end="url(#arrowhead)"/>
+
+  <!-- Message Queue -->
+  <rect x="540" y="298" width="160" height="44" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="620" y="318" text-anchor="middle" class="label-text" font-size="13">Message Queue</text>
+  <text x="620" y="333" text-anchor="middle" class="sub-text" font-size="10">async tasks</text>
+
+  <!-- Arrow: MQ -> Workers -->
+  <line x1="620" y1="342" x2="620" y2="385" class="arrow" marker-end="url(#arrowhead)"/>
+
+  <!-- Workers -->
+  <rect x="540" y="388" width="160" height="44" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="620" y="408" text-anchor="middle" class="label-text" font-size="13">Workers</text>
+  <text x="620" y="423" text-anchor="middle" class="sub-text" font-size="10">emails, reports</text>
+
+  <!-- Labels -->
+  <text x="40" y="325" class="sub-text" font-size="11" fill="var(--a5)">read path</text>
+  <line x1="68" y1="330" x2="218" y2="318" stroke="var(--a5)" stroke-width="1" stroke-dasharray="4"/>
+  <text x="500" y="275" class="sub-text" font-size="11" fill="var(--a5)">write path</text>
+</svg>
+
+<div role="note" class="callout warn">
+<div class="callout-title">注意：シンプルに始め、必要なときにスケールする</div>
+<p>よくある間違いは、最初から過剰設計することです。50人のユーザーのアプリケーションにマイクロサービス、メッセージキュー、3層のキャッシュは必要ありません。単一のサーバーでモノリスから始めましょう。データベースがボトルネックになったときにキャッシュを追加し、1台のサーバーが追いつかなくなったときにロードバランサーを追加し、同期処理がAPIを遅くしたときにメッセージキューを追加します。スケールの決定は、予測された問題ではなく、測定された問題によって駆動されるべきです。</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念：TaskForgeとの関連</div>
+<p>TaskForgeが突然バイラルになり、10,000人の同時ユーザーをサポートする必要があると想像してください。SQLiteを使った単一のFlaskサーバーでは対応できません。アーキテクチャを進化させる方法は以下の通りです：</p>
+<ol>
+<li><strong>データベース：</strong> SQLiteからPostgreSQL（並行書き込みに対応）に移行する。</li>
+<li><strong>アプリケーション：</strong> ロードバランサーの背後に4台のステートレスアプリサーバーを実行する。セッションをサーバーメモリではなくRedisに保存する。</li>
+<li><strong>キャッシング：</strong> 頻繁に読み込まれるタスクリストを30秒のTTLでRedisにキャッシュする。</li>
+<li><strong>非同期処理：</strong> メール通知とレポート生成をワーカープロセスを持つメッセージキューに移行する。</li>
+<li><strong>CDN：</strong> 静的アセット（CSS、JS、画像）をCDNで提供する。</li>
+</ol>
+<p>各変更は特定のボトルネックに対処します。順序が重要です。最大のボトルネックから取り組みます。</p>
+</div>
+
+<!-- Micro-Exercise -->
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう &mdash; ボトルネックを特定しましょう</div>
+<p>TaskForge APIには負荷時に次のような応答時間があります：タスクの一覧表示に800ms（そのうち400msはデータベースクエリ）、タスクの作成に50ms、通知メールの送信に3秒（応答をブロックしています）。どの問題を最初に修正し、どのように修正しますか？読み進める前に答えを書いてみましょう。</p>
+<p><strong>答え：</strong> メール通知を最初に修正します。最も影響の大きいボトルネックです（3秒間ユーザーリクエストをブロックしています）。メッセージキューに移行してAPIがすぐに応答できるようにします。次に、最近のクエリのキャッシュを追加してタスク一覧の遅さに対処します。</p>
+</div>
+
+<!-- Quiz 1 -->
+<div class="quiz" data-ch="34" data-ex="quiz-caching-strategy">
+  <h4>理解度チェック</h4>
+  <p>キャッシュとデータベースの両方に同時に書き込むキャッシュ戦略はどれですか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">TTLベースの有効期限</button>
+    <button class="quiz-option" data-correct="true">ライトスルー（Write-through）</button>
+    <button class="quiz-option" data-correct="false">ライトビハインド（Write-behind / write-back）</button>
+    <button class="quiz-option" data-correct="false">キャッシュアサイド（Cache-aside / lazy loading）</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Quiz 2 -->
+<div class="quiz" data-ch="34" data-ex="quiz-consistent-hashing">
+  <h4>理解度チェック</h4>
+  <p>一貫性ハッシュ（Consistent hashing）が単純なラウンドロビンでは解決できない問題は何ですか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">すべてのサーバーが均等な負荷を処理するようにする</button>
+    <button class="quiz-option" data-correct="false">ヘルスチェックの必要性をなくす</button>
+    <button class="quiz-option" data-correct="true">サーバーの追加・削除時のキーの再分散を最小化する</button>
+    <button class="quiz-option" data-correct="false">最速のサーバーが常にリクエストを受け取ることを保証する</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Quiz 3 -->
+<div class="quiz" data-ch="34" data-ex="quiz-rate-limiting">
+  <h4>理解度チェック</h4>
+  <p>トークンバケットアルゴリズムで、バケットが空のときにリクエストが届くとどうなりますか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">トークンが利用可能になるまでリクエストがキューに入る</button>
+    <button class="quiz-option" data-correct="false">すぐに新しいトークンが作成される</button>
+    <button class="quiz-option" data-correct="true">リクエストは拒否される（HTTP 429）</button>
+    <button class="quiz-option" data-correct="false">リクエストが別のサーバーに転送される</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Checklist -->
+<div class="checklist" data-ch="34" data-ex="checklist-system-design">
+  <h4>システム設計の基礎チェックリスト</h4>
+  <label><input type="checkbox"><span>垂直スケーリングと水平スケーリングの違いを説明できる</span></label>
+  <label><input type="checkbox"><span>ステートレスサービスがスケーリングしやすい理由を理解している</span></label>
+  <label><input type="checkbox"><span>3つのロードバランシング戦略とそれぞれの使い所を挙げられる</span></label>
+  <label><input type="checkbox"><span>キャッシュ無効化戦略（TTL、ライトスルー、ライトビハインド）を説明できる</span></label>
+  <label><input type="checkbox"><span>キャッシュスタンピードとは何か、その防止方法を理解している</span></label>
+  <label><input type="checkbox"><span>メッセージキューと同期処理のどちらを使うべきか説明できる</span></label>
+  <label><input type="checkbox"><span>レートリミットのトークンバケットアルゴリズムを理解している</span></label>
+  <label><input type="checkbox"><span>トレードオフ（一貫性 vs. 可用性、レイテンシ vs. スループット）を表現できる</span></label>
+</div>
+
+</section>
+
+
+<!-- ===== CH 35 ===== -->
+<section id="ch35" data-ch="35">
+<h2><span class="ch-label">第35章</span> 分散システム（Distributed Systems）とアーキテクチャ &mdash; 1台のマシンを超えて</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念</div>
+<p>第34章では、ロードバランサー、キャッシュ、キューを使ってシステムをスケールする方法を学びました。しかし、アプリケーションが大きくなりすぎて単一のチームが全体を管理できなくなったらどうでしょうか？異なる機能が異なる速度でスケールする必要があるときは？データが非常に重要で、データセンター全体の障害でも生き残る必要があるときは？これらの問いは分散システムへと導きます。複数の独立したサービスがネットワーク上で協調するアーキテクチャです。分散システムはすべての主要なテクノロジー製品を支えており、その制約を理解することでソフトウェアの考え方が根本的に変わるでしょう。</p>
+</div>
+
+<h3>モノリス vs. マイクロサービス：正直な比較</h3>
+
+<p><strong>モノリス（monolith）</strong>は、アプリケーションのすべての機能を含む単一のデプロイ可能なユニットです。すべてのコードは1つのリポジトリ、1つのプロセス、1つのデプロイメントパイプラインに存在します。モノリスは悪い評判を持ちがちですが、本当の利点があります：</p>
+
+<ul>
+<li><strong>開発がシンプル</strong> &mdash; モジュール間の関数呼び出しは高速でコンパイル時に型チェックされます。</li>
+<li><strong>デプロイがシンプル</strong> &mdash; 1つのビルド、1つのアーティファクト、1つのデプロイメント。</li>
+<li><strong>デバッグがシンプル</strong> &mdash; スタックトレースが全体の経緯を示します。ネットワークホップを追跡する必要がありません。</li>
+<li><strong>テストがシンプル</strong> &mdash; 統合テストはネットワーク呼び出しをモックすることなく単一プロセスで実行されます。</li>
+<li><strong>トランザクションの一貫性</strong> &mdash; 単一のデータベーストランザクションで複数のテーブルをアトミックに更新できます。</li>
+</ul>
+
+<p><strong>マイクロサービス（microservices）</strong>は、アプリケーションを複数の小さな独立してデプロイ可能なサービスに分割し、それぞれが1つのビジネス機能を担います。各サービスは独自のデータベース、独自のデプロイメントパイプライン、独自のチームを持ちます。利点は：</p>
+
+<ul>
+<li><strong>独立したスケーリング</strong> &mdash; 検索サービスが課金サービスより100倍多いトラフィックを受けている場合、それぞれを独立してスケールできます。</li>
+<li><strong>独立したデプロイメント</strong> &mdash; 決済サービスをリスクにさらすことなく通知サービスをデプロイできます。</li>
+<li><strong>技術的な柔軟性</strong> &mdash; 各サービスはそのニーズに最適な言語とデータベースを使用できます。</li>
+<li><strong>チームの自律性</strong> &mdash; 小さなチームが小さなサービスをエンドツーエンドで担当します。</li>
+</ul>
+
+<p>しかしマイクロサービスは<em>膨大な</em>複雑性をもたらします：</p>
+
+<ul>
+<li><strong>ネットワークは信頼できない</strong> &mdash; サービス間の呼び出しは失敗したり、タイムアウトしたり、不正なデータを返したりすることがあります。これらすべてに対処しなければなりません。</li>
+<li><strong>分散データの一貫性</strong> &mdash; サービスをまたいだ単一のデータベーストランザクションは使えません。サーガ、結果整合性、またはその他のパターンが必要です（後述）。</li>
+<li><strong>運用上のオーバーヘッド</strong> &mdash; 20のサービスを監視、デプロイ、デバッグすることは1つを監視するより根本的に難しいです。</li>
+<li><strong>統合テスト</strong> &mdash; サービス間の相互作用のテストには、コストのかかるエンドツーエンドテストかコントラクトテストが必要です。</li>
+</ul>
+
+<div class="pq">&ldquo;よく構造化されたモノリスを構築できないなら、マイクロサービスが答えだと思う根拠は何ですか？&rdquo; &mdash; Simon Brown</div>
+
+<p><strong>分割するタイミング：</strong> モノリスから始めましょう。明確な理由があるときだけ部分をサービスとして分割します。モジュールが独立したスケーリングを必要としているとき、チームがデプロイメントの自律性を必要としているとき、技術的な制約が異なるランタイムを要求しているときです。技術的な層ではなく、自然なビジネス境界（ユーザー、注文、通知）に沿って分割しましょう。</p>
+
+<h3>CAPの定理（CAP Theorem）</h3>
+
+<p><strong>CAPの定理（CAP theorem）</strong>は、ネットワークパーティション発生時に、分散システムは<strong>一貫性（Consistency）</strong>か<strong>可用性（Availability）</strong>のどちらかしか提供できず、両方は提供できないと述べています。それぞれを正確に定義しましょう：</p>
+
+<ul>
+<li><strong>一貫性（C: Consistency）</strong> &mdash; すべての読み取りが最新の書き込みを返します。すべてのノードが同じデータを同時に参照します。</li>
+<li><strong>可用性（A: Availability）</strong> &mdash; 一部のノードがダウンしていても、すべてのリクエストが（エラーではなく）応答を受け取ります。</li>
+<li><strong>パーティション耐性（P: Partition Tolerance）</strong> &mdash; ノード間のネットワーク通信が失われても、システムは機能し続けます。</li>
+</ul>
+
+<p>あらゆる分散システムでは、ネットワークパーティションは<em>必ず</em>発生します（ケーブルが切断される、スイッチが故障する、データセンターが停電する）。そのため、パーティション耐性はオプションではありません。常にPが必要です。本当の選択はパーティション発生時のCとAの間にあります：</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>CAPの定理：パーティション時に一貫性か可用性かを選ぶ</caption>
+<thead><tr><th>選択</th><th>パーティション時の動作</th><th>例</th></tr></thead>
+<tbody>
+<tr><td><strong>CP（一貫性 + パーティション耐性）</strong></td><td>古いデータを持つ可能性のあるノードへのリクエストを拒否。一部のリクエストは失敗するが、古い読み取りはなし。</td><td>銀行システム &mdash; 誤った残高を表示してはならない</td></tr>
+<tr><td><strong>AP（可用性 + パーティション耐性）</strong></td><td>常に応答するが、一部の応答は古いデータを含む可能性がある。後で整合させる。</td><td>ソーシャルメディア &mdash; 「いいね」数が一時的に間違っていても許容される</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>CAPはパーティション<em>中の</em>動作に関するものです。ネットワークが正常なときは、3つすべてを持つことができます。この定理は、問題が発生したときにユーザーにとって最も重要なことは何かを考えさせます。</p>
+
+<h3>イベント駆動アーキテクチャ（Event-Driven Architecture）</h3>
+
+<p>従来のアーキテクチャでは、サービスはお互いを直接呼び出して通信します。サービスAがサービスBにリクエストを送り、応答を待ちます。<strong>イベント駆動アーキテクチャ（event-driven architecture）</strong>では、サービスはイベントを発行・購読することで通信します。重要なことが起きると、サービスはイベント（「タスクが作成された」、「支払いが成功した」）を発行し、興味のあるサービスがそれに反応できます。</p>
+
+<p><strong>イベント（event）</strong>と<strong>コマンド（command）</strong>の区別は重要です。コマンドは「これをしてください」（メール送信、カード決済）と言います。特定のサービスに向けられています。イベントは「これが起きました」（注文が確定した、ユーザーが登録した）と言います。関心のある人に向けてブロードキャストされます。発行者は誰が聞いているかを知らず、気にもしないため、イベントはより疎な結合を生み出します。</p>
+
+<p><strong>イベントソーシング（event sourcing）</strong>はさらに進んだ考え方です。エンティティの<em>現在の状態</em>を保存する代わりに、その状態を生み出した<em>イベントのシーケンス</em>を保存します。銀行口座は「残高：$500」ではなく、完全な履歴です：$1000で開設、$200引き出し、$100入金、$400引き出し。イベントを再生することで常に現在の状態を再構築でき、無料で完全な監査証跡が手に入ります。</p>
+
+<p><strong>CQRS（Command Query Responsibility Segregation、コマンドクエリ責任分離）</strong>は読み取りモデルと書き込みモデルを分離します。書き込みはコマンド側（イベントソーシングを使う場合がある）を通じ、読み取りは別の最適化された読み取りモデル（非正規化されたデータベースビューの場合がある）から提供されます。これにより読み取りと書き込みを独立して最適化できます。</p>
+
+<h3>スケールにおけるAPI設計</h3>
+
+<p>複数のサービスとチームがAPIを共有するとき、些細に見える設計上の決定が重要になります。主な懸念点は以下の通りです：</p>
+
+<p><strong>バージョニング（Versioning）：</strong> APIは変化します。既存のクライアントを壊さずに進化させるための戦略が必要です。</p>
+
+<pre style="overflow-x:auto"><code># URL path versioning (most common, most visible)
+GET /api/v1/tasks
+GET /api/v2/tasks
+
+# Header versioning (cleaner URLs, harder to test in browser)
+GET /api/tasks
+Accept: application/vnd.taskforge.v2+json
+
+# Query parameter versioning
+GET /api/tasks?version=2</code></pre>
+
+<p><strong>ページネーション（Pagination）：</strong> 無制限のリストを返してはいけません。2つのアプローチがあります：</p>
+
+<pre style="overflow-x:auto"><code># Offset pagination (simple, but slow for large offsets)
+GET /api/tasks?offset=100&amp;limit=20
+
+# Cursor pagination (efficient, stable under inserts/deletes)
+GET /api/tasks?cursor=eyJpZCI6MTAwfQ&amp;limit=20
+# Response includes: "next_cursor": "eyJpZCI6MTIwfQ"</code></pre>
+
+<p><strong>冪等性キー（Idempotency keys）：</strong> クライアントが失敗したリクエストを再試行する場合（応答が途中で失われた場合など）、操作が2回実行されないようにする必要があります。クライアントは各リクエストと共に一意の<code>Idempotency-Key</code>ヘッダーを送信します。サーバーはこの値をキーとして結果を保存し、再試行時に保存された結果を返します。</p>
+
+<p><strong>後方互換性（Backward compatibility）：</strong> レスポンスにフィールドを追加することは安全です。フィールドを削除したり型を変更したりするとクライアントが壊れます。常に追加し、決して削除しないこと。</p>
+
+<h3>サービス間通信パターン</h3>
+
+<p>サービスは<strong>同期的（synchronously）</strong>（リクエスト/レスポンス）または<strong>非同期的（asynchronously）</strong>（メッセージキュー経由）に通信できます。同期はシンプルですが密な結合を生み出します。サービスBがダウンしていると、サービスAのリクエストも失敗します。非同期はより耐障害性が高いですが、推論が難しいです。</p>
+
+<p><strong>サーキットブレーカーパターン（circuit breaker pattern）</strong>は同期通信における連鎖障害を防ぎます。電気系統のサーキットブレーカーのように、3つの状態があります：</p>
+
+<ol>
+<li><strong>クローズド（Closed）</strong>（通常状態）&mdash; リクエストが通過します。障害がしきい値を超えると、ブレーカーが「トリップ」します。</li>
+<li><strong>オープン（Open）</strong> &mdash; すべてのリクエストはダウンストリームサービスを呼び出さずに即座に失敗します。すでに苦しんでいるサービスを圧倒するのを防ぎます。</li>
+<li><strong>ハーフオープン（Half-Open）</strong> &mdash; タイムアウト後、単一のテストリクエストが通過できます。成功すれば、ブレーカーは閉じます。失敗すれば、再び開きます。</li>
+</ol>
+
+<p><strong>指数バックオフによるリトライ（Retry with exponential backoff）</strong>も必須のパターンです。リクエストが失敗したとき、すぐに再試行しないでください。1秒待ち、次に2秒、次に4秒、次に8秒待ちます。多くのクライアントが同時に再試行するのを防ぐため、小さなランダムな「ジッター（jitter）」を加えます。</p>
+
+<pre style="overflow-x:auto"><code>import random
+import time
+
+def retry_with_backoff(operation, max_retries=5):
+    """Retry an operation with exponential backoff and jitter."""
+    for attempt in range(max_retries):
+        try:
+            return operation()
+        except Exception as e:
+            if attempt == max_retries - 1:
+                raise  # Final attempt failed; propagate the error
+            wait = (2 ** attempt) + random.uniform(0, 1)
+            print(f"Attempt {attempt + 1} failed: {e}. Retrying in {wait:.1f}s")
+            time.sleep(wait)</code></pre>
+
+<h3>分散システムにおけるデータ整合性</h3>
+
+<p>各マイクロサービスが独自のデータベースを持つ場合、サービスをまたいだ操作を単一のトランザクションでラップすることはできません。<strong>サーガパターン（saga pattern）</strong>が標準的な解決策です。サーガは各サービスにおけるローカルトランザクションのシーケンスで、各ステップには後のステップが失敗した場合にそれを取り消す<strong>補償アクション（compensating action）</strong>があります。</p>
+
+<p>例：注文の作成には（1）在庫の予約、（2）支払いの請求、（3）配送ラベルの作成が含まれる場合があります。ステップ3が失敗すると、サーガは補償アクションを実行します：支払いの返金（ステップ2を取り消し）、在庫の解放（ステップ1を取り消し）。</p>
+
+<p><strong>結果整合性（eventual consistency）</strong>とは、書き込みの後、すべての読者が即座に新しいデータを見るわけではないことを意味します。ただし、新しい書き込みなしに十分な時間が経過すると、すべての読者は<em>最終的に</em>同じ値を参照します。強い一貫性が必要に見えるシステムの多くは、実際には結果整合性で問題なく動作します。ユーザーのフレンドリストに新しい友達が反映されるまで2秒かかっても問題になりますか？通常はなりません。</p>
+
+<p><strong>分散トランザクション（distributed transactions）</strong>（二相コミット）はサービス間での強い一貫性を<em>確かに</em>提供しますが、大きなコストを伴います：遅く、プロトコル中にリソースをロックし、コーディネーターがクラッシュするとすべての参加者が止まります。マイクロサービスアーキテクチャでは、絶対に必要な場合を除いて分散トランザクションを避けてください。</p>
+
+<!-- SVG Diagram: Microservices Architecture -->
+<svg viewBox="0 0 780 460" aria-label="Microservices architecture diagram showing an API Gateway routing to three services each with its own database, connected by a message bus, with a circuit breaker between services" style="width:100%;max-width:780px;margin:2rem auto;display:block">
+  <!-- API Gateway -->
+  <rect x="290" y="10" width="200" height="44" rx="8" class="node-accent" stroke="var(--accent)" stroke-width="2"/>
+  <text x="390" y="37" text-anchor="middle" class="label-text" font-size="14" fill="var(--bg)">API Gateway</text>
+
+  <!-- Arrows from Gateway -->
+  <line x1="330" y1="54" x2="140" y2="105" class="arrow" marker-end="url(#arrowhead)"/>
+  <line x1="390" y1="54" x2="390" y2="105" class="arrow" marker-end="url(#arrowhead)"/>
+  <line x1="450" y1="54" x2="640" y2="105" class="arrow" marker-end="url(#arrowhead)"/>
+
+  <!-- Task Service -->
+  <rect x="50" y="108" width="180" height="44" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="140" y="135" text-anchor="middle" class="label-text" font-size="13">Task Service</text>
+
+  <!-- User Service -->
+  <rect x="300" y="108" width="180" height="44" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="390" y="135" text-anchor="middle" class="label-text" font-size="13">User Service</text>
+
+  <!-- Notification Service -->
+  <rect x="550" y="108" width="180" height="44" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="640" y="135" text-anchor="middle" class="label-text" font-size="13">Notification Service</text>
+
+  <!-- Databases -->
+  <line x1="140" y1="152" x2="140" y2="195" class="arrow" marker-end="url(#arrowhead)"/>
+  <rect x="70" y="198" width="140" height="38" rx="6" class="node-fill" stroke="var(--a5)" stroke-width="1.5"/>
+  <text x="140" y="222" text-anchor="middle" class="sub-text" font-size="12">Tasks DB</text>
+
+  <line x1="390" y1="152" x2="390" y2="195" class="arrow" marker-end="url(#arrowhead)"/>
+  <rect x="320" y="198" width="140" height="38" rx="6" class="node-fill" stroke="var(--a5)" stroke-width="1.5"/>
+  <text x="390" y="222" text-anchor="middle" class="sub-text" font-size="12">Users DB</text>
+
+  <line x1="640" y1="152" x2="640" y2="195" class="arrow" marker-end="url(#arrowhead)"/>
+  <rect x="570" y="198" width="140" height="38" rx="6" class="node-fill" stroke="var(--a5)" stroke-width="1.5"/>
+  <text x="640" y="222" text-anchor="middle" class="sub-text" font-size="12">Notifications DB</text>
+
+  <!-- Message Bus -->
+  <rect x="140" y="290" width="500" height="44" rx="8" class="node-accent" stroke="var(--accent)" stroke-width="2"/>
+  <text x="390" y="317" text-anchor="middle" class="label-text" font-size="14" fill="var(--bg)">Message Bus (Event Stream)</text>
+
+  <!-- Connections to Message Bus -->
+  <line x1="140" y1="236" x2="240" y2="288" class="arrow" marker-end="url(#arrowhead)"/>
+  <line x1="390" y1="236" x2="390" y2="288" class="arrow" marker-end="url(#arrowhead)"/>
+  <line x1="640" y1="236" x2="540" y2="288" class="arrow" marker-end="url(#arrowhead)"/>
+
+  <!-- Pub/Sub labels -->
+  <text x="170" y="268" class="sub-text" font-size="10" fill="var(--a5)">publish</text>
+  <text x="402" y="268" class="sub-text" font-size="10" fill="var(--a5)">pub/sub</text>
+  <text x="580" y="268" class="sub-text" font-size="10" fill="var(--a5)">subscribe</text>
+
+  <!-- Circuit Breaker between Task Service and User Service -->
+  <line x1="230" y1="130" x2="268" y2="130" stroke="var(--accent)" stroke-width="2"/>
+  <circle cx="280" cy="130" r="12" fill="var(--warn)" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="280" y="134" text-anchor="middle" font-size="10" fill="var(--bg)" font-weight="bold">CB</text>
+  <line x1="292" y1="130" x2="298" y2="130" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Circuit Breaker label -->
+  <text x="280" y="115" text-anchor="middle" class="sub-text" font-size="9" fill="var(--a5)">Circuit Breaker</text>
+
+  <!-- Event examples -->
+  <text x="390" y="365" text-anchor="middle" class="sub-text" font-size="11" fill="var(--a5)">Events: task.created &middot; user.updated &middot; notification.sent</text>
+
+  <!-- Legend box -->
+  <rect x="180" y="395" width="420" height="55" rx="6" fill="none" stroke="var(--a5)" stroke-width="1" stroke-dasharray="4"/>
+  <text x="390" y="415" text-anchor="middle" class="sub-text" font-size="11">Each service owns its data &middot; Services communicate via events</text>
+  <text x="390" y="435" text-anchor="middle" class="sub-text" font-size="11">Circuit breaker prevents cascade failures on sync calls</text>
+</svg>
+
+<div role="note" class="callout warn">
+<div class="callout-title">注意：「マイクロサービスは常にモノリスより優れている」という誤解</div>
+<p>多くの成功した企業が巨大なスケールでモノリスを運用しています。Shopify、Stack Overflow、Basecampはすべてモノリシックアーキテクチャを使用しています。マイクロサービスは技術的な問題よりも組織的な問題（多くのチームが1つの製品に取り組んでいる）を解決します。小さなチームなら、モノリスがほぼ確実に正しい選択です。最良のアーキテクチャは、チームが信頼性高く出荷できるものです。</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念：TaskForgeとの関連</div>
+<p>TaskForgeがマイクロサービスアーキテクチャを必要とするほど成長した場合、以下が合理的な分解の一例です：</p>
+<ul>
+<li><strong>タスクサービス（Task Service）</strong> &mdash; タスクのCRUD、タスクのステータス遷移、割り当てロジック。タスクデータベースを所有する。</li>
+<li><strong>ユーザーサービス（User Service）</strong> &mdash; 認証、認可、ユーザープロファイル。ユーザーデータベースを所有する。</li>
+<li><strong>通知サービス（Notification Service）</strong> &mdash; <code>task.assigned</code>や<code>task.overdue</code>などのイベントをサブスクライブし、メールとプッシュ通知を送信する。</li>
+</ul>
+<p>タスクサービスはタスク割り当て時にユーザーIDを検証するためにユーザーサービスを呼び出します（サーキットブレーカー付き）。タスクが作成されると、タスクサービスは<code>task.created</code>イベントをメッセージバスに発行します。通知サービスはこのイベントをサブスクライブして通知を送信します。通知サービスがダウンしていても、メッセージはキューに蓄積され、回復したときに処理されます。タスクは失われません。</p>
+</div>
+
+<!-- Micro-Exercise -->
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう &mdash; CAPトレードオフを分析しましょう</div>
+<p>各シナリオについて、CP（可用性より一貫性を優先）またはAP（一貫性より可用性を優先）のどちらを選ぶかを決め、その理由を説明してください：</p>
+<ol>
+<li>医療記録システム</li>
+<li>ソーシャルメディアの「トレンドトピック」機能</li>
+<li>航空座席予約システム</li>
+<li>商品推薦エンジン</li>
+</ol>
+<p><strong>答え：</strong> (1) CP &mdash; 誤った医療データは危険な可能性があります。(2) AP &mdash; わずかに古いトレンドトピックは無害です。(3) CP &mdash; 座席の二重予約は受け入れられません。(4) AP &mdash; わずかに古い推薦は問題ありません。</p>
+</div>
+
+<!-- Quiz 1 -->
+<div class="quiz" data-ch="35" data-ex="quiz-cap-theorem">
+  <h4>理解度チェック</h4>
+  <p>CAPの定理において、銀行システムはネットワークパーティション時に通常何を犠牲にしますか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">一貫性 &mdash; 古い残高を表示する</button>
+    <button class="quiz-option" data-correct="true">可用性 &mdash; 誤ったデータを表示するリスクを冒すより、リクエストを拒否する</button>
+    <button class="quiz-option" data-correct="false">パーティション耐性 &mdash; ネットワーク分割を防ぐ</button>
+    <button class="quiz-option" data-correct="false">3つすべて &mdash; 銀行システムはCAPを使わない</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Quiz 2 -->
+<div class="quiz" data-ch="35" data-ex="quiz-circuit-breaker">
+  <h4>理解度チェック</h4>
+  <p>マイクロサービスアーキテクチャにおいてサーキットブレーカーは何をしますか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">サービス間のトラフィックを暗号化する</button>
+    <button class="quiz-option" data-correct="false">サービスインスタンス間で負荷を分散する</button>
+    <button class="quiz-option" data-correct="true">連鎖障害を防ぐため、障害中のサービスへの呼び出しを停止する</button>
+    <button class="quiz-option" data-correct="false">APIリクエストのスキーマを検証する</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Quiz 3 -->
+<div class="quiz" data-ch="35" data-ex="quiz-saga-pattern">
+  <h4>理解度チェック</h4>
+  <p>サーガパターンで、4ステップのサーガのステップ3が失敗するとどうなりますか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">サーガ全体がステップ1から再試行される</button>
+    <button class="quiz-option" data-correct="true">補償アクションがステップ2、次にステップ1を（逆順で）取り消す</button>
+    <button class="quiz-option" data-correct="false">ステップ1と2はデータベースによって自動的にロールバックされる</button>
+    <button class="quiz-option" data-correct="false">サーガは部分的としてマークされ、不整合な状態のまま残される</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Checklist -->
+<div class="checklist" data-ch="35" data-ex="checklist-architecture">
+  <h4>アーキテクチャ決定チェックリスト</h4>
+  <label><input type="checkbox"><span>モノリスとマイクロサービスの本当のトレードオフを説明できる</span></label>
+  <label><input type="checkbox"><span>CAPの定理を適用して、特定のシステムでCPとAPのどちらを選ぶか決定できる</span></label>
+  <label><input type="checkbox"><span>イベントとコマンドの違いを理解し、イベント駆動アーキテクチャをいつ使うか分かる</span></label>
+  <label><input type="checkbox"><span>APIのバージョニングとページネーション戦略を設計できる</span></label>
+  <label><input type="checkbox"><span>サーキットブレーカーパターンと指数バックオフを説明できる</span></label>
+  <label><input type="checkbox"><span>分散データ整合性のためのサーガパターンを理解している</span></label>
+  <label><input type="checkbox"><span>結果整合性が許容される場合とそうでない場合を知っている</span></label>
+  <label><input type="checkbox"><span>モノリスから始め、必要なときだけ分割するアプローチを取る</span></label>
+</div>
+
+</section>
+
+
+<!-- ===== CH 36 ===== -->
+<section id="ch36" data-ch="36">
+<h2><span class="ch-label">第36章</span> パフォーマンス（Performance）と可観測性（Observability）&mdash; システムの内部を見る</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念</div>
+<p>世界で最もエレガントなアーキテクチャを設計できても、その内部で何が起きているかを<em>見る</em>ことができなければ、盲目で飛んでいるようなものです。アプリケーションが遅いとき、<em>どこで</em>、<em>なぜ</em>遅いのかを知る必要があります。午前3時に壊れたとき、推測なしに何が悪かったかを教えてくれるツールが必要です。パフォーマンスエンジニアリングと可観測性は、実行中のシステムの内部に目と耳を与える規律です。「なんか遅い」を「このインデックスが欠けているためこの関数が400msかかっている」に変えます。</p>
+</div>
+
+<h3>プロファイリング（Profiling）：ボトルネックを見つける</h3>
+
+<p><strong>プロファイリング（profiling）</strong>とは、プログラムが時間（またはメモリ）をどこで費やしているかを正確に測定することです。推測と知識の違いです。よくある間違いは、重要でないコードを最適化することです。全実行時間の0.1%しか占めない関数を数時間かけて10倍速くするようなことです。プロファイリングは、コードのどの5%が遅さの95%を担っているかを教えてくれます。</p>
+
+<p><strong>CPUプロファイリング（CPU profiling）</strong>は各関数でどのくらいの時間が費やされているかを測定します。PythonのビルトインモジュールであるcProfileが標準ツールです：</p>
+
+<pre style="overflow-x:auto"><code>import cProfile
+
+def slow_function():
+    total = 0
+    for i in range(1_000_000):
+        total += i ** 2
+    return total
+
+def fast_function():
+    return sum(i ** 2 for i in range(1_000_000))
+
+def main():
+    slow_function()
+    fast_function()
+
+# Profile the main function
+cProfile.run('main()')
+# Output shows: function name, call count, time per call, cumulative time</code></pre>
+
+<p>プロファイル出力はどの関数が時間を消費しているかを正確に示します。まず「cumulative time（累積時間）」列を見ます。これはその関数が呼び出すすべての関数を<em>含む</em>、関数で費やされた合計時間を教えてくれます。次に、個別に遅い関数を見つけるために「time per call（呼び出しあたりの時間）」を確認します。</p>
+
+<p><strong>メモリプロファイリング（Memory profiling）</strong>は、プログラムが割り当てるメモリ量を追跡します。これは、メモリリークが数時間または数日後にクラッシュを引き起こす、長時間実行されるサーバープロセスにとって重要です。<code>memory_profiler</code>などのツールは行ごとのメモリ使用量を表示できます。</p>
+
+<p><strong>フレームグラフ（flame graphs）</strong>はプロファイリングデータの視覚的表現です。X軸は各関数で費やされた時間の割合を示し、Y軸はコールスタックを示します。グラフの上部にある幅の広いバーがボトルネックです。複雑なアプリケーションでどこに時間が費やされているかを素早く理解するための最も強力なツールの一つです。</p>
+
+<h3>実践でのキャッシング</h3>
+
+<p>第34章でキャッシングアーキテクチャについて説明しました。今度はコードレベルの実装を見てみましょう。Pythonの<code>functools.lru_cache</code>デコレーターは<strong>メモ化（memoization）</strong>を提供します。引数に基づいて関数の戻り値をキャッシュします：</p>
+
+<pre style="overflow-x:auto"><code>from functools import lru_cache
+
+@lru_cache(maxsize=128)
+def fibonacci(n):
+    """Without caching, this is O(2^n). With caching, it is O(n)."""
+    if n &lt; 2:
+        return n
+    return fibonacci(n - 1) + fibonacci(n - 2)
+
+# First call: computes and caches
+print(fibonacci(100))  # Instant, thanks to caching
+
+# Check cache statistics
+print(fibonacci.cache_info())
+# CacheInfo(hits=98, misses=101, maxsize=128, currsize=101)</code></pre>
+
+<p><strong>キャッシュアサイドパターン（cache-aside pattern）</strong>（「遅延ロード」とも呼ばれます）は最も一般的なアプリケーションレベルのキャッシング戦略です。コードはまずキャッシュを確認し、ミスの場合はデータベースから読み込み、結果をキャッシュに保存して返します：</p>
+
+<pre style="overflow-x:auto"><code>def get_task(task_id, cache, database):
+    """Cache-aside pattern: check cache first, fall back to database."""
+    # 1. Check cache
+    cached = cache.get(f"task:{task_id}")
+    if cached is not None:
+        return cached  # Cache hit!
+
+    # 2. Cache miss - read from database
+    task = database.query("SELECT * FROM tasks WHERE id = %s", (task_id,))
+
+    # 3. Store in cache for next time (with 60-second TTL)
+    cache.set(f"task:{task_id}", task, ttl=60)
+
+    return task</code></pre>
+
+<p><strong>Redis</strong>は最も広く使われるアプリケーションキャッシュです。文字列、リスト、セット、ハッシュ、ソート済みセットをサポートするインメモリのキーバリューストアです。一般的な用途には、セッションストレージ、レートリミットカウンター、リーダーボード（ソート済みセットを使用）、汎用キャッシングが含まれます。</p>
+
+<h3>可観測性の三本柱</h3>
+
+<p><strong>可観測性（observability）</strong>とは、システムの出力を調べることでシステム内部で何が起きているかを理解できる能力です。三本柱は<strong>ログ（logs）</strong>、<strong>メトリクス（metrics）</strong>、<strong>トレース（traces）</strong>です。それぞれが異なる質問に答え、完全な全体像を得るためには3つすべてが必要です。</p>
+
+<!-- SVG Diagram: Three Pillars of Observability -->
+<svg viewBox="0 0 780 380" aria-label="可観測性の三本柱：ログ、メトリクス、トレースを示す図" style="width:100%;max-width:780px;margin:2rem auto;display:block">
+  <!-- Title -->
+  <text x="390" y="30" text-anchor="middle" class="label-text" font-size="16" font-weight="bold">可観測性の三本柱</text>
+
+  <!-- Pillar 1: Logs -->
+  <rect x="30" y="50" width="220" height="290" rx="10" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <rect x="30" y="50" width="220" height="44" rx="10" class="node-accent" stroke="var(--accent)" stroke-width="2"/>
+  <text x="140" y="78" text-anchor="middle" class="label-text" font-size="15" fill="var(--bg)" font-weight="bold">Logs</text>
+
+  <text x="140" y="118" text-anchor="middle" class="sub-text" font-size="11" font-weight="bold">何が起きたか？</text>
+  <text x="50" y="145" class="sub-text" font-size="11">タイムスタンプと文脈を</text>
+  <text x="50" y="160" class="sub-text" font-size="11">持つ個別イベント</text>
+
+  <text x="140" y="190" text-anchor="middle" class="sub-text" font-size="10" fill="var(--a5)">例：</text>
+  <text x="50" y="210" class="sub-text" font-size="10" fill="var(--a5)">- ユーザーログイン失敗</text>
+  <text x="50" y="228" class="sub-text" font-size="10" fill="var(--a5)">- 支払い処理完了</text>
+  <text x="50" y="246" class="sub-text" font-size="10" fill="var(--a5)">- データベースタイムアウト</text>
+  <text x="50" y="264" class="sub-text" font-size="10" fill="var(--a5)">- リクエスト詳細</text>
+
+  <text x="140" y="300" text-anchor="middle" class="sub-text" font-size="10" font-style="italic">高詳細度、大量データ</text>
+  <text x="140" y="318" text-anchor="middle" class="sub-text" font-size="10" font-style="italic">デバッグに最適</text>
+
+  <!-- Pillar 2: Metrics -->
+  <rect x="280" y="50" width="220" height="290" rx="10" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <rect x="280" y="50" width="220" height="44" rx="10" class="node-accent" stroke="var(--accent)" stroke-width="2"/>
+  <text x="390" y="78" text-anchor="middle" class="label-text" font-size="15" fill="var(--bg)" font-weight="bold">Metrics</text>
+
+  <text x="390" y="118" text-anchor="middle" class="sub-text" font-size="11" font-weight="bold">どのくらいのパフォーマンスか？</text>
+  <text x="300" y="145" class="sub-text" font-size="11">時系列の数値計測</text>
+  <text x="300" y="160" class="sub-text" font-size="11">（集計データ）</text>
+
+  <text x="390" y="190" text-anchor="middle" class="sub-text" font-size="10" fill="var(--a5)">例：</text>
+  <text x="300" y="210" class="sub-text" font-size="10" fill="var(--a5)">- リクエストレイテンシ (p50, p99)</text>
+  <text x="300" y="228" class="sub-text" font-size="10" fill="var(--a5)">- エラーレート (5xx / 合計)</text>
+  <text x="300" y="246" class="sub-text" font-size="10" fill="var(--a5)">- CPU使用率 (%)</text>
+  <text x="300" y="264" class="sub-text" font-size="10" fill="var(--a5)">- キューの深さ</text>
+
+  <text x="390" y="300" text-anchor="middle" class="sub-text" font-size="10" font-style="italic">低詳細度、少量データ</text>
+  <text x="390" y="318" text-anchor="middle" class="sub-text" font-size="10" font-style="italic">アラートとトレンド分析に最適</text>
+
+  <!-- Pillar 3: Traces -->
+  <rect x="530" y="50" width="220" height="290" rx="10" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <rect x="530" y="50" width="220" height="44" rx="10" class="node-accent" stroke="var(--accent)" stroke-width="2"/>
+  <text x="640" y="78" text-anchor="middle" class="label-text" font-size="15" fill="var(--bg)" font-weight="bold">Traces</text>
+
+  <text x="640" y="118" text-anchor="middle" class="sub-text" font-size="11" font-weight="bold">どこに時間がかかっているか？</text>
+  <text x="550" y="145" class="sub-text" font-size="11">サービスをまたいだ</text>
+  <text x="550" y="160" class="sub-text" font-size="11">エンドツーエンドのリクエスト経路</text>
+
+  <text x="640" y="190" text-anchor="middle" class="sub-text" font-size="10" fill="var(--a5)">例：</text>
+  <text x="550" y="210" class="sub-text" font-size="10" fill="var(--a5)">- API→認証→DB→キャッシュ</text>
+  <text x="550" y="228" class="sub-text" font-size="10" fill="var(--a5)">- 認証サービスで200ms</text>
+  <text x="550" y="246" class="sub-text" font-size="10" fill="var(--a5)">- データベースで50ms</text>
+  <text x="550" y="264" class="sub-text" font-size="10" fill="var(--a5)">- キャッシュ参照で10ms</text>
+
+  <text x="640" y="300" text-anchor="middle" class="sub-text" font-size="10" font-style="italic">中詳細度、中量データ</text>
+  <text x="640" y="318" text-anchor="middle" class="sub-text" font-size="10" font-style="italic">レイテンシ分析に最適</text>
+
+  <!-- Connecting arrows at bottom -->
+  <line x1="250" y1="360" x2="280" y2="360" stroke="var(--a5)" stroke-width="1.5" marker-end="url(#arrowhead-muted)"/>
+  <line x1="500" y1="360" x2="530" y2="360" stroke="var(--a5)" stroke-width="1.5" marker-end="url(#arrowhead-muted)"/>
+  <text x="265" y="375" text-anchor="middle" class="sub-text" font-size="9" fill="var(--a5)">correlate</text>
+  <text x="515" y="375" text-anchor="middle" class="sub-text" font-size="9" fill="var(--a5)">correlate</text>
+</svg>
+
+<h3>構造化ロギング（Structured Logging）</h3>
+
+<p>従来のテキストログはこのようなものです：</p>
+
+<pre style="overflow-x:auto"><code>2026-03-18 14:23:05 ERROR Failed to create task for user 42: database timeout</code></pre>
+
+<p>人間には読みやすいですが、機械には不向きです。「ユーザー42のすべてのエラー」を検索するには脆弱な正規表現パースが必要です。<strong>構造化ロギング（structured logging）</strong>は一貫したフィールドを持つJSONオブジェクトとしてログを出力します：</p>
+
+<pre style="overflow-x:auto"><code>import json
+import time
+import uuid
+
+class StructuredLogger:
+    """Logger that outputs JSON-formatted log entries."""
+
+    def __init__(self, service_name):
+        self.service_name = service_name
+
+    def log(self, level, message, **context):
+        entry = {
+            "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+            "level": level,
+            "service": self.service_name,
+            "message": message,
+            **context
+        }
+        print(json.dumps(entry))
+
+logger = StructuredLogger("taskforge-api")
+
+# Usage with correlation ID for request tracing
+correlation_id = str(uuid.uuid4())
+logger.log("INFO", "Task created",
+    correlation_id=correlation_id,
+    user_id=42,
+    task_id=1001,
+    duration_ms=45
+)
+# Output:
+# {"timestamp":"2026-03-18T14:23:05Z","level":"INFO","service":"taskforge-api",
+#  "message":"Task created","correlation_id":"a1b2c3...","user_id":42,
+#  "task_id":1001,"duration_ms":45}</code></pre>
+
+<p><strong>コリレーションID（correlation ID）</strong>（「リクエストID」または「トレースID」とも呼ばれます）は、リクエストがシステムに入るときに生成される一意の識別子です。すべてのサービスがこのIDをログに含め、リクエストが触れたすべてのサービスにまたがる単一のリクエストのすべてのログエントリをフィルタリングできます。</p>
+
+<p>標準の<strong>ログレベル（log levels）</strong>は重大度を伝えます：</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>標準ログレベルとその使い時</caption>
+<thead><tr><th>レベル</th><th>使い時</th><th>例</th></tr></thead>
+<tbody>
+<tr><td><code>DEBUG</code></td><td>開発者向けの詳細な診断情報</td><td>変数の値、クエリパラメーター</td></tr>
+<tr><td><code>INFO</code></td><td>記録する価値のある通常の操作</td><td>ユーザーがログインした、タスクが作成された</td></tr>
+<tr><td><code>WARNING</code></td><td>予期しないが壊れてはいないもの</td><td>キャッシュミス率がしきい値を超えている</td></tr>
+<tr><td><code>ERROR</code></td><td>このリクエストで何かが失敗した</td><td>データベースクエリのタイムアウト</td></tr>
+<tr><td><code>CRITICAL</code></td><td>システムがダウンしそうな状態</td><td>ディスクフル、メモリ不足</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>モニタリングとアラート：ゴールデンシグナル（Golden Signals）</h3>
+
+<p>GoogleのSite Reliability Engineering（SRE）の書籍は、すべてのサービスが監視すべき4つの<strong>ゴールデンシグナル（golden signals）</strong>を定義しています：</p>
+
+<ol>
+<li><strong>レイテンシ（Latency）</strong> &mdash; リクエストにかかる時間。平均だけでなくパーセンタイル（p50、p95、p99）を追跡します。100msの平均値はリクエストの1%が5秒かかっている事実を隠してしまうかもしれません。</li>
+<li><strong>トラフィック（Traffic）</strong> &mdash; システムへの需要の大きさ。1秒あたりのリクエスト数、同時ユーザー数、またはデータスループット。</li>
+<li><strong>エラー（Errors）</strong> &mdash; 失敗したリクエストのレート。明示的な失敗（HTTP 500）と暗黙的な失敗（HTTP 200だが内容が間違っている）の両方。</li>
+<li><strong>飽和（Saturation）</strong> &mdash; システムがどのくらい「満杯」か。CPU使用率、メモリ使用量、キューの深さ、ディスクI/O。飽和は問題が発生する前に将来の問題を予測します。</li>
+</ol>
+
+<p>これらのシグナルは<strong>SLI、SLO、SLA</strong>と関連しています：</p>
+
+<ul>
+<li><strong>SLI（Service Level Indicator、サービスレベル指標）</strong> &mdash; 定量的な測定値。例：「リクエストの99.2%が200ms以内に完了する。」</li>
+<li><strong>SLO（Service Level Objective、サービスレベル目標）</strong> &mdash; 内部で設定するターゲット。例：「リクエストの99.5%を200ms以内を目標とする。」</li>
+<li><strong>SLA（Service Level Agreement、サービスレベル契約）</strong> &mdash; 違反した場合に結果が伴う顧客への契約上の約束。例：「99.9%の稼働時間を保証、それ以下ならクレジットを提供。」</li>
+</ul>
+
+<p>良いアラートは<em>原因</em>（CPU 80%超）ではなく<em>症状</em>（エラーレート5%超）に基づきます。高いCPUはユーザーに見える影響を引き起こす場合にのみ問題です。ユーザーが体験していることをアラートにし、その後ダッシュボードとログで原因を見つけましょう。</p>
+
+<h3>分散トレーシング（Distributed Tracing）</h3>
+
+<p>単一のユーザーリクエストが5つのサービスを通過し、合計応答時間が2秒の場合、どのサービスがボトルネックですか？<strong>分散トレーシング（distributed tracing）</strong>はリクエストをサービス境界を越えて追跡することでこれに答えます。</p>
+
+<p>各サービスは<strong>スパン（span）</strong>を作成します。行った作業、かかった時間、親スパンの記録です。スパンが集まって<strong>トレース（trace）</strong>ツリーを形成し、リクエストの完全なライフサイクルを示します。トレースIDはすべてのスパンを結びつけるためにサービス間で渡されます（通常HTTPヘッダーとして）。</p>
+
+<pre style="overflow-x:auto"><code># Conceptual trace structure (simplified)
+trace = {
+    "trace_id": "abc-123",
+    "spans": [
+        {"service": "api-gateway",    "duration_ms": 1950, "parent": None},
+        {"service": "auth-service",   "duration_ms": 150,  "parent": "api-gateway"},
+        {"service": "task-service",   "duration_ms": 1700, "parent": "api-gateway"},
+        {"service": "database",       "duration_ms": 1500, "parent": "task-service"},
+    ]
+}
+# Diagnosis: 1500ms in the database query - that is the bottleneck!</code></pre>
+
+<h3>本番環境のデバッグ：調査の考え方</h3>
+
+<p>本番環境のデバッグは開発中のデバッグとは根本的に異なります。デバッガーをアタッチできず、print文を追加できず、問題が断続的かもしれません。アプローチは体系的です：</p>
+
+<ol>
+<li><strong>観察（Observe）</strong> &mdash; 症状は何か？ダッシュボード、エラーレート、最近のログを確認します。いつ始まったか？最近何が変わったか（デプロイメント、設定変更、トラフィックスパイク）？</li>
+<li><strong>仮説（Hypothesize）</strong> &mdash; 原因についての理論を立てます。「新しいデプロイメントが遅いクエリを導入した。」「トラフィックスパイクでデータベースが過負荷になっている。」</li>
+<li><strong>検証（Test）</strong> &mdash; 仮説を確認します。クエリのパフォーマンスメトリクスを確認します。データベース接続数を確認します。デプロイメント前後のエラーレートを比較します。</li>
+<li><strong>対処（Act）</strong> &mdash; 即時の問題を修正し（デプロイメントのロールバック、データベースのスケールアップ）、次に根本原因に対処します。</li>
+</ol>
+
+<p>インシデントを解決した後、<strong>ポストモーテム（postmortem）</strong>を実施します。良いポストモーテムは<strong>ブレームレス（blameless、責任追及なし）</strong>です。個人への非難（「Bobが悪いクエリを書いた」）ではなく、システム的な原因（「コードレビュープロセスがこれを捉えられなかった」）に焦点を当てます。具体的なアクションアイテムを生み出します：「タスク一覧エンドポイントの負荷テストを追加する」、「データベースのレイテンシが500msを超えたときのアラートを追加する。」</p>
+
+<div class="pq">&ldquo;すべてのインシデントはギフトです。システムに存在するとは知らなかった弱点を学ぶ機会です。&rdquo;</div>
+
+<div role="note" class="callout warn">
+<div class="callout-title">注意：可観測性はオプションではない</div>
+<p>多くの開発者はロギングとモニタリングを後回しにします。「後で」追加するものとして扱います。実際には、適切な可観測性なしでの最初の本番インシデントは、最初から可観測性を設定するよりも多くのエンジニアリング時間を消費します。最初から組み込みましょう。構造化ロギング、基本的なメトリクス（4つのゴールデンシグナル）、コリレーションIDは構築するすべてのサービスで標準であるべきです。</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念：TaskForgeとの関連</div>
+<p>TaskForgeの本番対応の可観測性は以下のようになります：</p>
+<ul>
+<li><strong>構造化ロギング：</strong> すべてのAPIリクエストがメソッド、パス、ステータスコード、所要時間、ユーザーID、コリレーションIDをログに記録します。</li>
+<li><strong>メトリクス：</strong> リクエストレイテンシ（p50、p95、p99）、エラーレート（5xxレスポンス/合計）、アクティブタスク数（ビジネスメトリクス）、データベースクエリ所要時間を追跡します。</li>
+<li><strong>アラート：</strong> エラーレートが5分間5%を超えたとき、p99レイテンシが2秒を超えたとき、データベース接続プールが80%を超えたときにトリガーします。</li>
+<li><strong>プロファイル：</strong> タスク一覧エンドポイントでcProfileを実行し、<code>tasks.user_id</code>のインデックス欠如がフルテーブルスキャンを引き起こしていることを発見します。インデックスを追加すると、レイテンシが800msから15msに低下します。</li>
+</ul>
+</div>
+
+<!-- Micro-Exercise -->
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう &mdash; 構造化ログを読みましょう</div>
+<p>このログエントリを見て答えてください：何が起きましたか？どのユーザーが影響を受けましたか？どのくらいかかりましたか？これはどのリクエストの一部ですか？</p>
+<pre style="overflow-x:auto"><code>{"timestamp":"2026-03-18T09:15:22Z","level":"ERROR","service":"taskforge-api",
+ "message":"Failed to create task","correlation_id":"f47ac10b-58cc",
+ "user_id":87,"error":"database_timeout","duration_ms":5003}</code></pre>
+<p><strong>答え：</strong> データベースタイムアウトによりタスクの作成に失敗しました。ユーザー87が影響を受けました。リクエストには5003ms（5秒超）かかりました。コリレーションID <code>f47ac10b-58cc</code>を使って、サービスをまたいでこのリクエストに関連するすべてのログエントリを見つけることができます。</p>
+</div>
+
+<!-- Pyodide Exercise: Profiling Comparison -->
+<div class="exercise" data-type="pyodide" data-ch="36" data-ex="profiling-comparison">
+  <div class="exercise-header">
+    <h4>演習：プロファイルして比較する</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">1からnまでの二乗の合計を計算する2つの関数があります。一方はO(n²)、もう一方はO(1)です。Pythonの<code>time</code>モジュールを使って両方をプロファイルし、速い方のアプローチ名を返す<code>identify_faster</code>関数を書いてください。次に、O(1)の数学的公式（n(n+1)(2n+1)/6）を使って<code>sum_of_squares_fast</code>を実装してください。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+import time
+
+def sum_of_squares_slow(n):
+    """O(n^2) approach: compute each square by repeated addition."""
+    total = 0
+    for i in range(1, n + 1):
+        square = 0
+        for j in range(i):
+            square += i
+        total += square
+    return total
+
+def sum_of_squares_fast(n):
+    """O(1) approach: use the mathematical formula."""
+    # TODO: Return n*(n+1)*(2*n+1)//6
+    pass
+
+def identify_faster(n=5000):
+    """Time both functions and return the name of the faster one.
+
+    Returns:
+        str: Either "slow" or "fast"
+    """
+    # TODO: Time sum_of_squares_slow(n) and sum_of_squares_fast(n)
+    # Return "slow" or "fast" based on which is quicker
+    pass
+    </script>
+    <script type="text/plain" class="test-code">
+# Test correctness of fast implementation
+assert sum_of_squares_fast(1) == 1, "sum_of_squares_fast(1) should be 1"
+assert sum_of_squares_fast(5) == 55, "sum_of_squares_fast(5) should be 55 (1+4+9+16+25)"
+assert sum_of_squares_fast(10) == 385, "sum_of_squares_fast(10) should be 385"
+assert sum_of_squares_fast(100) == 338350, "sum_of_squares_fast(100) should be 338350"
+
+# Test that both functions produce the same result
+for test_n in [1, 5, 10, 50]:
+    slow_result = sum_of_squares_slow(test_n)
+    fast_result = sum_of_squares_fast(test_n)
+    assert slow_result == fast_result, f"Results differ for n={test_n}: slow={slow_result}, fast={fast_result}"
+
+# Test that identify_faster correctly identifies the fast version
+result = identify_faster(5000)
+assert result == "fast", f"identify_faster should return 'fast', got '{result}'"
+
+print("All profiling tests passed!")
+print(f"sum_of_squares_fast(1000) = {sum_of_squares_fast(1000)}")
+    </script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">確認</button>
+    <button class="ex-hint" data-level="0">ヒント</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">二乗の合計の数学的公式は：n * (n + 1) * (2 * n + 1) // 6 です。結果を整数として保つために整数除算（//）を使ってください。</p>
+    <p class="hint">関数の時間を計測するには、呼び出し前後でtime.time()を記録します。差分が経過時間（秒）です。</p>
+    <p class="hint">identify_fasterで：start1 = time.time(); sum_of_squares_slow(n); time_slow = time.time() - start1。fastについても同様に。time_fast &lt; time_slowなら"fast"、そうでなければ"slow"を返してください。</p>
+  </div>
+</div>
+
+<!-- Quiz -->
+<div class="quiz" data-ch="36" data-ex="quiz-golden-signals">
+  <h4>理解度チェック</h4>
+  <p>4つのゴールデンシグナルのうち、システムがどのくらい「満杯」かを測定するのはどれですか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">レイテンシ（Latency）</button>
+    <button class="quiz-option" data-correct="false">トラフィック（Traffic）</button>
+    <button class="quiz-option" data-correct="false">エラー（Errors）</button>
+    <button class="quiz-option" data-correct="true">飽和（Saturation）</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Quiz 2 -->
+<div class="quiz" data-ch="36" data-ex="quiz-log-levels">
+  <h4>理解度チェック</h4>
+  <p>ユーザーがタスクの作成が時々失敗すると報告しています。ログを確認すると「データベース接続プール枯渇」というメッセージが見つかります。このメッセージは何のログレベルであるべきですか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">DEBUG &mdash; 技術的な詳細情報である</button>
+    <button class="quiz-option" data-correct="false">INFO &mdash; 通常の運用イベントである</button>
+    <button class="quiz-option" data-correct="false">WARNING &mdash; 実際にはまだ失敗していない</button>
+    <button class="quiz-option" data-correct="true">ERROR &mdash; リクエストの失敗を引き起こしている</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Checklist -->
+<div class="checklist" data-ch="36" data-ex="checklist-observability">
+  <h4>パフォーマンスと可観測性チェックリスト</h4>
+  <label><input type="checkbox"><span>Pythonプログラムをプロファイリングしてパフォーマンスのボトルネックを見つけられる</span></label>
+  <label><input type="checkbox"><span>可観測性の三本柱（ログ、メトリクス、トレース）を理解している</span></label>
+  <label><input type="checkbox"><span>コリレーションIDを使った構造化ロギングを実装できる</span></label>
+  <label><input type="checkbox"><span>4つのゴールデンシグナルとそれぞれの測定内容を挙げられる</span></label>
+  <label><input type="checkbox"><span>SLI、SLO、SLAの違いを理解している</span></label>
+  <label><input type="checkbox"><span><code>@lru_cache</code>を使ったメモ化の使い方を知っている</span></label>
+  <label><input type="checkbox"><span>ブレームレスなポストモーテムプロセスを説明できる</span></label>
+  <label><input type="checkbox"><span>原因（CPU使用率）ではなく症状（エラーレート）でアラートを設定する</span></label>
+</div>
+
+</section>
+
+
+<!-- ===== CH 37 ===== -->
+<section id="ch37" data-ch="37">
+<h2><span class="ch-label">第37章</span> 大規模コードベースのナビゲーションと進化 &mdash; 実際の現場で働く</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念</div>
+<p>これまでのすべてのチュートリアル、演習、プロジェクトはゼロからスタートしました。しかし現実の世界では、そうなることはほとんどありません。キャリアの大半は、すでに存在するコードベース&mdash;他の人が書いた、時には何年も前の、しばしば不完全なドキュメントしかないコードベース&mdash;で作業することになります。不慣れなコードを読み、理解し、安全に発展させる能力は、プロのエンジニアが身につけるべき最も重要な実践的スキルと言えるでしょう。この章では、そのための体系的なアプローチを学びます。</p>
+</div>
+
+<h3>見慣れないコードを読む：体系的なアプローチ</h3>
+
+<p>100,000行のコードベースを初めて開くのは圧倒的な感覚がします。重要なのは、教科書を暗記しようとする学生としてではなく、未知の領域を地図化する探検家のようにアプローチすることです。すべてを理解する必要はありません。重要な部分のメンタルマップを構築する必要があります。</p>
+
+<p><strong>戦略1：エントリーポイントを見つける。</strong> すべてのプログラムには開始点があります。Webサーバーの場合、HTTPリクエストのリスニングを開始するファイルです。CLIツールの場合、<code>if __name__ == "__main__"</code>ブロックです。ライブラリの場合、<code>__init__.py</code>のパブリックAPIです。このアンカーを見つけることで、追跡を開始する場所が得られます。</p>
+
+<p><strong>戦略2：ハッピーパスを追跡する。</strong> 最も一般的なユーザーアクション（例：「タスクを作成する」）を選び、HTTPルートハンドラーからサービス層、データベースを通って戻るまでのコードを追います。エラー処理、エッジケース、ユーティリティモジュールに気を散らされないようにしましょう。まず通常のパスを理解します。</p>
+
+<p><strong>戦略3：依存関係グラフを描く。</strong> どのモジュールが他のどのモジュールをインポートするかをスケッチします。これにより、アーキテクチャが明らかになります。どのモジュールが中心的か（多くにインポートされている）、どれが周辺的か（少ししかインポートされていない）、どれが孤立しているか（何もインポートしていない。デッドコードの可能性がある）。</p>
+
+<p><strong>戦略4：トップダウン vs. ボトムアップ。</strong> トップダウンは<code>main()</code>から始めて関数呼び出しに掘り下げます。これにより全体像が素早く得られます。ボトムアップはテストと小さなユーティリティ関数から始め、具体的な例から理解を積み上げます。両方使いましょう。アーキテクチャにはトップダウンから始め、特定のモジュールを理解する必要があるときはボトムアップに切り替えます。</p>
+
+<p><strong>戦略5：シームを見つける。</strong> <strong>シーム（seam）</strong>はモジュール間の境界です。1つのモジュールが定義されたインターフェースを通じて別のモジュールと相互作用する場所です。シームを理解することで、安全に変更できる場所（モジュール内部、シームの背後）と、変更がコードベース全体に波及する場所（シームで、すべてのコンシューマーに影響する）が分かります。</p>
+
+<pre style="overflow-x:auto"><code># A practical code-reading session for a Python project:
+# 1. Check the README and any docs/ directory
+# 2. Look at pyproject.toml or setup.py for dependencies and entry points
+# 3. Find the main entry point:
+#    grep -r "if __name__" src/
+#    grep -r "def main" src/
+# 4. Look at the test directory structure - it mirrors the source
+# 5. Read the most recent tests - they show current behavior
+# 6. Use git log --oneline -20 to see recent changes
+# 7. Draw a quick sketch of the module dependencies</code></pre>
+
+<h3>レガシーシステムを理解する：考古学的アプローチ</h3>
+
+<p><strong>レガシーコード（legacy code）</strong>は蔑称ではありません。まだ動作し続けるほど価値のあるコードです。課題は、なぜそのように書かれたのかを理解することです。答えは通常、履歴の中にあります。</p>
+
+<p><strong><code>git blame</code></strong>はファイルの各行を最後に誰がいつ変更したかを示します。さらに重要なことに、コミットハッシュが示されます。これを確認することで、変更が<em>なぜ</em>行われたかを説明するコミットメッセージが分かります。「なぜこのコードはこんなに奇妙なのか？」という多くの疑問は、そのコードを導入したコミットを見つけることで答えられます。</p>
+
+<pre style="overflow-x:auto"><code># Who changed this confusing line, and why?
+git blame src/task_service.py
+
+# Read the full commit message for that change
+git show abc123f
+
+# Search the commit history for when a function was introduced
+git log --all -S "def calculate_priority" --oneline
+
+# Look at pull requests (on GitHub) for discussion context
+# PR comments often contain design decisions and alternatives considered</code></pre>
+
+<p><strong>耐荷壁を特定する。</strong> 建物では、一部の壁が屋根を支えています。それらを取り除くと構造が崩壊します。コードベースでは、一部のモジュールは<em>すべて</em>からインポートされ依存されています。それらを変更することは高リスクです。コードを修正する前に、何がそれに依存しているかを理解しましょう。</p>
+
+<p><strong>見つけたことを文書化する。</strong> 理解を深めるにつれて、書き留めましょう。大まかなメモでも（「TaskServiceは認証のためにUserServiceを呼び出す。タスクリストのキャッシングにRedisを使用する。calculate_priority関数は14か所から呼ばれる」）、このコードを次に読む人にとって非常に価値があります。将来の自分自身も含めて。</p>
+
+<h3>安全な変更：壊さずに修正するには</h3>
+
+<p>コードベースで最も危険な瞬間は、変更のすべての影響を理解せずに何かを変えることです。安全に変更を行う実証済みの技術を紹介します。</p>
+
+<p><strong>特性テスト（characterization tests）</strong>（「ゴールデンマスター」テストとも呼ばれます）は、その動作が正しいかどうかに関わらず、コードの<em>現在の</em>動作を捉えます。リファクタリング前に、コードが<em>実際に何をするか</em>をアサートするテストを書きます。コードが<em>すべき</em>と思うことではありません。その後リファクタリングし、テストが引き続きパスすれば、動作を保持したことが分かります。</p>
+
+<pre style="overflow-x:auto"><code># Step 1: Write characterization tests for existing behavior
+def test_calculate_priority_characterization():
+    """Captures current behavior - may or may not be 'correct'."""
+    # These assertions describe what the code DOES, not what it SHOULD do
+    assert calculate_priority(urgent=True, due_days=1) == 95
+    assert calculate_priority(urgent=True, due_days=30) == 70
+    assert calculate_priority(urgent=False, due_days=1) == 60
+    assert calculate_priority(urgent=False, due_days=30) == 10
+    # Edge case: negative due_days (overdue) - what does it actually return?
+    assert calculate_priority(urgent=False, due_days=-5) == 80  # Discovered!
+
+# Step 2: Refactor the code
+# Step 3: Run characterization tests - they must all still pass</code></pre>
+
+<p><strong>ストラングラーフィグパターン（strangler fig pattern）</strong>は、レガシーシステムを段階的に置き換える戦略です。既存の木の周りに成長して最終的に置き換えるイチジク木（strangler fig）にちなんで名付けられており、このパターンは以下のように機能します：</p>
+
+<ol>
+<li>古いシステムの前に<strong>ファサード（facade、プロキシ）</strong>を配置します。</li>
+<li>同じファサードの背後にある新しいシステムに新機能を実装します。</li>
+<li>古いシステムから新しいシステムへのトラフィックを徐々に増やします。</li>
+<li>すべてのトラフィックが新しいシステムにある場合、古いシステムを廃止します。</li>
+</ol>
+
+<p>すべてのステップで両方のシステムが実行されており、古いシステムにトラフィックをルーティングし直すことで即座にロールバックできます。</p>
+
+<!-- SVG Diagram: Strangler Fig Pattern -->
+<svg viewBox="0 0 780 350" aria-label="Strangler Fig pattern diagram showing a facade routing requests gradually from an old system to a new system growing alongside it" style="width:100%;max-width:780px;margin:2rem auto;display:block">
+  <!-- Title -->
+  <text x="390" y="25" text-anchor="middle" class="label-text" font-size="15" font-weight="bold">The Strangler Fig Pattern</text>
+
+  <!-- Phase 1: Before -->
+  <text x="130" y="60" text-anchor="middle" class="sub-text" font-size="12" font-weight="bold">Phase 1: Before</text>
+  <rect x="70" y="70" width="120" height="36" rx="6" class="node-accent" stroke="var(--accent)" stroke-width="2"/>
+  <text x="130" y="93" text-anchor="middle" class="label-text" font-size="12" fill="var(--bg)">Facade</text>
+  <line x1="130" y1="106" x2="130" y2="130" class="arrow" marker-end="url(#arrowhead)"/>
+  <rect x="50" y="133" width="160" height="80" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="130" y="165" text-anchor="middle" class="label-text" font-size="12">Old System</text>
+  <text x="130" y="185" text-anchor="middle" class="sub-text" font-size="10" fill="var(--a5)">100% traffic</text>
+
+  <!-- Phase 2: During -->
+  <text x="390" y="60" text-anchor="middle" class="sub-text" font-size="12" font-weight="bold">Phase 2: Migration</text>
+  <rect x="330" y="70" width="120" height="36" rx="6" class="node-accent" stroke="var(--accent)" stroke-width="2"/>
+  <text x="390" y="93" text-anchor="middle" class="label-text" font-size="12" fill="var(--bg)">Facade</text>
+
+  <!-- Old system (smaller) -->
+  <line x1="365" y1="106" x2="340" y2="130" class="arrow" marker-end="url(#arrowhead)"/>
+  <rect x="280" y="133" width="120" height="80" rx="8" class="node-fill" stroke="var(--a5)" stroke-width="1.5"/>
+  <text x="340" y="165" text-anchor="middle" class="label-text" font-size="11">Old System</text>
+  <text x="340" y="185" text-anchor="middle" class="sub-text" font-size="10" fill="var(--a5)">30% traffic</text>
+
+  <!-- New system (growing) -->
+  <line x1="415" y1="106" x2="440" y2="130" class="arrow" marker-end="url(#arrowhead)"/>
+  <rect x="400" y="133" width="130" height="80" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="465" y="165" text-anchor="middle" class="label-text" font-size="11">New System</text>
+  <text x="465" y="185" text-anchor="middle" class="sub-text" font-size="10" fill="var(--a5)">70% traffic</text>
+
+  <!-- Phase 3: After -->
+  <text x="650" y="60" text-anchor="middle" class="sub-text" font-size="12" font-weight="bold">Phase 3: Complete</text>
+  <rect x="590" y="70" width="120" height="36" rx="6" class="node-accent" stroke="var(--accent)" stroke-width="2"/>
+  <text x="650" y="93" text-anchor="middle" class="label-text" font-size="12" fill="var(--bg)">Facade</text>
+  <line x1="650" y1="106" x2="650" y2="130" class="arrow" marker-end="url(#arrowhead)"/>
+  <rect x="570" y="133" width="160" height="80" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="650" y="165" text-anchor="middle" class="label-text" font-size="12">New System</text>
+  <text x="650" y="185" text-anchor="middle" class="sub-text" font-size="10" fill="var(--a5)">100% traffic</text>
+
+  <!-- Arrows between phases -->
+  <line x1="210" y1="170" x2="265" y2="170" stroke="var(--a5)" stroke-width="1.5" stroke-dasharray="6" marker-end="url(#arrowhead-muted)"/>
+  <line x1="545" y1="170" x2="558" y2="170" stroke="var(--a5)" stroke-width="1.5" stroke-dasharray="6" marker-end="url(#arrowhead-muted)"/>
+
+  <!-- Key point -->
+  <rect x="140" y="260" width="500" height="70" rx="8" fill="none" stroke="var(--a5)" stroke-width="1" stroke-dasharray="4"/>
+  <text x="390" y="285" text-anchor="middle" class="sub-text" font-size="12">重要：古いシステムにトラフィックを戻すことで、いつでもロールバックできます。</text>
+  <text x="390" y="305" text-anchor="middle" class="sub-text" font-size="12">ファサードは古い実装と新しい実装の切り替えスイッチとして機能します。</text>
+  <text x="390" y="325" text-anchor="middle" class="sub-text" font-size="11" fill="var(--a5)">フィーチャーフラグが各リクエストを処理するシステムを制御します。</text>
+</svg>
+
+<p><strong>フィーチャーフラグ（feature flags）</strong>は、ユーザーにリリースせずにコードをデプロイできます。新しい動作を条件付きチェック（<code>if feature_enabled("new_priority_algorithm")</code>）でラップしてデプロイします。フラグは最初はオフなので、ユーザーは変更を見ません。その後、ユーザーの1%に対して有効にし、問題がないか監視し、徐々に100%にロールアウトできます。問題が発生した場合、デプロイメントなしでフラグを即座にオフに切り替えられます。</p>
+
+<h3>技術的負債（Technical Debt）：実践的なフレームワーク</h3>
+
+<p><strong>技術的負債（technical debt）</strong>はWard Cunninghamが作った比喩です：財務上の負債が今すぐ何かを購入して後で（利息付きで）支払えるように、技術的なショートカットは今すぐより速く出荷できますが、将来の変更を遅くします（利息）。すべての技術的負債が悪いわけではありません。時には速く出荷することが正しいビジネス上の決断です。問題は、あまりにも多くの負債を蓄積して返済を止めたときに来ます。</p>
+
+<p>技術的負債を測定する実践的な方法：</p>
+
+<ul>
+<li><strong>新しい開発者が生産的になるまでにどのくらいかかるか？</strong> 3日ではなく3週間かかるなら、オンボーディング負債があります。</li>
+<li><strong>ある領域の変更が別の領域を壊す頻度は？</strong> 頻繁であれば、結合（カップリング）負債があります。</li>
+<li><strong>テストスイートの実行にどのくらいかかるか？</strong> 45分かかるなら、開発者はスキップし、バグが出荷されます。これはテストインフラ負債です。</li>
+<li><strong>コードのどのくらいが1人だけが理解しているか？</strong> それはナレッジ負債です。バスファクターが1の状態です。</li>
+</ul>
+
+<p>負債は包括的にではなく<strong>戦略的に</strong>返済しましょう。誰も触れないコードのリファクタリングは時間の無駄です。変更頻度が高く欠陥率が高いモジュールに集中しましょう。これらが負債が実際にコストを生んでいる領域です。</p>
+
+<h3>コードレビュー：シニアのスキルとして</h3>
+
+<p>コードレビューはバグを見つけることだけではありません。良いコードレビューはコードを改善し<em>かつ</em>著者を成長させます。経験豊富なレビュアーが焦点を当てること：</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>コードレビューの優先順位とフィードバック例</caption>
+<thead><tr><th>優先順位</th><th>何を確認するか</th><th>フィードバック例</th></tr></thead>
+<tbody>
+<tr><td>1. 正確性</td><td>主張していることを実行しているか？エッジケースは？競合状態は？</td><td>「ここで<code>user_id</code>がNoneの場合、どうなりますか？」</td></tr>
+<tr><td>2. 可読性</td><td>コードに不慣れな人が理解できるか？</td><td>「これを名前付き関数に抽出できますか？意図が明確ではありません。」</td></tr>
+<tr><td>3. テスト可能性</td><td>コードはテスト可能か？テストはあるか？正しいことをテストしているか？</td><td>「このテストは動作ではなく実装の詳細を検証しています。」</td></tr>
+<tr><td>4. 設計</td><td>既存のアーキテクチャに合っているか？適切な抽象化レベルか？</td><td>「このサービス関数がHTTPリクエストに直接アクセスしています。必要なデータだけを渡せないでしょうか？」</td></tr>
+<tr><td>5. パフォーマンス</td><td>明らかな非効率は？N+1クエリは？不要なアロケーションは？</td><td>「このループはイテレーションごとにデータベースをクエリしています。バッチ処理できないでしょうか？」</td></tr>
+</tbody>
+</table>
+</div>
+
+<p><strong>バイクシェッディング（bikeshedding）</strong>を避けましょう。構造的な問題を見過ごしながら、些細な問題（変数の命名、フォーマット）に不釣り合いな時間を費やすことです。チームにリンターとフォーマッターがあれば、スタイルはツールに任せましょう。レビューの時間をロジック、設計、エッジケースに費やしましょう。</p>
+
+<h3>大きなチームと協働する</h3>
+
+<p>コードベースが成長するにつれて、<strong>規約（conventions）</strong>が不可欠になります。スタイルガイドとリンターは一貫性を強制し、異なる人が書いたコードが同じ人が書いたように見えるようにします。これによりコードを読む際の認知的負荷が大幅に軽減されます。</p>
+
+<p><strong>アーキテクチャ決定レコード（ADR: Architecture Decision Records）</strong>は重要な技術的決定とその理由を文書化します。ADRには通常以下が含まれます：</p>
+
+<pre style="overflow-x:auto"><code># ADR-007: Use PostgreSQL for Task Storage
+
+## Status: Accepted
+
+## Context
+TaskForge needs a relational database. We considered PostgreSQL, MySQL,
+and SQLite. We need concurrent write support, full-text search, and
+JSONB columns for flexible task metadata.
+
+## Decision
+We will use PostgreSQL.
+
+## Consequences
+- Positive: Native JSONB support, excellent concurrent performance,
+  strong community, good tooling.
+- Negative: More complex to set up than SQLite; team needs PostgreSQL
+  expertise. We accept this trade-off because SQLite cannot handle
+  our concurrency requirements.
+
+## Alternatives Considered
+- MySQL: Lacks native JSONB; full-text search requires plugins.
+- SQLite: Cannot handle concurrent writes from multiple workers.</code></pre>
+
+<p>ADRは非常に価値があります。<em>何が</em>決定されたかだけでなく、<em>なぜ</em>そして<em>どんな代替案が検討されたか</em>を記録するからです。6ヶ月後、誰かが「なぜSQLiteを使わないのか？」と聞いたとき、ADRは元の議論を誰かが覚えておく必要なく答えを提供します。</p>
+
+<p><strong>RFCプロセス（RFC: Request for Comments、コメント求む）</strong>はより大きな変更に対して同様の目的を果たします。主要な機能やアーキテクチャの変更を実装する前に、設計文書を書き、フィードバックのために回覧し、反復します。これにより高コストな驚きを防ぎ、チーム間の整合を確保します。</p>
+
+<div role="note" class="callout warn">
+<div class="callout-title">注意：「良いコードはドキュメントを必要としない」という誤解</div>
+<p>良いコードは<em>何を</em>するか、<em>どのように</em>するかについては自己文書化されています。しかし、コードは<em>なぜ</em>その決定がなされたか、どんな代替案が検討されたか、当時どんな制約があったかを決して教えてくれません。ドキュメントはこのギャップを埋めます。最も役立つドキュメントは意図、トレードオフ、コンテキストを説明します。コードが表現できないものです。</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念：TaskForgeとの関連</div>
+<p>以下の問題を持つTaskForgeの「レガシー」版を引き継いだと想像してください：</p>
+<ul>
+<li><strong>神クラス（God class）：</strong> 単一の<code>TaskManager</code>クラスがルーティング、ビジネスロジック、データベースクエリ、メール送信をすべて処理している。</li>
+<li><strong>テストなし：</strong> 自動テストがゼロ。変更に対するセーフティネットがない。</li>
+<li><strong>ハードコードされた設定：</strong> データベースURL、APIキー、メール認証情報がコード全体に文字列リテラルとして散在している。</li>
+<li><strong>SQLインジェクション：</strong> ユーザー入力がSQLクエリに直接結合されている。</li>
+</ul>
+<p>あなたのアプローチ：(1) 現在の動作を捉える特性テストを書く。(2) 設定を環境変数に抽出する。(3) SQLインジェクションを修正する（最高リスク項目）。(4) ストラングラーフィグパターンを使って神クラスを段階的に分解する。データベースアクセスのための<code>TaskRepository</code>、通知のための<code>EmailService</code>を導入し、<code>TaskManager</code>がそれらに委譲するようにします。各ステップは小さく、テスト済みで、元に戻せます。</p>
+</div>
+
+<!-- Micro-Exercise -->
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう &mdash; ADRを書いてみましょう</div>
+<p>このシナリオのための簡潔なアーキテクチャ決定レコードを書いてください：チームがTaskForgeにRedisキャッシュを追加するかどうか検討しています。現在、タスク一覧ページは毎回データベースをクエリするため800msかかります。Redisを使えば、キャッシュされた結果には5msかかります。トレードオフは運用上の複雑さ（もう1つのサービスの管理）と古いデータを提供するリスクです。チームは30秒のTTLでRedisを使用することを決定しました。</p>
+<p>上記のADRフォーマット（Status、Context、Decision、Consequences、Alternatives Considered）を使用してください。トレードオフを明確に表現する練習をしましょう。</p>
+</div>
+
+<!-- Pyodide Exercise: Characterization Tests and Refactoring -->
+<div class="exercise" data-type="pyodide" data-ch="37" data-ex="characterization-refactor">
+  <div class="exercise-header">
+    <h4>演習：特性テストを書いてからリファクタリング</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">以下はやり過ぎな<code>process_task_data</code>関数です。バリデーション、変換、優先度計算、出力フォーマットがすべて一塊になっています。まず動作を観察してください。次に、3つのクリーンな関数（<code>validate_task</code>、<code>calculate_priority</code>、<code>format_task_summary</code>）を実装し、元のものと同じ結果を生み出してください。特性テストがリファクタリングされたコードが元の動作と完全に一致することを検証します。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def process_task_data(title, assignee, days_until_due, is_urgent):
+    """Legacy function - messy but working. DO NOT MODIFY."""
+    result = {}
+    # Validation
+    if not title or not isinstance(title, str):
+        return {"error": "invalid title"}
+    if len(title) > 100:
+        return {"error": "title too long"}
+    if not assignee or not isinstance(assignee, str):
+        return {"error": "invalid assignee"}
+    # Title transformation
+    clean_title = title.strip().upper()
+    # Priority calculation
+    priority = 0
+    if is_urgent:
+        priority += 50
+    if days_until_due < 0:
+        priority += 40  # overdue
+    elif days_until_due <= 3:
+        priority += 30
+    elif days_until_due <= 7:
+        priority += 20
+    elif days_until_due <= 30:
+        priority += 10
+    if len(title) > 50:
+        priority -= 5  # long titles penalized (quirky legacy logic)
+    if priority > 100:
+        priority = 100
+    if priority < 0:
+        priority = 0
+    # Format output
+    if priority >= 80:
+        urgency_label = "CRITICAL"
+    elif priority >= 50:
+        urgency_label = "HIGH"
+    elif priority >= 30:
+        urgency_label = "MEDIUM"
+    else:
+        urgency_label = "LOW"
+    result["title"] = clean_title
+    result["assignee"] = assignee.strip()
+    result["priority"] = priority
+    result["label"] = urgency_label
+    result["summary"] = f"[{urgency_label}] {clean_title} (assigned to {assignee.strip()})"
+    return result
+
+
+def validate_task(title, assignee):
+    """Validate task inputs.
+
+    Returns:
+        None if valid, or a dict with an "error" key if invalid.
+    """
+    # TODO: Implement validation matching the original behavior
+    pass
+
+
+def calculate_priority(days_until_due, is_urgent, title_length):
+    """Calculate task priority score (0-100).
+
+    Args:
+        days_until_due: int, days until task is due (negative = overdue)
+        is_urgent: bool, whether task is marked urgent
+        title_length: int, length of the title string
+
+    Returns:
+        int: priority score between 0 and 100
+    """
+    # TODO: Implement priority calculation matching the original behavior
+    pass
+
+
+def format_task_summary(clean_title, assignee, priority):
+    """Format a task into the output dictionary.
+
+    Args:
+        clean_title: str, uppercased and stripped title
+        assignee: str, stripped assignee name
+        priority: int, calculated priority score
+
+    Returns:
+        dict with keys: title, assignee, priority, label, summary
+    """
+    # TODO: Implement formatting matching the original behavior
+    pass
+
+
+def process_task_refactored(title, assignee, days_until_due, is_urgent):
+    """Refactored version using the three clean functions above."""
+    # TODO: Compose validate_task, calculate_priority, format_task_summary
+    # to produce the same output as process_task_data
+    pass
+    </script>
+    <script type="text/plain" class="test-code">
+# Characterization tests: refactored version must match original exactly
+
+# Test 1: Normal task
+original_1 = process_task_data("Fix login bug", "Alice", 5, True)
+refactored_1 = process_task_refactored("Fix login bug", "Alice", 5, True)
+assert original_1 == refactored_1, f"Mismatch on normal task:\n  original:   {original_1}\n  refactored: {refactored_1}"
+
+# Test 2: Urgent overdue task
+original_2 = process_task_data("Deploy hotfix", "Bob", -2, True)
+refactored_2 = process_task_refactored("Deploy hotfix", "Bob", -2, True)
+assert original_2 == refactored_2, f"Mismatch on urgent overdue:\n  original:   {original_2}\n  refactored: {refactored_2}"
+
+# Test 3: Non-urgent, far-out task
+original_3 = process_task_data("Update docs", "Carol", 45, False)
+refactored_3 = process_task_refactored("Update docs", "Carol", 45, False)
+assert original_3 == refactored_3, f"Mismatch on non-urgent:\n  original:   {original_3}\n  refactored: {refactored_3}"
+
+# Test 4: Invalid title (empty)
+original_4 = process_task_data("", "Dave", 10, False)
+refactored_4 = process_task_refactored("", "Dave", 10, False)
+assert original_4 == refactored_4, f"Mismatch on empty title:\n  original:   {original_4}\n  refactored: {refactored_4}"
+
+# Test 5: Invalid assignee
+original_5 = process_task_data("Task", "", 10, False)
+refactored_5 = process_task_refactored("Task", "", 10, False)
+assert original_5 == refactored_5, f"Mismatch on empty assignee:\n  original:   {original_5}\n  refactored: {refactored_5}"
+
+# Test 6: Title too long
+long_title = "A" * 101
+original_6 = process_task_data(long_title, "Eve", 5, False)
+refactored_6 = process_task_refactored(long_title, "Eve", 5, False)
+assert original_6 == refactored_6, f"Mismatch on long title:\n  original:   {original_6}\n  refactored: {refactored_6}"
+
+# Test 7: Long title (51 chars) with penalty
+title_51 = "A" * 51
+original_7 = process_task_data(title_51, "Frank", 1, False)
+refactored_7 = process_task_refactored(title_51, "Frank", 1, False)
+assert original_7 == refactored_7, f"Mismatch on 51-char title:\n  original:   {original_7}\n  refactored: {refactored_7}"
+
+# Test 8: Whitespace handling
+original_8 = process_task_data("  padded title  ", "  Gina  ", 7, False)
+refactored_8 = process_task_refactored("  padded title  ", "  Gina  ", 7, False)
+assert original_8 == refactored_8, f"Mismatch on whitespace:\n  original:   {original_8}\n  refactored: {refactored_8}"
+
+# Verify individual functions exist and work
+assert validate_task("Valid", "Person") is None, "validate_task should return None for valid input"
+assert validate_task("", "Person") == {"error": "invalid title"}, "validate_task should catch empty title"
+assert 0 <= calculate_priority(5, True, 10) <= 100, "calculate_priority should return 0-100"
+
+print("All characterization tests passed! Refactored code matches original behavior exactly.")
+    </script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">確認</button>
+    <button class="ex-hint" data-level="0">ヒント</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">validate_taskから始めましょう：元のものと同じ条件をチェックします（空/非文字列のタイトル、タイトルが100文字超、空/非文字列の担当者）。有効ならNoneを返し、そうでなければ{"error": "..."}を返してください。</p>
+    <p class="hint">calculate_priorityについて：0から始め、urgentならば50追加、days_until_dueの範囲に基づいて追加、title_length > 50ならば5減算、0から100の間にクランプします。</p>
+    <p class="hint">format_task_summaryについて：priorityから緊急度ラベルを決定し（>=80はCRITICAL、>=50はHIGH、>=30はMEDIUM、それ以外はLOW）、5つのキーすべてを持つ結果dictを構築します。</p>
+    <p class="hint">process_task_refactoredの中で：まずvalidate_taskを呼び出し（Noneでなければそのエラーdictを返す）、次にタイトルをクリーンにし（strip + upper）、title_lengthとしてlen(title)を使って優先度を計算し、フォーマットします。</p>
+  </div>
+</div>
+
+<!-- Quiz -->
+<div class="quiz" data-ch="37" data-ex="quiz-strangler-fig">
+  <h4>理解度チェック</h4>
+  <p>「ビッグバン」書き直しに対するストラングラーフィグパターンの主な利点は何ですか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">完了が速い</button>
+    <button class="quiz-option" data-correct="true">両方のシステムが同時に実行されているため、どの時点でもロールバックできる</button>
+    <button class="quiz-option" data-correct="false">テストが不要である</button>
+    <button class="quiz-option" data-correct="false">データベースを自動的に移行する</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Quiz 2 -->
+<div class="quiz" data-ch="37" data-ex="quiz-characterization-tests">
+  <h4>理解度チェック</h4>
+  <p>特性テストは何を検証しますか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">コードが元の仕様を満たしていること</button>
+    <button class="quiz-option" data-correct="false">コードにバグがないこと</button>
+    <button class="quiz-option" data-correct="true">コードの現在の動作が変更後も保持されていること</button>
+    <button class="quiz-option" data-correct="false">コードがパフォーマンスベンチマークに合格すること</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Checklist -->
+<div class="checklist" data-ch="37" data-ex="checklist-large-codebases">
+  <h4>大規模コードベースのナビゲーションチェックリスト</h4>
+  <label><input type="checkbox"><span>見慣れないコードベースでエントリーポイントを見つけ、ハッピーパスを追跡できる</span></label>
+  <label><input type="checkbox"><span><code>git blame</code>とコミット履歴を使ってなぜコードがある方法で書かれたかを理解できる</span></label>
+  <label><input type="checkbox"><span>リファクタリング前に既存の動作を捉える特性テストを書ける</span></label>
+  <label><input type="checkbox"><span>段階的な置き換えのためのストラングラーフィグパターンを説明できる</span></label>
+  <label><input type="checkbox"><span>フィーチャーフラグとデプロイメントとリリースの分離方法を理解している</span></label>
+  <label><input type="checkbox"><span>技術的負債を評価し、どの負債を返済するかを優先順位づけできる</span></label>
+  <label><input type="checkbox"><span>アーキテクチャ決定レコードを書いたことがある（または書ける）</span></label>
+  <label><input type="checkbox"><span>コードレビューで何に集中するか（正確性、可読性、テスト可能性）とリンターに任せること（スタイル）を知っている</span></label>
+</div>
+
+</section>
+
+
+<!-- ===== PHASE 8 GATE ===== -->
+<section id="gate8">
+<h2><span class="ch-label">フェーズ8ゲート</span> チェックポイント &amp; スケールするTaskForge</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念：最低限の能力</div>
+<p>フェーズ8を完了した後、以下のことができるようになっているはずです：スケールのためのシステムアーキテクチャを設計する（コンポーネント、トレードオフ、ボトルネックを特定する）、分散システムの制約について考察する（CAPの定理、結果整合性、サーガパターン）、可観測性のためにアプリケーションを計装する（構造化ロギング、メトリクス、トレース）、既存のコードベースを安全にナビゲートして進化させる（特性テスト、ストラングラーフィグ、フィーチャーフラグ）。</p>
+</div>
+
+<h3>成果物：スケールするTaskForge</h3>
+
+<p>TaskForgeプロジェクトのために以下の成果物を作成してください：</p>
+
+<ol>
+<li><strong>システム設計文書</strong> &mdash; 10,000人の同時ユーザーに対応するTaskForgeのアーキテクチャ図。現在のアーキテクチャの少なくとも3つのボトルネックを特定し、それぞれの解決策を提案する（トレードオフ分析付き）。</li>
+<li><strong>構造化ロギングの実装</strong> &mdash; コリレーションIDを持つJSON形式の構造化ロギングをTaskForgeに追加する。すべてのAPIリクエストがメソッド、パス、ステータスコード、所要時間、ユーザーIDと共にログに記録されるべきである。</li>
+<li><strong>パフォーマンスプロファイル</strong> &mdash; 遅いエンドポイント（例：フィルタリングとソート付きのタスク一覧）をプロファイルする。見つけたボトルネックと適用した最適化を文書化する。少なくとも10倍の改善を示すこと。</li>
+<li><strong>レガシーコードのリファクタリング</strong> &mdash; TaskForgeモジュールの「雑然としたバージョン」を取り上げる。まず特性テストを書き、次にクリーンでよく構造化されたコードにリファクタリングする。すべての特性テストがリファクタリングの前後でパスしなければならない。</li>
+</ol>
+
+<h3>検証</h3>
+
+<div style="overflow-x:auto">
+<table>
+<caption>成果物ごとのフェーズ8検証基準</caption>
+<thead><tr><th>成果物</th><th>検証基準</th></tr></thead>
+<tbody>
+<tr><td>アーキテクチャ図</td><td>提案された解決策とトレードオフ分析付きで少なくとも3つのボトルネックを特定している</td></tr>
+<tr><td>構造化ロギング</td><td>ログはコリレーションID付きのJSON形式で、すべてのリクエストがログに記録されている</td></tr>
+<tr><td>パフォーマンスプロファイル</td><td>前後の測定値で少なくとも10倍の改善を示している</td></tr>
+<tr><td>レガシーリファクタリング</td><td>特性テストが前後でパスしている。コードが明確なモジュールに分解されている</td></tr>
+</tbody>
+</table>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">フェーズ9への橋渡し：AI支援開発</div>
+<p>あなたは今、完全なエンジニアリングツールキットを持っています。アルゴリズムからアーキテクチャへ、データベースから分散システムへ、プロファイリングから可観測性へ、レガシーコードを読むことからそれを安全に進化させることへ。プロのソフトウェアエンジニアが毎日頼りにしている知識と判断力を持っています。</p>
+<p>フェーズ9ではAI駆動の開発ツールを紹介します。フェーズ1〜8にわたって構築したエンジニアリングの判断力こそが、AIを<em>効果的に</em>使えるようにするものです。AIが生み出すものを評価し、見落とすものを捉え、より良い解決策に向けて誘導することができます。この基盤なしでは、AIツールはクラフトを学んだことのない人の手にある電動工具のようなものです。速いけれども危険です。この基盤があれば、AIはすでに持っているスキルの力乗数になります。</p>
+</div>
+
+</section>
+
+<nav class="phase-nav">
+  <a href="phase-7.html" class="phase-nav-link prev"><span class="phase-nav-label">Previous Phase</span>&larr; Phase 7: Engineering Craft</a>
+  <a href="phase-9.html" class="phase-nav-link next"><span class="phase-nav-label">Next Phase</span>Phase 9: AI-Assisted Development &rarr;</a>
+</nav>
+
+</div>
+</div>
+
+<footer>
+<p>Zero to Hero: プログラミングからマルチエージェントClaude Codeへ &middot; 2026年3月</p>
+</footer>
+
+<script src="../js/progress.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ace-builds@1.36.5/src-min-noconflict/ace.js"></script>
+<script src="../js/theme.js"></script>
+<script src="../js/sidebar.js"></script>
+<script src="../js/shared.js"></script>
+<script src="../js/ace-init.js"></script>
+<script src="../js/pyodide-runner.js"></script>
+<script src="../js/quiz.js"></script>
+<script src="../js/exercise-runner.js"></script>
+</body>
+</html>

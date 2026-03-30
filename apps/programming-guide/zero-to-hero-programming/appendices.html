@@ -1,0 +1,1503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Appendices — glossary of programming and AI terms, prompt library for Claude Code, self-assessment quiz, troubleshooting guide, and curated resources.">
+<title>Appendices — Zero to Hero</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/design-system.css">
+<script>try{if(localStorage.getItem('zth-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+<script>try{var z=localStorage.getItem('zth-zoom');if(z&&+z>=50&&+z<=200)document.documentElement.style.zoom=+z/100}catch(e){}</script>
+</head>
+<body>
+
+<!-- SVG Arrow Defs -->
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+<marker id="arrowhead-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--a5)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<!-- SIDEBAR — identical across all files -->
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo"><span>Zero to Hero</span>Programming &rarr; Multi-Agent AI</a>
+  <div class="toc-group">
+    <div class="toc-group-title">Foundations</div>
+    <a href="phase-1.html#ch01" class="toc-link"><span class="toc-num">01</span>What Programming Actually Is</a>
+    <a href="phase-1.html#ch02" class="toc-link"><span class="toc-num">02</span>How Computers Execute Code</a>
+    <a href="phase-1.html#ch03" class="toc-link"><span class="toc-num">03</span>Setting Up Your Environment</a>
+    <a href="phase-1.html#ch04" class="toc-link"><span class="toc-num">04</span>Reading Code Before Writing It</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Python</div>
+    <a href="phase-2.html#ch05" class="toc-link"><span class="toc-num">05</span>Functions, Logic &amp; Control Flow</a>
+    <a href="phase-2.html#ch06" class="toc-link"><span class="toc-num">06</span>Data Structures</a>
+    <a href="phase-2.html#ch07" class="toc-link"><span class="toc-num">07</span>Classes &amp; OOP Basics</a>
+    <a href="phase-2.html#ch08" class="toc-link"><span class="toc-num">08</span>Files, Modules &amp; Standard Library</a>
+    <a href="phase-2.html#ch09" class="toc-link"><span class="toc-num">09</span>Error Handling, Debugging &amp; Testing</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Development Tools</div>
+    <a href="phase-3.html#ch10" class="toc-link"><span class="toc-num">10</span>The Terminal &amp; Shell</a>
+    <a href="phase-3.html#ch11" class="toc-link"><span class="toc-num">11</span>Git Fundamentals</a>
+    <a href="phase-3.html#ch12" class="toc-link"><span class="toc-num">12</span>Git Remote &amp; GitHub</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Building &amp; Deploying</div>
+    <a href="phase-4.html#ch13" class="toc-link"><span class="toc-num">13</span>APIs &amp; HTTP</a>
+    <a href="phase-4.html#ch14" class="toc-link"><span class="toc-num">14</span>Building APIs with Flask</a>
+    <a href="phase-4.html#ch15" class="toc-link"><span class="toc-num">15</span>Database Basics</a>
+    <a href="phase-4.html#ch16" class="toc-link"><span class="toc-num">16</span>Docker &amp; Containers</a>
+    <a href="phase-4.html#ch17" class="toc-link"><span class="toc-num">17</span>CI/CD &amp; GitHub Actions</a>
+    <a href="phase-4.html#ch18" class="toc-link"><span class="toc-num">18</span>Project Architecture</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Data Structures</div>
+    <a href="phase-5.html#ch19" class="toc-link"><span class="toc-num">19</span>Complexity Analysis</a>
+    <a href="phase-5.html#ch20" class="toc-link"><span class="toc-num">20</span>Linear Structures</a>
+    <a href="phase-5.html#ch21" class="toc-link"><span class="toc-num">21</span>Hash Tables &amp; Maps</a>
+    <a href="phase-5.html#ch22" class="toc-link"><span class="toc-num">22</span>Trees</a>
+    <a href="phase-5.html#ch23" class="toc-link"><span class="toc-num">23</span>Graphs</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Algorithms</div>
+    <a href="phase-6.html#ch24" class="toc-link"><span class="toc-num">24</span>Searching &amp; Sorting</a>
+    <a href="phase-6.html#ch25" class="toc-link"><span class="toc-num">25</span>Recursion &amp; DP</a>
+    <a href="phase-6.html#ch26" class="toc-link"><span class="toc-num">26</span>Algorithm Patterns</a>
+    <a href="phase-6.html#ch27" class="toc-link"><span class="toc-num">27</span>Graph Algorithms</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Engineering Craft</div>
+    <a href="phase-7.html#ch28" class="toc-link"><span class="toc-num">28</span>Design Patterns &amp; SOLID</a>
+    <a href="phase-7.html#ch29" class="toc-link"><span class="toc-num">29</span>SQL &amp; Query Mastery</a>
+    <a href="phase-7.html#ch30" class="toc-link"><span class="toc-num">30</span>Transactions &amp; NoSQL</a>
+    <a href="phase-7.html#ch31" class="toc-link"><span class="toc-num">31</span>Networking &amp; the Internet</a>
+    <a href="phase-7.html#ch32" class="toc-link"><span class="toc-num">32</span>Concurrency &amp; Parallelism</a>
+    <a href="phase-7.html#ch33" class="toc-link"><span class="toc-num">33</span>Security Engineering</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Systems &amp; Scale</div>
+    <a href="phase-8.html#ch34" class="toc-link"><span class="toc-num">34</span>System Design</a>
+    <a href="phase-8.html#ch35" class="toc-link"><span class="toc-num">35</span>Distributed Systems</a>
+    <a href="phase-8.html#ch36" class="toc-link"><span class="toc-num">36</span>Performance &amp; Observability</a>
+    <a href="phase-8.html#ch37" class="toc-link"><span class="toc-num">37</span>Navigating Large Codebases</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AI Levels 1&ndash;5</div>
+    <a href="phase-9.html#ch38" class="toc-link"><span class="toc-num">38</span>Evaluating &amp; Directing AI Code</a>
+    <a href="phase-9.html#ch39" class="toc-link"><span class="toc-num">39</span>Levels 1 &amp; 2 &mdash; Tab Complete &amp; Agent IDE</a>
+    <a href="phase-9.html#ch40" class="toc-link"><span class="toc-num">40</span>Level 3 &mdash; Context Engineering</a>
+    <a href="phase-9.html#ch41" class="toc-link"><span class="toc-num">41</span>Level 4 &mdash; Compounding Engineering</a>
+    <a href="phase-9.html#ch42" class="toc-link"><span class="toc-num">42</span>Level 5 &mdash; MCP, Skills &amp; Capabilities</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AI Levels 6&ndash;8</div>
+    <a href="phase-10.html#ch43" class="toc-link"><span class="toc-num">43</span>Level 6 &mdash; Harness Engineering</a>
+    <a href="phase-10.html#ch44" class="toc-link"><span class="toc-num">44</span>Level 7 &mdash; Background Agents</a>
+    <a href="phase-10.html#ch45" class="toc-link"><span class="toc-num">45</span>Claude Code in Docker</a>
+    <a href="phase-10.html#ch46" class="toc-link"><span class="toc-num">46</span>Level 8 &mdash; Autonomous Agent Teams</a>
+    <a href="phase-10.html#ch47" class="toc-link"><span class="toc-num">47</span>The Multiplayer Effect</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Reference</div>
+    <a href="#glossary" class="toc-link"><span class="toc-num">&oplus;</span>Glossary</a>
+    <a href="#prompt-library" class="toc-link"><span class="toc-num">&oplus;</span>Prompt Library</a>
+    <a href="#self-assessment" class="toc-link"><span class="toc-num">&oplus;</span>Self-Assessment</a>
+    <a href="#common-mistakes" class="toc-link"><span class="toc-num">&oplus;</span>Common Mistakes</a>
+    <a href="#appendix-d" class="toc-link"><span class="toc-num">&oplus;</span>Troubleshooting</a>
+    <a href="#appendix-e" class="toc-link"><span class="toc-num">&oplus;</span>Resources</a>
+  </div>
+</aside>
+
+<div class="main">
+<section class="hero hero-sm">
+  <div class="hero-badge">Reference</div>
+  <h1><em>Appendices</em></h1>
+  <p class="hero-sub">Glossary, prompt library, self-assessment quiz, troubleshooting guide, and resources. Everything collected in one place.</p>
+</section>
+
+<div class="content-wrap">
+<div class="appendix-tabs-wrap">
+
+<div class="app-tabs">
+  <button class="app-tab active" data-tab="glossary">Glossary</button>
+  <button class="app-tab" data-tab="prompt-library">Prompt Library</button>
+  <button class="app-tab" data-tab="self-assessment">Self-Assessment</button>
+  <button class="app-tab" data-tab="common-mistakes">Common Mistakes</button>
+  <button class="app-tab" data-tab="appendix-d">Troubleshooting</button>
+  <button class="app-tab" data-tab="appendix-e">Resources</button>
+</div>
+
+<div class="app-tab-panel active" id="glossary">
+<h2><span class="ch-label">Appendix A</span> Glossary</h2>
+<p>Every technical term used in this document. Click a letter to jump, or search to filter.</p>
+
+<div id="glossary-content">
+<input type="text" class="glossary-search" placeholder="Search terms..." aria-label="Filter glossary terms">
+
+<div class="letter-bar" role="navigation" aria-label="Jump to letter">
+  <button class="letter-btn" data-letter="A">A</button>
+  <button class="letter-btn" data-letter="B">B</button>
+  <button class="letter-btn" data-letter="C">C</button>
+  <button class="letter-btn" data-letter="D">D</button>
+  <button class="letter-btn" data-letter="E">E</button>
+  <button class="letter-btn" data-letter="F">F</button>
+  <button class="letter-btn" data-letter="G">G</button>
+  <button class="letter-btn" data-letter="H">H</button>
+  <button class="letter-btn" data-letter="I">I</button>
+  <button class="letter-btn" data-letter="J">J</button>
+  <button class="letter-btn" data-letter="K">K</button>
+  <button class="letter-btn" data-letter="L">L</button>
+  <button class="letter-btn" data-letter="M">M</button>
+  <button class="letter-btn" data-letter="N">N</button>
+  <button class="letter-btn" data-letter="O">O</button>
+  <button class="letter-btn" data-letter="P">P</button>
+  <button class="letter-btn" data-letter="Q">Q</button>
+  <button class="letter-btn" data-letter="R">R</button>
+  <button class="letter-btn" data-letter="S">S</button>
+  <button class="letter-btn" data-letter="T">T</button>
+  <button class="letter-btn" data-letter="U">U</button>
+  <button class="letter-btn" data-letter="V">V</button>
+  <button class="letter-btn" data-letter="W">W</button>
+  <button class="letter-btn" data-letter="X">X</button>
+  <button class="letter-btn" data-letter="Y">Y</button>
+  <button class="letter-btn" data-letter="Z">Z</button>
+</div>
+
+<table class="glossary-table">
+<caption>Glossary of programming terms with definitions and first usage</caption>
+<thead><tr><th>Term</th><th>Definition</th><th>First Used</th></tr></thead>
+
+<tbody class="letter-group" id="letter-A">
+<tr><td colspan="3" class="letter-group-heading">A</td></tr>
+<tr class="glossary-term visible"><td><strong>Abstraction</strong></td><td>Hiding complexity behind a simpler interface. Each programming layer hides the one below it.</td><td>Ch 01</td></tr>
+<tr class="glossary-term visible"><td><strong>Adjacency list</strong></td><td>Graph representation using a dict of neighbor lists.</td><td>Phase 5</td></tr>
+<tr class="glossary-term visible"><td><strong>Agent IDE (L2)</strong></td><td>Chat interface connected to your codebase. Produces multi-file edits from natural language.</td><td>Ch 39</td></tr>
+<tr class="glossary-term visible"><td><strong>Agent Teams (L8)</strong></td><td>Experimental: agents with peer-to-peer coordination via shared mailbox.</td><td>Ch 46</td></tr>
+<tr class="glossary-term visible"><td><strong>API</strong></td><td>Application Programming Interface. A contract defining how software components communicate.</td><td>Ch 13</td></tr>
+<tr class="glossary-term visible"><td><strong>Assertion</strong></td><td>A statement that verifies a condition is true. Used in tests: <code>assert result == expected</code>.</td><td>Ch 08</td></tr>
+</tbody>
+
+<tbody class="letter-group" id="letter-B">
+<tr><td colspan="3" class="letter-group-heading">B</td></tr>
+<tr class="glossary-term visible"><td><strong>Backend</strong></td><td>The server-side part of a web application &mdash; processes requests, enforces business rules, talks to databases.</td><td>Ch 01</td></tr>
+<tr class="glossary-term visible"><td><strong>Backpressure (L6)</strong></td><td>Automated feedback (linters, tests, hooks) that lets agents self-correct without human review.</td><td>Ch 43</td></tr>
+<tr class="glossary-term visible"><td><strong>BeautifulSoup</strong></td><td>Python library for parsing HTML and extracting data from web pages.</td><td>Ch 13</td></tr>
+<tr class="glossary-term visible"><td><strong>BFS</strong></td><td>Breadth-First Search; graph traversal that visits all neighbors before going deeper.</td><td>Phase 5</td></tr>
+<tr class="glossary-term visible"><td><strong>Binary search tree</strong></td><td>Ordered tree where left child &lt; parent &lt; right child, enabling O(log n) lookup.</td><td>Phase 5</td></tr>
+<tr class="glossary-term visible"><td><strong>Branch</strong></td><td>A parallel line of development. <code>main</code> is the default. Feature branches isolate work.</td><td>Ch 11</td></tr>
+</tbody>
+
+<tbody class="letter-group" id="letter-C">
+<tr><td colspan="3" class="letter-group-heading">C</td></tr>
+<tr class="glossary-term visible"><td><strong>CI/CD</strong></td><td>Continuous Integration / Continuous Deployment. Automated build, test, and deploy pipelines.</td><td>Ch 17</td></tr>
+<tr class="glossary-term visible"><td><strong>Class</strong></td><td>A blueprint for creating objects that bundles data (attributes) and behavior (methods) together.</td><td>Ch 07</td></tr>
+<tr class="glossary-term visible"><td><strong>CLAUDE.md</strong></td><td>Persistent instruction file read by Claude Code at session start. Project-specific rules and context.</td><td>Ch 40</td></tr>
+<tr class="glossary-term visible"><td><strong>Clone</strong></td><td>Create a local copy of a remote repository, including its full history.</td><td>Ch 12</td></tr>
+<tr class="glossary-term visible"><td><strong>Closure</strong></td><td>A function that remembers variables from its enclosing scope, even after that scope has finished executing.</td><td>Ch 05</td></tr>
+<tr class="glossary-term visible"><td><strong>Codify</strong></td><td>Turn a lesson into a persistent rule (CLAUDE.md, rules file, skill, docs).</td><td>Ch 41</td></tr>
+<tr class="glossary-term visible"><td><strong>Collision</strong></td><td>When two different keys hash to the same index in a hash table.</td><td>Phase 5</td></tr>
+<tr class="glossary-term visible"><td><strong>Commit</strong></td><td>A snapshot of your project at a point in time. Has a message describing what changed.</td><td>Ch 11</td></tr>
+<tr class="glossary-term visible"><td><strong>Compiler</strong></td><td>A program that translates your entire source code into machine code before execution (e.g., Rust, C).</td><td>Ch 01</td></tr>
+<tr class="glossary-term visible"><td><strong>Compounding engineering (L4)</strong></td><td>The practice of codifying lessons so each session improves future sessions.</td><td>Ch 41</td></tr>
+<tr class="glossary-term visible"><td><strong>Constraint-based prompting</strong></td><td>Telling the model what success looks like (constraints) instead of step-by-step instructions.</td><td>Ch 43</td></tr>
+<tr class="glossary-term visible"><td><strong>Constructor (__init__)</strong></td><td>The special method called automatically when a new instance of a class is created.</td><td>Ch 07</td></tr>
+<tr class="glossary-term visible"><td><strong>Container</strong></td><td>A running instance of a Docker image; an isolated process with its own filesystem, network, and dependencies.</td><td>Ch 16</td></tr>
+<tr class="glossary-term visible"><td><strong>Context engineering (L3)</strong></td><td>Controlling what the model sees so every token does useful work.</td><td>Ch 40</td></tr>
+<tr class="glossary-term visible"><td><strong>Context window</strong></td><td>The total amount of text (tokens) a model can process at once. Has a fixed budget.</td><td>Ch 40</td></tr>
+<tr class="glossary-term visible"><td><strong>Control flow</strong></td><td>The order in which statements execute: sequential, conditional (if/else), or looping (for/while).</td><td>Ch 05</td></tr>
+<tr class="glossary-term visible"><td><strong>CSS</strong></td><td>Cascading Style Sheets; a language for describing the visual presentation of HTML documents.</td><td>Ch 14</td></tr>
+</tbody>
+
+<tbody class="letter-group" id="letter-D">
+<tr><td colspan="3" class="letter-group-heading">D</td></tr>
+<tr class="glossary-term visible"><td><strong>Data structure</strong></td><td>A way of organizing data: list (ordered), dictionary (key-value), set (unique), tuple (immutable).</td><td>Ch 06</td></tr>
+<tr class="glossary-term visible"><td><strong>Data type</strong></td><td>A classification of data (integer, string, boolean, etc.) that determines what operations are valid.</td><td>Ch 02</td></tr>
+<tr class="glossary-term visible"><td><strong>Database</strong></td><td>Persistent data storage. SQL databases (PostgreSQL, SQLite) use tables with schemas; NoSQL (MongoDB) uses flexible documents.</td><td>Ch 15</td></tr>
+<tr class="glossary-term visible"><td><strong>Decorator</strong></td><td>A function that wraps another function to modify its behavior, applied with <code>@</code> syntax.</td><td>Ch 07</td></tr>
+<tr class="glossary-term visible"><td><strong>DFS</strong></td><td>Depth-First Search; graph traversal that explores as far as possible along each branch before backtracking.</td><td>Phase 5</td></tr>
+<tr class="glossary-term visible"><td><strong>Diff</strong></td><td>A line-by-line comparison showing what changed between two versions. <code>+</code> = added, <code>-</code> = removed.</td><td>Ch 38</td></tr>
+<tr class="glossary-term visible"><td><strong>Dispatch (L7)</strong></td><td>Tool for sending tasks to background agents. Workers execute in fresh contexts.</td><td>Ch 44</td></tr>
+<tr class="glossary-term visible"><td><strong>Docker</strong></td><td>A platform that packages applications into containers &mdash; lightweight, portable units that run identically everywhere.</td><td>Ch 16</td></tr>
+<tr class="glossary-term visible"><td><strong>docker-compose</strong></td><td>A tool for defining and running multi-container Docker applications using a YAML configuration file.</td><td>Ch 16</td></tr>
+<tr class="glossary-term visible"><td><strong>Dockerfile</strong></td><td>A text file with instructions for building a Docker image, layer by layer.</td><td>Ch 16</td></tr>
+</tbody>
+
+<tbody class="letter-group" id="letter-E">
+<tr><td colspan="3" class="letter-group-heading">E</td></tr>
+<tr class="glossary-term visible"><td><strong>Endpoint</strong></td><td>A specific URL that an API responds to (e.g., <code>/api/tasks</code>).</td><td>Ch 13</td></tr>
+<tr class="glossary-term visible"><td><strong>Environment variable</strong></td><td>A named value available to all processes. Used for configuration and secrets.</td><td>Ch 10</td></tr>
+<tr class="glossary-term visible"><td><strong>Exception</strong></td><td>An error that interrupts normal execution. Caught with try/except.</td><td>Ch 08</td></tr>
+</tbody>
+
+<tbody class="letter-group" id="letter-F">
+<tr><td colspan="3" class="letter-group-heading">F</td></tr>
+<tr class="glossary-term visible"><td><strong>f-string</strong></td><td>A formatted string literal prefixed with <code>f</code> that embeds expressions inside braces: <code>f"Hello {name}"</code>.</td><td>Ch 05</td></tr>
+<tr class="glossary-term visible"><td><strong>FIFO</strong></td><td>First In, First Out; the principle used by queues.</td><td>Phase 5</td></tr>
+<tr class="glossary-term visible"><td><strong>First-class value</strong></td><td>An object that can be assigned to variables, passed as an argument, and returned from functions.</td><td>Ch 05</td></tr>
+<tr class="glossary-term visible"><td><strong>Flask</strong></td><td>Lightweight Python web framework for building APIs and web apps.</td><td>Ch 14</td></tr>
+<tr class="glossary-term visible"><td><strong>Fork</strong></td><td>A personal copy of someone else's repository on GitHub, used for contributing to open-source projects.</td><td>Ch 12</td></tr>
+<tr class="glossary-term visible"><td><strong>Frontend</strong></td><td>The user-facing part of a web application &mdash; HTML, CSS, JavaScript running in the browser.</td><td>Ch 01</td></tr>
+<tr class="glossary-term visible"><td><strong>Function</strong></td><td>A reusable block of code that takes inputs (parameters), does work, and returns an output.</td><td>Ch 05</td></tr>
+</tbody>
+
+<tbody class="letter-group" id="letter-G">
+<tr><td colspan="3" class="letter-group-heading">G</td></tr>
+<tr class="glossary-term visible"><td><strong>.gitignore</strong></td><td>A file listing patterns of files and directories that git should not track (e.g., <code>__pycache__/</code>, <code>.env</code>).</td><td>Ch 12</td></tr>
+<tr class="glossary-term visible"><td><strong>Graph</strong></td><td>A data structure with nodes (vertices) and edges representing relationships between them.</td><td>Phase 5</td></tr>
+</tbody>
+
+<tbody class="letter-group" id="letter-H">
+<tr><td colspan="3" class="letter-group-heading">H</td></tr>
+<tr class="glossary-term visible"><td><strong>Harness</strong></td><td>The collection of automated checks surrounding an agent: type checker, linter, tests, CI.</td><td>Ch 43</td></tr>
+<tr class="glossary-term visible"><td><strong>Hash function</strong></td><td>A function that converts keys into array indices for O(1) storage and retrieval.</td><td>Phase 5</td></tr>
+<tr class="glossary-term visible"><td><strong>Hash table</strong></td><td>A data structure that maps keys to values using hash functions for O(1) average-case lookup.</td><td>Phase 5</td></tr>
+<tr class="glossary-term visible"><td><strong>Higher-order function</strong></td><td>A function that takes other functions as arguments or returns a function.</td><td>Ch 05</td></tr>
+<tr class="glossary-term visible"><td><strong>Hook</strong></td><td>An automated script that runs at a lifecycle point (pre-commit, post-save, etc.).</td><td>Ch 42</td></tr>
+<tr class="glossary-term visible"><td><strong>HTML</strong></td><td>HyperText Markup Language; the standard markup language for creating web pages.</td><td>Ch 14</td></tr>
+<tr class="glossary-term visible"><td><strong>HTTP</strong></td><td>Hypertext Transfer Protocol. The request/response protocol of the web.</td><td>Ch 13</td></tr>
+<tr class="glossary-term visible"><td><strong>Hub-and-spoke</strong></td><td>Coordination where all workers report to a single orchestrator (Dispatch pattern).</td><td>Ch 46</td></tr>
+</tbody>
+
+<tbody class="letter-group" id="letter-I">
+<tr><td colspan="3" class="letter-group-heading">I</td></tr>
+<tr class="glossary-term visible"><td><strong>IDE</strong></td><td>Integrated Development Environment. Code editor with built-in tools (VS Code, Cursor).</td><td>Ch 03</td></tr>
+<tr class="glossary-term visible"><td><strong>Image</strong></td><td>A read-only template containing application code, runtime, and dependencies used to create containers.</td><td>Ch 16</td></tr>
+<tr class="glossary-term visible"><td><strong>Inheritance</strong></td><td>A mechanism where a new class derives attributes and methods from an existing parent class.</td><td>Ch 07</td></tr>
+<tr class="glossary-term visible"><td><strong>Insertion sort</strong></td><td>A sorting algorithm that builds the sorted list one element at a time by inserting each into its correct position. O(n) best case, O(n&sup2;) worst.</td><td>Phase 6</td></tr>
+<tr class="glossary-term visible"><td><strong>Instance</strong></td><td>A concrete realization of a class; "object" and "instance" are interchangeable in Python.</td><td>Ch 07</td></tr>
+<tr class="glossary-term visible"><td><strong>Instruction scaffold</strong></td><td>A document so precise that a non-deterministic model produces the same correct output nearly every time.</td><td>Ch 40, Ch 43</td></tr>
+<tr class="glossary-term visible"><td><strong>Interpreter</strong></td><td>A program that reads your source code and executes it line by line (e.g., Python). Contrast with a compiler.</td><td>Ch 01</td></tr>
+<tr class="glossary-term visible"><td><strong>iTerm2</strong></td><td>A macOS terminal emulator with advanced features like split panes, search, and profiles.</td><td>Ch 03</td></tr>
+</tbody>
+
+<tbody class="letter-group" id="letter-J">
+<tr><td colspan="3" class="letter-group-heading">J</td></tr>
+<tr class="glossary-term visible"><td><strong>JSON</strong></td><td>JavaScript Object Notation. Text format for structured data: <code>{"key": "value"}</code>.</td><td>Ch 08</td></tr>
+<tr class="glossary-term visible"><td><strong>JSON API</strong></td><td>An API that accepts and returns data in JSON format, the most common pattern for modern web services.</td><td>Ch 14</td></tr>
+</tbody>
+
+<tbody class="letter-group" id="letter-L">
+<tr><td colspan="3" class="letter-group-heading">L</td></tr>
+<tr class="glossary-term visible"><td><strong>Lambda</strong></td><td>An anonymous (unnamed) function, typically used for short throwaway operations.</td><td>Ch 05</td></tr>
+<tr class="glossary-term visible"><td><strong>Large language model (LLM)</strong></td><td>A model that predicts likely next tokens based on context. It generates useful code but does not "understand" your project &mdash; output quality depends on context, constraints, and verification.</td><td>Ch 38</td></tr>
+<tr class="glossary-term visible"><td><strong>LIFO</strong></td><td>Last In, First Out; the principle used by stacks.</td><td>Phase 5</td></tr>
+<tr class="glossary-term visible"><td><strong>Linked list</strong></td><td>A data structure where each node contains data and a pointer to the next node.</td><td>Phase 5</td></tr>
+<tr class="glossary-term visible"><td><strong>List Comprehension</strong></td><td>A concise syntax for creating lists from iterables: <code>[x for x in items if condition]</code>.</td><td>Ch 06</td></tr>
+</tbody>
+
+<tbody class="letter-group" id="letter-M">
+<tr><td colspan="3" class="letter-group-heading">M</td></tr>
+<tr class="glossary-term visible"><td><strong>MCP</strong></td><td>Model Context Protocol. Standardized connectors letting Claude Code interact with external tools.</td><td>Ch 42</td></tr>
+<tr class="glossary-term visible"><td><strong>Merge</strong></td><td>Combining changes from one branch into another.</td><td>Ch 11</td></tr>
+<tr class="glossary-term visible"><td><strong>Merge conflict</strong></td><td>When two branches modify the same lines. Must be resolved manually.</td><td>Ch 11</td></tr>
+<tr class="glossary-term visible"><td><strong>Method</strong></td><td>A function defined inside a class that operates on the instance's data.</td><td>Ch 07</td></tr>
+<tr class="glossary-term visible"><td><strong>Module</strong></td><td>A Python file that can be imported into other files. Organizes code into reusable units.</td><td>Ch 07</td></tr>
+<tr class="glossary-term visible"><td><strong>Memoization</strong></td><td>Caching the results of expensive function calls so repeated calls with the same arguments return instantly.</td><td>Phase 6</td></tr>
+<tr class="glossary-term visible"><td><strong>Multi-model dispatch</strong></td><td>Assigning different AI models to different tasks based on their strengths.</td><td>Ch 44</td></tr>
+</tbody>
+
+<tbody class="letter-group" id="letter-N">
+<tr><td colspan="3" class="letter-group-heading">N</td></tr>
+<tr class="glossary-term visible"><td><strong>Non-deterministic</strong></td><td>Producing different outputs from the same input across runs. LLMs are fundamentally non-deterministic &mdash; the same prompt can yield different code.</td><td>Ch 38</td></tr>
+</tbody>
+
+<tbody class="letter-group" id="letter-O">
+<tr><td colspan="3" class="letter-group-heading">O</td></tr>
+<tr class="glossary-term visible"><td><strong>Object</strong></td><td>A specific instance of a class, with its own data values but shared behavior from the class blueprint.</td><td>Ch 07</td></tr>
+<tr class="glossary-term visible"><td><strong>ORM</strong></td><td>Object-Relational Mapper. Translates between Python objects and database rows (e.g., SQLAlchemy).</td><td>Ch 15</td></tr>
+</tbody>
+
+<tbody class="letter-group" id="letter-P">
+<tr><td colspan="3" class="letter-group-heading">P</td></tr>
+<tr class="glossary-term visible"><td><strong>Package manager</strong></td><td>Tool for installing/managing software: pip (Python), npm (Node.js), brew (macOS).</td><td>Ch 03</td></tr>
+<tr class="glossary-term visible"><td><strong>Parameter</strong></td><td>A variable in a function definition that receives a value when the function is called.</td><td>Ch 05</td></tr>
+<tr class="glossary-term visible"><td><strong>PATH</strong></td><td>Environment variable listing directories where the shell looks for executables.</td><td>Ch 03</td></tr>
+<tr class="glossary-term visible"><td><strong>Peer-to-peer</strong></td><td>Coordination where agents communicate directly with each other (Agent Teams pattern).</td><td>Ch 46</td></tr>
+<tr class="glossary-term visible"><td><strong>Pipe ( | )</strong></td><td>Shell operator that sends one command's output as the next command's input.</td><td>Ch 10</td></tr>
+<tr class="glossary-term visible"><td><strong>Pre-commit hook</strong></td><td>A script that runs automatically before each git commit. Catches issues early.</td><td>Ch 43</td></tr>
+<tr class="glossary-term visible"><td><strong>Pull</strong></td><td>Download commits from a remote repository and merge them into your local branch.</td><td>Ch 12</td></tr>
+<tr class="glossary-term visible"><td><strong>Pull Request</strong></td><td>A proposal to merge changes from one branch into another, with code review and discussion.</td><td>Ch 12</td></tr>
+<tr class="glossary-term visible"><td><strong>Push</strong></td><td>Upload your local commits to a remote repository so others can access them.</td><td>Ch 12</td></tr>
+</tbody>
+
+<tbody class="letter-group" id="letter-Q">
+<tr><td colspan="3" class="letter-group-heading">Q</td></tr>
+<tr class="glossary-term visible"><td><strong>Queue</strong></td><td>A FIFO (First In, First Out) data structure where items are added at the back and removed from the front.</td><td>Phase 5</td></tr>
+<tr class="glossary-term visible"><td><strong>Quicksort</strong></td><td>A divide-and-conquer sorting algorithm that picks a pivot, partitions elements around it, and recurses. O(n log n) average.</td><td>Phase 6</td></tr>
+</tbody>
+
+<tbody class="letter-group" id="letter-R">
+<tr><td colspan="3" class="letter-group-heading">R</td></tr>
+<tr class="glossary-term visible"><td><strong>Ralph Loop</strong></td><td>Autonomous agent loop: run until PRD complete, each iteration starts with fresh context to avoid window exhaustion.</td><td>Ch 44</td></tr>
+<tr class="glossary-term visible"><td><strong>Remote</strong></td><td>A version of your repository hosted on a server (e.g., GitHub) that you push to and pull from.</td><td>Ch 12</td></tr>
+<tr class="glossary-term visible"><td><strong>REPL</strong></td><td>Read-Eval-Print Loop. An interactive prompt where you type code and see results immediately (<code>python3</code> &rarr; <code>&gt;&gt;&gt;</code>).</td><td>Ch 03</td></tr>
+<tr class="glossary-term visible"><td><strong>Repository (repo)</strong></td><td>A project tracked by git. Contains all files and their complete history.</td><td>Ch 11</td></tr>
+<tr class="glossary-term visible"><td><strong>REST</strong></td><td>Representational State Transfer. API style using HTTP methods (GET, POST, PUT, DELETE).</td><td>Ch 13</td></tr>
+<tr class="glossary-term visible"><td><strong>REST API</strong></td><td>An API that follows REST conventions: resources identified by URLs, manipulated with HTTP methods.</td><td>Ch 14</td></tr>
+<tr class="glossary-term visible"><td><strong>Return value</strong></td><td>The output a function sends back to whoever called it.</td><td>Ch 05</td></tr>
+<tr class="glossary-term visible"><td><strong>Route</strong></td><td>A URL pattern mapped to a handler function in a web framework; defines what code runs for each URL.</td><td>Ch 14</td></tr>
+</tbody>
+
+<tbody class="letter-group" id="letter-S">
+<tr><td colspan="3" class="letter-group-heading">S</td></tr>
+<tr class="glossary-term visible"><td><strong>Scope</strong></td><td>Where a variable is visible. Local scope = inside a function. Global scope = everywhere.</td><td>Ch 05</td></tr>
+<tr class="glossary-term visible"><td><strong>self</strong></td><td>The first parameter of every method in a Python class, referring to the current instance.</td><td>Ch 07</td></tr>
+<tr class="glossary-term visible"><td><strong>Skill</strong></td><td>A reusable instruction set (<code>.claude/skills/[name]/SKILL.md</code>) loaded on demand.</td><td>Ch 42</td></tr>
+<tr class="glossary-term visible"><td><strong>Specification (spec)</strong></td><td>A written document defining what a system should do, its inputs, outputs, and constraints.</td><td>Ch 41</td></tr>
+<tr class="glossary-term visible"><td><strong>SQL</strong></td><td>Structured Query Language. The standard language for creating, reading, updating, and deleting data in relational databases.</td><td>Ch 15</td></tr>
+<tr class="glossary-term visible"><td><strong>SQLite</strong></td><td>A lightweight, file-based SQL database engine that requires no server &mdash; ideal for small applications and prototyping.</td><td>Ch 15</td></tr>
+<tr class="glossary-term visible"><td><strong>SSH Key</strong></td><td>A cryptographic key pair used for passwordless authentication with remote git servers.</td><td>Ch 12</td></tr>
+<tr class="glossary-term visible"><td><strong>Stack</strong></td><td>A LIFO (Last In, First Out) data structure where items are added and removed from the top.</td><td>Phase 5</td></tr>
+<tr class="glossary-term visible"><td><strong>Standard library</strong></td><td>Built-in modules that ship with Python (json, os, sys, pathlib, etc.).</td><td>Ch 07</td></tr>
+<tr class="glossary-term visible"><td><strong>Status code</strong></td><td>HTTP response number: 200 = OK, 404 = Not Found, 500 = Server Error.</td><td>Ch 13</td></tr>
+<tr class="glossary-term visible"><td><strong>Subagent</strong></td><td>A specialized agent (<code>.claude/agents/*.md</code>) with restricted tools and a focused role.</td><td>Ch 42</td></tr>
+</tbody>
+
+<tbody class="letter-group" id="letter-T">
+<tr><td colspan="3" class="letter-group-heading">T</td></tr>
+<tr class="glossary-term visible"><td><strong>Tab complete (L1)</strong></td><td>Inline code suggestions as you type. Press Tab to accept.</td><td>Ch 39</td></tr>
+<tr class="glossary-term visible"><td><strong>Terminal / Shell</strong></td><td>Text-based interface for running commands. The shell interprets your commands (bash, zsh).</td><td>Ch 03</td></tr>
+<tr class="glossary-term visible"><td><strong>Test-driven development (TDD)</strong></td><td>Write tests first, then write code to make them pass. Red &rarr; green &rarr; refactor.</td><td>Ch 08</td></tr>
+<tr class="glossary-term visible"><td><strong>Topological sort</strong></td><td>An ordering of directed graph nodes such that every edge points forward; used for dependency resolution.</td><td>Phase 6</td></tr>
+</tbody>
+
+<tbody class="letter-group" id="letter-V">
+<tr><td colspan="3" class="letter-group-heading">V</td></tr>
+<tr class="glossary-term visible"><td><strong>Variable</strong></td><td>A named container for a value. The name points to a location in memory.</td><td>Ch 02</td></tr>
+<tr class="glossary-term visible"><td><strong>Virtual Environment</strong></td><td>An isolated Python installation that keeps project dependencies separate from the system Python.</td><td>Ch 03</td></tr>
+<tr class="glossary-term visible"><td><strong>Volume (Docker)</strong></td><td>A persistent storage mechanism that survives container restarts, used for databases and user data.</td><td>Ch 16</td></tr>
+</tbody>
+
+<tbody class="letter-group" id="letter-W">
+<tr><td colspan="3" class="letter-group-heading">W</td></tr>
+<tr class="glossary-term visible"><td><strong>Web scraping</strong></td><td>The practice of programmatically fetching web pages and extracting structured data from their HTML.</td><td>Ch 13</td></tr>
+<tr class="glossary-term visible"><td><strong>Worktree</strong></td><td>A separate working directory linked to the same repo. Enables parallel work without stashing.</td><td>Ch 11</td></tr>
+</tbody>
+
+</table>
+</div><!-- /glossary-content -->
+</div><!-- /glossary panel -->
+
+<div class="app-tab-panel" id="prompt-library">
+<h2><span class="ch-label">Appendix B</span> Prompt Library</h2>
+<p>All prompts, patterns, and templates from the document, organized by phase. Copy-paste ready. Use these as starting points&mdash;modify them for your specific project. The best prompts are specific to your context, not generic.</p>
+
+<div class="app-subtabs">
+  <button class="app-subtab active" data-subtab="pl-p1">Phase 1</button>
+  <button class="app-subtab" data-subtab="pl-p2">Phase 2</button>
+  <button class="app-subtab" data-subtab="pl-p3">Phase 3</button>
+  <button class="app-subtab" data-subtab="pl-p4">Phase 4</button>
+  <button class="app-subtab" data-subtab="pl-p9">Phase 9</button>
+  <button class="app-subtab" data-subtab="pl-p10">Phase 10</button>
+</div>
+
+<div class="app-subtab-panel active" data-subtab-panel="pl-p1">
+<h3>Phase 1 — Foundations</h3>
+
+<h4>Ch 3: Environment Verification</h4>
+<div class="prompt-block"><pre><code>python3 --version
+node --version
+git --version
+code --version</code></pre></div>
+
+<h4>Ch 4: Three-Pass Code Reading</h4>
+<div class="prompt-block"><pre><code># Pass 1: Structure — What are the functions? What does each do?
+# Pass 2: Flow — Where does execution start? What calls what?
+# Pass 3: Data — What goes in? What comes out? What transforms happen?</code></pre></div>
+
+<h4>Ch 4: Analyze This Code Template</h4>
+<div class="prompt-block"><pre><code>Analyze this code using the three-pass method:
+
+```python
+[paste code here]
+```
+
+Pass 1 — Structure:
+- List every function/class and its purpose in one sentence.
+
+Pass 2 — Flow:
+- Where does execution begin?
+- Trace the call chain from entry point to output.
+
+Pass 3 — Data:
+- What are the inputs (types, formats)?
+- What transformations happen?
+- What is the final output?
+
+Summary: What does this program do in one paragraph?</code></pre></div>
+</div><!-- /pl-p1 -->
+
+<div class="app-subtab-panel" data-subtab-panel="pl-p2">
+<h3>Phase 2 — Python</h3>
+
+<h4>Ch 5: Function Template</h4>
+<div class="prompt-block"><pre><code>def function_name(param1: type, param2: type) -> return_type:
+    """One-line description of what this function does."""
+    # logic here
+    return result</code></pre></div>
+
+<h4>Ch 09: Test-Driven Development Pattern</h4>
+<div class="prompt-block"><pre><code># 1. Write the test first
+def test_feature():
+    result = my_function(input)
+    assert result == expected
+
+# 2. Run: python3 -m pytest (watch it fail — RED)
+# 3. Write minimum code to pass
+# 4. Run: python3 -m pytest (watch it pass — GREEN)
+# 5. Refactor if needed</code></pre></div>
+
+<h4>Ch 08: JSON File Manipulation</h4>
+<div class="prompt-block"><pre><code>import json
+from pathlib import Path
+
+def load_data(filepath: str) -> list[dict]:
+    """Load JSON data from file. Return empty list if file missing."""
+    path = Path(filepath)
+    if not path.exists():
+        return []
+    return json.loads(path.read_text())
+
+def save_data(filepath: str, data: list[dict]) -> None:
+    """Write data to JSON file with pretty formatting."""
+    Path(filepath).write_text(json.dumps(data, indent=2))
+
+# Usage
+tasks = load_data("tasks.json")
+tasks.append({"id": len(tasks) + 1, "title": "New task", "status": "todo"})
+save_data("tasks.json", tasks)</code></pre></div>
+
+<h4>Ch 6: String Processing Pattern</h4>
+<div class="prompt-block"><pre><code># Common string operations for data cleaning
+def clean_and_parse(raw: str) -> dict:
+    """Strip whitespace, split on delimiter, return structured data."""
+    line = raw.strip()
+    parts = line.split(",")
+    return {
+        "name": parts[0].strip().title(),
+        "email": parts[1].strip().lower(),
+        "role": parts[2].strip() if len(parts) > 2 else "unknown",
+    }
+
+# f-string formatting
+summary = f"{task['title']} ({task['status']}) — due {task['due_date']}"
+
+# String methods chain
+normalized = user_input.strip().lower().replace(" ", "_")</code></pre></div>
+
+<h4>Ch 09: TaskForge Test Example</h4>
+<div class="prompt-block"><pre><code>def test_filter_tasks_by_status():
+    tasks = [
+        {"id": 1, "title": "Buy milk", "status": "todo"},
+        {"id": 2, "title": "Walk dog", "status": "done"},
+    ]
+    result = filter_tasks(tasks, status="done")
+    assert len(result) == 1
+    assert result[0]["title"] == "Walk dog"</code></pre></div>
+</div><!-- /pl-p2 -->
+
+<div class="app-subtab-panel" data-subtab-panel="pl-p3">
+<h3>Phase 3 — Development Tools</h3>
+
+<h4>Ch 10: Pipe Composition</h4>
+<div class="prompt-block"><pre><code># Find Python files containing "TODO" and count them
+grep -r "TODO" --include="*.py" . | wc -l
+
+# List the 5 largest files in src/
+du -sh src/* | sort -rh | head -5</code></pre></div>
+
+<h4>Ch 11: Git Workflow</h4>
+<div class="prompt-block"><pre><code>git checkout -b feature/add-tags
+# ... make changes ...
+git add src/taskforge/models.py tests/test_tags.py
+git commit -m "feat: add tag support with filtering"
+git checkout main
+git merge feature/add-tags</code></pre></div>
+
+<h4>Ch 12: Git Remote Workflow</h4>
+<div class="prompt-block"><pre><code># Set up remote and push
+git remote add origin git@github.com:username/taskforge.git
+git push -u origin main
+
+# Feature branch workflow with remote
+git checkout -b feature/api-endpoints
+# ... make changes, commit locally ...
+git push -u origin feature/api-endpoints
+
+# Create pull request (using GitHub CLI)
+gh pr create --title "Add API endpoints" --body "Implements REST API for tasks"
+
+# After PR review and merge, update local main
+git checkout main
+git pull origin main
+git branch -d feature/api-endpoints</code></pre></div>
+</div><!-- /pl-p3 -->
+
+<div class="app-subtab-panel" data-subtab-panel="pl-p4">
+<h3>Phase 4 — Building &amp; Deploying</h3>
+
+<h4>Ch 13: API Testing with curl</h4>
+<div class="prompt-block"><pre><code># GET request — retrieve data
+curl -s https://httpbin.org/get | python3 -m json.tool
+
+# POST request — send JSON data
+curl -s -X POST https://httpbin.org/post \
+  -H "Content-Type: application/json" \
+  -d '{"title": "New task", "status": "todo"}'
+
+# Test your local API
+curl -s http://localhost:5000/api/tasks | python3 -m json.tool
+
+# POST to your local API
+curl -s -X POST http://localhost:5000/api/tasks \
+  -H "Content-Type: application/json" \
+  -d '{"title": "Test task", "status": "todo"}'
+
+# Check response headers
+curl -I http://localhost:5000/api/tasks</code></pre></div>
+
+<h4>Ch 13: API Request Pattern</h4>
+<div class="prompt-block"><pre><code>import requests
+
+response = requests.get(
+    "https://api.github.com/repos/owner/repo",
+    headers={"Accept": "application/vnd.github.v3+json"}
+)
+if response.status_code == 200:
+    data = response.json()
+    print(data["description"])
+else:
+    print(f"Error: {response.status_code}")</code></pre></div>
+
+<h4>Ch 14: Flask API Endpoint</h4>
+<div class="prompt-block"><pre><code>from flask import Flask, jsonify, request
+
+app = Flask(__name__)
+
+tasks = []
+
+@app.route("/api/tasks", methods=["GET"])
+def get_tasks():
+    """Return all tasks, optionally filtered by status."""
+    status = request.args.get("status")
+    if status:
+        filtered = [t for t in tasks if t["status"] == status]
+        return jsonify(filtered)
+    return jsonify(tasks)
+
+@app.route("/api/tasks", methods=["POST"])
+def create_task():
+    """Create a new task from JSON body."""
+    data = request.get_json()
+    if not data or "title" not in data:
+        return jsonify({"error": "title is required"}), 400
+    task = {
+        "id": len(tasks) + 1,
+        "title": data["title"],
+        "status": data.get("status", "todo"),
+    }
+    tasks.append(task)
+    return jsonify(task), 201
+
+if __name__ == "__main__":
+    app.run(debug=True)</code></pre></div>
+
+<h4>Ch 16: Docker Build Pattern</h4>
+<div class="prompt-block"><pre><code># Dockerfile
+FROM python:3.12-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+EXPOSE 5000
+
+CMD ["python3", "-m", "flask", "run", "--host=0.0.0.0"]</code></pre></div>
+
+<div class="prompt-block"><pre><code># docker-compose.yml
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - FLASK_ENV=development</code></pre></div>
+
+<div class="prompt-block"><pre><code># Build and run
+docker build -t taskforge .
+docker run -p 5000:5000 taskforge
+
+# Or use docker-compose
+docker compose up --build</code></pre></div>
+</div><!-- /pl-p4 -->
+
+<div class="app-subtab-panel" data-subtab-panel="pl-p9">
+<h3>Phase 9 — AI-Assisted Development</h3>
+
+<h4>Ch 38: Implementation Spec Template</h4>
+<div class="prompt-block"><pre><code>**What:** [Feature name and one-sentence description]
+**Inputs:** [Parameters with types]
+**Outputs:** [Return value and format]
+**Constraints:** [Limits, validation rules, security requirements]
+**Edge cases:** [Empty input, invalid data, boundary conditions]
+**Acceptance criteria:** [Specific, testable conditions]</code></pre></div>
+
+<h4>Ch 39: First Claude Code Interaction</h4>
+<div class="prompt-block"><pre><code># Navigate to your project
+cd ~/projects/taskforge
+
+# Start Claude Code
+claude
+
+# Try Plan Mode first
+> Add a delete_task(task_id) function that removes a task by ID.
+> Plan first, then implement after I approve.</code></pre></div>
+
+<h4>Ch 40: CLAUDE.md Template</h4>
+<div class="prompt-block"><pre><code># ProjectName
+One-line description.
+
+## Commands
+- `python3 -m pytest` — run tests
+- `python3 -m flask run` — start server
+
+## Architecture
+- src/ — core logic
+- tests/ — test files
+- data/ — persistent storage (gitignored)
+
+## Code Style
+- Type hints on all function signatures
+- Docstrings on all public functions
+- No bare try/except
+
+## Gotchas
+- [Specific thing Claude gets wrong]
+- [Another specific gotcha]</code></pre></div>
+
+<h4>Ch 42: Skill Template</h4>
+<div class="prompt-block"><pre><code># .claude/skills/[name]/SKILL.md
+---
+name: skill-name
+description: One-line description of what this skill does.
+tools: Read, Glob, Grep, Bash
+model: opus
+---
+You are a [role]. Your job is to [task].
+
+## Steps
+1. [First step]
+2. [Second step]
+
+## Output Format
+[What the output should look like]</code></pre></div>
+
+<h4>Ch 42: Subagent Template</h4>
+<div class="prompt-block"><pre><code># .claude/agents/[name].md
+---
+name: agent-name
+description: One-line description.
+tools: Read, Glob, Write
+model: sonnet
+---
+[Instructions for the subagent]</code></pre></div>
+</div><!-- /pl-p9 -->
+
+<div class="app-subtab-panel" data-subtab-panel="pl-p10">
+<h3>Phase 10 — AI Orchestration</h3>
+
+<h4>Ch 43: Constraint-Based Prompt</h4>
+<div class="prompt-block"><pre><code>Add [feature] to [project].
+
+Requirements:
+- [Constraint 1]
+- [Constraint 2]
+
+Acceptance criteria:
+- All existing tests pass
+- New tests cover: [cases]
+
+Run: Work until `python3 -m pytest` passes cleanly.
+Fix failures yourself. Don't ask me unless genuinely stuck.</code></pre></div>
+
+<h4>Ch 43: Pre-commit Config</h4>
+<div class="prompt-block"><pre><code># .pre-commit-config.yaml
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.3.0
+    hooks:
+      - id: ruff
+      - id: ruff-format
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest
+        entry: python3 -m pytest
+        language: system
+        pass_filenames: false
+        always_run: true</code></pre></div>
+
+<h4>Ch 44: Dispatch Pattern</h4>
+<div class="prompt-block"><pre><code>/dispatch [description]:
+1) [task 1] — use [model], worktree
+2) [task 2] — use [model]
+3) [task 3] — use [model]</code></pre></div>
+
+<h4>Ch 46: Agent Decision Tree Template</h4>
+<div class="prompt-block"><pre><code># Agent Decision Tree
+
+## Simple, one-file task
+- **Pattern:** Single session
+- **Prerequisites:** None
+- **When:** Bug fix, small feature, config change
+
+## Needs exploration
+- **Pattern:** Subagents
+- **Prerequisites:** Level 3+ (context management)
+- **When:** Understanding unfamiliar code, research tasks
+
+## Multiple independent features
+- **Pattern:** Dispatch (Level 7)
+- **Prerequisites:** Level 6 (harness for backpressure)
+- **When:** Sprint of independent work items
+
+## Implementation + QA
+- **Pattern:** Builder-Validator (different models)
+- **Prerequisites:** Level 5+ (subagent configuration)
+- **When:** Any feature that needs quality assurance
+
+## Very large project
+- **Pattern:** Agent Teams (Level 8, experimental)
+- **Prerequisites:** Level 7, strong CI, clear architecture
+- **When:** Multi-system changes requiring coordination</code></pre></div>
+</div><!-- /pl-p10 -->
+
+</div><!-- /prompt-library panel -->
+
+<div class="app-tab-panel" id="self-assessment">
+<h2><span class="ch-label">Appendix C</span> Self-Assessment Quiz</h2>
+<p>Find your current level. Check the highest level where you can do <strong>all</strong> items confidently. Your level is the highest fully-checked level.</p>
+
+<div class="card">
+<h4>Level 1 — Tab Complete</h4>
+<ul>
+<li>I use inline code suggestions (Copilot, Codeium, Supermaven)</li>
+<li>I can accept, reject, or modify suggestions</li>
+<li>I understand that suggestions are probabilistic, not guaranteed correct</li>
+</ul>
+<p><strong>Next step:</strong> Install Claude Code or Cursor. Start using chat-based AI editing.</p>
+</div>
+
+<div class="card">
+<h4>Level 2 — Agent IDE</h4>
+<ul>
+<li>I use chat-based AI (Claude Code, Cursor) for multi-file edits</li>
+<li>I can describe features in natural language and review the output</li>
+<li>I use Plan Mode before letting the AI implement</li>
+<li>I review diffs before accepting changes</li>
+</ul>
+<p><strong>Next step:</strong> Create a CLAUDE.md for your main project. Start managing context deliberately.</p>
+</div>
+
+<div class="card">
+<h4>Level 3 — Context Engineering</h4>
+<ul>
+<li>I maintain a CLAUDE.md under 200 lines with actionable instructions</li>
+<li>I use <code>/compact</code> to manage context window usage</li>
+<li>I selectively include relevant files rather than entire codebases</li>
+<li>I understand the context window budget and place critical info at start/end</li>
+</ul>
+<p><strong>Next step:</strong> Start the codify loop. After each session, update CLAUDE.md with lessons learned.</p>
+</div>
+
+<div class="card">
+<h4>Level 4 — Compounding Engineering</h4>
+<ul>
+<li>I update CLAUDE.md or rules after every session where something went wrong</li>
+<li>I maintain architecture docs that Claude discovers on demand</li>
+<li>I use <code>.claude/rules/*.md</code> for domain-specific instructions</li>
+<li>Each session with Claude is measurably better than the last</li>
+</ul>
+<p><strong>Next step:</strong> Create your first skill and subagent. Set up an MCP for a tool you use daily.</p>
+</div>
+
+<div class="card">
+<h4>Level 5 — MCP, Skills, and Capabilities</h4>
+<ul>
+<li>I have at least one custom skill in <code>.claude/skills/</code></li>
+<li>I have at least one custom subagent in <code>.claude/agents/</code></li>
+<li>I've configured at least one MCP (database, GitHub, browser, etc.)</li>
+<li>I understand the CLI vs MCP tradeoff for token efficiency</li>
+</ul>
+<p><strong>Next step:</strong> Set up pre-commit hooks and a test suite. Let Claude self-correct through backpressure.</p>
+</div>
+
+<div class="card">
+<h4>Level 6 — Harness Engineering</h4>
+<ul>
+<li>I have pre-commit hooks running linter + tests on every commit</li>
+<li>I use constraint-based prompts instead of step-by-step instructions</li>
+<li>I can delegate a feature and have Claude complete it without my intervention</li>
+<li>My CI pipeline catches integration failures automatically</li>
+</ul>
+<p><strong>Next step:</strong> Install Dispatch. Start sending tasks to background agents.</p>
+</div>
+
+<div class="card">
+<h4>Level 7 — Background Agents</h4>
+<ul>
+<li>I dispatch 2+ tasks to background agents simultaneously</li>
+<li>I use different models for different tasks (Opus for architecture, Sonnet for implementation)</li>
+<li>I never let the same model implement and review</li>
+<li>I can review and merge agent output, resolving conflicts</li>
+</ul>
+<p><strong>Next step:</strong> Explore Agent Teams for large projects. Contribute skills to your team's registry.</p>
+</div>
+
+<div class="card">
+<h4>Level 8 — Autonomous Agent Teams</h4>
+<ul>
+<li>I use or have tested Agent Teams with peer-to-peer coordination</li>
+<li>I can articulate when teams are appropriate vs overkill</li>
+<li>I maintain a team skills registry with PR-reviewed skills</li>
+<li>I pull my team up by sharing and standardizing AI workflows</li>
+</ul>
+<p><strong>Next step:</strong> You're at the frontier. Focus on making your team effective, not just yourself.</p>
+</div>
+
+<h3>Scoring</h3>
+<p>Your level = the highest level where you checked <strong>every</strong> box. If you check 3/4 at Level 5 but all 4 at Level 4, you're Level 4. Partial credit means you know what to work on next.</p>
+
+<div role="note" class="callout info">
+<div class="callout-title">Remember</div>
+<p>Levels are not ranks&mdash;they're capabilities. Most professional work happens at Levels 3-6. Level 7+ is for projects that justify the coordination overhead. Being effective at Level 5 is more valuable than being superficial at Level 8.</p>
+</div>
+
+<div class="pq">
+<blockquote>"The computer programmer is a creator of universes for which he alone is the lawgiver. No playwright, no combiner of things ever fashioned universes complete with their own laws."<br>&mdash;Joseph Weizenbaum, <em>Computer Power and Human Reason</em></blockquote>
+</div>
+</div><!-- /self-assessment panel -->
+
+<div class="app-tab-panel" id="common-mistakes">
+<h2><span class="ch-label">Appendix C.5</span> Common Mistakes by Level</h2>
+<p>A quick-reference table of the most common mistakes at each level, how to catch them, and where the curriculum covers them. Consult this when you hit a problem and want to know if it's a known pattern.</p>
+
+<table>
+<caption>Common mistakes by skill level and how to catch them</caption>
+<tr><th>Level</th><th>Common Mistake</th><th>How to Catch</th><th>Chapter</th></tr>
+<tr><td><strong>0 (Foundations)</strong></td><td>Using <code>=</code> instead of <code>==</code></td><td>Python raises <code>SyntaxError</code> in conditionals</td><td>Ch05</td></tr>
+<tr><td><strong>0</strong></td><td>Indentation errors after <code>if</code>/<code>for</code></td><td>Read the traceback&mdash;it points to the exact line</td><td>Ch02</td></tr>
+<tr><td><strong>1 (Tab Complete)</strong></td><td>Accepting suggestions without reading them</td><td>Predict the output before running; if you can't, you didn't read it</td><td>Ch38</td></tr>
+<tr><td><strong>2 (Agent IDE)</strong></td><td>Giving vague prompts ("make it better")</td><td>If the prompt doesn't specify inputs, outputs, and constraints, it's too vague</td><td>Ch39</td></tr>
+<tr><td><strong>3 (Context)</strong></td><td>No CLAUDE.md or stale CLAUDE.md</td><td>Agent produces code that violates project conventions</td><td>Ch40</td></tr>
+<tr><td><strong>3</strong></td><td>Overloading a single prompt with multiple unrelated tasks</td><td>If the prompt has "and" more than twice, split it</td><td>Ch40</td></tr>
+<tr><td><strong>4 (Compounding)</strong></td><td>No tests before asking AI to modify code</td><td>AI change breaks something and you have no way to detect it</td><td>Ch41</td></tr>
+<tr><td><strong>4</strong></td><td>Bare <code>except:</code> clauses hiding real errors</td><td>Linter or <code>flake8 --select=E722</code></td><td>Ch09</td></tr>
+<tr><td><strong>5 (MCP/Skills)</strong></td><td>Hallucinated package names in AI output</td><td><code>pip install</code> fails with 404</td><td>Ch38</td></tr>
+<tr><td><strong>5</strong></td><td>Over-engineered AI solutions</td><td>Ask: "Could this be done in half the lines?"</td><td>Ch38</td></tr>
+<tr><td><strong>6 (Harness)</strong></td><td>Constraints too loose (agent makes sweeping changes)</td><td>Review <code>git diff --stat</code>&mdash;if it touches &gt;10 files, constraints were too broad</td><td>Ch43</td></tr>
+<tr><td><strong>7 (Background)</strong></td><td>No iteration limit on agent loops</td><td>Agent runs indefinitely; always set <code>max_iterations</code></td><td>Ch44</td></tr>
+<tr><td><strong>8 (Teams)</strong></td><td>Using multi-agent for tasks a single agent handles fine</td><td>If there are no independent subtasks, use one agent</td><td>Ch46</td></tr>
+</table>
+
+<div role="note" class="callout info">
+<div class="callout-title">Using This Table</div>
+<p>When something goes wrong, find your current level in the left column. The most likely mistake is listed next to it. If the fix isn't clear, follow the chapter reference for the full explanation.</p>
+</div>
+</div><!-- /common-mistakes panel -->
+
+<div class="app-tab-panel" id="appendix-d">
+<h2><span class="ch-label">Appendix D</span> Troubleshooting</h2>
+<p>Common issues organized by phase. Each entry includes what you see (symptom), what went wrong (cause), and how to fix it.</p>
+
+<h3>Phase 1 Issues</h3>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>Python not found</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>Symptom</dt>
+      <dd><code>python3: command not found</code> or <code>'python3' is not recognized</code> in the terminal.</dd>
+      <dt>Cause</dt>
+      <dd>Python is not installed, or the install directory is not in your system PATH.</dd>
+      <dt>Fix</dt>
+      <dd>Reinstall Python from <a href="https://python.org">python.org</a> and ensure "Add to PATH" is checked. On macOS, run <code>brew install python3</code>. Verify with <code>which python3</code>.</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>"command not found" errors</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>Symptom</dt>
+      <dd>Any tool (<code>git</code>, <code>node</code>, <code>code</code>) returns "command not found" after installation.</dd>
+      <dt>Cause</dt>
+      <dd>The executable's directory is not in your shell's PATH, or the shell session has not been restarted.</dd>
+      <dt>Fix</dt>
+      <dd>Close and reopen your terminal. If still broken, add the install path to your <code>~/.zshrc</code> or <code>~/.bashrc</code> and run <code>source ~/.zshrc</code>.</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>REPL won't start</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>Symptom</dt>
+      <dd>Typing <code>python3</code> hangs or shows an unexpected version.</dd>
+      <dt>Cause</dt>
+      <dd>Multiple Python installations are conflicting, or an alias is pointing to the wrong version.</dd>
+      <dt>Fix</dt>
+      <dd>Run <code>which python3</code> to see which binary runs. Use the full path (e.g., <code>/usr/local/bin/python3</code>) or fix your PATH order in your shell config.</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>VS Code can't find Python</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>Symptom</dt>
+      <dd>VS Code shows "No Python interpreter selected" or linting fails.</dd>
+      <dt>Cause</dt>
+      <dd>VS Code's Python extension doesn't know where your Python is installed.</dd>
+      <dt>Fix</dt>
+      <dd>Open the command palette (Cmd+Shift+P), type "Python: Select Interpreter", and choose the correct Python 3 installation.</dd>
+    </dl>
+  </div>
+</div>
+
+<h3>Phase 2 Issues</h3>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>IndentationError</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>Symptom</dt>
+      <dd><code>IndentationError: unexpected indent</code> or <code>unindent does not match</code>.</dd>
+      <dt>Cause</dt>
+      <dd>Your file mixes tabs and spaces for indentation, or indentation levels are inconsistent.</dd>
+      <dt>Fix</dt>
+      <dd>Configure your editor to use 4 spaces (not tabs). In VS Code: Settings &rarr; "Editor: Tab Size" = 4, "Editor: Insert Spaces" = checked. Re-indent the affected file.</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>ModuleNotFoundError</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>Symptom</dt>
+      <dd><code>ModuleNotFoundError: No module named 'requests'</code> (or any third-party package).</dd>
+      <dt>Cause</dt>
+      <dd>The package is not installed in the Python environment you are using, or you have multiple Python installations.</dd>
+      <dt>Fix</dt>
+      <dd>Run <code>python3 -m pip install requests</code> (using <code>python3 -m pip</code> ensures you install to the correct Python). Use a virtual environment to isolate dependencies.</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>json.decoder.JSONDecodeError</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>Symptom</dt>
+      <dd><code>json.decoder.JSONDecodeError: Expecting value</code> when reading a JSON file.</dd>
+      <dt>Cause</dt>
+      <dd>The file is empty, contains invalid JSON, or has a trailing comma or single quotes instead of double quotes.</dd>
+      <dt>Fix</dt>
+      <dd>Validate your JSON at <a href="https://jsonlint.com">jsonlint.com</a>. Ensure the file is not empty. Use <code>json.dumps()</code> to write JSON instead of hand-editing it.</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>pytest not found</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>Symptom</dt>
+      <dd><code>No module named pytest</code> when running <code>python3 -m pytest</code>.</dd>
+      <dt>Cause</dt>
+      <dd>pytest is not installed in your current Python environment.</dd>
+      <dt>Fix</dt>
+      <dd>Run <code>python3 -m pip install pytest</code>. If using a virtual environment, make sure it is activated first (<code>source venv/bin/activate</code>).</dd>
+    </dl>
+  </div>
+</div>
+
+<h3>Phase 3 Issues</h3>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>Permission denied (file/SSH)</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>Symptom</dt>
+      <dd><code>Permission denied</code> when reading a file or connecting to a git remote via SSH.</dd>
+      <dt>Cause</dt>
+      <dd>File permissions are too restrictive, or your SSH key is not added to the SSH agent or GitHub.</dd>
+      <dt>Fix</dt>
+      <dd>For files: <code>chmod 644 filename</code>. For SSH: run <code>ssh-add ~/.ssh/id_ed25519</code> and verify your key is added to GitHub under Settings &rarr; SSH Keys.</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>Git "detached HEAD"</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>Symptom</dt>
+      <dd>Git says <code>HEAD detached at abc1234</code> and commits seem to disappear.</dd>
+      <dt>Cause</dt>
+      <dd>You checked out a specific commit or tag instead of a branch, so there is no branch to track your new commits.</dd>
+      <dt>Fix</dt>
+      <dd>Create a branch from your current position: <code>git checkout -b my-branch</code>. Your commits are safe once they are on a named branch.</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>Merge conflict</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>Symptom</dt>
+      <dd>Files show <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code> markers and git won't complete the merge.</dd>
+      <dt>Cause</dt>
+      <dd>Two branches edited the same lines. Git cannot automatically decide which version to keep.</dd>
+      <dt>Fix</dt>
+      <dd>Open each conflicted file, choose the correct code between the markers, remove all <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code> / <code>=======</code> / <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code> lines, then <code>git add</code> and <code>git commit</code>.</dd>
+    </dl>
+  </div>
+</div>
+
+<h3>Phase 4 &amp; 5 Issues</h3>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>"Port already in use"</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>Symptom</dt>
+      <dd><code>OSError: [Errno 48] Address already in use</code> when starting Flask or another server.</dd>
+      <dt>Cause</dt>
+      <dd>Another process is already listening on that port (often a previous server you forgot to stop).</dd>
+      <dt>Fix</dt>
+      <dd>Find the process: <code>lsof -i :5000</code>. Kill it: <code>kill -9 &lt;PID&gt;</code>. Or start your server on a different port: <code>flask run --port 5001</code>.</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>Claude Code won't install</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>Symptom</dt>
+      <dd><code>npm install -g @anthropic-ai/claude-code</code> fails with engine or version errors.</dd>
+      <dt>Cause</dt>
+      <dd>Your Node.js version is too old. Claude Code requires Node.js 18 or later.</dd>
+      <dt>Fix</dt>
+      <dd>Run <code>node --version</code> to check. Install the latest LTS from <a href="https://nodejs.org">nodejs.org</a> or use <code>nvm install --lts</code>.</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>CLAUDE.md not being read</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>Symptom</dt>
+      <dd>Claude Code ignores your CLAUDE.md rules; behavior does not match instructions.</dd>
+      <dt>Cause</dt>
+      <dd>The CLAUDE.md file is not in the project root directory, or you started Claude Code from a different directory.</dd>
+      <dt>Fix</dt>
+      <dd>Run <code>pwd</code> to check your current directory. Ensure CLAUDE.md is in the same directory where you run <code>claude</code>. Use <code>ls CLAUDE.md</code> to verify.</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>API key errors</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>Symptom</dt>
+      <dd><code>AuthenticationError</code> or "invalid API key" when Claude Code starts.</dd>
+      <dt>Cause</dt>
+      <dd>Your API key is missing, expired, or set in the wrong environment variable.</dd>
+      <dt>Fix</dt>
+      <dd>Run <code>claude</code> and follow the authentication prompts. If using an API key directly, verify <code>ANTHROPIC_API_KEY</code> is set correctly in your shell config.</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>MCP server connection failures</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>Symptom</dt>
+      <dd>Claude Code reports "MCP server failed to connect" or tools are unavailable.</dd>
+      <dt>Cause</dt>
+      <dd>The MCP server process crashed, the config file has a typo, or required dependencies are missing.</dd>
+      <dt>Fix</dt>
+      <dd>Check <code>.claude/mcp.json</code> for syntax errors. Run the MCP server command manually to see error output. Ensure all dependencies are installed.</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>Rate limit errors</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>Symptom</dt>
+      <dd><code>429 Too Many Requests</code> or <code>RateLimitError</code> when using Claude Code.</dd>
+      <dt>Cause</dt>
+      <dd>You've exceeded your API rate limit or your plan's usage cap.</dd>
+      <dt>Fix</dt>
+      <dd>Wait 60 seconds and retry. If persistent, check your usage at console.anthropic.com. Claude Max subscribers have higher limits than API-key users. If you hit limits during exercises, start a new conversation &mdash; shorter context uses fewer tokens.</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>Network / Firewall blocking</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>Symptom</dt>
+      <dd><code>ECONNREFUSED</code>, <code>ETIMEDOUT</code>, or <code>fetch failed</code> when Claude Code tries to connect.</dd>
+      <dt>Cause</dt>
+      <dd>Your network is blocking outbound HTTPS connections to api.anthropic.com, or you're behind a corporate firewall/VPN.</dd>
+      <dt>Fix</dt>
+      <dd>Test connectivity with <code>curl https://api.anthropic.com/v1/messages -I</code>. If blocked, check your firewall settings or try from a different network. If you're behind a corporate proxy, set the <code>HTTPS_PROXY</code> environment variable: <code>export HTTPS_PROXY=http://your-proxy:port</code>.</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>Proxy configuration</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>Symptom</dt>
+      <dd>Claude Code installs but cannot reach the API; <code>npm install</code> itself fails with network errors.</dd>
+      <dt>Cause</dt>
+      <dd>npm and Claude Code need proxy configuration separately.</dd>
+      <dt>Fix</dt>
+      <dd>For npm: <code>npm config set proxy http://your-proxy:port</code> and <code>npm config set https-proxy http://your-proxy:port</code>. For Claude Code: set <code>HTTPS_PROXY</code> in your shell config file (<code>~/.zshrc</code> or <code>~/.bashrc</code>), then run <code>source ~/.zshrc</code>.</dd>
+    </dl>
+  </div>
+</div>
+
+<h3>Phase 9 Issues</h3>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>Dispatch not found</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>Symptom</dt>
+      <dd><code>dispatch: command not found</code> or the <code>/dispatch</code> command is not recognized.</dd>
+      <dt>Cause</dt>
+      <dd>The Dispatch tool is not installed, or it is not available in your Claude Code version.</dd>
+      <dt>Fix</dt>
+      <dd>Update Claude Code to the latest version: <code>npm update -g @anthropic-ai/claude-code</code>. Verify Dispatch availability in your plan's feature set.</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>Background agents failing silently</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>Symptom</dt>
+      <dd>Dispatched tasks show "completed" but produce no output or incorrect results.</dd>
+      <dt>Cause</dt>
+      <dd>The agent's context was insufficient, or the harness (tests/linter) did not catch the failure.</dd>
+      <dt>Fix</dt>
+      <dd>Check the agent's output log for errors. Ensure your harness has adequate test coverage. Add constraints to the dispatch prompt so failures surface explicitly.</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>Merge conflicts from parallel agents</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>Symptom</dt>
+      <dd>Multiple agent branches conflict when merging back to main.</dd>
+      <dt>Cause</dt>
+      <dd>Two or more agents modified the same files, which is expected when dispatching parallel tasks.</dd>
+      <dt>Fix</dt>
+      <dd>Use worktrees to isolate each agent. Assign agents to non-overlapping files when possible. Merge one branch at a time and resolve conflicts incrementally.</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>Docker permission denied</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>Symptom</dt>
+      <dd><code>permission denied while trying to connect to the Docker daemon socket</code>.</dd>
+      <dt>Cause</dt>
+      <dd>Your user is not in the <code>docker</code> group, or Docker Desktop is not running.</dd>
+      <dt>Fix</dt>
+      <dd>On macOS: start Docker Desktop. On Linux: run <code>sudo usermod -aG docker $USER</code> and log out/in. Verify with <code>docker ps</code>.</dd>
+    </dl>
+  </div>
+</div>
+
+<h3>Phase 10 Issues</h3>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>Agent teams producing conflicting file changes</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>Symptom</dt>
+      <dd>Two agents edit the same file simultaneously; one overwrites the other&rsquo;s changes.</dd>
+      <dt>Cause</dt>
+      <dd>No file-locking or coordination between parallel agents.</dd>
+      <dt>Fix</dt>
+      <dd>Use the hub-and-spoke pattern from Ch 46. Assign each agent a separate file or section. If agents must share a file, serialize their writes through the orchestrator.</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>Background agent timeout or hang</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>Symptom</dt>
+      <dd>A background agent stops producing output and never completes.</dd>
+      <dt>Cause</dt>
+      <dd>Agent entered an infinite retry loop, hit a rate limit, or is waiting for user input it can&rsquo;t receive.</dd>
+      <dt>Fix</dt>
+      <dd>Set <code>max_iterations</code> in your agent config. Monitor agent output logs. If stuck, kill the process and dispatch a fresh agent with a narrower task.</dd>
+    </dl>
+  </div>
+</div>
+
+</div><!-- /appendix-d panel -->
+
+<div class="app-tab-panel" id="appendix-e">
+<h2><span class="ch-label">Appendix E</span> Resources and Further Reading</h2>
+<p>Curated resources for deepening your skills. Organized by topic, with brief descriptions of what each offers.</p>
+
+<h3>Structured Reading Path</h3>
+<p>These books deepen the foundations this curriculum introduces. Read them in order, at the pace suggested.</p>
+
+<table>
+<caption>Structured reading path: books ordered by curriculum phase</caption>
+<tr><th>When to Start</th><th>Book</th><th>What It Gives You</th><th>How to Read It</th></tr>
+<tr>
+<td><strong>After Phase 2</strong></td>
+<td><a href="https://composingprograms.com">Composing Programs</a> (free online)</td>
+<td>Deep understanding of functions, data abstraction, recursion, and interpreters.</td>
+<td>Read Ch 1-2. Do all exercises.</td>
+</tr>
+<tr>
+<td><strong>After Phase 2</strong></td>
+<td><em>Code: The Hidden Language of Computer Hardware and Software</em> &mdash; Charles Petzold</td>
+<td>How computers actually work, from telegraph relays to CPUs.</td>
+<td>Read cover to cover. No exercises &mdash; just read and absorb.</td>
+</tr>
+<tr>
+<td><strong>After Phase 4</strong></td>
+<td><em>The Algorithm Design Manual</em> &mdash; Steven Skiena</td>
+<td>Practical algorithm thinking. Complements Phase 6: Algorithms.</td>
+<td>Read Part I (Ch 1-8). Skip Part II on first pass.</td>
+</tr>
+<tr>
+<td><strong>After Phase 4</strong></td>
+<td><em>Computer Systems: A Programmer's Perspective</em> (CS:APP)</td>
+<td>How programs actually run on hardware. Memory, processes, networking.</td>
+<td>Read Ch 1-6. One chapter per week is fine.</td>
+</tr>
+<tr>
+<td><strong>After Phase 9</strong></td>
+<td><em>Designing Data-Intensive Applications</em> (DDIA) &mdash; Martin Kleppmann</td>
+<td>How real systems handle data at scale.</td>
+<td>Read Ch 1-2 first, then Ch 3-9 when building systems.</td>
+</tr>
+<tr>
+<td><strong>After Phase 10</strong></td>
+<td><a href="https://craftinginterpreters.com">Crafting Interpreters</a> (free online) &mdash; Robert Nystrom</td>
+<td>Build a programming language from scratch.</td>
+<td>Read Ch 1-4 first. Build the full interpreter when you have time.</td>
+</tr>
+</table>
+
+<div role="note" class="callout info">
+<div class="callout-title">How This Connects to AI</div>
+<p>Every book on this list makes you a better AI supervisor. <em>Composing Programs</em> teaches you to read any code AI generates. <em>The Algorithm Design Manual</em> teaches you to evaluate its efficiency. <em>DDIA</em> teaches you to question its architecture. The deeper your understanding, the better your judgment.</p>
+</div>
+
+<h3>Python</h3>
+<ul>
+<li><strong><a href="https://docs.python.org/3/">Python Official Docs</a></strong> &mdash; The definitive reference for the language, standard library, and built-in functions.</li>
+<li><strong><a href="https://docs.python.org/3/tutorial/">The Python Tutorial</a></strong> &mdash; The official beginner-friendly walkthrough of Python fundamentals, written by the core team.</li>
+<li><strong><a href="https://realpython.com/">Real Python</a></strong> &mdash; In-depth tutorials and articles covering Python from beginner to advanced topics.</li>
+</ul>
+
+<h3>Git</h3>
+<ul>
+<li><strong><a href="https://git-scm.com/book/en/v2">Pro Git (free online)</a></strong> &mdash; The comprehensive, freely available book covering everything from basics to internals.</li>
+<li><strong><a href="https://docs.github.com/">GitHub Docs</a></strong> &mdash; Official documentation for GitHub features: pull requests, actions, issues, and collaboration workflows.</li>
+<li><strong><a href="https://www.atlassian.com/git/tutorials">Atlassian Git Tutorials</a></strong> &mdash; Visual, well-structured tutorials explaining git concepts and workflows.</li>
+</ul>
+
+<h3>Web &amp; APIs</h3>
+<ul>
+<li><strong><a href="https://developer.mozilla.org/">MDN Web Docs</a></strong> &mdash; The authoritative reference for HTML, CSS, JavaScript, and web APIs, maintained by Mozilla.</li>
+<li><strong><a href="https://flask.palletsprojects.com/">Flask Documentation</a></strong> &mdash; Official docs for the Flask web framework, including quickstart, tutorial, and API reference.</li>
+<li><strong><a href="https://httpbin.org/">httpbin.org</a></strong> &mdash; A free HTTP request and response testing service, useful for experimenting with API calls.</li>
+</ul>
+
+<h3>Claude Code</h3>
+<ul>
+<li><strong><a href="https://docs.anthropic.com/">Anthropic Documentation</a></strong> &mdash; Official documentation for Claude models, API reference, and best practices.</li>
+<li><strong><a href="https://docs.anthropic.com/en/docs/claude-code">Claude Code CLI Docs</a></strong> &mdash; Setup, configuration, CLAUDE.md format, MCP integration, and advanced usage.</li>
+<li><strong><a href="https://sankalp.bearblog.dev/my-experience-with-claude-code-20-and-how-to-get-better-at-using-coding-agents/">Sankalp's Claude Code Guide</a></strong> &mdash; Practical tips from heavy daily use: how to structure prompts, manage context, and get consistently good output.</li>
+<li><strong><a href="https://clune.org/posts/claude-code-manual/">The Missing Manual for Claude Code</a></strong> &mdash; Comprehensive reference covering features, workflows, and patterns not in the official docs.</li>
+<li><strong><a href="https://harper.blog/2025/02/16/my-llm-codegen-workflow-atm/">Harper Reed: LLM Codegen Workflow</a></strong> &mdash; The spec-driven workflow (brainstorm &rarr; spec &rarr; plan &rarr; execute) that defines modern AI-assisted development.</li>
+</ul>
+
+<h3>Docker</h3>
+<ul>
+<li><strong><a href="https://docs.docker.com/">Docker Official Docs</a></strong> &mdash; Complete reference for Docker Engine, Compose, Dockerfile syntax, and networking.</li>
+<li><strong><a href="https://docs.docker.com/get-started/">Docker Getting Started Guide</a></strong> &mdash; A hands-on tutorial that walks through building, running, and deploying your first container.</li>
+</ul>
+
+<h3>Databases</h3>
+<ul>
+<li><strong><a href="https://www.sqlite.org/docs.html">SQLite Documentation</a></strong> &mdash; Official docs for the lightweight, file-based database used throughout this guide.</li>
+<li><strong><a href="https://docs.sqlalchemy.org/en/20/tutorial/">SQLAlchemy Tutorial</a></strong> &mdash; Step-by-step guide to the most popular Python ORM, covering both Core and ORM patterns.</li>
+</ul>
+
+<h3>Practice Platforms</h3>
+<p>Reading and exercises aren't enough &mdash; you need volume. These platforms give you hundreds of problems to build fluency.</p>
+<ul>
+<li><strong><a href="https://neetcode.io">NeetCode</a></strong> &mdash; Curated algorithm and data structure problems organized by category and difficulty. Start with the "NeetCode 150" roadmap.</li>
+<li><strong><a href="https://leetcode.com">LeetCode</a></strong> &mdash; The largest collection of algorithm problems. Focus on Easy and Medium.</li>
+<li><strong><a href="https://learngitbranching.js.org">Learn Git Branching</a></strong> &mdash; Interactive visual tutorial for Git branching, merging, and remote operations.</li>
+<li><strong><a href="https://selectstarsql.com">Select Star SQL</a></strong> &mdash; Free interactive SQL tutorial using real data. Complete alongside Ch15.</li>
+</ul>
+
+<h3>General Learning</h3>
+<ul>
+<li><strong><a href="https://exercism.org/">exercism.org</a></strong> &mdash; Free coding exercises in 70+ languages with mentor feedback. Excellent for building fluency.</li>
+<li><strong><a href="https://adventofcode.com/">Advent of Code</a></strong> &mdash; Annual programming puzzle competition (December). Great for practicing problem-solving in any language.</li>
+<li><strong><a href="https://projecteuler.net/">Project Euler</a></strong> &mdash; Math-heavy programming challenges that build algorithmic thinking and number theory skills.</li>
+</ul>
+</div><!-- /appendix-e panel -->
+
+</div><!-- /appendix-tabs-wrap -->
+
+<nav class="phase-nav">
+  <a href="phase-10.html" class="phase-nav-link prev"><span class="phase-nav-label">Previous Phase</span>&larr; Phase 10: AI Orchestration</a>
+  <a href="index.html" class="phase-nav-link next"><span class="phase-nav-label">Home</span>Landing Page &rarr;</a>
+</nav>
+
+</div>
+</div>
+
+<footer>
+<p>Zero to Hero: Programming to Multi-Agent Claude Code &middot; March 2026</p>
+</footer>
+
+<script src="js/progress.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ace-builds@1.36.5/src-min-noconflict/ace.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/shared.js"></script>
+<script src="js/ace-init.js"></script>
+<script src="js/pyodide-runner.js"></script>
+<script src="js/quiz.js"></script>
+<script src="js/exercise-runner.js"></script>
+<script src="js/appendix-tabs.js"></script>
+</body>
+</html>

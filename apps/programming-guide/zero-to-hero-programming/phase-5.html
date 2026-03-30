@@ -1,0 +1,2103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Phase 5: Data Structures and Complexity — Big-O analysis, arrays, linked lists, stacks, queues, hash tables, trees, and graphs. Chapters 19–23.">
+<title>Phase 5: Data Structures &amp; Complexity — Zero to Hero</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/design-system.css">
+<script>try{if(localStorage.getItem('zth-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+<script>try{var z=localStorage.getItem('zth-zoom');if(z&&+z>=50&&+z<=200)document.documentElement.style.zoom=+z/100}catch(e){}</script>
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+<marker id="arrowhead-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--a5)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo"><span>Zero to Hero</span>Programming &rarr; Multi-Agent AI</a>
+  <div class="toc-group">
+    <div class="toc-group-title">Foundations</div>
+    <a href="phase-1.html#ch01" class="toc-link"><span class="toc-num">01</span>What Programming Actually Is</a>
+    <a href="phase-1.html#ch02" class="toc-link"><span class="toc-num">02</span>How Computers Execute Code</a>
+    <a href="phase-1.html#ch03" class="toc-link"><span class="toc-num">03</span>Setting Up Your Environment</a>
+    <a href="phase-1.html#ch04" class="toc-link"><span class="toc-num">04</span>Reading Code Before Writing It</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Python</div>
+    <a href="phase-2.html#ch05" class="toc-link"><span class="toc-num">05</span>Functions, Logic &amp; Control Flow</a>
+    <a href="phase-2.html#ch06" class="toc-link"><span class="toc-num">06</span>Data Structures</a>
+    <a href="phase-2.html#ch07" class="toc-link"><span class="toc-num">07</span>Classes &amp; OOP Basics</a>
+    <a href="phase-2.html#ch08" class="toc-link"><span class="toc-num">08</span>Files, Modules &amp; Standard Library</a>
+    <a href="phase-2.html#ch09" class="toc-link"><span class="toc-num">09</span>Error Handling, Debugging &amp; Testing</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Development Tools</div>
+    <a href="phase-3.html#ch10" class="toc-link"><span class="toc-num">10</span>The Terminal &amp; Shell</a>
+    <a href="phase-3.html#ch11" class="toc-link"><span class="toc-num">11</span>Git Fundamentals</a>
+    <a href="phase-3.html#ch12" class="toc-link"><span class="toc-num">12</span>Git Remote &amp; GitHub</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Building &amp; Deploying</div>
+    <a href="phase-4.html#ch13" class="toc-link"><span class="toc-num">13</span>APIs &amp; HTTP</a>
+    <a href="phase-4.html#ch14" class="toc-link"><span class="toc-num">14</span>Building APIs with Flask</a>
+    <a href="phase-4.html#ch15" class="toc-link"><span class="toc-num">15</span>Database Basics</a>
+    <a href="phase-4.html#ch16" class="toc-link"><span class="toc-num">16</span>Docker &amp; Containers</a>
+    <a href="phase-4.html#ch17" class="toc-link"><span class="toc-num">17</span>CI/CD &amp; GitHub Actions</a>
+    <a href="phase-4.html#ch18" class="toc-link"><span class="toc-num">18</span>Project Architecture</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Data Structures</div>
+    <a href="#ch19" class="toc-link"><span class="toc-num">19</span>Complexity Analysis</a>
+    <a href="#ch20" class="toc-link"><span class="toc-num">20</span>Linear Structures</a>
+    <a href="#ch21" class="toc-link"><span class="toc-num">21</span>Hash Tables &amp; Maps</a>
+    <a href="#ch22" class="toc-link"><span class="toc-num">22</span>Trees</a>
+    <a href="#ch23" class="toc-link"><span class="toc-num">23</span>Graphs</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Algorithms</div>
+    <a href="phase-6.html#ch24" class="toc-link"><span class="toc-num">24</span>Searching &amp; Sorting</a>
+    <a href="phase-6.html#ch25" class="toc-link"><span class="toc-num">25</span>Recursion &amp; DP</a>
+    <a href="phase-6.html#ch26" class="toc-link"><span class="toc-num">26</span>Algorithm Patterns</a>
+    <a href="phase-6.html#ch27" class="toc-link"><span class="toc-num">27</span>Graph Algorithms</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Engineering Craft</div>
+    <a href="phase-7.html#ch28" class="toc-link"><span class="toc-num">28</span>Design Patterns &amp; SOLID</a>
+    <a href="phase-7.html#ch29" class="toc-link"><span class="toc-num">29</span>SQL &amp; Query Mastery</a>
+    <a href="phase-7.html#ch30" class="toc-link"><span class="toc-num">30</span>Transactions &amp; NoSQL</a>
+    <a href="phase-7.html#ch31" class="toc-link"><span class="toc-num">31</span>Networking &amp; the Internet</a>
+    <a href="phase-7.html#ch32" class="toc-link"><span class="toc-num">32</span>Concurrency &amp; Parallelism</a>
+    <a href="phase-7.html#ch33" class="toc-link"><span class="toc-num">33</span>Security Engineering</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Systems &amp; Scale</div>
+    <a href="phase-8.html#ch34" class="toc-link"><span class="toc-num">34</span>System Design</a>
+    <a href="phase-8.html#ch35" class="toc-link"><span class="toc-num">35</span>Distributed Systems</a>
+    <a href="phase-8.html#ch36" class="toc-link"><span class="toc-num">36</span>Performance &amp; Observability</a>
+    <a href="phase-8.html#ch37" class="toc-link"><span class="toc-num">37</span>Navigating Large Codebases</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AI Levels 1&ndash;5</div>
+    <a href="phase-9.html#ch38" class="toc-link"><span class="toc-num">38</span>Evaluating &amp; Directing AI Code</a>
+    <a href="phase-9.html#ch39" class="toc-link"><span class="toc-num">39</span>Levels 1 &amp; 2 &mdash; Tab Complete &amp; Agent IDE</a>
+    <a href="phase-9.html#ch40" class="toc-link"><span class="toc-num">40</span>Level 3 &mdash; Context Engineering</a>
+    <a href="phase-9.html#ch41" class="toc-link"><span class="toc-num">41</span>Level 4 &mdash; Compounding Engineering</a>
+    <a href="phase-9.html#ch42" class="toc-link"><span class="toc-num">42</span>Level 5 &mdash; MCP, Skills &amp; Capabilities</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AI Levels 6&ndash;8</div>
+    <a href="phase-10.html#ch43" class="toc-link"><span class="toc-num">43</span>Level 6 &mdash; Harness Engineering</a>
+    <a href="phase-10.html#ch44" class="toc-link"><span class="toc-num">44</span>Level 7 &mdash; Background Agents</a>
+    <a href="phase-10.html#ch45" class="toc-link"><span class="toc-num">45</span>Claude Code in Docker</a>
+    <a href="phase-10.html#ch46" class="toc-link"><span class="toc-num">46</span>Level 8 &mdash; Autonomous Agent Teams</a>
+    <a href="phase-10.html#ch47" class="toc-link"><span class="toc-num">47</span>The Multiplayer Effect</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Reference</div>
+    <a href="appendices.html#glossary" class="toc-link"><span class="toc-num">&oplus;</span>Glossary</a>
+    <a href="appendices.html#prompt-library" class="toc-link"><span class="toc-num">&oplus;</span>Prompt Library</a>
+    <a href="appendices.html#self-assessment" class="toc-link"><span class="toc-num">&oplus;</span>Self-Assessment</a>
+    <a href="appendices.html#common-mistakes" class="toc-link"><span class="toc-num">&oplus;</span>Common Mistakes</a>
+    <a href="appendices.html#appendix-d" class="toc-link"><span class="toc-num">&oplus;</span>Troubleshooting</a>
+    <a href="appendices.html#appendix-e" class="toc-link"><span class="toc-num">&oplus;</span>Resources</a>
+  </div>
+</aside>
+
+<div class="main">
+<section class="hero hero-sm">
+  <div class="hero-badge">Phase 5 &mdash; Data Structures</div>
+  <h1>Data Structures &amp; <em>Complexity</em></h1>
+  <p class="hero-sub">How data lives in memory, how to measure performance, and which structure to pick for which problem. Every engineering decision starts here.</p>
+  <div class="hero-meta"><span>Chapters 19–23</span><span>Phase Gate + TaskForge</span></div>
+</section>
+<div class="content-wrap">
+
+<div role="note" class="callout info">
+<div class="callout-title">Before You Begin Phase 5</div>
+<p>This phase assumes you can: write Python functions with tests (Ch 05, 09), use lists, dicts, and sets for everyday tasks (Ch 06), and build a Flask API with a database (Ch 14-15). If any of these feel shaky, revisit the relevant chapter first.</p>
+</div>
+
+<!-- ===== CH 19 ===== -->
+<section id="ch19" data-ch="19">
+<h2><span class="ch-label">Chapter 19</span> Complexity Analysis &mdash; Measuring What Matters</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>You need to predict how code performs <em>before</em> running it. When AI generates a nested loop over 10 million records, can you tell it will take hours? When a colleague writes a function that scans a list inside another loop, can you spot that it scales terribly? Big-O notation gives you that vocabulary. It is the language engineers use to reason about performance, and it is the foundation every data structure and algorithm discussion builds on.</p>
+</div>
+
+<h3>What Is Big-O Notation?</h3>
+<p>Big-O notation describes how the <strong>number of operations</strong> a function performs grows as the input size <strong>n</strong> grows. It answers one question: "If I double the input, how much longer does this take?"</p>
+
+<p>We count operations, not seconds, because seconds depend on your CPU, your operating system, what else is running, and the phase of the moon. Operations are deterministic. If a function does <code>n</code> comparisons for an input of size <code>n</code>, it will always do <code>2n</code> comparisons for an input of size <code>2n</code>&mdash;regardless of hardware.</p>
+
+<p>Big-O has two simplification rules:</p>
+<ul>
+<li><strong>Drop constants.</strong> O(3n) becomes O(n). O(100) becomes O(1). Constants don't change the growth <em>shape</em>.</li>
+<li><strong>Drop lower-order terms.</strong> O(n&sup2; + n) becomes O(n&sup2;). When n is large, the n&sup2; term dominates so completely that the n term is irrelevant.</li>
+</ul>
+
+<p>A concrete comparison makes this tangible. Suppose you have a list of tasks and you want to check whether a specific title exists:</p>
+<pre style="overflow-x:auto"><code># O(n) — scan the list one element at a time
+def find_in_list(tasks, title):
+    for task in tasks:
+        if task["title"] == title:
+            return True
+    return False
+
+# O(1) — look up in a dict (hash table) directly
+task_index = {"Buy groceries": 1, "Write tests": 2, "Deploy API": 3}
+def find_in_dict(task_index, title):
+    return title in task_index</code></pre>
+<p>With 10 tasks, both finish instantly. With 10 million tasks, the list scan might take seconds while the dict lookup still finishes in microseconds. Big-O told you this would happen before you ran a single benchmark.</p>
+
+<h3>Common Complexity Classes</h3>
+<p>There are six complexity classes you will encounter constantly. Each one has a distinct growth shape and a real-world example you already know.</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>Common Big-O complexity classes and their growth behavior</caption>
+<tr><th>Class</th><th>Name</th><th>Example</th><th>Doubles Input &rarr; Time Impact</th></tr>
+<tr><td>O(1)</td><td>Constant</td><td>Dict lookup, array index access</td><td>No change</td></tr>
+<tr><td>O(log n)</td><td>Logarithmic</td><td>Binary search in a sorted list</td><td>+1 step</td></tr>
+<tr><td>O(n)</td><td>Linear</td><td>Scanning a list, summing elements</td><td>2x time</td></tr>
+<tr><td>O(n log n)</td><td>Linearithmic</td><td>Efficient sorting (merge sort, Timsort)</td><td>~2x time</td></tr>
+<tr><td>O(n&sup2;)</td><td>Quadratic</td><td>Nested loops comparing every pair</td><td>4x time</td></tr>
+<tr><td>O(2&#8319;)</td><td>Exponential</td><td>Generating all subsets of a set</td><td>Squared time</td></tr>
+</table>
+</div>
+
+<p>Here is a Python example for each class so you can see the pattern in code:</p>
+<pre style="overflow-x:auto"><code># O(1) — Constant: dictionary lookup
+def get_task(task_dict, task_id):
+    return task_dict.get(task_id)  # one operation regardless of dict size
+
+# O(log n) — Logarithmic: binary search
+def binary_search(sorted_list, target):
+    lo, hi = 0, len(sorted_list) - 1
+    while lo <= hi:
+        mid = (lo + hi) // 2
+        if sorted_list[mid] == target:
+            return mid
+        elif sorted_list[mid] < target:
+            lo = mid + 1
+        else:
+            hi = mid - 1
+    return -1  # halves the search space each step
+
+# O(n) — Linear: scan every element
+def find_max(numbers):
+    best = numbers[0]
+    for num in numbers:
+        if num > best:
+            best = num
+    return best  # touches each element exactly once
+
+# O(n log n) — Linearithmic: Python's built-in sort
+def sort_tasks(tasks):
+    return sorted(tasks, key=lambda t: t["priority"])
+    # Timsort: divides and conquers, n log n comparisons
+
+# O(n^2) — Quadratic: check all pairs for duplicates
+def has_duplicate_naive(items):
+    for i in range(len(items)):
+        for j in range(i + 1, len(items)):
+            if items[i] == items[j]:
+                return True
+    return False  # compares every pair: n*(n-1)/2 operations
+
+# O(2^n) — Exponential: generate all subsets
+def all_subsets(items):
+    if not items:
+        return [[]]
+    first = items[0]
+    rest_subsets = all_subsets(items[1:])
+    return rest_subsets + [[first] + s for s in rest_subsets]
+    # each element doubles the number of subsets</code></pre>
+
+<h3>Analyzing Your Own Code</h3>
+<p>You don't need to memorize rules. You need to recognize two patterns:</p>
+
+<p><strong>Rule 1: Sequential blocks &rarr; add (take the max).</strong> If your function first scans a list O(n), then sorts it O(n log n), the total is O(n) + O(n log n) = O(n log n). You keep the dominant term.</p>
+<pre style="overflow-x:auto"><code>def process_tasks(tasks):
+    # Step 1: filter — O(n)
+    active = [t for t in tasks if t["status"] == "active"]
+    # Step 2: sort — O(n log n)
+    active.sort(key=lambda t: t["priority"])
+    # Step 3: return first 10 — O(1)
+    return active[:10]
+    # Total: O(n) + O(n log n) + O(1) = O(n log n)</code></pre>
+
+<p><strong>Rule 2: Nested loops &rarr; multiply.</strong> A loop inside a loop means the inner loop runs once for every iteration of the outer loop. If both iterate over n items, you get O(n) &times; O(n) = O(n&sup2;).</p>
+<pre style="overflow-x:auto"><code>def find_common_tasks(list_a, list_b):
+    common = []
+    for a in list_a:          # O(n)
+        for b in list_b:      #   O(m) for each a
+            if a["title"] == b["title"]:
+                common.append(a)
+    return common
+    # Total: O(n * m). If both lists are size n, this is O(n^2)</code></pre>
+
+<p>Let's walk through a more subtle example:</p>
+<pre style="overflow-x:auto"><code>def group_by_status(tasks):
+    groups = {}
+    for task in tasks:           # O(n)
+        status = task["status"]
+        if status not in groups:
+            groups[status] = []  # O(1) dict operations
+        groups[status].append(task)  # O(1) amortized
+    return groups
+    # Total: O(n) — one pass, all dict operations are O(1)</code></pre>
+
+<p>And a tricky one where the complexity is hidden:</p>
+<pre style="overflow-x:auto"><code>def remove_duplicates_naive(items):
+    unique = []
+    for item in items:           # O(n)
+        if item not in unique:   # O(k) where k = len(unique)
+            unique.append(item)
+    return unique
+    # Worst case: all unique, so k grows to n
+    # Total: O(n^2) — the "in" check on a list is O(n)!
+
+def remove_duplicates_fast(items):
+    seen = set()
+    unique = []
+    for item in items:           # O(n)
+        if item not in seen:     # O(1) set lookup
+            seen.add(item)       # O(1)
+            unique.append(item)
+    return unique
+    # Total: O(n) — set lookup is O(1)</code></pre>
+<p>The difference between these two functions is the difference between O(n&sup2;) and O(n). For 10,000 items, that is 100,000,000 vs 10,000 operations. The second function isn't just "a little faster"&mdash;it is 10,000 times faster.</p>
+
+<h3>Space Complexity</h3>
+<p>Time complexity measures operations. <strong>Space complexity</strong> measures how much additional memory your algorithm uses beyond the input itself.</p>
+<pre style="overflow-x:auto"><code># O(1) space — modifies in place
+def reverse_in_place(items):
+    left, right = 0, len(items) - 1
+    while left < right:
+        items[left], items[right] = items[right], items[left]
+        left += 1
+        right -= 1
+    # Uses only two integer variables — constant extra space
+
+# O(n) space — creates a new list
+def reverse_copy(items):
+    return items[::-1]
+    # Creates an entirely new list of the same size</code></pre>
+<p>Space complexity matters when your data is large. Reversing a 10-element list? Space doesn't matter. Reversing a 10-million-element list? Creating a copy doubles your memory usage. In-place algorithms trade readability for memory efficiency.</p>
+
+<h3>Amortized Analysis</h3>
+<p>Python's <code>list.append()</code> is advertised as O(1), but occasionally the underlying array runs out of space and must be resized&mdash;copying every element to a new, larger array. That single resize is O(n). How can append be O(1)?</p>
+
+<p><strong>Amortized analysis</strong> averages the cost over a sequence of operations. When a dynamic array doubles its capacity (say from 8 to 16 slots), the next 8 appends are "free"&mdash;no resize needed. The expensive O(n) copy gets spread across the cheap O(1) appends that follow it. On average, each append costs O(1).</p>
+
+<p>Think of it like paying rent. You pay a large amount once a month, but amortized over 30 days, it's a fixed daily cost. One expensive day doesn't make your average expense high.</p>
+
+<pre style="overflow-x:auto"><code># Demonstrating dynamic array growth
+import sys
+
+items = []
+prev_size = 0
+for i in range(65):
+    items.append(i)
+    curr_size = sys.getsizeof(items)
+    if curr_size != prev_size:
+        print(f"Length {len(items):3d} -> Memory {curr_size:5d} bytes")
+        prev_size = curr_size
+# You'll see memory jumps at irregular intervals as the array resizes</code></pre>
+
+<h3>When Big-O Lies</h3>
+<p>Big-O tells you about <em>growth rate</em>, not <em>actual speed</em>. For small inputs, constant factors dominate. A few important exceptions to keep in mind:</p>
+
+<ul>
+<li><strong>Small n:</strong> For fewer than ~50 elements, an O(n&sup2;) insertion sort often beats an O(n log n) merge sort because insertion sort has much lower overhead (fewer function calls, better cache usage). Python's Timsort actually <em>uses</em> insertion sort for small runs inside its merge sort.</li>
+<li><strong>Cache locality:</strong> An array stores elements contiguously in memory. When the CPU loads one element, it loads nearby elements into cache for free. A linked list scatters nodes across memory, causing <strong>cache misses</strong>&mdash;each access potentially waits for main memory. An O(n) array scan can be 10&ndash;100x faster than an O(n) linked list scan because of cache effects.</li>
+<li><strong>Constant factors:</strong> An O(n) algorithm with a constant factor of 1000 is slower than an O(n log n) algorithm with a constant factor of 1 for any n below about 10,000. Big-O hides these constants by design.</li>
+</ul>
+
+<p>The lesson: Big-O is a thinking tool, not the final answer. For large-scale decisions (O(n) vs O(n&sup2;) for millions of records), trust the theory. For micro-optimization (choosing between two O(n) algorithms), measure with a profiler.</p>
+
+<div role="note" class="callout info">
+<div class="callout-title">Engineering Angle</div>
+<p>In the real world, profiling with <code>timeit</code> and <code>cProfile</code> often contradicts theoretical analysis. A dict comprehension and a for-loop have the same Big-O, but the comprehension can be 20% faster due to fewer bytecode instructions. Know when to trust theory (choosing between O(n) and O(n&sup2;) for large data) and when to measure (choosing between two O(n) approaches with different constants). Senior engineers do both: Big-O for design decisions, profiling for optimization.</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">TaskForge Connection</div>
+<p>Analyze TaskForge's current operations. Adding a task to the end of a list is O(1) amortized. Searching for a task by title requires scanning every task: O(n). Sorting tasks by priority uses Python's Timsort: O(n log n). As your task list grows from 10 to 10,000 to 10 million, search becomes the bottleneck. In Chapter 21, you will build a hash-based index that makes search O(1)&mdash;and Big-O is how you know it is worth doing.</p>
+</div>
+
+<div class="diagram">
+<svg viewBox="0 0 700 400" xmlns="http://www.w3.org/2000/svg" aria-label="Line chart showing how O(1), O(log n), O(n), O(n log n), O(n squared), and O(2 to the n) growth rates diverge as input size n increases from 1 to 100">
+  <!-- Axes -->
+  <line x1="80" y1="360" x2="680" y2="360" stroke="var(--text-muted)" stroke-width="1.5"/>
+  <line x1="80" y1="360" x2="80" y2="20" stroke="var(--text-muted)" stroke-width="1.5"/>
+  <!-- Axis labels -->
+  <text x="380" y="395" text-anchor="middle" fill="var(--text-muted)" font-size="13">Input size (n)</text>
+  <text x="25" y="190" text-anchor="middle" fill="var(--text-muted)" font-size="13" transform="rotate(-90,25,190)">Operations</text>
+  <!-- X-axis ticks -->
+  <text class="sub-text" x="80" y="378">0</text>
+  <text class="sub-text" x="200" y="378">20</text>
+  <text class="sub-text" x="320" y="378">40</text>
+  <text class="sub-text" x="440" y="378">60</text>
+  <text class="sub-text" x="560" y="378">80</text>
+  <text class="sub-text" x="668" y="378">100</text>
+  <!-- Y-axis ticks -->
+  <text class="sub-text" x="70" y="360" text-anchor="end">0</text>
+  <text class="sub-text" x="70" y="280" text-anchor="end">2k</text>
+  <text class="sub-text" x="70" y="200" text-anchor="end">5k</text>
+  <text class="sub-text" x="70" y="120" text-anchor="end">7.5k</text>
+  <text class="sub-text" x="70" y="40" text-anchor="end">10k</text>
+  <!-- Grid lines -->
+  <line x1="80" y1="280" x2="680" y2="280" stroke="var(--border-accent)" stroke-width="0.5" stroke-dasharray="4"/>
+  <line x1="80" y1="200" x2="680" y2="200" stroke="var(--border-accent)" stroke-width="0.5" stroke-dasharray="4"/>
+  <line x1="80" y1="120" x2="680" y2="120" stroke="var(--border-accent)" stroke-width="0.5" stroke-dasharray="4"/>
+
+  <!-- O(1) — flat line near bottom -->
+  <line x1="80" y1="357" x2="680" y2="357" stroke="var(--accent)" stroke-width="2.5"/>
+  <text x="685" y="357" fill="var(--accent)" font-size="12">O(1)</text>
+
+  <!-- O(log n) — very slow growth -->
+  <polyline fill="none" stroke="var(--heading)" stroke-width="2" points="80,360 140,342 200,334 260,328 320,324 380,321 440,318 500,316 560,314 620,313 680,312"/>
+  <text x="685" y="312" fill="var(--heading)" font-size="12">O(log n)</text>
+
+  <!-- O(n) — straight line, moderate slope -->
+  <line x1="80" y1="360" x2="680" y2="328" stroke="#4caf50" stroke-width="2"/>
+  <text x="685" y="328" fill="#4caf50" font-size="12">O(n)</text>
+
+  <!-- O(n log n) — slightly curved above O(n) -->
+  <polyline fill="none" stroke="var(--a5)" stroke-width="2" points="80,360 140,354 200,345 260,333 320,319 380,303 440,285 500,265 560,244 620,222 680,198"/>
+  <text x="685" y="198" fill="var(--a5)" font-size="12">O(n log n)</text>
+
+  <!-- O(n^2) — steep parabolic curve -->
+  <polyline fill="none" stroke="#e53e3e" stroke-width="2.5" points="80,360 140,358 200,350 260,336 320,314 380,284 440,246 500,200 560,146 620,84 680,40"/>
+  <text x="685" y="40" fill="#e53e3e" font-size="12">O(n&sup2;)</text>
+
+  <!-- O(2^n) — shoots up almost immediately, exits chart fast -->
+  <polyline fill="none" stroke="#f59e0b" stroke-width="2" stroke-dasharray="6,3" points="80,360 110,358 140,354 170,344 200,316 220,272 240,180 255,40"/>
+  <text x="260" y="35" fill="#f59e0b" font-size="12">O(2&#8319;)</text>
+
+  <!-- Title -->
+  <text class="label-text" x="380" y="16" text-anchor="middle">Complexity Growth Rates</text>
+</svg>
+<div class="diagram-caption">How different complexity classes grow as input size increases. O(1) and O(log n) remain manageable at any scale. O(n&sup2;) and O(2&#8319;) become unusable quickly. The right algorithm choice can mean the difference between milliseconds and hours.</div>
+</div>
+
+<h3>Micro-Exercises</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">1: Classify These Functions</div>
+<p>Determine the Big-O time complexity of each function:</p>
+<pre style="overflow-x:auto"><code># Function A
+def func_a(items):
+    return items[0] if items else None
+
+# Function B
+def func_b(items):
+    total = 0
+    for x in items:
+        total += x
+    return total
+
+# Function C
+def func_c(items):
+    for x in items:
+        for y in items:
+            print(x, y)
+
+# Function D
+def func_d(items):
+    items.sort()
+    return items[0]</code></pre>
+<p><strong>Answers:</strong> A is O(1)&mdash;single index access. B is O(n)&mdash;one pass. C is O(n&sup2;)&mdash;nested loops. D is O(n log n)&mdash;the sort dominates.</p>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">2: Spot the Hidden Quadratic</div>
+<p>This function <em>looks</em> linear but is actually O(n&sup2;). Can you see why?</p>
+<pre style="overflow-x:auto"><code>def build_string(n):
+    result = ""
+    for i in range(n):
+        result += str(i)  # string concatenation creates a new string each time
+    return result</code></pre>
+<p><strong>Answer:</strong> Strings are immutable in Python. Each <code>+=</code> creates a new string and copies all previous characters. The total copies are 1 + 2 + 3 + ... + n = O(n&sup2;). Fix: use <code>"".join(str(i) for i in range(n))</code> for O(n).</p>
+</div>
+
+<div class="pq">Big-O is not about math. It is about predicting the future&mdash;how your code will behave when the data gets 10x, 100x, or 1000x larger than your test cases.</div>
+
+<h3>Interactive Exercises</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="19" data-ex="complexity">
+  <div class="exercise-header">
+    <h4>Design Challenge: "Predict and Measure"</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Three functions solve the same problem: finding if a list contains duplicates. Predict their Big-O, then time them to verify. Fill in the <code>predict</code> dictionary and the <code>measure()</code> function.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+import time
+
+def has_dup_nested(items):
+    """Check duplicates with nested loops."""
+    for i in range(len(items)):
+        for j in range(i + 1, len(items)):
+            if items[i] == items[j]:
+                return True
+    return False
+
+def has_dup_sort(items):
+    """Sort first, then check adjacent pairs."""
+    s = sorted(items)
+    for i in range(len(s) - 1):
+        if s[i] == s[i + 1]:
+            return True
+    return False
+
+def has_dup_set(items):
+    """Use a set for O(1) lookups."""
+    return len(set(items)) != len(items)
+
+# Step 1: Predict the Big-O for each function
+predict = {
+    "nested": "O(?)",   # Replace ? with complexity
+    "sort":   "O(?)",
+    "set":    "O(?)"
+}
+
+# Step 2: Measure the actual time for n = 5000
+def measure(func, n):
+    items = list(range(n))  # no duplicates = worst case
+    start = time.time()
+    func(items)
+    return round(time.time() - start, 4)
+
+n = 5000
+print(f"Predictions: {predict}")
+print(f"nested: {measure(has_dup_nested, n)}s")
+print(f"sort:   {measure(has_dup_sort, n)}s")
+print(f"set:    {measure(has_dup_set, n)}s")
+</script>
+    <script type="text/plain" class="test-code">
+assert predict["nested"] == "O(n^2)" or predict["nested"] == "O(n2)" or predict["nested"] == "O(n**2)", "Nested loops = O(n^2)"
+assert predict["sort"] == "O(n log n)" or predict["sort"] == "O(nlogn)", "Sort-based = O(n log n)"
+assert predict["set"] == "O(n)", "Set-based = O(n)"
+print("All predictions correct!")
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">The nested function has two loops over n elements. What do nested loops multiply to?</p>
+    <p class="hint">The sort function calls <code>sorted()</code> which is O(n log n), then scans once which is O(n). Which dominates?</p>
+    <p class="hint">Building a set from n elements is O(n). Comparing two lengths is O(1). Total: O(n).</p>
+  </div>
+</div>
+
+<div class="quiz" data-ch="19" data-ex="quiz-bigo">
+  <h4>Knowledge Check</h4>
+  <p>What is the time complexity of searching for a value in an unsorted list of n elements?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">O(1)</button>
+    <button class="quiz-option" data-correct="false">O(log n)</button>
+    <button class="quiz-option" data-correct="true">O(n)</button>
+    <button class="quiz-option" data-correct="false">O(n&sup2;)</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+</section>
+
+<!-- ===== CH 20 ===== -->
+<section id="ch20" data-ch="20">
+<h2><span class="ch-label">Chapter 20</span> Linear Structures &mdash; Arrays, Linked Lists, Stacks &amp; Queues</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>Every program stores sequences of data. Understanding <em>how</em> they are stored&mdash;contiguous vs scattered, indexed vs linked&mdash;determines whether your code runs in milliseconds or minutes. This chapter covers the four fundamental linear structures and teaches you when to use each one.</p>
+</div>
+
+<h3>Arrays in Memory</h3>
+<p>An <strong>array</strong> stores elements in contiguous (side-by-side) memory locations. If element 0 starts at memory address 1000 and each element takes 8 bytes, then element 5 lives at address 1000 + (5 &times; 8) = 1040. This address arithmetic is why array index access is O(1)&mdash;the CPU can jump directly to any element without scanning.</p>
+
+<p>Python's <code>list</code> is a <strong>dynamic array</strong>. Under the hood, it stores an array of pointers (references) to Python objects. The array itself is contiguous, even though the objects it points to may be scattered in memory.</p>
+
+<p>Contiguous storage gives arrays an enormous advantage: <strong>cache locality</strong>. Modern CPUs don't fetch one byte at a time&mdash;they load entire <em>cache lines</em> (typically 64 bytes) from memory. When you access element 0 of an array, the CPU loads elements 0 through 7 (or more) into cache for free. Iterating through an array is fast because the next element is almost always already in cache.</p>
+
+<h3>Dynamic Arrays</h3>
+<p>Static arrays have a fixed size set at creation. Dynamic arrays (like Python's <code>list</code>) grow automatically. The strategy is <strong>geometric growth</strong>: when the array is full, allocate a new array that is roughly double the size, copy everything over, and free the old array.</p>
+
+<p>This makes <code>append()</code> O(1) <em>amortized</em> (as we analyzed in Ch 19). But operations at the beginning of the array are expensive:</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>Time complexity of Python list operations</caption>
+<tr><th>Operation</th><th>Time</th><th>Why</th></tr>
+<tr><td><code>list[i]</code> (access by index)</td><td>O(1)</td><td>Address arithmetic</td></tr>
+<tr><td><code>list.append(x)</code></td><td>O(1) amortized</td><td>Adds to the end; occasional resize</td></tr>
+<tr><td><code>list.insert(0, x)</code></td><td>O(n)</td><td>Every element shifts right by one</td></tr>
+<tr><td><code>list.pop()</code> (last element)</td><td>O(1)</td><td>Removes from the end</td></tr>
+<tr><td><code>list.pop(0)</code> (first element)</td><td>O(n)</td><td>Every element shifts left by one</td></tr>
+<tr><td><code>x in list</code></td><td>O(n)</td><td>Must scan the entire list</td></tr>
+</table>
+</div>
+
+<p>The critical insight: <strong>inserting or removing from the front of a Python list is O(n)</strong>, not O(1). Every element after the insertion point must shift. This is one of the most common performance traps in Python code.</p>
+
+<h3>Linked Lists</h3>
+<p>A <strong>linked list</strong> stores elements as individual <strong>node</strong> objects, each containing a value and a reference (pointer) to the next node. Nodes can be scattered anywhere in memory&mdash;they are connected by pointers, not by physical position.</p>
+
+<pre style="overflow-x:auto"><code>class Node:
+    def __init__(self, value, next_node=None):
+        self.value = value
+        self.next = next_node
+
+class LinkedList:
+    def __init__(self):
+        self.head = None
+        self.size = 0
+
+    def prepend(self, value):
+        """Add to the front — O(1)."""
+        self.head = Node(value, self.head)
+        self.size += 1
+
+    def get(self, index):
+        """Access by index — O(n). Must walk the chain."""
+        current = self.head
+        for _ in range(index):
+            if current is None:
+                raise IndexError("Index out of range")
+            current = current.next
+        return current.value
+
+    def __len__(self):
+        return self.size
+
+    def __iter__(self):
+        current = self.head
+        while current:
+            yield current.value
+            current = current.next</code></pre>
+
+<p>In a <strong>singly linked list</strong>, each node points to the next. In a <strong>doubly linked list</strong>, each node also points to the previous, enabling traversal in both directions and O(1) removal from either end (if you have a reference to the node).</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>Operation complexity: arrays vs. linked lists</caption>
+<tr><th>Operation</th><th>Array (Python list)</th><th>Linked List</th></tr>
+<tr><td>Access by index</td><td>O(1)</td><td>O(n)</td></tr>
+<tr><td>Insert at front</td><td>O(n)</td><td>O(1)</td></tr>
+<tr><td>Insert at end</td><td>O(1) amortized</td><td>O(1) with tail pointer</td></tr>
+<tr><td>Delete from front</td><td>O(n)</td><td>O(1)</td></tr>
+<tr><td>Search</td><td>O(n)</td><td>O(n)</td></tr>
+<tr><td>Memory per element</td><td>8 bytes (pointer)</td><td>~56 bytes (object + pointer)</td></tr>
+</table>
+</div>
+
+<h3>When Linked Lists Win (And When They Don't)</h3>
+<p>Textbooks love linked lists for their O(1) insert/delete at the head. Reality is more nuanced. Python's <code>list</code> (a dynamic array) beats linked lists in <em>almost every practical scenario</em> because:</p>
+<ul>
+<li><strong>Cache misses destroy performance.</strong> Array elements are contiguous; the CPU prefetches them. Linked list nodes are scattered; every node access is a potential cache miss.</li>
+<li><strong>Memory overhead.</strong> Each linked list node is a Python object with header, value, and pointer(s). A list of 1 million integers uses roughly 8 MB as an array vs 56 MB as a linked list.</li>
+<li><strong>Python overhead.</strong> Creating millions of <code>Node</code> objects puts pressure on Python's garbage collector.</li>
+</ul>
+<p>Linked lists shine in two specific scenarios: (1) when you need O(1) insert/delete at both ends without index access (use <code>collections.deque</code>, which is a doubly-linked list of fixed-size blocks), and (2) when you need to splice sublists or reorder nodes without copying data (rare in Python, common in systems programming).</p>
+
+<h3>Stacks (LIFO)</h3>
+<p>A <strong>stack</strong> is a Last-In, First-Out (LIFO) structure. You push items on top and pop them off the top. Think of a stack of plates: you add to the top and take from the top.</p>
+
+<pre style="overflow-x:auto"><code># Python list is a perfect stack
+stack = []
+stack.append("open file")    # push
+stack.append("edit line 5")  # push
+stack.append("delete word")  # push
+
+last_action = stack.pop()    # pop -> "delete word"
+print(last_action)           # most recent action</code></pre>
+
+<p><strong>Use cases for stacks:</strong></p>
+<ul>
+<li><strong>Undo systems</strong>&mdash;push each action, pop to undo. This is exactly what you'll build for TaskForge.</li>
+<li><strong>The call stack</strong>&mdash;when Python calls a function, it pushes a frame onto the call stack. When the function returns, it pops the frame. This is why infinite recursion causes a "stack overflow."</li>
+<li><strong>Parentheses matching</strong>&mdash;push open brackets, pop when you see a closing bracket. If the stack is empty when you pop, or non-empty at the end, the brackets are unbalanced.</li>
+<li><strong>Expression evaluation</strong>&mdash;calculators use stacks to evaluate <code>3 + 4 * 2</code> with correct precedence.</li>
+</ul>
+
+<pre style="overflow-x:auto"><code>def is_balanced(expression):
+    """Check if parentheses are balanced — classic stack problem."""
+    stack = []
+    pairs = {"(": ")", "[": "]", "{": "}"}
+    for char in expression:
+        if char in pairs:
+            stack.append(char)
+        elif char in pairs.values():
+            if not stack:
+                return False
+            if pairs[stack.pop()] != char:
+                return False
+    return len(stack) == 0
+
+print(is_balanced("({[]})"))   # True
+print(is_balanced("({[})"))    # False
+print(is_balanced("((()"))     # False</code></pre>
+
+<h3>Queues and Deques (FIFO)</h3>
+<p>A <strong>queue</strong> is a First-In, First-Out (FIFO) structure. Items enter at the back and leave from the front, like a line at a ticket counter.</p>
+
+<p>You might be tempted to use a Python <code>list</code> as a queue, but there is a critical performance problem:</p>
+<pre style="overflow-x:auto"><code># BAD: Using list as a queue — pop(0) is O(n)!
+queue = [1, 2, 3, 4, 5]
+queue.append(6)       # enqueue at back — O(1), fine
+front = queue.pop(0)  # dequeue from front — O(n), every element shifts!
+
+# GOOD: Use collections.deque — popleft() is O(1)
+from collections import deque
+queue = deque([1, 2, 3, 4, 5])
+queue.append(6)          # enqueue at back — O(1)
+front = queue.popleft()  # dequeue from front — O(1)!</code></pre>
+
+<p><code>collections.deque</code> (double-ended queue) supports O(1) operations at both ends. It is implemented as a doubly-linked list of fixed-size blocks&mdash;getting cache-friendly behavior of arrays with the flexibility of linked lists at the ends.</p>
+
+<p><strong>Use cases for queues:</strong></p>
+<ul>
+<li><strong>Task scheduling</strong>&mdash;process tasks in the order they arrive. Print queues, message queues, job queues.</li>
+<li><strong>Breadth-first search</strong>&mdash;explore neighbors layer by layer (you'll use this with graphs in Ch 23).</li>
+<li><strong>Rate limiting</strong>&mdash;track timestamps of recent requests in a sliding window.</li>
+</ul>
+
+<div class="diagram">
+<svg viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg" aria-label="Memory layout comparison between an array with contiguous colored blocks and indices versus a linked list with scattered nodes connected by arrows. A CPU cache line is shown covering multiple array elements but only one linked list node.">
+  <!-- Title -->
+  <text class="label-text" x="350" y="20" text-anchor="middle">Memory Layout: Array vs Linked List</text>
+
+  <!-- Array section -->
+  <text class="label-text" x="60" y="55">Array (Python list)</text>
+  <text class="sub-text" x="60" y="72" fill="var(--text-muted)">Contiguous in memory</text>
+  <!-- Array blocks -->
+  <rect x="60" y="85" width="70" height="45" rx="4" fill="var(--accent)" opacity="0.15" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="label-text" x="95" y="113" text-anchor="middle">"A"</text>
+  <text class="sub-text" x="95" y="143" text-anchor="middle">[0]</text>
+
+  <rect x="135" y="85" width="70" height="45" rx="4" fill="var(--accent)" opacity="0.15" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="label-text" x="170" y="113" text-anchor="middle">"B"</text>
+  <text class="sub-text" x="170" y="143" text-anchor="middle">[1]</text>
+
+  <rect x="210" y="85" width="70" height="45" rx="4" fill="var(--accent)" opacity="0.15" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="label-text" x="245" y="113" text-anchor="middle">"C"</text>
+  <text class="sub-text" x="245" y="143" text-anchor="middle">[2]</text>
+
+  <rect x="285" y="85" width="70" height="45" rx="4" fill="var(--accent)" opacity="0.15" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="label-text" x="320" y="113" text-anchor="middle">"D"</text>
+  <text class="sub-text" x="320" y="143" text-anchor="middle">[3]</text>
+
+  <rect x="360" y="85" width="70" height="45" rx="4" fill="var(--accent)" opacity="0.15" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="label-text" x="395" y="113" text-anchor="middle">"E"</text>
+  <text class="sub-text" x="395" y="143" text-anchor="middle">[4]</text>
+
+  <!-- Cache line bracket over array -->
+  <rect x="55" y="78" width="305" height="58" rx="6" fill="none" stroke="var(--heading)" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="207" y="74" text-anchor="middle" fill="var(--heading)" font-size="11">CPU Cache Line (64 bytes) — loads all at once</text>
+
+  <!-- Linked List section -->
+  <text class="label-text" x="60" y="185">Linked List</text>
+  <text class="sub-text" x="60" y="202" fill="var(--text-muted)">Scattered in memory</text>
+
+  <!-- Node A -->
+  <rect class="node-accent" x="60" y="215" width="70" height="40" rx="6"/>
+  <text class="label-text" x="95" y="240" text-anchor="middle">"A"</text>
+  <line x1="130" y1="235" x2="190" y2="235" class="arrow"/>
+
+  <!-- Node B (offset vertically to show scatter) -->
+  <rect class="node-accent" x="195" y="225" width="70" height="40" rx="6"/>
+  <text class="label-text" x="230" y="250" text-anchor="middle">"B"</text>
+  <line x1="265" y1="245" x2="325" y2="225" class="arrow"/>
+
+  <!-- Node C (different position) -->
+  <rect class="node-accent" x="330" y="208" width="70" height="40" rx="6"/>
+  <text class="label-text" x="365" y="233" text-anchor="middle">"C"</text>
+  <line x1="400" y1="228" x2="445" y2="250" class="arrow"/>
+
+  <!-- Node D -->
+  <rect class="node-accent" x="450" y="235" width="70" height="40" rx="6"/>
+  <text class="label-text" x="485" y="260" text-anchor="middle">"D"</text>
+  <line x1="520" y1="255" x2="565" y2="235" class="arrow"/>
+
+  <!-- Node E -->
+  <rect class="node-accent" x="570" y="218" width="70" height="40" rx="6"/>
+  <text class="label-text" x="605" y="243" text-anchor="middle">"E"</text>
+
+  <!-- Cache line over just one linked list node -->
+  <rect x="55" y="210" width="85" height="52" rx="6" fill="none" stroke="var(--heading)" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="97" y="290" text-anchor="middle" fill="var(--heading)" font-size="11">Cache line covers only 1 node</text>
+</svg>
+<div class="diagram-caption">Arrays store elements side by side in memory, so a single CPU cache line loads multiple elements at once. Linked list nodes are scattered, causing a cache miss on nearly every access. This is why arrays are faster in practice even when linked lists have better theoretical complexity for certain operations.</div>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">Engineering Angle</div>
+<p>Python's <code>collections.deque</code> is the right choice when you need a queue. Using <code>list.pop(0)</code> is O(n)&mdash;every element shifts. <code>deque.popleft()</code> is O(1). This is the kind of performance trap that AI-generated code often falls into. When you see <code>queue = []</code> followed by <code>queue.pop(0)</code> in AI output, you know to replace it with <code>deque</code>. One data structure swap, no algorithm change, and performance goes from O(n&sup2;) to O(n) for a series of dequeue operations.</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">TaskForge Connection</div>
+<p>Implement an undo stack for TaskForge. Every operation&mdash;add task, delete task, update task&mdash;pushes a record onto the stack that stores enough information to reverse it. Calling <code>undo()</code> pops the last record and reverses the operation. This is the same pattern used by text editors, drawing tools, and database transactions.</p>
+</div>
+
+<h3>Micro-Exercises</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">1: Stack-Based Bracket Checker</div>
+<p>Test the <code>is_balanced()</code> function from the stacks section with these inputs. Predict the output before running:</p>
+<pre style="overflow-x:auto"><code>print(is_balanced(""))         # ?
+print(is_balanced("()"))       # ?
+print(is_balanced("([{}])"))   # ?
+print(is_balanced("(]"))       # ?
+print(is_balanced("((())"))    # ?</code></pre>
+<p><strong>Answers:</strong> True, True, True, False, False. An empty string has balanced brackets (nothing to mismatch).</p>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">2: Deque vs List Performance</div>
+<p>Time this comparison and observe the dramatic difference:</p>
+<pre style="overflow-x:auto"><code>import time
+from collections import deque
+
+n = 100000
+
+# List: pop from front
+data = list(range(n))
+start = time.time()
+while data:
+    data.pop(0)
+list_time = time.time() - start
+
+# Deque: pop from front
+data = deque(range(n))
+start = time.time()
+while data:
+    data.popleft()
+deque_time = time.time() - start
+
+print(f"list.pop(0):    {list_time:.4f}s")
+print(f"deque.popleft():{deque_time:.4f}s")
+print(f"Deque is {list_time/deque_time:.0f}x faster")</code></pre>
+</div>
+
+<div class="pq">The right data structure can turn an O(n&sup2;) disaster into an O(n) solution. The wrong one hides performance bugs that only surface when your data grows.</div>
+
+<h3>Interactive Exercises</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="20" data-ex="undo-stack">
+  <div class="exercise-header">
+    <h4>Design Challenge: "TaskForge Undo Stack"</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Build an <code>UndoStack</code> class that records operations and reverses them. Each operation is a dict with <code>"action"</code> (add/delete), <code>"task"</code> (task dict). The stack manages a task list. <code>add_task(task)</code> adds and records. <code>undo()</code> reverses the last operation. <code>get_tasks()</code> returns current tasks.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+class UndoStack:
+    def __init__(self):
+        self.tasks = []
+        self.history = []  # stack of operations
+
+    def add_task(self, task):
+        """Add a task and record the operation for undo."""
+        # Your code here
+        pass
+
+    def delete_task(self, title):
+        """Delete a task by title and record for undo."""
+        # Your code here
+        pass
+
+    def undo(self):
+        """Reverse the last operation. Return True if undone, False if nothing to undo."""
+        # Your code here
+        pass
+
+    def get_tasks(self):
+        return list(self.tasks)
+
+# Test it
+mgr = UndoStack()
+mgr.add_task({"title": "Buy groceries", "done": False})
+mgr.add_task({"title": "Write tests", "done": False})
+mgr.add_task({"title": "Deploy API", "done": False})
+print("After 3 adds:", [t["title"] for t in mgr.get_tasks()])
+mgr.undo()
+print("After undo:", [t["title"] for t in mgr.get_tasks()])
+</script>
+    <script type="text/plain" class="test-code">
+mgr = UndoStack()
+mgr.add_task({"title": "A", "done": False})
+mgr.add_task({"title": "B", "done": False})
+mgr.add_task({"title": "C", "done": False})
+assert len(mgr.get_tasks()) == 3, "Should have 3 tasks"
+mgr.undo()
+assert len(mgr.get_tasks()) == 2, "After undo, should have 2 tasks"
+titles = [t["title"] for t in mgr.get_tasks()]
+assert "C" not in titles, "Task C should be removed by undo"
+mgr.delete_task("A")
+assert len(mgr.get_tasks()) == 1, "After delete, should have 1 task"
+mgr.undo()
+assert len(mgr.get_tasks()) == 2, "Undo delete should restore task A"
+assert mgr.undo() == True, "Undo should return True when there's history"
+assert mgr.undo() == True, "Should still have history"
+assert mgr.undo() == False, "No more history, should return False"
+print("All tests passed!")
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">In <code>add_task</code>, append the task to <code>self.tasks</code>, then push <code>{"action": "add", "task": task}</code> onto <code>self.history</code>.</p>
+    <p class="hint">In <code>undo</code>, pop from <code>self.history</code>. If the action was "add", remove that task from <code>self.tasks</code>. If "delete", re-add it.</p>
+    <p class="hint">In <code>delete_task</code>, find and remove the task, then push <code>{"action": "delete", "task": removed_task}</code> onto history.</p>
+  </div>
+</div>
+
+<div class="quiz" data-ch="20" data-ex="quiz-deque">
+  <h4>Knowledge Check</h4>
+  <p>You need a data structure where you frequently add to the back and remove from the front. Which is the best choice?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">list</button>
+    <button class="quiz-option" data-correct="false">dict</button>
+    <button class="quiz-option" data-correct="true">collections.deque</button>
+    <button class="quiz-option" data-correct="false">set</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+</section>
+
+<!-- ===== CH 21 ===== -->
+<section id="ch21" data-ch="21">
+<h2><span class="ch-label">Chapter 21</span> Hash Tables, Sets &amp; Maps</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>The <code>dict</code> is Python's most powerful data structure. Understanding how it works internally helps you know when it is O(1), when it degrades, and why certain things can't be dict keys. Every time you write <code>if x in my_dict</code> and it returns instantly, a hash table is doing the work. Every time you get a <code>TypeError: unhashable type: 'list'</code>, it is because hash tables require immutable keys. This chapter explains why.</p>
+</div>
+
+<h3>How Hashing Works</h3>
+<p>A <strong>hash function</strong> converts a key (any immutable value) into an integer called a <strong>hash code</strong>. That integer, taken modulo the table size, determines which <strong>bucket</strong> the key-value pair lives in.</p>
+
+<pre style="overflow-x:auto"><code># Python's built-in hash function
+print(hash("hello"))     # e.g., 2534023372954268
+print(hash("hello") % 8) # e.g., 4 — bucket 4 in an 8-bucket table
+print(hash(42))          # 42 — integers hash to themselves
+print(hash((1, 2, 3)))   # tuples are hashable because they're immutable</code></pre>
+
+<p>The process for looking up <code>my_dict["hello"]</code>:</p>
+<ol>
+<li>Compute <code>hash("hello")</code> &rarr; some large integer</li>
+<li>Compute <code>hash_code % table_size</code> &rarr; bucket index (e.g., 4)</li>
+<li>Go directly to bucket 4 and find the value</li>
+</ol>
+<p>No scanning, no comparisons with other keys. That is why dict lookup is O(1).</p>
+
+<h3>Collision Resolution</h3>
+<p>Two different keys can hash to the same bucket. This is called a <strong>collision</strong>. If <code>hash("hello") % 8 == 4</code> and <code>hash("world") % 8 == 4</code>, both keys map to bucket 4. Hash tables must handle this.</p>
+
+<p>There are two main strategies:</p>
+<ul>
+<li><strong>Chaining:</strong> Each bucket holds a linked list (or small array) of entries. When a collision occurs, the new entry is appended to the chain. Lookup scans the chain&mdash;O(k) where k is the chain length. If the hash function distributes evenly, chains stay short.</li>
+<li><strong>Open addressing:</strong> When a collision occurs, probe the next empty slot using a deterministic sequence (linear probing, quadratic probing, or double hashing). CPython uses a variant of open addressing with a pseudo-random probe sequence.</li>
+</ul>
+
+<p>Both strategies have trade-offs: chaining wastes memory on node pointers, open addressing suffers from <strong>clustering</strong> (occupied slots clump together, making probe sequences longer). In practice, both work well when the table is not too full.</p>
+
+<h3>Load Factor and Rehashing</h3>
+<p>The <strong>load factor</strong> is the ratio of entries to buckets: <code>n / table_size</code>. As the load factor increases, collisions become more frequent and performance degrades toward O(n).</p>
+
+<p>CPython keeps the load factor below roughly 2/3 (0.67). When inserting a new entry would exceed this threshold, the table <strong>rehashes</strong>: allocates a new, larger table (typically double the size) and reinserts every existing entry. This is an O(n) operation, but it happens infrequently&mdash;amortized O(1) per insert, the same pattern as dynamic array resizing.</p>
+
+<pre style="overflow-x:auto"><code># You can observe rehashing indirectly via memory usage
+import sys
+
+d = {}
+prev = sys.getsizeof(d)
+for i in range(100):
+    d[i] = i
+    curr = sys.getsizeof(d)
+    if curr != prev:
+        print(f"At {i} entries: dict size jumped from {prev} to {curr} bytes")
+        prev = curr
+# You'll see jumps at approximately 5, 10, 21, 42, 85 entries</code></pre>
+
+<h3>Python Dict Internals</h3>
+<p>Since CPython 3.6, dicts use a <strong>compact layout</strong> with two separate arrays:</p>
+<ul>
+<li>A <strong>sparse hash table</strong> (mostly empty) that stores indices into the dense array</li>
+<li>A <strong>dense entries array</strong> that stores keys and values in insertion order</li>
+</ul>
+<p>This is why Python dicts preserve insertion order since 3.7&mdash;the dense array records entries in the order they were added. It also explains why dicts use more memory than you might expect: the sparse hash table has empty slots to keep the load factor low.</p>
+
+<p>Key facts about Python dicts:</p>
+<ul>
+<li>Average lookup, insert, and delete: O(1)</li>
+<li>Worst-case (all keys collide): O(n)&mdash;but this essentially never happens with Python's hash function</li>
+<li>Iteration is O(n) and follows insertion order</li>
+<li>Memory usage is roughly 50&ndash;70 bytes per entry (much more than a list)</li>
+</ul>
+
+<h3>Sets</h3>
+<p>A <strong>set</strong> is a hash table without values&mdash;it stores only keys. This gives you O(1) membership testing, which is the single most common reason to use a set over a list.</p>
+
+<pre style="overflow-x:auto"><code># O(n) — membership test on a list
+def has_overdue_list(task_ids, overdue_ids_list):
+    for tid in task_ids:
+        if tid in overdue_ids_list:  # O(n) each time
+            return True
+    return False
+# Total: O(n * m) where n = task_ids, m = overdue list
+
+# O(n) — membership test on a set
+def has_overdue_set(task_ids, overdue_ids_set):
+    for tid in task_ids:
+        if tid in overdue_ids_set:  # O(1) each time
+            return True
+    return False
+# Total: O(n) where n = task_ids</code></pre>
+
+<p>Sets also support efficient mathematical operations:</p>
+<pre style="overflow-x:auto"><code>team_a = {"Alice", "Bob", "Carol"}
+team_b = {"Bob", "Dave", "Carol"}
+
+print(team_a & team_b)   # Intersection: {"Bob", "Carol"}
+print(team_a | team_b)   # Union: {"Alice", "Bob", "Carol", "Dave"}
+print(team_a - team_b)   # Difference: {"Alice"}
+print(team_a ^ team_b)   # Symmetric diff: {"Alice", "Dave"}</code></pre>
+
+<p><strong>When to use a set vs a list:</strong> If you need to check "is X in my collection?" more than occasionally, convert to a set. For 100 elements, the difference is negligible. For 1 million elements, <code>x in my_list</code> takes a millisecond while <code>x in my_set</code> takes a microsecond&mdash;a 1000x difference.</p>
+
+<h3>When Hashing Breaks</h3>
+<p>Hash tables have failure modes you need to know about:</p>
+<ul>
+<li><strong>Mutable keys are forbidden.</strong> If you could modify a list after using it as a dict key, its hash would change and the dict could no longer find it. Python prevents this: <code>TypeError: unhashable type: 'list'</code>. Convert to a tuple first.</li>
+<li><strong>Hash collision attacks.</strong> An attacker who knows your hash function can craft inputs that all map to the same bucket, degrading O(1) to O(n). Python mitigates this with hash randomization (different seed per process).</li>
+<li><strong>Pathological distributions.</strong> If many keys hash to the same bucket despite a good hash function, performance degrades. This is extremely rare with Python's hash, but worth knowing about for debugging.</li>
+</ul>
+
+<pre style="overflow-x:auto"><code># This fails: lists are mutable, so unhashable
+try:
+    d = {[1, 2, 3]: "value"}
+except TypeError as e:
+    print(e)  # unhashable type: 'list'
+
+# This works: tuples are immutable, so hashable
+d = {(1, 2, 3): "value"}
+print(d[(1, 2, 3)])  # "value"</code></pre>
+
+<div class="diagram">
+<svg viewBox="0 0 700 340" xmlns="http://www.w3.org/2000/svg" aria-label="Hash table diagram with 8 buckets showing 5 key-value pairs, with 2 pairs colliding in bucket 3 forming a chain. Labels show the hash function, modulo operation, and chaining.">
+  <!-- Title -->
+  <text class="label-text" x="350" y="20" text-anchor="middle">Hash Table with Chaining</text>
+
+  <!-- Hash function box -->
+  <rect class="node-accent" x="30" y="40" width="160" height="50" rx="8"/>
+  <text class="label-text" x="110" y="62" text-anchor="middle">hash(key) % 8</text>
+  <text class="sub-text" x="110" y="78" text-anchor="middle">Hash Function</text>
+
+  <!-- Arrow from hash function to buckets -->
+  <line x1="190" y1="65" x2="240" y2="65" class="arrow"/>
+
+  <!-- Buckets (8 slots) -->
+  <rect x="250" y="35" width="60" height="28" rx="4" fill="none" stroke="var(--border-accent)" stroke-width="1"/>
+  <text class="sub-text" x="255" y="53">[0]</text>
+  <text class="sub-text" x="320" y="53" fill="var(--text-muted)">empty</text>
+
+  <rect x="250" y="67" width="60" height="28" rx="4" fill="none" stroke="var(--border-accent)" stroke-width="1"/>
+  <text class="sub-text" x="255" y="85">[1]</text>
+  <!-- Entry in bucket 1 -->
+  <rect class="node-fill" x="320" y="69" width="150" height="24" rx="4"/>
+  <text class="sub-text" x="395" y="85" text-anchor="middle">"age": 30</text>
+
+  <rect x="250" y="99" width="60" height="28" rx="4" fill="none" stroke="var(--border-accent)" stroke-width="1"/>
+  <text class="sub-text" x="255" y="117">[2]</text>
+  <text class="sub-text" x="320" y="117" fill="var(--text-muted)">empty</text>
+
+  <rect x="250" y="131" width="60" height="28" rx="4" fill="var(--accent)" opacity="0.15" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="sub-text" x="255" y="149">[3]</text>
+  <!-- Collision chain in bucket 3 -->
+  <rect class="node-accent" x="320" y="133" width="150" height="24" rx="4"/>
+  <text class="sub-text" x="395" y="149" text-anchor="middle">"name": "Alice"</text>
+  <line x1="470" y1="145" x2="495" y2="145" class="arrow"/>
+  <rect class="node-accent" x="500" y="133" width="160" height="24" rx="4"/>
+  <text class="sub-text" x="580" y="149" text-anchor="middle">"city": "Boston"</text>
+  <!-- Collision label -->
+  <text x="490" y="175" fill="var(--accent)" font-size="11" text-anchor="middle">Collision! Two keys in bucket 3</text>
+
+  <rect x="250" y="195" width="60" height="28" rx="4" fill="none" stroke="var(--border-accent)" stroke-width="1"/>
+  <text class="sub-text" x="255" y="213">[4]</text>
+  <text class="sub-text" x="320" y="213" fill="var(--text-muted)">empty</text>
+
+  <rect x="250" y="227" width="60" height="28" rx="4" fill="none" stroke="var(--border-accent)" stroke-width="1"/>
+  <text class="sub-text" x="255" y="245">[5]</text>
+  <!-- Entry in bucket 5 -->
+  <rect class="node-fill" x="320" y="229" width="150" height="24" rx="4"/>
+  <text class="sub-text" x="395" y="245" text-anchor="middle">"email": "a@b.c"</text>
+
+  <rect x="250" y="259" width="60" height="28" rx="4" fill="none" stroke="var(--border-accent)" stroke-width="1"/>
+  <text class="sub-text" x="255" y="277">[6]</text>
+  <!-- Entry in bucket 6 -->
+  <rect class="node-fill" x="320" y="261" width="150" height="24" rx="4"/>
+  <text class="sub-text" x="395" y="277" text-anchor="middle">"role": "dev"</text>
+
+  <rect x="250" y="291" width="60" height="28" rx="4" fill="none" stroke="var(--border-accent)" stroke-width="1"/>
+  <text class="sub-text" x="255" y="309">[7]</text>
+  <text class="sub-text" x="320" y="309" fill="var(--text-muted)">empty</text>
+
+  <!-- Summary label -->
+  <text class="sub-text" x="350" y="335" text-anchor="middle" fill="var(--text-muted)">5 entries in 8 buckets &mdash; load factor = 0.625 (below 0.67 threshold)</text>
+</svg>
+<div class="diagram-caption">A hash table with 8 buckets holding 5 key-value pairs. Bucket 3 has a collision: two keys hashed to the same index. Chaining links them in a chain. Lookup checks the bucket, then walks the chain if needed. With a low load factor, chains stay short and lookups remain O(1).</div>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">Engineering Angle</div>
+<p>Choosing between <code>dict</code>, <code>set</code>, and <code>list</code> for lookups is a daily engineering decision. <code>if x in my_list</code> is O(n). <code>if x in my_set</code> is O(1). For 100 elements it doesn't matter. For 1 million, it is the difference between 1 second and 1 microsecond. When you see AI-generated code that stores unique IDs in a list and checks membership in a loop, you know to swap it for a set. This is the kind of optimization that scales.</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">TaskForge Connection</div>
+<p>Build a tag-based index for tasks. A dict maps tag strings to lists of task IDs: <code>{"urgent": [1, 3, 7], "backend": [2, 3]}</code>. When you need all tasks tagged "urgent," the dict gives you the answer in O(1) instead of scanning every task. This is the same pattern databases use for indexes&mdash;you are building one by hand.</p>
+</div>
+
+<h3>Micro-Exercises</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">1: Set vs List Membership</div>
+<p>Convert this O(n&sup2;) function to O(n) using a set:</p>
+<pre style="overflow-x:auto"><code># O(n^2) — checking membership in a list inside a loop
+def find_common(list_a, list_b):
+    common = []
+    for item in list_a:
+        if item in list_b:  # O(n) for each check
+            common.append(item)
+    return common
+
+# Your O(n) version:
+def find_common_fast(list_a, list_b):
+    set_b = set(list_b)       # O(m) one-time conversion
+    common = []
+    for item in list_a:
+        if item in set_b:     # O(1) for each check
+            common.append(item)
+    return common
+    # Total: O(n + m) instead of O(n * m)</code></pre>
+</div>
+
+<div class="pq">The dict is not just a data structure&mdash;it is a design pattern. Anytime you need fast lookup by key, you need a hash table. Once you see this pattern, you see it everywhere.</div>
+
+<h3>Interactive Exercises</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="21" data-ex="tag-index">
+  <div class="exercise-header">
+    <h4>Design Challenge: "TaskForge Tag Index"</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Build a <code>TagIndex</code> class that maintains a dict mapping tags to sets of task IDs. Implement <code>add_task(task_id, tags)</code>, <code>remove_task(task_id, tags)</code>, and <code>search(tag)</code> that returns a set of task IDs.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+class TagIndex:
+    def __init__(self):
+        self.index = {}  # tag -> set of task_ids
+
+    def add_task(self, task_id, tags):
+        """Add task_id to the index under each tag."""
+        # Your code here
+        pass
+
+    def remove_task(self, task_id, tags):
+        """Remove task_id from the index under each tag."""
+        # Your code here
+        pass
+
+    def search(self, tag):
+        """Return the set of task_ids for a given tag. Empty set if tag not found."""
+        # Your code here
+        pass
+
+# Test it
+idx = TagIndex()
+idx.add_task(1, ["urgent", "backend"])
+idx.add_task(2, ["backend", "bug"])
+idx.add_task(3, ["urgent", "frontend"])
+print("urgent:", idx.search("urgent"))
+print("backend:", idx.search("backend"))
+idx.remove_task(1, ["urgent", "backend"])
+print("urgent after remove:", idx.search("urgent"))
+</script>
+    <script type="text/plain" class="test-code">
+idx = TagIndex()
+idx.add_task(1, ["urgent", "backend"])
+idx.add_task(2, ["backend", "bug"])
+idx.add_task(3, ["urgent", "frontend"])
+assert idx.search("urgent") == {1, 3}, f"urgent should be {{1, 3}}, got {idx.search('urgent')}"
+assert idx.search("backend") == {1, 2}, f"backend should be {{1, 2}}"
+assert idx.search("bug") == {2}, f"bug should be {{2}}"
+assert idx.search("nonexistent") == set(), "Missing tag should return empty set"
+idx.remove_task(1, ["urgent", "backend"])
+assert idx.search("urgent") == {3}, "After removing task 1, urgent should be {3}"
+assert idx.search("backend") == {2}, "After removing task 1, backend should be {2}"
+idx.add_task(4, ["urgent"])
+assert idx.search("urgent") == {3, 4}, "After adding task 4, urgent should be {3, 4}"
+print("All tests passed!")
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">In <code>add_task</code>, loop through tags. For each tag, if it's not in <code>self.index</code>, create an empty set. Then add the task_id to the set.</p>
+    <p class="hint">Use <code>self.index.setdefault(tag, set()).add(task_id)</code> for a concise one-liner per tag.</p>
+    <p class="hint">In <code>search</code>, return <code>self.index.get(tag, set())</code> to handle missing tags gracefully.</p>
+  </div>
+</div>
+
+<div class="quiz" data-ch="21" data-ex="quiz-hash">
+  <h4>Knowledge Check</h4>
+  <p>Why can't you use a list as a dictionary key in Python?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">Lists are too large</button>
+    <button class="quiz-option" data-correct="true">Lists are mutable so their hash would change</button>
+    <button class="quiz-option" data-correct="false">Python doesn't support it for speed reasons</button>
+    <button class="quiz-option" data-correct="false">Lists don't have a __hash__ method by default</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+</section>
+
+<!-- ===== CH 22 ===== -->
+<section id="ch22" data-ch="22">
+<h2><span class="ch-label">Chapter 22</span> Trees</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>Trees are everywhere you don't see them. Your file system is a tree. Database indexes are trees. The HTML DOM is a tree. JSON is a tree. When you call <code>os.walk()</code> to traverse directories, you are traversing a tree. Understanding trees means understanding how all these systems perform and why database queries are fast even on tables with millions of rows.</p>
+</div>
+
+<h3>Binary Tree Basics</h3>
+<p>A <strong>binary tree</strong> is a hierarchy where each node has at most two children, conventionally called <strong>left</strong> and <strong>right</strong>. The topmost node is the <strong>root</strong>. Nodes with no children are <strong>leaves</strong>. The <strong>depth</strong> of a node is its distance from the root. The <strong>height</strong> of the tree is the depth of its deepest leaf.</p>
+
+<pre style="overflow-x:auto"><code>class TreeNode:
+    def __init__(self, value, left=None, right=None):
+        self.value = value
+        self.left = left
+        self.right = right
+
+# Build a small tree:
+#        8
+#       / \
+#      3   10
+#     / \    \
+#    1   6    14
+root = TreeNode(8,
+    TreeNode(3, TreeNode(1), TreeNode(6)),
+    TreeNode(10, None, TreeNode(14))
+)</code></pre>
+
+<h4>Tree Traversals</h4>
+<p>There are four standard ways to visit every node in a tree. Each traversal order serves a different purpose:</p>
+
+<pre style="overflow-x:auto"><code>def inorder(node):
+    """Left -> Root -> Right. For BSTs, visits nodes in sorted order."""
+    if node is None:
+        return []
+    return inorder(node.left) + [node.value] + inorder(node.right)
+
+def preorder(node):
+    """Root -> Left -> Right. Copies the tree structure."""
+    if node is None:
+        return []
+    return [node.value] + preorder(node.left) + preorder(node.right)
+
+def postorder(node):
+    """Left -> Right -> Root. Safe for deletion (children before parent)."""
+    if node is None:
+        return []
+    return postorder(node.left) + postorder(node.right) + [node.value]
+
+def levelorder(node):
+    """Layer by layer (BFS). Uses a queue."""
+    from collections import deque
+    if node is None:
+        return []
+    result, queue = [], deque([node])
+    while queue:
+        current = queue.popleft()
+        result.append(current.value)
+        if current.left:
+            queue.append(current.left)
+        if current.right:
+            queue.append(current.right)
+    return result
+
+# Using our tree from above:
+print("Inorder:   ", inorder(root))    # [1, 3, 6, 8, 10, 14] — sorted!
+print("Preorder:  ", preorder(root))   # [8, 3, 1, 6, 10, 14]
+print("Postorder: ", postorder(root))  # [1, 6, 3, 14, 10, 8]
+print("Levelorder:", levelorder(root)) # [8, 3, 10, 1, 6, 14]</code></pre>
+
+<h3>Binary Search Trees</h3>
+<p>A <strong>Binary Search Tree</strong> (BST) enforces an ordering rule: for every node, all values in the left subtree are smaller and all values in the right subtree are larger. This rule makes search, insert, and delete all O(h) where h is the height of the tree.</p>
+
+<pre style="overflow-x:auto"><code>def bst_search(node, target):
+    """Search a BST — O(h) where h = height."""
+    if node is None:
+        return False
+    if target == node.value:
+        return True
+    elif target < node.value:
+        return bst_search(node.left, target)   # go left
+    else:
+        return bst_search(node.right, target)  # go right
+
+def bst_insert(node, value):
+    """Insert into a BST — O(h)."""
+    if node is None:
+        return TreeNode(value)
+    if value < node.value:
+        node.left = bst_insert(node.left, value)
+    elif value > node.value:
+        node.right = bst_insert(node.right, value)
+    # if value == node.value, duplicate — skip or handle as you wish
+    return node
+
+# Build a BST from scratch
+tree = None
+for val in [8, 3, 10, 1, 6, 14]:
+    tree = bst_insert(tree, val)
+
+print(bst_search(tree, 6))   # True
+print(bst_search(tree, 7))   # False
+print(inorder(tree))          # [1, 3, 6, 8, 10, 14] — always sorted</code></pre>
+
+<h3>Why Balance Matters</h3>
+<p>The performance of a BST depends entirely on its <strong>height</strong>. A balanced BST with n nodes has height log n, giving O(log n) operations. But if you insert sorted data into a BST, every node goes to the right, creating a degenerate tree that is effectively a linked list with height n.</p>
+
+<pre style="overflow-x:auto"><code># Balanced insertion: [8, 3, 10, 1, 6, 14]
+# Creates a nice tree with height 3:
+#        8
+#       / \
+#      3   10
+#     / \    \
+#    1   6    14
+# Search: O(log n) = O(log 6) ≈ 3 comparisons
+
+# Sorted insertion: [1, 3, 6, 8, 10, 14]
+# Creates a degenerate tree with height 6:
+#    1
+#     \
+#      3
+#       \
+#        6
+#         \
+#          8
+#           \
+#            10
+#              \
+#               14
+# Search: O(n) = 6 comparisons — it's a linked list!</code></pre>
+
+<p><strong>Self-balancing trees</strong> (AVL trees, red-black trees) automatically restructure after inserts and deletes to guarantee O(log n) height. You will almost never implement these yourself&mdash;they exist inside libraries and databases. But you need to know <em>why</em> they exist: to prevent the O(n) degenerate case. Python's <code>sorted containers</code> library and C++'s <code>std::map</code> use red-black trees. Database indexes use B-trees (below).</p>
+
+<h3>Heaps and Priority Queues</h3>
+<p>A <strong>min-heap</strong> is a complete binary tree where every parent is less than or equal to its children. The minimum value is always at the root. Heaps are stored as arrays using index arithmetic:</p>
+<ul>
+<li>Children of node i: indices 2i+1 and 2i+2</li>
+<li>Parent of node i: index (i-1)//2</li>
+</ul>
+
+<p>Python's <code>heapq</code> module provides a min-heap backed by a regular list:</p>
+<pre style="overflow-x:auto"><code>import heapq
+
+# Build a heap from a list
+tasks = [(3, "Low priority task"),
+         (1, "URGENT task"),
+         (2, "Medium task")]
+heapq.heapify(tasks)  # O(n) — rearranges in place
+
+# Pop the smallest (highest priority)
+print(heapq.heappop(tasks))  # (1, "URGENT task")
+print(heapq.heappop(tasks))  # (2, "Medium task")
+print(heapq.heappop(tasks))  # (3, "Low priority task")
+
+# Push a new item
+heapq.heappush(tasks, (0, "Critical fix"))
+
+# Get top-K without sorting the whole list
+data = [42, 17, 93, 5, 68, 31, 84, 2]
+print(heapq.nsmallest(3, data))  # [2, 5, 17] — O(n log k)
+print(heapq.nlargest(3, data))   # [93, 84, 68]</code></pre>
+
+<div style="overflow-x:auto">
+<table>
+<caption>Heap operation time complexities</caption>
+<tr><th>Heap Operation</th><th>Time Complexity</th></tr>
+<tr><td><code>heapify(list)</code></td><td>O(n)</td></tr>
+<tr><td><code>heappush(heap, item)</code></td><td>O(log n)</td></tr>
+<tr><td><code>heappop(heap)</code></td><td>O(log n)</td></tr>
+<tr><td><code>nsmallest(k, iterable)</code></td><td>O(n log k)</td></tr>
+<tr><td>Access minimum</td><td>O(1) &mdash; it is <code>heap[0]</code></td></tr>
+</table>
+</div>
+
+<p>The key insight: if you only need the minimum (or maximum) element repeatedly, a heap is better than sorting. Sorting gives you all elements in order (O(n log n)). A heap gives you just the min in O(1) and lets you remove it in O(log n). For "give me the top 10 most important tasks out of 10,000," a heap is the right tool.</p>
+
+<h3>Tries</h3>
+<p>A <strong>trie</strong> (pronounced "try") is a tree where each node represents a character. A path from the root to a node spells a prefix. Tries power autocomplete features: to find all words starting with "pro", walk down the p-r-o path and return everything below.</p>
+
+<p>The critical property: lookup time is O(m) where m is the key length, regardless of how many keys are stored. A trie with 1 million words finds "programming" in exactly 11 steps.</p>
+
+<pre style="overflow-x:auto"><code>class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.is_end = False
+
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+
+    def insert(self, word):
+        node = self.root
+        for char in word:
+            if char not in node.children:
+                node.children[char] = TrieNode()
+            node = node.children[char]
+        node.is_end = True
+
+    def search(self, word):
+        node = self.root
+        for char in word:
+            if char not in node.children:
+                return False
+            node = node.children[char]
+        return node.is_end
+
+    def starts_with(self, prefix):
+        node = self.root
+        for char in prefix:
+            if char not in node.children:
+                return False
+            node = node.children[char]
+        return True
+
+t = Trie()
+for word in ["task", "tag", "test", "team"]:
+    t.insert(word)
+print(t.search("task"))       # True
+print(t.search("tas"))        # False (prefix, not complete word)
+print(t.starts_with("ta"))    # True
+print(t.starts_with("te"))    # True
+print(t.starts_with("tx"))    # False</code></pre>
+
+<h3>B-Trees (Conceptual)</h3>
+<p>Databases don't use BSTs. They use <strong>B-trees</strong>&mdash;wide, shallow trees designed for disk-based storage.</p>
+
+<p>The problem with BSTs on disk: each node is one comparison, and reading a node from disk takes ~10 milliseconds (mechanical disk) or ~0.1 ms (SSD). A balanced BST with 1 million nodes has height 20, requiring 20 disk reads. At 0.1 ms each, that is 2 ms per query&mdash;tolerable but not great.</p>
+
+<p>A B-tree solves this by making nodes <strong>wide</strong>: each node holds hundreds of keys and has hundreds of children. A B-tree with branching factor 100 and 3 levels can hold 100&sup3; = 1 million keys with only <strong>3 disk reads</strong> per search. That is why <code>SELECT * FROM tasks WHERE id = 42</code> returns instantly on a table with millions of rows.</p>
+
+<p>You don't implement B-trees. You use them through databases (SQLite, PostgreSQL). But knowing they exist explains why database indexes are fast and why <code>CREATE INDEX</code> speeds up queries&mdash;it builds a B-tree over the indexed column.</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg" aria-label="Comparison of balanced BST with height 3 versus degenerate BST with height 7, built from the same 7 numbers inserted in different orders. Labels show O(log n) versus O(n) search time.">
+  <!-- Title -->
+  <text class="label-text" x="350" y="20" text-anchor="middle">BST Shape Depends on Insertion Order</text>
+
+  <!-- LEFT SIDE: Balanced -->
+  <text class="label-text" x="175" y="48" text-anchor="middle" fill="var(--accent)">Random Order: [4,2,6,1,3,5,7]</text>
+  <text class="sub-text" x="175" y="65" text-anchor="middle">Height = 3 &mdash; Search: O(log n)</text>
+
+  <!--        4       -->
+  <circle cx="175" cy="95" r="16" fill="var(--accent)" opacity="0.2" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="label-text" x="175" y="100" text-anchor="middle">4</text>
+  <!--       / \      -->
+  <line x1="162" y1="108" x2="115" y2="138" stroke="var(--accent)" stroke-width="1.5"/>
+  <line x1="188" y1="108" x2="235" y2="138" stroke="var(--accent)" stroke-width="1.5"/>
+  <!--      2   6     -->
+  <circle cx="110" cy="150" r="16" fill="var(--accent)" opacity="0.2" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="label-text" x="110" y="155" text-anchor="middle">2</text>
+  <circle cx="240" cy="150" r="16" fill="var(--accent)" opacity="0.2" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="label-text" x="240" y="155" text-anchor="middle">6</text>
+  <!--     / \ / \    -->
+  <line x1="98" y1="163" x2="72" y2="188" stroke="var(--accent)" stroke-width="1.5"/>
+  <line x1="122" y1="163" x2="148" y2="188" stroke="var(--accent)" stroke-width="1.5"/>
+  <line x1="228" y1="163" x2="202" y2="188" stroke="var(--accent)" stroke-width="1.5"/>
+  <line x1="252" y1="163" x2="278" y2="188" stroke="var(--accent)" stroke-width="1.5"/>
+  <!--    1  3  5  7  -->
+  <circle cx="68" cy="200" r="16" fill="var(--accent)" opacity="0.2" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="label-text" x="68" y="205" text-anchor="middle">1</text>
+  <circle cx="152" cy="200" r="16" fill="var(--accent)" opacity="0.2" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="label-text" x="152" y="205" text-anchor="middle">3</text>
+  <circle cx="198" cy="200" r="16" fill="var(--accent)" opacity="0.2" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="label-text" x="198" y="205" text-anchor="middle">5</text>
+  <circle cx="282" cy="200" r="16" fill="var(--accent)" opacity="0.2" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="label-text" x="282" y="205" text-anchor="middle">7</text>
+
+  <!-- RIGHT SIDE: Degenerate -->
+  <text class="label-text" x="525" y="48" text-anchor="middle" fill="#e53e3e">Sorted Order: [1,2,3,4,5,6,7]</text>
+  <text class="sub-text" x="525" y="65" text-anchor="middle">Height = 7 &mdash; Search: O(n)</text>
+
+  <!-- Degenerate chain: each node links only to the right -->
+  <circle cx="430" cy="90" r="14" fill="#e53e3e" opacity="0.15" stroke="#e53e3e" stroke-width="1.5"/>
+  <text class="label-text" x="430" y="95" text-anchor="middle">1</text>
+  <line x1="442" y1="100" x2="458" y2="118" stroke="#e53e3e" stroke-width="1.5"/>
+
+  <circle cx="462" cy="128" r="14" fill="#e53e3e" opacity="0.15" stroke="#e53e3e" stroke-width="1.5"/>
+  <text class="label-text" x="462" y="133" text-anchor="middle">2</text>
+  <line x1="474" y1="138" x2="490" y2="156" stroke="#e53e3e" stroke-width="1.5"/>
+
+  <circle cx="494" cy="166" r="14" fill="#e53e3e" opacity="0.15" stroke="#e53e3e" stroke-width="1.5"/>
+  <text class="label-text" x="494" y="171" text-anchor="middle">3</text>
+  <line x1="506" y1="176" x2="522" y2="194" stroke="#e53e3e" stroke-width="1.5"/>
+
+  <circle cx="526" cy="204" r="14" fill="#e53e3e" opacity="0.15" stroke="#e53e3e" stroke-width="1.5"/>
+  <text class="label-text" x="526" y="209" text-anchor="middle">4</text>
+  <line x1="538" y1="214" x2="554" y2="232" stroke="#e53e3e" stroke-width="1.5"/>
+
+  <circle cx="558" cy="242" r="14" fill="#e53e3e" opacity="0.15" stroke="#e53e3e" stroke-width="1.5"/>
+  <text class="label-text" x="558" y="247" text-anchor="middle">5</text>
+  <line x1="570" y1="252" x2="586" y2="268" stroke="#e53e3e" stroke-width="1.5"/>
+
+  <circle cx="590" cy="278" r="14" fill="#e53e3e" opacity="0.15" stroke="#e53e3e" stroke-width="1.5"/>
+  <text class="label-text" x="590" y="283" text-anchor="middle">6</text>
+  <line x1="600" y1="290" x2="610" y2="300" stroke="#e53e3e" stroke-width="1.5"/>
+
+  <circle cx="616" cy="310" r="14" fill="#e53e3e" opacity="0.15" stroke="#e53e3e" stroke-width="1.5"/>
+  <text class="label-text" x="616" y="315" text-anchor="middle">7</text>
+</svg>
+<div class="diagram-caption">The same 7 numbers produce very different trees depending on insertion order. Random order gives a balanced tree with O(log n) search. Sorted order gives a degenerate tree&mdash;effectively a linked list&mdash;with O(n) search. Self-balancing trees prevent the degenerate case.</div>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">Engineering Angle</div>
+<p>You almost never implement a tree yourself. But understanding them is essential: database indexes are B-trees, file systems are tree-structured, and <code>heapq</code> is the right tool for "give me the top 10 most important tasks." When AI generates code that sorts a list just to find the max, you know a single <code>max()</code> call is O(n) and even better, if you need the max repeatedly as items change, a heap gives O(log n) per update vs re-sorting at O(n log n). Knowing the structure means knowing the right tool.</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">TaskForge Connection</div>
+<p>Implement priority-based task scheduling using <code>heapq</code>. Tasks with lower priority numbers get processed first (priority 1 = most urgent). Support <code>add_task(priority, name)</code> and <code>next_task()</code> that returns the highest-priority task. This replaces the naive approach of sorting the entire task list every time you want the next task.</p>
+</div>
+
+<h3>Micro-Exercises</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">1: Traversal Practice</div>
+<p>Given this tree, predict the output of each traversal before running the code:</p>
+<pre style="overflow-x:auto"><code>#       10
+#      /  \
+#     5    15
+#    / \     \
+#   2   7    20
+
+root = TreeNode(10,
+    TreeNode(5, TreeNode(2), TreeNode(7)),
+    TreeNode(15, None, TreeNode(20))
+)
+
+print("Inorder:   ", inorder(root))    # ?
+print("Preorder:  ", preorder(root))   # ?
+print("Postorder: ", postorder(root))  # ?</code></pre>
+<p><strong>Answers:</strong> Inorder: [2, 5, 7, 10, 15, 20]. Preorder: [10, 5, 2, 7, 15, 20]. Postorder: [2, 7, 5, 20, 15, 10].</p>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">2: Heap for Top-K</div>
+<p>Use <code>heapq.nlargest</code> to find the 3 tasks with the highest priority (largest number):</p>
+<pre style="overflow-x:auto"><code>import heapq
+tasks = [(3, "Low"), (10, "Critical"), (1, "Trivial"),
+         (7, "High"), (5, "Medium"), (9, "Urgent")]
+top_3 = heapq.nlargest(3, tasks)
+print(top_3)  # [(10, 'Critical'), (9, 'Urgent'), (7, 'High')]</code></pre>
+</div>
+
+<div class="pq">Trees let you organize data hierarchically and search it efficiently. The difference between a balanced tree and a degenerate one is the difference between O(log n) and O(n)&mdash;the same difference that makes database indexes fast.</div>
+
+<h3>Interactive Exercises</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="22" data-ex="priority-queue">
+  <div class="exercise-header">
+    <h4>Design Challenge: "TaskForge Priority Scheduler"</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Build a <code>TaskScheduler</code> class using <code>heapq</code>. <code>add_task(priority, name)</code> adds a task. <code>next_task()</code> returns and removes the highest-priority (lowest number) task as a <code>(priority, name)</code> tuple, or <code>None</code> if empty. <code>peek()</code> returns the next task without removing it.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+import heapq
+
+class TaskScheduler:
+    def __init__(self):
+        self.heap = []
+        self.counter = 0  # tiebreaker for equal priorities
+
+    def add_task(self, priority, name):
+        """Add a task with given priority (lower = more urgent)."""
+        # Your code here
+        pass
+
+    def next_task(self):
+        """Remove and return (priority, name) of most urgent task, or None."""
+        # Your code here
+        pass
+
+    def peek(self):
+        """Return (priority, name) of most urgent task without removing, or None."""
+        # Your code here
+        pass
+
+    def __len__(self):
+        return len(self.heap)
+
+# Test it
+sched = TaskScheduler()
+sched.add_task(3, "Low priority bug")
+sched.add_task(1, "Server is down!")
+sched.add_task(2, "Feature request")
+print(f"Next: {sched.next_task()}")  # Should be (1, "Server is down!")
+print(f"Next: {sched.next_task()}")  # Should be (2, "Feature request")
+print(f"Next: {sched.next_task()}")  # Should be (3, "Low priority bug")
+</script>
+    <script type="text/plain" class="test-code">
+sched = TaskScheduler()
+sched.add_task(3, "Low")
+sched.add_task(1, "Critical")
+sched.add_task(2, "Medium")
+assert len(sched) == 3, "Should have 3 tasks"
+p = sched.peek()
+assert p[0] == 1, f"Peek should return priority 1, got {p[0]}"
+assert len(sched) == 3, "Peek should not remove"
+t = sched.next_task()
+assert t[0] == 1, f"First should be priority 1, got {t[0]}"
+assert t[1] == "Critical", f"Should be 'Critical', got {t[1]}"
+t = sched.next_task()
+assert t[0] == 2, f"Second should be priority 2, got {t[0]}"
+t = sched.next_task()
+assert t[0] == 3, f"Third should be priority 3, got {t[0]}"
+assert sched.next_task() is None, "Empty scheduler should return None"
+assert sched.peek() is None, "Empty peek should return None"
+# Test equal priorities (FIFO tiebreaker)
+sched.add_task(1, "First added")
+sched.add_task(1, "Second added")
+t1 = sched.next_task()
+t2 = sched.next_task()
+assert t1[1] == "First added", "Equal priorities should use FIFO order"
+print("All tests passed!")
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">Use <code>heapq.heappush(self.heap, (priority, self.counter, name))</code>. The counter acts as a tiebreaker for equal priorities (FIFO order).</p>
+    <p class="hint">In <code>next_task</code>, use <code>heapq.heappop(self.heap)</code> which returns <code>(priority, counter, name)</code>. Return <code>(priority, name)</code> to the caller.</p>
+    <p class="hint">In <code>peek</code>, access <code>self.heap[0]</code> without popping. Return <code>(self.heap[0][0], self.heap[0][2])</code>.</p>
+  </div>
+</div>
+
+<div class="quiz" data-ch="22" data-ex="quiz-tree">
+  <h4>Knowledge Check</h4>
+  <p>A BST has 1 million nodes and is perfectly balanced. How many comparisons does a search take at most?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">1,000,000</button>
+    <button class="quiz-option" data-correct="false">1,000</button>
+    <button class="quiz-option" data-correct="true">~20 (log&#8322; of 1 million)</button>
+    <button class="quiz-option" data-correct="false">100</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+</section>
+
+<!-- ===== CH 23 ===== -->
+<section id="ch23" data-ch="23">
+<h2><span class="ch-label">Chapter 23</span> Graphs</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>Not all relationships are hierarchical. Social networks, flight routes, task dependencies, web page links&mdash;these are all <strong>graphs</strong>. When you need to model "A depends on B" or "Alice knows Bob" or "there's a road from X to Y," a tree won't cut it because trees can't represent cycles, multiple paths, or peer-to-peer relationships. Graphs are the most general-purpose data structure for modeling connections.</p>
+</div>
+
+<h3>Graph Vocabulary</h3>
+<p>A <strong>graph</strong> is a set of <strong>nodes</strong> (also called <strong>vertices</strong>) connected by <strong>edges</strong>. That is the entire definition. Everything else is a specialization:</p>
+
+<ul>
+<li><strong>Directed vs undirected:</strong> In a directed graph, edge A&rarr;B is one-way (A depends on B, but B does not depend on A). In an undirected graph, edges go both ways (Alice knows Bob means Bob knows Alice).</li>
+<li><strong>Weighted vs unweighted:</strong> Weighted edges carry a value (distance, cost, time). Unweighted edges represent only connection.</li>
+<li><strong>Path:</strong> A sequence of edges connecting two nodes. "Can I get from A to D?" is a question about whether a path exists.</li>
+<li><strong>Cycle:</strong> A path that starts and ends at the same node. A graph with no cycles is <strong>acyclic</strong>.</li>
+<li><strong>Connected component:</strong> A group of nodes where every node can reach every other node. A graph may have multiple disconnected components.</li>
+<li><strong>Degree:</strong> The number of edges connected to a node. In directed graphs, <strong>in-degree</strong> counts incoming edges and <strong>out-degree</strong> counts outgoing edges.</li>
+</ul>
+
+<h3>Representations</h3>
+<p>There are two standard ways to store a graph in code. Both represent the same information but have different performance characteristics.</p>
+
+<h4>Adjacency List</h4>
+<p>A dict mapping each node to a list (or set) of its neighbors. This is the most common representation and the one you should default to.</p>
+<pre style="overflow-x:auto"><code># Directed graph: A->B, A->C, B->C, C->D
+adj_list = {
+    "A": ["B", "C"],
+    "B": ["C"],
+    "C": ["D"],
+    "D": []
+}
+
+# Checking neighbors of A: O(1) dict lookup
+print(adj_list["A"])  # ["B", "C"]
+
+# Checking if edge A->B exists: O(degree of A)
+print("B" in adj_list["A"])  # True</code></pre>
+
+<h4>Adjacency Matrix</h4>
+<p>A 2D grid where <code>matrix[i][j] = 1</code> (or a weight) if there is an edge from node i to node j, and 0 otherwise.</p>
+<pre style="overflow-x:auto"><code># Same graph: A=0, B=1, C=2, D=3
+#       A  B  C  D
+adj_matrix = [
+    [0, 1, 1, 0],  # A -> B, A -> C
+    [0, 0, 1, 0],  # B -> C
+    [0, 0, 0, 1],  # C -> D
+    [0, 0, 0, 0],  # D -> (none)
+]
+
+# Checking if edge A->B exists: O(1)
+print(adj_matrix[0][1])  # 1 — edge exists</code></pre>
+
+<div style="overflow-x:auto">
+<table>
+<caption>Adjacency list vs. adjacency matrix operation costs</caption>
+<tr><th>Operation</th><th>Adjacency List</th><th>Adjacency Matrix</th></tr>
+<tr><td>Space</td><td>O(V + E)</td><td>O(V&sup2;)</td></tr>
+<tr><td>Check if edge exists</td><td>O(degree)</td><td>O(1)</td></tr>
+<tr><td>Find all neighbors</td><td>O(degree)</td><td>O(V)</td></tr>
+<tr><td>Add edge</td><td>O(1)</td><td>O(1)</td></tr>
+<tr><td>Best for</td><td>Sparse graphs (few edges)</td><td>Dense graphs (many edges)</td></tr>
+</table>
+</div>
+
+<p>Most real-world graphs are <strong>sparse</strong>: a social network with 1 billion users doesn't have 1 billion friends per person. Adjacency lists are the default. Use a matrix only when you need O(1) edge lookup and the graph is dense.</p>
+
+<h3>Building a Graph Class</h3>
+<pre style="overflow-x:auto"><code>class Graph:
+    def __init__(self, directed=False):
+        self.adj = {}
+        self.directed = directed
+
+    def add_node(self, node):
+        if node not in self.adj:
+            self.adj[node] = set()
+
+    def add_edge(self, u, v):
+        self.add_node(u)
+        self.add_node(v)
+        self.adj[u].add(v)
+        if not self.directed:
+            self.adj[v].add(u)
+
+    def neighbors(self, node):
+        return self.adj.get(node, set())
+
+    def has_edge(self, u, v):
+        return v in self.adj.get(u, set())
+
+    def nodes(self):
+        return list(self.adj.keys())
+
+    def __repr__(self):
+        lines = []
+        for node, neighbors in self.adj.items():
+            for n in neighbors:
+                lines.append(f"  {node} -> {n}")
+        return "Graph:\n" + "\n".join(lines)
+
+# Example: social network (undirected)
+social = Graph(directed=False)
+social.add_edge("Alice", "Bob")
+social.add_edge("Bob", "Carol")
+social.add_edge("Alice", "Carol")
+print(social.neighbors("Alice"))  # {"Bob", "Carol"}
+print(social.has_edge("Bob", "Alice"))  # True (undirected)
+
+# Example: task dependencies (directed)
+deps = Graph(directed=True)
+deps.add_edge("Write code", "Run tests")
+deps.add_edge("Run tests", "Deploy")
+deps.add_edge("Write code", "Code review")
+print(deps.neighbors("Write code"))  # {"Run tests", "Code review"}
+print(deps.has_edge("Deploy", "Write code"))  # False (directed)</code></pre>
+
+<h3>Modeling Real Problems as Graphs</h3>
+<p>The power of graphs is that they model a huge variety of real-world problems with the same code:</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>Real-world problems modeled as graphs</caption>
+<tr><th>Problem</th><th>Nodes</th><th>Edges</th><th>Type</th></tr>
+<tr><td>Task dependencies</td><td>Tasks</td><td>A must finish before B</td><td>Directed, unweighted</td></tr>
+<tr><td>Social network</td><td>People</td><td>Friendship</td><td>Undirected, unweighted</td></tr>
+<tr><td>Flight routes</td><td>Cities</td><td>Flight with distance/cost</td><td>Directed or undirected, weighted</td></tr>
+<tr><td>Web links</td><td>Pages</td><td>Hyperlinks</td><td>Directed, unweighted</td></tr>
+<tr><td>Package dependencies</td><td>Packages</td><td>A requires B</td><td>Directed, unweighted (DAG)</td></tr>
+</table>
+</div>
+
+<h3>Directed Acyclic Graphs (DAGs)</h3>
+<p>A <strong>DAG</strong> is a directed graph with no cycles. DAGs are critical for dependency modeling: if task A depends on B and B depends on C, that is fine. But if C also depends on A, you have a cycle&mdash;no valid execution order exists.</p>
+
+<pre style="overflow-x:auto"><code># Valid DAG (no cycles):
+#   Write code -> Run tests -> Deploy
+#   Write code -> Code review -> Deploy
+
+# Invalid (cycle):
+#   A -> B -> C -> A
+# No task can go first because each depends on another</code></pre>
+
+<p>Detecting cycles is therefore a critical validation step: before scheduling tasks based on dependencies, verify that the dependency graph is a DAG. If it contains a cycle, the user has an impossible set of requirements.</p>
+
+<h3>Cycle Detection with DFS</h3>
+<p>You can detect cycles in a directed graph using depth-first search (DFS) with a <strong>recursion stack</strong>. The idea: as you explore deeper via DFS, keep track of all nodes currently on the exploration path. If you reach a node that is already on the current path, you have found a cycle.</p>
+
+<pre style="overflow-x:auto"><code>def has_cycle(graph):
+    """Detect cycles in a directed graph using DFS.
+
+    Uses three states per node:
+    - unvisited: not yet explored
+    - in_stack: currently on the DFS path (ancestors of current node)
+    - done: fully explored, no cycles through this node
+    """
+    visited = set()
+    in_stack = set()
+
+    def dfs(node):
+        visited.add(node)
+        in_stack.add(node)
+
+        for neighbor in graph.neighbors(node):
+            if neighbor not in visited:
+                if dfs(neighbor):
+                    return True
+            elif neighbor in in_stack:
+                return True  # found a cycle!
+
+        in_stack.remove(node)
+        return False
+
+    for node in graph.nodes():
+        if node not in visited:
+            if dfs(node):
+                return True
+    return False
+
+# Test: valid DAG
+dag = Graph(directed=True)
+dag.add_edge("A", "B")
+dag.add_edge("B", "C")
+dag.add_edge("A", "C")
+print(has_cycle(dag))  # False
+
+# Test: graph with cycle
+cyclic = Graph(directed=True)
+cyclic.add_edge("A", "B")
+cyclic.add_edge("B", "C")
+cyclic.add_edge("C", "A")  # creates cycle
+print(has_cycle(cyclic))  # True</code></pre>
+
+<div class="diagram">
+<svg viewBox="0 0 700 330" xmlns="http://www.w3.org/2000/svg" aria-label="Same 5-node graph shown as adjacency list representation on the left and adjacency matrix representation on the right, with directed and undirected edges.">
+  <!-- Title -->
+  <text class="label-text" x="350" y="20" text-anchor="middle">Two Representations of the Same Graph</text>
+
+  <!-- THE GRAPH (center-top) -->
+  <text class="sub-text" x="350" y="42" text-anchor="middle" fill="var(--text-muted)">A directed graph with 5 nodes and 6 edges</text>
+
+  <!-- Nodes arranged in a pentagon -->
+  <!-- A (top) -->
+  <circle cx="350" cy="75" r="18" fill="var(--accent)" opacity="0.2" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="label-text" x="350" y="80" text-anchor="middle">A</text>
+  <!-- B (top-right) -->
+  <circle cx="440" cy="115" r="18" fill="var(--accent)" opacity="0.2" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="label-text" x="440" y="120" text-anchor="middle">B</text>
+  <!-- C (bottom-right) -->
+  <circle cx="410" cy="180" r="18" fill="var(--accent)" opacity="0.2" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="label-text" x="410" y="185" text-anchor="middle">C</text>
+  <!-- D (bottom-left) -->
+  <circle cx="290" cy="180" r="18" fill="var(--accent)" opacity="0.2" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="label-text" x="290" y="185" text-anchor="middle">D</text>
+  <!-- E (top-left) -->
+  <circle cx="260" cy="115" r="18" fill="var(--accent)" opacity="0.2" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="label-text" x="260" y="120" text-anchor="middle">E</text>
+
+  <!-- Directed edges: A->B, A->E, B->C, C->D, D->E, A->C -->
+  <line x1="365" y1="83" x2="424" y2="105" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="335" y1="83" x2="276" y2="105" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="432" y1="132" x2="418" y2="163" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="392" y1="183" x2="308" y2="183" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="280" y1="166" x2="268" y2="132" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="358" y1="91" x2="402" y2="165" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- ADJACENCY LIST (left) -->
+  <text class="label-text" x="110" y="220" text-anchor="middle" fill="var(--accent)">Adjacency List (dict)</text>
+  <rect class="node-fill" x="20" y="230" width="180" height="90" rx="6"/>
+  <text class="sub-text" x="30" y="248" font-family="JetBrains Mono, monospace">A: [B, E, C]</text>
+  <text class="sub-text" x="30" y="265" font-family="JetBrains Mono, monospace">B: [C]</text>
+  <text class="sub-text" x="30" y="282" font-family="JetBrains Mono, monospace">C: [D]</text>
+  <text class="sub-text" x="30" y="299" font-family="JetBrains Mono, monospace">D: [E]</text>
+  <text class="sub-text" x="30" y="316" font-family="JetBrains Mono, monospace">E: []</text>
+
+  <!-- ADJACENCY MATRIX (right) -->
+  <text class="label-text" x="560" y="220" text-anchor="middle" fill="var(--accent)">Adjacency Matrix</text>
+  <!-- Header row -->
+  <text class="sub-text" x="490" y="242" font-family="JetBrains Mono, monospace">A B C D E</text>
+  <!-- Matrix rows -->
+  <text class="sub-text" x="470" y="258" font-family="JetBrains Mono, monospace">A [0 1 1 0 1]</text>
+  <text class="sub-text" x="470" y="274" font-family="JetBrains Mono, monospace">B [0 0 1 0 0]</text>
+  <text class="sub-text" x="470" y="290" font-family="JetBrains Mono, monospace">C [0 0 0 1 0]</text>
+  <text class="sub-text" x="470" y="306" font-family="JetBrains Mono, monospace">D [0 0 0 0 1]</text>
+  <text class="sub-text" x="470" y="322" font-family="JetBrains Mono, monospace">E [0 0 0 0 0]</text>
+</svg>
+<div class="diagram-caption">The same directed graph shown as an adjacency list (left) and adjacency matrix (right). The adjacency list uses space proportional to the number of edges. The matrix uses V&sup2; space regardless of how many edges exist. For this sparse graph (6 edges, 25 matrix cells), the list is more space-efficient.</div>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">Engineering Angle</div>
+<p>Graphs show up everywhere in professional engineering. <code>pip</code> resolves package dependencies using a DAG and topological sort. Google Maps finds routes using weighted graphs and shortest path algorithms (Dijkstra's). LinkedIn's "people you may know" uses BFS on the social graph. Docker's layer system forms a DAG. Even Git's commit history is a DAG where each commit points to its parent(s). You will implement some of these algorithms in Phase 6.</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">TaskForge Connection</div>
+<p>Model task dependencies as a DAG. If Task B depends on Task A, add a directed edge A &rarr; B (meaning A must be completed before B). Before scheduling, validate the DAG with <code>has_cycle()</code>&mdash;a cycle means the dependencies are impossible. In Phase 6, you will learn topological sort to find a valid execution order for all tasks.</p>
+</div>
+
+<h3>Micro-Exercises</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">1: Build a Graph</div>
+<p>Model this scenario as a graph and answer the questions:</p>
+<p>"Task A depends on nothing. Task B depends on A. Task C depends on A. Task D depends on both B and C."</p>
+<pre style="overflow-x:auto"><code>g = Graph(directed=True)
+g.add_edge("A", "B")   # A must finish before B
+g.add_edge("A", "C")   # A must finish before C
+g.add_edge("B", "D")   # B must finish before D
+g.add_edge("C", "D")   # C must finish before D
+print(has_cycle(g))     # False — valid DAG
+print(g.neighbors("A")) # {"B", "C"}
+# Valid execution orders: A, B, C, D  or  A, C, B, D</code></pre>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">2: Detect an Invalid Dependency</div>
+<p>What happens when you add an edge from D back to A?</p>
+<pre style="overflow-x:auto"><code>g.add_edge("D", "A")    # D depends on A, but A depends on B/C which depend on D!
+print(has_cycle(g))      # True — impossible dependency cycle</code></pre>
+</div>
+
+<div class="pq">Graphs are the most flexible data structure you will learn. Any problem that involves relationships, connections, or dependencies can be modeled as a graph and solved with graph algorithms.</div>
+
+<h3>Interactive Exercises</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="23" data-ex="task-dag">
+  <div class="exercise-header">
+    <h4>Design Challenge: "TaskForge Dependency Graph"</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Build a <code>TaskGraph</code> class that manages tasks as nodes and dependencies as directed edges. Implement <code>add_task(name)</code>, <code>add_dependency(task, depends_on)</code>, and <code>has_cycle()</code> that returns True if the dependency graph contains a cycle.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+class TaskGraph:
+    def __init__(self):
+        self.adj = {}  # task -> set of tasks it depends on
+
+    def add_task(self, name):
+        """Add a task node."""
+        # Your code here
+        pass
+
+    def add_dependency(self, task, depends_on):
+        """task depends on depends_on (depends_on must finish first).
+        Edge direction: depends_on -> task"""
+        # Your code here
+        pass
+
+    def get_dependencies(self, task):
+        """Return set of tasks that 'task' depends on."""
+        # Your code here
+        pass
+
+    def has_cycle(self):
+        """Return True if the graph has a cycle."""
+        # Your code here — use DFS with a recursion stack
+        pass
+
+# Test it
+tg = TaskGraph()
+tg.add_task("Design")
+tg.add_task("Code")
+tg.add_task("Test")
+tg.add_task("Deploy")
+tg.add_dependency("Code", "Design")
+tg.add_dependency("Test", "Code")
+tg.add_dependency("Deploy", "Test")
+print("Has cycle:", tg.has_cycle())  # False
+
+# Add a circular dependency
+tg.add_dependency("Design", "Deploy")
+print("Has cycle:", tg.has_cycle())  # True
+</script>
+    <script type="text/plain" class="test-code">
+# Test 1: Valid DAG
+tg = TaskGraph()
+tg.add_task("A")
+tg.add_task("B")
+tg.add_task("C")
+tg.add_dependency("B", "A")
+tg.add_dependency("C", "B")
+assert tg.has_cycle() == False, "Linear chain should have no cycle"
+
+# Test 2: Cycle
+tg.add_dependency("A", "C")
+assert tg.has_cycle() == True, "A->B->C->A should be a cycle"
+
+# Test 3: Fresh graph with diamond (no cycle)
+tg2 = TaskGraph()
+tg2.add_task("A")
+tg2.add_task("B")
+tg2.add_task("C")
+tg2.add_task("D")
+tg2.add_dependency("B", "A")
+tg2.add_dependency("C", "A")
+tg2.add_dependency("D", "B")
+tg2.add_dependency("D", "C")
+assert tg2.has_cycle() == False, "Diamond DAG should have no cycle"
+
+# Test 4: Self-loop
+tg3 = TaskGraph()
+tg3.add_task("X")
+tg3.add_dependency("X", "X")
+assert tg3.has_cycle() == True, "Self-loop is a cycle"
+
+print("All tests passed!")
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">Store the graph as <code>self.adj[node] = set()</code> where the set contains nodes that this node has edges to. For <code>add_dependency("B", "A")</code>, add an edge A -> B (A must finish before B).</p>
+    <p class="hint">For cycle detection, implement DFS with two sets: <code>visited</code> (all nodes seen) and <code>in_stack</code> (nodes on the current DFS path). If you reach a node in <code>in_stack</code>, you found a cycle.</p>
+    <p class="hint">Remember to iterate over all nodes in the outer loop, not just one starting node. The graph might have disconnected components.</p>
+  </div>
+</div>
+
+<div class="quiz" data-ch="23" data-ex="quiz-graph">
+  <h4>Knowledge Check</h4>
+  <p>You are modeling flight routes between cities with distances. Which graph representation is most appropriate?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">Undirected unweighted</button>
+    <button class="quiz-option" data-correct="false">Directed unweighted</button>
+    <button class="quiz-option" data-correct="false">Directed weighted</button>
+    <button class="quiz-option" data-correct="true">Undirected weighted or directed weighted depending on whether routes are one-way</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+</section>
+
+<!-- ===== PHASE 5 GATE ===== -->
+<section id="gate5">
+<h2><span class="ch-label">Phase 5 Gate</span> Checkpoint &amp; TaskForge Data Structures</h2>
+<div class="card">
+<h4>Minimum Competency</h4>
+<p>Analyze the time and space complexity of any Python function. Choose the right data structure for a given problem. Understand how arrays, linked lists, hash tables, trees, and graphs work internally. Implement undo systems, tag indexes, priority queues, and dependency graphs.</p>
+</div>
+<div class="card">
+<h4>Your Artifact</h4>
+<p>Extend TaskForge with a dependency system: model tasks as a DAG (Ch 23), schedule by priority using a heap (Ch 22), and support undo for all operations (Ch 20). Your system should detect circular dependencies, process tasks in priority order within dependency constraints, and let users undo their last 10 operations.</p>
+</div>
+<div class="card">
+<h4>Verification</h4>
+<p>Adding a circular dependency raises an error or returns a warning. <code>next_task()</code> returns the highest-priority task whose dependencies are all complete. <code>undo()</code> reverses the last operation and restores previous state. The tag index (Ch 21) returns matching tasks in O(1) instead of scanning all tasks.</p>
+</div>
+<div role="note" class="callout critical">
+<div class="callout-title">Failure Signal</div>
+<p>If you cannot explain why <code>list.pop(0)</code> is O(n) and <code>deque.popleft()</code> is O(1), or why <code>x in my_list</code> is O(n) and <code>x in my_set</code> is O(1), return to Chapters 19&ndash;21. These performance distinctions are the foundation of every algorithm discussion in Phase 6.</p>
+</div>
+
+<h3>What You Can Now Do</h3>
+<div class="card">
+<ul>
+<li>Analyze time and space complexity using Big-O notation</li>
+<li>Choose between arrays, linked lists, stacks, queues, and deques</li>
+<li>Use dicts and sets for O(1) lookups and build custom indexes</li>
+<li>Use heaps for priority-based scheduling</li>
+<li>Model relationships and dependencies as graphs</li>
+<li>Detect cycles in directed graphs to validate dependencies</li>
+</ul>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">Bridge to Phase 6</div>
+<p>You now know the structures. Phase 6 teaches you the algorithms that operate on them&mdash;searching, sorting, dynamic programming, and graph traversal. These are the tools that transform data structures from storage containers into problem-solving machines. You will implement binary search on sorted arrays, BFS and DFS on graphs, and dynamic programming on sequences. Every algorithm in Phase 6 builds directly on the data structures you learned here.</p>
+</div>
+
+</section>
+
+<nav class="phase-nav">
+  <a href="phase-4.html" class="phase-nav-link prev"><span class="phase-nav-label">Previous Phase</span>&larr; Phase 4: Building &amp; Deploying</a>
+  <a href="phase-6.html" class="phase-nav-link next"><span class="phase-nav-label">Next Phase</span>Phase 6: Algorithms &rarr;</a>
+</nav>
+
+</div>
+</div>
+
+<footer>
+<p>Zero to Hero: Programming to Multi-Agent Claude Code &middot; March 2026</p>
+</footer>
+
+<script src="js/progress.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ace-builds@1.36.5/src-min-noconflict/ace.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/shared.js"></script>
+<script src="js/ace-init.js"></script>
+<script src="js/pyodide-runner.js"></script>
+<script src="js/quiz.js"></script>
+<script src="js/exercise-runner.js"></script>
+</body>
+</html>

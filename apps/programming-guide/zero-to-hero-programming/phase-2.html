@@ -1,0 +1,2096 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Phase 2: Write Python — functions, data structures, classes, file I/O, error handling, and testing. Build working fluency for AI-assisted development. Chapters 05–09.">
+<title>Phase 2: Writing Python — Zero to Hero</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/design-system.css">
+<script>try{if(localStorage.getItem('zth-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+<script>try{var z=localStorage.getItem('zth-zoom');if(z&&+z>=50&&+z<=200)document.documentElement.style.zoom=+z/100}catch(e){}</script>
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+<marker id="arrowhead-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--a5)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo"><span>Zero to Hero</span>Programming &rarr; Multi-Agent AI</a>
+  <div class="toc-group">
+    <div class="toc-group-title">Foundations</div>
+    <a href="phase-1.html#ch01" class="toc-link"><span class="toc-num">01</span>What Programming Actually Is</a>
+    <a href="phase-1.html#ch02" class="toc-link"><span class="toc-num">02</span>How Computers Execute Code</a>
+    <a href="phase-1.html#ch03" class="toc-link"><span class="toc-num">03</span>Setting Up Your Environment</a>
+    <a href="phase-1.html#ch04" class="toc-link"><span class="toc-num">04</span>Reading Code Before Writing It</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Python</div>
+    <a href="#ch05" class="toc-link"><span class="toc-num">05</span>Functions, Logic &amp; Control Flow</a>
+    <a href="#ch06" class="toc-link"><span class="toc-num">06</span>Data Structures</a>
+    <a href="#ch07" class="toc-link"><span class="toc-num">07</span>Classes &amp; OOP Basics</a>
+    <a href="#ch08" class="toc-link"><span class="toc-num">08</span>Files, Modules &amp; Standard Library</a>
+    <a href="#ch09" class="toc-link"><span class="toc-num">09</span>Error Handling, Debugging &amp; Testing</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Development Tools</div>
+    <a href="phase-3.html#ch10" class="toc-link"><span class="toc-num">10</span>The Terminal &amp; Shell</a>
+    <a href="phase-3.html#ch11" class="toc-link"><span class="toc-num">11</span>Git Fundamentals</a>
+    <a href="phase-3.html#ch12" class="toc-link"><span class="toc-num">12</span>Git Remote &amp; GitHub</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Building &amp; Deploying</div>
+    <a href="phase-4.html#ch13" class="toc-link"><span class="toc-num">13</span>APIs &amp; HTTP</a>
+    <a href="phase-4.html#ch14" class="toc-link"><span class="toc-num">14</span>Building APIs with Flask</a>
+    <a href="phase-4.html#ch15" class="toc-link"><span class="toc-num">15</span>Database Basics</a>
+    <a href="phase-4.html#ch16" class="toc-link"><span class="toc-num">16</span>Docker &amp; Containers</a>
+    <a href="phase-4.html#ch17" class="toc-link"><span class="toc-num">17</span>CI/CD &amp; GitHub Actions</a>
+    <a href="phase-4.html#ch18" class="toc-link"><span class="toc-num">18</span>Project Architecture</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Data Structures</div>
+    <a href="phase-5.html#ch19" class="toc-link"><span class="toc-num">19</span>Complexity Analysis</a>
+    <a href="phase-5.html#ch20" class="toc-link"><span class="toc-num">20</span>Linear Structures</a>
+    <a href="phase-5.html#ch21" class="toc-link"><span class="toc-num">21</span>Hash Tables &amp; Maps</a>
+    <a href="phase-5.html#ch22" class="toc-link"><span class="toc-num">22</span>Trees</a>
+    <a href="phase-5.html#ch23" class="toc-link"><span class="toc-num">23</span>Graphs</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Algorithms</div>
+    <a href="phase-6.html#ch24" class="toc-link"><span class="toc-num">24</span>Searching &amp; Sorting</a>
+    <a href="phase-6.html#ch25" class="toc-link"><span class="toc-num">25</span>Recursion &amp; DP</a>
+    <a href="phase-6.html#ch26" class="toc-link"><span class="toc-num">26</span>Algorithm Patterns</a>
+    <a href="phase-6.html#ch27" class="toc-link"><span class="toc-num">27</span>Graph Algorithms</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Engineering Craft</div>
+    <a href="phase-7.html#ch28" class="toc-link"><span class="toc-num">28</span>Design Patterns &amp; SOLID</a>
+    <a href="phase-7.html#ch29" class="toc-link"><span class="toc-num">29</span>SQL &amp; Query Mastery</a>
+    <a href="phase-7.html#ch30" class="toc-link"><span class="toc-num">30</span>Transactions &amp; NoSQL</a>
+    <a href="phase-7.html#ch31" class="toc-link"><span class="toc-num">31</span>Networking &amp; the Internet</a>
+    <a href="phase-7.html#ch32" class="toc-link"><span class="toc-num">32</span>Concurrency &amp; Parallelism</a>
+    <a href="phase-7.html#ch33" class="toc-link"><span class="toc-num">33</span>Security Engineering</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Systems &amp; Scale</div>
+    <a href="phase-8.html#ch34" class="toc-link"><span class="toc-num">34</span>System Design</a>
+    <a href="phase-8.html#ch35" class="toc-link"><span class="toc-num">35</span>Distributed Systems</a>
+    <a href="phase-8.html#ch36" class="toc-link"><span class="toc-num">36</span>Performance &amp; Observability</a>
+    <a href="phase-8.html#ch37" class="toc-link"><span class="toc-num">37</span>Navigating Large Codebases</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AI Levels 1&ndash;5</div>
+    <a href="phase-9.html#ch38" class="toc-link"><span class="toc-num">38</span>Evaluating &amp; Directing AI Code</a>
+    <a href="phase-9.html#ch39" class="toc-link"><span class="toc-num">39</span>Levels 1 &amp; 2 &mdash; Tab Complete &amp; Agent IDE</a>
+    <a href="phase-9.html#ch40" class="toc-link"><span class="toc-num">40</span>Level 3 &mdash; Context Engineering</a>
+    <a href="phase-9.html#ch41" class="toc-link"><span class="toc-num">41</span>Level 4 &mdash; Compounding Engineering</a>
+    <a href="phase-9.html#ch42" class="toc-link"><span class="toc-num">42</span>Level 5 &mdash; MCP, Skills &amp; Capabilities</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AI Levels 6&ndash;8</div>
+    <a href="phase-10.html#ch43" class="toc-link"><span class="toc-num">43</span>Level 6 &mdash; Harness Engineering</a>
+    <a href="phase-10.html#ch44" class="toc-link"><span class="toc-num">44</span>Level 7 &mdash; Background Agents</a>
+    <a href="phase-10.html#ch45" class="toc-link"><span class="toc-num">45</span>Claude Code in Docker</a>
+    <a href="phase-10.html#ch46" class="toc-link"><span class="toc-num">46</span>Level 8 &mdash; Autonomous Agent Teams</a>
+    <a href="phase-10.html#ch47" class="toc-link"><span class="toc-num">47</span>The Multiplayer Effect</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Reference</div>
+    <a href="appendices.html#glossary" class="toc-link"><span class="toc-num">&oplus;</span>Glossary</a>
+    <a href="appendices.html#prompt-library" class="toc-link"><span class="toc-num">&oplus;</span>Prompt Library</a>
+    <a href="appendices.html#self-assessment" class="toc-link"><span class="toc-num">&oplus;</span>Self-Assessment</a>
+    <a href="appendices.html#common-mistakes" class="toc-link"><span class="toc-num">&oplus;</span>Common Mistakes</a>
+    <a href="appendices.html#appendix-d" class="toc-link"><span class="toc-num">&oplus;</span>Troubleshooting</a>
+    <a href="appendices.html#appendix-e" class="toc-link"><span class="toc-num">&oplus;</span>Resources</a>
+  </div>
+</aside>
+
+<div class="main">
+<section class="hero hero-sm">
+  <div class="hero-badge">Phase 2 &mdash; Python</div>
+  <h1>Writing <em>Python</em></h1>
+  <p class="hero-sub">By the end of Phase 2, you can write a function with tests and debug when it fails. See the Phase 2 Gate for the exact test.</p>
+  <div class="hero-meta"><span>Chapters 05–09</span><span>Phase Gate + TaskForge</span></div>
+</section>
+
+<div class="content-wrap">
+
+<div role="note" class="callout info">
+<div class="callout-title">Before You Begin Phase 2</div>
+<p>This phase assumes you can: open a terminal and run commands (Ch 03), read a short Python function and predict its output (Ch 04), and explain what variables, types, and basic operators do (Ch 02). If any of these feel shaky, revisit the relevant Phase 1 chapter first.</p>
+</div>
+
+<!-- ===== CH 05 ===== -->
+<section id="ch05" data-ch="05">
+<h2><span class="ch-label">Chapter 05</span> Functions, Logic, and Control Flow</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>Functions, conditionals, and loops are the three patterns that appear in virtually every program. When Claude Code generates a 200-line function, you need to recognize these patterns to judge whether the logic is correct. You can't supervise what you can't read.</p>
+</div>
+
+<p>In Phase 1 you learned to <em>read</em> code. Now you write it. This chapter covers the three building blocks that appear in every program: <strong>functions</strong> (reusable blocks), <strong>conditionals</strong> (decision points), and <strong>loops</strong> (repetition).</p>
+
+<h3>Functions</h3>
+<p>A <strong>function</strong> is like a recipe card in a kitchen: it has a name, a list of ingredients (parameters), and step-by-step instructions. You write the recipe once, then use it every time you need that dish. In code terms: you define it once, then call it whenever you need it. One function, one job.</p>
+<pre><code>def greet(name):
+    return f"Hello, {name}!"
+
+print(greet("World"))  # Hello, World!</code></pre>
+<p><code>def</code> defines the function. <code>name</code> is a <strong>parameter</strong>&mdash;the input. <code>return</code> sends a value back. Defining a function does NOT run it; <em>calling</em> it does.</p>
+
+<h3>Comparison and Boolean Operators</h3>
+<p>Before your program can make decisions, it needs a way to ask yes-or-no questions. <strong>Comparison operators</strong> compare two values and produce a Boolean (<code>True</code> or <code>False</code>):</p>
+<table>
+<caption>Python comparison operators and their results</caption>
+<tr><th>Operator</th><th>Meaning</th><th>Example</th><th>Result</th></tr>
+<tr><td><code>==</code></td><td>Equal to</td><td><code>5 == 5</code></td><td><code>True</code></td></tr>
+<tr><td><code>!=</code></td><td>Not equal to</td><td><code>5 != 3</code></td><td><code>True</code></td></tr>
+<tr><td><code>&lt;</code></td><td>Less than</td><td><code>3 &lt; 10</code></td><td><code>True</code></td></tr>
+<tr><td><code>&gt;</code></td><td>Greater than</td><td><code>10 &gt; 20</code></td><td><code>False</code></td></tr>
+<tr><td><code>&lt;=</code></td><td>Less than or equal</td><td><code>5 &lt;= 5</code></td><td><code>True</code></td></tr>
+<tr><td><code>&gt;=</code></td><td>Greater than or equal</td><td><code>7 &gt;= 10</code></td><td><code>False</code></td></tr>
+</table>
+
+<div role="note" class="callout warn">
+<div class="callout-title">Common Trap: = vs ==</div>
+<p><code>=</code> is <strong>assignment</strong> (put a value in a box). <code>==</code> is <strong>comparison</strong> (are these two values equal?). Writing <code>if x = 5:</code> when you mean <code>if x == 5:</code> is one of the most common mistakes beginners make&mdash;and one that AI-generated code almost never gets wrong.</p>
+</div>
+
+<p><strong>Boolean operators</strong> combine True/False values:</p>
+<table>
+<caption>Python Boolean operators for combining conditions</caption>
+<tr><th>Operator</th><th>Meaning</th><th>Example</th><th>Result</th></tr>
+<tr><td><code>and</code></td><td>Both must be True</td><td><code>True and False</code></td><td><code>False</code></td></tr>
+<tr><td><code>or</code></td><td>At least one must be True</td><td><code>True or False</code></td><td><code>True</code></td></tr>
+<tr><td><code>not</code></td><td>Flips the value</td><td><code>not True</code></td><td><code>False</code></td></tr>
+</table>
+<pre><code>age = 25
+has_license = True
+can_drive = age >= 16 and has_license  # True</code></pre>
+
+<p>The <code>in</code> operator tests membership&mdash;whether a value exists inside a collection:</p>
+<pre><code>print("a" in "apple")     # True
+print(3 in [1, 2, 3])     # True
+print("quit" in "quilts") # True &mdash; checks substrings too</code></pre>
+<p>In TaskForge, you'll see patterns like <code>if command == "add":</code> using comparison operators and <code>for task in tasks:</code> using <code>in</code> to iterate. These operators are the glue that connects data to decisions&mdash;and they're the prerequisite for conditionals below.</p>
+
+<h3>Conditionals</h3>
+<p><code>if</code>/<code>elif</code>/<code>else</code> lets your program choose a path. The program executes the <strong>first</strong> true branch and skips the rest.</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" aria-label="Flowchart showing if/elif/else branching: an input value is checked and the program follows exactly one of three paths">
+  <rect class="node-accent" x="260" y="5" width="180" height="36" rx="8"/>
+  <text class="label-text" x="350" y="28" text-anchor="middle">Input Value</text>
+  <!-- Diamond -->
+  <polygon points="350,60 420,95 350,130 280,95" class="node-fill"/>
+  <text class="label-text" x="350" y="99" text-anchor="middle">Check</text>
+  <line class="arrow" x1="350" y1="41" x2="350" y2="60"/>
+  <!-- Three branches -->
+  <line class="arrow" x1="280" y1="95" x2="140" y2="95"/>
+  <rect class="node-fill" x="40" y="75" width="100" height="40" rx="6"/>
+  <text class="label-text" x="90" y="99" text-anchor="middle">Path A</text>
+  <line class="arrow" x1="350" y1="130" x2="350" y2="150"/>
+  <rect class="node-fill" x="300" y="150" width="100" height="40" rx="6"/>
+  <text class="label-text" x="350" y="174" text-anchor="middle">Path B</text>
+  <line class="arrow" x1="420" y1="95" x2="560" y2="95"/>
+  <rect class="node-fill" x="560" y="75" width="100" height="40" rx="6"/>
+  <text class="label-text" x="610" y="99" text-anchor="middle">Path C</text>
+</svg>
+<div class="diagram-caption">The program takes ONE path. Once it enters a branch, it skips all others.</div>
+</div>
+
+<h3>Loops</h3>
+<p><code>for</code> loops process each item in a collection. <code>while</code> loops repeat until a condition changes.</p>
+
+<div class="dw">
+<svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" aria-label="Table tracing a for loop over five numbers, showing how a running total accumulates from 0 to 150 across iterations">
+  <text class="label-text" x="10" y="20">for item in [10, 20, 30, 40, 50]:  total += item</text>
+  <!-- Table header -->
+  <text class="sub-text" x="80" y="55" text-anchor="middle">Iteration</text>
+  <text class="sub-text" x="230" y="55" text-anchor="middle">item</text>
+  <text class="sub-text" x="380" y="55" text-anchor="middle">total before</text>
+  <text class="sub-text" x="560" y="55" text-anchor="middle">total after</text>
+  <line x1="10" y1="62" x2="690" y2="62" stroke="var(--border)" stroke-width="1"/>
+  <!-- Rows -->
+  <text class="sub-text" x="80" y="82" text-anchor="middle">1</text>
+  <text class="label-text" x="230" y="82" text-anchor="middle">10</text>
+  <text class="sub-text" x="380" y="82" text-anchor="middle">0</text>
+  <text class="label-text" x="560" y="82" text-anchor="middle">10</text>
+  <text class="sub-text" x="80" y="102" text-anchor="middle">2</text>
+  <text class="label-text" x="230" y="102" text-anchor="middle">20</text>
+  <text class="sub-text" x="380" y="102" text-anchor="middle">10</text>
+  <text class="label-text" x="560" y="102" text-anchor="middle">30</text>
+  <text class="sub-text" x="80" y="122" text-anchor="middle">3</text>
+  <text class="label-text" x="230" y="122" text-anchor="middle">30</text>
+  <text class="sub-text" x="380" y="122" text-anchor="middle">30</text>
+  <text class="label-text" x="560" y="122" text-anchor="middle">60</text>
+  <text class="sub-text" x="80" y="142" text-anchor="middle">4</text>
+  <text class="label-text" x="230" y="142" text-anchor="middle">40</text>
+  <text class="sub-text" x="380" y="142" text-anchor="middle">60</text>
+  <text class="label-text" x="560" y="142" text-anchor="middle">100</text>
+  <text class="sub-text" x="80" y="162" text-anchor="middle">5</text>
+  <text class="label-text" x="230" y="162" text-anchor="middle">50</text>
+  <text class="sub-text" x="380" y="162" text-anchor="middle">100</text>
+  <text class="label-text" x="560" y="162" text-anchor="middle">150</text>
+  <rect x="520" y="150" width="80" height="20" rx="4" class="node-accent" style="fill-opacity:.3"/>
+</svg>
+<div class="diagram-caption">The loop processes one item at a time. The accumulator remembers the running result.</div>
+</div>
+
+<h3>Scope</h3>
+<p>Variables defined <em>inside</em> a function are invisible outside it. This is called <strong>scope</strong>. It's a common source of bugs in AI-generated code&mdash;the AI sometimes references a variable that only exists inside another function.</p>
+
+<p>Here's a concrete example. This function <em>looks</em> like it updates a counter, but it doesn't:</p>
+<pre><code># BUG: this does NOT modify the outer variable
+count = 0
+
+def increment():
+    count = count + 1  # UnboundLocalError!
+
+increment()
+print(count)  # never reached</code></pre>
+<p>Python sees <code>count = ...</code> inside the function and treats <code>count</code> as a <em>local</em> variable. But you're also trying to read <code>count</code> on the right side before it's been assigned locally&mdash;hence the error. The fix: pass the value in and return the result out.</p>
+<pre><code># FIX: pass in, return out
+count = 0
+
+def increment(current):
+    return current + 1
+
+count = increment(count)
+print(count)  # 1</code></pre>
+
+<div role="note" class="callout warn">
+<div class="callout-title">Scope and AI-Generated Code</div>
+<p>AI-generated code sometimes manipulates global state. Recognizing scope issues helps you catch these bugs. If you see a function reading or writing a variable that isn't a parameter or defined inside the function, that's a red flag.</p>
+</div>
+
+<h3>Micro-Exercises</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">1: Write a Function</div>
+<pre><code>def greet(name):
+    return f"Hello, {name}!"
+
+print(greet("World"))</code></pre>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">2: Write a Conditional</div>
+<pre><code>def is_positive(n):
+    if n > 0:
+        return True
+    return False</code></pre>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">3: Write a Loop</div>
+<pre><code>for num in [1, 2, 3, 4, 5]:
+    print(num * 10)</code></pre>
+</div>
+
+<h3>TaskForge Connection</h3>
+<p>Look at TaskForge's <code>complete_task</code>: it uses a <code>for</code> loop with an <code>if</code> conditional inside a function. Every concept from this chapter appears in that one function.</p>
+
+<div role="note" class="callout ok">
+<div class="callout-title">Try This Now</div>
+<p>Write <code>analyze_signal(value, threshold)</code> that returns <code>'CRITICAL'</code> if value &gt; threshold, <code>'WARNING'</code> if value &gt; threshold * 0.9, <code>'NORMAL'</code> otherwise.</p>
+<div class="prompt-block"><span class="label">analyze_signal.py</span>def analyze_signal(value, threshold):
+    if value > threshold:
+        return 'CRITICAL'
+    elif value > threshold * 0.9:
+        return 'WARNING'
+    else:
+        return 'NORMAL'
+
+print(analyze_signal(95, 100))   # WARNING
+print(analyze_signal(105, 100))  # CRITICAL
+print(analyze_signal(50, 100))   # NORMAL</div>
+<p><strong>Verification:</strong> All 3 test cases return the expected value.</p>
+<p><strong>If this doesn't work:</strong> (1) All results are <code>'CRITICAL'</code> &rarr; check order: CRITICAL first, then WARNING. (2) <code>NameError</code> &rarr; you forgot <code>def</code> or misspelled the function name. (3) Nothing returns &rarr; you used <code>print()</code> instead of <code>return</code>.</p>
+</div>
+
+<div class="pq">You just wrote a function with parameters, conditionals, and a return value. This is the same structure behind every TaskForge command and every function Claude Code generates.</div>
+
+<h3>String Methods</h3>
+<p>Strings are everywhere&mdash;user input, file paths, API responses, log messages. Python gives you built-in methods to slice, clean, and reassemble them. You'll use these constantly when processing text data and parsing AI output.</p>
+
+<h4>f-strings</h4>
+<p>f-strings let you embed expressions directly inside a string. Prefix the string with <code>f</code> and put variables or expressions in curly braces:</p>
+<pre><code>name = "Alice"
+tasks = 5
+print(f"{name} has {tasks} tasks")  # Alice has 5 tasks
+print(f"Double: {tasks * 2}")       # Double: 10</code></pre>
+
+<h4>Essential String Methods</h4>
+<table>
+<caption>Essential Python string methods with examples</caption>
+<tr><th>Method</th><th>Example</th><th>Result</th></tr>
+<tr><td><code>split(sep)</code></td><td><code>"a,b,c".split(",")</code></td><td><code>["a", "b", "c"]</code></td></tr>
+<tr><td><code>strip()</code></td><td><code>"  hello  ".strip()</code></td><td><code>"hello"</code></td></tr>
+<tr><td><code>join(list)</code></td><td><code>", ".join(["a", "b"])</code></td><td><code>"a, b"</code></td></tr>
+<tr><td><code>replace(old, new)</code></td><td><code>"hello".replace("l", "r")</code></td><td><code>"herro"</code></td></tr>
+<tr><td><code>startswith(s)</code></td><td><code>"hello".startswith("he")</code></td><td><code>True</code></td></tr>
+<tr><td><code>endswith(s)</code></td><td><code>"file.py".endswith(".py")</code></td><td><code>True</code></td></tr>
+</table>
+
+<p>These methods <strong>return new strings</strong>&mdash;they never modify the original. Strings in Python are immutable.</p>
+
+<div role="note" class="callout ok">
+<div class="callout-title">Micro-Exercise: String Pipeline</div>
+<p>Given the string <code>'  alice,bob,charlie  '</code>, use string methods to produce <code>['Alice', 'Bob', 'Charlie']</code>.</p>
+<pre><code>raw = '  alice,bob,charlie  '
+names = [name.strip().capitalize() for name in raw.strip().split(",")]
+print(names)  # ['Alice', 'Bob', 'Charlie']</code></pre>
+<p>This chains <code>strip()</code> to remove outer whitespace, <code>split(",")</code> to break on commas, then <code>capitalize()</code> on each piece. You'll see this pattern constantly when cleaning data.</p>
+</div>
+
+<h3>Interactive Exercises</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="05" data-ex="fizzbuzz">
+  <div class="exercise-header">
+    <h4>Design Challenge: "FizzBuzz"</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Write <code>fizzbuzz(n)</code> returning a list of strings from 1 to n. Multiples of 3 &rarr; 'Fizz', multiples of 5 &rarr; 'Buzz', both &rarr; 'FizzBuzz', otherwise the number as a string.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def fizzbuzz(n):
+    # Your code here
+    pass
+</script>
+    <script type="text/plain" class="test-code">
+assert fizzbuzz(1) == ['1'], "fizzbuzz(1) should return ['1']"
+assert fizzbuzz(3) == ['1', '2', 'Fizz'], "fizzbuzz(3)"
+assert fizzbuzz(5) == ['1', '2', 'Fizz', '4', 'Buzz'], "fizzbuzz(5)"
+assert fizzbuzz(15)[-1] == 'FizzBuzz', "15 should be FizzBuzz"
+assert fizzbuzz(0) == [], "fizzbuzz(0) should be empty"
+assert len(fizzbuzz(15)) == 15, "fizzbuzz(15) should have 15 items"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">Use the modulo operator (%) to check divisibility.</p>
+    <p class="hint">Check divisibility by 15 before checking 3 or 5 separately.</p>
+    <p class="hint">Build a list with a for loop: <code>for i in range(1, n+1)</code></p>
+  </div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="05" data-ex="palindrome">
+  <div class="exercise-header">
+    <h4>Design Challenge: "Palindrome Checker"</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Write <code>is_palindrome(s)</code> that returns True if the string is a palindrome. Ignore case and non-alphanumeric characters.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def is_palindrome(s):
+    # Your code here
+    pass
+</script>
+    <script type="text/plain" class="test-code">
+assert is_palindrome("racecar") == True, "racecar is a palindrome"
+assert is_palindrome("hello") == False, "hello is not a palindrome"
+assert is_palindrome("A man a plan a canal Panama") == True, "Ignore spaces and case"
+assert is_palindrome("") == True, "Empty string is a palindrome"
+assert is_palindrome("a") == True, "Single char is a palindrome"
+assert is_palindrome("Was it a car or a cat I saw?") == True, "Ignore punctuation"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">First normalize: lowercase and filter to only alphanumeric characters.</p>
+    <p class="hint">Use <code>c.isalnum()</code> to check if a character is alphanumeric.</p>
+    <p class="hint">Compare the cleaned string to its reverse: <code>cleaned == cleaned[::-1]</code></p>
+  </div>
+</div>
+
+<div class="quiz" data-ch="05" data-ex="quiz-scope">
+  <h4>Knowledge Check</h4>
+  <p>What happens if you try to use a variable defined inside a function, outside of that function?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">It works fine</button>
+    <button class="quiz-option" data-correct="true">NameError — the variable doesn't exist outside the function</button>
+    <button class="quiz-option" data-correct="false">It returns None</button>
+    <button class="quiz-option" data-correct="false">The program crashes silently</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<h3>Functions as Values: Higher-Order Functions and Closures</h3>
+<p>In Python, functions are <strong>first-class values</strong> — you can assign them to variables, pass them as arguments, and return them from other functions. AI generates these patterns constantly.</p>
+
+<h4>Built-in Higher-Order Functions</h4>
+<p><code>map()</code>, <code>filter()</code>, and <code>sorted()</code> with a <code>key</code> function are the most common. Each takes a function as an argument:</p>
+<pre><code># map: apply a function to every element
+names = ["alice", "bob", "charlie"]
+upper_names = list(map(str.upper, names))  # ["ALICE", "BOB", "CHARLIE"]
+
+# filter: keep elements where function returns True
+numbers = [1, 2, 3, 4, 5, 6]
+evens = list(filter(lambda x: x % 2 == 0, numbers))  # [2, 4, 6]
+
+# sorted with key: sort by a custom criterion
+tasks = [{"title": "B task", "priority": 2}, {"title": "A task", "priority": 1}]
+by_priority = sorted(tasks, key=lambda t: t["priority"])</code></pre>
+
+<div role="note" class="callout info">
+<div class="callout-title">map/filter vs. List Comprehensions</div>
+<p>AI generates <code>map()</code> and <code>filter()</code> frequently. In Python, list comprehensions are usually more readable: <code>[x.upper() for x in names]</code> vs <code>list(map(str.upper, names))</code>. Knowing both lets you read the AI's code and decide which is clearer for your context.</p>
+</div>
+
+<h4>Lambda Expressions</h4>
+<p>A <code>lambda</code> is an anonymous function — useful as a short, throwaway argument:</p>
+<pre><code># Lambda: anonymous function for one-time use
+square = lambda x: x ** 2  # equivalent to def square(x): return x ** 2
+
+# Most useful as arguments to higher-order functions
+sorted_tasks = sorted(tasks, key=lambda t: t["due_date"])</code></pre>
+<p><strong>Rule of thumb:</strong> If a lambda is more than one expression, use a named function instead. Readability matters more than brevity.</p>
+<p>In practice, PEP 8 recommends using def for named functions. Lambdas shine as inline arguments: <code>sorted(names, key=lambda n: len(n))</code>.</p>
+
+<h4>Closures</h4>
+<p>A <strong>closure</strong> is a function that remembers variables from the scope where it was defined:</p>
+<pre><code>def make_multiplier(n):
+    def multiplier(x):
+        return x * n  # 'n' is remembered from the outer scope
+    return multiplier
+
+double = make_multiplier(2)
+triple = make_multiplier(3)
+print(double(5))  # 10
+print(triple(5))  # 15</code></pre>
+<p>AI generates closures in callbacks, event handlers, and factory patterns. Understanding them means you can read and debug these patterns when they appear.</p>
+
+<div class="exercise" data-type="pyodide" data-ch="05" data-ex="higher-order">
+  <div class="exercise-header">
+    <h4>Exercise: Higher-Order Functions</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Implement <code>apply_to_all(func, lst)</code> that applies a function to every element (like <code>map</code>), and <code>keep_if(func, lst)</code> that keeps elements where func returns True (like <code>filter</code>).</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def apply_to_all(func, lst):
+    """Apply func to every element. Return a new list."""
+    pass
+
+def keep_if(func, lst):
+    """Keep elements where func returns True. Return a new list."""
+    pass
+</script>
+    <script type="text/plain" class="test-code">
+assert apply_to_all(str.upper, ["a", "b", "c"]) == ["A", "B", "C"], "Should uppercase all"
+assert apply_to_all(lambda x: x * 2, [1, 2, 3]) == [2, 4, 6], "Should double all"
+assert keep_if(lambda x: x > 3, [1, 2, 3, 4, 5]) == [4, 5], "Should keep > 3"
+assert keep_if(lambda x: len(x) > 3, ["hi", "hello", "hey"]) == ["hello"], "Should keep long strings"
+print("All tests passed!")
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">For apply_to_all: create a new list, loop through lst, append func(item) for each item.</p>
+    <p class="hint">For keep_if: create a new list, loop through lst, append item only if func(item) is True.</p>
+    <p class="hint">apply_to_all: return [func(x) for x in lst]. keep_if: return [x for x in lst if func(x)].</p>
+  </div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="05" data-ex="closure">
+  <div class="exercise-header">
+    <h4>Exercise: Closure — Make a Validator</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Implement <code>make_validator(min_len, max_len)</code> that returns a function checking if a string's length is within range.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def make_validator(min_len, max_len):
+    """Return a function that checks if a string's length is between min_len and max_len (inclusive)."""
+    pass
+</script>
+    <script type="text/plain" class="test-code">
+check_username = make_validator(3, 20)
+assert check_username("alice") == True, "5 chars is valid"
+assert check_username("ab") == False, "2 chars too short"
+assert check_username("a" * 21) == False, "21 chars too long"
+check_password = make_validator(8, 128)
+assert check_password("short") == False, "5 chars too short for password"
+assert check_password("long_enough_password") == True, "20 chars is valid"
+print("All tests passed!")
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">Return an inner function that takes a string and checks min_len &lt;= len(s) &lt;= max_len.</p>
+    <p class="hint">The inner function "closes over" min_len and max_len from the outer scope.</p>
+    <p class="hint">def make_validator(min_len, max_len): def check(s): return min_len &lt;= len(s) &lt;= max_len; return check</p>
+  </div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="05" data-ex="solve-compare-wordfreq">
+  <div class="exercise-header">
+    <h4>Solve &amp; Compare: Word Frequency Counter</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt"><strong>Step 1:</strong> Solve this problem yourself. <strong>Step 2:</strong> Click &ldquo;Hint&rdquo; three times to see how an AI solved it. <strong>Step 3:</strong> Compare and answer the evaluation questions in comments.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+# YOUR SOLUTION: Word Frequency Counter
+# Write word_freq(text) that returns a dict of word -> count.
+# Case-insensitive. Strip basic punctuation (.,!?;:).
+# Example: word_freq("The cat and the dog") -> {"the": 2, "cat": 1, "and": 1, "dog": 1}
+# Write your solution, run it, then click Hint 3 times to see the AI's version.
+
+def word_freq(text):
+    pass
+
+# After comparing, answer these questions in comments:
+# 1. What did the AI do differently?
+# 2. Is the AI's approach better, worse, or just different? Why?
+# 3. Did you spot any issues in the AI's version?
+</script>
+    <script type="text/plain" class="test-code">
+result = word_freq("The cat and the dog")
+assert isinstance(result, dict), "Should return a dict"
+assert result["the"] == 2, "Should count 'the' twice (case-insensitive)"
+assert result["cat"] == 1, "Should count 'cat' once"
+result2 = word_freq("Hello, world! Hello.")
+assert result2["hello"] == 2, "Should strip punctuation and be case-insensitive"
+assert result2["world"] == 1, "Should count 'world' once"
+result3 = word_freq("")
+assert result3 == {}, "Empty string should return empty dict"
+print("All tests passed!")
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">Solve it yourself first &mdash; use <code>.lower()</code> and <code>.split()</code>, then loop through words and count with a dict.</p>
+    <p class="hint">To strip punctuation, try <code>word.strip(".,!?;:")</code> on each word after splitting.</p>
+    <p class="hint"><strong>AI&rsquo;s Solution:</strong><br><code>from collections import Counter<br>def word_freq(text):<br>&nbsp;&nbsp;&nbsp;&nbsp;words = text.lower().split()<br>&nbsp;&nbsp;&nbsp;&nbsp;cleaned = [w.strip(".,!?;:") for w in words]<br>&nbsp;&nbsp;&nbsp;&nbsp;return dict(Counter(w for w in cleaned if w))</code><br><br><strong>Evaluation:</strong> The AI used <code>Counter</code> from <code>collections</code> &mdash; a one-liner that does what your loop does. Your manual approach works perfectly fine. But now you know <code>Counter</code> exists &mdash; add it to your vocabulary. In TaskForge, you might use it to count task statuses.</p>
+  </div>
+</div>
+
+</section>
+
+<!-- ===== CH 06 ===== -->
+<section id="ch06" data-ch="06">
+<h2><span class="ch-label">Chapter 06</span> Data Structures &mdash; Lists, Dicts, and How Data Lives</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>Every API response, every config file, every AI tool output is structured data&mdash;usually JSON, which is just nested lists and dictionaries. If you can't navigate nested data, you can't use APIs, read AI output, or debug data issues.</p>
+</div>
+
+<p>Functions process data. But where does the data <em>live</em>? In <strong>data structures</strong>&mdash;containers that organize information. Two structures dominate Python and AI tooling: <strong>lists</strong> (ordered sequences) and <strong>dictionaries</strong> (key-value pairs).</p>
+
+<h3>Lists</h3>
+<p>A <strong>list</strong> is an ordered collection, indexed starting at 0:</p>
+<pre><code>signals = ["speed", "rpm", "fuel"]
+print(signals[0])   # "speed"
+print(signals[-1])  # "fuel" (last item)
+signals.append("temp")  # adds to end</code></pre>
+
+<h3>Dictionaries</h3>
+<p>A <strong>dictionary</strong> maps keys to values. This is THE most important structure for APIs and AI tools, because JSON (the universal data format) is essentially nested dictionaries.</p>
+<pre><code>warning = {"level": "critical", "system": "brakes"}
+print(warning["level"])  # "critical"</code></pre>
+
+<h3>Nested Structures</h3>
+<p>Real data is almost always nested&mdash;dicts containing lists containing dicts:</p>
+<pre><code>vehicles = [
+    {"name": "eCanter", "type": "EV", "range_km": 200},
+    {"name": "Super Great", "type": "diesel", "range_km": 800}
+]
+print(vehicles[0]["name"])  # "eCanter"</code></pre>
+
+<div class="dw">
+<svg viewBox="0 0 700 150" xmlns="http://www.w3.org/2000/svg" aria-label="Comparison of list, dictionary, and nested data structures showing how each stores and accesses data differently">
+  <!-- List -->
+  <rect class="node-fill" x="10" y="10" width="200" height="120" rx="8"/>
+  <text class="label-text" x="110" y="32" text-anchor="middle">List</text>
+  <text class="sub-text" x="110" y="52" text-anchor="middle">[0] = "a"</text>
+  <text class="sub-text" x="110" y="68" text-anchor="middle">[1] = "b"</text>
+  <text class="sub-text" x="110" y="84" text-anchor="middle">[2] = "c"</text>
+  <text class="sub-text" x="110" y="118" text-anchor="middle" fill="var(--accent)">Ordered by position</text>
+  <!-- Dict -->
+  <rect class="node-fill" x="250" y="10" width="200" height="120" rx="8"/>
+  <text class="label-text" x="350" y="32" text-anchor="middle">Dictionary</text>
+  <text class="sub-text" x="350" y="52" text-anchor="middle">"name" &rarr; "Alice"</text>
+  <text class="sub-text" x="350" y="68" text-anchor="middle">"age" &rarr; 30</text>
+  <text class="sub-text" x="350" y="118" text-anchor="middle" fill="var(--accent)">Accessed by key name</text>
+  <!-- Nested -->
+  <rect class="node-accent" x="490" y="10" width="200" height="120" rx="8"/>
+  <text class="label-text" x="590" y="32" text-anchor="middle">Nested</text>
+  <text class="sub-text" x="590" y="52" text-anchor="middle">"tasks" &rarr; [</text>
+  <text class="sub-text" x="590" y="68" text-anchor="middle">&nbsp;&nbsp;{id:1, ...},</text>
+  <text class="sub-text" x="590" y="84" text-anchor="middle">&nbsp;&nbsp;{id:2, ...}</text>
+  <text class="sub-text" x="590" y="98" text-anchor="middle">]</text>
+  <text class="sub-text" x="590" y="118" text-anchor="middle" fill="var(--accent)">This is real-world data</text>
+</svg>
+<div class="diagram-caption">Lists hold ordered items. Dicts hold named items. Real data is usually nested dicts containing lists of dicts.</div>
+</div>
+
+<h3>Choosing the Right Structure</h3>
+<table>
+<caption>Choosing the right data structure by use case</caption>
+<tr><th>Need</th><th>Use</th><th>Example</th></tr>
+<tr><td>Ordered sequence</td><td>List</td><td>A queue of tasks</td></tr>
+<tr><td>Lookup by name</td><td>Dictionary</td><td>Config settings</td></tr>
+<tr><td>Unique items only</td><td>Set</td><td>Tags without duplicates</td></tr>
+<tr><td>Unchangeable sequence</td><td>Tuple</td><td>Database row coordinates</td></tr>
+</table>
+
+<h3>TaskForge Connection</h3>
+<p>TaskForge stores tasks as a <strong>list of dictionaries</strong>: <code>tasks = [{"id": 1, "description": "...", "status": "pending"}, ...]</code>. This is the same pattern you'll see in every API response and every JSON file.</p>
+
+<h3>Micro-Exercises</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">1: List Access</div>
+<p>Create a list of 5 numbers. Print the third one (index 2).</p>
+<pre><code>nums = [10, 20, 30, 40, 50]
+print(nums[2])  # 30</code></pre>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">2: Dict Access</div>
+<pre><code>person = {"name": "Alice", "age": 30, "city": "Tokyo"}
+print(person["city"])  # Tokyo</code></pre>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">Try This Now</div>
+<p>Create a dict representing a project with: <code>name</code> (string), <code>features</code> (list of 3 strings), <code>tech_stack</code> (dict with 'language', 'framework', 'database'), <code>status</code> (string). Print <code>project['tech_stack']['framework']</code>.</p>
+<div class="prompt-block"><span class="label">project.py</span>project = {
+    "name": "TaskForge",
+    "features": ["add tasks", "complete tasks", "list tasks"],
+    "tech_stack": {"language": "Python", "framework": "Flask", "database": "JSON"},
+    "status": "in progress"
+}
+print(project["tech_stack"]["framework"])  # Flask</div>
+<p><strong>Verification:</strong> The nested access prints the framework value.</p>
+<p><strong>If this doesn't work:</strong> (1) <code>KeyError</code> &rarr; key names are case-sensitive. (2) <code>TypeError: string indices</code> &rarr; you defined <code>tech_stack</code> as a string, not a dict.</p>
+</div>
+
+<div class="pq">You just used JSON&mdash;the same data format that APIs and AI tools use to exchange information. When Claude Code sends your prompt to the Anthropic API, it goes as JSON that looks exactly like what you just wrote.</div>
+
+<h3>List Comprehensions</h3>
+<p>A <strong>list comprehension</strong> builds a new list in a single line. It's a compact alternative to a <code>for</code> loop that appends to a list. AI-generated Python uses comprehensions heavily, so you need to read them fluently.</p>
+
+<h4>Basic Syntax</h4>
+<pre><code>[expression for item in iterable]</code></pre>
+<p>This reads as: "For each <code>item</code> in the iterable, evaluate <code>expression</code> and collect the results into a list."</p>
+
+<h4>With a Condition</h4>
+<pre><code>[expression for item in iterable if condition]</code></pre>
+<p>This adds a filter: only items where <code>condition</code> is true get included.</p>
+
+<h4>Before and After</h4>
+<p>Here's the same logic written as a loop and as a comprehension:</p>
+<pre><code># Loop version
+squares = []
+for n in range(5):
+    squares.append(n ** 2)
+
+# Comprehension version
+squares = [n ** 2 for n in range(5)]
+# Both produce: [0, 1, 4, 9, 16]</code></pre>
+
+<pre><code># Loop with filter
+evens = []
+for n in range(10):
+    if n % 2 == 0:
+        evens.append(n)
+
+# Comprehension with filter
+evens = [n for n in range(10) if n % 2 == 0]
+# Both produce: [0, 2, 4, 6, 8]</code></pre>
+
+<div role="note" class="callout warn">
+<div class="callout-title">Why This Matters for AI Code Review</div>
+<p>AI-generated code uses comprehensions constantly. If you can't read them, you can't review AI output. When you see <code>[task for task in tasks if task["status"] == "pending"]</code>, you need to instantly recognize: "filter the task list to only pending tasks."</p>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">Micro-Exercise: Comprehension Conversion</div>
+<p><strong>Part A:</strong> Rewrite this loop as a comprehension:</p>
+<pre><code>names = ["alice", "bob", "charlie"]
+upper = []
+for name in names:
+    upper.append(name.upper())</code></pre>
+<pre><code># Answer
+upper = [name.upper() for name in names]</code></pre>
+<p><strong>Part B:</strong> Rewrite this comprehension as a loop:</p>
+<pre><code>short = [w for w in ["hi", "hello", "hey", "greetings"] if len(w) <= 3]</code></pre>
+<pre><code># Answer
+short = []
+for w in ["hi", "hello", "hey", "greetings"]:
+    if len(w) <= 3:
+        short.append(w)
+# Both produce: ["hi", "hey"]</code></pre>
+</div>
+
+<h3>Interactive Exercises</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="06" data-ex="groupby">
+  <div class="exercise-header">
+    <h4>Design Challenge: "Group By"</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Write <code>group_by(items, key_fn)</code> that groups a list by the result of calling key_fn on each item. Return a dict mapping keys to lists.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def group_by(items, key_fn):
+    # Your code here
+    pass
+</script>
+    <script type="text/plain" class="test-code">
+assert group_by(["hi", "hey", "hello", "ha"], len) == {2: ["hi", "ha"], 3: ["hey"], 5: ["hello"]}, "Group by length"
+assert group_by([1,2,3,4,5,6], str) == {"1": [1], "2": [2], "3": [3], "4": [4], "5": [5], "6": [6]}, "Group by string form"
+assert group_by([], len) == {}, "Empty list returns empty dict"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">Start with an empty dict. For each item, compute the key.</p>
+    <p class="hint">Use <code>dict.setdefault(key, []).append(item)</code> to add items.</p>
+    <p class="hint">Or use <code>result[key] = result.get(key, []) + [item]</code></p>
+  </div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="06" data-ex="flatten">
+  <div class="exercise-header">
+    <h4>Design Challenge: "Flatten"</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Write <code>flatten(nested)</code> that flattens an arbitrarily nested list into a single flat list.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def flatten(nested):
+    # Your code here
+    pass
+</script>
+    <script type="text/plain" class="test-code">
+assert flatten([1, [2, [3, 4], 5], 6]) == [1, 2, 3, 4, 5, 6], "Nested lists"
+assert flatten([1, 2, 3]) == [1, 2, 3], "Already flat"
+assert flatten([]) == [], "Empty list"
+assert flatten([[[[1]]]]) == [1], "Deeply nested"
+assert flatten([1, [2], [3, [4, [5]]]]) == [1, 2, 3, 4, 5], "Mixed nesting"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">Loop through each element. If an element is itself a list, you need to flatten <em>that</em> list too. One approach: call your own function inside itself (this is called <strong>recursion</strong>&mdash;a function calling itself with a smaller input).</p>
+    <p class="hint">Check with <code>isinstance(item, list)</code> to see if something is a list or a regular value.</p>
+    <p class="hint">Pattern: create a <code>result = []</code>. For each item, if it's a list, extend result with <code>flatten(item)</code>. Otherwise, append the item directly.</p>
+  </div>
+</div>
+
+<div class="quiz" data-ch="06" data-ex="quiz-dict">
+  <h4>Knowledge Check</h4>
+  <p>What happens when you access a key that doesn't exist with <code>my_dict['missing']</code>?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">Returns None</button>
+    <button class="quiz-option" data-correct="false">Returns an empty string</button>
+    <button class="quiz-option" data-correct="true">Raises KeyError</button>
+    <button class="quiz-option" data-correct="false">Returns False</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">Big O — How Fast Is This Code?</div>
+<p>Big O notation describes how an operation's time grows as data grows. You don't need to derive it mathematically — you need to <em>recognize</em> it when reading AI-generated code:</p>
+<table>
+<caption>Common Big O complexities and what they mean in practice</caption>
+<tr><th>Notation</th><th>Name</th><th>Example</th><th>Feel</th></tr>
+<tr><td><code>O(1)</code></td><td>Constant</td><td>Dict lookup by key</td><td>Instant, no matter the size</td></tr>
+<tr><td><code>O(log n)</code></td><td>Logarithmic</td><td>Binary search</td><td>Doubles data? One extra step</td></tr>
+<tr><td><code>O(n)</code></td><td>Linear</td><td>Loop through a list</td><td>10x data = 10x time</td></tr>
+<tr><td><code>O(n log n)</code></td><td>Linearithmic</td><td>Sorting (good algorithms)</td><td>Slightly worse than linear</td></tr>
+<tr><td><code>O(n&sup2;)</code></td><td>Quadratic</td><td>Nested loops</td><td>10x data = 100x time</td></tr>
+<tr><td><code>O(2&#x207F;)</code></td><td>Exponential</td><td>Brute force all subsets</td><td>Unusable past ~30 items</td></tr>
+</table>
+<p><strong>The practical rule:</strong> When AI generates a nested loop over a list, ask: "Is this O(n&sup2;)? Could it be O(n) with a dict?" That single question catches the most common performance mistake in AI-generated code.</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">Going Deeper: Data Structures Under the Hood</div>
+<p>This chapter taught you to <em>use</em> lists, dicts, and sets. <a href="phase-5.html">Phase 5</a> teaches you how they <em>work</em> internally&mdash;hash tables, linked lists, trees, and graphs. Understanding the internals matters because AI-generated code sometimes picks the wrong data structure, and you need the vocabulary to catch it.</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">Algorithms: The Recipes Behind the Code</div>
+<p>Data structures are <em>how you store</em> data. Algorithms are <em>how you process</em> it. When AI generates a sort, a search, or a pathfinding solution, it&rsquo;s applying an algorithm. <a href="phase-6.html">Phase 6</a> teaches you the essential ones so you can evaluate whether the AI picked the right approach.</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">Practice: Data Structure Problems</div>
+<p>Want more practice? Work through the Arrays &amp; Hashing section on <a href="https://neetcode.io">NeetCode</a>. Start with "Two Sum" and "Group Anagrams" &mdash; both use dicts to solve problems that would be slow with lists alone.</p>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="06" data-ex="solve-compare-flatten">
+  <div class="exercise-header">
+    <h4>Solve &amp; Compare: Flatten Nested Lists</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt"><strong>Step 1:</strong> Solve this problem yourself. <strong>Step 2:</strong> Click &ldquo;Hint&rdquo; three times to see how an AI solved it. <strong>Step 3:</strong> Compare and answer the evaluation questions.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+# YOUR SOLUTION: Flatten Nested Lists
+# Write flatten(lst) that flattens arbitrarily nested lists.
+# Example: flatten([1, [2, [3, 4]], 5]) -> [1, 2, 3, 4, 5]
+# Write your solution, run it, then click Hint 3 times.
+
+def flatten(lst):
+    pass
+
+# After comparing, answer:
+# 1. What did the AI do differently?
+# 2. Is the AI's approach better, worse, or just different?
+# 3. Did you spot any issues in the AI's version?
+</script>
+    <script type="text/plain" class="test-code">
+assert flatten([1, [2, [3, 4]], 5]) == [1, 2, 3, 4, 5], "Should flatten nested lists"
+assert flatten([1, 2, 3]) == [1, 2, 3], "Already flat list should stay flat"
+assert flatten([[1], [2], [3]]) == [1, 2, 3], "Should flatten one level of nesting"
+assert flatten([]) == [], "Empty list should return empty list"
+assert flatten([1, [2, [], [3, [4]]]]) == [1, 2, 3, 4], "Should handle empty inner lists"
+print("All tests passed!")
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">You need to check each item: is it a list or a plain value? Use <code>isinstance(item, list)</code>.</p>
+    <p class="hint">If an item is a list, you need to flatten it too &mdash; this is a recursive problem. Call <code>flatten()</code> on sub-lists.</p>
+    <p class="hint"><strong>AI&rsquo;s Solution:</strong><br><code>def flatten(lst):<br>&nbsp;&nbsp;&nbsp;&nbsp;result = []<br>&nbsp;&nbsp;&nbsp;&nbsp;for item in lst:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if isinstance(item, list):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result.extend(flatten(item))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result.append(item)<br>&nbsp;&nbsp;&nbsp;&nbsp;return result</code><br><br><strong>Evaluation:</strong> The AI used recursion with <code>isinstance</code> &mdash; did you? If you used a loop with a stack, that&rsquo;s also valid and avoids deep recursion limits. Notice: the AI handles <code>[[]]</code> correctly (empty inner list). In TaskForge, nested structures appear when tasks have sub-tasks &mdash; flattening is a real operation you&rsquo;ll need.</p>
+  </div>
+</div>
+
+</section>
+
+<!-- ===== CH 07: CLASSES AND OOP BASICS ===== -->
+<section id="ch07" data-ch="07">
+<h2><span class="ch-label">Chapter 07</span> Classes and Object-Oriented Basics</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>AI-generated Python code frequently uses classes. When Claude writes <code>class Task:</code> with <code>self.tasks</code>, you need to understand what you're reading.</p>
+</div>
+
+<p>So far you've stored data in dictionaries and processed it with functions. That works&mdash;until your data and the functions that operate on it start drifting apart across your codebase. <strong>Classes</strong> solve this by bundling data and behavior into a single unit called an <strong>object</strong>.</p>
+
+<h3>What Is a Class?</h3>
+<p>A <strong>class</strong> is a blueprint for creating objects. Think of it like a cookie cutter: the class defines the shape, and each cookie you stamp out is an <strong>instance</strong>&mdash;an individual object created from that blueprint. The cookie cutter itself isn't a cookie; it's the template that produces cookies. Every cookie has the same shape, but each one can have different frosting (different data).</p>
+
+<p>In programming terms: a class defines what attributes (data) and methods (behavior) every instance will have. Each instance gets its own copy of the data, but they all share the same methods.</p>
+
+<h3>Defining a Class</h3>
+<p>Here's the simplest useful class:</p>
+<pre><code>class Task:
+    def __init__(self, title):
+        self.title = title
+        self.done = False</code></pre>
+
+<p>Let's break this down piece by piece:</p>
+<ul>
+<li><code>class Task:</code> &mdash; declares a new class named <code>Task</code>. Class names use <strong>CamelCase</strong> by convention (not <code>snake_case</code> like functions).</li>
+<li><code>__init__</code> &mdash; the <strong>initializer</strong> (sometimes called the constructor). Python calls this automatically when you create a new instance. The double underscores (called "dunder") mark it as a special method.</li>
+<li><code>self</code> &mdash; a reference to the <em>specific instance</em> being created. When you write <code>self.title = title</code>, you're saying "this particular object's title is whatever was passed in." Every method in a class receives <code>self</code> as its first parameter.</li>
+<li><code>self.title</code> and <code>self.done</code> &mdash; these are <strong>instance attributes</strong>. Each <code>Task</code> object gets its own <code>title</code> and <code>done</code>.</li>
+</ul>
+
+<h3>Methods vs Functions</h3>
+<p>A <strong>method</strong> is a function that belongs to a class. The only syntactic difference: methods take <code>self</code> as their first parameter, which gives them access to the instance's data. A regular function stands alone; a method is attached to an object and operates on that object's data.</p>
+<pre><code># Regular function — stands alone
+def mark_done(task_dict):
+    task_dict["done"] = True
+
+# Method — belongs to the class, operates on self
+class Task:
+    def __init__(self, title):
+        self.title = title
+        self.done = False
+
+    def mark_done(self):
+        self.done = True</code></pre>
+<p>When you call <code>task.mark_done()</code>, Python automatically passes the instance as <code>self</code>. You don't write <code>task.mark_done(task)</code>&mdash;Python handles that.</p>
+
+<h3>Creating Instances</h3>
+<p>You create an instance by calling the class like a function:</p>
+<pre><code>task = Task("Buy groceries")
+print(task.title)  # Buy groceries
+print(task.done)   # False</code></pre>
+<p>Notice you pass <code>"Buy groceries"</code> but not <code>self</code>. Python fills in <code>self</code> automatically. Each call to <code>Task(...)</code> creates a brand-new, independent object.</p>
+
+<h3>Instance Attributes</h3>
+<p>Every instance carries its own data. Changing one object doesn't affect another:</p>
+<pre><code>task1 = Task("Buy groceries")
+task2 = Task("Write report")
+
+task1.mark_done()
+print(task1.done)  # True
+print(task2.done)  # False — completely independent</code></pre>
+<p>You access attributes with dot notation: <code>task.title</code>, <code>task.done</code>. This is the same syntax you've been using with strings (<code>"hello".upper()</code>) and lists (<code>my_list.append(x)</code>)&mdash;because strings and lists are objects too.</p>
+
+<h3>A Complete Example</h3>
+<p>Here's a <code>Task</code> class with an initializer, a behavior method, and a string representation:</p>
+<pre><code>class Task:
+    def __init__(self, title):
+        self.title = title
+        self.done = False
+
+    def mark_done(self):
+        self.done = True
+
+    def __str__(self):
+        status = "done" if self.done else "pending"
+        return f"[{status}] {self.title}"
+
+# Usage
+task = Task("Buy groceries")
+print(task)          # [pending] Buy groceries
+task.mark_done()
+print(task)          # [done] Buy groceries</code></pre>
+<p><code>__str__</code> is another dunder method. Python calls it automatically when you <code>print()</code> an object or convert it to a string. Without it, printing a <code>Task</code> would show something unhelpful like <code>&lt;__main__.Task object at 0x...&gt;</code>.</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg" aria-label="UML class diagram for Task class with three compartments: name, attributes (title, done, id), and methods (init, mark_done, str)">
+  <!-- Class box outer -->
+  <rect class="node-accent" x="200" y="10" width="300" height="260" rx="10"/>
+  <!-- Title section -->
+  <rect x="200" y="10" width="300" height="44" rx="10" fill="var(--accent)" opacity="0.15" stroke="none"/>
+  <text class="label-text" x="350" y="38" text-anchor="middle" font-size="14" fill="var(--accent)">Task</text>
+  <!-- Divider 1 -->
+  <line x1="200" y1="54" x2="500" y2="54" stroke="var(--accent)" stroke-width="1" opacity="0.4"/>
+  <!-- Attributes section -->
+  <text class="label-text" x="220" y="78" font-size="10" fill="var(--text-muted)">ATTRIBUTES</text>
+  <text class="sub-text" x="240" y="100">title : str</text>
+  <text class="sub-text" x="240" y="120">done : bool</text>
+  <text class="sub-text" x="240" y="140">id : int</text>
+  <!-- Divider 2 -->
+  <line x1="200" y1="156" x2="500" y2="156" stroke="var(--accent)" stroke-width="1" opacity="0.4"/>
+  <!-- Methods section -->
+  <text class="label-text" x="220" y="180" font-size="10" fill="var(--text-muted)">METHODS</text>
+  <text class="sub-text" x="240" y="202">__init__(self, title)</text>
+  <text class="sub-text" x="240" y="222">mark_done(self)</text>
+  <text class="sub-text" x="240" y="242">__str__(self)</text>
+  <!-- Labels on the left -->
+  <text class="label-text" x="180" y="120" text-anchor="end" fill="var(--accent)">Data</text>
+  <line x1="185" y1="116" x2="198" y2="116" stroke="var(--accent)" stroke-width="1"/>
+  <text class="label-text" x="180" y="222" text-anchor="end" fill="var(--accent)">Behavior</text>
+  <line x1="185" y1="218" x2="198" y2="218" stroke="var(--accent)" stroke-width="1"/>
+</svg>
+<div class="diagram-caption">A class is a box with three compartments: name at top, data (attributes) in the middle, behavior (methods) at the bottom. This is the UML class diagram pattern.</div>
+</div>
+
+<h3>Inheritance Basics</h3>
+<p>Sometimes you need a class that's <em>almost</em> like an existing class, but with a few extras. <strong>Inheritance</strong> lets you create a new class that builds on an existing one. The new class (called the <strong>child</strong> or <strong>subclass</strong>) inherits all attributes and methods from the existing class (the <strong>parent</strong> or <strong>superclass</strong>) and can add or override them.</p>
+
+<p>Here's a <code>PriorityTask</code> that extends <code>Task</code> with a priority field:</p>
+<pre><code>class PriorityTask(Task):
+    def __init__(self, title, priority="medium"):
+        super().__init__(title)
+        self.priority = priority
+
+    def __str__(self):
+        status = "done" if self.done else "pending"
+        return f"[{status}] ({self.priority}) {self.title}"</code></pre>
+
+<p>The parentheses in <code>class PriorityTask(Task)</code> mean "PriorityTask inherits from Task." The <code>super().__init__(title)</code> call runs the parent's <code>__init__</code>, so the child gets <code>self.title</code> and <code>self.done</code> without duplicating that code. Then the child adds its own <code>self.priority</code>.</p>
+
+<p><code>PriorityTask</code> gets <code>mark_done()</code> for free&mdash;it inherits it from <code>Task</code>. But it <strong>overrides</strong> <code>__str__</code> with its own version that includes the priority. This is the core idea: reuse what works, change only what's different.</p>
+
+<pre><code>task = PriorityTask("Fix login bug", "high")
+print(task)          # [pending] (high) Fix login bug
+task.mark_done()
+print(task)          # [done] (high) Fix login bug
+print(task.done)     # True — inherited from Task</code></pre>
+
+<h3>When to Use Classes vs Dictionaries</h3>
+<p>Classes and dictionaries both store data. The question is: does your data need <em>behavior</em>?</p>
+
+<table>
+<caption>When to use a dictionary versus a class</caption>
+<tr><th>Scenario</th><th>Use a Dictionary</th><th>Use a Class</th></tr>
+<tr><td>Simple data with known keys</td><td><code>{"name": "Alice", "age": 30}</code></td><td>Overkill</td></tr>
+<tr><td>Data from/to JSON</td><td>Natural fit&mdash;dicts map directly to JSON</td><td>Add <code>to_dict()</code> if needed</td></tr>
+<tr><td>Data + behavior together</td><td>Functions scattered across the file</td><td><code>task.mark_done()</code> keeps it together</td></tr>
+<tr><td>Multiple related types</td><td>No inheritance mechanism</td><td><code>PriorityTask(Task)</code></td></tr>
+<tr><td>Quick prototyping</td><td>Fastest to write</td><td>More setup, more structure</td></tr>
+</table>
+
+<p><strong>Rule of thumb:</strong> start with dictionaries. When you find yourself writing multiple functions that all take the same dictionary as their first argument, that's a sign the data and behavior want to live together in a class.</p>
+
+<h3>Common Misconceptions</h3>
+
+<div role="note" class="callout warn">
+<div class="callout-title">Misconception: "Classes Are Always Better Than Dictionaries"</div>
+<p>Not true. Dictionaries are simpler, faster to write, and map directly to JSON. If your data is just key-value pairs with no behavior, a dict is the right tool. Classes add value when you need <em>methods</em> that operate on the data, <em>validation</em> on creation, or <em>inheritance</em> for related types. Use the right tool for the job.</p>
+</div>
+
+<div role="note" class="callout warn">
+<div class="callout-title">Misconception: "self Is a Keyword"</div>
+<p><code>self</code> is <strong>not</strong> a keyword&mdash;it's a convention. You could technically name it <code>this</code> or <code>potato</code> and Python wouldn't complain. But every Python programmer uses <code>self</code>, every AI generates <code>self</code>, and every linter expects <code>self</code>. Treat it as mandatory even though it's technically optional.</p>
+</div>
+
+<h3>TaskForge Connection</h3>
+<p>TaskForge v0.1 stores tasks as dictionaries in a list. This works, but notice how functions like <code>complete_task</code> and <code>add_task</code> all operate on the same dictionary structure. That's a signal that a class might be a better fit. Here's the before and after, side by side:</p>
+
+<div class="pe">
+<div class="pb"><div class="ph">Before &mdash; Dictionary</div>
+<div class="pp"><pre><code># TaskForge v0.1 — dictionary-based
+task = {
+    "id": 1,
+    "title": "Buy groceries",
+    "status": "pending"
+}
+
+def complete_task(tasks, task_id):
+    for t in tasks:
+        if t["id"] == task_id:
+            t["status"] = "done"
+            return True
+    return False</code></pre></div>
+</div>
+<div class="pg"><div class="ph">After &mdash; Class</div>
+<div class="pp"><pre><code># TaskForge refactored — class-based
+class Task:
+    def __init__(self, task_id, title):
+        self.id = task_id
+        self.title = title
+        self.status = "pending"
+
+    def complete(self):
+        self.status = "done"
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "status": self.status
+        }
+
+# Usage
+task = Task(1, "Buy groceries")
+task.complete()
+print(task.to_dict())
+# {"id": 1, "title": "Buy groceries", "status": "done"}</code></pre></div>
+</div>
+</div>
+
+<p>The class version keeps data and behavior together. <code>task.complete()</code> is clearer than <code>complete_task(tasks, task_id)</code> because the task itself knows how to mark itself done. The <code>to_dict()</code> method means JSON serialization still works&mdash;you get the best of both worlds.</p>
+
+<h3>Micro-Exercises</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">1: Define a Dog Class</div>
+<p>Define a <code>Dog</code> class with <code>name</code> and <code>breed</code> attributes and a <code>bark()</code> method that returns a string.</p>
+<pre><code>class Dog:
+    def __init__(self, name, breed):
+        self.name = name
+        self.breed = breed
+
+    def bark(self):
+        return f"{self.name} says Woof!"
+
+dog = Dog("Rex", "Labrador")
+print(dog.bark())   # Rex says Woof!
+print(dog.breed)    # Labrador</code></pre>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">2: Create a BankAccount Class</div>
+<p>Create a <code>BankAccount</code> class with <code>deposit()</code> and <code>withdraw()</code> methods that track balance.</p>
+<pre><code>class BankAccount:
+    def __init__(self, owner, balance=0):
+        self.owner = owner
+        self.balance = balance
+
+    def deposit(self, amount):
+        self.balance += amount
+        return self.balance
+
+    def withdraw(self, amount):
+        if amount > self.balance:
+            return "Insufficient funds"
+        self.balance -= amount
+        return self.balance
+
+account = BankAccount("Alice", 100)
+print(account.deposit(50))    # 150
+print(account.withdraw(30))   # 120
+print(account.withdraw(200))  # Insufficient funds</code></pre>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">Try This Now</div>
+<p>Refactor TaskForge's task dictionary to a <code>Task</code> class. Add a <code>to_dict()</code> method so JSON serialization still works.</p>
+<div class="prompt-block"><span class="label">task_class.py</span>import json
+
+class Task:
+    def __init__(self, task_id, title):
+        self.id = task_id
+        self.title = title
+        self.status = "pending"
+
+    def complete(self):
+        self.status = "done"
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "status": self.status
+        }
+
+    def __str__(self):
+        return f"[{self.status}] {self.title}"
+
+# Test it
+task = Task(1, "Buy groceries")
+print(task)                    # [pending] Buy groceries
+task.complete()
+print(task)                    # [done] Buy groceries
+print(json.dumps(task.to_dict(), indent=2))
+# {"id": 1, "title": "Buy groceries", "status": "done"}</div>
+<p><strong>Verification:</strong> Your <code>Task</code> class creates objects, and <code>to_dict()</code> returns a dictionary matching the original format.</p>
+<p><strong>If this doesn't work:</strong> If <code>self</code> errors appear, make sure every method's first parameter is <code>self</code>. (1) <code>TypeError: __init__() takes 2 positional arguments</code> &rarr; you forgot <code>self</code> as the first parameter. (2) <code>AttributeError: 'Task' has no attribute 'title'</code> &rarr; make sure <code>__init__</code> sets <code>self.title = title</code>. (3) <code>to_dict()</code> returns <code>None</code> &rarr; you forgot the <code>return</code> statement.</p>
+</div>
+
+<div class="pq">You just turned a loose collection of dictionaries and functions into a cohesive class. This is the same pattern Claude Code uses when it generates model classes, API handlers, and data structures. Now you can read that code and know exactly what's happening.</div>
+
+<h3>Interactive Exercises</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="07" data-ex="bank">
+  <div class="exercise-header">
+    <h4>Design Challenge: "Bank Account"</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Create a <code>BankAccount</code> class with <code>deposit(amount)</code>, <code>withdraw(amount)</code>, and <code>get_balance()</code> methods. Withdrawals should raise <code>ValueError</code> if they would make the balance negative. Initial balance is 0.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+class BankAccount:
+    def __init__(self):
+        # Your code here
+        pass
+
+    def deposit(self, amount):
+        pass
+
+    def withdraw(self, amount):
+        pass
+
+    def get_balance(self):
+        pass
+</script>
+    <script type="text/plain" class="test-code">
+acct = BankAccount()
+assert acct.get_balance() == 0, "Initial balance should be 0"
+acct.deposit(100)
+assert acct.get_balance() == 100, "After depositing 100"
+acct.withdraw(30)
+assert acct.get_balance() == 70, "After withdrawing 30"
+try:
+    acct.withdraw(200)
+    assert False, "Should have raised ValueError"
+except ValueError:
+    pass
+assert acct.get_balance() == 70, "Balance unchanged after failed withdrawal"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">Store balance in <code>self.balance</code> in <code>__init__</code>.</p>
+    <p class="hint">In withdraw, check <code>if amount > self.balance</code> before subtracting.</p>
+    <p class="hint"><code>raise ValueError('Insufficient funds')</code> when overdrawing.</p>
+  </div>
+</div>
+
+<div class="quiz" data-ch="07" data-ex="quiz-self">
+  <h4>Knowledge Check</h4>
+  <p>What does <code>self</code> refer to in a Python method?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">The class itself</button>
+    <button class="quiz-option" data-correct="true">The specific instance the method was called on</button>
+    <button class="quiz-option" data-correct="false">The parent class</button>
+    <button class="quiz-option" data-correct="false">The module the class is defined in</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="07" data-ex="counter">
+  <div class="exercise-header">
+    <h4>Design Challenge: "Counter Class"</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Create a <code>WordCounter</code> class. Constructor takes a string. Methods: <code>count(word)</code> returns how many times that word appears (case-insensitive), <code>most_common(n)</code> returns the n most frequent words as a list of (word, count) tuples.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+class WordCounter:
+    def __init__(self, text):
+        # Your code here
+        pass
+
+    def count(self, word):
+        pass
+
+    def most_common(self, n):
+        pass
+</script>
+    <script type="text/plain" class="test-code">
+wc = WordCounter("the cat sat on the mat the cat")
+assert wc.count("the") == 3, "the appears 3 times"
+assert wc.count("cat") == 2, "cat appears 2 times"
+assert wc.count("dog") == 0, "dog not in text"
+assert wc.count("The") == 3, "Case insensitive"
+top = wc.most_common(2)
+assert top[0] == ("the", 3), "Most common is 'the'"
+assert top[1] == ("cat", 2), "Second most common is 'cat'"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">In __init__, split text into words and build a frequency dict.</p>
+    <p class="hint">Use <code>.lower()</code> for case insensitivity on both storage and lookup.</p>
+    <p class="hint">For most_common, sort the items by count (descending) and slice.</p>
+  </div>
+</div>
+
+<h3>Decorators: Functions That Modify Functions</h3>
+<p>A <strong>decorator</strong> is a function that takes a function and returns a modified version. The <code>@decorator</code> syntax is shorthand:</p>
+<pre><code># This:
+@app.route("/tasks")
+def get_tasks():
+    pass
+
+# Is equivalent to:
+def get_tasks():
+    pass
+get_tasks = app.route("/tasks")(get_tasks)</code></pre>
+
+<p>You'll see decorators constantly in later chapters — <code>@app.route()</code> in Flask, <code>@staticmethod</code> in classes, <code>@pytest.fixture</code> in tests. AI generates decorated functions constantly. Here's how to build one:</p>
+
+<pre><code>import time
+
+def timer(func):
+    """Decorator that prints how long a function takes."""
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = func(*args, **kwargs)
+        elapsed = time.time() - start
+        print(f"{func.__name__} took {elapsed:.4f}s")
+        return result
+    return wrapper
+
+@timer
+def slow_function():
+    time.sleep(0.1)
+    return "done"
+
+slow_function()  # Prints: slow_function took 0.1001s</code></pre>
+
+<p>Production decorators should also use <code>@functools.wraps(func)</code> to preserve the original function's name and docstring. We skip that for simplicity here.</p>
+
+<div class="exercise" data-type="pyodide" data-ch="07" data-ex="decorator">
+  <div class="exercise-header">
+    <h4>Exercise: Build a Logging Decorator</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Implement a <code>@log_calls</code> decorator that prints the function name and arguments each time it's called.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def log_calls(func):
+    """Decorator that prints function name and args on each call."""
+    def wrapper(*args, **kwargs):
+        # Print the function name and arguments
+        # Then call and return the original function
+        pass
+    return wrapper
+
+@log_calls
+def add(a, b):
+    return a + b
+
+@log_calls
+def greet(name):
+    return f"Hello, {name}!"
+</script>
+    <script type="text/plain" class="test-code">
+import io, sys
+old_stdout = sys.stdout
+sys.stdout = buffer = io.StringIO()
+result1 = add(3, 4)
+result2 = greet("Alice")
+sys.stdout = old_stdout
+output = buffer.getvalue()
+assert result1 == 7, "add should return 7"
+assert result2 == "Hello, Alice!", "greet should return greeting"
+assert "add" in output, "Should print function name 'add'"
+assert "greet" in output, "Should print function name 'greet'"
+print("All tests passed!")
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">Inside wrapper: print something like f"Calling {func.__name__} with args={args}, kwargs={kwargs}".</p>
+    <p class="hint">Then call result = func(*args, **kwargs) and return result.</p>
+    <p class="hint">wrapper body: print(f"Calling {func.__name__}({args}, {kwargs})"); result = func(*args, **kwargs); return result</p>
+  </div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="07" data-ex="solve-compare-bank">
+  <div class="exercise-header">
+    <h4>Solve &amp; Compare: Bank Account Class</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt"><strong>Step 1:</strong> Solve this problem yourself. <strong>Step 2:</strong> Click &ldquo;Hint&rdquo; three times to see how an AI solved it. <strong>Step 3:</strong> Compare the two approaches.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+# YOUR SOLUTION: Bank Account Class
+# Write a BankAccount class with:
+# - __init__(self, owner, balance=0)
+# - deposit(amount) — adds to balance, returns new balance
+# - withdraw(amount) — subtracts if sufficient funds, returns new balance
+#   raises ValueError if insufficient funds
+# - get_balance() — returns current balance
+
+class BankAccount:
+    pass
+
+# After comparing, answer:
+# 1. What did the AI do differently?
+# 2. Is the AI's approach better, worse, or just different?
+# 3. Did you spot any issues in the AI's version?
+</script>
+    <script type="text/plain" class="test-code">
+acct = BankAccount("Alice", 100)
+assert acct.get_balance() == 100, "Initial balance should be 100"
+assert acct.deposit(50) == 150, "Deposit should return new balance"
+assert acct.withdraw(30) == 120, "Withdraw should return new balance"
+try:
+    acct.withdraw(200)
+    assert False, "Should raise ValueError for overdraft"
+except ValueError:
+    pass
+assert acct.get_balance() == 120, "Balance unchanged after failed withdrawal"
+acct2 = BankAccount("Bob")
+assert acct2.get_balance() == 0, "Default balance should be 0"
+print("All tests passed!")
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">Start with <code>__init__</code>: store <code>self.owner</code> and <code>self.balance</code>. Check <code>amount &gt; 0</code> in deposit and withdraw.</p>
+    <p class="hint">In <code>withdraw</code>, check <code>if amount &gt; self.balance: raise ValueError("Insufficient funds")</code>.</p>
+    <p class="hint"><strong>AI&rsquo;s Solution:</strong><br><code>from datetime import datetime<br><br>class BankAccount:<br>&nbsp;&nbsp;&nbsp;&nbsp;def __init__(self, owner, balance=0):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.owner = owner<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.balance = balance<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.transactions = []<br><br>&nbsp;&nbsp;&nbsp;&nbsp;def deposit(self, amount):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.balance += amount<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.transactions.append({"type": "deposit", "amount": amount, "time": str(datetime.now())})<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return self.balance<br><br>&nbsp;&nbsp;&nbsp;&nbsp;def withdraw(self, amount):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if amount &gt; self.balance:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raise ValueError("Insufficient funds")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.balance -= amount<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.transactions.append({"type": "withdraw", "amount": amount, "time": str(datetime.now())})<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return self.balance<br><br>&nbsp;&nbsp;&nbsp;&nbsp;def get_balance(self):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return self.balance<br><br>&nbsp;&nbsp;&nbsp;&nbsp;def __repr__(self):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return f"BankAccount({self.owner}, balance={self.balance})"</code><br><br><strong>Evaluation:</strong> The AI added features you didn&rsquo;t ask for &mdash; transaction history, timestamps, and a <code>__repr__</code> method. This is <em>over-engineering</em>, one of the most common AI failure modes. Your simpler version is better for this requirement. In TaskForge, resist the urge to add features &ldquo;just in case&rdquo; &mdash; build what the spec asks for.</p>
+  </div>
+</div>
+
+</section>
+
+<!-- ===== CH 08 ===== -->
+<section id="ch08" data-ch="08">
+<h2><span class="ch-label">Chapter 08</span> Files, Modules, and the Standard Library</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>Real projects have dozens of files. When Claude Code edits <code>src/models.py</code>, it needs to know how that file connects to <code>src/api.py</code> and <code>tests/test_models.py</code>. Modules are how code is organized across files. Without this, you can't navigate a real codebase.</p>
+</div>
+
+<p>So far, your data disappears when the program ends. <strong>Files</strong> make data persist. <strong>Modules</strong> let you organize code across multiple files. The <strong>standard library</strong> gives you hundreds of pre-built tools.</p>
+
+<h3>Reading and Writing Files</h3>
+<pre><code># Write
+with open("data.txt", "w") as f:
+    f.write("Hello, file!")
+
+# Read
+with open("data.txt", "r") as f:
+    content = f.read()
+    print(content)  # Hello, file!</code></pre>
+<p>The <code>with</code> statement (a <strong>context manager</strong>) automatically closes the file when you're done. Always use it.</p>
+
+<h3>JSON: The Universal Data Format</h3>
+<p><strong>JSON</strong> (JavaScript Object Notation) is how AI tools and APIs exchange data. It looks almost identical to Python dictionaries:</p>
+<pre><code>import json
+
+# Dict to JSON string
+data = {"name": "TaskForge", "version": "0.1"}
+json_string = json.dumps(data, indent=2)
+
+# JSON string to dict
+parsed = json.loads(json_string)
+
+# Dict to JSON file
+with open("config.json", "w") as f:
+    json.dump(data, f, indent=2)
+
+# JSON file to dict
+with open("config.json", "r") as f:
+    loaded = json.load(f)</code></pre>
+
+<div class="dw">
+<svg viewBox="0 0 700 140" xmlns="http://www.w3.org/2000/svg" aria-label="Four file formats compared side by side: .txt (unstructured), .csv (tabular), .json (API standard), and Python dict (native)">
+  <rect class="node-fill" x="10" y="10" width="155" height="110" rx="8"/>
+  <text class="label-text" x="87" y="32" text-anchor="middle">.txt</text>
+  <text class="sub-text" x="87" y="52" text-anchor="middle">name: Alice</text>
+  <text class="sub-text" x="87" y="66" text-anchor="middle">age: 30</text>
+  <text class="sub-text" x="87" y="108" text-anchor="middle" fill="var(--text-muted)">Unstructured</text>
+  <rect class="node-fill" x="185" y="10" width="155" height="110" rx="8"/>
+  <text class="label-text" x="262" y="32" text-anchor="middle">.csv</text>
+  <text class="sub-text" x="262" y="52" text-anchor="middle">name,age</text>
+  <text class="sub-text" x="262" y="66" text-anchor="middle">Alice,30</text>
+  <text class="sub-text" x="262" y="108" text-anchor="middle" fill="var(--text-muted)">Tabular</text>
+  <rect class="node-accent" x="360" y="10" width="155" height="110" rx="8"/>
+  <text class="label-text" x="437" y="32" text-anchor="middle">.json</text>
+  <text class="sub-text" x="437" y="52" text-anchor="middle">{"name": "Alice",</text>
+  <text class="sub-text" x="437" y="66" text-anchor="middle">&nbsp;"age": 30}</text>
+  <text class="sub-text" x="437" y="108" text-anchor="middle" fill="var(--accent)">AI &amp; API standard</text>
+  <rect class="node-fill" x="535" y="10" width="155" height="110" rx="8"/>
+  <text class="label-text" x="612" y="32" text-anchor="middle">.py dict</text>
+  <text class="sub-text" x="612" y="52" text-anchor="middle">{"name": "Alice",</text>
+  <text class="sub-text" x="612" y="66" text-anchor="middle">&nbsp;"age": 30}</text>
+  <text class="sub-text" x="612" y="108" text-anchor="middle" fill="var(--text-muted)">Python native</text>
+</svg>
+<div class="diagram-caption">Different formats store the same data differently. JSON is the format AI tools and APIs use. Learn it well.</div>
+</div>
+
+<h3>Modules and Imports</h3>
+<p>A <strong>module</strong> is a <code>.py</code> file containing functions&mdash;think of it like a toolbox. Instead of carrying every tool everywhere, you <code>import</code> just the toolbox you need for the current job:</p>
+<pre><code>import json          # entire module
+from pathlib import Path  # one thing from a module</code></pre>
+<p>The <code>if __name__ == "__main__":</code> pattern (which you saw in TaskForge) means "only run this block when the file is executed directly, not when it's imported."</p>
+
+<h3>TaskForge Connection</h3>
+<p>In Phase 2's gate exercise, you'll add <code>save_tasks(filepath)</code> and <code>load_tasks(filepath)</code> to TaskForge using <code>json.dump</code> and <code>json.load</code>. Tasks will survive between sessions.</p>
+
+<h3>Micro-Exercises</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">1: Write and Read a File</div>
+<pre><code>with open("hello.txt", "w") as f:
+    f.write("Hello!")
+
+with open("hello.txt", "r") as f:
+    print(f.read())  # Hello!</code></pre>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">2: Convert Dict to JSON</div>
+<pre><code>import json
+data = {"name": "test", "count": 5}
+print(json.dumps(data, indent=2))</code></pre>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">Try This Now</div>
+<p>Create <code>config.json</code> with: <code>{"project": "my-app", "version": "0.1", "features": ["auth", "dashboard"]}</code>. Write a Python script that reads this file, adds <code>"api"</code> to the features list, and writes it back.</p>
+<div class="prompt-block"><span class="label">update_config.py</span>import json
+
+with open("config.json", "r") as f:
+    config = json.load(f)
+
+config["features"].append("api")
+
+with open("config.json", "w") as f:
+    json.dump(config, f, indent=2)</div>
+<p><strong>Verification:</strong> After running, <code>config.json</code> contains <code>["auth", "dashboard", "api"]</code>.</p>
+<p><strong>If this doesn't work:</strong> (1) <code>FileNotFoundError</code> &rarr; create the JSON file first. (2) <code>JSONDecodeError</code> &rarr; check for trailing commas or missing quotes. (3) File unchanged &rarr; you forgot to write back with <code>json.dump()</code>.</p>
+</div>
+
+<div class="pq">You just read, modified, and wrote a JSON file&mdash;the exact workflow that TaskForge uses for persistence and that every API uses for data exchange.</div>
+
+<h3>Interactive Exercises</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="08" data-ex="csv">
+  <div class="exercise-header">
+    <h4>Design Challenge: "CSV Parser"</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Write <code>parse_csv(text)</code> that takes a CSV string (first row is headers) and returns a list of dicts.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def parse_csv(text):
+    # Your code here
+    pass
+</script>
+    <script type="text/plain" class="test-code">
+result = parse_csv("name,age\nAlice,30\nBob,25")
+assert len(result) == 2, "Should have 2 rows"
+assert result[0] == {"name": "Alice", "age": "30"}, "First row"
+assert result[1] == {"name": "Bob", "age": "25"}, "Second row"
+assert parse_csv("a,b\n1,2") == [{"a": "1", "b": "2"}], "Simple case"
+assert parse_csv("x\n1\n2") == [{"x": "1"}, {"x": "2"}], "Single column"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">Split by newlines to get rows, then split each row by commas.</p>
+    <p class="hint">First row gives you the headers (keys). Remaining rows are data.</p>
+    <p class="hint">Use <code>zip(headers, values)</code> then <code>dict()</code> to create each row dict.</p>
+  </div>
+</div>
+
+<div class="quiz" data-ch="08" data-ex="quiz-json">
+  <h4>Knowledge Check</h4>
+  <p>What does <code>json.loads(text)</code> do?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">Writes JSON to a file</button>
+    <button class="quiz-option" data-correct="true">Parses a JSON string into a Python object</button>
+    <button class="quiz-option" data-correct="false">Converts Python to a JSON string</button>
+    <button class="quiz-option" data-correct="false">Loads a JSON file from disk</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="08" data-ex="solve-compare-csv">
+  <div class="exercise-header">
+    <h4>Solve &amp; Compare: CSV Report Generator</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt"><strong>Step 1:</strong> Solve this problem yourself. <strong>Step 2:</strong> Click &ldquo;Hint&rdquo; three times to see the AI&rsquo;s version. <strong>Step 3:</strong> Evaluate the differences.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+# YOUR SOLUTION: CSV Report Generator
+# Write generate_report(data) that takes a list of dicts and returns
+# a CSV-formatted string. First row is headers (from dict keys).
+# Return the CSV string (not write to file — Pyodide has no filesystem).
+# Example: generate_report([{"name": "Alice", "score": 95}])
+# -> "name,score\nAlice,95"
+
+def generate_report(data):
+    pass
+
+# After comparing, answer:
+# 1. What did the AI do differently?
+# 2. Is the AI's approach better, worse, or just different?
+# 3. Did you spot any issues in the AI's version?
+</script>
+    <script type="text/plain" class="test-code">
+data = [{"name": "Alice", "score": 95}, {"name": "Bob", "score": 87}]
+result = generate_report(data)
+lines = result.strip().split("\n")
+assert len(lines) == 3, "Should have header + 2 data rows"
+assert "name" in lines[0] and "score" in lines[0], "First line should be headers"
+assert "Alice" in lines[1], "Should contain Alice's data"
+assert "Bob" in lines[2], "Should contain Bob's data"
+assert generate_report([]) == "", "Empty data should return empty string"
+mixed = [{"a": 1, "b": 2}, {"a": 3, "b": 4, "c": 5}]
+mixed_result = generate_report(mixed)
+assert "c" in mixed_result, "Should handle dicts with different keys"
+print("All tests passed!")
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">Collect all unique keys across all dicts for headers: <code>headers = list(data[0].keys())</code> works if all dicts are the same.</p>
+    <p class="hint">For each row dict, use <code>str(row.get(h, ""))</code> to handle missing keys. Join with commas.</p>
+    <p class="hint"><strong>AI&rsquo;s Solution:</strong><br><code>def generate_report(data):<br>&nbsp;&nbsp;&nbsp;&nbsp;if not data:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return ""<br>&nbsp;&nbsp;&nbsp;&nbsp;headers = list(data[0].keys())<br>&nbsp;&nbsp;&nbsp;&nbsp;lines = [",".join(headers)]<br>&nbsp;&nbsp;&nbsp;&nbsp;for row in data:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lines.append(",".join(str(row[h]) for h in headers))<br>&nbsp;&nbsp;&nbsp;&nbsp;return "\n".join(lines)</code><br><br><strong>Evaluation:</strong> The AI hardcoded headers from only the first dict&rsquo;s keys. If later dicts have extra keys (like <code>"c"</code>), those columns are silently dropped &mdash; and <code>row[h]</code> will crash with <code>KeyError</code> if a row is missing a key from the first dict. Did your version handle mixed keys? In TaskForge, CSV exports of tasks with optional fields hit exactly this bug. Note: the AI&rsquo;s solution would actually fail the mixed-keys test above. That&rsquo;s the point &mdash; always run the tests.</p>
+  </div>
+</div>
+
+</section>
+
+<!-- ===== CH 09 ===== -->
+<section id="ch09" data-ch="09">
+<h2><span class="ch-label">Chapter 09</span> Error Handling, Debugging, and Testing</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>AI-generated code often looks correct but has subtle bugs. Without tests, you have no way to prove it works. Without error handling, one bad input crashes your program. This chapter gives you the tools to <em>verify</em> code&mdash;yours or the AI's.</p>
+</div>
+
+<p>Code breaks. That's normal. What separates professionals from beginners is how they <em>handle</em> and <em>prevent</em> breakage. This chapter covers three tools: <strong>try/except</strong> (handling errors gracefully), <strong>debugging</strong> (finding what went wrong), and <strong>testing</strong> (proving your code is correct).</p>
+
+<h3>Try/Except</h3>
+<pre><code>try:
+    task_id = int(input("Task ID: "))
+except ValueError:
+    print("Please enter a number.")</code></pre>
+<p>Without <code>try/except</code>, invalid input crashes your program. With it, you handle the error gracefully. Always catch <strong>specific</strong> exceptions&mdash;never write bare <code>except:</code>.</p>
+
+<h3>Debugging</h3>
+<p>When something goes wrong, read the <strong>stack trace</strong> from the <em>bottom up</em>. The last line tells you the error type and message. The lines above show you where it happened.</p>
+
+<h3>Testing with Assert</h3>
+<p>An <strong>assertion</strong> is a statement that must be true. If it's false, the program crashes&mdash;which is exactly what you want in a test.</p>
+<pre><code>assert 2 + 2 == 4      # passes silently
+assert 2 + 2 == 5      # AssertionError!</code></pre>
+
+<div class="diagram">
+<svg viewBox="0 0 700 100" xmlns="http://www.w3.org/2000/svg" aria-label="Test-driven AI workflow: write tests, describe intent to AI, AI generates code, run tests to verify correctness">
+  <rect class="node-accent" x="10" y="25" width="140" height="50" rx="8"/>
+  <text class="label-text" x="80" y="46" text-anchor="middle">Write Tests</text>
+  <text class="sub-text" x="80" y="62" text-anchor="middle">YOU define correct</text>
+  <line class="arrow" x1="150" y1="50" x2="185" y2="50"/>
+  <rect class="node-fill" x="185" y="25" width="140" height="50" rx="8"/>
+  <text class="label-text" x="255" y="46" text-anchor="middle">Describe to AI</text>
+  <text class="sub-text" x="255" y="62" text-anchor="middle">What you want</text>
+  <line class="arrow" x1="325" y1="50" x2="360" y2="50"/>
+  <rect class="node-fill" x="360" y="25" width="140" height="50" rx="8"/>
+  <text class="label-text" x="430" y="46" text-anchor="middle">AI Generates</text>
+  <text class="sub-text" x="430" y="62" text-anchor="middle">Code output</text>
+  <line class="arrow" x1="500" y1="50" x2="535" y2="50"/>
+  <rect class="node-accent" x="535" y="25" width="155" height="50" rx="8"/>
+  <text class="label-text" x="612" y="46" text-anchor="middle">Run Tests</text>
+  <text class="sub-text" x="612" y="62" text-anchor="middle">Pass = evidence</text>
+</svg>
+<div class="diagram-caption">Write tests BEFORE asking the AI. Tests define the contract. The AI implements against it.</div>
+</div>
+
+<div role="note" class="callout critical">
+<div class="callout-title">Test-Driven AI Development</div>
+<p>Write tests before asking the AI to write code. This is the highest-leverage AI coding workflow. Your tests define "correct." The AI writes code that tries to pass them. If it fails, iterate.</p>
+</div>
+
+<div role="note" class="callout warn">
+<div class="callout-title">What Happens Without Tests</div>
+<p>You ask an AI to write <code>calculate_tax(income)</code>. It returns a function that looks correct. You deploy it. A month later, you discover it's been calculating 15% instead of the correct bracket-based rate&mdash;and every invoice was wrong. Tests would have caught this in seconds. Without tests, you're trusting the AI's output on faith. With tests, you have evidence.</p>
+</div>
+
+<h3>pytest</h3>
+<p>Put tests in files named <code>test_*.py</code>. Run them: <code>python3 -m pytest</code>. pytest discovers and runs all test functions.</p>
+<pre><code># test_math.py
+def test_addition():
+    assert 2 + 2 == 4
+
+def test_string_concat():
+    assert "hello " + "world" == "hello world"</code></pre>
+
+<h3>TaskForge Connection</h3>
+<p>TaskForge v0.1 has no error handling&mdash;<code>int(input("Task ID: "))</code> crashes on non-numeric input. In the Phase 2 Gate, you'll fix this <em>and</em> write tests proving it works.</p>
+
+<h3>Micro-Exercises</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">1: Silent Success</div>
+<p>Run <code>assert 2 + 2 == 4</code>. Nothing happens&mdash;assertions that pass are silent. Now run <code>assert 2 + 2 == 5</code>. You get <code>AssertionError</code>.</p>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">2: Graceful Error</div>
+<pre><code>try:
+    print(1 / 0)
+except ZeroDivisionError:
+    print("Cannot divide by zero")</code></pre>
+<p>The program handles the error instead of crashing.</p>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">Try This Now</div>
+<p>Write 3 assert statements testing a function called <code>is_valid_email(email)</code>&mdash;one valid email, one invalid (no @), one edge case (empty string). <strong>Don't write the function.</strong> Go to <strong>claude.ai</strong> or <strong>chatgpt.com</strong> (free) and ask: "Write a Python function <code>is_valid_email</code> that passes these tests: [paste your asserts]." Run the tests.</p>
+<div class="prompt-block"><span class="label">test_email.py</span>assert is_valid_email("user@example.com") == True
+assert is_valid_email("invalid-email") == False
+assert is_valid_email("") == False</div>
+<p><strong>Verification:</strong> The AI's function passes all 3 assertions.</p>
+<p><strong>Note:</strong> This is your first interaction with an LLM for code. You haven't formally learned about AI coding tools (that starts in Phase 5). This is a preview.</p>
+<p><strong>If this doesn't work:</strong> (1) <code>NameError: is_valid_email</code> &rarr; paste the AI's function definition ABOVE your assert statements. (2) Assertion fails &rarr; the AI's implementation has a bug. Read the function and figure out why. This is exactly the skill Phase 5 teaches.</p>
+</div>
+
+<div class="pq">You just used AI to write code, then verified it with tests. This is the exact workflow you'll use in Phase 5&mdash;except there, you'll do it with Claude Code on real features.</div>
+
+<h3>Interactive Exercises</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="09" data-ex="debug-tests">
+  <div class="exercise-header">
+    <h4>Debug Challenge: "Fix the Test Suite"</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">This function and its tests have 4 bugs — 2 in the function and 2 in the tests. Fix all of them so all assertions pass.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def find_max(numbers):
+    if len(numbers) == 0:
+        return 0
+    max_val = 0
+    for n in numbers:
+        if n > max_val:
+            max_val = n
+    return max_val
+
+# Tests (2 of these are wrong):
+assert find_max([1, 5, 3]) == 5
+assert find_max([-2, -8, -1]) == -1
+assert find_max([42]) == 42
+assert find_max([]) == 0
+</script>
+    <script type="text/plain" class="test-code">
+assert find_max([1, 5, 3]) == 5, "Basic case"
+assert find_max([-2, -8, -1]) == -1, "All negatives"
+assert find_max([42]) == 42, "Single element"
+assert find_max([]) is None, "Empty should return None"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">What should <code>find_max([])</code> return — 0 or None? Think about what makes sense.</p>
+    <p class="hint">If all numbers are negative, starting <code>max_val = 0</code> will never get replaced. Use <code>numbers[0]</code> instead.</p>
+    <p class="hint">The test for empty list expects 0, but should it? And the function needs to handle the empty case before using <code>numbers[0]</code>.</p>
+  </div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="09" data-ex="ai-eval">
+  <div class="exercise-header">
+    <h4>Evaluate AI-Generated Code</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">An AI was asked: "Write a function to calculate the average of a list of numbers." Below is what it generated. It has 3 problems: a crash on empty input, an incorrect return type, and an unnecessary import. Find and fix all three.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+import math
+
+def calculate_average(numbers):
+    """AI-generated: Calculate the average of a list of numbers."""
+    total = math.fsum(numbers)
+    average = total / len(numbers)
+    return str(round(average, 2))
+
+# Test it:
+print(calculate_average([10, 20, 30]))  # Should print 20.0
+print(calculate_average([]))             # Should handle empty list
+</script>
+    <script type="text/plain" class="test-code">
+assert calculate_average([10, 20, 30]) == 20.0, "Basic average"
+assert calculate_average([]) is None, "Empty list returns None"
+assert calculate_average([7]) == 7.0, "Single element"
+assert isinstance(calculate_average([1, 2]), float), "Must return float, not string"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">What happens when <code>numbers</code> is empty? <code>len(numbers)</code> is 0, and dividing by 0 crashes.</p>
+    <p class="hint">The function returns <code>str(...)</code> but the tests expect a <code>float</code>. Remove the <code>str()</code> wrapper.</p>
+    <p class="hint"><code>math.fsum</code> works but <code>sum()</code> is simpler and doesn't require an import. The AI over-engineered this.</p>
+  </div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="09" data-ex="retry">
+  <div class="exercise-header">
+    <h4>Design Challenge: "Retry Decorator"</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Write a function <code>retry(fn, max_attempts=3)</code> that calls fn(). If it raises an exception, retry up to max_attempts times. Return the result on success, or re-raise the last exception if all attempts fail.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def retry(fn, max_attempts=3):
+    # Your code here
+    pass
+</script>
+    <script type="text/plain" class="test-code">
+call_count = 0
+def flaky():
+    global call_count
+    call_count += 1
+    if call_count < 3:
+        raise ValueError("not yet")
+    return "success"
+call_count = 0
+assert retry(flaky) == "success", "Should succeed on 3rd try"
+call_count = 0
+def always_fail():
+    raise RuntimeError("nope")
+try:
+    retry(always_fail, max_attempts=2)
+    assert False, "Should have raised"
+except RuntimeError:
+    pass
+def always_works():
+    return 42
+assert retry(always_works) == 42, "Should work on first try"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">Use a for loop: <code>for attempt in range(max_attempts)</code></p>
+    <p class="hint">Wrap fn() in try/except inside the loop. On success, return immediately.</p>
+    <p class="hint">After the loop, re-raise: <code>raise</code> inside the except block on the last attempt.</p>
+  </div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="09" data-ex="solve-compare-retry">
+  <div class="exercise-header">
+    <h4>Solve &amp; Compare: Retry Decorator</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt"><strong>Step 1:</strong> Solve this problem yourself. <strong>Step 2:</strong> Click &ldquo;Hint&rdquo; three times to see the AI&rsquo;s version. <strong>Step 3:</strong> Look for a subtle but real bug in the AI&rsquo;s code.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+# YOUR SOLUTION: Retry Decorator
+# Write a retry(max_attempts) decorator factory.
+# Usage: @retry(max_attempts=3) makes a function retry up to 3 times
+# if it raises an exception. Re-raise the last exception if all fail.
+
+def retry(max_attempts=3):
+    pass  # Return a decorator
+
+# Test it:
+attempt_count = 0
+
+@retry(max_attempts=3)
+def flaky():
+    global attempt_count
+    attempt_count += 1
+    if attempt_count < 3:
+        raise RuntimeError("not yet")
+    return "success"
+
+# After comparing, answer:
+# 1. What did the AI do differently?
+# 2. Can you find the BUG in the AI's version?
+# 3. Why does that bug matter in production code?
+</script>
+    <script type="text/plain" class="test-code">
+attempt_count = 0
+@retry(max_attempts=3)
+def flaky():
+    global attempt_count
+    attempt_count += 1
+    if attempt_count < 3:
+        raise RuntimeError("not yet")
+    return "success"
+assert flaky() == "success", "Should succeed on third attempt"
+
+@retry(max_attempts=1)
+def always_fail():
+    raise ValueError("nope")
+try:
+    always_fail()
+    assert False, "Should have raised ValueError"
+except ValueError:
+    pass
+
+@retry(max_attempts=2)
+def instant():
+    return 42
+assert instant() == 42, "Should return on first try"
+print("All tests passed!")
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint"><code>retry(max_attempts)</code> returns a decorator. That decorator takes a function and returns a wrapper. Three levels of nesting.</p>
+    <p class="hint">The wrapper loops <code>range(max_attempts)</code>, calls <code>func()</code> in a try/except. On success, return. On the last failure, re-raise.</p>
+    <p class="hint"><strong>AI&rsquo;s Solution:</strong><br><code>def retry(max_attempts=3):<br>&nbsp;&nbsp;&nbsp;&nbsp;def decorator(func):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;def wrapper(*args, **kwargs):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for attempt in range(max_attempts):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;try:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return func(*args, **kwargs)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;except:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if attempt == max_attempts - 1:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raise<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return wrapper<br>&nbsp;&nbsp;&nbsp;&nbsp;return decorator</code><br><br><strong>Evaluation:</strong> The AI used bare <code>except:</code> instead of <code>except Exception:</code>. This catches <code>KeyboardInterrupt</code> and <code>SystemExit</code>, meaning Ctrl+C won&rsquo;t stop your program during retries. This is the kind of subtle bug that only someone who understands error handling can catch. In TaskForge, a retry decorator with bare <code>except</code> could make your CLI tool impossible to kill.</p>
+  </div>
+</div>
+
+</section>
+
+<!-- ===== PHASE 2 GATE ===== -->
+<section id="gate2">
+<h2><span class="ch-label">Phase 2 Gate</span> Checkpoint &amp; TaskForge Extension</h2>
+
+<div class="card">
+<h4>Minimum Competency</h4>
+<p>Write a function with parameters, conditionals, loops, and a return value. Create/manipulate nested dicts. Read/write JSON. Write meaningful test assertions.</p>
+</div>
+
+<div class="card">
+<h4>Your Artifact</h4>
+<p>Extended TaskForge with:</p>
+<ul>
+<li><code>filter_tasks(status)</code> &mdash; returns only tasks matching the status</li>
+<li><code>save_tasks(filepath)</code> / <code>load_tasks(filepath)</code> &mdash; JSON persistence</li>
+<li>5 passing test assertions (add, complete, filter, save, load)</li>
+</ul>
+</div>
+
+<div class="card">
+<h4>Verification</h4>
+<p><code>python3 taskforge.py</code> runs. <code>python3 -m pytest test_taskforge.py</code> passes 5 assertions.</p>
+</div>
+
+<div role="note" class="callout critical">
+<div class="callout-title">Failure Signal</div>
+<p>If you cannot write a function that takes a list and returns filtered results &rarr; return to Chapters 05–06.</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">Hints &mdash; Try Without These First</div>
+<p>If you're stuck on the gate exercise, follow these steps. Try each one on your own before reading the hint.</p>
+<p><strong>Step 1: <code>filter_tasks(tasks, status)</code></strong></p>
+<p>Write a function that accepts the task list and a status string, then returns only the tasks that match. Think list comprehensions: <code>[task for task in tasks if ...]</code>.</p>
+<pre><code>def filter_tasks(tasks, status):
+    # Return a list of tasks where task["status"] == status
+    pass  # replace with one line</code></pre>
+<p><strong>Step 2: <code>save_tasks(tasks, filepath)</code></strong></p>
+<p>Write a function that writes the task list to a JSON file. You need <code>import json</code> and <code>json.dump()</code>. Remember the <code>with open(filepath, "w")</code> pattern from Chapter 08.</p>
+<pre><code>def save_tasks(tasks, filepath):
+    # Open filepath for writing, then json.dump(tasks, f, indent=2)
+    pass</code></pre>
+<p><strong>Step 3: <code>load_tasks(filepath)</code></strong></p>
+<p>Write a function that reads tasks from a JSON file. Use <code>json.load()</code>. Handle the case where the file doesn't exist yet&mdash;return an empty list.</p>
+<pre><code>def load_tasks(filepath):
+    # Try to open and json.load(). If FileNotFoundError, return []
+    pass</code></pre>
+<p><strong>Step 4: Wire into the main loop</strong></p>
+<p>At program start, call <code>load_tasks</code> to populate the task list. After any change (add/complete), call <code>save_tasks</code>. Add a menu option for filtering by status.</p>
+</div>
+
+<h3>TaskForge Checkpoint</h3>
+<p>TaskForge now has filtering, persistence (JSON), and tests. Still a single directory with no git, no structure. Phase 3 fixes that.</p>
+
+<h3>What You Can Now Do</h3>
+<div class="card">
+<ul>
+<li>Write functions with parameters, conditionals, loops, and return values</li>
+<li>Create and navigate nested data structures (lists of dicts)</li>
+<li>Read, write, and manipulate JSON files</li>
+<li>Handle errors gracefully and write meaningful test assertions</li>
+<li>Use an AI to generate code and verify it with tests</li>
+</ul>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">Bridge to Phase 3</div>
+<p>You can write Python. But right now your code lives in a single folder with no safety net. What happens when you make a bad edit and can't undo it? What happens when you need to share code with a team or an AI agent? Phase 3 introduces the professional development tools&mdash;terminal fluency, Git fundamentals, and remote collaboration with GitHub&mdash;that make your code <em>manageable</em> and set the stage for real project workflows.</p>
+</div>
+</section>
+
+<nav class="phase-nav">
+  <a href="phase-1.html" class="phase-nav-link prev"><span class="phase-nav-label">Previous Phase</span>&larr; Phase 1: What Is Code?</a>
+  <a href="phase-3.html" class="phase-nav-link next"><span class="phase-nav-label">Next Phase</span>Phase 3: Development Tools &rarr;</a>
+</nav>
+
+</div>
+</div>
+
+<footer>
+<p>Zero to Hero: Programming to Multi-Agent Claude Code &middot; March 2026</p>
+<p>Structured around the 8 Levels of Agentic Engineering.</p>
+</footer>
+
+<script src="js/progress.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ace-builds@1.36.5/src-min-noconflict/ace.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/shared.js"></script>
+<script src="js/ace-init.js"></script>
+<script src="js/pyodide-runner.js"></script>
+<script src="js/quiz.js"></script>
+<script src="js/exercise-runner.js"></script>
+</body>
+</html>

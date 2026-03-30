@@ -1,0 +1,2553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Phase 4: Build and deploy — APIs, Flask, SQLite databases, Docker containers, CI/CD pipelines, and project architecture. Chapters 13–18.">
+<title>Phase 4: Building &amp; Deploying — Zero to Hero</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/design-system.css">
+<script>try{if(localStorage.getItem('zth-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+<script>try{var z=localStorage.getItem('zth-zoom');if(z&&+z>=50&&+z<=200)document.documentElement.style.zoom=+z/100}catch(e){}</script>
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+<marker id="arrowhead-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--a5)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo"><span>Zero to Hero</span>Programming &rarr; Multi-Agent AI</a>
+  <div class="toc-group">
+    <div class="toc-group-title">Foundations</div>
+    <a href="phase-1.html#ch01" class="toc-link"><span class="toc-num">01</span>What Programming Actually Is</a>
+    <a href="phase-1.html#ch02" class="toc-link"><span class="toc-num">02</span>How Computers Execute Code</a>
+    <a href="phase-1.html#ch03" class="toc-link"><span class="toc-num">03</span>Setting Up Your Environment</a>
+    <a href="phase-1.html#ch04" class="toc-link"><span class="toc-num">04</span>Reading Code Before Writing It</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Python</div>
+    <a href="phase-2.html#ch05" class="toc-link"><span class="toc-num">05</span>Functions, Logic &amp; Control Flow</a>
+    <a href="phase-2.html#ch06" class="toc-link"><span class="toc-num">06</span>Data Structures</a>
+    <a href="phase-2.html#ch07" class="toc-link"><span class="toc-num">07</span>Classes &amp; OOP Basics</a>
+    <a href="phase-2.html#ch08" class="toc-link"><span class="toc-num">08</span>Files, Modules &amp; Standard Library</a>
+    <a href="phase-2.html#ch09" class="toc-link"><span class="toc-num">09</span>Error Handling, Debugging &amp; Testing</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Development Tools</div>
+    <a href="phase-3.html#ch10" class="toc-link"><span class="toc-num">10</span>The Terminal &amp; Shell</a>
+    <a href="phase-3.html#ch11" class="toc-link"><span class="toc-num">11</span>Git Fundamentals</a>
+    <a href="phase-3.html#ch12" class="toc-link"><span class="toc-num">12</span>Git Remote &amp; GitHub</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Building &amp; Deploying</div>
+    <a href="#ch13" class="toc-link"><span class="toc-num">13</span>APIs &amp; HTTP</a>
+    <a href="#ch14" class="toc-link"><span class="toc-num">14</span>Building APIs with Flask</a>
+    <a href="#ch15" class="toc-link"><span class="toc-num">15</span>Database Basics</a>
+    <a href="#ch16" class="toc-link"><span class="toc-num">16</span>Docker &amp; Containers</a>
+    <a href="#ch17" class="toc-link"><span class="toc-num">17</span>CI/CD &amp; GitHub Actions</a>
+    <a href="#ch18" class="toc-link"><span class="toc-num">18</span>Project Architecture</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Data Structures</div>
+    <a href="phase-5.html#ch19" class="toc-link"><span class="toc-num">19</span>Complexity Analysis</a>
+    <a href="phase-5.html#ch20" class="toc-link"><span class="toc-num">20</span>Linear Structures</a>
+    <a href="phase-5.html#ch21" class="toc-link"><span class="toc-num">21</span>Hash Tables &amp; Maps</a>
+    <a href="phase-5.html#ch22" class="toc-link"><span class="toc-num">22</span>Trees</a>
+    <a href="phase-5.html#ch23" class="toc-link"><span class="toc-num">23</span>Graphs</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Algorithms</div>
+    <a href="phase-6.html#ch24" class="toc-link"><span class="toc-num">24</span>Searching &amp; Sorting</a>
+    <a href="phase-6.html#ch25" class="toc-link"><span class="toc-num">25</span>Recursion &amp; DP</a>
+    <a href="phase-6.html#ch26" class="toc-link"><span class="toc-num">26</span>Algorithm Patterns</a>
+    <a href="phase-6.html#ch27" class="toc-link"><span class="toc-num">27</span>Graph Algorithms</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Engineering Craft</div>
+    <a href="phase-7.html#ch28" class="toc-link"><span class="toc-num">28</span>Design Patterns &amp; SOLID</a>
+    <a href="phase-7.html#ch29" class="toc-link"><span class="toc-num">29</span>SQL &amp; Query Mastery</a>
+    <a href="phase-7.html#ch30" class="toc-link"><span class="toc-num">30</span>Transactions &amp; NoSQL</a>
+    <a href="phase-7.html#ch31" class="toc-link"><span class="toc-num">31</span>Networking &amp; the Internet</a>
+    <a href="phase-7.html#ch32" class="toc-link"><span class="toc-num">32</span>Concurrency &amp; Parallelism</a>
+    <a href="phase-7.html#ch33" class="toc-link"><span class="toc-num">33</span>Security Engineering</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Systems &amp; Scale</div>
+    <a href="phase-8.html#ch34" class="toc-link"><span class="toc-num">34</span>System Design</a>
+    <a href="phase-8.html#ch35" class="toc-link"><span class="toc-num">35</span>Distributed Systems</a>
+    <a href="phase-8.html#ch36" class="toc-link"><span class="toc-num">36</span>Performance &amp; Observability</a>
+    <a href="phase-8.html#ch37" class="toc-link"><span class="toc-num">37</span>Navigating Large Codebases</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AI Levels 1&ndash;5</div>
+    <a href="phase-9.html#ch38" class="toc-link"><span class="toc-num">38</span>Evaluating &amp; Directing AI Code</a>
+    <a href="phase-9.html#ch39" class="toc-link"><span class="toc-num">39</span>Levels 1 &amp; 2 &mdash; Tab Complete &amp; Agent IDE</a>
+    <a href="phase-9.html#ch40" class="toc-link"><span class="toc-num">40</span>Level 3 &mdash; Context Engineering</a>
+    <a href="phase-9.html#ch41" class="toc-link"><span class="toc-num">41</span>Level 4 &mdash; Compounding Engineering</a>
+    <a href="phase-9.html#ch42" class="toc-link"><span class="toc-num">42</span>Level 5 &mdash; MCP, Skills &amp; Capabilities</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AI Levels 6&ndash;8</div>
+    <a href="phase-10.html#ch43" class="toc-link"><span class="toc-num">43</span>Level 6 &mdash; Harness Engineering</a>
+    <a href="phase-10.html#ch44" class="toc-link"><span class="toc-num">44</span>Level 7 &mdash; Background Agents</a>
+    <a href="phase-10.html#ch45" class="toc-link"><span class="toc-num">45</span>Claude Code in Docker</a>
+    <a href="phase-10.html#ch46" class="toc-link"><span class="toc-num">46</span>Level 8 &mdash; Autonomous Agent Teams</a>
+    <a href="phase-10.html#ch47" class="toc-link"><span class="toc-num">47</span>The Multiplayer Effect</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Reference</div>
+    <a href="appendices.html#glossary" class="toc-link"><span class="toc-num">&oplus;</span>Glossary</a>
+    <a href="appendices.html#prompt-library" class="toc-link"><span class="toc-num">&oplus;</span>Prompt Library</a>
+    <a href="appendices.html#self-assessment" class="toc-link"><span class="toc-num">&oplus;</span>Self-Assessment</a>
+    <a href="appendices.html#common-mistakes" class="toc-link"><span class="toc-num">&oplus;</span>Common Mistakes</a>
+    <a href="appendices.html#appendix-d" class="toc-link"><span class="toc-num">&oplus;</span>Troubleshooting</a>
+    <a href="appendices.html#appendix-e" class="toc-link"><span class="toc-num">&oplus;</span>Resources</a>
+  </div>
+</aside>
+
+<div class="main">
+<section class="hero hero-sm">
+  <div class="hero-badge">Phase 4 &mdash; Building &amp; Deploying</div>
+  <h1>Building &amp; <em>Deploying</em></h1>
+  <p class="hero-sub">APIs, Flask, databases, Docker, CI/CD, and professional project structure. From consuming software to building and shipping it.</p>
+  <div class="hero-meta"><span>Chapters 13–18</span><span>Phase Gate + TaskForge</span></div>
+</section>
+<div class="content-wrap">
+
+<div role="note" class="callout info">
+<div class="callout-title">Before You Begin Phase 4</div>
+<p>This phase assumes you can: navigate the terminal and use basic shell commands (Ch 10), create Git repositories, make commits, and push to GitHub (Ch 11-12), and write Python functions with error handling and tests (Ch 05, 09).</p>
+</div>
+
+<!-- ===== CH 13 ===== -->
+<section id="ch13" data-ch="13">
+<h2><span class="ch-label">Chapter 13</span> APIs and HTTP</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>Almost every modern application talks to other applications over the internet. Weather apps fetch forecasts. Payment systems process charges. AI tools send prompts and receive completions. The language they all speak is HTTP, and the conversation pattern they follow is called an API. Understanding APIs is how you go from writing code that runs on your machine to writing code that connects to the world.</p>
+</div>
+
+<h3>What Is an API?</h3>
+<p>An <strong>API</strong> (Application Programming Interface) is a contract between two programs. One program says "send me a request in this format, and I'll send you a response in that format." The API defines the rules&mdash;what you can ask for, how to ask, and what you'll get back.</p>
+
+<p>You've already used APIs without knowing it. When you call <code>len([1, 2, 3])</code> in Python, you're using a function API&mdash;you pass a list, it returns the length. Web APIs work the same way, except the function lives on a remote server and the call travels over the internet.</p>
+
+<p>Think of a restaurant analogy. You (the <strong>client</strong>) read the menu (the <strong>API documentation</strong>), place an order with the waiter (send a <strong>request</strong>), the kitchen (the <strong>server</strong>) prepares your food, and the waiter brings it back (the <strong>response</strong>). You never walk into the kitchen. The menu is the contract.</p>
+
+<h3>HTTP: The Language of the Web</h3>
+<p><strong>HTTP</strong> (HyperText Transfer Protocol) is the protocol that clients and servers use to communicate. Every time you visit a website, your browser sends an HTTP request and receives an HTTP response. APIs use the same protocol.</p>
+
+<p>An HTTP exchange has two parts:</p>
+<ul>
+<li><strong>Request</strong>&mdash;sent by the client. Contains a method, a URL, headers, and optionally a body.</li>
+<li><strong>Response</strong>&mdash;sent by the server. Contains a status code, headers, and a body.</li>
+</ul>
+
+<div class="diagram">
+<svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" aria-label="HTTP request-response flow diagram showing client sending request to server and receiving response">
+  <!-- Client -->
+  <rect class="node-accent" x="30" y="40" width="150" height="80" rx="8"/>
+  <text class="label-text" x="105" y="68" text-anchor="middle">Client</text>
+  <text class="sub-text" x="105" y="88" text-anchor="middle">Your Python script</text>
+  <text class="sub-text" x="105" y="103" text-anchor="middle">or browser</text>
+  <!-- Request arrow (top) -->
+  <line x1="180" y1="62" x2="370" y2="62" class="arrow"/>
+  <text class="sub-text" x="275" y="52" text-anchor="middle">HTTP Request</text>
+  <text class="sub-text" x="275" y="38" text-anchor="middle" fill="var(--accent)">GET /tasks HTTP/1.1</text>
+  <!-- Server -->
+  <rect class="node-accent" x="370" y="40" width="150" height="80" rx="8"/>
+  <text class="label-text" x="445" y="68" text-anchor="middle">Server</text>
+  <text class="sub-text" x="445" y="88" text-anchor="middle">Remote application</text>
+  <text class="sub-text" x="445" y="103" text-anchor="middle">with the data</text>
+  <!-- Response arrow (bottom) -->
+  <line x1="370" y1="100" x2="180" y2="100" stroke="var(--a3)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text class="sub-text" x="275" y="118" text-anchor="middle" fill="var(--a3)">HTTP Response</text>
+  <text class="sub-text" x="275" y="134" text-anchor="middle" fill="var(--a3)">200 OK + JSON body</text>
+  <!-- Detail boxes -->
+  <rect class="node-fill" x="555" y="20" width="130" height="72" rx="6"/>
+  <text class="label-text" x="620" y="38" text-anchor="middle">Request has:</text>
+  <text class="sub-text" x="620" y="54" text-anchor="middle">Method + URL</text>
+  <text class="sub-text" x="620" y="68" text-anchor="middle">Headers</text>
+  <text class="sub-text" x="620" y="82" text-anchor="middle">Body (optional)</text>
+  <rect class="node-fill" x="555" y="108" width="130" height="72" rx="6"/>
+  <text class="label-text" x="620" y="126" text-anchor="middle">Response has:</text>
+  <text class="sub-text" x="620" y="142" text-anchor="middle">Status code</text>
+  <text class="sub-text" x="620" y="156" text-anchor="middle">Headers</text>
+  <text class="sub-text" x="620" y="170" text-anchor="middle">Body (the data)</text>
+</svg>
+<div class="diagram-caption">The HTTP request-response cycle: the client sends a request with a method and URL, the server processes it, and returns a response with a status code and data.</div>
+</div>
+
+<h3>HTTP Methods</h3>
+<p>The <strong>method</strong> tells the server what you want to do. There are four you need to know:</p>
+<table>
+<caption>HTTP methods and their purposes</caption>
+<tr><th>Method</th><th>Purpose</th><th>Example</th></tr>
+<tr><td><code>GET</code></td><td>Read/retrieve data</td><td>Get a list of tasks</td></tr>
+<tr><td><code>POST</code></td><td>Create new data</td><td>Add a new task</td></tr>
+<tr><td><code>PUT</code></td><td>Update existing data</td><td>Mark a task as done</td></tr>
+<tr><td><code>DELETE</code></td><td>Remove data</td><td>Delete a task</td></tr>
+</table>
+<p><code>GET</code> and <code>DELETE</code> typically don't send a body. <code>POST</code> and <code>PUT</code> send data in the request body (usually JSON).</p>
+
+<h3>Status Codes</h3>
+<p>Every HTTP response includes a <strong>status code</strong>&mdash;a three-digit number that tells the client what happened. You don't need to memorize all of them, just these five groups:</p>
+<table>
+<caption>HTTP status code ranges and their meanings</caption>
+<tr><th>Range</th><th>Meaning</th><th>Common Codes</th></tr>
+<tr><td><code>2xx</code></td><td>Success</td><td><code>200 OK</code>, <code>201 Created</code></td></tr>
+<tr><td><code>3xx</code></td><td>Redirect</td><td><code>301 Moved Permanently</code></td></tr>
+<tr><td><code>4xx</code></td><td>Client error (you made a mistake)</td><td><code>400 Bad Request</code>, <code>404 Not Found</code></td></tr>
+<tr><td><code>5xx</code></td><td>Server error (they have a problem)</td><td><code>500 Internal Server Error</code></td></tr>
+</table>
+<p>When something goes wrong, the status code is the first thing to check. A <code>404</code> means the URL is wrong. A <code>401</code> means you're not authenticated. A <code>500</code> means the server is broken&mdash;not your fault.</p>
+
+<h3>JSON: The Data Format</h3>
+<p>APIs need a shared format for sending data. The standard is <strong>JSON</strong> (JavaScript Object Notation). You already know JSON&mdash;it looks exactly like Python dictionaries and lists:</p>
+<pre><code>{
+    "id": 1,
+    "title": "Buy groceries",
+    "done": false
+}</code></pre>
+<p>Python's <code>json</code> module converts between JSON strings and Python objects. But when using the <code>requests</code> library (below), this conversion happens automatically.</p>
+
+<h3>Headers</h3>
+<p><strong>Headers</strong> are metadata attached to requests and responses. They carry information about the message itself, not the data. Two headers you'll see constantly:</p>
+<ul>
+<li><code>Content-Type: application/json</code> &mdash; tells the server "I'm sending you JSON."</li>
+<li><code>Authorization: Bearer &lt;token&gt;</code> &mdash; proves your identity (like a password).</li>
+</ul>
+<p>You rarely set headers manually&mdash;tools like the <code>requests</code> library handle most of them for you.</p>
+
+<h3>Using Python's requests Library</h3>
+<p>Python's <code>requests</code> library makes HTTP calls simple. It's not part of the standard library, so you need to install it:</p>
+
+<div role="note" class="callout info">
+<div class="callout-title">Current Tool (March 2026)</div>
+<p><strong>requests</strong> (Python, free). The most popular HTTP library for Python. Install inside your virtual environment: <code>pip install requests</code>.</p>
+</div>
+
+<div class="prompt-block"><span class="label">Terminal</span># Make sure your virtual environment is activated first
+pip install requests</div>
+
+<h4>Making a GET Request</h4>
+<pre><code>import requests
+
+response = requests.get("https://api.github.com/users/octocat")
+
+print(response.status_code)  # 200
+print(response.json())       # Python dict with user data</code></pre>
+<p><code>requests.get()</code> sends a GET request to the URL. The response object gives you the status code with <code>.status_code</code> and the parsed JSON body with <code>.json()</code>.</p>
+
+<h4>Making a POST Request</h4>
+<pre><code>import requests
+
+data = {"title": "Buy groceries", "done": False}
+response = requests.post("http://localhost:5000/tasks", json=data)
+
+print(response.status_code)  # 201
+print(response.json())       # {"id": 1, "title": "Buy groceries", "done": false}</code></pre>
+<p>The <code>json=data</code> parameter automatically converts the Python dict to JSON and sets the <code>Content-Type</code> header for you.</p>
+
+<h4>All Four Methods</h4>
+<pre><code>import requests
+
+BASE = "http://localhost:5000"
+
+# GET    - read
+r = requests.get(f"{BASE}/tasks")
+
+# POST   - create
+r = requests.post(f"{BASE}/tasks", json={"title": "New task"})
+
+# PUT    - update
+r = requests.put(f"{BASE}/tasks/1/done")
+
+# DELETE - remove
+r = requests.delete(f"{BASE}/tasks/1")</code></pre>
+
+<h3>Consuming a Public API</h3>
+<p>Let's try a real public API. The GitHub API is free and requires no authentication for basic requests:</p>
+<pre><code>import requests
+
+# Get public info about a GitHub user
+response = requests.get("https://api.github.com/users/octocat")
+
+if response.status_code == 200:
+    user = response.json()
+    print(f"Name: {user['name']}")
+    print(f"Public repos: {user['public_repos']}")
+    print(f"Followers: {user['followers']}")
+else:
+    print(f"Error: {response.status_code}")</code></pre>
+<div class="api-demo" data-url="https://api.github.com/users/octocat">
+  <div class="api-demo-bar">
+    <button class="api-demo-btn">Try it Live</button>
+  </div>
+</div>
+<p>Always check the status code before using the response data. A <code>200</code> means success. Anything else means something went wrong, and <code>response.json()</code> might not contain what you expect.</p>
+
+<h3>Common Misconceptions</h3>
+<div role="note" class="callout warn">
+<div class="callout-title">"APIs Are Only for Web Developers"</div>
+<p>APIs are how programs talk to each other. Data scientists use APIs to fetch datasets. DevOps engineers use APIs to manage cloud infrastructure. AI agents use APIs to call language models. If you write code that interacts with any external service, you're using an API.</p>
+</div>
+
+<div role="note" class="callout warn">
+<div class="callout-title">"GET and POST Are Interchangeable"</div>
+<p>They're not. GET retrieves data and should never modify anything on the server. POST creates new data. Using the wrong method confuses other developers and breaks tooling that relies on these conventions. The method communicates intent.</p>
+</div>
+
+<h3>TaskForge Connection</h3>
+<p>Right now TaskForge is a CLI tool&mdash;you interact with it from the terminal. But what if a web frontend, a mobile app, or an AI agent wants to manage tasks? They would need an API. In Chapter 14, you'll build exactly that: a Flask web API for TaskForge. But first, you'll practice consuming an API with Python's <code>requests</code> library so you understand both sides of the conversation.</p>
+
+<h3>Micro-Exercises</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">1: Fetch a GitHub User</div>
+<p>Use <code>requests</code> to fetch information about any GitHub user and print their name and number of public repos.</p>
+<pre><code>import requests
+
+response = requests.get("https://api.github.com/users/octocat")
+data = response.json()
+print(f"Name: {data['name']}")
+print(f"Repos: {data['public_repos']}")</code></pre>
+<div class="api-demo" data-url="https://api.github.com/users/{username}">
+  <div class="api-demo-bar">
+    <input class="api-demo-input" type="text" placeholder="GitHub username" value="octocat">
+    <button class="api-demo-btn">Try it Live</button>
+  </div>
+</div>
+<p>Try replacing <code>"octocat"</code> with your own GitHub username.</p>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">2: Check the Status Code</div>
+<p>Request a URL that doesn't exist and confirm you get a 404:</p>
+<pre><code>import requests
+
+response = requests.get("https://api.github.com/users/this-user-does-not-exist-999999")
+print(response.status_code)  # 404</code></pre>
+<p>Now try <code>https://api.github.com/</code> (the root) and confirm you get a <code>200</code>.</p>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">Try This Now</div>
+<p>Write a Python script that fetches the 5 most recent public repositories for a GitHub user and prints their names and star counts.</p>
+<div class="prompt-block"><span class="label">github_repos.py</span>import requests
+
+username = "octocat"
+url = f"https://api.github.com/users/{username}/repos"
+response = requests.get(url, params={"sort": "created", "per_page": 5})
+
+if response.status_code == 200:
+    repos = response.json()
+    for repo in repos:
+        stars = repo["stargazers_count"]
+        print(f"{repo['name']} - {stars} stars")
+else:
+    print(f"Error: {response.status_code}")</div>
+<div class="api-demo" data-url="https://api.github.com/users/{username}/repos?sort=created&per_page=5">
+  <div class="api-demo-bar">
+    <input class="api-demo-input" type="text" placeholder="GitHub username" value="octocat">
+    <button class="api-demo-btn">Try it Live</button>
+  </div>
+</div>
+<p><strong>Verification:</strong> Running the script prints 5 repository names with their star counts. Change the <code>username</code> variable and run again&mdash;you should see different results.</p>
+<p><strong>If this doesn't work:</strong> (1) <code>ModuleNotFoundError: No module named 'requests'</code> &rarr; make sure your virtual environment is activated and run <code>pip install requests</code>. (2) <code>ConnectionError</code> &rarr; check your internet connection. (3) Status code <code>403</code> &rarr; you've hit the GitHub API rate limit (60 requests/hour for unauthenticated users). Wait a few minutes and try again.</p>
+</div>
+
+<div class="pq">Every web service you've ever used&mdash;from checking the weather to asking an AI a question&mdash;works through HTTP requests and responses. You now understand the protocol that connects the internet.</div>
+
+<h3>Interactive Exercises</h3>
+
+<div class="quiz" data-ch="13" data-ex="quiz-methods">
+  <h4>Knowledge Check</h4>
+  <p>Which HTTP method is used to create a new resource?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">GET</button>
+    <button class="quiz-option" data-correct="true">POST</button>
+    <button class="quiz-option" data-correct="false">PUT</button>
+    <button class="quiz-option" data-correct="false">DELETE</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz" data-ch="13" data-ex="quiz-status">
+  <h4>Knowledge Check</h4>
+  <p>What does a 404 status code mean?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">Server error</button>
+    <button class="quiz-option" data-correct="false">Success</button>
+    <button class="quiz-option" data-correct="true">Resource not found</button>
+    <button class="quiz-option" data-correct="false">Unauthorized</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="13" data-ex="parse-api">
+  <div class="exercise-header">
+    <h4>Design Challenge: "Parse API Response"</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Write <code>extract_repos(json_str)</code> that parses a JSON string of GitHub repos and returns a list of <code>(name, stars)</code> tuples, sorted by stars descending.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+import json
+
+def extract_repos(json_str):
+    # Your code here
+    pass
+
+# Test data:
+sample = '[{"name": "flask", "stargazers_count": 65000}, {"name": "requests", "stargazers_count": 51000}, {"name": "django", "stargazers_count": 76000}]'
+print(extract_repos(sample))
+</script>
+    <script type="text/plain" class="test-code">
+import json
+sample = '[{"name": "flask", "stargazers_count": 65000}, {"name": "requests", "stargazers_count": 51000}, {"name": "django", "stargazers_count": 76000}]'
+result = extract_repos(sample)
+assert result[0] == ("django", 76000), "Django should be first (most stars)"
+assert result[1] == ("flask", 65000), "Flask second"
+assert result[2] == ("requests", 51000), "Requests third"
+assert extract_repos('[]') == [], "Empty list"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">Use <code>json.loads()</code> to parse the string into a Python list.</p>
+    <p class="hint">Use a list comprehension to extract <code>(name, stargazers_count)</code> tuples.</p>
+    <p class="hint">Sort with <code>sorted(items, key=lambda x: x[1], reverse=True)</code>.</p>
+  </div>
+</div>
+
+<h3>Optional: Web Scraping with Python</h3>
+<div role="note" class="callout info">
+<div class="callout-title">This Section Is Optional</div>
+<p>Web scraping extends the HTTP skills from this chapter but is not required for later chapters. Skip it if you want to move forward; come back when you need to extract data from web pages.</p>
+</div>
+
+<p>Web scraping means making HTTP requests to web pages and extracting data from the HTML. The difference from APIs: APIs return structured JSON, web pages return HTML that you parse.</p>
+
+<h4>When to Scrape vs. When to Use an API</h4>
+<p>If the site has an API, <strong>use the API</strong> — it's faster, more reliable, and more polite. Scrape only when there's no API and the data is publicly accessible.</p>
+
+<div role="note" class="callout warn">
+<div class="callout-title">Scraping Ethics</div>
+<p>Respect <code>robots.txt</code>, rate-limit your requests with <code>time.sleep()</code>, and check terms of service. Scraping is a tool, not a right.</p>
+</div>
+
+<h4>Basics with BeautifulSoup</h4>
+<div role="note" class="callout info">
+<div class="callout-title">Dependency Note</div>
+<p><strong>Note:</strong> BeautifulSoup (<code>pip install beautifulsoup4</code>) is an optional tool not required for the exercises. The exercise below uses Python&rsquo;s built-in <code>html.parser</code> instead.</p>
+</div>
+<pre><code>import requests
+from bs4 import BeautifulSoup
+
+# Fetch the page
+response = requests.get("https://example.com/data")
+soup = BeautifulSoup(response.text, "html.parser")
+
+# Find elements
+title = soup.find("h1").text
+links = [a["href"] for a in soup.find_all("a")]
+rows = soup.select("table tr")  # CSS selector</code></pre>
+
+<p><strong>Common patterns:</strong></p>
+<ul>
+<li><code>soup.find("tag")</code> &mdash; first matching element</li>
+<li><code>soup.find_all("tag")</code> &mdash; all matching elements</li>
+<li><code>soup.select(".class")</code> &mdash; CSS selector</li>
+<li><code>tag.text</code> or <code>tag.get_text(strip=True)</code> &mdash; extract text</li>
+<li><code>tag["href"]</code> &mdash; extract attribute</li>
+</ul>
+
+<div class="exercise" data-type="pyodide" data-ch="13" data-ex="scraping">
+  <div class="exercise-header">
+    <h4>Exercise: Parse HTML Data</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Given an HTML string, extract all link texts and URLs into a list of dicts. Uses Python's built-in <code>html.parser</code> since BeautifulSoup isn't available in the browser.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+from html.parser import HTMLParser
+
+def extract_links(html_string):
+    """Extract all <a> tags and return [{"text": ..., "href": ...}, ...]"""
+    links = []
+
+    class LinkParser(HTMLParser):
+        def __init__(self):
+            super().__init__()
+            self.current_href = None
+            self.current_text = ""
+            self.in_a = False
+
+        def handle_starttag(self, tag, attrs):
+            # TODO: If tag is "a", set self.in_a = True,
+            # reset self.current_text, and extract "href" from attrs.
+            # attrs is a list of (name, value) tuples.
+            pass
+
+        def handle_data(self, data):
+            if self.in_a:
+                self.current_text += data
+
+        def handle_endtag(self, tag):
+            if tag == "a" and self.in_a:
+                links.append({"text": self.current_text.strip(), "href": self.current_href})
+                self.in_a = False
+                self.current_href = None
+
+    parser = LinkParser()
+    parser.feed(html_string)
+    return links
+
+# Test HTML
+test_html = """
+<div>
+  <a href="https://python.org">Python</a>
+  <a href="https://github.com">GitHub</a>
+  <a href="/about">About</a>
+</div>
+"""
+</script>
+    <script type="text/plain" class="test-code">
+result = extract_links(test_html)
+assert len(result) == 3, f"Should find 3 links, found {len(result)}"
+assert result[0]["text"] == "Python", "First link text should be 'Python'"
+assert result[0]["href"] == "https://python.org", "First href should be python.org"
+assert result[1]["text"] == "GitHub", "Second link text should be 'GitHub'"
+assert result[2]["href"] == "/about", "Third href should be '/about'"
+print("All tests passed!")
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">Inside handle_starttag, check if <code>tag == "a"</code>. If so, set <code>self.in_a = True</code> and reset <code>self.current_text = ""</code>.</p>
+    <p class="hint">Loop through attrs with <code>for name, value in attrs:</code> and check <code>if name == "href":</code> to grab the URL.</p>
+    <p class="hint">Full solution: <code>if tag == "a": self.in_a = True; self.current_text = ""; [set self.current_href = value for (name, value) in attrs if name == "href"]</code></p>
+  </div>
+</div>
+
+</section>
+
+<!-- ===== CH 14 ===== -->
+<section id="ch14" data-ch="14">
+<h2><span class="ch-label">Chapter 14</span> Building Web APIs with Flask</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>Chapter 13 taught you to consume APIs. Now you build one. This is the bridge from user to creator&mdash;and it's what the Phase 4 Gate requires.</p>
+</div>
+
+<h3>What Is Flask?</h3>
+<p><strong>Flask</strong> is a minimal Python web framework. It lets you turn Python functions into API endpoints with just a few lines of code. Unlike larger frameworks (Django), Flask gives you only what you need and gets out of the way.</p>
+
+<div role="note" class="callout info">
+<div class="callout-title">Current Tool (March 2026)</div>
+<p><strong>Flask</strong> (Python, free). Minimal web framework for building APIs and web apps. Install: <code>pip install flask</code>.</p>
+</div>
+
+<h3>Your First Flask App</h3>
+<p>A complete Flask app in 5 lines:</p>
+<pre><code>from flask import Flask
+
+app = Flask(__name__)
+
+@app.route("/")
+def hello():
+    return "Hello, World!"
+
+if __name__ == "__main__":
+    app.run(debug=True)</code></pre>
+<p>Save as <code>app.py</code> and run with <code>python3 app.py</code>. Open <code>http://localhost:5000</code> in your browser. You just built a web server.</p>
+<p><code>@app.route("/")</code> is a <strong>decorator</strong>&mdash;it tells Flask which URL triggers which function. <code>debug=True</code> auto-reloads on code changes and shows helpful error pages.</p>
+
+<h3>Routes and Methods</h3>
+<p>Each endpoint is a URL + HTTP method combination. Flask defaults to GET only. To accept other methods, specify them explicitly:</p>
+<pre><code>@app.route("/tasks", methods=["GET", "POST"])
+def handle_tasks():
+    if request.method == "GET":
+        # return all tasks
+        pass
+    elif request.method == "POST":
+        # create a new task
+        pass</code></pre>
+<p>You can also use separate functions for each method, which is cleaner:</p>
+<pre><code>@app.route("/tasks", methods=["GET"])
+def get_tasks():
+    # return all tasks
+    pass
+
+@app.route("/tasks", methods=["POST"])
+def create_task():
+    # create a new task
+    pass</code></pre>
+
+<h3>Returning JSON</h3>
+<p>APIs return JSON, not HTML. Flask provides <code>jsonify()</code> to convert Python dicts to proper JSON responses with the correct <code>Content-Type</code> header:</p>
+<pre><code>from flask import Flask, jsonify
+
+@app.route("/status")
+def status():
+    return jsonify({"status": "running", "version": "1.0"}), 200</code></pre>
+<p>The second value (<code>200</code>) is the HTTP status code. Common codes:</p>
+<table>
+<caption>Common HTTP status codes for Flask API responses</caption>
+<tr><th>Code</th><th>Meaning</th><th>When to Use</th></tr>
+<tr><td><code>200</code></td><td>OK</td><td>Successful GET or PUT</td></tr>
+<tr><td><code>201</code></td><td>Created</td><td>Successful POST that creates a resource</td></tr>
+<tr><td><code>400</code></td><td>Bad Request</td><td>Client sent invalid data</td></tr>
+<tr><td><code>404</code></td><td>Not Found</td><td>Resource doesn't exist</td></tr>
+<tr><td><code>500</code></td><td>Server Error</td><td>Something broke on your end</td></tr>
+</table>
+
+<h3>Reading Request Data</h3>
+<p>When a client sends data to your API, you need to read it. Flask provides two main ways:</p>
+<pre><code>from flask import Flask, request, jsonify
+
+# JSON body (for POST/PUT requests)
+@app.route("/tasks", methods=["POST"])
+def create_task():
+    data = request.json          # parse JSON body
+    title = data.get("title")   # safely get a field
+    return jsonify({"title": title}), 201
+
+# Query parameters (for GET requests)
+# GET /tasks?status=pending
+@app.route("/tasks", methods=["GET"])
+def get_tasks():
+    status = request.args.get("status", "all")  # default to "all"
+    return jsonify({"filter": status})</code></pre>
+<p><code>request.json</code> parses the JSON body sent by the client. <code>request.args</code> reads URL query parameters (everything after the <code>?</code>).</p>
+
+<h3>Building a TaskForge API</h3>
+<p>Let's build a complete REST API for TaskForge, step by step. We'll use an in-memory list to store tasks&mdash;no database needed yet.</p>
+
+<h4>Step 1: Setup and Data Store</h4>
+<pre><code>from flask import Flask, jsonify, request
+
+app = Flask(__name__)
+
+# In-memory task storage
+tasks = []
+next_id = 1</code></pre>
+
+<h4>Step 2: GET /tasks &mdash; List All Tasks</h4>
+<pre><code>@app.route("/tasks", methods=["GET"])
+def get_tasks():
+    return jsonify(tasks), 200</code></pre>
+<p>This returns the entire task list as a JSON array. Simple and direct.</p>
+
+<h4>Step 3: POST /tasks &mdash; Add a Task</h4>
+<pre><code>@app.route("/tasks", methods=["POST"])
+def create_task():
+    global next_id
+    data = request.json
+
+    if not data or "title" not in data:
+        return jsonify({"error": "title is required"}), 400
+
+    task = {
+        "id": next_id,
+        "title": data["title"],
+        "done": False
+    }
+    tasks.append(task)
+    next_id += 1
+    return jsonify(task), 201</code></pre>
+<p>Notice the validation: if the client doesn't send a <code>title</code>, we return a <code>400 Bad Request</code> with a clear error message. Never trust client input.</p>
+
+<h4>Step 4: PUT /tasks/&lt;id&gt;/done &mdash; Mark Task Complete</h4>
+<pre><code>@app.route("/tasks/&lt;int:task_id&gt;/done", methods=["PUT"])
+def complete_task(task_id):
+    for task in tasks:
+        if task["id"] == task_id:
+            task["done"] = True
+            return jsonify(task), 200
+
+    return jsonify({"error": "task not found"}), 404</code></pre>
+<p><code>&lt;int:task_id&gt;</code> is a <strong>URL variable</strong>&mdash;Flask extracts the number from the URL and passes it as a function parameter. If no task matches, we return <code>404</code>.</p>
+
+<h4>Step 5: Run It</h4>
+<pre><code>if __name__ == "__main__":
+    app.run(debug=True)</code></pre>
+
+<div class="diagram">
+<svg viewBox="0 0 700 180" xmlns="http://www.w3.org/2000/svg" aria-label="Flask request routing diagram showing how a request is matched to a handler function">
+  <!-- Client -->
+  <rect class="node-accent" x="20" y="60" width="120" height="60" rx="8"/>
+  <text class="label-text" x="80" y="85" text-anchor="middle">Client</text>
+  <text class="sub-text" x="80" y="100" text-anchor="middle">curl / browser</text>
+  <!-- Request arrow -->
+  <line x1="140" y1="78" x2="230" y2="78" class="arrow"/>
+  <text class="sub-text" x="185" y="72" text-anchor="middle">HTTP Request</text>
+  <!-- Flask App box -->
+  <rect class="node-fill" x="230" y="20" width="260" height="140" rx="8"/>
+  <text class="label-text" x="360" y="42" text-anchor="middle">Flask App</text>
+  <!-- Route matching -->
+  <rect class="node-accent" x="250" y="55" width="220" height="36" rx="6"/>
+  <text class="sub-text" x="360" y="70" text-anchor="middle">Route Matching</text>
+  <text class="sub-text" x="360" y="82" text-anchor="middle">/tasks &rarr; get_tasks()</text>
+  <!-- Handler -->
+  <line x1="360" y1="91" x2="360" y2="105" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <rect class="node-fill" x="280" y="105" width="160" height="36" rx="6" style="stroke:var(--accent);stroke-width:1"/>
+  <text class="sub-text" x="360" y="120" text-anchor="middle">Handler Function</text>
+  <text class="sub-text" x="360" y="132" text-anchor="middle">return jsonify(data)</text>
+  <!-- Response arrow -->
+  <line x1="230" y1="102" x2="140" y2="102" stroke="var(--a3)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text class="sub-text" x="185" y="118" text-anchor="middle" fill="var(--a3)">JSON Response</text>
+  <!-- Response box -->
+  <rect class="node-fill" x="530" y="60" width="150" height="60" rx="8"/>
+  <text class="label-text" x="605" y="85" text-anchor="middle">Response</text>
+  <text class="sub-text" x="605" y="100" text-anchor="middle">200 + JSON body</text>
+  <line x1="490" y1="90" x2="530" y2="90" class="arrow"/>
+</svg>
+<div class="diagram-caption">A request arrives, Flask matches the URL to a route, the handler function runs and returns data, and the client receives a JSON response.</div>
+</div>
+
+<h3>Testing Your API</h3>
+<p>With your Flask app running in one terminal, open another terminal and test with <code>curl</code>:</p>
+<div class="prompt-block"><span class="label">Terminal</span># List all tasks (empty at first)
+curl http://localhost:5000/tasks
+
+# Add a task
+curl -X POST -H "Content-Type: application/json" \
+  -d '{"title": "Buy groceries"}' \
+  http://localhost:5000/tasks
+
+# Add another task
+curl -X POST -H "Content-Type: application/json" \
+  -d '{"title": "Write tests"}' \
+  http://localhost:5000/tasks
+
+# List again (now shows 2 tasks)
+curl http://localhost:5000/tasks
+
+# Mark task 1 as done
+curl -X PUT http://localhost:5000/tasks/1/done
+
+# Verify it changed
+curl http://localhost:5000/tasks</div>
+
+<p>You can also test with Python <code>requests</code> (from Chapter 13):</p>
+<pre><code>import requests
+
+# Add a task
+r = requests.post("http://localhost:5000/tasks",
+                   json={"title": "Test from Python"})
+print(r.status_code)  # 201
+print(r.json())       # {"id": 1, "title": "Test from Python", "done": false}
+
+# List all tasks
+r = requests.get("http://localhost:5000/tasks")
+print(r.json())       # [{"id": 1, ...}]</code></pre>
+
+<h3>Error Handling in APIs</h3>
+<p>A good API returns clear error responses so the client knows what went wrong and how to fix it:</p>
+<pre><code># Bad request: missing required field
+@app.route("/tasks", methods=["POST"])
+def create_task():
+    data = request.json
+    if not data or "title" not in data:
+        return jsonify({"error": "title is required"}), 400
+
+    if not isinstance(data["title"], str) or len(data["title"].strip()) == 0:
+        return jsonify({"error": "title must be a non-empty string"}), 400
+
+    # ... create the task
+
+# Not found
+@app.route("/tasks/&lt;int:task_id&gt;/done", methods=["PUT"])
+def complete_task(task_id):
+    for task in tasks:
+        if task["id"] == task_id:
+            task["done"] = True
+            return jsonify(task), 200
+    return jsonify({"error": f"task {task_id} not found"}), 404
+
+# Catch unexpected errors
+@app.errorhandler(500)
+def internal_error(e):
+    return jsonify({"error": "internal server error"}), 500</code></pre>
+
+<p>The pattern: always return JSON with an <code>"error"</code> key and an appropriate status code. Never return a bare string or an HTML error page from an API.</p>
+
+<h3>Common Misconceptions</h3>
+<div role="note" class="callout warn">
+<div class="callout-title">"Flask Is Only for Small Projects"</div>
+<p>Flask scales. Instagram, Pinterest, and Netflix have used Flask in production. The difference between a toy project and a production app is architecture, not the framework. Flask gives you the flexibility to add complexity only when you need it.</p>
+</div>
+
+<div role="note" class="callout warn">
+<div class="callout-title">"You Need a Database for an API"</div>
+<p>Not to start. Our TaskForge API uses a Python list&mdash;perfectly fine for learning and prototyping. Data disappears when you restart the server, but that's a problem you'll solve in Chapter 15 with SQLite. Start simple, add complexity when you need it.</p>
+</div>
+
+<h3>TaskForge Connection</h3>
+<p>You just turned TaskForge from a CLI tool into a web API. Any program&mdash;a web frontend, a mobile app, another Python script, or an AI agent&mdash;can now create and manage tasks by making HTTP requests. In the Phase 4 Gate, this API is part of the required artifact.</p>
+
+<h3>Micro-Exercises</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">1: Hello API</div>
+<p>Create a Flask app with a single GET endpoint that returns <code>{"message": "Hello, World!"}</code>.</p>
+<pre><code>from flask import Flask, jsonify
+
+app = Flask(__name__)
+
+@app.route("/")
+def hello():
+    return jsonify({"message": "Hello, World!"})
+
+if __name__ == "__main__":
+    app.run(debug=True)</code></pre>
+<p>Run it and visit <code>http://localhost:5000</code> in your browser. You should see the JSON response.</p>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">2: Greeting Endpoint</div>
+<p>Add a POST endpoint that accepts a name in JSON and returns a greeting.</p>
+<pre><code>from flask import Flask, jsonify, request
+
+app = Flask(__name__)
+
+@app.route("/greet", methods=["POST"])
+def greet():
+    data = request.json
+    name = data.get("name", "stranger")
+    return jsonify({"greeting": f"Hello, {name}!"}), 200
+
+if __name__ == "__main__":
+    app.run(debug=True)</code></pre>
+<p>Test: <code>curl -X POST -H "Content-Type: application/json" -d '{"name": "Alice"}' http://localhost:5000/greet</code></p>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">Try This Now</div>
+<p>Build a complete REST API for TaskForge with GET /tasks, POST /tasks, and PUT /tasks/&lt;id&gt;/done endpoints. Test each with curl.</p>
+<div class="prompt-block"><span class="label">taskforge_api.py</span>from flask import Flask, jsonify, request
+
+app = Flask(__name__)
+tasks = []
+next_id = 1
+
+@app.route("/tasks", methods=["GET"])
+def get_tasks():
+    return jsonify(tasks), 200
+
+@app.route("/tasks", methods=["POST"])
+def create_task():
+    global next_id
+    data = request.json
+    if not data or "title" not in data:
+        return jsonify({"error": "title is required"}), 400
+    task = {"id": next_id, "title": data["title"], "done": False}
+    tasks.append(task)
+    next_id += 1
+    return jsonify(task), 201
+
+@app.route("/tasks/&lt;int:task_id&gt;/done", methods=["PUT"])
+def complete_task(task_id):
+    for task in tasks:
+        if task["id"] == task_id:
+            task["done"] = True
+            return jsonify(task), 200
+    return jsonify({"error": "task not found"}), 404
+
+if __name__ == "__main__":
+    app.run(debug=True)</div>
+<p><strong>Verification:</strong> <code>curl http://localhost:5000/tasks</code> returns a JSON array. <code>curl -X POST -H "Content-Type: application/json" -d '{"title":"Test"}' http://localhost:5000/tasks</code> creates a task.</p>
+<p><strong>If this doesn't work:</strong> (1) Port already in use &rarr; kill the existing process or use <code>app.run(port=5001)</code>. (2) Import errors &rarr; make sure Flask is installed in your venv (<code>pip install flask</code>). (3) <code>curl</code> returns HTML instead of JSON &rarr; make sure you're using <code>jsonify()</code>, not returning a plain string.</p>
+</div>
+
+<div class="pq">You just built a web API from scratch. Any program on the internet can now interact with TaskForge&mdash;the same pattern behind every web service, from GitHub to Anthropic's Claude API.</div>
+
+<h3>Interactive Exercises</h3>
+
+<div class="quiz" data-ch="14" data-ex="quiz-route">
+  <h4>Knowledge Check</h4>
+  <p>What decorator makes a function handle GET requests to /tasks?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false"><code>@app.get('/tasks')</code></button>
+    <button class="quiz-option" data-correct="true"><code>@app.route('/tasks')</code></button>
+    <button class="quiz-option" data-correct="false"><code>@app.url('/tasks')</code></button>
+    <button class="quiz-option" data-correct="false"><code>@app.handle('/tasks')</code></button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz" data-ch="14" data-ex="quiz-201">
+  <h4>Knowledge Check</h4>
+  <p>What status code should a successful POST request return when creating a resource?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">200</button>
+    <button class="quiz-option" data-correct="true">201</button>
+    <button class="quiz-option" data-correct="false">301</button>
+    <button class="quiz-option" data-correct="false">404</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="14" data-ex="test-api">
+  <div class="exercise-header">
+    <h4>Test Your API Endpoints</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Below is a simplified TaskForge API with <code>get_tasks()</code> and <code>add_task()</code>. Write 4 test functions that verify: (1) GET returns an empty list initially, (2) POST adds a task and returns 201, (3) POST without a title returns 400, (4) GET after adding returns the task. The test helpers <code>get(path)</code> and <code>post(path, data)</code> are provided.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+# Simulated API (no Flask needed in browser)
+tasks = []
+
+def get(path):
+    if path == "/tasks":
+        return {"status": 200, "json": list(tasks)}
+    return {"status": 404, "json": {"error": "not found"}}
+
+def post(path, data=None):
+    if path == "/tasks":
+        if not data or not data.get("title"):
+            return {"status": 400, "json": {"error": "title required"}}
+        task = {"id": len(tasks) + 1, "title": data["title"], "status": "pending"}
+        tasks.append(task)
+        return {"status": 201, "json": task}
+    return {"status": 404, "json": {"error": "not found"}}
+
+# Write your tests below:
+def test_get_empty():
+    tasks.clear()
+    pass  # Your assertion here
+
+def test_add_task():
+    tasks.clear()
+    pass  # Your assertion here
+
+def test_add_without_title():
+    tasks.clear()
+    pass  # Your assertion here
+
+def test_get_after_add():
+    tasks.clear()
+    pass  # Your assertion here
+</script>
+    <script type="text/plain" class="test-code">
+tasks.clear()
+test_get_empty()
+tasks.clear()
+test_add_task()
+tasks.clear()
+test_add_without_title()
+tasks.clear()
+test_get_after_add()
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint"><code>test_get_empty</code>: call <code>get("/tasks")</code> and assert the status is 200 and the json is <code>[]</code>.</p>
+    <p class="hint"><code>test_add_task</code>: call <code>post("/tasks", {"title": "Test"})</code> and assert status is 201 and the returned json has the title.</p>
+    <p class="hint"><code>test_add_without_title</code>: call <code>post("/tasks", {})</code> and assert status is 400.</p>
+  </div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="14" data-ex="validate">
+  <div class="exercise-header">
+    <h4>Design Challenge: "Request Validator"</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Write <code>validate_task(data)</code> that validates a task dict: 'title' is required (non-empty string), 'priority' is optional (must be 'high', 'medium', or 'low'), 'due_date' is optional (must match YYYY-MM-DD). Return a list of error strings, or empty list if valid.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def validate_task(data):
+    errors = []
+    # Your code here
+    return errors
+</script>
+    <script type="text/plain" class="test-code">
+assert validate_task({"title": "Buy milk"}) == [], "Valid simple task"
+assert len(validate_task({})) > 0, "Missing title should error"
+assert len(validate_task({"title": ""})) > 0, "Empty title should error"
+assert validate_task({"title": "Test", "priority": "high"}) == [], "Valid priority"
+assert len(validate_task({"title": "Test", "priority": "urgent"})) > 0, "Invalid priority"
+assert validate_task({"title": "Test", "due_date": "2026-03-16"}) == [], "Valid date"
+assert len(validate_task({"title": "Test", "due_date": "March 16"})) > 0, "Invalid date format"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">Check if 'title' key exists AND is a non-empty string.</p>
+    <p class="hint">For priority, use <code>if 'priority' in data and data['priority'] not in ('high', 'medium', 'low')</code>.</p>
+    <p class="hint">For due_date, try <code>datetime.strptime(data['due_date'], '%Y-%m-%d')</code> in a try/except. Import datetime at top.</p>
+  </div>
+</div>
+
+<h3>Connecting a Frontend to Your API</h3>
+<p>You built an API. Now let's connect it to a web page. You need just enough HTML, CSS, and JavaScript to consume your own API — this is <em>minimum viable frontend</em>, not a full web development course.</p>
+
+<h4>HTML in 5 Minutes</h4>
+<p>HTML is a tree of nested tags that describe a document's structure:</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;TaskForge&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;My Tasks&lt;/h1&gt;
+    &lt;ul id="task-list"&gt;&lt;/ul&gt;
+    &lt;input id="new-task" type="text" placeholder="New task..."&gt;
+    &lt;button id="add-btn"&gt;Add Task&lt;/button&gt;
+    &lt;script src="app.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+<div role="note" class="callout info">
+<div class="callout-title">Reading HTML, Not Mastering It</div>
+<p>AI generates HTML constantly. You need to read it, not master it. Focus on understanding the tree structure: which tags are parents, which are children, and what <code>id</code> and <code>class</code> attributes do.</p>
+</div>
+
+<h4>CSS in 2 Minutes</h4>
+<p>CSS controls how your HTML looks &mdash; colors, layout, spacing, fonts. AI generates CSS well, so you mainly need to <em>read</em> it rather than write it from scratch. The key concept: a <code>&lt;link rel='stylesheet' href='style.css'&gt;</code> tag in your HTML imports a CSS file that styles elements by matching selectors to tags, classes, and IDs.</p>
+
+<h4>JavaScript fetch() in 5 Minutes</h4>
+<p><code>fetch()</code> calls your API from the browser. Here's a complete example that talks to a TaskForge Flask API:</p>
+<pre><code>// GET: Fetch all tasks and display them
+fetch("http://localhost:5000/api/tasks")
+  .then(response =&gt; response.json())
+  .then(tasks =&gt; {
+    const list = document.getElementById("task-list");
+    list.innerHTML = "";
+    tasks.forEach(task =&gt; {
+      const li = document.createElement("li");
+      li.textContent = task.title;
+      list.appendChild(li);
+    });
+  });
+
+// POST: Add a new task
+function addTask(title) {
+  fetch("http://localhost:5000/api/tasks", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ title: title, status: "todo" })
+  })
+  .then(response =&gt; response.json())
+  .then(task =&gt; console.log("Created:", task));
+}</code></pre>
+
+<div role="note" class="callout info">
+<div class="callout-title">Going Deeper: Frontend Development</div>
+<p>This section teaches the minimum to consume an API. If you want to build real frontends, start with <a href="https://developer.mozilla.org/">MDN Web Docs</a> &mdash; the authoritative reference for HTML, CSS, and JavaScript.</p>
+</div>
+
+</section>
+
+<!-- ===== CH 15 ===== -->
+<section id="ch15" data-ch="15">
+<h2><span class="ch-label">Chapter 15</span> Database Basics</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>TaskForge currently loses all data when you close it. Databases solve this permanently. Every real application uses one.</p>
+</div>
+
+<h3>What Is a Database?</h3>
+<p>A <strong>database</strong> is structured storage that persists beyond program execution. When you close your Python script, variables disappear. When you close a program backed by a database, the data stays. Every real application&mdash;from TaskForge to GitHub to the Anthropic API&mdash;stores its data in a database.</p>
+
+<h3>SQL vs NoSQL</h3>
+<p>There are two major families of databases. For this course, we focus on SQL.</p>
+<table>
+<caption>Comparison of SQL and NoSQL databases</caption>
+<tr><th>Feature</th><th>SQL</th><th>NoSQL</th></tr>
+<tr><td>Structure</td><td>Tables with rows and columns</td><td>Flexible documents or key-value pairs</td></tr>
+<tr><td>Schema</td><td>Strict&mdash;define columns before inserting data</td><td>Flexible&mdash;each document can differ</td></tr>
+<tr><td>Query Language</td><td>SQL (Structured Query Language)</td><td>Varies by database</td></tr>
+<tr><td>Examples</td><td>PostgreSQL, SQLite, MySQL</td><td>MongoDB, Redis, DynamoDB</td></tr>
+<tr><td>Best For</td><td>Structured data with relationships</td><td>Rapidly changing schemas, caching</td></tr>
+</table>
+
+<h3>SQLite &mdash; Your First Database</h3>
+<p>We start with <strong>SQLite</strong> because it removes every barrier to getting started:</p>
+<ul>
+<li><strong>No server</strong>&mdash;it's a library, not a service. No installation, no configuration, no passwords.</li>
+<li><strong>Built into Python</strong>&mdash;<code>import sqlite3</code> works out of the box. No <code>pip install</code> required.</li>
+<li><strong>File-based</strong>&mdash;your entire database is a single file (<code>tasks.db</code>). Copy it, back it up, delete it&mdash;just like any file.</li>
+</ul>
+<p>SQLite is not a toy. It's used in production by every iPhone, every Android phone, every web browser, and every copy of Python. For learning and for single-user applications like TaskForge, it's the right choice.</p>
+
+<h3>Basic SQL</h3>
+<p>SQL is a language for talking to databases. The core is just 5 commands:</p>
+
+<h4>CREATE TABLE &mdash; Define Your Structure</h4>
+<pre><code>CREATE TABLE tasks (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    done BOOLEAN DEFAULT 0
+);</code></pre>
+<p>This creates a table with three columns. <code>PRIMARY KEY AUTOINCREMENT</code> means each task gets a unique, auto-assigned ID. <code>NOT NULL</code> means the title is required. <code>DEFAULT 0</code> means new tasks start as not done.</p>
+
+<h4>INSERT &mdash; Add Data</h4>
+<pre><code>INSERT INTO tasks (title, done) VALUES ('Buy groceries', 0);
+INSERT INTO tasks (title, done) VALUES ('Write tests', 0);
+INSERT INTO tasks (title, done) VALUES ('Deploy API', 1);</code></pre>
+
+<h4>SELECT &mdash; Read Data</h4>
+<pre><code>-- Get all tasks
+SELECT * FROM tasks;
+
+-- Get only incomplete tasks
+SELECT * FROM tasks WHERE done = 0;
+
+-- Get just titles
+SELECT title FROM tasks WHERE done = 0;</code></pre>
+
+<h4>UPDATE &mdash; Modify Data</h4>
+<pre><code>UPDATE tasks SET done = 1 WHERE id = 1;</code></pre>
+<p>Always include a <code>WHERE</code> clause. Without it, you update <em>every</em> row.</p>
+
+<h4>DELETE &mdash; Remove Data</h4>
+<pre><code>DELETE FROM tasks WHERE id = 1;</code></pre>
+<p>Same rule: always use <code>WHERE</code>. <code>DELETE FROM tasks</code> with no WHERE deletes everything.</p>
+
+<h3>Python's sqlite3 Module</h3>
+<p>Python includes <code>sqlite3</code> in the standard library. Here's the workflow:</p>
+<pre><code>import sqlite3
+
+# 1. Connect to database (creates file if it doesn't exist)
+conn = sqlite3.connect("tasks.db")
+
+# 2. Create a cursor (the object that executes SQL)
+cursor = conn.cursor()
+
+# 3. Execute SQL
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS tasks (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        done BOOLEAN DEFAULT 0
+    )
+""")
+
+# 4. Insert data
+cursor.execute("INSERT INTO tasks (title, done) VALUES (?, ?)", ("Buy groceries", 0))
+
+# 5. Commit changes (saves to disk)
+conn.commit()
+
+# 6. Query data
+cursor.execute("SELECT * FROM tasks")
+rows = cursor.fetchall()
+for row in rows:
+    print(row)  # (1, 'Buy groceries', 0)
+
+# 7. Close the connection
+conn.close()</code></pre>
+<p>Key functions: <code>connect()</code> opens the database, <code>cursor()</code> creates an executor, <code>execute()</code> runs SQL, <code>fetchall()</code> retrieves results, <code>commit()</code> saves changes, <code>close()</code> cleans up.</p>
+
+<h3>Parameterized Queries</h3>
+
+<div role="note" class="callout critical">
+<div class="callout-title">SQL Injection &mdash; Never Use String Formatting</div>
+<p>ALWAYS use <code>?</code> placeholders. NEVER build SQL strings with f-strings, <code>.format()</code>, or <code>+</code> concatenation. String formatting lets attackers inject malicious SQL into your database. This is not theoretical&mdash;SQL injection is one of the most common security vulnerabilities in real applications.</p>
+</div>
+
+<pre><code># DANGEROUS — never do this
+title = input("Task title: ")
+cursor.execute(f"INSERT INTO tasks (title) VALUES ('{title}')")
+# A user could type: '); DROP TABLE tasks; --
+# And your entire table is deleted.
+
+# SAFE — always do this
+title = input("Task title: ")
+cursor.execute("INSERT INTO tasks (title) VALUES (?)", (title,))
+# The ? placeholder handles escaping automatically.</code></pre>
+<p>The <code>?</code> placeholder tells sqlite3 to safely escape the value. This one rule prevents an entire class of security vulnerabilities.</p>
+
+<h3>TaskForge Connection</h3>
+<p>Replace TaskForge's JSON file storage with SQLite. Here's the before and after:</p>
+
+<h4>Before: JSON File Storage</h4>
+<pre><code>import json
+
+def load_tasks(filepath):
+    try:
+        with open(filepath, "r") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return []
+
+def save_tasks(tasks, filepath):
+    with open(filepath, "w") as f:
+        json.dump(tasks, f, indent=2)
+
+def add_task(tasks, title, filepath):
+    task = {"id": len(tasks) + 1, "title": title, "done": False}
+    tasks.append(task)
+    save_tasks(tasks, filepath)
+    return task</code></pre>
+
+<h4>After: SQLite Storage</h4>
+<pre><code>import sqlite3
+
+def get_connection():
+    conn = sqlite3.connect("tasks.db")
+    conn.row_factory = sqlite3.Row  # access columns by name
+    return conn
+
+def init_db():
+    conn = get_connection()
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS tasks (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            done BOOLEAN DEFAULT 0
+        )
+    """)
+    conn.commit()
+    conn.close()
+
+def add_task(title):
+    conn = get_connection()
+    conn.execute("INSERT INTO tasks (title) VALUES (?)", (title,))
+    conn.commit()
+    conn.close()
+
+def list_tasks():
+    conn = get_connection()
+    rows = conn.execute("SELECT * FROM tasks").fetchall()
+    conn.close()
+    return [dict(row) for row in rows]
+
+def complete_task(task_id):
+    conn = get_connection()
+    conn.execute("UPDATE tasks SET done = 1 WHERE id = ?", (task_id,))
+    conn.commit()
+    conn.close()</code></pre>
+<p>The biggest difference: no more loading the entire file into memory, no more rewriting the whole file on every change. The database handles reads and writes efficiently, even with thousands of tasks.</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 160" xmlns="http://www.w3.org/2000/svg" aria-label="Diagram showing data flow from Python app through sqlite3 module to database file on disk">
+  <!-- Python App -->
+  <rect class="node-accent" x="30" y="45" width="160" height="60" rx="8"/>
+  <text class="label-text" x="110" y="70" text-anchor="middle">Python App</text>
+  <text class="sub-text" x="110" y="86" text-anchor="middle">taskforge.py</text>
+  <!-- Arrow with SQL -->
+  <line x1="190" y1="68" x2="300" y2="68" class="arrow"/>
+  <text class="sub-text" x="245" y="60" text-anchor="middle">SQL query</text>
+  <!-- sqlite3 module -->
+  <rect class="node-fill" x="300" y="45" width="160" height="60" rx="8"/>
+  <text class="label-text" x="380" y="70" text-anchor="middle">sqlite3 module</text>
+  <text class="sub-text" x="380" y="86" text-anchor="middle">import sqlite3</text>
+  <!-- Arrow to DB -->
+  <line x1="460" y1="68" x2="530" y2="68" class="arrow"/>
+  <text class="sub-text" x="495" y="60" text-anchor="middle">read/write</text>
+  <!-- Database file -->
+  <rect class="node-accent" x="530" y="35" width="150" height="80" rx="8"/>
+  <text class="label-text" x="605" y="62" text-anchor="middle">tasks.db</text>
+  <text class="sub-text" x="605" y="78" text-anchor="middle">SQLite Database</text>
+  <text class="sub-text" x="605" y="94" text-anchor="middle">File on disk</text>
+  <!-- Return arrow -->
+  <line x1="300" y1="98" x2="190" y2="98" stroke="var(--a3)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text class="sub-text" x="245" y="118" text-anchor="middle" fill="var(--a3)">rows / confirmation</text>
+</svg>
+<div class="diagram-caption">Your Python code sends SQL through the sqlite3 module, which reads and writes a single database file. No server needed.</div>
+</div>
+
+<h3>ORMs &mdash; A Preview</h3>
+<p>An <strong>ORM</strong> (Object-Relational Mapper) bridges the gap between Python objects and database rows. Instead of writing raw SQL, you define Python classes that map to tables:</p>
+<pre><code># Raw SQL (what you learned above)
+cursor.execute("SELECT * FROM tasks WHERE done = 0")
+rows = cursor.fetchall()
+
+# ORM style (conceptual — SQLAlchemy)
+pending_tasks = Task.query.filter_by(done=False).all()</code></pre>
+<p>The most popular Python ORM is <strong>SQLAlchemy</strong>. We won't teach it in depth here&mdash;raw SQL gives you a better understanding of what ORMs do under the hood. But know that ORMs exist and that most production applications use them.</p>
+
+<h3>Common Misconceptions</h3>
+<div role="note" class="callout warn">
+<div class="callout-title">"JSON Files Are Fine for Storage"</div>
+<p>They work for simple cases, but they don't handle concurrent access (two processes writing at once corrupts the file), they require loading the entire dataset into memory, and they have no query capability&mdash;you can't ask "give me all incomplete tasks" without loading everything. Databases solve all three problems.</p>
+</div>
+
+<div role="note" class="callout warn">
+<div class="callout-title">"SQL Is Hard"</div>
+<p>The basics are 5 commands: CREATE, INSERT, SELECT, UPDATE, DELETE. You just learned them. The advanced features (joins, indexes, transactions) exist, but you can build real applications with just the basics.</p>
+</div>
+
+<h3>Micro-Exercises</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">1: Create and Populate</div>
+<p>Create a SQLite database with a <code>tasks</code> table and insert 3 tasks using the Python sqlite3 module.</p>
+<pre><code>import sqlite3
+
+conn = sqlite3.connect("practice.db")
+cursor = conn.cursor()
+
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS tasks (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        done BOOLEAN DEFAULT 0
+    )
+""")
+
+cursor.execute("INSERT INTO tasks (title) VALUES (?)", ("Buy groceries",))
+cursor.execute("INSERT INTO tasks (title) VALUES (?)", ("Write tests",))
+cursor.execute("INSERT INTO tasks (title) VALUES (?)", ("Deploy API",))
+conn.commit()
+
+# Verify
+rows = cursor.execute("SELECT * FROM tasks").fetchall()
+for row in rows:
+    print(row)
+
+conn.close()</code></pre>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">2: Query Incomplete Tasks</div>
+<p>Write a query that returns only incomplete tasks.</p>
+<pre><code>import sqlite3
+
+conn = sqlite3.connect("practice.db")
+cursor = conn.cursor()
+
+cursor.execute("SELECT * FROM tasks WHERE done = 0")
+incomplete = cursor.fetchall()
+for task in incomplete:
+    print(task)
+
+conn.close()</code></pre>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">Try This Now</div>
+<p>Refactor TaskForge to use SQLite instead of JSON files. Create functions: <code>init_db()</code>, <code>add_task(title)</code>, <code>list_tasks()</code>, <code>complete_task(id)</code>.</p>
+<div class="prompt-block"><span class="label">taskforge_db.py</span>import sqlite3
+
+DB_PATH = "taskforge.db"
+
+def get_connection():
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    return conn
+
+def init_db():
+    conn = get_connection()
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS tasks (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            done BOOLEAN DEFAULT 0
+        )
+    """)
+    conn.commit()
+    conn.close()
+
+def add_task(title):
+    conn = get_connection()
+    conn.execute("INSERT INTO tasks (title) VALUES (?)", (title,))
+    conn.commit()
+    conn.close()
+
+def list_tasks():
+    conn = get_connection()
+    rows = conn.execute("SELECT * FROM tasks").fetchall()
+    conn.close()
+    return [dict(row) for row in rows]
+
+def complete_task(task_id):
+    conn = get_connection()
+    conn.execute("UPDATE tasks SET done = 1 WHERE id = ?", (task_id,))
+    conn.commit()
+    conn.close()
+
+if __name__ == "__main__":
+    init_db()
+    add_task("Buy groceries")
+    add_task("Write chapter 15")
+    print("All tasks:", list_tasks())
+    complete_task(1)
+    print("After completing task 1:", list_tasks())</div>
+<p><strong>Verification:</strong> Tasks persist between program runs. Close and reopen&mdash;your tasks are still there. Run the script, then comment out the <code>add_task</code> lines and run again&mdash;<code>list_tasks()</code> still returns the previously added tasks.</p>
+<p><strong>If this doesn't work:</strong> (1) If "database is locked", make sure you're calling <code>conn.close()</code> or using <code>with</code> statements. (2) If the table doesn't exist, call <code>init_db()</code> at startup. (3) <code>sqlite3.OperationalError: no such table</code> &rarr; you're connecting to a different file than the one where the table was created. Check <code>DB_PATH</code>.</p>
+</div>
+
+<div class="pq">You just replaced a fragile JSON file with a real database. TaskForge data now survives restarts, handles queries efficiently, and is protected against injection attacks. This is how every production application stores data.</div>
+
+<h3>Interactive Exercises</h3>
+
+<div class="quiz" data-ch="15" data-ex="quiz-sql">
+  <h4>Knowledge Check</h4>
+  <p>Which SQL statement retrieves data from a table?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">INSERT</button>
+    <button class="quiz-option" data-correct="false">UPDATE</button>
+    <button class="quiz-option" data-correct="true">SELECT</button>
+    <button class="quiz-option" data-correct="false">CREATE</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="15" data-ex="sql-guided">
+  <div class="exercise-header">
+    <h4>Guided Exercise: "SQL in the Browser"</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">This exercise runs real SQLite in your browser. Create a 'tasks' table, insert 3 tasks, then query for incomplete ones.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+import sqlite3
+
+conn = sqlite3.connect(':memory:')
+cursor = conn.cursor()
+
+# Create the tasks table
+cursor.execute('''CREATE TABLE tasks (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    done BOOLEAN DEFAULT 0
+)''')
+
+# Insert 3 tasks
+cursor.execute("INSERT INTO tasks (title) VALUES (?)", ("Learn Python",))
+cursor.execute("INSERT INTO tasks (title) VALUES (?)", ("Build TaskForge",))
+cursor.execute("INSERT INTO tasks (title, done) VALUES (?, ?)", ("Setup Git", 1))
+conn.commit()
+
+# TODO: Query for incomplete tasks (done = 0) and print them
+# Your code here
+
+conn.close()
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="15" data-ex="taskdb">
+  <div class="exercise-header">
+    <h4>Design Challenge: "TaskDB Class"</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Build a <code>TaskDB</code> class backed by SQLite in-memory. Methods: <code>add(title)</code> returns the new task ID, <code>complete(task_id)</code> marks it done, <code>search(keyword)</code> finds tasks by title substring, <code>stats()</code> returns a dict with total, completed, and pending counts.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+import sqlite3
+
+class TaskDB:
+    def __init__(self):
+        self.conn = sqlite3.connect(':memory:')
+        # Create table here
+        pass
+
+    def add(self, title):
+        # Insert and return ID
+        pass
+
+    def complete(self, task_id):
+        pass
+
+    def search(self, keyword):
+        # Return list of (id, title, done) tuples
+        pass
+
+    def stats(self):
+        # Return {"total": N, "completed": N, "pending": N}
+        pass
+</script>
+    <script type="text/plain" class="test-code">
+db = TaskDB()
+id1 = db.add("Learn Python")
+id2 = db.add("Build API")
+id3 = db.add("Learn Docker")
+assert isinstance(id1, int), "add should return an integer ID"
+db.complete(id1)
+results = db.search("Learn")
+assert len(results) == 2, "Should find 2 tasks with 'Learn'"
+s = db.stats()
+assert s["total"] == 3, "3 total tasks"
+assert s["completed"] == 1, "1 completed"
+assert s["pending"] == 2, "2 pending"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">In __init__, create the table with id, title, and done columns.</p>
+    <p class="hint">For add, use <code>cursor.lastrowid</code> after INSERT to get the new ID.</p>
+    <p class="hint">For search, use <code>WHERE title LIKE ?</code> with <code>f'%{keyword}%'</code> as the parameter.</p>
+  </div>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">Practice: Interactive SQL</div>
+<p>Complete <a href="https://selectstarsql.com">Select Star SQL</a> &mdash; a free interactive tutorial that teaches SQL using real data. It covers SELECT, WHERE, GROUP BY, JOIN, and subqueries. You can finish it in an afternoon.</p>
+</div>
+
+</section>
+
+<!-- ===== CH 16 ===== -->
+<section id="ch16" data-ch="16">
+<h2><span class="ch-label">Chapter 16</span> Docker and Containers</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>Docker solves "works on my machine" forever. It's how professional teams ensure consistent environments, and it's how you'll run Claude Code agents in isolated containers in Phase 6.</p>
+</div>
+
+<h3>What Is Docker?</h3>
+<p>Docker lets you package your application and everything it needs&mdash;Python version, libraries, system tools&mdash;into a single <strong>container</strong> that runs identically on any machine. Think of a shipping container: it doesn't matter whether the ship is going to Tokyo or Rotterdam, the box is the same and the contents arrive intact. Docker containers work the same way for software.</p>
+
+<p>Containers are <em>not</em> virtual machines. A VM emulates an entire operating system with its own kernel&mdash;heavyweight and slow to start. A container <strong>shares the host OS kernel</strong> and only isolates the application layer. This makes containers lightweight (megabytes instead of gigabytes) and fast to start (seconds instead of minutes).</p>
+
+<h3>Key Concepts</h3>
+<table>
+<caption>Key Docker concepts and analogies</caption>
+<tr><th>Concept</th><th>What It Is</th><th>Analogy</th></tr>
+<tr><td><strong>Image</strong></td><td>A snapshot/blueprint of an environment</td><td>Like a class in Python&mdash;a template</td></tr>
+<tr><td><strong>Container</strong></td><td>A running instance of an image</td><td>Like an object&mdash;a live instance created from the class</td></tr>
+<tr><td><strong>Dockerfile</strong></td><td>Instructions to build an image</td><td>Like a recipe&mdash;step-by-step build instructions</td></tr>
+<tr><td><strong>docker-compose</strong></td><td>A tool to run multiple containers together</td><td>Like an orchestra conductor&mdash;coordinates multiple players</td></tr>
+</table>
+
+<h3>Installing Docker</h3>
+<p>Install <strong>Docker Desktop</strong>, which includes the Docker engine, CLI, and a GUI dashboard:</p>
+<ul>
+<li><strong>macOS:</strong> Download from <code>docker.com/products/docker-desktop</code>. Drag to Applications. Launch Docker Desktop&mdash;the whale icon appears in your menu bar.</li>
+<li><strong>Windows:</strong> Download the installer from the same URL. Enable WSL 2 backend during setup. Restart when prompted.</li>
+</ul>
+<p>Verify the installation:</p>
+<div class="prompt-block"><span class="label">Terminal</span>docker --version
+docker compose version</div>
+
+<h3>Your First Container</h3>
+<p>Run Docker's built-in test image to confirm everything works:</p>
+<div class="prompt-block"><span class="label">Terminal</span>docker run hello-world</div>
+<p>Docker pulls the <code>hello-world</code> image from Docker Hub (a public registry of images), creates a container from it, runs it, and prints a success message. That's the entire workflow: pull, create, run.</p>
+
+<p>Now try something more useful&mdash;a Python REPL inside a container:</p>
+<div class="prompt-block"><span class="label">Terminal</span>docker run -it python:3.12 python3</div>
+<p>The <code>-it</code> flags give you an interactive terminal. You're now inside a Python 3.12 environment that's completely isolated from your host machine. Type <code>exit()</code> to leave.</p>
+
+<h3>Writing a Dockerfile</h3>
+<p>A <strong>Dockerfile</strong> is a text file that tells Docker how to build an image. Here's one for TaskForge:</p>
+<pre><code>FROM python:3.12-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+COPY . .
+CMD ["python", "taskforge.py"]</code></pre>
+
+<p>Each line is an instruction:</p>
+<table>
+<caption>Dockerfile instructions explained line by line</caption>
+<tr><th>Line</th><th>What It Does</th></tr>
+<tr><td><code>FROM python:3.12-slim</code></td><td>Start from the official Python 3.12 image (slim variant, smaller size)</td></tr>
+<tr><td><code>WORKDIR /app</code></td><td>Set the working directory inside the container to <code>/app</code></td></tr>
+<tr><td><code>COPY requirements.txt .</code></td><td>Copy the requirements file into the container first (for caching)</td></tr>
+<tr><td><code>RUN pip install -r requirements.txt</code></td><td>Install Python dependencies inside the container</td></tr>
+<tr><td><code>COPY . .</code></td><td>Copy all project files into the container</td></tr>
+<tr><td><code>CMD ["python", "taskforge.py"]</code></td><td>Default command when the container starts</td></tr>
+</table>
+
+<p>Why copy <code>requirements.txt</code> before everything else? Docker caches each layer. If your code changes but your dependencies don't, Docker reuses the cached dependency layer&mdash;making rebuilds much faster.</p>
+
+<h3>Building and Running</h3>
+<p>Build the image and run a container from it:</p>
+<div class="prompt-block"><span class="label">Terminal</span># Build an image tagged "taskforge" from the current directory
+docker build -t taskforge .
+
+# Run a container from the image
+docker run -it taskforge</div>
+
+<p>The <code>-t taskforge</code> flag gives your image a name (tag). The <code>.</code> tells Docker to use the current directory as the build context (where to find the Dockerfile and files to copy).</p>
+
+<h3>Volumes: Persisting Data</h3>
+<p>Containers are <strong>ephemeral</strong>&mdash;when you stop a container, any data it created inside is lost. This is a problem for TaskForge's SQLite database. <strong>Volumes</strong> mount a host directory into the container so data survives restarts:</p>
+<div class="prompt-block"><span class="label">Terminal</span>docker run -it -v $(pwd)/data:/app/data taskforge</div>
+<p>This maps <code>./data</code> on your host to <code>/app/data</code> inside the container. The SQLite database file lives in this shared directory, so it persists even when the container stops.</p>
+
+<h3>Docker Compose Basics</h3>
+<p>When your project needs multiple services (a web API, a database, etc.), <strong>Docker Compose</strong> manages them all with a single file:</p>
+<pre><code># docker-compose.yml
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./data:/app/data
+    command: ["python", "-m", "flask", "run", "--host=0.0.0.0"]</code></pre>
+
+<p>Start everything with one command:</p>
+<div class="prompt-block"><span class="label">Terminal</span># Start all services
+docker compose up
+
+# Stop all services
+docker compose down</div>
+
+<p>The <code>ports</code> mapping <code>"5000:5000"</code> means: forward port 5000 on your host to port 5000 in the container. This is how you access the Flask API from your browser.</p>
+
+<h3>Essential Commands</h3>
+<table>
+<caption>Essential Docker commands</caption>
+<tr><th>Command</th><th>What It Does</th></tr>
+<tr><td><code>docker build -t name .</code></td><td>Build an image from a Dockerfile</td></tr>
+<tr><td><code>docker run -it name</code></td><td>Run a container interactively</td></tr>
+<tr><td><code>docker ps</code></td><td>List running containers</td></tr>
+<tr><td><code>docker stop id</code></td><td>Stop a running container</td></tr>
+<tr><td><code>docker rm id</code></td><td>Remove a stopped container</td></tr>
+<tr><td><code>docker logs id</code></td><td>View container output/logs</td></tr>
+<tr><td><code>docker exec -it id bash</code></td><td>Open a shell inside a running container</td></tr>
+</table>
+
+<h3>.dockerignore</h3>
+<p>Just like <code>.gitignore</code> tells git which files to skip, <code>.dockerignore</code> tells Docker which files to exclude from the build context. This keeps images small and avoids copying sensitive data:</p>
+<pre><code>.venv
+__pycache__
+.git
+.env
+*.pyc
+.pytest_cache</code></pre>
+
+<h3>Common Misconceptions</h3>
+<div role="note" class="callout warn">
+<div class="callout-title">Misconception: "Docker Is Only for Deployment"</div>
+<p>Docker is just as valuable during development. It ensures every developer on the team has the same environment&mdash;same Python version, same library versions, same system tools. No more "it works on my machine but not yours."</p>
+</div>
+
+<div role="note" class="callout warn">
+<div class="callout-title">Misconception: "Containers Are Virtual Machines"</div>
+<p>Containers share the host OS kernel. They don't emulate hardware or boot a full OS. This is why containers start in seconds while VMs take minutes, and why a container image is megabytes while a VM image is gigabytes.</p>
+</div>
+
+<h3>TaskForge Connection</h3>
+<p>Containerize TaskForge. Write a Dockerfile, build an image, and run it. Verify that TaskForge works the same inside the container as it does on your host machine. This is the foundation for running Claude Code agents in Docker in Phase 6.</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg" aria-label="Diagram showing three containers running on Docker Engine on top of the host operating system">
+  <!-- Host OS -->
+  <rect class="node-fill" x="50" y="220" width="600" height="44" rx="8"/>
+  <text class="label-text" x="350" y="247" text-anchor="middle">Host Operating System</text>
+  <!-- Docker Engine -->
+  <rect class="node-accent" x="80" y="145" width="540" height="44" rx="8"/>
+  <text class="label-text" x="350" y="172" text-anchor="middle">Docker Engine</text>
+  <!-- Container 1: TaskForge API -->
+  <rect class="node-fill" x="95" y="30" width="155" height="85" rx="6"/>
+  <text class="label-text" x="172" y="55" text-anchor="middle">TaskForge API</text>
+  <text class="sub-text" x="172" y="72" text-anchor="middle">Python 3.12</text>
+  <text class="sub-text" x="172" y="88" text-anchor="middle">Flask + SQLite</text>
+  <line class="arrow" x1="172" y1="115" x2="172" y2="145"/>
+  <!-- Container 2: Database -->
+  <rect class="node-fill" x="272" y="30" width="155" height="85" rx="6"/>
+  <text class="label-text" x="350" y="55" text-anchor="middle">Database</text>
+  <text class="sub-text" x="350" y="72" text-anchor="middle">PostgreSQL</text>
+  <text class="sub-text" x="350" y="88" text-anchor="middle">Persistent volume</text>
+  <line class="arrow" x1="350" y1="115" x2="350" y2="145"/>
+  <!-- Container 3: Claude Agent -->
+  <rect class="node-fill" x="449" y="30" width="155" height="85" rx="6"/>
+  <text class="label-text" x="527" y="55" text-anchor="middle">Claude Agent</text>
+  <text class="sub-text" x="527" y="72" text-anchor="middle">Node.js + Claude</text>
+  <text class="sub-text" x="527" y="88" text-anchor="middle">Code CLI</text>
+  <line class="arrow" x1="527" y1="115" x2="527" y2="145"/>
+  <!-- Connection between engine and host -->
+  <line class="arrow" x1="350" y1="189" x2="350" y2="220"/>
+</svg>
+<div class="diagram-caption">Containers are isolated but share the Docker Engine and host OS. Each container has its own filesystem, network, and process space&mdash;but they're lightweight because they share the kernel.</div>
+</div>
+
+<h3>Micro-Exercises</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">1: Run Python in Docker</div>
+<p>Run <code>docker run -it python:3.12 python3</code> and execute <code>print('Hello from Docker!')</code> inside the container. Type <code>exit()</code> to leave.</p>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">2: Build a TaskForge Image</div>
+<p>Write a Dockerfile for TaskForge and build it with <code>docker build -t taskforge .</code>. Verify with <code>docker images</code> that the image appears.</p>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">Try This Now</div>
+<p>Create a <code>docker-compose.yml</code> that runs TaskForge's Flask API on port 5000 with a volume mount for the SQLite database:</p>
+<div class="prompt-block"><span class="label">docker-compose.yml</span>services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./data:/app/data
+    command: ["python", "-m", "flask", "run", "--host=0.0.0.0"]</div>
+<p>Start it with <code>docker compose up</code>, then verify from another terminal:</p>
+<div class="prompt-block"><span class="label">Terminal</span>curl http://localhost:5000/tasks</div>
+<p><strong>Verification:</strong> TaskForge runs inside Docker, accessible from your host machine. Data persists across <code>docker compose down</code> and <code>docker compose up</code>.</p>
+<p><strong>If this doesn't work:</strong> (1) Port conflict &rarr; change <code>"5000:5000"</code> to <code>"5001:5000"</code> and use <code>curl http://localhost:5001/tasks</code>. (2) <code>permission denied</code> &rarr; make sure Docker Desktop is running. (3) Build fails &rarr; check that <code>requirements.txt</code> exists in your project root.</p>
+</div>
+
+<div class="pq">You just containerized an application so it runs identically anywhere&mdash;your laptop, a teammate's machine, or a cloud server. This is the infrastructure that makes isolated AI agent containers possible.</div>
+
+<h3>Interactive Exercises</h3>
+
+<div class="quiz" data-ch="16" data-ex="quiz-from">
+  <h4>Knowledge Check</h4>
+  <p>What does <code>FROM python:3.12</code> do in a Dockerfile?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">Installs Python 3.12 on your machine</button>
+    <button class="quiz-option" data-correct="true">Sets the base image for the container</button>
+    <button class="quiz-option" data-correct="false">Downloads Python source code</button>
+    <button class="quiz-option" data-correct="false">Creates a virtual environment</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz" data-ch="16" data-ex="quiz-volume">
+  <h4>Knowledge Check</h4>
+  <p>What does <code>-v $(pwd):/app</code> do in a <code>docker run</code> command?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">Creates a new directory called /app</button>
+    <button class="quiz-option" data-correct="false">Copies files into the container</button>
+    <button class="quiz-option" data-correct="true">Mounts the current directory into the container at /app</button>
+    <button class="quiz-option" data-correct="false">Sets the working directory to /app</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="checklist" data-ch="16" data-ex="docker-check">
+  <h4>Docker Workflow</h4>
+  <label><input type="checkbox"><span>Docker installed — <code>docker --version</code> shows a version</span></label>
+  <label><input type="checkbox"><span>Pulled the Python image — <code>docker pull python:3.12</code></span></label>
+  <label><input type="checkbox"><span>Built TaskForge image — <code>docker build -t taskforge .</code></span></label>
+  <label><input type="checkbox"><span>Ran TaskForge in a container successfully</span></label>
+  <label><input type="checkbox"><span><code>docker ps</code> shows running containers (or <code>docker ps -a</code> shows history)</span></label>
+</div>
+
+</section>
+
+<!-- ===== CH 17 ===== -->
+<section id="ch17" data-ch="17">
+<h2><span class="ch-label">Chapter 17</span> CI/CD and GitHub Actions</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>Every push to GitHub can automatically run your tests, check your code, and even deploy your app. CI/CD turns manual quality checks into automated pipelines. In Phase 5, you'll use CI-triggered agents that depend on this infrastructure.</p>
+</div>
+
+<h3>What Is CI/CD?</h3>
+<p><strong>CI (Continuous Integration)</strong> means automatically running tests every time code is pushed to a repository. Instead of remembering to run <code>pytest</code> before merging, the system does it for you&mdash;every single time, without fail.</p>
+
+<p><strong>CD (Continuous Deployment/Delivery)</strong> takes it further: after tests pass, the code is automatically deployed to production (deployment) or packaged and ready for a one-click release (delivery).</p>
+
+<p>The core idea is simple: <strong>catch bugs before they reach production</strong>. If a test fails, the pipeline stops and notifies you. No broken code gets deployed. No "I forgot to run tests" disasters.</p>
+
+<table>
+<caption>CI/CD terminology and pipeline stages</caption>
+<tr><th>Term</th><th>What It Means</th><th>When It Runs</th></tr>
+<tr><td><strong>CI</strong></td><td>Run tests and checks automatically</td><td>On every push or pull request</td></tr>
+<tr><td><strong>CD (Delivery)</strong></td><td>Package code, ready for manual deploy</td><td>After CI passes on main branch</td></tr>
+<tr><td><strong>CD (Deployment)</strong></td><td>Automatically deploy to production</td><td>After CI passes on main branch</td></tr>
+</table>
+
+<h3>GitHub Actions Basics</h3>
+<p>GitHub Actions is GitHub's built-in CI/CD system. It's free for public repos and has generous free-tier minutes for private repos. The key concepts:</p>
+
+<table>
+<caption>GitHub Actions core concepts</caption>
+<tr><th>Concept</th><th>What It Is</th><th>Analogy</th></tr>
+<tr><td><strong>Workflow</strong></td><td>A YAML file defining your automation pipeline</td><td>A recipe with ordered steps</td></tr>
+<tr><td><strong>Trigger</strong></td><td>The event that starts a workflow</td><td>The "go" signal</td></tr>
+<tr><td><strong>Job</strong></td><td>A set of steps that run on the same machine</td><td>One cook at one station</td></tr>
+<tr><td><strong>Step</strong></td><td>A single command or action within a job</td><td>One instruction in the recipe</td></tr>
+</table>
+
+<p>Workflows live in <code>.github/workflows/</code> inside your repository. Each workflow is a <strong>YAML file</strong> (a human-readable data format, similar to JSON but with indentation instead of braces).</p>
+
+<p>Common triggers:</p>
+<ul>
+<li><code>push</code> &mdash; runs when code is pushed to specified branches</li>
+<li><code>pull_request</code> &mdash; runs when a PR is opened or updated</li>
+<li><code>schedule</code> &mdash; runs on a cron schedule (e.g., nightly tests)</li>
+</ul>
+
+<h3>Your First Workflow</h3>
+<p>Here's a complete, working GitHub Actions workflow that runs your tests on every push and pull request:</p>
+
+<pre><code>name: Run Tests
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - run: python -m pytest</code></pre>
+
+<p>Let's walk through each line:</p>
+<table>
+<caption>GitHub Actions workflow file explained line by line</caption>
+<tr><th>Line</th><th>What It Does</th></tr>
+<tr><td><code>name: Run Tests</code></td><td>A human-readable name that appears in the GitHub Actions UI</td></tr>
+<tr><td><code>on: push: branches: [main]</code></td><td>Trigger this workflow when code is pushed to the <code>main</code> branch</td></tr>
+<tr><td><code>on: pull_request: branches: [main]</code></td><td>Also trigger when a PR targets <code>main</code></td></tr>
+<tr><td><code>jobs: test:</code></td><td>Define a job called <code>test</code></td></tr>
+<tr><td><code>runs-on: ubuntu-latest</code></td><td>Run on a fresh Ubuntu virtual machine (GitHub provides this for free)</td></tr>
+<tr><td><code>uses: actions/checkout@v4</code></td><td>Check out your repository code into the VM&mdash;without this, the VM is empty</td></tr>
+<tr><td><code>uses: actions/setup-python@v5</code></td><td>Install the specified Python version on the VM</td></tr>
+<tr><td><code>with: python-version: '3.12'</code></td><td>Use Python 3.12 specifically</td></tr>
+<tr><td><code>run: pip install -r requirements.txt</code></td><td>Install your project's dependencies</td></tr>
+<tr><td><code>run: python -m pytest</code></td><td>Run your test suite&mdash;if any test fails, the workflow fails</td></tr>
+</table>
+
+<p>Save this as <code>.github/workflows/test.yml</code> in your repository. Push to GitHub, and the workflow runs automatically.</p>
+
+<h3>Adding More Checks</h3>
+<p>Tests alone aren't enough. Professional pipelines also check code quality:</p>
+
+<h4>Linting with ruff</h4>
+<p><strong>Linting</strong> catches style issues, unused imports, and potential bugs without running the code. Add a linting step to your workflow:</p>
+<pre><code>      - run: pip install ruff
+      - run: ruff check .</code></pre>
+<p><code>ruff</code> is fast and catches many common Python mistakes. An alternative is <code>flake8</code>, which has been the standard for years.</p>
+
+<h4>Type Checking</h4>
+<p>If you use type hints in your Python code, tools like <code>mypy</code> can check them in CI. This is more advanced&mdash;for now, know that it exists and can be added as another step.</p>
+
+<h4>Matrix Strategy: Multiple Python Versions</h4>
+<p>Your code might work on Python 3.12 but break on 3.11. A <strong>matrix strategy</strong> tests against multiple versions in parallel:</p>
+<pre><code>jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.11', '3.12', '3.13']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: pip install -r requirements.txt
+      - run: python -m pytest</code></pre>
+<p>This creates three parallel jobs, one for each Python version. If any fails, you know exactly which version has the problem.</p>
+
+<h3>Status Badges</h3>
+<p>Add a badge to your <code>README.md</code> that shows whether your tests are passing:</p>
+<pre><code>![Tests](https://github.com/YOUR-USERNAME/YOUR-REPO/actions/workflows/test.yml/badge.svg)</code></pre>
+<p>Replace <code>YOUR-USERNAME</code> and <code>YOUR-REPO</code> with your actual GitHub username and repository name. The badge turns green when tests pass and red when they fail&mdash;visible to anyone viewing the repo.</p>
+
+<h3>Secrets Management</h3>
+<p>Some workflows need API keys or tokens (e.g., for deployment or calling external services). <strong>Never hardcode credentials</strong> in your workflow files or source code.</p>
+
+<p>GitHub provides <strong>Secrets</strong>&mdash;encrypted variables stored in your repository settings. To add one: go to your repo on GitHub, navigate to Settings, then Secrets and variables, then Actions, and click "New repository secret."</p>
+
+<p>Reference secrets in your workflow with the <code>${{ secrets.NAME }}</code> syntax:</p>
+<pre><code>      - run: python deploy.py
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}</code></pre>
+
+<div role="note" class="callout critical">
+<div class="callout-title">Never Print Secrets</div>
+<p>GitHub automatically masks secrets in logs, but avoid <code>echo $API_KEY</code> or <code>print(os.environ["API_KEY"])</code> in your workflow steps. If a secret leaks, rotate it immediately.</p>
+</div>
+
+<h3>When Things Fail</h3>
+<p>Your workflow will fail. This is normal&mdash;it's doing its job by catching problems. Here's how to debug:</p>
+
+<p><strong>Reading the logs:</strong> On GitHub, go to the Actions tab, click the failed workflow run, click the failed job, and expand the failed step. The log shows the exact error and line number.</p>
+
+<p><strong>Common failures:</strong></p>
+<table>
+<caption>Common CI/CD pipeline failures and fixes</caption>
+<tr><th>Symptom</th><th>Likely Cause</th><th>Fix</th></tr>
+<tr><td><code>ModuleNotFoundError</code></td><td>Missing dependency</td><td>Add the package to <code>requirements.txt</code></td></tr>
+<tr><td>Wrong Python version errors</td><td>Code uses features from a newer Python</td><td>Match the <code>python-version</code> in your workflow to your development version</td></tr>
+<tr><td>Tests pass locally but fail in CI</td><td>Different OS, missing env vars, or hardcoded paths</td><td>Use <code>os.path.join()</code> instead of hardcoded paths; check all env vars are set</td></tr>
+<tr><td><code>Permission denied</code></td><td>Script not executable or writing to protected path</td><td>Add <code>chmod +x</code> step or write to a writable directory</td></tr>
+</table>
+
+<h3>Common Misconceptions</h3>
+<div role="note" class="callout warn">
+<div class="callout-title">Misconception: "CI Is Only for Big Teams"</div>
+<p>Even solo projects benefit from automated tests. You'll forget to run tests before pushing. You'll break something you didn't realize was connected. CI catches these mistakes automatically&mdash;it's a safety net for teams of one just as much as teams of fifty.</p>
+</div>
+
+<div role="note" class="callout warn">
+<div class="callout-title">Misconception: "If Tests Pass Locally, They'll Pass in CI"</div>
+<p>CI runs on a different operating system (usually Ubuntu), a potentially different Python version, and a clean environment with no leftover state. Environment variables you set locally don't exist in CI. Files outside your repo don't exist. This is exactly the point&mdash;CI proves your code works in a clean environment, not just on your machine.</p>
+</div>
+
+<h3>TaskForge Connection</h3>
+<p>Add a GitHub Actions workflow to TaskForge that runs pytest on every push and pull request. Save it as <code>.github/workflows/test.yml</code> in your TaskForge repository. After pushing, visit the Actions tab on GitHub to see your tests run automatically. This is the same CI infrastructure that CI-triggered agents will use in Phase 5.</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 140" xmlns="http://www.w3.org/2000/svg" aria-label="CI/CD pipeline diagram showing push to GitHub triggering tests with pass or fail outcomes">
+  <!-- Push Code -->
+  <rect class="node-fill" x="10" y="45" width="100" height="50" rx="8"/>
+  <text class="label-text" x="60" y="66" text-anchor="middle">Push</text>
+  <text class="sub-text" x="60" y="80" text-anchor="middle">Code</text>
+  <line class="arrow" x1="110" y1="70" x2="140" y2="70"/>
+  <!-- GitHub -->
+  <rect class="node-accent" x="140" y="45" width="100" height="50" rx="8"/>
+  <text class="label-text" x="190" y="74" text-anchor="middle">GitHub</text>
+  <line class="arrow" x1="240" y1="70" x2="270" y2="70"/>
+  <!-- Trigger Workflow -->
+  <rect class="node-fill" x="270" y="45" width="100" height="50" rx="8"/>
+  <text class="label-text" x="320" y="66" text-anchor="middle">Trigger</text>
+  <text class="sub-text" x="320" y="80" text-anchor="middle">Workflow</text>
+  <line class="arrow" x1="370" y1="70" x2="400" y2="70"/>
+  <!-- Run Tests -->
+  <rect class="node-fill" x="400" y="45" width="100" height="50" rx="8"/>
+  <text class="label-text" x="450" y="66" text-anchor="middle">Run</text>
+  <text class="sub-text" x="450" y="80" text-anchor="middle">Tests</text>
+  <line class="arrow" x1="500" y1="70" x2="530" y2="70"/>
+  <!-- Pass? diamond approximation -->
+  <rect class="node-accent" x="530" y="45" width="60" height="50" rx="8"/>
+  <text class="label-text" x="560" y="74" text-anchor="middle">Pass?</text>
+  <!-- Deploy (top branch) -->
+  <line x1="560" y1="45" x2="560" y2="20" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <rect class="node-fill" x="610" y="5" width="80" height="32" rx="6"/>
+  <text class="sub-text" x="650" y="25" text-anchor="middle">Deploy</text>
+  <line x1="590" y1="20" x2="610" y2="20" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="sub-text" x="582" y="14" text-anchor="middle" fill="var(--accent)">Yes</text>
+  <!-- Fail / Notify (bottom branch) -->
+  <line x1="560" y1="95" x2="560" y2="120" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <rect class="node-fill" x="610" y="108" width="80" height="32" rx="6"/>
+  <text class="sub-text" x="650" y="128" text-anchor="middle">Notify</text>
+  <line x1="590" y1="124" x2="610" y2="124" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="sub-text" x="582" y="134" text-anchor="middle" fill="var(--accent)">No</text>
+</svg>
+<div class="diagram-caption">The CI/CD pipeline: every push triggers automated tests. If they pass, code can be deployed. If they fail, you're notified before anything breaks in production.</div>
+</div>
+
+<h3>Micro-Exercises</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">1: Create a Workflow for TaskForge</div>
+<p>Create the file <code>.github/workflows/test.yml</code> in your TaskForge repository with the following content:</p>
+<pre><code>name: Run Tests
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - run: python -m pytest</code></pre>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">2: Add a Linting Step</div>
+<p>Add a step to your workflow that checks code formatting with ruff. Insert these lines after the <code>pip install</code> step and before the <code>pytest</code> step:</p>
+<pre><code>      - run: pip install ruff
+      - run: ruff check .</code></pre>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">Try This Now</div>
+<p>Push TaskForge to GitHub (from Ch 12), then push the <code>.github/workflows/test.yml</code> you created. Go to the Actions tab on GitHub and watch the workflow run. Make a test fail intentionally, push again, and see the red X.</p>
+<div class="prompt-block"><span class="label">Terminal</span># Ensure the workflows directory exists
+mkdir -p .github/workflows
+
+# Create the workflow file (or copy the one from Exercise 1)
+# Then push to GitHub
+git add .github/workflows/test.yml
+git commit -m "Add CI workflow"
+git push
+
+# Now intentionally break a test
+# Edit a test to assert something wrong, e.g.:
+# assert 1 == 2
+git add -A
+git commit -m "Break a test intentionally"
+git push
+
+# Go to GitHub > Actions tab and watch the red X appear</div>
+<p><strong>Verification:</strong> The Actions tab shows a green checkmark on your first push. After breaking a test and pushing again, it shows a red X. You can see the test output in the logs.</p>
+<p><strong>If this doesn't work:</strong> (1) Workflow doesn't trigger &rarr; check the <code>on:</code> section matches your branch name (e.g., <code>main</code> vs <code>master</code>). (2) Python not found &rarr; ensure the <code>actions/setup-python</code> step is included. (3) Dependencies missing &rarr; ensure <code>pip install -r requirements.txt</code> runs before tests. (4) No Actions tab &rarr; make sure the repo is on GitHub, not just local.</p>
+</div>
+
+<div class="pq">You just automated your quality checks so they run on every push&mdash;the same infrastructure that CI-triggered agents use to review code, run tests, and guard production in professional workflows.</div>
+
+<h3>Interactive Exercises</h3>
+
+<div class="quiz" data-ch="17" data-ex="quiz-trigger">
+  <h4>Knowledge Check</h4>
+  <p>What does <code>on: push</code> mean in a GitHub Actions workflow?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">Run only when manually triggered</button>
+    <button class="quiz-option" data-correct="true">Run on every push to any branch</button>
+    <button class="quiz-option" data-correct="false">Run only on pull requests</button>
+    <button class="quiz-option" data-correct="false">Run on a schedule</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz" data-ch="17" data-ex="quiz-runner">
+  <h4>Knowledge Check</h4>
+  <p>What does <code>runs-on: ubuntu-latest</code> specify?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">The programming language</button>
+    <button class="quiz-option" data-correct="true">The operating system of the CI runner</button>
+    <button class="quiz-option" data-correct="false">The Docker image to use</button>
+    <button class="quiz-option" data-correct="false">The branch to run on</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="checklist" data-ch="17" data-ex="cicd-check">
+  <h4>CI/CD Setup</h4>
+  <label><input type="checkbox"><span>Created <code>.github/workflows/test.yml</code></span></label>
+  <label><input type="checkbox"><span>Pushed workflow file to GitHub</span></label>
+  <label><input type="checkbox"><span>Saw workflow run in GitHub Actions tab</span></label>
+  <label><input type="checkbox"><span>Green checkmark on a passing run</span></label>
+  <label><input type="checkbox"><span>Intentionally broke a test and saw red X</span></label>
+</div>
+
+</section>
+
+<!-- ===== CH 18 ===== -->
+<section id="ch18" data-ch="18">
+<h2><span class="ch-label">Chapter 18</span> Project Architecture</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>You can now build APIs, persist data, containerize applications, and run automated tests. But as projects grow, the way you organize code matters as much as the code itself. Poor architecture turns a working project into an unmaintainable one. Good architecture lets you&mdash;and AI coding tools&mdash;navigate, extend, and refactor with confidence.</p>
+</div>
+
+<h3>Why Architecture Matters</h3>
+<p>When TaskForge was a single file, you could hold the entire program in your head. Now it has a Flask API, database functions, tests, a Dockerfile, and a CI pipeline. If all of that lived in one file, you'd spend more time scrolling than coding.</p>
+
+<p><strong>Architecture</strong> is how you organize code into files, folders, and modules so that each piece has a clear purpose. Good architecture provides three things:</p>
+<ul>
+<li><strong>Findability</strong>&mdash;you can locate any piece of functionality quickly.</li>
+<li><strong>Changeability</strong>&mdash;you can modify one part without breaking others.</li>
+<li><strong>Readability</strong>&mdash;a new developer (or an AI agent reading your codebase) can understand the structure without reading every line.</li>
+</ul>
+
+<h3>Separation of Concerns</h3>
+<p><strong>Separation of concerns</strong> means each file or module handles one responsibility. The API layer handles HTTP requests and responses. The database layer handles data storage and retrieval. The business logic handles the rules of your application. When these concerns are separated, a change to how you store data doesn't require changes to your API routes, and vice versa.</p>
+
+<p>Think of it like a restaurant. The waiter takes orders (API layer), the kitchen cooks food (business logic), and the pantry stores ingredients (data layer). If you reorganize the pantry, the waiter doesn't need retraining.</p>
+
+<h3>Common Patterns: From Flat Scripts to Packages</h3>
+<p>Projects evolve through predictable stages as they grow:</p>
+
+<h4>Stage 1: Single File</h4>
+<p>Everything in one file. Fine for scripts under 100 lines.</p>
+<pre><code># taskforge.py — everything in one file
+tasks = []
+
+def add_task(title):
+    tasks.append({"title": title, "done": False})
+
+def list_tasks():
+    return tasks
+
+if __name__ == "__main__":
+    add_task("Buy groceries")
+    print(list_tasks())</code></pre>
+
+<h4>Stage 2: Multiple Modules</h4>
+<p>Split by responsibility. Each file does one thing.</p>
+<pre><code># db.py — database operations
+# api.py — Flask routes
+# cli.py — command-line interface
+# models.py — data structures</code></pre>
+
+<h4>Stage 3: Package with Directory Structure</h4>
+<p>Group related modules into directories. Add configuration, tests, and infrastructure files at the top level.</p>
+
+<h3>Directory Structure Conventions</h3>
+<p>Here is a conventional Python project layout. You don't need to memorize it&mdash;just know the pattern exists so you can recognize it and follow it.</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 380" xmlns="http://www.w3.org/2000/svg" aria-label="Diagram showing TaskForge directory structure with files organized into source code, tests, and configuration categories">
+  <!-- Title -->
+  <text class="label-text" x="350" y="22" text-anchor="middle">TaskForge Project Structure</text>
+  <!-- Root -->
+  <rect class="node-accent" x="20" y="38" width="200" height="28" rx="4"/>
+  <text class="sub-text" x="30" y="56">taskforge/</text>
+  <!-- src package -->
+  <rect class="node-fill" x="50" y="74" width="280" height="28" rx="4"/>
+  <text class="sub-text" x="60" y="92">taskforge/           (Python package)</text>
+  <rect class="node-fill" x="80" y="108" width="250" height="28" rx="4"/>
+  <text class="sub-text" x="90" y="126">__init__.py        (marks as package)</text>
+  <rect class="node-fill" x="80" y="142" width="250" height="28" rx="4"/>
+  <text class="sub-text" x="90" y="160">api.py             (Flask routes)</text>
+  <rect class="node-fill" x="80" y="176" width="250" height="28" rx="4"/>
+  <text class="sub-text" x="90" y="194">db.py              (database layer)</text>
+  <rect class="node-fill" x="80" y="210" width="250" height="28" rx="4"/>
+  <text class="sub-text" x="90" y="228">cli.py             (CLI commands)</text>
+  <!-- tests -->
+  <rect class="node-fill" x="50" y="248" width="280" height="28" rx="4"/>
+  <text class="sub-text" x="60" y="266">tests/               (test suite)</text>
+  <rect class="node-fill" x="80" y="282" width="250" height="28" rx="4"/>
+  <text class="sub-text" x="90" y="300">test_api.py        (API tests)</text>
+  <rect class="node-fill" x="80" y="316" width="250" height="28" rx="4"/>
+  <text class="sub-text" x="90" y="334">test_db.py         (database tests)</text>
+  <!-- config files on the right -->
+  <rect class="node-accent" x="380" y="74" width="290" height="28" rx="4"/>
+  <text class="sub-text" x="390" y="92">Dockerfile           (container build)</text>
+  <rect class="node-accent" x="380" y="108" width="290" height="28" rx="4"/>
+  <text class="sub-text" x="390" y="126">docker-compose.yml   (multi-container)</text>
+  <rect class="node-accent" x="380" y="142" width="290" height="28" rx="4"/>
+  <text class="sub-text" x="390" y="160">requirements.txt     (dependencies)</text>
+  <rect class="node-accent" x="380" y="176" width="290" height="28" rx="4"/>
+  <text class="sub-text" x="390" y="194">.gitignore           (git exclusions)</text>
+  <rect class="node-accent" x="380" y="210" width="290" height="28" rx="4"/>
+  <text class="sub-text" x="390" y="228">.env                 (local config)</text>
+  <rect class="node-accent" x="380" y="248" width="290" height="28" rx="4"/>
+  <text class="sub-text" x="390" y="266">.github/workflows/   (CI pipelines)</text>
+  <rect class="node-accent" x="380" y="282" width="290" height="28" rx="4"/>
+  <text class="sub-text" x="390" y="300">README.md            (project docs)</text>
+  <!-- Labels -->
+  <text class="label-text" x="190" y="368" text-anchor="middle" fill="var(--accent)">Source Code &amp; Tests</text>
+  <text class="label-text" x="525" y="368" text-anchor="middle" fill="var(--accent)">Configuration &amp; Infrastructure</text>
+</svg>
+<div class="diagram-caption">A conventional Python project separates source code and tests from configuration and infrastructure files. Each file has a single, clear responsibility.</div>
+</div>
+
+<p>Key conventions:</p>
+<ul>
+<li><strong>Source code</strong> lives in a package directory (same name as the project) with an <code>__init__.py</code> file.</li>
+<li><strong>Tests</strong> live in a separate <code>tests/</code> directory, mirroring the source structure.</li>
+<li><strong>Configuration files</strong> (<code>Dockerfile</code>, <code>requirements.txt</code>, <code>.gitignore</code>) live at the project root.</li>
+<li><strong>CI workflows</strong> live in <code>.github/workflows/</code>.</li>
+</ul>
+
+<h3>Configuration Management</h3>
+<p>Applications need configuration: database paths, API keys, debug flags. Hardcoding these values into your source code is fragile and insecure. Two approaches:</p>
+
+<h4>Environment Variables</h4>
+<p>Set configuration outside the code, in the environment where the program runs:</p>
+<pre><code>import os
+
+DB_PATH = os.environ.get("TASKFORGE_DB", "taskforge.db")
+DEBUG = os.environ.get("FLASK_DEBUG", "0") == "1"</code></pre>
+<p><code>os.environ.get()</code> reads an environment variable with a fallback default. This means the same code works in development (using the default) and in production (using the environment variable set by Docker or CI).</p>
+
+<h4>The .env File</h4>
+<p>During development, you can store environment variables in a <code>.env</code> file at the project root:</p>
+<pre><code># .env — local development configuration
+TASKFORGE_DB=taskforge.db
+FLASK_DEBUG=1</code></pre>
+<p>Add <code>.env</code> to your <code>.gitignore</code> so it never gets committed. Each developer has their own local <code>.env</code>. Production uses real environment variables set by the deployment system.</p>
+
+<div role="note" class="callout critical">
+<div class="callout-title">Never Commit Secrets</div>
+<p>API keys, database passwords, and tokens must never appear in source code or be committed to git. Use environment variables or secrets management (Chapter 17). If you accidentally commit a secret, rotate it immediately&mdash;even after deleting the file, the secret exists in git history forever.</p>
+</div>
+
+<h3>The TaskForge Evolution</h3>
+<p>Here's how TaskForge grew across the phases, and why each structural change was made:</p>
+
+<table>
+<caption>TaskForge project structure evolution across phases</caption>
+<tr><th>Phase</th><th>Structure</th><th>Why</th></tr>
+<tr><td>Phase 2</td><td>Single file: <code>taskforge.py</code></td><td>Everything in one place while learning functions, classes, and data structures.</td></tr>
+<tr><td>Phase 3</td><td>Added <code>.gitignore</code>, pushed to GitHub</td><td>Version control and collaboration require separating tracked from untracked files.</td></tr>
+<tr><td>Phase 4</td><td>Multiple files: <code>api.py</code>, <code>db.py</code>, <code>cli.py</code>, <code>tests/</code>, <code>Dockerfile</code>, <code>.github/workflows/</code></td><td>Each new capability (API, database, containers, CI) needs its own file. Mixing them would make every file enormous and every change risky.</td></tr>
+</table>
+
+<p>The progression was natural: you split code when a file gets too long, when two parts change for different reasons, or when you need to test pieces independently. You never reorganize for the sake of it&mdash;you reorganize when the current structure creates friction.</p>
+
+<h3>When to Refactor</h3>
+<p><strong>Refactoring</strong> means restructuring code without changing what it does. You refactor when:</p>
+<ul>
+<li>A file is too long to navigate (rough threshold: 200+ lines).</li>
+<li>Two parts of the code change for different reasons (e.g., API routes and database queries).</li>
+<li>You find yourself scrolling past large blocks of code to reach the part you need.</li>
+<li>Tests are hard to write because everything is tangled together.</li>
+</ul>
+<p>You do <em>not</em> refactor when:</p>
+<ul>
+<li>The current structure works and is easy to understand.</li>
+<li>You're adding a feature and reorganizing at the same time (do one at a time).</li>
+<li>You're copying a "best practice" structure for a 50-line script. Simple code deserves simple structure.</li>
+</ul>
+
+<div role="note" class="callout warn">
+<div class="callout-title">"You Need Perfect Architecture Before Writing Code"</div>
+<p>You don't. Start with the simplest structure that works. Reorganize when you feel friction&mdash;not before. Over-engineering a directory structure for a 100-line script is wasted effort. Architecture should emerge from real needs, not theoretical ideals.</p>
+</div>
+
+<h3>Common Misconceptions</h3>
+<div role="note" class="callout warn">
+<div class="callout-title">"More Files Always Means Better Organization"</div>
+<p>Splitting a 30-line module into 6 files of 5 lines each makes the project harder to understand, not easier. Each file should contain a meaningful, cohesive unit of functionality. If you can't describe what a file does in one sentence, it's either too big (split it) or too vague (merge it with something related).</p>
+</div>
+
+<h3>TaskForge Connection</h3>
+<p>Take the TaskForge code you've built across Phases 2&ndash;4 and reorganize it into the conventional structure shown in the diagram above. Create a <code>taskforge/</code> package directory with <code>__init__.py</code>, <code>api.py</code>, <code>db.py</code>, and <code>cli.py</code>. Move tests into a <code>tests/</code> directory. Keep <code>Dockerfile</code>, <code>docker-compose.yml</code>, <code>requirements.txt</code>, and <code>.github/workflows/</code> at the project root. Verify that <code>python -m pytest</code> and <code>docker compose up</code> still work after the reorganization.</p>
+
+<h3>Micro-Exercises</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">1: Identify the Layers</div>
+<p>Look at the TaskForge code you've written so far. Identify which lines belong to the API layer, the database layer, and the CLI layer. Write a comment next to each section marking its layer.</p>
+<pre><code># In your current taskforge files, label sections like this:
+
+# --- API LAYER ---
+@app.route("/tasks", methods=["GET"])
+def get_tasks():
+    ...
+
+# --- DATABASE LAYER ---
+def init_db():
+    conn = sqlite3.connect(DB_PATH)
+    ...
+
+# --- CLI LAYER ---
+if __name__ == "__main__":
+    import sys
+    command = sys.argv[1]
+    ...</code></pre>
+<p>If you find all three layers in one file, that's a sign it's ready to be split.</p>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">2: Create the Package Structure</div>
+<p>Create the directory structure for TaskForge. You don't need to move code yet&mdash;just create the empty files:</p>
+<div class="prompt-block"><span class="label">Terminal</span># Create two folders: one for your code, one for tests
+# -p means "create parent folders if needed" (no error if they exist)
+mkdir -p taskforge tests
+
+# "touch" creates an empty file (or updates its timestamp if it exists)
+# __init__.py tells Python this folder is a package it can import from
+touch taskforge/__init__.py
+
+# One file per responsibility: API routes, database logic, CLI
+touch taskforge/api.py
+touch taskforge/db.py
+touch taskforge/cli.py
+
+# Matching test files — one per module
+touch tests/test_api.py
+touch tests/test_db.py</div>
+<p>Run <code>find . -name "*.py"</code> to verify the structure looks correct.</p>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">Try This Now</div>
+<p>Reorganize TaskForge into the package structure. Move database functions into <code>taskforge/db.py</code>, Flask routes into <code>taskforge/api.py</code>, and CLI logic into <code>taskforge/cli.py</code>. Update imports so everything still works.</p>
+<div class="prompt-block"><span class="label">taskforge/db.py</span>import sqlite3
+import os
+
+DB_PATH = os.environ.get("TASKFORGE_DB", "taskforge.db")
+
+def get_connection():
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    return conn
+
+def init_db():
+    conn = get_connection()
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS tasks (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            done BOOLEAN DEFAULT 0
+        )
+    """)
+    conn.commit()
+    conn.close()
+
+def add_task(title):
+    conn = get_connection()
+    conn.execute("INSERT INTO tasks (title) VALUES (?)", (title,))
+    conn.commit()
+    conn.close()
+
+def list_tasks():
+    conn = get_connection()
+    rows = conn.execute("SELECT * FROM tasks").fetchall()
+    conn.close()
+    return [dict(row) for row in rows]
+
+def complete_task(task_id):
+    conn = get_connection()
+    conn.execute("UPDATE tasks SET done = 1 WHERE id = ?", (task_id,))
+    conn.commit()
+    conn.close()</div>
+<div class="prompt-block"><span class="label">taskforge/api.py</span>from flask import Flask, jsonify, request
+from taskforge.db import init_db, add_task, list_tasks, complete_task
+
+app = Flask(__name__)
+init_db()
+
+@app.route("/tasks", methods=["GET"])
+def get_tasks():
+    return jsonify(list_tasks()), 200
+
+@app.route("/tasks", methods=["POST"])
+def create_task():
+    data = request.json
+    if not data or "title" not in data:
+        return jsonify({"error": "title is required"}), 400
+    add_task(data["title"])
+    return jsonify({"status": "created"}), 201
+
+@app.route("/tasks/&lt;int:task_id&gt;/done", methods=["PUT"])
+def mark_complete(task_id):
+    complete_task(task_id)
+    return jsonify({"status": "updated"}), 200</div>
+<p><strong>Verification:</strong> Run <code>python -m pytest</code> from the project root&mdash;all tests pass. Run <code>flask --app taskforge.api run</code> and test with <code>curl http://localhost:5000/tasks</code>&mdash;the API works. Run <code>docker compose up</code>&mdash;the container starts successfully.</p>
+<p><strong>If this doesn't work:</strong> (1) <code>ModuleNotFoundError: No module named 'taskforge'</code> &rarr; make sure <code>taskforge/__init__.py</code> exists and you're running commands from the project root. (2) Circular imports &rarr; make sure <code>db.py</code> doesn't import from <code>api.py</code>. Dependencies should flow one direction: <code>api.py</code> imports from <code>db.py</code>, not the reverse. (3) Tests can't find modules &rarr; run <code>pip install -e .</code> to install your package in editable mode, or use <code>python -m pytest</code> from the root directory.</p>
+</div>
+
+<div class="pq">Architecture isn't about following rules&mdash;it's about making your future self's life easier. A well-structured project is one where every file has a clear purpose and every change has a predictable location.</div>
+
+<h3>Interactive Exercises</h3>
+
+<div class="quiz" data-ch="18" data-ex="quiz-soc">
+  <h4>Knowledge Check</h4>
+  <p>What is separation of concerns?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">Writing all code in one file for simplicity</button>
+    <button class="quiz-option" data-correct="true">Organizing code so each module handles one responsibility</button>
+    <button class="quiz-option" data-correct="false">Separating frontend from backend</button>
+    <button class="quiz-option" data-correct="false">Using microservices</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="18" data-ex="refactor">
+  <div class="exercise-header">
+    <h4>Design Challenge: "Refactor the Monolith"</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">This 30-line script mixes input parsing, validation, and output formatting. Refactor it into 3 functions: <code>parse_input(raw)</code>, <code>validate(data)</code>, and <code>format_output(data)</code>. The main logic should just call these 3 functions.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def process(raw_input):
+    """Currently does everything. Refactor into 3 functions."""
+    # Parse
+    parts = raw_input.strip().split(',')
+    data = {'name': parts[0].strip(), 'age': parts[1].strip()}
+
+    # Validate
+    if not data['name']:
+        return "Error: name required"
+    if not data['age'].isdigit():
+        return "Error: age must be a number"
+    data['age'] = int(data['age'])
+
+    # Format
+    return f"{data['name']} is {data['age']} years old"
+
+# Refactor into: parse_input, validate, format_output
+# Then rewrite process() to use them.
+
+print(process("  Alice , 30  "))
+</script>
+    <script type="text/plain" class="test-code">
+assert callable(parse_input), "parse_input function must exist"
+assert callable(validate), "validate function must exist"
+assert callable(format_output), "format_output function must exist"
+p = parse_input("  Alice , 30  ")
+assert p == {'name': 'Alice', 'age': '30'} or p == {'name': 'Alice', 'age': 30}, "parse_input extracts name and age"
+assert format_output({'name': 'Bob', 'age': 25}) == "Bob is 25 years old", "format_output"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">parse_input should only split and strip — no validation.</p>
+    <p class="hint">validate should check the data dict and return error string or None.</p>
+    <p class="hint">format_output takes a validated dict and returns the formatted string.</p>
+  </div>
+</div>
+
+<div class="checklist" data-ch="18" data-ex="arch-check">
+  <h4>Architecture Review</h4>
+  <label><input type="checkbox"><span>TaskForge has separate files for CLI, API, and database logic</span></label>
+  <label><input type="checkbox"><span>No function is longer than 30 lines</span></label>
+  <label><input type="checkbox"><span>Imports are at the top of each file</span></label>
+  <label><input type="checkbox"><span><code>python -m pytest</code> still passes after reorganizing</span></label>
+</div>
+
+</section>
+
+<!-- ===== PHASE 4 GATE ===== -->
+<section id="gate4">
+<h2><span class="ch-label">Phase 4 Gate</span> Checkpoint &amp; TaskForge Full Stack</h2>
+<div class="card">
+<h4>Minimum Competency</h4>
+<p>Build a REST API with Flask, persist data with SQLite, containerize with Docker, and run automated tests via CI. Understand project directory structure and separation of concerns.</p>
+</div>
+<div class="card">
+<h4>Your Artifact</h4>
+<p>TaskForge with: Flask REST API (GET/POST/PUT endpoints), SQLite database persistence, a Dockerfile, a docker-compose.yml, a GitHub Actions workflow that runs tests on push, and a clean project structure.</p>
+</div>
+<div class="card">
+<h4>Verification</h4>
+<p><code>curl http://localhost:5000/tasks</code> returns JSON. Data persists across server restarts. <code>docker compose up</code> runs TaskForge. GitHub Actions shows green checkmark.</p>
+</div>
+<div role="note" class="callout critical">
+<div class="callout-title">Failure Signal</div>
+<p>If your API returns HTML instead of JSON, or data disappears on restart, or Docker build fails &rarr; return to the specific chapter covering that topic.</p>
+</div>
+<h3>TaskForge Checkpoint</h3>
+<p>TaskForge is now a full-stack application: CLI, REST API, database, container, CI pipeline. It's ready for data structures and algorithms in Phase 5.</p>
+
+<h3>What You Can Now Do</h3>
+<div class="card">
+<ul>
+<li>Consume and build REST APIs</li>
+<li>Persist data with SQL databases</li>
+<li>Containerize applications with Docker</li>
+<li>Automate testing with CI/CD pipelines</li>
+<li>Structure projects for maintainability</li>
+</ul>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">Bridge to Phase 5</div>
+<p>You now have a full-stack application with professional infrastructure. Phase 5 dives into the data structures and algorithms that power everything you've built&mdash;how lists, hash tables, and trees work under the hood, and how to measure and compare their performance. Understanding these foundations makes you a stronger engineer, whether you're writing code by hand or evaluating AI-generated solutions.</p>
+</div>
+
+<h3>Bridge Exercise: Human Code vs AI Code</h3>
+<p>You've been building TaskForge by hand. Now compare your approach to an AI-generated version of the same feature. This is exactly the skill you'll practice throughout Phase 5.</p>
+
+<div class="exercise" data-ch="gate4" data-ex="bridge-ai" data-type="pyodide">
+  <div class="exercise-header"><h4>Spot the Differences</h4></div>
+  <p>Below are two implementations of a <code>get_task_stats</code> function. One was written by a human following the patterns from this guide. The other was AI-generated. Read both, then write a function <code>evaluate()</code> that returns a dictionary with three keys: <code>"missing_validation"</code> (which version skips input validation&mdash;<code>"human"</code> or <code>"ai"</code>), <code>"over_engineered"</code> (which version adds unnecessary complexity), and <code>"better_for_production"</code> (your judgment).</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+# Human version
+def get_task_stats_human(tasks):
+    total = len(tasks)
+    done = sum(1 for t in tasks if t["status"] == "done")
+    pending = total - done
+    return {"total": total, "done": done, "pending": pending}
+
+# AI-generated version
+def get_task_stats_ai(tasks):
+    from collections import Counter
+    from datetime import datetime
+    stats = Counter(t.get("status", "unknown") for t in tasks)
+    return {
+        "total": sum(stats.values()),
+        "done": stats.get("done", 0),
+        "pending": stats.get("pending", 0),
+        "in_progress": stats.get("in_progress", 0),
+        "unknown": stats.get("unknown", 0),
+        "generated_at": datetime.now().isoformat(),
+        "categories": dict(stats)
+    }
+
+def evaluate():
+    # Return a dict with three keys:
+    # "missing_validation" -> "human" or "ai"
+    # "over_engineered"    -> "human" or "ai"
+    # "better_for_production" -> "human" or "ai"
+    pass
+</script>
+    <script type="text/plain" class="test-code">
+result = evaluate()
+assert isinstance(result, dict), "evaluate() must return a dictionary"
+assert result.get("missing_validation") == "human", "The human version assumes 'status' key exists and only has two states"
+assert result.get("over_engineered") == "ai", "The AI version imports datetime, adds generated_at, and tracks categories nobody asked for"
+assert result.get("better_for_production") in ("human", "ai"), "Choose which is better for production"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">Look at what each function assumes about its input. Does the human version handle missing keys? Does the AI version add fields nobody requested?</p>
+    <p class="hint">The human version uses <code>t["status"]</code> (crashes on missing key) and assumes only two states. The AI version imports datetime and adds a timestamp nobody asked for.</p>
+  </div>
+</div>
+
+</section>
+
+<nav class="phase-nav">
+  <a href="phase-3.html" class="phase-nav-link prev"><span class="phase-nav-label">Previous Phase</span>&larr; Phase 3: Development Tools</a>
+  <a href="phase-5.html" class="phase-nav-link next"><span class="phase-nav-label">Next Phase</span>Phase 5: Data Structures &rarr;</a>
+</nav>
+
+</div>
+</div>
+
+<footer>
+<p>Zero to Hero: Programming to Multi-Agent Claude Code &middot; March 2026</p>
+</footer>
+
+<script src="js/progress.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ace-builds@1.36.5/src-min-noconflict/ace.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/shared.js"></script>
+<script src="js/ace-init.js"></script>
+<script src="js/pyodide-runner.js"></script>
+<script src="js/quiz.js"></script>
+<script src="js/exercise-runner.js"></script>
+<script src="js/api-demo.js"></script>
+</body>
+</html>

@@ -1,0 +1,2289 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="フェーズ6：アルゴリズム — 探索、ソート、再帰、動的計画法、アルゴリズムパターン、グラフアルゴリズム。第24〜27章。">
+<title>フェーズ6：アルゴリズム — ゼロからヒーロー</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/design-system.css">
+<script>try{if(localStorage.getItem('zth-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+<script>try{var z=localStorage.getItem('zth-zoom');if(z&&+z>=50&&+z<=200)document.documentElement.style.zoom=+z/100}catch(e){}</script>
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+<marker id="arrowhead-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--a5)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo"><span>ゼロからヒーロー</span>プログラミング &rarr; マルチエージェントAI</a>
+  <div class="toc-group">
+    <div class="toc-group-title">基礎</div>
+    <a href="phase-1.html#ch01" class="toc-link"><span class="toc-num">01</span>プログラミングとは何か</a>
+    <a href="phase-1.html#ch02" class="toc-link"><span class="toc-num">02</span>コンピュータがコードを実行する仕組み</a>
+    <a href="phase-1.html#ch03" class="toc-link"><span class="toc-num">03</span>環境のセットアップ</a>
+    <a href="phase-1.html#ch04" class="toc-link"><span class="toc-num">04</span>書く前にコードを読む</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Python</div>
+    <a href="phase-2.html#ch05" class="toc-link"><span class="toc-num">05</span>関数、ロジック、制御フロー</a>
+    <a href="phase-2.html#ch06" class="toc-link"><span class="toc-num">06</span>データ構造</a>
+    <a href="phase-2.html#ch07" class="toc-link"><span class="toc-num">07</span>クラスとオブジェクト指向プログラミング</a>
+    <a href="phase-2.html#ch08" class="toc-link"><span class="toc-num">08</span>ファイル、モジュール、標準ライブラリ</a>
+    <a href="phase-2.html#ch09" class="toc-link"><span class="toc-num">09</span>エラー処理、デバッグ、テスト</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">開発ツール</div>
+    <a href="phase-3.html#ch10" class="toc-link"><span class="toc-num">10</span>ターミナルとシェル</a>
+    <a href="phase-3.html#ch11" class="toc-link"><span class="toc-num">11</span>Gitの基礎</a>
+    <a href="phase-3.html#ch12" class="toc-link"><span class="toc-num">12</span>GitリモートとGitHub</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">構築とデプロイ</div>
+    <a href="phase-4.html#ch13" class="toc-link"><span class="toc-num">13</span>APIとHTTP</a>
+    <a href="phase-4.html#ch14" class="toc-link"><span class="toc-num">14</span>FlaskでAPIを構築する</a>
+    <a href="phase-4.html#ch15" class="toc-link"><span class="toc-num">15</span>データベースの基礎</a>
+    <a href="phase-4.html#ch16" class="toc-link"><span class="toc-num">16</span>Dockerとコンテナ</a>
+    <a href="phase-4.html#ch17" class="toc-link"><span class="toc-num">17</span>CI/CDとGitHub Actions</a>
+    <a href="phase-4.html#ch18" class="toc-link"><span class="toc-num">18</span>プロジェクトアーキテクチャ</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">データ構造</div>
+    <a href="phase-5.html#ch19" class="toc-link"><span class="toc-num">19</span>計算量分析</a>
+    <a href="phase-5.html#ch20" class="toc-link"><span class="toc-num">20</span>線形構造</a>
+    <a href="phase-5.html#ch21" class="toc-link"><span class="toc-num">21</span>ハッシュテーブルとマップ</a>
+    <a href="phase-5.html#ch22" class="toc-link"><span class="toc-num">22</span>木構造</a>
+    <a href="phase-5.html#ch23" class="toc-link"><span class="toc-num">23</span>グラフ</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">アルゴリズム</div>
+    <a href="phase-6.html#ch24" class="toc-link"><span class="toc-num">24</span>探索とソート</a>
+    <a href="phase-6.html#ch25" class="toc-link"><span class="toc-num">25</span>再帰と動的計画法</a>
+    <a href="phase-6.html#ch26" class="toc-link"><span class="toc-num">26</span>アルゴリズムパターン</a>
+    <a href="phase-6.html#ch27" class="toc-link"><span class="toc-num">27</span>グラフアルゴリズム</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">エンジニアリングの技術</div>
+    <a href="phase-7.html#ch28" class="toc-link"><span class="toc-num">28</span>デザインパターンとSOLID</a>
+    <a href="phase-7.html#ch29" class="toc-link"><span class="toc-num">29</span>SQLとクエリマスタリー</a>
+    <a href="phase-7.html#ch30" class="toc-link"><span class="toc-num">30</span>トランザクションとNoSQL</a>
+    <a href="phase-7.html#ch31" class="toc-link"><span class="toc-num">31</span>ネットワークとインターネット</a>
+    <a href="phase-7.html#ch32" class="toc-link"><span class="toc-num">32</span>並行性と並列処理</a>
+    <a href="phase-7.html#ch33" class="toc-link"><span class="toc-num">33</span>セキュリティエンジニアリング</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">システムとスケール</div>
+    <a href="phase-8.html#ch34" class="toc-link"><span class="toc-num">34</span>システム設計</a>
+    <a href="phase-8.html#ch35" class="toc-link"><span class="toc-num">35</span>分散システム</a>
+    <a href="phase-8.html#ch36" class="toc-link"><span class="toc-num">36</span>パフォーマンスと可観測性</a>
+    <a href="phase-8.html#ch37" class="toc-link"><span class="toc-num">37</span>大規模コードベースのナビゲーション</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AIレベル1〜5</div>
+    <a href="phase-9.html#ch38" class="toc-link"><span class="toc-num">38</span>AIコードの評価と指示</a>
+    <a href="phase-9.html#ch39" class="toc-link"><span class="toc-num">39</span>レベル1&amp;2 — タブ補完とエージェントIDE</a>
+    <a href="phase-9.html#ch40" class="toc-link"><span class="toc-num">40</span>レベル3 — コンテキストエンジニアリング</a>
+    <a href="phase-9.html#ch41" class="toc-link"><span class="toc-num">41</span>レベル4 — 複合エンジニアリング</a>
+    <a href="phase-9.html#ch42" class="toc-link"><span class="toc-num">42</span>レベル5 — MCP、スキル、機能</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AIレベル6〜8</div>
+    <a href="phase-10.html#ch43" class="toc-link"><span class="toc-num">43</span>レベル6 — ハーネスエンジニアリング</a>
+    <a href="phase-10.html#ch44" class="toc-link"><span class="toc-num">44</span>レベル7 — バックグラウンドエージェント</a>
+    <a href="phase-10.html#ch45" class="toc-link"><span class="toc-num">45</span>DockerでのClaude Code</a>
+    <a href="phase-10.html#ch46" class="toc-link"><span class="toc-num">46</span>レベル8 — 自律エージェントチーム</a>
+    <a href="phase-10.html#ch47" class="toc-link"><span class="toc-num">47</span>マルチプレイヤー効果</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">リファレンス</div>
+    <a href="appendices.html#glossary" class="toc-link"><span class="toc-num">&oplus;</span>用語集</a>
+    <a href="appendices.html#prompt-library" class="toc-link"><span class="toc-num">&oplus;</span>プロンプトライブラリ</a>
+    <a href="appendices.html#self-assessment" class="toc-link"><span class="toc-num">&oplus;</span>自己評価</a>
+    <a href="appendices.html#common-mistakes" class="toc-link"><span class="toc-num">&oplus;</span>よくある間違い</a>
+    <a href="appendices.html#appendix-d" class="toc-link"><span class="toc-num">&oplus;</span>トラブルシューティング</a>
+    <a href="appendices.html#appendix-e" class="toc-link"><span class="toc-num">&oplus;</span>リソース</a>
+  </div>
+</aside>
+</aside>
+
+<div class="main">
+<section class="hero hero-sm">
+  <div class="hero-badge">フェーズ6 &mdash; アルゴリズム</div>
+  <h1><em>アルゴリズム</em></h1>
+  <p class="hero-sub">探索、ソート、再帰、動的計画法（dynamic programming）、そして人間やAIが生成したあらゆる解を評価するための問題解決パターンを学びます。</p>
+  <div class="hero-meta"><span>第24〜27章</span><span>フェーズゲート + TaskForge</span></div>
+</section>
+<div class="content-wrap">
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念</div>
+<p>このフェーズでは、以下のことができる前提で進みます：コードの時間・空間計算量（time and space complexity）の分析（第19章）、スタック・キュー・ハッシュテーブル・木・グラフの実装と活用（第20〜23章）、そしてどのデータ構造が優れているかを判断する力。</p>
+</div>
+
+<!-- ===== CH 24 ===== -->
+<section id="ch24" data-ch="24">
+<h2><span class="ch-label">第24章</span> 探索とソート</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念</div>
+<p>データベースのクエリはすべて探索を使います。ソートされた表示はすべてソートを使います。AIは絶えずソートコードを生成します。そのアルゴリズムが適切かどうかを評価できなければなりません。誤った選択は、10ミリ秒の応答と10秒の応答の差を生みます。この章では、その判断を毎回正確に下すための語彙と理解を身につけます。</p>
+</div>
+
+<h3>線形探索（Linear Search）</h3>
+<p><strong>線形探索</strong>（linear search）は最もシンプルな探索アルゴリズムです。先頭から始めてすべての要素を確認し、対象が見つかるか、要素がなくなれば終了します。時間計算量は<strong>O(n)</strong>で、最悪の場合はすべての要素を調べます。</p>
+
+<pre style="overflow-x:auto"><code>def linear_search(arr, target):
+    """Return the index of target in arr, or -1 if not found."""
+    for i in range(len(arr)):      # Walk through every index
+        if arr[i] == target:       # Found it?
+            return i               # Return the position
+    return -1                      # Exhausted the list without finding target
+
+# Usage
+tasks = ["buy groceries", "write tests", "deploy app", "review PR"]
+idx = linear_search(tasks, "deploy app")
+print(idx)  # 2</code></pre>
+
+<p>線形探索が<em>正しい</em>選択となる状況は、思っているよりも多くあります：</p>
+<ul>
+<li><strong>未ソートのデータ</strong>&mdash;ソートされていないコレクションには二分探索を使えません。データがランダムな順序で届き、1回だけ探索する場合、線形探索しか選択肢がありません。</li>
+<li><strong>小さなコレクション</strong>&mdash;要素数が約50未満の場合、ソート済み構造の維持やハッシュテーブルの構築コストが、単純にスキャンするコストを上回ります。PythonのリストにおけるIn演算子は内部で線形探索を使っています。</li>
+<li><strong>一度だけ探索するシナリオ</strong>&mdash;コレクションを1回だけ探索する場合、最初にソートして（O(n log n)）から二分探索（O(log n)）するより、単純な線形スキャン（O(n)）の方が速いです。</li>
+</ul>
+
+<p>Pythonのリストにおける<code>in</code>演算子は内部で線形探索を行います：</p>
+<pre style="overflow-x:auto"><code>tasks = ["buy groceries", "write tests", "deploy app"]
+print("write tests" in tasks)  # True — scans left to right, O(n)</code></pre>
+
+<h3>二分探索（Binary Search）</h3>
+<p><strong>二分探索</strong>（binary search）は<em>ソートされた</em>データが必要です。探索空間を繰り返し半分に切り分けます。対象と中央の要素を比較して、対象が含まれ得ない半分を捨てます。これにより<strong>O(log n)</strong>の時間計算量が得られます。100万件の要素を探索しても、最大20回の比較で済みます。</p>
+
+<p>アルゴリズムのステップ：</p>
+<ol>
+<li><code>lo = 0</code>、<code>hi = len(arr) - 1</code> を設定します。</li>
+<li><code>lo &lt;= hi</code> の間：
+  <ol>
+  <li><code>mid = (lo + hi) // 2</code> を計算します。</li>
+  <li><code>arr[mid] == target</code> なら <code>mid</code> を返します。</li>
+  <li><code>arr[mid] &lt; target</code> なら対象は右半分にあります：<code>lo = mid + 1</code> とします。</li>
+  <li><code>arr[mid] &gt; target</code> なら対象は左半分にあります：<code>hi = mid - 1</code> とします。</li>
+  </ol>
+</li>
+<li>ループが終了しても返っていなければ、対象は配列に存在しません。<code>-1</code> を返します。</li>
+</ol>
+
+<pre style="overflow-x:auto"><code>def binary_search(arr, target):
+    """Return the index of target in sorted arr, or -1 if not found."""
+    lo, hi = 0, len(arr) - 1           # 1. Initialize boundaries
+
+    while lo <= hi:                     # 2. Loop while search space is non-empty
+        mid = (lo + hi) // 2           #    Find the midpoint
+        if arr[mid] == target:         #    2a. Exact match
+            return mid
+        elif arr[mid] < target:        #    2b. Target is in the right half
+            lo = mid + 1               #         Discard left half including mid
+        else:                          #    2c. Target is in the left half
+            hi = mid - 1              #         Discard right half including mid
+
+    return -1                          # 3. Not found
+
+# Usage
+sorted_ids = [2, 5, 8, 12, 16, 23, 38, 56, 72, 91]
+print(binary_search(sorted_ids, 23))   # 5
+print(binary_search(sorted_ids, 24))   # -1</code></pre>
+
+<div role="note" class="callout warn">
+<div class="callout-title">注意</div>
+<p>二分探索は誤りやすいことで有名です。よくあるバグ：</p>
+<ul>
+<li><strong><code>lo &lt;= hi</code> か <code>lo &lt; hi</code> か</strong>&mdash;<code>&lt;=</code> の代わりに <code>&lt;</code> を使うと、<code>lo == hi</code> のケースをスキップしてしまい、最後の要素を確認できなくなります。</li>
+<li><strong><code>mid + 1</code> / <code>mid - 1</code> か <code>mid</code> か</strong>&mdash;<code>lo = mid + 1</code> の代わりに <code>lo = mid</code> と設定すると、<code>lo == mid</code>（<code>hi - lo == 1</code> のとき）で無限ループが発生します。</li>
+<li><strong>整数オーバーフロー（integer overflow）</strong>&mdash;C++ や Java などの言語では <code>(lo + hi)</code> がオーバーフローする場合があります。Python は任意精度の整数を扱うのでこの問題は起きませんが、他の言語で作業する際には注意が必要です。</li>
+</ul>
+</div>
+
+<h4>探索空間上の二分探索</h4>
+<p>二分探索は配列内の要素を見つけるだけに限りません。「Xは十分大きいか？」という問いにYes/Noで答えられる問題なら、答えの空間に対して二分探索を適用できます。これは最も強力なアルゴリズムテクニックの一つで、実際のエンジニアリングでも頻繁に登場します。</p>
+
+<p><strong>問題：</strong>タスクの所要時間のリストとワーカー数が与えられています。各ワーカーはタスクを順番に処理します。どのワーカーの作業時間の最大値も最小になるようにタスクを割り当てるには？その最小の最大時間はいくらですか？</p>
+
+<p>洞察：時間制限 <code>T</code> を推測すれば、<code>T</code> が実現可能かどうかを貪欲に確認できます。各ワーカーに順番にタスクを割り当て、現在のワーカーが <code>T</code> を超えそうになったら新しいワーカーに切り替えます。必要なワーカー数が利用可能な数を超えれば <code>T</code> は小さすぎます。以下なら実現可能です。答えは実現可能な最小の <code>T</code> です。</p>
+
+<pre style="overflow-x:auto"><code>def min_max_time(durations, num_workers):
+    """Find the minimum possible maximum time per worker."""
+
+    def is_feasible(max_time):
+        """Can we assign all tasks using <= num_workers if each handles <= max_time?"""
+        workers_needed = 1
+        current_load = 0
+        for d in durations:
+            if current_load + d > max_time:
+                workers_needed += 1        # Start a new worker
+                current_load = d           # This task goes to the new worker
+            else:
+                current_load += d          # Add task to current worker
+        return workers_needed <= num_workers
+
+    lo = max(durations)          # Lower bound: at least the longest single task
+    hi = sum(durations)          # Upper bound: one worker does everything
+
+    while lo < hi:
+        mid = (lo + hi) // 2
+        if is_feasible(mid):
+            hi = mid             # mid works — try to find something smaller
+        else:
+            lo = mid + 1         # mid is too small — need more time
+
+    return lo
+
+# Example: 5 tasks, 3 workers
+print(min_max_time([10, 20, 30, 40, 50], 3))  # 60</code></pre>
+
+<p>要素探索の二分探索との微妙な違いに注目してください：ここでは <code>lo &lt; hi</code>（<code>&lt;=</code> ではなく）を使い、<code>lo</code> と <code>hi</code> が同じ値に収束するまで続けます。これが「最大値を最小化する」二分探索の標準テンプレートです。</p>
+
+<h3>挿入ソート（Insertion Sort）</h3>
+<p><strong>挿入ソート</strong>（insertion sort）は配列のソート済み部分を1要素ずつ構築します。新しい要素ごとに、より大きな要素を右にシフトしてスペースを作り、正しい位置に挿入します。</p>
+
+<pre style="overflow-x:auto"><code>def insertion_sort(arr):
+    """Sort arr in-place using insertion sort."""
+    for i in range(1, len(arr)):       # Start from the second element
+        key = arr[i]                   # The element to insert
+        j = i - 1                      # Start comparing with the element to its left
+
+        # Shift elements that are larger than key one position to the right
+        while j >= 0 and arr[j] > key:
+            arr[j + 1] = arr[j]        # Shift right
+            j -= 1                     # Move comparison pointer left
+
+        arr[j + 1] = key               # Insert key in the correct position
+
+    return arr
+
+print(insertion_sort([5, 2, 8, 1, 9, 3]))  # [1, 2, 3, 5, 8, 9]</code></pre>
+
+<p><strong>計算量：</strong> 最悪ケース（逆順ソート済み入力）はO(n²)ですが、データがほぼソート済みの場合は<strong>最良ケースO(n)</strong>です。これにより、挿入ソートは小さな配列や「ほぼソート済み」の配列に優れています。これは実際には驚くほど多く見られます。PythonのTimsort自体も小さな連続区間（run）に挿入ソートを使っています。</p>
+
+<h3>マージソート（Merge Sort）</h3>
+<p><strong>マージソート</strong>（merge sort）は<strong>分割統治法</strong>（divide-and-conquer）アルゴリズムです。各部分が1要素になるまで（それ自体でソート済み）再帰的に配列を半分に分割し、ソート済みの半分を結合します。入力の順序に関わらず<strong>O(n log n)</strong>の時間を保証し、<strong>安定ソート</strong>（stable sort）です。等しい要素は元の相対順序を保ちます。</p>
+
+<pre style="overflow-x:auto"><code>def merge_sort(arr):
+    """Return a new sorted list using merge sort."""
+    if len(arr) <= 1:                  # Base case: 0 or 1 elements are already sorted
+        return arr
+
+    mid = len(arr) // 2                # Find the midpoint
+    left = merge_sort(arr[:mid])       # Recursively sort the left half
+    right = merge_sort(arr[mid:])      # Recursively sort the right half
+
+    return merge(left, right)          # Merge the two sorted halves
+
+def merge(left, right):
+    """Merge two sorted lists into one sorted list."""
+    result = []
+    i = j = 0                         # Pointers into left and right
+
+    while i < len(left) and j < len(right):
+        if left[i] <= right[j]:        # <= preserves stability
+            result.append(left[i])
+            i += 1
+        else:
+            result.append(right[j])
+            j += 1
+
+    # One of the halves may have remaining elements
+    result.extend(left[i:])
+    result.extend(right[j:])
+    return result
+
+print(merge_sort([38, 27, 43, 3, 9, 82, 10]))  # [3, 9, 10, 27, 38, 43, 82]</code></pre>
+
+<p><strong>再帰木：</strong> 8要素の配列は2つの4要素配列に、それが4つの2要素配列に、さらに8つの1要素配列に分割されます。分割のレベル数は<strong>log₂ n</strong>です。各レベルでマージステップがすべての要素に1回触れるため、各レベルのコストはO(n)です。合計：<strong>O(n log n)</strong>。</p>
+
+<p><strong>空間計算量（space complexity）：</strong> O(n)。マージ関数は各レベルで新しいリストを作成します。これがクイックソートのような「インプレース（in-place）」ソートとのトレードオフです。</p>
+
+<div class="diagram">
+<svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" aria-label="Merge sort divides the array recursively then merges sorted halves">
+  <!-- Title -->
+  <text class="label-text" x="360" y="22" text-anchor="middle">マージソート：分割統治法</text>
+
+  <!-- Level 0: Full array -->
+  <rect class="node-accent" x="180" y="35" width="360" height="32" rx="6"/>
+  <text class="sub-text" x="202" y="56" text-anchor="middle">38</text>
+  <text class="sub-text" x="247" y="56" text-anchor="middle">27</text>
+  <text class="sub-text" x="292" y="56" text-anchor="middle">43</text>
+  <text class="sub-text" x="337" y="56" text-anchor="middle">3</text>
+  <text class="sub-text" x="382" y="56" text-anchor="middle">9</text>
+  <text class="sub-text" x="427" y="56" text-anchor="middle">82</text>
+  <text class="sub-text" x="472" y="56" text-anchor="middle">10</text>
+  <text class="sub-text" x="517" y="56" text-anchor="middle">7</text>
+
+  <!-- Divide arrows L0->L1 -->
+  <line x1="270" y1="67" x2="180" y2="90" class="arrow"/>
+  <line x1="450" y1="67" x2="540" y2="90" class="arrow"/>
+
+  <!-- Level 1: Two halves -->
+  <rect class="node-fill" x="80" y="92" width="200" height="28" rx="5"/>
+  <text class="sub-text" x="115" y="111" text-anchor="middle">38</text>
+  <text class="sub-text" x="155" y="111" text-anchor="middle">27</text>
+  <text class="sub-text" x="195" y="111" text-anchor="middle">43</text>
+  <text class="sub-text" x="235" y="111" text-anchor="middle">3</text>
+
+  <rect class="node-fill" x="440" y="92" width="200" height="28" rx="5"/>
+  <text class="sub-text" x="475" y="111" text-anchor="middle">9</text>
+  <text class="sub-text" x="515" y="111" text-anchor="middle">82</text>
+  <text class="sub-text" x="555" y="111" text-anchor="middle">10</text>
+  <text class="sub-text" x="595" y="111" text-anchor="middle">7</text>
+
+  <!-- Divide arrows L1->L2 -->
+  <line x1="135" y1="120" x2="95" y2="145" class="arrow"/>
+  <line x1="225" y1="120" x2="265" y2="145" class="arrow"/>
+  <line x1="495" y1="120" x2="455" y2="145" class="arrow"/>
+  <line x1="585" y1="120" x2="625" y2="145" class="arrow"/>
+
+  <!-- Level 2: Four quarters -->
+  <rect class="node-fill" x="30" y="147" width="100" height="26" rx="4"/>
+  <text class="sub-text" x="60" y="165" text-anchor="middle">38</text>
+  <text class="sub-text" x="100" y="165" text-anchor="middle">27</text>
+
+  <rect class="node-fill" x="220" y="147" width="100" height="26" rx="4"/>
+  <text class="sub-text" x="250" y="165" text-anchor="middle">43</text>
+  <text class="sub-text" x="290" y="165" text-anchor="middle">3</text>
+
+  <rect class="node-fill" x="400" y="147" width="100" height="26" rx="4"/>
+  <text class="sub-text" x="430" y="165" text-anchor="middle">9</text>
+  <text class="sub-text" x="470" y="165" text-anchor="middle">82</text>
+
+  <rect class="node-fill" x="590" y="147" width="100" height="26" rx="4"/>
+  <text class="sub-text" x="620" y="165" text-anchor="middle">10</text>
+  <text class="sub-text" x="660" y="165" text-anchor="middle">7</text>
+
+  <!-- Divide arrows L2->L3 (single elements) -->
+  <line x1="55" y1="173" x2="30" y2="195" stroke="var(--a5)" stroke-width="1"/>
+  <line x1="105" y1="173" x2="110" y2="195" stroke="var(--a5)" stroke-width="1"/>
+  <line x1="245" y1="173" x2="230" y2="195" stroke="var(--a5)" stroke-width="1"/>
+  <line x1="295" y1="173" x2="300" y2="195" stroke="var(--a5)" stroke-width="1"/>
+  <line x1="425" y1="173" x2="410" y2="195" stroke="var(--a5)" stroke-width="1"/>
+  <line x1="475" y1="173" x2="490" y2="195" stroke="var(--a5)" stroke-width="1"/>
+  <line x1="615" y1="173" x2="600" y2="195" stroke="var(--a5)" stroke-width="1"/>
+  <line x1="665" y1="173" x2="680" y2="195" stroke="var(--a5)" stroke-width="1"/>
+
+  <!-- Level 3: Single elements -->
+  <rect x="14" y="197" width="36" height="22" rx="3" fill="var(--bg)" stroke="var(--border-accent)" stroke-width="1"/>
+  <text class="sub-text" x="32" y="212" text-anchor="middle">38</text>
+  <rect x="94" y="197" width="36" height="22" rx="3" fill="var(--bg)" stroke="var(--border-accent)" stroke-width="1"/>
+  <text class="sub-text" x="112" y="212" text-anchor="middle">27</text>
+  <rect x="214" y="197" width="36" height="22" rx="3" fill="var(--bg)" stroke="var(--border-accent)" stroke-width="1"/>
+  <text class="sub-text" x="232" y="212" text-anchor="middle">43</text>
+  <rect x="284" y="197" width="36" height="22" rx="3" fill="var(--bg)" stroke="var(--border-accent)" stroke-width="1"/>
+  <text class="sub-text" x="302" y="212" text-anchor="middle">3</text>
+  <rect x="394" y="197" width="36" height="22" rx="3" fill="var(--bg)" stroke="var(--border-accent)" stroke-width="1"/>
+  <text class="sub-text" x="412" y="212" text-anchor="middle">9</text>
+  <rect x="474" y="197" width="36" height="22" rx="3" fill="var(--bg)" stroke="var(--border-accent)" stroke-width="1"/>
+  <text class="sub-text" x="492" y="212" text-anchor="middle">82</text>
+  <rect x="584" y="197" width="36" height="22" rx="3" fill="var(--bg)" stroke="var(--border-accent)" stroke-width="1"/>
+  <text class="sub-text" x="602" y="212" text-anchor="middle">10</text>
+  <rect x="664" y="197" width="36" height="22" rx="3" fill="var(--bg)" stroke="var(--border-accent)" stroke-width="1"/>
+  <text class="sub-text" x="682" y="212" text-anchor="middle">7</text>
+
+  <!-- MERGE label -->
+  <text fill="var(--accent)" font-size="11" font-weight="600" x="360" y="242" text-anchor="middle">マージフェーズ</text>
+  <line x1="140" y1="238" x2="290" y2="238" stroke="var(--accent)" stroke-width="1" stroke-dasharray="4"/>
+  <line x1="430" y1="238" x2="580" y2="238" stroke="var(--accent)" stroke-width="1" stroke-dasharray="4"/>
+
+  <!-- Merge Level 2: Sorted pairs -->
+  <rect class="node-accent" x="30" y="252" width="100" height="26" rx="4"/>
+  <text class="sub-text" x="60" y="270" text-anchor="middle" fill="var(--bg)">27</text>
+  <text class="sub-text" x="100" y="270" text-anchor="middle" fill="var(--bg)">38</text>
+
+  <rect class="node-accent" x="220" y="252" width="100" height="26" rx="4"/>
+  <text class="sub-text" x="250" y="270" text-anchor="middle" fill="var(--bg)">3</text>
+  <text class="sub-text" x="290" y="270" text-anchor="middle" fill="var(--bg)">43</text>
+
+  <rect class="node-accent" x="400" y="252" width="100" height="26" rx="4"/>
+  <text class="sub-text" x="430" y="270" text-anchor="middle" fill="var(--bg)">9</text>
+  <text class="sub-text" x="470" y="270" text-anchor="middle" fill="var(--bg)">82</text>
+
+  <rect class="node-accent" x="590" y="252" width="100" height="26" rx="4"/>
+  <text class="sub-text" x="620" y="270" text-anchor="middle" fill="var(--bg)">7</text>
+  <text class="sub-text" x="660" y="270" text-anchor="middle" fill="var(--bg)">10</text>
+
+  <!-- Merge arrows L2->L1 -->
+  <line x1="95" y1="278" x2="135" y2="300" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="265" y1="278" x2="225" y2="300" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="455" y1="278" x2="495" y2="300" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="635" y1="278" x2="585" y2="300" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Merge Level 1: Sorted fours -->
+  <rect class="node-accent" x="80" y="302" width="200" height="28" rx="5"/>
+  <text class="sub-text" x="115" y="321" text-anchor="middle" fill="var(--bg)">3</text>
+  <text class="sub-text" x="155" y="321" text-anchor="middle" fill="var(--bg)">27</text>
+  <text class="sub-text" x="195" y="321" text-anchor="middle" fill="var(--bg)">38</text>
+  <text class="sub-text" x="235" y="321" text-anchor="middle" fill="var(--bg)">43</text>
+
+  <rect class="node-accent" x="440" y="302" width="200" height="28" rx="5"/>
+  <text class="sub-text" x="475" y="321" text-anchor="middle" fill="var(--bg)">7</text>
+  <text class="sub-text" x="515" y="321" text-anchor="middle" fill="var(--bg)">9</text>
+  <text class="sub-text" x="555" y="321" text-anchor="middle" fill="var(--bg)">10</text>
+  <text class="sub-text" x="595" y="321" text-anchor="middle" fill="var(--bg)">82</text>
+
+  <!-- Final merge arrows -->
+  <line x1="225" y1="330" x2="300" y2="348" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="495" y1="330" x2="420" y2="348" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Final sorted array -->
+  <rect class="node-accent" x="180" y="350" width="360" height="28" rx="6"/>
+  <text class="sub-text" x="202" y="369" text-anchor="middle" fill="var(--bg)">3</text>
+  <text class="sub-text" x="247" y="369" text-anchor="middle" fill="var(--bg)">7</text>
+  <text class="sub-text" x="292" y="369" text-anchor="middle" fill="var(--bg)">9</text>
+  <text class="sub-text" x="337" y="369" text-anchor="middle" fill="var(--bg)">10</text>
+  <text class="sub-text" x="382" y="369" text-anchor="middle" fill="var(--bg)">27</text>
+  <text class="sub-text" x="427" y="369" text-anchor="middle" fill="var(--bg)">38</text>
+  <text class="sub-text" x="472" y="369" text-anchor="middle" fill="var(--bg)">43</text>
+  <text class="sub-text" x="517" y="369" text-anchor="middle" fill="var(--bg)">82</text>
+</svg>
+<div class="diagram-caption">マージソートは配列を再帰的に分割し（上半分）、ソート済みの部分配列を結合します（下半分）。各マージレベルですべての要素に1回触れるため、合計の作業量はO(n log n)です。</div>
+</div>
+
+<h3>クイックソート（Quicksort）</h3>
+<p><strong>クイックソート</strong>（quicksort）も分割統治法アルゴリズムですが、中点で分割する代わりに、<strong>ピボット</strong>（pivot）要素を基準に配列を<strong>分割</strong>（partition）します。ピボットより小さい要素はその左へ、大きい要素はその右へ移動します。そして左右の部分配列を再帰的にソートします。</p>
+
+<pre style="overflow-x:auto"><code>def quicksort(arr):
+    """Return a new sorted list using quicksort."""
+    if len(arr) <= 1:
+        return arr
+
+    pivot = arr[len(arr) // 2]                # Choose middle element as pivot
+    left = [x for x in arr if x < pivot]      # Elements smaller than pivot
+    middle = [x for x in arr if x == pivot]    # Elements equal to pivot
+    right = [x for x in arr if x > pivot]     # Elements larger than pivot
+
+    return quicksort(left) + middle + quicksort(right)
+
+print(quicksort([10, 7, 8, 9, 1, 5]))  # [1, 5, 7, 8, 9, 10]</code></pre>
+
+<p>これは「Lomutoスタイル」のリスト内包表記バージョンで、明快ですが余分なメモリを使います。インプレースのHoare分割スキームはメモリ効率が良いですが、読みにくいです：</p>
+
+<pre style="overflow-x:auto"><code>def quicksort_inplace(arr, lo=0, hi=None):
+    """Sort arr in-place using quicksort with Hoare partition."""
+    if hi is None:
+        hi = len(arr) - 1
+    if lo >= hi:
+        return
+
+    # Partition
+    pivot = arr[(lo + hi) // 2]
+    i, j = lo, hi
+    while i <= j:
+        while arr[i] < pivot:
+            i += 1
+        while arr[j] > pivot:
+            j -= 1
+        if i <= j:
+            arr[i], arr[j] = arr[j], arr[i]
+            i += 1
+            j -= 1
+
+    quicksort_inplace(arr, lo, j)
+    quicksort_inplace(arr, i, hi)
+
+data = [10, 7, 8, 9, 1, 5]
+quicksort_inplace(data)
+print(data)  # [1, 5, 7, 8, 9, 10]</code></pre>
+
+<p><strong>計算量：</strong> 平均ケースはO(n log n)ですが、<strong>最悪ケースはO(n²)</strong>です。ピボットが常に最小または最大の要素になる場合（例：最初の要素をピボットにするとソート済み入力がこれに該当）に発生します。これを避けるためのピボット選択戦略：</p>
+<ul>
+<li><strong>ランダムピボット</strong>&mdash;ランダムな要素を選びます。最悪ケースの発生確率が天文学的に低くなります。</li>
+<li><strong>3の中央値（median-of-three）</strong>&mdash;最初、中間、最後の要素の中央値を取ります。ソート済み入力をうまく処理します。</li>
+<li><strong>中央要素</strong>&mdash;上記で使用した方法です。シンプルで通常は効果的です。</li>
+</ul>
+
+<h3>ヒープソート（Heapsort）</h3>
+<p><strong>ヒープソート</strong>（heapsort）は配列から最大ヒープ（max-heap）を構築し（第22章で解説）、最大要素を繰り返し取り出して末尾に配置します。<strong>O(n log n)</strong>の保証時間を達成し、<strong>インプレース</strong>（in-place）で動作します。余分な配列が不要です。</p>
+
+<pre style="overflow-x:auto"><code>def heapsort(arr):
+    """Sort arr in-place using heapsort."""
+    n = len(arr)
+
+    def sift_down(start, end):
+        """Restore the max-heap property from start down to end."""
+        root = start
+        while 2 * root + 1 <= end:
+            child = 2 * root + 1        # Left child
+            if child + 1 <= end and arr[child] < arr[child + 1]:
+                child += 1              # Right child is larger
+            if arr[root] < arr[child]:
+                arr[root], arr[child] = arr[child], arr[root]
+                root = child
+            else:
+                return
+
+    # Phase 1: Build a max-heap (heapify)
+    for i in range(n // 2 - 1, -1, -1):
+        sift_down(i, n - 1)
+
+    # Phase 2: Extract max repeatedly
+    for end in range(n - 1, 0, -1):
+        arr[0], arr[end] = arr[end], arr[0]   # Move max to sorted position
+        sift_down(0, end - 1)                  # Restore heap on reduced array
+
+    return arr
+
+data = [4, 10, 3, 5, 1]
+print(heapsort(data))  # [1, 3, 4, 5, 10]</code></pre>
+
+<p>ヒープソートは余分なメモリなしでO(n log n)を保証したい場合に有用です。実際には、クイックソートはキャッシュの局所性（cache locality）が良いため速いことが多いですが、ヒープソートの最悪ケースは厳密にO(n log n)で、不運なピボットの心配がありません。</p>
+
+<h3>非比較ソート（Non-Comparison Sorts）</h3>
+<p>上記のソートはすべて要素のペアを比較します。<strong>比較の下限（comparison lower bound）</strong>と呼ばれる数学的な結果は、比較ベースのソートがO(n log n)より良くなれないことを証明しています。しかし、データが既知の範囲の整数で構成される場合、この壁を突破できます。</p>
+
+<p><strong>カウントソート</strong>（counting sort）は各値の出現回数を数えてから、カウントから配列を再構築します。時間計算量：<strong>O(n + k)</strong>（kは値の範囲）。</p>
+
+<pre style="overflow-x:auto"><code>def counting_sort(arr, max_val):
+    """Sort non-negative integers using counting sort. O(n + k)."""
+    counts = [0] * (max_val + 1)        # One counter per possible value
+    for x in arr:
+        counts[x] += 1                  # Count occurrences
+
+    result = []
+    for val, count in enumerate(counts):
+        result.extend([val] * count)    # Emit each value 'count' times
+    return result
+
+print(counting_sort([4, 2, 2, 8, 3, 3, 1], 8))  # [1, 2, 2, 3, 3, 4, 8]</code></pre>
+
+<p><strong>基数ソート</strong>（radix sort）は整数を最下位桁から最上位桁へと桁ごとにソートし、各桁で安定ソート（カウントソートなど）を使います。時間計算量：<strong>O(d × (n + k))</strong>（dは桁数、kは基数（通常10））。固定サイズの整数では実質的にO(n)です。</p>
+
+<h3>安定性（Stability）</h3>
+<p>等しいキーを持つ要素が元の相対順序を維持するソートを<strong>安定ソート</strong>（stable sort）と言います。複数のキーでソートする際に重要です。</p>
+
+<p>例：作成日でソートされたタスクがあります。今度は優先度でソートします。安定ソートを使えば、同じ優先度のタスクは作成日の順序を保ちます。不安定ソートでは、優先度レベル内での順序が予測できなくなります。</p>
+
+<table>
+<caption>ソートアルゴリズムの時間・空間・安定性の比較</caption>
+<tr><th>アルゴリズム</th><th>時間（最悪）</th><th>時間（平均）</th><th>空間</th><th>安定？</th></tr>
+<tr><td>挿入ソート</td><td>O(n²)</td><td>O(n²)</td><td>O(1)</td><td>はい</td></tr>
+<tr><td>マージソート</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n)</td><td>はい</td></tr>
+<tr><td>クイックソート</td><td>O(n²)</td><td>O(n log n)</td><td>O(log n)</td><td>いいえ</td></tr>
+<tr><td>ヒープソート</td><td>O(n log n)</td><td>O(n log n)</td><td>O(1)</td><td>いいえ</td></tr>
+<tr><td>カウントソート</td><td>O(n + k)</td><td>O(n + k)</td><td>O(k)</td><td>はい</td></tr>
+</table>
+
+<h3>Timsort：Pythonが実際に使うアルゴリズム</h3>
+<p>Pythonで <code>sorted()</code> や <code>list.sort()</code> を呼び出すと、<strong>Timsort</strong>が使われます。これはTim Petersが2002年にPython用に発明したハイブリッドアルゴリズムです。Timsortはマージソートと挿入ソートを組み合わせ、実世界のデータに現れるパターンを活用するように設計されています：</p>
+<ul>
+<li>入力内の既存のソート済み「ラン」（run：昇順または降順の連続）を見つけます。</li>
+<li>短いランは挿入ソートを使って最小長まで延長されます。</li>
+<li>ランはペアでマージされ、不均一なマージには「ギャロッピング」モードを使った修正マージソートが適用されます。</li>
+</ul>
+<p>Timsortの最悪ケースは<strong>O(n log n)</strong>、ソート済みデータでは<strong>O(n)</strong>で、安定ソートです。その効果は非常に高く、Java、Rust、Swiftも標準ライブラリに採用しています。</p>
+
+<p>実践的な結論：<strong>Pythonの組み込み <code>sorted()</code> を使いましょう</strong>。C言語で実装されており、Timsortの実世界最適化を使うため、手書きより速いことはほぼ確実です。自分でソートを書くのは学習のため、または制約のある環境で作業する場合だけにしましょう。</p>
+
+<h3>エンジニアリングの視点</h3>
+<div role="note" class="callout info">
+<div class="callout-title">補足</div>
+<p>カスタム <code>key</code> パラメータを使った <code>sorted()</code> で実際のソートニーズの99%に対応できます。タスクを優先度でソートしたいですか？ <code>sorted(tasks, key=lambda t: t["priority"])</code>。降順が必要ですか？ <code>reverse=True</code> を追加。第2ソートキーが必要ですか？タプルを返せばOK：<code>key=lambda t: (t["priority"], t["due_date"])</code>。</p>
+<p>データベースの <code>ORDER BY</code> 句はBツリーインデックススキャンを使って実際にソートせずにソート済み結果を返します。データはすでにインデックスで整理されています。ソート済みデータを繰り返し探索する必要がある場合は、1回ソートして毎回二分探索を行いましょう：1回のO(n log n)ソートとk回のO(log n)探索は、k > log n の場合にk回のO(n)線形スキャンより速くなります。</p>
+</div>
+
+<h3>TaskForgeとの接続</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう</div>
+<p>TaskForge向けの複数キーソートを実装してみましょう：まず優先度でソートし（高優先度を先に）、同じ優先度内では期日（最も早いものを先に）でソートし、さらに作成日をタイブレーカーとして使います。これはタプルキーを使った <code>sorted()</code> の動作と全く同じです：</p>
+<pre style="overflow-x:auto"><code># TaskForge multi-key sort
+tasks = [
+    {"title": "Deploy v2", "priority": 1, "due": "2026-03-20", "created": "2026-03-10"},
+    {"title": "Write docs", "priority": 2, "due": "2026-03-22", "created": "2026-03-11"},
+    {"title": "Fix bug #42", "priority": 1, "due": "2026-03-18", "created": "2026-03-12"},
+    {"title": "Code review", "priority": 2, "due": "2026-03-22", "created": "2026-03-09"},
+]
+
+# Sort: priority ascending (1=highest), due date ascending, created ascending
+sorted_tasks = sorted(tasks, key=lambda t: (t["priority"], t["due"], t["created"]))
+for t in sorted_tasks:
+    print(f"[P{t['priority']}] {t['due']} - {t['title']}")
+# [P1] 2026-03-18 - Fix bug #42
+# [P1] 2026-03-20 - Deploy v2
+# [P2] 2026-03-22 - Code review   (earlier created date wins)
+# [P2] 2026-03-22 - Write docs</code></pre>
+<p>これはTimsortの安定性とPythonのタプル比較に依存しています。カスタムソートアルゴリズムは不要です。組み込み関数がすべてやってくれます。</p>
+</div>
+
+<h3>演習</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="24" data-ex="binary-search">
+  <div class="exercise-header">
+    <h4>二分探索：要素と探索空間</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">2つの関数を実装してください：(1) <code>binary_search(arr, target)</code> はソート済みリスト内で <code>target</code> のインデックスを返し、見つからなければ <code>-1</code> を返します。(2) <code>min_workers_time(durations, num_workers)</code> は探索空間上の二分探索を使って、ワーカー1人当たりの最小の最大時間を求めます。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def binary_search(arr, target):
+    """Return the index of target in sorted arr, or -1 if not found."""
+    # Your code here
+    pass
+
+def min_workers_time(durations, num_workers):
+    """Find the minimum possible max time per worker using binary search."""
+    # Your code here
+    pass
+
+# Test
+print(binary_search([1, 3, 5, 7, 9, 11], 7))  # Expected: 3
+print(binary_search([1, 3, 5, 7, 9, 11], 4))  # Expected: -1
+print(min_workers_time([10, 20, 30, 40, 50], 3))  # Expected: 60
+</script>
+    <script type="text/plain" class="test-code">
+# Test binary_search
+assert binary_search([1, 3, 5, 7, 9, 11], 7) == 3, "Should find 7 at index 3"
+assert binary_search([1, 3, 5, 7, 9, 11], 1) == 0, "Should find 1 at index 0"
+assert binary_search([1, 3, 5, 7, 9, 11], 11) == 5, "Should find 11 at index 5"
+assert binary_search([1, 3, 5, 7, 9, 11], 4) == -1, "Should return -1 for missing element"
+assert binary_search([], 5) == -1, "Empty array returns -1"
+assert binary_search([42], 42) == 0, "Single-element array, found"
+
+# Test min_workers_time
+assert min_workers_time([10, 20, 30, 40, 50], 3) == 60, "3 workers: [10,20,30], [40], [50] -> max 60"
+assert min_workers_time([10, 20, 30, 40, 50], 1) == 150, "1 worker does everything"
+assert min_workers_time([10, 20, 30, 40, 50], 5) == 50, "5 workers: one task each, max is 50"
+assert min_workers_time([7, 2, 5, 10, 8], 2) == 18, "2 workers optimal split"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">確認</button>
+    <button class="ex-hint" data-level="0">ヒント</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">binary_search：lo=0、hi=len(arr)-1 を設定し、lo &lt;= hi の間ループします。arr[mid] を target と比較して lo または hi を調整します。</p>
+    <p class="hint">min_workers_time：max(durations) と sum(durations) の間で二分探索します。与えられた時間制限が実現可能かを貪欲にタスクを割り当てることで確認するヘルパー関数を書きましょう。</p>
+  </div>
+</div>
+
+<div class="quiz" data-ch="24" data-ex="quiz-sort">
+  <h4>確認クイズ</h4>
+  <p>ほぼソート済みの50要素をソートする必要があります。実際に最も速いアルゴリズムはどれでしょうか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">マージソート</button>
+    <button class="quiz-option" data-correct="false">クイックソート</button>
+    <button class="quiz-option" data-correct="true">挿入ソート</button>
+    <button class="quiz-option" data-correct="false">ヒープソート</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="pq">適切なソートアルゴリズムはデータによって決まります。教科書ではありません。すべての選択肢を知ることで、自分で選べるようになり、AIの選択を評価できるようになります。</div>
+
+</section>
+
+<!-- ===== CH 25 ===== -->
+<section id="ch25" data-ch="25">
+<h2><span class="ch-label">第25章</span> 再帰と動的計画法</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念</div>
+<p>多くの問題には優雅な再帰的解法があります。しかし、単純な再帰は天文学的に遅くなる場合があります。Fibonacci(50)を再帰で計算すると100兆回以上の関数呼び出しが発生します。動的計画法（dynamic programming）はこれらの指数的アルゴリズムを多項式時間に変換します。AIは再帰コードをよく生成します。効率的なときと本番システムをクラッシュさせるトラップになるときを見極める必要があります。</p>
+</div>
+
+<h3>再帰的思考（Recursive Thinking）</h3>
+<p><strong>再帰関数</strong>（recursive function）は同じ問題の小さなバージョンで自身を呼び出します。すべての再帰には2つの部分が必要です：</p>
+<ol>
+<li><strong>ベースケース</strong>（base case）&mdash;再帰を停止する条件です。これがないと関数は永遠に自身を呼び続けます。</li>
+<li><strong>再帰ケース</strong>（recursive case）&mdash;ベースケースに近づく小さな入力で自身を呼び出します。</li>
+</ol>
+
+<p>最もシンプルな例は階乗（factorial）です：</p>
+<pre style="overflow-x:auto"><code>def factorial(n):
+    """Compute n! = n * (n-1) * ... * 1."""
+    if n <= 1:             # Base case: 0! = 1! = 1
+        return 1
+    return n * factorial(n - 1)  # Recursive case: n! = n * (n-1)!
+
+print(factorial(5))  # 120 = 5 * 4 * 3 * 2 * 1</code></pre>
+
+<p>実行の流れを追ってみましょう：</p>
+<pre style="overflow-x:auto"><code>factorial(5)
+  = 5 * factorial(4)
+  = 5 * (4 * factorial(3))
+  = 5 * (4 * (3 * factorial(2)))
+  = 5 * (4 * (3 * (2 * factorial(1))))
+  = 5 * (4 * (3 * (2 * 1)))           # Base case reached
+  = 5 * (4 * (3 * 2))
+  = 5 * (4 * 6)
+  = 5 * 24
+  = 120</code></pre>
+
+<p>次はフィボナッチ数列（Fibonacci）。各数は前の2つの和です：0, 1, 1, 2, 3, 5, 8, 13, 21, ...</p>
+<pre style="overflow-x:auto"><code>def fib(n):
+    """Return the nth Fibonacci number (naive recursive)."""
+    if n <= 1:             # Base cases: fib(0) = 0, fib(1) = 1
+        return n
+    return fib(n - 1) + fib(n - 2)  # Recursive case
+
+print(fib(10))  # 55</code></pre>
+
+<p>これは動作しますが、大きなnに対しては<em>壊滅的に</em>遅くなります。なぜなら、同じ部分問題を何度も繰り返し計算するからです。<code>fib(5)</code> は <code>fib(3)</code> を2回、<code>fib(2)</code> を3回、<code>fib(1)</code> を5回呼び出します。呼び出し総数は指数関数的に増加します：<strong>O(2ⁿ)</strong>。</p>
+
+<h3>コールスタック（Call Stack）</h3>
+<p>各再帰呼び出しは<strong>スタックフレーム</strong>（stack frame）を追加します。これは関数のローカル変数とリターンアドレスを格納するメモリブロックです。再帰が深くなるほどフレームが積み上がり、各呼び出しが返るたびにアンワインド（unwind）されます。</p>
+
+<pre style="overflow-x:auto"><code># Visualizing the call stack for factorial(4):
+#
+# Frame 4: factorial(1) -> returns 1         [TOP]
+# Frame 3: factorial(2) -> waiting for frame 4
+# Frame 2: factorial(3) -> waiting for frame 3
+# Frame 1: factorial(4) -> waiting for frame 2  [BOTTOM]
+#
+# After factorial(1) returns, frames unwind from top to bottom.</code></pre>
+
+<p>Pythonはデフォルトの<strong>再帰制限（recursion limit）を1000</strong>に設定しています。確認・変更できます：</p>
+<pre style="overflow-x:auto"><code>import sys
+print(sys.getrecursionlimit())  # 1000
+sys.setrecursionlimit(5000)     # Increase it</code></pre>
+
+<div role="note" class="callout warn">
+<div class="callout-title">注意</div>
+<p>再帰が制限に達した場合、本当の問題はアルゴリズムの深さが指数関数的になっていることであり、制限が低すぎることではありません。制限を増やすことはクラッシュを先延ばしにし、利用可能なメモリをすべて消費するリスクがあります。正しい対処法は、反復に変換するか、メモ化を追加することです。</p>
+</div>
+
+<h3>スタックオーバーフロー（Stack Overflow）</h3>
+<p>再帰が深くなりすぎると、<strong>RecursionError</strong>（Pythonのスタックオーバーフロー）が発生します。これは次の場合に起こります：</p>
+<ul>
+<li>ベースケースを忘れた</li>
+<li>ベースケースが間違っていて一度も発動しない</li>
+<li>問題が再帰の深さに対して大きすぎる（例：100,000要素の連結リストを再帰的に処理する）</li>
+</ul>
+
+<p><strong>末尾再帰</strong>（tail recursion）は、再帰呼び出しが関数の最後の操作となるパターンです。一部の言語（Scheme、Scala）ではこれを自動的にループに最適化し、スタックの増加を排除します。<strong>Pythonは末尾呼び出し最適化（tail-call optimization）を行いません。</strong> Pythonで深い再帰が必要な場合は、スタックデータ構造を使った明示的なループに変換しましょう。</p>
+
+<pre style="overflow-x:auto"><code># Recursive (limited by call stack):
+def sum_list_recursive(lst, i=0):
+    if i == len(lst):
+        return 0
+    return lst[i] + sum_list_recursive(lst, i + 1)
+
+# Iterative (no stack limit):
+def sum_list_iterative(lst):
+    total = 0
+    for x in lst:
+        total += x
+    return total</code></pre>
+
+<h3>メモ化（Memoization）</h3>
+<p><strong>メモ化</strong>（memoization）は高コストな関数呼び出しの結果をキャッシュし、同じ引数で再び呼ばれた場合に再計算せずにキャッシュ済みの結果を返します。これにより、O(2ⁿ)のフィボナッチが<strong>O(n)</strong>に変わります。</p>
+
+<pre style="overflow-x:auto"><code>def fib_memo(n, cache={}):
+    """Fibonacci with manual memoization."""
+    if n in cache:             # Already computed? Return cached result.
+        return cache[n]
+    if n <= 1:
+        return n
+    cache[n] = fib_memo(n - 1, cache) + fib_memo(n - 2, cache)
+    return cache[n]
+
+print(fib_memo(50))  # 12586269025 — instant, not heat-death-of-the-universe</code></pre>
+
+<p>Pythonにはこれを自動的に行う組み込みデコレータがあります：</p>
+<pre style="overflow-x:auto"><code>from functools import lru_cache
+
+@lru_cache(maxsize=None)    # Cache all results (no eviction)
+def fib_cached(n):
+    if n <= 1:
+        return n
+    return fib_cached(n - 1) + fib_cached(n - 2)
+
+print(fib_cached(100))  # 354224848179261915075</code></pre>
+
+<p>その違いは劇的です。計測してみましょう：</p>
+<pre style="overflow-x:auto"><code>import time
+
+# Naive recursive — try n=35 (anything higher may freeze your machine)
+start = time.time()
+fib(35)
+print(f"Naive: {time.time() - start:.2f}s")  # ~3-5 seconds
+
+# Memoized — same n but now try n=500
+start = time.time()
+fib_cached(500)
+print(f"Memoized: {time.time() - start:.6f}s")  # ~0.000 seconds</code></pre>
+
+<h3>ボトムアップの表化（Bottom-Up Tabulation）</h3>
+<p>メモ化は「トップダウン」です。大きな問題から始めて再帰で降りていきます。<strong>表化</strong>（tabulation）は「ボトムアップ」です。ベースケースからテーブルを構築し、上向きに進みます。再帰もスタックのオーバーヘッドもありません。</p>
+
+<pre style="overflow-x:auto"><code>def fib_table(n):
+    """Fibonacci using bottom-up tabulation."""
+    if n <= 1:
+        return n
+
+    table = [0] * (n + 1)     # table[i] will hold fib(i)
+    table[0] = 0               # Base case
+    table[1] = 1               # Base case
+
+    for i in range(2, n + 1):
+        table[i] = table[i - 1] + table[i - 2]   # Build from smaller subproblems
+
+    return table[n]
+
+print(fib_table(100))  # 354224848179261915075</code></pre>
+
+<p>前の2つの値だけが必要なので、空間計算量をO(1)に最適化することもできます：</p>
+<pre style="overflow-x:auto"><code>def fib_optimal(n):
+    """Fibonacci with O(1) space."""
+    if n <= 1:
+        return n
+    prev2, prev1 = 0, 1
+    for _ in range(2, n + 1):
+        prev2, prev1 = prev1, prev2 + prev1
+    return prev1
+
+print(fib_optimal(100))  # 354224848179261915075</code></pre>
+
+<h3>古典的なDPパターン</h3>
+
+<h4>コイン問題：目標金額を作る最少枚数</h4>
+<p><strong>問題：</strong>コインの額面（例：[1, 5, 10, 25]）と目標金額が与えられています。必要なコインの最少枚数を求めてください。</p>
+<p>これはDPの典型的な問題です。重要な洞察：金額 <code>a</code> に必要な最少コイン枚数は、すべてのコイン <code>c</code> について金額 <code>a - c</code> の答えの最小値に1を足したものです。</p>
+
+<pre style="overflow-x:auto"><code>def coin_change(coins, amount):
+    """Return minimum coins to make amount, or -1 if impossible."""
+    # dp[i] = minimum coins needed to make amount i
+    dp = [float('inf')] * (amount + 1)
+    dp[0] = 0                          # Base case: 0 coins for amount 0
+
+    for a in range(1, amount + 1):     # For each amount from 1 to target
+        for c in coins:                # Try each coin denomination
+            if c <= a:                 # Coin must not exceed the current amount
+                dp[a] = min(dp[a], dp[a - c] + 1)
+
+    return dp[amount] if dp[amount] != float('inf') else -1
+
+print(coin_change([1, 5, 10, 25], 36))  # 3 (25 + 10 + 1)
+print(coin_change([3, 7], 5))            # -1 (impossible)</code></pre>
+
+<p><strong>計算量：</strong>O(amount × len(coins))。テーブルの各セルは1回だけ計算され、コインごとに一定の作業量を使います。</p>
+
+<h4>最長共通部分列（LCS：Longest Common Subsequence）</h4>
+<p><strong>問題：</strong>2つの文字列が与えられます。最長共通部分列（LCS）の長さを求めてください。LCSとは両方の文字列に同じ順序で現れる最長の文字列（ただし連続でなくてもよい）です。</p>
+
+<p>これはdiffアルゴリズム（<code>git diff</code> など）の基盤です。2つのファイルのLCSを見つけ、LCSに含まれないものすべてが変更です。</p>
+
+<pre style="overflow-x:auto"><code>def lcs(s1, s2):
+    """Return the length of the longest common subsequence."""
+    m, n = len(s1), len(s2)
+    # dp[i][j] = LCS length of s1[:i] and s2[:j]
+    dp = [[0] * (n + 1) for _ in range(m + 1)]
+
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if s1[i - 1] == s2[j - 1]:          # Characters match
+                dp[i][j] = dp[i - 1][j - 1] + 1  # Extend the LCS
+            else:                                  # Characters differ
+                dp[i][j] = max(dp[i - 1][j],      # Skip char from s1
+                               dp[i][j - 1])      # Skip char from s2
+
+    return dp[m][n]
+
+print(lcs("ABCBDAB", "BDCAB"))  # 4 ("BCAB")</code></pre>
+
+<h4>0/1ナップサック問題：重量制限内で価値を最大化</h4>
+<p><strong>問題：</strong>重さと価値を持つアイテムがあります。重量制限のあるナップサックがあります。制限を超えずに合計価値を最大化してください。各アイテムは最大1回しか取れません。</p>
+
+<pre style="overflow-x:auto"><code>def knapsack(values, weights, capacity):
+    """Return maximum value achievable within capacity."""
+    n = len(values)
+    # dp[i][w] = max value using items 0..i-1 with capacity w
+    dp = [[0] * (capacity + 1) for _ in range(n + 1)]
+
+    for i in range(1, n + 1):
+        for w in range(capacity + 1):
+            dp[i][w] = dp[i - 1][w]               # Don't take item i
+            if weights[i - 1] <= w:                 # Can we take item i?
+                take = dp[i - 1][w - weights[i - 1]] + values[i - 1]
+                dp[i][w] = max(dp[i][w], take)     # Take it if better
+
+    return dp[n][capacity]
+
+# Items: (value, weight)
+values  = [60, 100, 120]
+weights = [10,  20,  30]
+capacity = 50
+print(knapsack(values, weights, capacity))  # 220 (items 2 and 3)</code></pre>
+
+<p><strong>計算量：</strong>O(n × capacity)。これは<strong>擬多項式時間</strong>（pseudo-polynomial）と呼ばれます。入力サイズだけでなく、capacityの数値にも依存するからです。</p>
+
+<h3>DP問題の見極め方</h3>
+<p>すべての問題がDPで恩恵を受けるわけではありません。2つの性質が成立する必要があります：</p>
+<ol>
+<li><strong>重複する部分問題</strong>（overlapping subproblems）&mdash;同じ部分問題が複数回解かれます。すべての部分問題が一意であれば（マージソートのように）、DPはオーバーヘッドを加えるだけで利益がありません。</li>
+<li><strong>最適部分構造</strong>（optimal substructure）&mdash;問題全体の最適解が部分問題の最適解から構築できます。サブ決定を変えても他のサブ決定に影響しない場合、その問題は最適部分構造を持ちます。</li>
+</ol>
+
+<p><strong>簡易テスト：</strong>再帰解を書けますか？同じ部分問題を再計算していますか？両方「はい」なら、メモ化を追加しましょう。部分問題テーブルの次元を特定できれば、ボトムアップバージョンを書きましょう。</p>
+
+<div class="diagram">
+<svg viewBox="0 0 720 400" xmlns="http://www.w3.org/2000/svg" aria-label="Fibonacci recursive call tree showing repeated subproblems that memoization eliminates">
+  <!-- Title -->
+  <text class="label-text" x="360" y="20" text-anchor="middle">フィボナッチ呼び出し木：素朴な実装 vs. メモ化</text>
+
+  <!-- Left side: Naive -->
+  <text fill="var(--accent)" font-size="12" font-weight="600" x="185" y="42" text-anchor="middle">素朴な再帰</text>
+
+  <!-- fib(6) -->
+  <circle cx="185" cy="65" r="16" fill="var(--bg)" stroke="var(--accent)" stroke-width="2"/>
+  <text class="sub-text" x="185" y="70" text-anchor="middle">f(6)</text>
+
+  <!-- Level 1 -->
+  <line x1="172" y1="78" x2="115" y2="100" stroke="var(--accent)" stroke-width="1.2"/>
+  <line x1="198" y1="78" x2="255" y2="100" stroke="var(--accent)" stroke-width="1.2"/>
+  <circle cx="115" cy="112" r="14" fill="var(--bg)" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="sub-text" x="115" y="117" text-anchor="middle">f(5)</text>
+  <circle cx="255" cy="112" r="14" fill="var(--bg)" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="sub-text" x="255" y="117" text-anchor="middle">f(4)</text>
+
+  <!-- Level 2 from f(5) -->
+  <line x1="104" y1="124" x2="65" y2="148" stroke="var(--accent)" stroke-width="1"/>
+  <line x1="126" y1="124" x2="155" y2="148" stroke="var(--accent)" stroke-width="1"/>
+  <circle cx="65" cy="158" r="13" fill="var(--bg)" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="sub-text" x="65" y="163" text-anchor="middle">f(4)</text>
+  <circle cx="155" cy="158" r="13" fill="var(--bg)" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="sub-text" x="155" y="163" text-anchor="middle">f(3)</text>
+
+  <!-- Level 2 from f(4) right -->
+  <line x1="244" y1="124" x2="215" y2="148" stroke="var(--accent)" stroke-width="1"/>
+  <line x1="266" y1="124" x2="295" y2="148" stroke="var(--accent)" stroke-width="1"/>
+  <circle cx="215" cy="158" r="13" fill="var(--bg)" stroke="var(--text-muted)" stroke-width="1.5" stroke-dasharray="3"/>
+  <text class="sub-text" x="215" y="163" text-anchor="middle" fill="var(--text-muted)">f(3)</text>
+  <circle cx="295" cy="158" r="13" fill="var(--bg)" stroke="var(--text-muted)" stroke-width="1.5" stroke-dasharray="3"/>
+  <text class="sub-text" x="295" y="163" text-anchor="middle" fill="var(--text-muted)">f(2)</text>
+
+  <!-- Level 3 from f(4) left -->
+  <line x1="55" y1="170" x2="30" y2="192" stroke="var(--accent)" stroke-width="1"/>
+  <line x1="75" y1="170" x2="100" y2="192" stroke="var(--accent)" stroke-width="1"/>
+  <circle cx="30" cy="202" r="12" fill="var(--bg)" stroke="var(--text-muted)" stroke-width="1.5" stroke-dasharray="3"/>
+  <text class="sub-text" x="30" y="207" text-anchor="middle" fill="var(--text-muted)">f(3)</text>
+  <circle cx="100" cy="202" r="12" fill="var(--bg)" stroke="var(--text-muted)" stroke-width="1.5" stroke-dasharray="3"/>
+  <text class="sub-text" x="100" y="207" text-anchor="middle" fill="var(--text-muted)">f(2)</text>
+
+  <!-- Level 3 from f(3) -->
+  <line x1="145" y1="170" x2="125" y2="192" stroke="var(--accent)" stroke-width="1"/>
+  <line x1="165" y1="170" x2="185" y2="192" stroke="var(--accent)" stroke-width="1"/>
+  <circle cx="125" cy="202" r="12" fill="var(--bg)" stroke="var(--text-muted)" stroke-width="1.5" stroke-dasharray="3"/>
+  <text class="sub-text" x="125" y="207" text-anchor="middle" fill="var(--text-muted)">f(2)</text>
+  <circle cx="185" cy="202" r="12" fill="var(--bg)" stroke="var(--border-accent)" stroke-width="1.5"/>
+  <text class="sub-text" x="185" y="207" text-anchor="middle">f(1)</text>
+
+  <!-- Repeated indicator -->
+  <text fill="var(--text-muted)" font-size="9" x="185" y="240" text-anchor="middle">破線 = 重複する計算</text>
+  <text fill="var(--text-muted)" font-size="9" x="185" y="252" text-anchor="middle">f(3)は3回、f(2)は5回計算される</text>
+
+  <!-- Divider -->
+  <line x1="365" y1="38" x2="365" y2="260" stroke="var(--border-accent)" stroke-width="1" stroke-dasharray="6"/>
+
+  <!-- Right side: Memoized -->
+  <text fill="var(--accent)" font-size="12" font-weight="600" x="545" y="42" text-anchor="middle">メモ化あり</text>
+
+  <!-- fib(6) -->
+  <circle cx="545" cy="65" r="16" fill="var(--bg)" stroke="var(--accent)" stroke-width="2"/>
+  <text class="sub-text" x="545" y="70" text-anchor="middle">f(6)</text>
+
+  <!-- Level 1 -->
+  <line x1="532" y1="78" x2="480" y2="100" stroke="var(--accent)" stroke-width="1.5"/>
+  <line x1="558" y1="78" x2="610" y2="100" stroke="var(--accent)" stroke-width="1.5"/>
+  <circle cx="480" cy="112" r="14" fill="var(--bg)" stroke="var(--accent)" stroke-width="2"/>
+  <text class="sub-text" x="480" y="117" text-anchor="middle">f(5)</text>
+  <rect x="596" y="99" width="28" height="24" rx="4" fill="var(--accent)" opacity="0.2" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="sub-text" x="610" y="116" text-anchor="middle" fill="var(--accent)">f(4)</text>
+
+  <!-- Level 2 from f(5) -->
+  <line x1="468" y1="124" x2="420" y2="148" stroke="var(--accent)" stroke-width="1.5"/>
+  <line x1="492" y1="124" x2="540" y2="148" stroke="var(--accent)" stroke-width="1.5"/>
+  <circle cx="420" cy="158" r="14" fill="var(--bg)" stroke="var(--accent)" stroke-width="2"/>
+  <text class="sub-text" x="420" y="163" text-anchor="middle">f(4)</text>
+  <rect x="526" y="145" width="28" height="24" rx="4" fill="var(--accent)" opacity="0.2" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="sub-text" x="540" y="162" text-anchor="middle" fill="var(--accent)">f(3)</text>
+
+  <!-- Level 3 from f(4) -->
+  <line x1="408" y1="170" x2="370" y2="192" stroke="var(--accent)" stroke-width="1.5"/>
+  <line x1="432" y1="170" x2="470" y2="192" stroke="var(--accent)" stroke-width="1.5"/>
+  <circle cx="370" cy="202" r="13" fill="var(--bg)" stroke="var(--accent)" stroke-width="2"/>
+  <text class="sub-text" x="370" y="207" text-anchor="middle">f(3)</text>
+  <rect x="456" y="190" width="28" height="24" rx="4" fill="var(--accent)" opacity="0.2" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="sub-text" x="470" y="207" text-anchor="middle" fill="var(--accent)">f(2)</text>
+
+  <!-- Level 4 from f(3) -->
+  <line x1="360" y1="214" x2="340" y2="234" stroke="var(--accent)" stroke-width="1.5"/>
+  <line x1="380" y1="214" x2="400" y2="234" stroke="var(--accent)" stroke-width="1.5"/>
+  <circle cx="340" cy="246" r="12" fill="var(--bg)" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="sub-text" x="340" y="251" text-anchor="middle">f(2)</text>
+  <circle cx="400" cy="246" r="12" fill="var(--bg)" stroke="var(--border-accent)" stroke-width="1.5"/>
+  <text class="sub-text" x="400" y="251" text-anchor="middle">f(1)</text>
+
+  <!-- Level 5 from f(2) -->
+  <line x1="332" y1="258" x2="315" y2="276" stroke="var(--accent)" stroke-width="1"/>
+  <line x1="348" y1="258" x2="365" y2="276" stroke="var(--accent)" stroke-width="1"/>
+  <circle cx="315" cy="288" r="11" fill="var(--bg)" stroke="var(--border-accent)" stroke-width="1.5"/>
+  <text class="sub-text" x="315" y="293" text-anchor="middle">f(1)</text>
+  <circle cx="365" cy="288" r="11" fill="var(--bg)" stroke="var(--border-accent)" stroke-width="1.5"/>
+  <text class="sub-text" x="365" y="293" text-anchor="middle">f(0)</text>
+
+  <!-- Cache hit legend -->
+  <rect x="475" y="270" width="16" height="12" rx="3" fill="var(--accent)" opacity="0.2" stroke="var(--accent)" stroke-width="1"/>
+  <text class="sub-text" x="498" y="280" text-anchor="start" fill="var(--accent)">= キャッシュヒット（O(1)参照）</text>
+  <text fill="var(--text-muted)" font-size="9" x="545" y="300" text-anchor="middle">2ⁿではなくn回のユニークな呼び出しのみ</text>
+
+  <!-- Bottom comparison -->
+  <rect x="50" y="330" width="280" height="55" rx="6" fill="var(--bg)" stroke="var(--text-muted)" stroke-width="1"/>
+  <text class="label-text" x="190" y="350" text-anchor="middle">素朴な実装：O(2ⁿ)回の呼び出し</text>
+  <text class="sub-text" x="190" y="368" text-anchor="middle">fib(50) ≈ 10¹⁵回の演算</text>
+  <text class="sub-text" x="190" y="380" text-anchor="middle" fill="var(--text-muted)">計算に何年もかかる</text>
+
+  <rect x="390" y="330" width="280" height="55" rx="6" fill="var(--bg)" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="label-text" x="530" y="350" text-anchor="middle">メモ化：O(n)回の呼び出し</text>
+  <text class="sub-text" x="530" y="368" text-anchor="middle">fib(50) = 50回の演算</text>
+  <text class="sub-text" x="530" y="380" text-anchor="middle" fill="var(--accent)">瞬時に完了</text>
+</svg>
+<div class="diagram-caption">左：素朴な再帰フィボナッチは部分問題を指数関数的に再計算します。右：メモ化バージョンは結果をキャッシュし（網掛けボックス）、O(n)のユニークな計算に削減します。</div>
+</div>
+
+<h3>エンジニアリングの視点</h3>
+<div role="note" class="callout info">
+<div class="callout-title">補足</div>
+<p>DPは思っているよりも多く本番システムに登場します。テキストdiffアルゴリズム（<code>git diff</code>、コードレビューツール）はLCSを使います。スペルチェッカーは<strong>編集距離</strong>（edit distance：1つの単語を別の単語に変換するための最少の挿入・削除・置換回数を数えるDPの変種）を使います。リソース配分システムはナップサック型の最適化を使います。ルートプランナーはDPを使って最短経路を求めます。</p>
+<p>AIが再帰解を生成したら、最初のチェックは：<strong>部分問題を再計算していますか？</strong> はいなら <code>@lru_cache</code> で包めば10,000倍の高速化が得られるかもしれません。再帰の深さが大きすぎる場合は、ボトムアップの表化に変換しましょう。</p>
+</div>
+
+<h3>TaskForgeとの接続</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう</div>
+<p>TaskForgeのタスクセットがあり、それぞれ時間コストと価値（優先度スコア）を持っています。スプリントの時間予算があります。時間予算内で合計価値を最大化するにはどのタスクを選ぶべきですか？これは0/1ナップサック問題です。</p>
+<pre style="overflow-x:auto"><code>def select_tasks(tasks, time_budget):
+    """Select tasks to maximize total value within time_budget.
+    Each task is a dict with 'title', 'time', and 'value' keys.
+    Returns list of selected task titles.
+    """
+    n = len(tasks)
+    dp = [[0] * (time_budget + 1) for _ in range(n + 1)]
+
+    for i in range(1, n + 1):
+        t = tasks[i - 1]
+        for w in range(time_budget + 1):
+            dp[i][w] = dp[i - 1][w]              # Don't take this task
+            if t["time"] <= w:
+                take = dp[i - 1][w - t["time"]] + t["value"]
+                dp[i][w] = max(dp[i][w], take)
+
+    # Backtrack to find which tasks were selected
+    selected = []
+    w = time_budget
+    for i in range(n, 0, -1):
+        if dp[i][w] != dp[i - 1][w]:
+            selected.append(tasks[i - 1]["title"])
+            w -= tasks[i - 1]["time"]
+
+    return selected
+
+sprint_tasks = [
+    {"title": "Auth system",     "time": 8,  "value": 90},
+    {"title": "Search feature",  "time": 5,  "value": 60},
+    {"title": "Fix CSS bug",     "time": 1,  "value": 20},
+    {"title": "API pagination",  "time": 3,  "value": 45},
+    {"title": "Dark mode",       "time": 4,  "value": 30},
+]
+print(select_tasks(sprint_tasks, 10))
+# ['API pagination', 'Search feature', 'Fix CSS bug'] — value 125 in 9 hours</code></pre>
+</div>
+
+<h3>演習</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="25" data-ex="coin-change">
+  <div class="exercise-header">
+    <h4>コイン問題：3つのアプローチ</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">ボトムアップの動的計画法を使って <code>coin_change(coins, amount)</code> を実装してください。コインの額面と目標金額が与えられたとき、必要なコインの最少枚数を返します（実現不可能な場合は-1を返します）。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def coin_change(coins, amount):
+    """Return minimum coins to make amount, or -1 if impossible.
+    Use bottom-up DP (tabulation).
+    """
+    # Your code here
+    pass
+
+# Test
+print(coin_change([1, 5, 10, 25], 36))  # Expected: 3 (25 + 10 + 1)
+print(coin_change([1, 5, 10, 25], 30))  # Expected: 2 (25 + 5)
+print(coin_change([3, 7], 5))            # Expected: -1
+</script>
+    <script type="text/plain" class="test-code">
+assert coin_change([1, 5, 10, 25], 36) == 3, "36 cents = 25 + 10 + 1"
+assert coin_change([1, 5, 10, 25], 30) == 2, "30 cents = 25 + 5"
+assert coin_change([1, 5, 10, 25], 0) == 0, "0 cents = 0 coins"
+assert coin_change([3, 7], 5) == -1, "Can't make 5 with 3s and 7s"
+assert coin_change([1], 7) == 7, "7 cents = 7 x 1-cent coins"
+assert coin_change([2], 3) == -1, "Can't make 3 with only 2-cent coins"
+assert coin_change([1, 3, 4], 6) == 2, "6 = 3 + 3 (not 4+1+1)"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">確認</button>
+    <button class="ex-hint" data-level="0">ヒント</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">サイズamount+1のdp配列を作成し、無限大（dp[0]=0を除く）で初期化します。1から目標金額までの各金額で、各コインを試して最小値を取ります。</p>
+    <p class="hint">c &lt;= a の各コインcに対してdp[a] = min(dp[a], dp[a - c] + 1)。dp[amount]がまだ無限大なら-1を返します。</p>
+  </div>
+</div>
+
+<div class="quiz" data-ch="25" data-ex="quiz-dp">
+  <h4>確認クイズ</h4>
+  <p>問題が重複する部分問題に分解できます。O(2ⁿ)の再帰解をO(n²)以下に変換する技術はどれですか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">貪欲アルゴリズム</button>
+    <button class="quiz-option" data-correct="false">二分探索</button>
+    <button class="quiz-option" data-correct="true">動的計画法</button>
+    <button class="quiz-option" data-correct="false">分割統治法</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="pq">素朴な再帰解とメモ化した解の差は、「太陽が燃え尽きるまでに終わらない」と「1ミリ秒で完了」の差になりえます。</div>
+
+</section>
+
+<!-- ===== CH 26 ===== -->
+<section id="ch26" data-ch="26">
+<h2><span class="ch-label">第26章</span> アルゴリズムパターン</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念</div>
+<p>ほとんどのアルゴリズム問題は少数のパターンに当てはまります。パターンを認識することが解決の80%です。これらは単なる面接対策のトリックではありません。実際のエンジニアリング解法の構成要素です。レートリミッターはスライディングウィンドウを使います。スケジューラーは貪欲アルゴリズムを使います。設定バリデーターはバックトラッキングを使います。パターンを見れば、どこにでも見えるようになります。</p>
+</div>
+
+<h3>2ポインタ法（Two Pointers）</h3>
+<p><strong>2ポインタ</strong>（two-pointer）法は配列を移動する2つのインデックスを使います。両端から互いに近づくか、同じ方向に異なる速度で移動します。多くのO(n²)のブルートフォース解をO(n)に変換できます。</p>
+
+<h4>パターン1：収束するポインタ（両端から）</h4>
+<p><strong>問題：</strong>ソート済み配列と目標合計が与えられています。合計が目標と等しくなる要素のペアを見つけてください。</p>
+
+<pre style="overflow-x:auto"><code>def two_sum_sorted(arr, target):
+    """Find two numbers in sorted arr that sum to target. Return their indices."""
+    left, right = 0, len(arr) - 1
+
+    while left < right:
+        current_sum = arr[left] + arr[right]
+        if current_sum == target:
+            return (left, right)
+        elif current_sum < target:
+            left += 1          # Need a bigger sum — move left pointer right
+        else:
+            right -= 1         # Need a smaller sum — move right pointer left
+
+    return None                # No pair found
+
+print(two_sum_sorted([1, 3, 5, 7, 11, 15], 16))  # (2, 4) — 5 + 11</code></pre>
+
+<p><strong>なぜ機能するか：</strong>配列がソート済みのため、左ポインタを右に動かすと合計が増え、右ポインタを左に動かすと合計が減ります。すでに除外したペアを再チェックする必要がありません。</p>
+
+<h4>パターン2：回文チェック（Palindrome Check）</h4>
+<pre style="overflow-x:auto"><code>def is_palindrome(s):
+    """Check if string is a palindrome, ignoring case and non-alphanumeric chars."""
+    left, right = 0, len(s) - 1
+
+    while left < right:
+        while left < right and not s[left].isalnum():
+            left += 1
+        while left < right and not s[right].isalnum():
+            right -= 1
+        if s[left].lower() != s[right].lower():
+            return False
+        left += 1
+        right -= 1
+
+    return True
+
+print(is_palindrome("A man, a plan, a canal: Panama"))  # True</code></pre>
+
+<h4>パターン3：インプレースで重複を除去</h4>
+<pre style="overflow-x:auto"><code>def remove_duplicates(arr):
+    """Remove duplicates from sorted arr in-place. Return new length."""
+    if not arr:
+        return 0
+
+    write = 1                          # Position to write next unique element
+    for read in range(1, len(arr)):    # Scan through the array
+        if arr[read] != arr[read - 1]: # Found a new value
+            arr[write] = arr[read]     # Write it
+            write += 1
+
+    return write
+
+data = [1, 1, 2, 2, 2, 3, 4, 4, 5]
+new_len = remove_duplicates(data)
+print(data[:new_len])  # [1, 2, 3, 4, 5]</code></pre>
+
+<h3>スライディングウィンドウ（Sliding Window）</h3>
+<p><strong>スライディングウィンドウ</strong>（sliding window）法は「ウィンドウ」（連続する部分配列または部分文字列）を維持し、データ全体をスライドさせます。2種類あります：</p>
+
+<h4>固定サイズのウィンドウ：k個の連続要素の最大合計</h4>
+<pre style="overflow-x:auto"><code>def max_sum_k(arr, k):
+    """Return the maximum sum of k consecutive elements."""
+    if len(arr) < k:
+        return None
+
+    # Compute the sum of the first window
+    window_sum = sum(arr[:k])
+    max_sum = window_sum
+
+    # Slide: add the next element, remove the leftmost element
+    for i in range(k, len(arr)):
+        window_sum += arr[i] - arr[i - k]   # Slide the window
+        max_sum = max(max_sum, window_sum)
+
+    return max_sum
+
+print(max_sum_k([2, 1, 5, 1, 3, 2], 3))  # 9 (5 + 1 + 3)</code></pre>
+
+<p>各位置でk要素の合計を再計算する（O(n × k)）代わりに、1要素分の調整（O(1)）で済み、合計O(n)になります。</p>
+
+<h4>可変サイズのウィンドウ：重複文字のない最長部分文字列</h4>
+<pre style="overflow-x:auto"><code>def longest_unique_substring(s):
+    """Return the length of the longest substring without repeating characters."""
+    seen = {}                  # Map character -> its most recent index
+    max_len = 0
+    start = 0                  # Left edge of the window
+
+    for end in range(len(s)):  # Right edge expands
+        if s[end] in seen and seen[s[end]] >= start:
+            start = seen[s[end]] + 1   # Shrink: jump past the duplicate
+        seen[s[end]] = end
+        max_len = max(max_len, end - start + 1)
+
+    return max_len
+
+print(longest_unique_substring("abcabcbb"))  # 3 ("abc")
+print(longest_unique_substring("pwwkew"))    # 3 ("wke")</code></pre>
+
+<h4>可変サイズのウィンドウ：合計が目標以上の最小部分配列</h4>
+<pre style="overflow-x:auto"><code>def min_subarray_sum(arr, target):
+    """Return the length of the smallest subarray with sum >= target, or 0."""
+    min_len = float('inf')
+    window_sum = 0
+    start = 0
+
+    for end in range(len(arr)):
+        window_sum += arr[end]             # Expand window
+
+        while window_sum >= target:        # Shrink while condition holds
+            min_len = min(min_len, end - start + 1)
+            window_sum -= arr[start]
+            start += 1
+
+    return min_len if min_len != float('inf') else 0
+
+print(min_subarray_sum([2, 3, 1, 2, 4, 3], 7))  # 2 ([4, 3])</code></pre>
+
+<div class="diagram">
+<svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" aria-label="Sliding window technique showing a window moving across an array tracking the maximum sum">
+  <!-- Title -->
+  <text class="label-text" x="360" y="20" text-anchor="middle">スライディングウィンドウ (k=3)：最大合計</text>
+
+  <!-- Array boxes -->
+  <rect x="80" y="40" width="70" height="40" rx="4" fill="var(--bg)" stroke="var(--border-accent)" stroke-width="1.5"/>
+  <text class="label-text" x="115" y="66" text-anchor="middle">2</text>
+  <rect x="150" y="40" width="70" height="40" rx="4" fill="var(--bg)" stroke="var(--border-accent)" stroke-width="1.5"/>
+  <text class="label-text" x="185" y="66" text-anchor="middle">1</text>
+  <rect x="220" y="40" width="70" height="40" rx="4" fill="var(--bg)" stroke="var(--border-accent)" stroke-width="1.5"/>
+  <text class="label-text" x="255" y="66" text-anchor="middle">5</text>
+  <rect x="290" y="40" width="70" height="40" rx="4" fill="var(--bg)" stroke="var(--border-accent)" stroke-width="1.5"/>
+  <text class="label-text" x="325" y="66" text-anchor="middle">1</text>
+  <rect x="360" y="40" width="70" height="40" rx="4" fill="var(--bg)" stroke="var(--border-accent)" stroke-width="1.5"/>
+  <text class="label-text" x="395" y="66" text-anchor="middle">3</text>
+  <rect x="430" y="40" width="70" height="40" rx="4" fill="var(--bg)" stroke="var(--border-accent)" stroke-width="1.5"/>
+  <text class="label-text" x="465" y="66" text-anchor="middle">2</text>
+
+  <!-- Window position 1: [2,1,5] = 8 -->
+  <rect x="78" y="95" width="214" height="30" rx="5" fill="none" stroke="var(--accent)" stroke-width="2"/>
+  <text class="sub-text" x="185" y="115" text-anchor="middle" fill="var(--accent)">sum = 8</text>
+  <text class="sub-text" x="550" y="115" text-anchor="middle">ウィンドウ1</text>
+
+  <!-- Window position 2: [1,5,1] = 7 -->
+  <rect x="148" y="130" width="214" height="30" rx="5" fill="none" stroke="var(--text-muted)" stroke-width="1.5" stroke-dasharray="4"/>
+  <text class="sub-text" x="255" y="150" text-anchor="middle" fill="var(--text-muted)">sum = 7</text>
+  <text class="sub-text" x="550" y="150" text-anchor="middle" fill="var(--text-muted)">ウィンドウ2</text>
+
+  <!-- Window position 3: [5,1,3] = 9 — MAX -->
+  <rect x="218" y="165" width="214" height="30" rx="5" fill="var(--accent)" fill-opacity="0.15" stroke="var(--accent)" stroke-width="2.5"/>
+  <text class="sub-text" x="325" y="185" text-anchor="middle" fill="var(--accent)">合計 = 9 (最大)</text>
+  <text class="sub-text" x="550" y="185" text-anchor="middle" fill="var(--accent)">ウィンドウ3</text>
+
+  <!-- Window position 4: [1,3,2] = 6 -->
+  <rect x="288" y="200" width="214" height="30" rx="5" fill="none" stroke="var(--text-muted)" stroke-width="1.5" stroke-dasharray="4"/>
+  <text class="sub-text" x="395" y="220" text-anchor="middle" fill="var(--text-muted)">sum = 6</text>
+  <text class="sub-text" x="550" y="220" text-anchor="middle" fill="var(--text-muted)">ウィンドウ4</text>
+
+  <!-- Explanation -->
+  <text class="sub-text" x="360" y="260" text-anchor="middle">各スライド：新しい右要素を追加し、古い左要素を引く。合計O(n)。</text>
+</svg>
+<div class="diagram-caption">固定サイズのスライディングウィンドウ（k=3）が配列をスライドします。各位置でウィンドウに入る新要素を加え、出る要素を引くことでO(1)で合計を更新します。最大合計のウィンドウがハイライトされています。</div>
+</div>
+
+<h3>貪欲法（Greedy）</h3>
+<p><strong>貪欲法</strong>（greedy）アルゴリズムは各ステップで局所最適な選択をし、大局的な最適解を目指します。問題が<strong>貪欲選択特性</strong>（greedy choice property）を持つ場合に機能します。局所最適な選択が大局的最適解に繋がる性質です。</p>
+
+<h4>貪欲法が機能する場合：区間スケジューリング</h4>
+<p><strong>問題：</strong>区間（start, end）のセットが与えられます。重複しない区間の最大数を求めてください。</p>
+<p><strong>戦略：</strong>常に最も早く終わる区間を選びます。これにより後の区間のための余地が最大になります。</p>
+
+<pre style="overflow-x:auto"><code>def max_non_overlapping(intervals):
+    """Return max number of non-overlapping intervals.
+    Each interval is (start, end).
+    """
+    # Sort by end time
+    intervals.sort(key=lambda x: x[1])
+
+    count = 0
+    last_end = float('-inf')
+
+    for start, end in intervals:
+        if start >= last_end:      # No overlap with previous selection
+            count += 1
+            last_end = end         # Update the end boundary
+
+    return count
+
+meetings = [(1, 3), (2, 5), (3, 6), (5, 7), (8, 10), (6, 9)]
+print(max_non_overlapping(meetings))  # 3: (1,3), (5,7), (8,10)</code></pre>
+
+<h4>貪欲法が失敗する場合：変わった額面のコイン問題</h4>
+<p>貪欲法は米国のコイン額面（25, 10, 5, 1）では機能します。常に最大のコインを選べばよいです。しかし額面[1, 3, 4]と金額6を考えてみましょう：</p>
+<ul>
+<li><strong>貪欲法：</strong>4 + 1 + 1 = 3枚</li>
+<li><strong>最適：</strong>3 + 3 = 2枚</li>
+</ul>
+<p>貪欲アプローチは最大コインを最初に選びますが、それがより良い解を阻んでいます。これが第25章で一般的なコイン問題にDPが必要だった理由です。</p>
+
+<div role="note" class="callout warn">
+<div class="callout-title">注意</div>
+<p>貪欲アルゴリズムの危険性は、多くの入力で<em>ほぼ</em>機能することです。いくつかの例でテストして正しい結果を得た後、本番環境で反例に遭遇するかもしれません。問題に対して貪欲法が正しいことを常に証明するか、確信が持てない場合はDPを使いましょう。AIが生成した解がDPが必要な場合に貪欲法を使うことがよくあります。注意して見てください。</p>
+</div>
+
+<h3>分割統治法（Divide and Conquer）</h3>
+<p><strong>分割統治法</strong>（divide and conquer）は問題を独立した部分問題に分割し、各々を再帰的に解き、結果を結合します。マージソート（第24章）はすでに知っています。このパターンはソートを超えて適用されます：</p>
+
+<ul>
+<li><strong>最近点対問題</strong>（closest pair of points）&mdash;点をx座標で分割し、各半分で最近点対を見つけ、分割線をまたぐ点対を確認します。</li>
+<li><strong>転倒数の計算</strong>（counting inversions）&mdash;順序が逆になったペアの数を数える修正マージソートです。</li>
+<li><strong>Karatsuba乗算</strong>&mdash;大きな数を半分に分割して乗算し、O(n²)からO(n¹·⁵⁸)に削減します。</li>
+</ul>
+
+<p>DPとの重要な違い：分割統治法の部分問題は<em>独立</em>しています（重複なし）。DPの部分問題は<em>重複</em>します。</p>
+
+<h3>バックトラッキング（Backtracking）</h3>
+<p><strong>バックトラッキング</strong>（backtracking）はすべての可能な選択肢を探索しますが、有効な解に繋がりえない枝を刈り込みます（枝刈り：pruning）。行き止まりに時間を無駄にせずすべてを試す体系的な方法です。</p>
+
+<p>パターン：選択を行い、再帰し、選択を元に戻し（バックトラック）、次の選択肢を試す。</p>
+
+<h4>例：全部分集合の生成</h4>
+<pre style="overflow-x:auto"><code>def subsets(nums):
+    """Generate all subsets of nums."""
+    result = []
+
+    def backtrack(start, current):
+        result.append(current[:])          # Add a copy of the current subset
+
+        for i in range(start, len(nums)):
+            current.append(nums[i])        # Choose
+            backtrack(i + 1, current)      # Explore
+            current.pop()                  # Un-choose (backtrack)
+
+    backtrack(0, [])
+    return result
+
+print(subsets([1, 2, 3]))
+# [[], [1], [1,2], [1,2,3], [1,3], [2], [2,3], [3]]</code></pre>
+
+<h4>例：Nクイーン問題（n×nのボードにnクイーンを配置できるか）</h4>
+<pre style="overflow-x:auto"><code>def solve_n_queens(n):
+    """Return the number of ways to place n queens on an n x n board
+    so that no two queens attack each other."""
+    solutions = 0
+    cols = set()          # Columns with queens
+    diag1 = set()         # "row - col" diagonals with queens
+    diag2 = set()         # "row + col" diagonals with queens
+
+    def backtrack(row):
+        nonlocal solutions
+        if row == n:               # All queens placed successfully
+            solutions += 1
+            return
+
+        for col in range(n):
+            if col in cols or (row - col) in diag1 or (row + col) in diag2:
+                continue           # Prune: this position is attacked
+
+            # Place queen
+            cols.add(col)
+            diag1.add(row - col)
+            diag2.add(row + col)
+
+            backtrack(row + 1)     # Try next row
+
+            # Remove queen (backtrack)
+            cols.remove(col)
+            diag1.remove(row - col)
+            diag2.remove(row + col)
+
+    backtrack(0)
+    return solutions
+
+print(solve_n_queens(8))  # 92 solutions</code></pre>
+
+<h3>パターン選択フレームワーク</h3>
+<p>問題に直面したときは、このフレームワークを使ってどのパターンが適用されるか特定しましょう：</p>
+
+<table>
+<caption>問題の形とアルゴリズムパターンの対応</caption>
+<tr><th>問題の形</th><th>パターン</th><th>例</th></tr>
+<tr><td>ソート済み配列でペア/三組を探す</td><td>2ポインタ法</td><td>2合計、3合計、回文チェック</td></tr>
+<tr><td>連続する部分配列/部分文字列</td><td>スライディングウィンドウ</td><td>k要素の最大合計、最長ユニーク部分文字列</td></tr>
+<tr><td>局所最適が大局的最適になる</td><td>貪欲法</td><td>区間スケジューリング、ハフマン符号</td></tr>
+<tr><td>問題が独立した部分に分割できる</td><td>分割統治法</td><td>マージソート、最近点対問題</td></tr>
+<tr><td>重複する部分問題</td><td>動的計画法</td><td>コイン問題、ナップサック、LCS</td></tr>
+<tr><td>有効な全構成を探索する</td><td>バックトラッキング</td><td>Nクイーン、部分集合生成、順列</td></tr>
+</table>
+
+<h3>エンジニアリングの視点</h3>
+<div role="note" class="callout info">
+<div class="callout-title">補足</div>
+<p>これらのパターンは本番システムで常に登場します：</p>
+<ul>
+<li><strong>スライディングウィンドウ</strong>はレートリミッターに使われます。直近N秒のリクエスト数をカウントし、制限を超えればリクエストを拒否します。</li>
+<li><strong>貪欲法</strong>はスケジューリングに使われます。cronジョブの優先度付け、タスクキューの順序付け、キャッシュ退避（LRUは貪欲ポリシーです）。</li>
+<li><strong>バックトラッキング</strong>は設定バリデーションに使われます。これらの設定は競合しますか？有効なすべての組み合わせを生成して確認します。</li>
+<li><strong>2ポインタ法</strong>はソート済みストリームのマージに使われます。複数サーバーのソート済みログファイルの結合など。</li>
+</ul>
+<p>ネストしたループ（O(n²)）を使うAI生成解を見たら、「これは2ポインタ法またはスライディングウィンドウ問題ではないか？」と自問しましょう。答えがYesになることはよくあります。</p>
+</div>
+
+<h3>TaskForgeとの接続</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう</div>
+<p>「ローリング7日間ウィンドウごとに完了したタスク数」を計算するスライディングウィンドウを実装してください。タスク完了タイムスタンプ（日数）のソート済みリストが与えられたとき、任意の7日間に完了したタスクの最大数を計算します。</p>
+<pre style="overflow-x:auto"><code>def max_completions_in_window(completion_days, window_size=7):
+    """Return the maximum number of tasks completed in any window_size-day period.
+    completion_days is a sorted list of day numbers when tasks were completed.
+    """
+    if not completion_days:
+        return 0
+
+    max_count = 0
+    start = 0
+
+    for end in range(len(completion_days)):
+        # Shrink window: remove tasks outside the window
+        while completion_days[end] - completion_days[start] >= window_size:
+            start += 1
+        # All tasks from start to end are within the window
+        max_count = max(max_count, end - start + 1)
+
+    return max_count
+
+# Task completions on these days:
+days = [1, 2, 3, 5, 8, 9, 10, 11, 15, 16]
+print(max_completions_in_window(days, 7))  # 5 (days 5,8,9,10,11)</code></pre>
+</div>
+
+<h3>演習</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="26" data-ex="sliding-window">
+  <div class="exercise-header">
+    <h4>スライディングウィンドウ：2つの問題</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">2つの関数を実装してください：(1) <code>max_sum_k(arr, k)</code>はk個の連続要素の最大合計を返します。(2) <code>longest_unique(s)</code>は重複文字のない最長部分文字列の長さを返します。どちらもO(n)で動作する必要があります。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def max_sum_k(arr, k):
+    """Maximum sum of k consecutive elements. O(n)."""
+    # Your code here
+    pass
+
+def longest_unique(s):
+    """Length of longest substring without repeating characters. O(n)."""
+    # Your code here
+    pass
+
+# Test
+print(max_sum_k([2, 1, 5, 1, 3, 2], 3))    # Expected: 9
+print(longest_unique("abcabcbb"))             # Expected: 3
+print(longest_unique("pwwkew"))               # Expected: 3
+</script>
+    <script type="text/plain" class="test-code">
+# max_sum_k tests
+assert max_sum_k([2, 1, 5, 1, 3, 2], 3) == 9, "Window [5,1,3]"
+assert max_sum_k([1, 2, 3, 4, 5], 2) == 9, "Window [4,5]"
+assert max_sum_k([5], 1) == 5, "Single element"
+assert max_sum_k([1, 1, 1, 1], 4) == 4, "Entire array"
+
+# longest_unique tests
+assert longest_unique("abcabcbb") == 3, "abc"
+assert longest_unique("bbbbb") == 1, "Single repeated char"
+assert longest_unique("pwwkew") == 3, "wke"
+assert longest_unique("") == 0, "Empty string"
+assert longest_unique("abcdef") == 6, "All unique"
+assert longest_unique("dvdf") == 3, "vdf"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">確認</button>
+    <button class="ex-hint" data-level="0">ヒント</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">max_sum_k：最初のウィンドウの合計を計算し、arr[i]を加えてarr[i-k]を引くことでスライドします。longest_unique：各文字の最後のインデックスを追跡するdictを使い、重複が見つかればstartポインタをその先へ移動します。</p>
+    <p class="hint">longest_unique：'start'変数を維持します。ウィンドウ内にすでにある文字（格納インデックスがstart以上）を見たら、startをstored_index + 1にジャンプします。各ステップでmax_lenを更新します。</p>
+  </div>
+</div>
+
+<div class="quiz" data-ch="26" data-ex="quiz-pattern">
+  <h4>確認クイズ</h4>
+  <p>合計が目標以上の最短の連続部分配列を見つける問題があります。最も適したパターンはどれですか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">2ポインタ法</button>
+    <button class="quiz-option" data-correct="true">スライディングウィンドウ</button>
+    <button class="quiz-option" data-correct="false">貪欲法</button>
+    <button class="quiz-option" data-correct="false">動的計画法</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="pq">パターンはトリックではありません。問題解決の語彙です。問題の形が見えれば、解法が自然と導かれます。</div>
+
+</section>
+
+<!-- ===== CH 27 ===== -->
+<section id="ch27" data-ch="27">
+<h2><span class="ch-label">第27章</span> グラフアルゴリズムと問題解決</h2>
+
+<div role="note" class="callout warn">
+<div class="callout-title">注意</div>
+<p>この章は第23章のGraphクラスを前提としています。その章の演習を完了していなければ、先に行ってください。隣接リスト（adjacency list）、有向グラフ対無向グラフ、重み付きエッジの理解が必要です。</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念</div>
+<p>グラフは関係をモデル化します：道路で繋がる都市、友人関係で繋がるユーザー、依存関係で繋がるタスク。グラフアルゴリズムは実際の問題を解決します：最短ルート、依存関係の順序付け、ネットワーク接続性。この章では中核のアルゴリズムと適切なものを選ぶためのフレームワークを提供します。</p>
+</div>
+
+<h3>幅優先探索（BFS：Breadth-First Search）</h3>
+<p><strong>幅優先探索</strong>（breadth-first search）はグラフをレベルごとに探索し、次のレベルに移る前に現在のノードの隣接ノードをすべて訪問します。第20章で学んだ<strong>キュー</strong>（queue：FIFO）データ構造を使います。BFSは始点からの距離順にノードを発見するため、<strong>重みなしグラフの最短経路</strong>を見つけます。</p>
+
+<pre style="overflow-x:auto"><code>from collections import deque
+
+def bfs(graph, start):
+    """Perform BFS from start node. Return dict of {node: distance}.
+    graph: dict of {node: [neighbors]}
+    """
+    visited = {start: 0}              # node -> distance from start
+    queue = deque([start])
+
+    while queue:
+        node = queue.popleft()         # Dequeue the front node
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                visited[neighbor] = visited[node] + 1
+                queue.append(neighbor) # Enqueue unvisited neighbor
+
+    return visited
+
+# Example graph:
+#   A -- B -- D
+#   |         |
+#   C -- E -- F
+graph = {
+    'A': ['B', 'C'],
+    'B': ['A', 'D'],
+    'C': ['A', 'E'],
+    'D': ['B', 'F'],
+    'E': ['C', 'F'],
+    'F': ['D', 'E'],
+}
+distances = bfs(graph, 'A')
+print(distances)
+# {'A': 0, 'B': 1, 'C': 1, 'D': 2, 'E': 2, 'F': 3}</code></pre>
+
+<p><strong>計算量：</strong>O(V + E)（Vは頂点数、Eは辺数）。各ノードは1回訪問され、各辺は1回調べられます。</p>
+
+<h4>BFS最短経路（経路の再構築）</h4>
+<pre style="overflow-x:auto"><code>from collections import deque
+
+def bfs_path(graph, start, end):
+    """Return the shortest path from start to end, or None."""
+    if start == end:
+        return [start]
+
+    visited = {start}
+    queue = deque([(start, [start])])  # (node, path_so_far)
+
+    while queue:
+        node, path = queue.popleft()
+        for neighbor in graph[node]:
+            if neighbor == end:
+                return path + [neighbor]
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append((neighbor, path + [neighbor]))
+
+    return None  # No path exists
+
+print(bfs_path(graph, 'A', 'F'))  # ['A', 'B', 'D', 'F'] or ['A', 'C', 'E', 'F']</code></pre>
+
+<h3>深さ優先探索（DFS：Depth-First Search）</h3>
+<p><strong>深さ優先探索</strong>（depth-first search）はバックトラックする前に各枝を可能な限り深く探索します。<strong>スタック</strong>（stack：LIFO）を使います。コールスタック（再帰経由）または明示的なスタックデータ構造のどちらかです。</p>
+
+<h4>再帰DFS</h4>
+<pre style="overflow-x:auto"><code>def dfs_recursive(graph, node, visited=None):
+    """Perform DFS from node. Return list of visited nodes in order."""
+    if visited is None:
+        visited = []
+    visited.append(node)
+
+    for neighbor in graph[node]:
+        if neighbor not in visited:
+            dfs_recursive(graph, neighbor, visited)
+
+    return visited
+
+print(dfs_recursive(graph, 'A'))  # ['A', 'B', 'D', 'F', 'E', 'C']</code></pre>
+
+<h4>反復DFS</h4>
+<pre style="overflow-x:auto"><code>def dfs_iterative(graph, start):
+    """Perform DFS from start using an explicit stack."""
+    visited = []
+    stack = [start]
+
+    while stack:
+        node = stack.pop()
+        if node not in visited:
+            visited.append(node)
+            # Add neighbors in reverse to visit them in order
+            for neighbor in reversed(graph[node]):
+                if neighbor not in visited:
+                    stack.append(neighbor)
+
+    return visited
+
+print(dfs_iterative(graph, 'A'))  # ['A', 'B', 'D', 'F', 'E', 'C']</code></pre>
+
+<p><strong>DFSの応用：</strong></p>
+<ul>
+<li><strong>閉路検出</strong>（cycle detection）&mdash;有向グラフのDFS中に、現在の再帰スタックにあるノード（単に訪問済みではなく）に遭遇した場合、閉路があります。</li>
+<li><strong>トポロジカルソート</strong>（topological sort）&mdash;後述します。</li>
+<li><strong>連結成分</strong>（connected components）&mdash;未訪問のノードから各DFSを実行します。各DFSが1つの成分を発見します。</li>
+<li><strong>経路探索</strong>（path finding）&mdash;DFSは<em>ある</em>経路を見つけますが、必ずしも最短ではありません。</li>
+</ul>
+
+<div class="diagram">
+<svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" aria-label="BFS explores nodes level by level while DFS explores as deep as possible before backtracking">
+  <!-- Title -->
+  <text class="label-text" x="360" y="20" text-anchor="middle">BFS対DFS：訪問順序</text>
+
+  <!-- Divider -->
+  <line x1="360" y1="30" x2="360" y2="310" stroke="var(--border-accent)" stroke-width="1" stroke-dasharray="6"/>
+
+  <!-- === LEFT: BFS === -->
+  <text fill="var(--accent)" font-size="13" font-weight="600" x="180" y="48" text-anchor="middle">BFS（キュー）</text>
+
+  <!-- Graph nodes -->
+  <circle cx="180" cy="80" r="20" fill="var(--accent)" stroke="var(--accent)" stroke-width="2"/>
+  <text x="180" y="86" text-anchor="middle" fill="var(--bg)" font-size="12" font-weight="600">A:1</text>
+
+  <circle cx="110" cy="140" r="18" fill="var(--accent)" stroke="var(--accent)" stroke-width="2" opacity="0.85"/>
+  <text x="110" y="146" text-anchor="middle" fill="var(--bg)" font-size="11" font-weight="500">B:2</text>
+
+  <circle cx="250" cy="140" r="18" fill="var(--accent)" stroke="var(--accent)" stroke-width="2" opacity="0.85"/>
+  <text x="250" y="146" text-anchor="middle" fill="var(--bg)" font-size="11" font-weight="500">C:3</text>
+
+  <circle cx="70" cy="210" r="17" fill="var(--accent)" stroke="var(--accent)" stroke-width="2" opacity="0.7"/>
+  <text x="70" y="216" text-anchor="middle" fill="var(--bg)" font-size="11" font-weight="500">D:4</text>
+
+  <circle cx="150" cy="210" r="17" fill="var(--accent)" stroke="var(--accent)" stroke-width="2" opacity="0.7"/>
+  <text x="150" y="216" text-anchor="middle" fill="var(--bg)" font-size="11" font-weight="500">E:5</text>
+
+  <circle cx="290" cy="210" r="17" fill="var(--accent)" stroke="var(--accent)" stroke-width="2" opacity="0.55"/>
+  <text x="290" y="216" text-anchor="middle" fill="var(--bg)" font-size="11" font-weight="500">F:6</text>
+
+  <!-- BFS edges -->
+  <line x1="166" y1="96" x2="120" y2="124" stroke="var(--accent)" stroke-width="1.5"/>
+  <line x1="194" y1="96" x2="240" y2="124" stroke="var(--accent)" stroke-width="1.5"/>
+  <line x1="98" y1="155" x2="80" y2="195" stroke="var(--accent)" stroke-width="1.5"/>
+  <line x1="122" y1="155" x2="140" y2="195" stroke="var(--accent)" stroke-width="1.5"/>
+  <line x1="262" y1="155" x2="280" y2="195" stroke="var(--accent)" stroke-width="1.5"/>
+
+  <!-- Level markers -->
+  <text class="sub-text" x="330" y="85" text-anchor="end" fill="var(--text-muted)">レベル0</text>
+  <text class="sub-text" x="330" y="145" text-anchor="end" fill="var(--text-muted)">レベル1</text>
+  <text class="sub-text" x="330" y="215" text-anchor="end" fill="var(--text-muted)">レベル2</text>
+
+  <!-- BFS visit order -->
+  <text class="sub-text" x="180" y="268" text-anchor="middle">訪問順序：A, B, C, D, E, F</text>
+  <text class="sub-text" x="180" y="283" text-anchor="middle" fill="var(--accent)">層ごとに（幅優先）</text>
+
+  <!-- === RIGHT: DFS === -->
+  <text fill="var(--accent)" font-size="13" font-weight="600" x="540" y="48" text-anchor="middle">DFS（スタック）</text>
+
+  <!-- Graph nodes -->
+  <circle cx="540" cy="80" r="20" fill="var(--accent)" stroke="var(--accent)" stroke-width="2"/>
+  <text x="540" y="86" text-anchor="middle" fill="var(--bg)" font-size="12" font-weight="600">A:1</text>
+
+  <circle cx="470" cy="140" r="18" fill="var(--accent)" stroke="var(--accent)" stroke-width="2" opacity="0.85"/>
+  <text x="470" y="146" text-anchor="middle" fill="var(--bg)" font-size="11" font-weight="500">B:2</text>
+
+  <circle cx="610" cy="140" r="18" fill="var(--accent)" stroke="var(--accent)" stroke-width="2" opacity="0.55"/>
+  <text x="610" y="146" text-anchor="middle" fill="var(--bg)" font-size="11" font-weight="500">C:5</text>
+
+  <circle cx="430" cy="210" r="17" fill="var(--accent)" stroke="var(--accent)" stroke-width="2" opacity="0.7"/>
+  <text x="430" y="216" text-anchor="middle" fill="var(--bg)" font-size="11" font-weight="500">D:3</text>
+
+  <circle cx="510" cy="210" r="17" fill="var(--accent)" stroke="var(--accent)" stroke-width="2" opacity="0.55"/>
+  <text x="510" y="216" text-anchor="middle" fill="var(--bg)" font-size="11" font-weight="500">E:4</text>
+
+  <circle cx="650" cy="210" r="17" fill="var(--accent)" stroke="var(--accent)" stroke-width="2" opacity="0.4"/>
+  <text x="650" y="216" text-anchor="middle" fill="var(--bg)" font-size="11" font-weight="500">F:6</text>
+
+  <!-- DFS edges — highlighted path -->
+  <line x1="526" y1="96" x2="480" y2="124" stroke="var(--accent)" stroke-width="2"/>
+  <line x1="458" y1="155" x2="440" y2="195" stroke="var(--accent)" stroke-width="2"/>
+  <line x1="482" y1="155" x2="500" y2="195" stroke="var(--accent)" stroke-width="2"/>
+  <line x1="554" y1="96" x2="600" y2="124" stroke="var(--accent)" stroke-width="1.2" stroke-dasharray="4"/>
+  <line x1="622" y1="155" x2="640" y2="195" stroke="var(--accent)" stroke-width="1.2" stroke-dasharray="4"/>
+
+  <!-- DFS visit order -->
+  <text class="sub-text" x="540" y="268" text-anchor="middle">訪問順序：A, B, D, E, C, F</text>
+  <text class="sub-text" x="540" y="283" text-anchor="middle" fill="var(--accent)">深く進んでからバックトラック</text>
+
+  <!-- Bottom note -->
+  <text class="sub-text" x="360" y="308" text-anchor="middle">同じグラフ、同じ始点、異なる探索順序と使用ケース。</text>
+</svg>
+<div class="diagram-caption">BFS（左）はノードをレベルごとに訪問します。距離1のノードをすべて訪問してから距離2のノードへ進みます。DFS（右）はバックトラックする前に1つの枝を深く進みます。数字は訪問順序を示します。</div>
+</div>
+
+<h3>ダイクストラ法（Dijkstra's Algorithm）</h3>
+<p><strong>ダイクストラ法</strong>（Dijkstra's algorithm）は<strong>非負の重みを持つ重み付きグラフ</strong>で最短経路を見つけます。第22章の最小ヒープを使った<strong>優先度キュー</strong>（priority queue）を利用して、常に最も近い未訪問ノードを最初に処理します。</p>
+
+<p>アルゴリズムのステップ：</p>
+<ol>
+<li>始点ノードへの距離を0、その他すべての距離を無限大に設定します。</li>
+<li>始点ノードを距離0で優先度キューに追加します。</li>
+<li>優先度キューが空でない間：
+  <ol>
+  <li>最小距離のノードを取り出します。</li>
+  <li>各隣接ノードについて、現在のノードを経由した距離を計算します。</li>
+  <li>この距離が隣接ノードの現在の距離より短い場合、更新してキューに追加します。</li>
+  </ol>
+</li>
+</ol>
+
+<pre style="overflow-x:auto"><code>import heapq
+
+def dijkstra(graph, start):
+    """Find shortest distances from start to all nodes.
+    graph: dict of {node: [(neighbor, weight), ...]}
+    Returns: dict of {node: shortest_distance}
+    """
+    distances = {node: float('inf') for node in graph}
+    distances[start] = 0
+    pq = [(0, start)]             # (distance, node)
+    visited = set()
+
+    while pq:
+        dist, node = heapq.heappop(pq)
+
+        if node in visited:        # Already processed with a shorter distance
+            continue
+        visited.add(node)
+
+        for neighbor, weight in graph[node]:
+            new_dist = dist + weight
+            if new_dist < distances[neighbor]:
+                distances[neighbor] = new_dist
+                heapq.heappush(pq, (new_dist, neighbor))
+
+    return distances
+
+# Weighted graph:
+#   A --4-- B --2-- D
+#   |       |       |
+#   1       3       1
+#   |       |       |
+#   C --5-- E --1-- F
+weighted = {
+    'A': [('B', 4), ('C', 1)],
+    'B': [('A', 4), ('D', 2), ('E', 3)],
+    'C': [('A', 1), ('E', 5)],
+    'D': [('B', 2), ('F', 1)],
+    'E': [('B', 3), ('C', 5), ('F', 1)],
+    'F': [('D', 1), ('E', 1)],
+}
+print(dijkstra(weighted, 'A'))
+# {'A': 0, 'B': 4, 'C': 1, 'D': 6, 'E': 6, 'F': 7}</code></pre>
+
+<p><strong>計算量：</strong>二分ヒープを使うとO((V + E) log V)。log V の係数はヒープ操作から来ます。</p>
+
+<div role="note" class="callout warn">
+<div class="callout-title">注意</div>
+<p>グラフに負の辺の重みがある場合、ダイクストラ法は正しくない結果を出します。代わりにベルマン-フォード法（Bellman-Ford：O(V × E)）を使ってください。負の重みは金融裁定取引の検出や一部のゲームメカニクスに現れますが、ほとんどの実世界グラフ（道路距離、ネットワーク遅延）は非負の重みを持ちます。</p>
+</div>
+
+<h4>最短経路の再構築</h4>
+<pre style="overflow-x:auto"><code>import heapq
+
+def dijkstra_path(graph, start, end):
+    """Find the shortest path and its distance from start to end."""
+    distances = {node: float('inf') for node in graph}
+    distances[start] = 0
+    previous = {node: None for node in graph}  # Track the path
+    pq = [(0, start)]
+    visited = set()
+
+    while pq:
+        dist, node = heapq.heappop(pq)
+        if node in visited:
+            continue
+        visited.add(node)
+
+        if node == end:
+            break
+
+        for neighbor, weight in graph[node]:
+            new_dist = dist + weight
+            if new_dist < distances[neighbor]:
+                distances[neighbor] = new_dist
+                previous[neighbor] = node
+                heapq.heappush(pq, (new_dist, neighbor))
+
+    # Reconstruct path
+    path = []
+    current = end
+    while current is not None:
+        path.append(current)
+        current = previous[current]
+    path.reverse()
+
+    return path, distances[end]
+
+path, dist = dijkstra_path(weighted, 'A', 'F')
+print(f"Path: {path}, Distance: {dist}")
+# Path: ['A', 'B', 'D', 'F'], Distance: 7</code></pre>
+
+<h3>トポロジカルソート（Topological Sort）</h3>
+<p><strong>トポロジカルソート</strong>（topological sort）は<strong>有向非閉路グラフ（DAG：Directed Acyclic Graph）</strong>のノードを線形順序で並べます。すべての辺 u → v について、uがvの前に現れます。依存関係を解決するアルゴリズムです：ビルドシステム、パッケージマネージャ、科目の前提条件、タスクスケジューリング。</p>
+
+<h4>カーンのアルゴリズム（BFSベース：Kahn's Algorithm）</h4>
+<p>カーンのアルゴリズムは<strong>入次数</strong>（in-degree）の追跡を使います。入来辺がないノード（入次数0）から始め、処理し、その隣接ノードの入次数を減らし、繰り返します。</p>
+
+<pre style="overflow-x:auto"><code>from collections import deque
+
+def topological_sort_kahn(graph):
+    """Return a topological ordering of the DAG, or None if a cycle exists.
+    graph: dict of {node: [dependents]} (edges point from dependency to dependent)
+    """
+    # Step 1: Compute in-degrees
+    in_degree = {node: 0 for node in graph}
+    for node in graph:
+        for neighbor in graph[node]:
+            in_degree[neighbor] = in_degree.get(neighbor, 0) + 1
+
+    # Step 2: Start with all nodes that have in-degree 0
+    queue = deque([node for node in graph if in_degree[node] == 0])
+    result = []
+
+    # Step 3: Process nodes
+    while queue:
+        node = queue.popleft()
+        result.append(node)
+
+        for neighbor in graph[node]:
+            in_degree[neighbor] -= 1       # One dependency satisfied
+            if in_degree[neighbor] == 0:   # All dependencies satisfied
+                queue.append(neighbor)
+
+    # Step 4: Check for cycles
+    if len(result) != len(graph):
+        return None  # Cycle detected! Not all nodes were processed.
+
+    return result
+
+# TaskForge dependency DAG:
+#   "setup" -> "backend" -> "deploy"
+#   "setup" -> "frontend" -> "deploy"
+#   "backend" -> "tests"
+deps = {
+    "setup":    ["backend", "frontend"],
+    "backend":  ["tests", "deploy"],
+    "frontend": ["deploy"],
+    "tests":    [],
+    "deploy":   [],
+}
+print(topological_sort_kahn(deps))
+# ['setup', 'backend', 'frontend', 'tests', 'deploy']</code></pre>
+
+<h4>DFSベースのトポロジカルソート</h4>
+<pre style="overflow-x:auto"><code>def topological_sort_dfs(graph):
+    """Topological sort using DFS (post-order reverse)."""
+    visited = set()
+    stack = []         # Will contain the reverse post-order
+    in_progress = set()  # For cycle detection
+
+    def dfs(node):
+        if node in in_progress:
+            return False           # Cycle detected
+        if node in visited:
+            return True
+
+        in_progress.add(node)
+        for neighbor in graph[node]:
+            if not dfs(neighbor):
+                return False
+        in_progress.remove(node)
+        visited.add(node)
+        stack.append(node)         # Post-order: add after all descendants
+        return True
+
+    for node in graph:
+        if node not in visited:
+            if not dfs(node):
+                return None        # Cycle
+
+    stack.reverse()                # Reverse post-order = topological order
+    return stack
+
+print(topological_sort_dfs(deps))
+# ['setup', 'frontend', 'backend', 'tests', 'deploy']</code></pre>
+
+<p><strong>計算量：</strong>両アルゴリズムともO(V + E)で動作します。</p>
+
+<h3>Union-Find（素集合データ構造：Disjoint Set）</h3>
+<p><strong>Union-Find</strong>（素集合データ構造）は連結成分を効率よく追跡します。2つの操作をサポートします：</p>
+<ul>
+<li><strong>find(x)</strong>&mdash;xの成分のルート代表を返します。</li>
+<li><strong>union(x, y)</strong>&mdash;xとyを含む成分を結合します。</li>
+</ul>
+
+<p><strong>経路圧縮</strong>（path compression：find中に木を平坦化）と<strong>ランクによる結合</strong>（union by rank：小さい木を大きい木の下に付ける）により、両操作は実質的に定数時間で動作します：O(α(n))の償却時間（αはアッカーマン関数の逆関数）、実際上はすべての目的においてO(1)です。</p>
+
+<pre style="overflow-x:auto"><code>class UnionFind:
+    """Disjoint Set with path compression and union by rank."""
+
+    def __init__(self, n):
+        self.parent = list(range(n))   # Each node is its own parent initially
+        self.rank = [0] * n            # Rank (approximate tree height)
+        self.components = n            # Number of distinct components
+
+    def find(self, x):
+        """Return the root of x's component (with path compression)."""
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])  # Flatten the tree
+        return self.parent[x]
+
+    def union(self, x, y):
+        """Merge the components of x and y. Return True if they were separate."""
+        rx, ry = self.find(x), self.find(y)
+        if rx == ry:
+            return False               # Already in the same component
+
+        # Attach smaller tree under larger tree
+        if self.rank[rx] < self.rank[ry]:
+            self.parent[rx] = ry
+        elif self.rank[rx] > self.rank[ry]:
+            self.parent[ry] = rx
+        else:
+            self.parent[ry] = rx
+            self.rank[rx] += 1
+
+        self.components -= 1
+        return True
+
+    def connected(self, x, y):
+        """Check if x and y are in the same component."""
+        return self.find(x) == self.find(y)
+
+# Example: network of 6 servers
+uf = UnionFind(6)
+uf.union(0, 1)   # Connect server 0 and 1
+uf.union(2, 3)   # Connect server 2 and 3
+uf.union(1, 3)   # Connect the two clusters
+
+print(uf.connected(0, 3))  # True — all four are connected
+print(uf.connected(0, 4))  # False — server 4 is isolated
+print(uf.components)        # 3 (cluster {0,1,2,3}, isolated 4, isolated 5)</code></pre>
+
+<p><strong>使用ケース：</strong>辺を追加すると閉路ができるかの検出（クラスカルのMSTアルゴリズム：Kruskal's MST）、ネットワーク接続性の確認、関連アイテムのグループ化（例：重複写真の検出）。</p>
+
+<h3>問題解決フレームワーク</h3>
+<p>グラフ問題に直面したとき、この体系的なアプローチを使いましょう：</p>
+<ol>
+<li><strong>問題を理解する</strong>&mdash;ノードは何ですか？辺は何ですか？有向ですか？重み付きですか？何を探していますか？</li>
+<li><strong>形を特定する：</strong>
+  <ul>
+  <li>重みなしグラフの最短経路 → <strong>BFS</strong></li>
+  <li>重み付きグラフの最短経路（非負） → <strong>ダイクストラ法</strong></li>
+  <li>依存関係の順序付け → <strong>トポロジカルソート</strong></li>
+  <li>成分の接続性 → <strong>Union-Find</strong> または <strong>BFS/DFS</strong></li>
+  <li>閉路検出（有向） → 進行中追跡付きの <strong>DFS</strong></li>
+  <li>閉路検出（無向） → <strong>Union-Find</strong></li>
+  <li>全経路 / 全可能性の探索 → <strong>DFS + バックトラッキング</strong></li>
+  </ul>
+</li>
+<li><strong>実装と検証</strong>&mdash;エッジケースでテストします：空グラフ、単一ノード、非連結成分、閉路。</li>
+</ol>
+
+<h3>エンジニアリングの視点</h3>
+<div role="note" class="callout info">
+<div class="callout-title">補足</div>
+<p>グラフアルゴリズムは毎日使うソフトウェアを動かしています：</p>
+<ul>
+<li><strong>pip</strong> と <strong>npm</strong> は依存関係DAGのトポロジカルソートを使ってパッケージ依存関係を解決します。閉路は無効な依存チェーンを意味します。</li>
+<li><strong>GPSルーティング</strong>（Google Maps、Waze）はダイクストラ法（またはその拡張であるA*）を使って場所間の最短経路を見つけます。</li>
+<li><strong>ソーシャルメディア</strong>の「知り合いかも」機能はBFSを使って2〜3ホップ以内の友達の友達を見つけます。</li>
+<li><strong>ネットワーク監視</strong>はUnion-Findを使って全サーバーが接続されているか、障害によってネットワークが分割されていないかを素早く判断します。</li>
+<li><strong>ビルドシステム</strong>（Make、Bazel、GitHub Actions）はトポロジカルソートを使ってどのタスクをどの順序で実行するかを決定します。</li>
+</ul>
+</div>
+
+<h3>TaskForgeとの接続</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう</div>
+<p>依存関係のあるTaskForgeタスクが与えられたとき、有効な実行順序を見つけるためにトポロジカルソートを実装してください。有効な順序が存在しない場合（依存関係グラフに閉路がある場合）、エラーを報告します。</p>
+<pre style="overflow-x:auto"><code>from collections import deque
+
+def resolve_task_order(tasks):
+    """Given a dict of {task: [dependencies]}, return a valid execution order.
+    Raises ValueError if there is a circular dependency.
+    """
+    # Build the forward graph and compute in-degrees
+    graph = {t: [] for t in tasks}
+    in_degree = {t: 0 for t in tasks}
+
+    for task, deps in tasks.items():
+        for dep in deps:
+            graph[dep].append(task)    # dep must come before task
+            in_degree[task] += 1
+
+    # Kahn's algorithm
+    queue = deque([t for t in tasks if in_degree[t] == 0])
+    order = []
+
+    while queue:
+        task = queue.popleft()
+        order.append(task)
+        for dependent in graph[task]:
+            in_degree[dependent] -= 1
+            if in_degree[dependent] == 0:
+                queue.append(dependent)
+
+    if len(order) != len(tasks):
+        raise ValueError("Circular dependency detected! Cannot determine order.")
+
+    return order
+
+# TaskForge sprint tasks with dependencies
+sprint = {
+    "Set up database":    [],
+    "Build API":          ["Set up database"],
+    "Build frontend":     ["Build API"],
+    "Write tests":        ["Build API"],
+    "Deploy":             ["Build frontend", "Write tests"],
+}
+
+print(resolve_task_order(sprint))
+# ['Set up database', 'Build API', 'Build frontend', 'Write tests', 'Deploy']
+
+# Detect circular dependency
+try:
+    circular = {
+        "A": ["B"],
+        "B": ["C"],
+        "C": ["A"],  # Cycle!
+    }
+    resolve_task_order(circular)
+except ValueError as e:
+    print(e)  # "Circular dependency detected! Cannot determine order."</code></pre>
+</div>
+
+<h3>演習</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="27" data-ex="topo-sort">
+  <div class="exercise-header">
+    <h4>閉路検出付きトポロジカルソート</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">カーンのアルゴリズムを使って <code>topo_sort(graph)</code> を実装してください。グラフは有向辺を表す <code>{node: [neighbors]}</code> のdictです。トポロジカル順序のリストを返すか、グラフに閉路が含まれる場合は <code>None</code> を返します。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+from collections import deque
+
+def topo_sort(graph):
+    """Return topological order of DAG, or None if cycle exists.
+    graph: {node: [nodes this node points to]}
+    """
+    # Your code here
+    pass
+
+# Test with valid DAG
+dag = {
+    "A": ["B", "C"],
+    "B": ["D"],
+    "C": ["D"],
+    "D": [],
+}
+print(topo_sort(dag))  # ['A', 'B', 'C', 'D'] or ['A', 'C', 'B', 'D']
+
+# Test with cycle
+cyclic = {
+    "X": ["Y"],
+    "Y": ["Z"],
+    "Z": ["X"],
+}
+print(topo_sort(cyclic))  # None
+</script>
+    <script type="text/plain" class="test-code">
+# Valid DAG
+dag = {"A": ["B", "C"], "B": ["D"], "C": ["D"], "D": []}
+result = topo_sort(dag)
+assert result is not None, "DAG should have a valid ordering"
+assert len(result) == 4, "Should contain all 4 nodes"
+assert result.index("A") < result.index("B"), "A before B"
+assert result.index("A") < result.index("C"), "A before C"
+assert result.index("B") < result.index("D"), "B before D"
+assert result.index("C") < result.index("D"), "C before D"
+
+# Cycle detection
+cyclic = {"X": ["Y"], "Y": ["Z"], "Z": ["X"]}
+assert topo_sort(cyclic) is None, "Should detect cycle"
+
+# Single node
+single = {"A": []}
+assert topo_sort(single) == ["A"], "Single node"
+
+# Linear chain
+chain = {"A": ["B"], "B": ["C"], "C": []}
+result2 = topo_sort(chain)
+assert result2 == ["A", "B", "C"], "Linear chain"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">確認</button>
+    <button class="ex-hint" data-level="0">ヒント</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">まず各ノードの入次数を計算します。入次数0のノードは前提条件がなく、最初に来られます。キュー（deque）を使います。</p>
+    <p class="hint">全ノードを処理した後、結果リストがノード数より短い場合、閉路が存在するはずです（入次数が0に達せないノードがあります）。</p>
+  </div>
+</div>
+
+<div class="quiz" data-ch="27" data-ex="quiz-algo">
+  <h4>確認クイズ</h4>
+  <p>道路によって距離が異なる地図上で、2つの都市間の最短経路を見つける必要があります。適切なアルゴリズムはどれですか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">BFS（重みなしグラフのみで機能）</button>
+    <button class="quiz-option" data-correct="false">DFS</button>
+    <button class="quiz-option" data-correct="true">ダイクストラ法</button>
+    <button class="quiz-option" data-correct="false">トポロジカルソート</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="pq">グラフはどこにでもあります。依存関係、ネットワーク、地図、関係。この章のアルゴリズムはそれらの繋がりを理解するためのツールです。</div>
+
+</section>
+
+<!-- ===== PHASE 6 GATE ===== -->
+<section id="phase6-gate" data-ch="gate6">
+<h2><span class="ch-label">フェーズゲート6</span> アルゴリズムのチェックポイント</h2>
+
+<h3>今できること</h3>
+<div class="card">
+<ul>
+<li>任意のデータセットに対して適切な探索アルゴリズムを選べます。未ソートには線形探索、ソート済みには二分探索、最適化には探索空間上の二分探索。</li>
+<li>5種類のソートアルゴリズムを実装・分析し、それぞれがいつ適切かを説明できます。</li>
+<li>再帰解が部分問題を再計算していることを認識し、メモ化またはボトムアップDPで修正できます。</li>
+<li>2ポインタ法、スライディングウィンドウ、貪欲法、分割統治法、バックトラッキングを使って問題を解けます。</li>
+<li>BFSとDFSでグラフを走査し、ダイクストラ法で最短経路を見つけ、トポロジカルソートで依存関係を順序付け、Union-Findで接続性を追跡できます。</li>
+<li>AIが生成したアルゴリズムコードの正確性、効率性、適切なアルゴリズム選択を評価できます。</li>
+</ul>
+</div>
+
+<h3>TaskForgeチェックポイント</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう</div>
+<p>依存関係（DAG）、優先度、時間見積もりを持つTaskForgeタスクのセットが与えられたとき：</p>
+<ol>
+<li><strong>トポロジカルソート</strong>（第27章）&mdash;すべての依存関係を考慮した有効な実行順序を見つけます。循環依存が存在する場合はエラーを報告します。</li>
+<li><strong>ナップサックDP</strong>（第25章）&mdash;トポロジカルソートされたタスクに対して、0/1ナップサックアプローチを適用して時間予算内で収まる最高価値のタスクサブセットを選択します。</li>
+<li><strong>探索空間上の二分探索</strong>（第24章）&mdash;選択した全タスクをデッドライン内に完了するために必要な最少の並行ワーカー数を見つけます。</li>
+</ol>
+<p>この演習は3つの章を1つのパイプラインに組み合わせます：依存関係の解決、制約内での最適化、リソース配分。実際のスプリント計画の仕組みを反映しています。作業を順序付け、収まるものを選び、人員を計算します。</p>
+</div>
+
+<div role="note" class="callout critical">
+<div class="callout-title">注意</div>
+<p>トポロジカルソートが循環入力でクラッシュする、ナップサックが予算を超えるアイテムを返す、二分探索のoff-by-oneで必要以上のワーカーが必要になる場合は、該当する章に戻って復習してください。</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">補足</div>
+<p>アルゴリズムのツールキットを手に入れました。フェーズ7ではそれを実際のエンジニアリングに適用します：コードを保守しやすくするデザインパターン、クエリを速くするデータベース最適化、システムを通信させるネットワーキング、高速化する並行性、安全にするセキュリティ。ここで学んだアルゴリズム（ソート、探索、グラフ走査、動的計画法）は、それらのエンジニアリング実践が構築される基盤です。</p>
+</div>
+
+</section>
+
+<nav class="phase-nav">
+  <a href="phase-5.html" class="phase-nav-link prev"><span class="phase-nav-label">前のフェーズ</span>&larr; フェーズ5：データ構造</a>
+  <a href="phase-7.html" class="phase-nav-link next"><span class="phase-nav-label">次のフェーズ</span>フェーズ7：エンジニアリングの技術 &rarr;</a>
+</nav>
+
+</div>
+</div>
+
+<footer>
+<p>ゼロからヒーロー：プログラミングからマルチエージェントClaude Codeへ &middot; 2026年3月</p>
+</footer>
+
+<script src="../js/progress.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ace-builds@1.36.5/src-min-noconflict/ace.js"></script>
+<script src="../js/theme.js"></script>
+<script src="../js/sidebar.js"></script>
+<script src="../js/shared.js"></script>
+<script src="../js/ace-init.js"></script>
+<script src="../js/pyodide-runner.js"></script>
+<script src="../js/quiz.js"></script>
+<script src="../js/exercise-runner.js"></script>
+</body>
+</html>

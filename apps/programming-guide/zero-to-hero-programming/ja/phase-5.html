@@ -1,0 +1,2105 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="フェーズ5：データ構造と計算量 — Big-O解析、配列、連結リスト、スタック、キュー、ハッシュテーブル、木構造、グラフ。第19〜23章。">
+<title>フェーズ5：データ構造と計算量 — ゼロからヒーロー</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/design-system.css">
+<script>try{if(localStorage.getItem('zth-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+<script>try{var z=localStorage.getItem('zth-zoom');if(z&&+z>=50&&+z<=200)document.documentElement.style.zoom=+z/100}catch(e){}</script>
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+<marker id="arrowhead-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--a5)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo"><span>ゼロからヒーロー</span>プログラミング &rarr; マルチエージェントAI</a>
+  <div class="toc-group">
+    <div class="toc-group-title">基礎</div>
+    <a href="phase-1.html#ch01" class="toc-link"><span class="toc-num">01</span>プログラミングとは何か</a>
+    <a href="phase-1.html#ch02" class="toc-link"><span class="toc-num">02</span>コンピュータがコードを実行する仕組み</a>
+    <a href="phase-1.html#ch03" class="toc-link"><span class="toc-num">03</span>環境のセットアップ</a>
+    <a href="phase-1.html#ch04" class="toc-link"><span class="toc-num">04</span>書く前にコードを読む</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Python</div>
+    <a href="phase-2.html#ch05" class="toc-link"><span class="toc-num">05</span>関数、ロジック、制御フロー</a>
+    <a href="phase-2.html#ch06" class="toc-link"><span class="toc-num">06</span>データ構造</a>
+    <a href="phase-2.html#ch07" class="toc-link"><span class="toc-num">07</span>クラスとオブジェクト指向プログラミング</a>
+    <a href="phase-2.html#ch08" class="toc-link"><span class="toc-num">08</span>ファイル、モジュール、標準ライブラリ</a>
+    <a href="phase-2.html#ch09" class="toc-link"><span class="toc-num">09</span>エラー処理、デバッグ、テスト</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">開発ツール</div>
+    <a href="phase-3.html#ch10" class="toc-link"><span class="toc-num">10</span>ターミナルとシェル</a>
+    <a href="phase-3.html#ch11" class="toc-link"><span class="toc-num">11</span>Gitの基礎</a>
+    <a href="phase-3.html#ch12" class="toc-link"><span class="toc-num">12</span>GitリモートとGitHub</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">構築とデプロイ</div>
+    <a href="phase-4.html#ch13" class="toc-link"><span class="toc-num">13</span>APIとHTTP</a>
+    <a href="phase-4.html#ch14" class="toc-link"><span class="toc-num">14</span>FlaskでAPIを構築する</a>
+    <a href="phase-4.html#ch15" class="toc-link"><span class="toc-num">15</span>データベースの基礎</a>
+    <a href="phase-4.html#ch16" class="toc-link"><span class="toc-num">16</span>Dockerとコンテナ</a>
+    <a href="phase-4.html#ch17" class="toc-link"><span class="toc-num">17</span>CI/CDとGitHub Actions</a>
+    <a href="phase-4.html#ch18" class="toc-link"><span class="toc-num">18</span>プロジェクトアーキテクチャ</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">データ構造</div>
+    <a href="phase-5.html#ch19" class="toc-link"><span class="toc-num">19</span>計算量分析</a>
+    <a href="phase-5.html#ch20" class="toc-link"><span class="toc-num">20</span>線形構造</a>
+    <a href="phase-5.html#ch21" class="toc-link"><span class="toc-num">21</span>ハッシュテーブルとマップ</a>
+    <a href="phase-5.html#ch22" class="toc-link"><span class="toc-num">22</span>木構造</a>
+    <a href="phase-5.html#ch23" class="toc-link"><span class="toc-num">23</span>グラフ</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">アルゴリズム</div>
+    <a href="phase-6.html#ch24" class="toc-link"><span class="toc-num">24</span>探索とソート</a>
+    <a href="phase-6.html#ch25" class="toc-link"><span class="toc-num">25</span>再帰と動的計画法</a>
+    <a href="phase-6.html#ch26" class="toc-link"><span class="toc-num">26</span>アルゴリズムパターン</a>
+    <a href="phase-6.html#ch27" class="toc-link"><span class="toc-num">27</span>グラフアルゴリズム</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">エンジニアリングの技術</div>
+    <a href="phase-7.html#ch28" class="toc-link"><span class="toc-num">28</span>デザインパターンとSOLID</a>
+    <a href="phase-7.html#ch29" class="toc-link"><span class="toc-num">29</span>SQLとクエリマスタリー</a>
+    <a href="phase-7.html#ch30" class="toc-link"><span class="toc-num">30</span>トランザクションとNoSQL</a>
+    <a href="phase-7.html#ch31" class="toc-link"><span class="toc-num">31</span>ネットワークとインターネット</a>
+    <a href="phase-7.html#ch32" class="toc-link"><span class="toc-num">32</span>並行性と並列処理</a>
+    <a href="phase-7.html#ch33" class="toc-link"><span class="toc-num">33</span>セキュリティエンジニアリング</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">システムとスケール</div>
+    <a href="phase-8.html#ch34" class="toc-link"><span class="toc-num">34</span>システム設計</a>
+    <a href="phase-8.html#ch35" class="toc-link"><span class="toc-num">35</span>分散システム</a>
+    <a href="phase-8.html#ch36" class="toc-link"><span class="toc-num">36</span>パフォーマンスと可観測性</a>
+    <a href="phase-8.html#ch37" class="toc-link"><span class="toc-num">37</span>大規模コードベースのナビゲーション</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AIレベル1〜5</div>
+    <a href="phase-9.html#ch38" class="toc-link"><span class="toc-num">38</span>AIコードの評価と指示</a>
+    <a href="phase-9.html#ch39" class="toc-link"><span class="toc-num">39</span>レベル1&amp;2 — タブ補完とエージェントIDE</a>
+    <a href="phase-9.html#ch40" class="toc-link"><span class="toc-num">40</span>レベル3 — コンテキストエンジニアリング</a>
+    <a href="phase-9.html#ch41" class="toc-link"><span class="toc-num">41</span>レベル4 — 複合エンジニアリング</a>
+    <a href="phase-9.html#ch42" class="toc-link"><span class="toc-num">42</span>レベル5 — MCP、スキル、機能</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AIレベル6〜8</div>
+    <a href="phase-10.html#ch43" class="toc-link"><span class="toc-num">43</span>レベル6 — ハーネスエンジニアリング</a>
+    <a href="phase-10.html#ch44" class="toc-link"><span class="toc-num">44</span>レベル7 — バックグラウンドエージェント</a>
+    <a href="phase-10.html#ch45" class="toc-link"><span class="toc-num">45</span>DockerでのClaude Code</a>
+    <a href="phase-10.html#ch46" class="toc-link"><span class="toc-num">46</span>レベル8 — 自律エージェントチーム</a>
+    <a href="phase-10.html#ch47" class="toc-link"><span class="toc-num">47</span>マルチプレイヤー効果</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">リファレンス</div>
+    <a href="appendices.html#glossary" class="toc-link"><span class="toc-num">&oplus;</span>用語集</a>
+    <a href="appendices.html#prompt-library" class="toc-link"><span class="toc-num">&oplus;</span>プロンプトライブラリ</a>
+    <a href="appendices.html#self-assessment" class="toc-link"><span class="toc-num">&oplus;</span>自己評価</a>
+    <a href="appendices.html#common-mistakes" class="toc-link"><span class="toc-num">&oplus;</span>よくある間違い</a>
+    <a href="appendices.html#appendix-d" class="toc-link"><span class="toc-num">&oplus;</span>トラブルシューティング</a>
+    <a href="appendices.html#appendix-e" class="toc-link"><span class="toc-num">&oplus;</span>リソース</a>
+  </div>
+</aside>
+</aside>
+
+<div class="main">
+<section class="hero hero-sm">
+  <div class="hero-badge">フェーズ5 &mdash; データ構造</div>
+  <h1>データ構造と<em>計算量</em></h1>
+  <p class="hero-sub">データがメモリ上にどう存在するか、パフォーマンスの測り方、そして問題に応じた構造の選び方。すべてのエンジニアリング上の意思決定はここから始まります。</p>
+  <div class="hero-meta"><span>第19〜23章</span><span>フェーズゲート + TaskForge</span></div>
+</section>
+<div class="content-wrap">
+
+<div role="note" class="callout info">
+<div class="callout-title">注意</div>
+<p>このフェーズでは、次のことができることを前提としています：テスト付きのPython関数を書く（第05・09章）、リスト・辞書・集合を日常的なタスクに使う（第06章）、データベース付きのFlask APIを構築する（第14〜15章）。どれかが不安な場合は、先に該当する章を復習してください。</p>
+</div>
+
+<!-- ===== CH 19 ===== -->
+<section id="ch19" data-ch="19">
+<h2><span class="ch-label">第19章</span> 計算量分析（Complexity Analysis）&mdash; 重要なものを測る</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念</div>
+<p>コードを実行する<em>前に</em>、そのパフォーマンスを予測できる必要があります。AIが1000万件のレコードに対してネストしたループを生成したとき、それが何時間もかかると分かりますか？同僚がリストをループの中でスキャンする関数を書いたとき、スケールが非常に悪いと気づけますか？Big-O記法（Big-O notation）はそのための語彙を与えてくれます。エンジニアがパフォーマンスについて考える際に使う言語であり、すべてのデータ構造とアルゴリズムの議論の基礎となるものです。</p>
+</div>
+
+<h3>Big-O記法とは何か</h3>
+<p>Big-O記法は、入力サイズ<strong>n</strong>が大きくなるにつれて、関数が実行する<strong>操作数</strong>がどのように増加するかを表します。答える問いはひとつ：「入力を2倍にしたら、処理時間はどれだけ増えるか？」</p>
+
+<p>私たちは秒数ではなく操作数を数えます。なぜなら秒数はCPU、OS、他に実行中のプロセスなどに依存するからです。操作数は決定論的です。入力サイズが<code>n</code>のとき関数が<code>n</code>回比較を行うなら、入力サイズが<code>2n</code>のときは常に<code>2n</code>回の比較を行います——ハードウェアに関係なく。</p>
+
+<p>Big-Oには2つの簡略化ルールがあります：</p>
+<ul>
+<li><strong>定数を落とす。</strong> O(3n)はO(n)になります。O(100)はO(1)になります。定数は成長の<em>形状</em>を変えません。</li>
+<li><strong>低次の項を落とす。</strong> O(n&sup2; + n)はO(n&sup2;)になります。nが大きいとき、n&sup2;の項がn項を完全に支配するため、n項は無関係です。</li>
+</ul>
+
+<p>具体的な比較でイメージを掴みましょう。タスクのリストがあり、特定のタイトルが存在するか確認したいとします：</p>
+<pre style="overflow-x:auto"><code># O(n) — scan the list one element at a time
+def find_in_list(tasks, title):
+    for task in tasks:
+        if task["title"] == title:
+            return True
+    return False
+
+# O(1) — look up in a dict (hash table) directly
+task_index = {"Buy groceries": 1, "Write tests": 2, "Deploy API": 3}
+def find_in_dict(task_index, title):
+    return title in task_index</code></pre>
+<p>タスクが10件なら両方とも瞬時に終わります。タスクが1000万件になると、リストのスキャンは数秒かかる可能性がありますが、辞書の検索は依然としてマイクロ秒で終わります。Big-Oはベンチマークを一度も実行する前に、このことを教えてくれました。</p>
+
+<h3>主な計算量クラス</h3>
+<p>常に出会う計算量クラスが6つあります。それぞれ独自の成長形状と、すでに知っている現実世界の例があります。</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>主なBig-O計算量クラスとその成長特性</caption>
+<tr><th>クラス</th><th>名称</th><th>例</th><th>入力を2倍にすると &rarr; 時間への影響</th></tr>
+<tr><td>O(1)</td><td>定数（Constant）</td><td>辞書の検索、配列のインデックスアクセス</td><td>変化なし</td></tr>
+<tr><td>O(log n)</td><td>対数（Logarithmic）</td><td>ソート済みリストの二分探索</td><td>+1ステップ</td></tr>
+<tr><td>O(n)</td><td>線形（Linear）</td><td>リストのスキャン、要素の合計</td><td>2倍の時間</td></tr>
+<tr><td>O(n log n)</td><td>線形対数（Linearithmic）</td><td>効率的なソート（マージソート、Timsort）</td><td>約2倍の時間</td></tr>
+<tr><td>O(n&sup2;)</td><td>二乗（Quadratic）</td><td>すべてのペアを比較するネストループ</td><td>4倍の時間</td></tr>
+<tr><td>O(2&#8319;)</td><td>指数（Exponential）</td><td>集合のすべての部分集合の生成</td><td>二乗の時間</td></tr>
+</table>
+</div>
+
+<p>各クラスのPythonの例を示します。コードでパターンを確認してください：</p>
+<pre style="overflow-x:auto"><code># O(1) — Constant: dictionary lookup
+def get_task(task_dict, task_id):
+    return task_dict.get(task_id)  # one operation regardless of dict size
+
+# O(log n) — Logarithmic: binary search
+def binary_search(sorted_list, target):
+    lo, hi = 0, len(sorted_list) - 1
+    while lo <= hi:
+        mid = (lo + hi) // 2
+        if sorted_list[mid] == target:
+            return mid
+        elif sorted_list[mid] < target:
+            lo = mid + 1
+        else:
+            hi = mid - 1
+    return -1  # halves the search space each step
+
+# O(n) — Linear: scan every element
+def find_max(numbers):
+    best = numbers[0]
+    for num in numbers:
+        if num > best:
+            best = num
+    return best  # touches each element exactly once
+
+# O(n log n) — Linearithmic: Python's built-in sort
+def sort_tasks(tasks):
+    return sorted(tasks, key=lambda t: t["priority"])
+    # Timsort: divides and conquers, n log n comparisons
+
+# O(n^2) — Quadratic: check all pairs for duplicates
+def has_duplicate_naive(items):
+    for i in range(len(items)):
+        for j in range(i + 1, len(items)):
+            if items[i] == items[j]:
+                return True
+    return False  # compares every pair: n*(n-1)/2 operations
+
+# O(2^n) — Exponential: generate all subsets
+def all_subsets(items):
+    if not items:
+        return [[]]
+    first = items[0]
+    rest_subsets = all_subsets(items[1:])
+    return rest_subsets + [[first] + s for s in rest_subsets]
+    # each element doubles the number of subsets</code></pre>
+
+<h3>自分のコードを分析する</h3>
+<p>ルールを暗記する必要はありません。2つのパターンを認識できれば十分です：</p>
+
+<p><strong>ルール1：順次ブロック &rarr; 加算（最大を取る）。</strong> 関数がまずリストをスキャンしO(n)、次にソートしO(n log n)なら、合計はO(n) + O(n log n) = O(n log n)です。支配的な項を残します。</p>
+<pre style="overflow-x:auto"><code>def process_tasks(tasks):
+    # Step 1: filter — O(n)
+    active = [t for t in tasks if t["status"] == "active"]
+    # Step 2: sort — O(n log n)
+    active.sort(key=lambda t: t["priority"])
+    # Step 3: return first 10 — O(1)
+    return active[:10]
+    # Total: O(n) + O(n log n) + O(1) = O(n log n)</code></pre>
+
+<p><strong>ルール2：ネストしたループ &rarr; 掛け算。</strong> ループの中にループがあると、内側のループが外側のループの各反復に対して1回実行されます。両方がn個の要素を反復すると、O(n) &times; O(n) = O(n&sup2;)になります。</p>
+<pre style="overflow-x:auto"><code>def find_common_tasks(list_a, list_b):
+    common = []
+    for a in list_a:          # O(n)
+        for b in list_b:      #   O(m) for each a
+            if a["title"] == b["title"]:
+                common.append(a)
+    return common
+    # Total: O(n * m). If both lists are size n, this is O(n^2)</code></pre>
+
+<p>より微妙な例を見てみましょう：</p>
+<pre style="overflow-x:auto"><code>def group_by_status(tasks):
+    groups = {}
+    for task in tasks:           # O(n)
+        status = task["status"]
+        if status not in groups:
+            groups[status] = []  # O(1) dict operations
+        groups[status].append(task)  # O(1) amortized
+    return groups
+    # Total: O(n) — one pass, all dict operations are O(1)</code></pre>
+
+<p>そして、計算量が隠れているトリッキーな例：</p>
+<pre style="overflow-x:auto"><code>def remove_duplicates_naive(items):
+    unique = []
+    for item in items:           # O(n)
+        if item not in unique:   # O(k) where k = len(unique)
+            unique.append(item)
+    return unique
+    # Worst case: all unique, so k grows to n
+    # Total: O(n^2) — the "in" check on a list is O(n)!
+
+def remove_duplicates_fast(items):
+    seen = set()
+    unique = []
+    for item in items:           # O(n)
+        if item not in seen:     # O(1) set lookup
+            seen.add(item)       # O(1)
+            unique.append(item)
+    return unique
+    # Total: O(n) — set lookup is O(1)</code></pre>
+<p>この2つの関数の違いは、O(n&sup2;)とO(n)の違いです。10,000個のアイテムでは、1億回対1万回の操作になります。2番目の関数は「少し速い」だけでなく、1万倍速いのです。</p>
+
+<h3>空間計算量（Space Complexity）</h3>
+<p>時間計算量は操作数を測定します。<strong>空間計算量（Space Complexity）</strong>は、アルゴリズムが入力そのもの以外に使用する追加メモリの量を測定します。</p>
+<pre style="overflow-x:auto"><code># O(1) space — modifies in place
+def reverse_in_place(items):
+    left, right = 0, len(items) - 1
+    while left < right:
+        items[left], items[right] = items[right], items[left]
+        left += 1
+        right -= 1
+    # Uses only two integer variables — constant extra space
+
+# O(n) space — creates a new list
+def reverse_copy(items):
+    return items[::-1]
+    # Creates an entirely new list of the same size</code></pre>
+<p>空間計算量はデータが大きい場合に重要です。10要素のリストを逆にする？空間は関係ありません。1000万要素のリストを逆にする？コピーを作るとメモリ使用量が2倍になります。インプレイスアルゴリズムは可読性をメモリ効率と引き換えにします。</p>
+
+<h3>均しコスト分析（Amortized Analysis）</h3>
+<p>Pythonの<code>list.append()</code>はO(1)と言われていますが、時々、内部配列がスペース不足になり、リサイズが必要になります——全要素を新しい大きな配列にコピーします。その単一のリサイズはO(n)です。では、appendはどうしてO(1)なのでしょう？</p>
+
+<p><strong>均しコスト分析（Amortized Analysis）</strong>は、一連の操作にわたってコストを平均します。動的配列が容量を2倍にする（たとえば8スロットから16スロットへ）と、次の8回のappendは「無料」——リサイズ不要です。高コストのO(n)コピーは、その後に続く安価なO(1)のappendに分散されます。平均すると、各appendはO(1)のコストです。</p>
+
+<p>家賃の支払いのようなものです。月に一度大きな金額を支払いますが、30日間で均すと固定の日当たりコストになります。1日が高くても、平均費用は高くなりません。</p>
+
+<pre style="overflow-x:auto"><code># Demonstrating dynamic array growth
+import sys
+
+items = []
+prev_size = 0
+for i in range(65):
+    items.append(i)
+    curr_size = sys.getsizeof(items)
+    if curr_size != prev_size:
+        print(f"Length {len(items):3d} -> Memory {curr_size:5d} bytes")
+        prev_size = curr_size
+# You'll see memory jumps at irregular intervals as the array resizes</code></pre>
+
+<h3>Big-Oが「嘘をつく」とき</h3>
+<p>Big-Oは<em>成長率</em>を教えますが、<em>実際の速度</em>は教えません。小さな入力では、定数因子が支配します。覚えておくべき重要な例外がいくつかあります：</p>
+
+<ul>
+<li><strong>小さなn：</strong> 約50要素未満では、O(n&sup2;)の挿入ソートがO(n log n)のマージソートに勝つことがよくあります。なぜなら挿入ソートのオーバーヘッドが遥かに小さいからです（関数呼び出しが少なく、キャッシュの使用効率が良い）。PythonのTimsortは実際、マージソートの中で小さな部分列に<em>挿入ソートを使用</em>しています。</li>
+<li><strong>キャッシュ局所性（Cache locality）：</strong> 配列は要素をメモリに連続して格納します。CPUが1要素をロードするとき、近くの要素も無料でキャッシュにロードします。連結リストはノードをメモリ全体に散らばらせ、<strong>キャッシュミス（cache miss）</strong>を引き起こします——各アクセスがメインメモリを待つ可能性があります。キャッシュ効果により、O(n)の配列スキャンはO(n)の連結リストスキャンより10〜100倍速いことがあります。</li>
+<li><strong>定数因子：</strong> 定数因子が1000のO(n)アルゴリズムは、定数因子が1のO(n log n)アルゴリズムより、n ≈ 10,000未満では遅くなります。Big-Oはこれらの定数を意図的に隠しています。</li>
+</ul>
+
+<p>教訓：Big-Oは思考ツールであり、最終的な答えではありません。大規模な意思決定（数百万件のレコードに対してO(n)対O(n&sup2;)）では理論を信頼してください。マイクロ最適化（2つのO(n)アルゴリズムの選択）では、プロファイラで測定してください。</p>
+
+<div role="note" class="callout info">
+<div class="callout-title">補足</div>
+<p>現実の世界では、<code>timeit</code>や<code>cProfile</code>によるプロファイリングが理論的な分析と矛盾することがよくあります。辞書内包表記とforループは同じBig-Oですが、内包表記はバイトコード命令が少ないため20%速いことがあります。理論を信頼すべき時（大きなデータに対してO(n)かO(n&sup2;)かを選ぶとき）と、測定すべき時（異なる定数を持つ2つのO(n)アプローチを選ぶとき）を知ってください。シニアエンジニアは両方を行います：設計判断にはBig-O、最適化にはプロファイリング。</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">ヒント</div>
+<p>TaskForgeの現在の操作を分析してください。リストの末尾にタスクを追加するのは均しコストO(1)です。タイトルでタスクを検索するにはすべてのタスクをスキャンする必要があります：O(n)。優先度でタスクをソートするのはPythonのTimsortを使います：O(n log n)。タスクリストが10件から10,000件、1000万件に増えると、検索がボトルネックになります。第21章では、検索をO(1)にするハッシュベースのインデックスを構築します——そしてBig-Oがそれが価値あることを教えてくれます。</p>
+</div>
+
+<div class="diagram">
+<svg viewBox="0 0 700 400" xmlns="http://www.w3.org/2000/svg" aria-label="Line chart showing how O(1), O(log n), O(n), O(n log n), O(n squared), and O(2 to the n) growth rates diverge as input size n increases from 1 to 100">
+  <!-- Axes -->
+  <line x1="80" y1="360" x2="680" y2="360" stroke="var(--text-muted)" stroke-width="1.5"/>
+  <line x1="80" y1="360" x2="80" y2="20" stroke="var(--text-muted)" stroke-width="1.5"/>
+  <!-- Axis labels -->
+  <text x="380" y="395" text-anchor="middle" fill="var(--text-muted)" font-size="13">Input size (n)</text>
+  <text x="25" y="190" text-anchor="middle" fill="var(--text-muted)" font-size="13" transform="rotate(-90,25,190)">Operations</text>
+  <!-- X-axis ticks -->
+  <text class="sub-text" x="80" y="378">0</text>
+  <text class="sub-text" x="200" y="378">20</text>
+  <text class="sub-text" x="320" y="378">40</text>
+  <text class="sub-text" x="440" y="378">60</text>
+  <text class="sub-text" x="560" y="378">80</text>
+  <text class="sub-text" x="668" y="378">100</text>
+  <!-- Y-axis ticks -->
+  <text class="sub-text" x="70" y="360" text-anchor="end">0</text>
+  <text class="sub-text" x="70" y="280" text-anchor="end">2k</text>
+  <text class="sub-text" x="70" y="200" text-anchor="end">5k</text>
+  <text class="sub-text" x="70" y="120" text-anchor="end">7.5k</text>
+  <text class="sub-text" x="70" y="40" text-anchor="end">10k</text>
+  <!-- Grid lines -->
+  <line x1="80" y1="280" x2="680" y2="280" stroke="var(--border-accent)" stroke-width="0.5" stroke-dasharray="4"/>
+  <line x1="80" y1="200" x2="680" y2="200" stroke="var(--border-accent)" stroke-width="0.5" stroke-dasharray="4"/>
+  <line x1="80" y1="120" x2="680" y2="120" stroke="var(--border-accent)" stroke-width="0.5" stroke-dasharray="4"/>
+
+  <!-- O(1) — flat line near bottom -->
+  <line x1="80" y1="357" x2="680" y2="357" stroke="var(--accent)" stroke-width="2.5"/>
+  <text x="685" y="357" fill="var(--accent)" font-size="12">O(1)</text>
+
+  <!-- O(log n) — very slow growth -->
+  <polyline fill="none" stroke="var(--heading)" stroke-width="2" points="80,360 140,342 200,334 260,328 320,324 380,321 440,318 500,316 560,314 620,313 680,312"/>
+  <text x="685" y="312" fill="var(--heading)" font-size="12">O(log n)</text>
+
+  <!-- O(n) — straight line, moderate slope -->
+  <line x1="80" y1="360" x2="680" y2="328" stroke="#4caf50" stroke-width="2"/>
+  <text x="685" y="328" fill="#4caf50" font-size="12">O(n)</text>
+
+  <!-- O(n log n) — slightly curved above O(n) -->
+  <polyline fill="none" stroke="var(--a5)" stroke-width="2" points="80,360 140,354 200,345 260,333 320,319 380,303 440,285 500,265 560,244 620,222 680,198"/>
+  <text x="685" y="198" fill="var(--a5)" font-size="12">O(n log n)</text>
+
+  <!-- O(n^2) — steep parabolic curve -->
+  <polyline fill="none" stroke="#e53e3e" stroke-width="2.5" points="80,360 140,358 200,350 260,336 320,314 380,284 440,246 500,200 560,146 620,84 680,40"/>
+  <text x="685" y="40" fill="#e53e3e" font-size="12">O(n&sup2;)</text>
+
+  <!-- O(2^n) — shoots up almost immediately, exits chart fast -->
+  <polyline fill="none" stroke="#f59e0b" stroke-width="2" stroke-dasharray="6,3" points="80,360 110,358 140,354 170,344 200,316 220,272 240,180 255,40"/>
+  <text x="260" y="35" fill="#f59e0b" font-size="12">O(2&#8319;)</text>
+
+  <!-- Title -->
+  <text class="label-text" x="380" y="16" text-anchor="middle">計算量の成長率</text>
+</svg>
+<div class="diagram-caption">入力サイズが増えるにつれて、異なる計算量クラスがどのように成長するかを示します。O(1)とO(log n)はどんな規模でも管理可能なままです。O(n&sup2;)とO(2&#8319;)はすぐに使用不能になります。適切なアルゴリズムの選択は、ミリ秒と時間の差を意味することがあります。</div>
+</div>
+
+<h3>ミニ演習</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう1：関数の分類</div>
+<p>各関数のBig-O時間計算量を求めてください：</p>
+<pre style="overflow-x:auto"><code># Function A
+def func_a(items):
+    return items[0] if items else None
+
+# Function B
+def func_b(items):
+    total = 0
+    for x in items:
+        total += x
+    return total
+
+# Function C
+def func_c(items):
+    for x in items:
+        for y in items:
+            print(x, y)
+
+# Function D
+def func_d(items):
+    items.sort()
+    return items[0]</code></pre>
+<p><strong>解答：</strong> AはO(1)——単一インデックスアクセス。BはO(n)——1回のパス。CはO(n&sup2;)——ネストループ。DはO(n log n)——ソートが支配的。</p>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう2：隠れた二次計算量を見つける</div>
+<p>この関数は線形に<em>見えます</em>が、実際はO(n&sup2;)です。なぜか分かりますか？</p>
+<pre style="overflow-x:auto"><code>def build_string(n):
+    result = ""
+    for i in range(n):
+        result += str(i)  # string concatenation creates a new string each time
+    return result</code></pre>
+<p><strong>解答：</strong> Pythonでは文字列はイミュータブルです。各<code>+=</code>は新しい文字列を作成し、以前のすべての文字をコピーします。合計コピー回数は1 + 2 + 3 + ... + n = O(n&sup2;)です。修正方法：O(n)にするには<code>"".join(str(i) for i in range(n))</code>を使用してください。</p>
+</div>
+
+<div class="pq">Big-Oは数学についてではありません。未来を予測することです——テストケースよりデータが10倍、100倍、1000倍大きくなったとき、コードがどう振る舞うかを。</div>
+
+<h3>インタラクティブ演習</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="19" data-ex="complexity">
+  <div class="exercise-header">
+    <h4>設計チャレンジ：「予測して測定する」</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">3つの関数が同じ問題を解決します：リストに重複があるかどうかを確認します。それぞれのBig-Oを予測してから、時間を測って検証してください。<code>predict</code>辞書と<code>measure()</code>関数を埋めてください。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+import time
+
+def has_dup_nested(items):
+    """Check duplicates with nested loops."""
+    for i in range(len(items)):
+        for j in range(i + 1, len(items)):
+            if items[i] == items[j]:
+                return True
+    return False
+
+def has_dup_sort(items):
+    """Sort first, then check adjacent pairs."""
+    s = sorted(items)
+    for i in range(len(s) - 1):
+        if s[i] == s[i + 1]:
+            return True
+    return False
+
+def has_dup_set(items):
+    """Use a set for O(1) lookups."""
+    return len(set(items)) != len(items)
+
+# Step 1: Predict the Big-O for each function
+predict = {
+    "nested": "O(?)",   # Replace ? with complexity
+    "sort":   "O(?)",
+    "set":    "O(?)"
+}
+
+# Step 2: Measure the actual time for n = 5000
+def measure(func, n):
+    items = list(range(n))  # no duplicates = worst case
+    start = time.time()
+    func(items)
+    return round(time.time() - start, 4)
+
+n = 5000
+print(f"Predictions: {predict}")
+print(f"nested: {measure(has_dup_nested, n)}s")
+print(f"sort:   {measure(has_dup_sort, n)}s")
+print(f"set:    {measure(has_dup_set, n)}s")
+</script>
+    <script type="text/plain" class="test-code">
+assert predict["nested"] == "O(n^2)" or predict["nested"] == "O(n2)" or predict["nested"] == "O(n**2)", "Nested loops = O(n^2)"
+assert predict["sort"] == "O(n log n)" or predict["sort"] == "O(nlogn)", "Sort-based = O(n log n)"
+assert predict["set"] == "O(n)", "Set-based = O(n)"
+print("All predictions correct!")
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">確認</button>
+    <button class="ex-hint" data-level="0">ヒント</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">nestedの関数はn要素に対して2つのループを持っています。ネストしたループを掛け合わせると何になりますか？</p>
+    <p class="hint">sortの関数は<code>sorted()</code>を呼び出しO(n log n)、次に1回スキャンしO(n)です。どちらが支配的ですか？</p>
+    <p class="hint">n要素からセットを構築するのはO(n)です。2つの長さを比較するのはO(1)です。合計：O(n)。</p>
+  </div>
+</div>
+
+<div class="quiz" data-ch="19" data-ex="quiz-bigo">
+  <h4>理解度チェック</h4>
+  <p>n要素のソートされていないリストから値を検索する時間計算量は何ですか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">O(1)</button>
+    <button class="quiz-option" data-correct="false">O(log n)</button>
+    <button class="quiz-option" data-correct="true">O(n)</button>
+    <button class="quiz-option" data-correct="false">O(n&sup2;)</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+</section>
+
+<!-- ===== CH 20 ===== -->
+<section id="ch20" data-ch="20">
+<h2><span class="ch-label">第20章</span> 線形構造（Linear Structures）&mdash; 配列、連結リスト、スタックとキュー</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念</div>
+<p>すべてのプログラムはデータのシーケンスを格納します。それらがどのように格納されるか——連続（contiguous）対散在（scattered）、インデックス参照（indexed）対連結（linked）——を理解することで、コードがミリ秒で実行されるか数分かかるかが決まります。この章では4つの基本的な線形構造を取り上げ、それぞれをいつ使うべきかを学びます。</p>
+</div>
+
+<h3>メモリ上の配列（Array）</h3>
+<p><strong>配列（Array）</strong>は要素を連続した（隣り合った）メモリ位置に格納します。要素0がメモリアドレス1000から始まり、各要素が8バイト取るなら、要素5はアドレス1000 + (5 &times; 8) = 1040に存在します。このアドレス演算が配列のインデックスアクセスがO(1)である理由です——CPUはスキャンなしに任意の要素に直接ジャンプできます。</p>
+
+<p>Pythonの<code>list</code>は<strong>動的配列（Dynamic Array）</strong>です。内部では、Pythonオブジェクトへのポインタ（参照）の配列を格納しています。配列自体は連続していますが、指しているオブジェクトはメモリ上に散在している場合があります。</p>
+
+<p>連続した格納は配列に大きな利点をもたらします：<strong>キャッシュ局所性（Cache locality）</strong>。現代のCPUは1バイトずつフェッチするのではなく、メモリから<em>キャッシュライン（Cache line）</em>（通常64バイト）全体をロードします。配列の要素0にアクセスすると、CPUは要素0〜7（またはそれ以上）を無料でキャッシュにロードします。次の要素がほぼ常にすでにキャッシュにあるため、配列の反復は高速です。</p>
+
+<h3>動的配列（Dynamic Array）</h3>
+<p>静的配列は作成時にサイズが固定されています。動的配列（Pythonの<code>list</code>など）は自動的に成長します。戦略は<strong>等比成長（Geometric Growth）</strong>です：配列がいっぱいになると、約2倍のサイズの新しい配列を割り当て、すべてをコピーし、古い配列を解放します。</p>
+
+<p>これにより<code>append()</code>は均しコストでO(1)になります（第19章で分析した通り）。しかし、配列の先頭での操作は高コストです：</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>Pythonのリスト操作の時間計算量</caption>
+<tr><th>操作</th><th>時間</th><th>理由</th></tr>
+<tr><td><code>list[i]</code>（インデックスアクセス）</td><td>O(1)</td><td>アドレス演算</td></tr>
+<tr><td><code>list.append(x)</code></td><td>O(1) 均しコスト</td><td>末尾に追加；時々リサイズ</td></tr>
+<tr><td><code>list.insert(0, x)</code></td><td>O(n)</td><td>すべての要素が1つ右にシフト</td></tr>
+<tr><td><code>list.pop()</code>（最後の要素）</td><td>O(1)</td><td>末尾から削除</td></tr>
+<tr><td><code>list.pop(0)</code>（最初の要素）</td><td>O(n)</td><td>すべての要素が1つ左にシフト</td></tr>
+<tr><td><code>x in list</code></td><td>O(n)</td><td>リスト全体をスキャンする必要がある</td></tr>
+</table>
+</div>
+
+<p>重要な洞察：<strong>Pythonリストの先頭への挿入または削除はO(n)</strong>であり、O(1)ではありません。挿入点以降のすべての要素がシフトする必要があります。これはPythonコードで最もよくあるパフォーマンスの罠のひとつです。</p>
+
+<h3>連結リスト（Linked List）</h3>
+<p><strong>連結リスト（Linked List）</strong>は要素を個別の<strong>ノード（Node）</strong>オブジェクトとして格納します。各ノードは値と次のノードへの参照（ポインタ）を含みます。ノードはメモリのどこにでも散在できます——物理的な位置ではなくポインタによって接続されています。</p>
+
+<pre style="overflow-x:auto"><code>class Node:
+    def __init__(self, value, next_node=None):
+        self.value = value
+        self.next = next_node
+
+class LinkedList:
+    def __init__(self):
+        self.head = None
+        self.size = 0
+
+    def prepend(self, value):
+        """Add to the front — O(1)."""
+        self.head = Node(value, self.head)
+        self.size += 1
+
+    def get(self, index):
+        """Access by index — O(n). Must walk the chain."""
+        current = self.head
+        for _ in range(index):
+            if current is None:
+                raise IndexError("Index out of range")
+            current = current.next
+        return current.value
+
+    def __len__(self):
+        return self.size
+
+    def __iter__(self):
+        current = self.head
+        while current:
+            yield current.value
+            current = current.next</code></pre>
+
+<p><strong>単方向連結リスト（Singly Linked List）</strong>では、各ノードは次のノードを指します。<strong>双方向連結リスト（Doubly Linked List）</strong>では、各ノードが前のノードも指し、両方向への走査とO(1)での両端からの削除（ノードへの参照があれば）が可能です。</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>操作計算量：配列対連結リスト</caption>
+<tr><th>操作</th><th>配列（Pythonリスト）</th><th>連結リスト</th></tr>
+<tr><td>インデックスアクセス</td><td>O(1)</td><td>O(n)</td></tr>
+<tr><td>先頭への挿入</td><td>O(n)</td><td>O(1)</td></tr>
+<tr><td>末尾への挿入</td><td>O(1) 均しコスト</td><td>O(1) テールポインタがあれば</td></tr>
+<tr><td>先頭からの削除</td><td>O(n)</td><td>O(1)</td></tr>
+<tr><td>検索</td><td>O(n)</td><td>O(n)</td></tr>
+<tr><td>要素ごとのメモリ</td><td>8バイト（ポインタ）</td><td>〜56バイト（オブジェクト+ポインタ）</td></tr>
+</table>
+</div>
+
+<h3>連結リストが勝つとき（そして勝たないとき）</h3>
+<p>教科書は連結リストの先頭でのO(1)の挿入・削除を好みます。現実はより微妙です。Pythonの<code>list</code>（動的配列）は<em>ほぼすべての実用的な場面</em>で連結リストに勝ります。なぜなら：</p>
+<ul>
+<li><strong>キャッシュミスがパフォーマンスを破壊する。</strong> 配列の要素は連続しており、CPUがプリフェッチします。連結リストのノードは散在しており、各ノードアクセスは潜在的なキャッシュミスです。</li>
+<li><strong>メモリオーバーヘッド。</strong> 各連結リストのノードはヘッダ、値、ポインタを持つPythonオブジェクトです。100万の整数のリストは配列で約8MBですが、連結リストでは56MBです。</li>
+<li><strong>Pythonのオーバーヘッド。</strong> 数百万の<code>Node</code>オブジェクトを作成すると、PythonのガベージコレクタGCに圧力がかかります。</li>
+</ul>
+<p>連結リストが輝く特定のシナリオが2つあります：(1) インデックスアクセスなしに両端でO(1)の挿入・削除が必要な場合（固定サイズブロックの双方向連結リストである<code>collections.deque</code>を使用）、(2) データをコピーせずにサブリストを結合したりノードを並べ替えたりする必要がある場合（Pythonでは稀ですが、システムプログラミングでは一般的）。</p>
+
+<h3>スタック（Stack）：LIFO</h3>
+<p><strong>スタック（Stack）</strong>は後入れ先出し（Last-In, First-Out：LIFO）の構造です。アイテムを上にプッシュ（push）し、上からポップ（pop）します。皿の重ね積みを想像してください：上に追加し、上から取ります。</p>
+
+<pre style="overflow-x:auto"><code># Python list is a perfect stack
+stack = []
+stack.append("open file")    # push
+stack.append("edit line 5")  # push
+stack.append("delete word")  # push
+
+last_action = stack.pop()    # pop -> "delete word"
+print(last_action)           # most recent action</code></pre>
+
+<p><strong>スタックのユースケース：</strong></p>
+<ul>
+<li><strong>アンドゥシステム（Undo）</strong>&mdash;各アクションをプッシュし、アンドゥするためにポップします。これはまさにTaskForgeで構築するものです。</li>
+<li><strong>コールスタック（Call Stack）</strong>&mdash;Pythonが関数を呼び出すとき、コールスタックにフレームをプッシュします。関数が戻るとき、フレームをポップします。これが無限再帰が「スタックオーバーフロー（stack overflow）」を引き起こす理由です。</li>
+<li><strong>括弧の対応チェック</strong>&mdash;開き括弧をプッシュし、閉じ括弧が来たらポップします。ポップ時にスタックが空、または最後にスタックが空でなければ、括弧は対応していません。</li>
+<li><strong>式の評価</strong>&mdash;電卓は<code>3 + 4 * 2</code>を正しい優先順位で評価するためにスタックを使います。</li>
+</ul>
+
+<pre style="overflow-x:auto"><code>def is_balanced(expression):
+    """Check if parentheses are balanced — classic stack problem."""
+    stack = []
+    pairs = {"(": ")", "[": "]", "{": "}"}
+    for char in expression:
+        if char in pairs:
+            stack.append(char)
+        elif char in pairs.values():
+            if not stack:
+                return False
+            if pairs[stack.pop()] != char:
+                return False
+    return len(stack) == 0
+
+print(is_balanced("({[]})"))   # True
+print(is_balanced("({[})"))    # False
+print(is_balanced("((()"))     # False</code></pre>
+
+<h3>キュー（Queue）とデック（Deque）：FIFO</h3>
+<p><strong>キュー（Queue）</strong>は先入れ先出し（First-In, First-Out：FIFO）の構造です。アイテムは後ろから入り、前から出ます。切符売り場の列を想像してください。</p>
+
+<p>PythonのリストをキューとしてPythonの<code>list</code>を使いたくなるかもしれませんが、重大なパフォーマンス問題があります：</p>
+<pre style="overflow-x:auto"><code># BAD: Using list as a queue — pop(0) is O(n)!
+queue = [1, 2, 3, 4, 5]
+queue.append(6)       # enqueue at back — O(1), fine
+front = queue.pop(0)  # dequeue from front — O(n), every element shifts!
+
+# GOOD: Use collections.deque — popleft() is O(1)
+from collections import deque
+queue = deque([1, 2, 3, 4, 5])
+queue.append(6)          # enqueue at back — O(1)
+front = queue.popleft()  # dequeue from front — O(1)!</code></pre>
+
+<p><code>collections.deque</code>（両端キュー：Double-Ended Queue）は両端でO(1)の操作をサポートします。固定サイズブロックの双方向連結リストとして実装されており、配列のキャッシュフレンドリーな動作と両端での連結リストの柔軟性を兼ね備えています。</p>
+
+<p><strong>キューのユースケース：</strong></p>
+<ul>
+<li><strong>タスクスケジューリング</strong>&mdash;タスクが到着した順に処理します。プリントキュー、メッセージキュー、ジョブキュー。</li>
+<li><strong>幅優先探索（Breadth-first search：BFS）</strong>&mdash;隣接ノードを層ごとに探索します（第23章のグラフで使用）。</li>
+<li><strong>レート制限</strong>&mdash;スライディングウィンドウで最近のリクエストのタイムスタンプを追跡します。</li>
+</ul>
+
+<div class="diagram">
+<svg viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg" aria-label="Memory layout comparison between an array with contiguous colored blocks and indices versus a linked list with scattered nodes connected by arrows. A CPU cache line is shown covering multiple array elements but only one linked list node.">
+  <!-- Title -->
+  <text class="label-text" x="350" y="20" text-anchor="middle">メモリレイアウト：配列 対 連結リスト</text>
+
+  <!-- Array section -->
+  <text class="label-text" x="60" y="55">配列（Pythonリスト）</text>
+  <text class="sub-text" x="60" y="72" fill="var(--text-muted)">メモリ上で連続</text>
+  <!-- Array blocks -->
+  <rect x="60" y="85" width="70" height="45" rx="4" fill="var(--accent)" opacity="0.15" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="label-text" x="95" y="113" text-anchor="middle">"A"</text>
+  <text class="sub-text" x="95" y="143" text-anchor="middle">[0]</text>
+
+  <rect x="135" y="85" width="70" height="45" rx="4" fill="var(--accent)" opacity="0.15" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="label-text" x="170" y="113" text-anchor="middle">"B"</text>
+  <text class="sub-text" x="170" y="143" text-anchor="middle">[1]</text>
+
+  <rect x="210" y="85" width="70" height="45" rx="4" fill="var(--accent)" opacity="0.15" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="label-text" x="245" y="113" text-anchor="middle">"C"</text>
+  <text class="sub-text" x="245" y="143" text-anchor="middle">[2]</text>
+
+  <rect x="285" y="85" width="70" height="45" rx="4" fill="var(--accent)" opacity="0.15" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="label-text" x="320" y="113" text-anchor="middle">"D"</text>
+  <text class="sub-text" x="320" y="143" text-anchor="middle">[3]</text>
+
+  <rect x="360" y="85" width="70" height="45" rx="4" fill="var(--accent)" opacity="0.15" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="label-text" x="395" y="113" text-anchor="middle">"E"</text>
+  <text class="sub-text" x="395" y="143" text-anchor="middle">[4]</text>
+
+  <!-- Cache line bracket over array -->
+  <rect x="55" y="78" width="305" height="58" rx="6" fill="none" stroke="var(--heading)" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="207" y="74" text-anchor="middle" fill="var(--heading)" font-size="11">CPUキャッシュライン（64バイト）— 一度にすべてをロード</text>
+
+  <!-- Linked List section -->
+  <text class="label-text" x="60" y="185">連結リスト</text>
+  <text class="sub-text" x="60" y="202" fill="var(--text-muted)">メモリ上に散在</text>
+
+  <!-- Node A -->
+  <rect class="node-accent" x="60" y="215" width="70" height="40" rx="6"/>
+  <text class="label-text" x="95" y="240" text-anchor="middle">"A"</text>
+  <line x1="130" y1="235" x2="190" y2="235" class="arrow"/>
+
+  <!-- Node B (offset vertically to show scatter) -->
+  <rect class="node-accent" x="195" y="225" width="70" height="40" rx="6"/>
+  <text class="label-text" x="230" y="250" text-anchor="middle">"B"</text>
+  <line x1="265" y1="245" x2="325" y2="225" class="arrow"/>
+
+  <!-- Node C (different position) -->
+  <rect class="node-accent" x="330" y="208" width="70" height="40" rx="6"/>
+  <text class="label-text" x="365" y="233" text-anchor="middle">"C"</text>
+  <line x1="400" y1="228" x2="445" y2="250" class="arrow"/>
+
+  <!-- Node D -->
+  <rect class="node-accent" x="450" y="235" width="70" height="40" rx="6"/>
+  <text class="label-text" x="485" y="260" text-anchor="middle">"D"</text>
+  <line x1="520" y1="255" x2="565" y2="235" class="arrow"/>
+
+  <!-- Node E -->
+  <rect class="node-accent" x="570" y="218" width="70" height="40" rx="6"/>
+  <text class="label-text" x="605" y="243" text-anchor="middle">"E"</text>
+
+  <!-- Cache line over just one linked list node -->
+  <rect x="55" y="210" width="85" height="52" rx="6" fill="none" stroke="var(--heading)" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="97" y="290" text-anchor="middle" fill="var(--heading)" font-size="11">キャッシュラインは1ノードしかカバーしない</text>
+</svg>
+<div class="diagram-caption">配列は要素をメモリ上に隣り合わせで格納するため、単一のCPUキャッシュラインが複数の要素を一度にロードします。連結リストのノードは散在しており、ほぼすべてのアクセスでキャッシュミスが発生します。これが、連結リストが特定の操作でより良い理論的計算量を持つ場合でも、実際には配列が速い理由です。</div>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">補足</div>
+<p>キューが必要なとき、Pythonの<code>collections.deque</code>が正しい選択です。<code>list.pop(0)</code>を使うとO(n)——すべての要素がシフトします。<code>deque.popleft()</code>はO(1)です。これはAIが生成するコードがよく陥るパフォーマンスの罠です。AIの出力に<code>queue = []</code>の後に<code>queue.pop(0)</code>が続くのを見たら、<code>deque</code>に置き換えるべきだと分かります。データ構造を1つ変えるだけ、アルゴリズムの変更なしで、一連のデキュー操作のパフォーマンスがO(n&sup2;)からO(n)になります。</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">ヒント</div>
+<p>TaskForgeにアンドゥスタックを実装してください。すべての操作——タスクの追加、削除、更新——は、それを取り消すのに十分な情報を格納するレコードをスタックにプッシュします。<code>undo()</code>を呼び出すと、最後のレコードをポップして操作を取り消します。これはテキストエディタ、描画ツール、データベーストランザクションで使われているパターンと同じです。</p>
+</div>
+
+<h3>ミニ演習</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう1：スタックを使った括弧チェッカー</div>
+<p>スタックのセクションの<code>is_balanced()</code>関数をこれらの入力でテストしてください。実行前に出力を予測してください：</p>
+<pre style="overflow-x:auto"><code>print(is_balanced(""))         # ?
+print(is_balanced("()"))       # ?
+print(is_balanced("([{}])"))   # ?
+print(is_balanced("(]"))       # ?
+print(is_balanced("((())"))    # ?</code></pre>
+<p><strong>解答：</strong> True、True、True、False、False。空文字列は括弧が対応しています（不一致するものがない）。</p>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう2：デック対リストのパフォーマンス</div>
+<p>この比較の時間を測定して、劇的な違いを観察してください：</p>
+<pre style="overflow-x:auto"><code>import time
+from collections import deque
+
+n = 100000
+
+# List: pop from front
+data = list(range(n))
+start = time.time()
+while data:
+    data.pop(0)
+list_time = time.time() - start
+
+# Deque: pop from front
+data = deque(range(n))
+start = time.time()
+while data:
+    data.popleft()
+deque_time = time.time() - start
+
+print(f"list.pop(0):    {list_time:.4f}s")
+print(f"deque.popleft():{deque_time:.4f}s")
+print(f"Deque is {list_time/deque_time:.0f}x faster")</code></pre>
+</div>
+
+<div class="pq">適切なデータ構造は、O(n&sup2;)の惨事をO(n)の解法に変えることができます。誤った選択はデータが増えたときにだけ表れるパフォーマンスのバグを隠します。</div>
+
+<h3>インタラクティブ演習</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="20" data-ex="undo-stack">
+  <div class="exercise-header">
+    <h4>設計チャレンジ：「TaskForgeアンドゥスタック」</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">操作を記録して逆にする<code>UndoStack</code>クラスを構築してください。各操作は<code>"action"</code>（add/delete）と<code>"task"</code>（タスクの辞書）を持つ辞書です。スタックはタスクリストを管理します。<code>add_task(task)</code>で追加・記録します。<code>undo()</code>で最後の操作を取り消します。<code>get_tasks()</code>で現在のタスクを返します。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+class UndoStack:
+    def __init__(self):
+        self.tasks = []
+        self.history = []  # stack of operations
+
+    def add_task(self, task):
+        """Add a task and record the operation for undo."""
+        # Your code here
+        pass
+
+    def delete_task(self, title):
+        """Delete a task by title and record for undo."""
+        # Your code here
+        pass
+
+    def undo(self):
+        """Reverse the last operation. Return True if undone, False if nothing to undo."""
+        # Your code here
+        pass
+
+    def get_tasks(self):
+        return list(self.tasks)
+
+# Test it
+mgr = UndoStack()
+mgr.add_task({"title": "Buy groceries", "done": False})
+mgr.add_task({"title": "Write tests", "done": False})
+mgr.add_task({"title": "Deploy API", "done": False})
+print("After 3 adds:", [t["title"] for t in mgr.get_tasks()])
+mgr.undo()
+print("After undo:", [t["title"] for t in mgr.get_tasks()])
+</script>
+    <script type="text/plain" class="test-code">
+mgr = UndoStack()
+mgr.add_task({"title": "A", "done": False})
+mgr.add_task({"title": "B", "done": False})
+mgr.add_task({"title": "C", "done": False})
+assert len(mgr.get_tasks()) == 3, "Should have 3 tasks"
+mgr.undo()
+assert len(mgr.get_tasks()) == 2, "After undo, should have 2 tasks"
+titles = [t["title"] for t in mgr.get_tasks()]
+assert "C" not in titles, "Task C should be removed by undo"
+mgr.delete_task("A")
+assert len(mgr.get_tasks()) == 1, "After delete, should have 1 task"
+mgr.undo()
+assert len(mgr.get_tasks()) == 2, "Undo delete should restore task A"
+assert mgr.undo() == True, "Undo should return True when there's history"
+assert mgr.undo() == True, "Should still have history"
+assert mgr.undo() == False, "No more history, should return False"
+print("All tests passed!")
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">確認</button>
+    <button class="ex-hint" data-level="0">ヒント</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint"><code>add_task</code>では、タスクを<code>self.tasks</code>に追加し、<code>{"action": "add", "task": task}</code>を<code>self.history</code>にプッシュします。</p>
+    <p class="hint"><code>undo</code>では、<code>self.history</code>からポップします。アクションが"add"なら、そのタスクを<code>self.tasks</code>から削除します。"delete"なら、再び追加します。</p>
+    <p class="hint"><code>delete_task</code>では、タスクを見つけて削除し、<code>{"action": "delete", "task": removed_task}</code>をhistoryにプッシュします。</p>
+  </div>
+</div>
+
+<div class="quiz" data-ch="20" data-ex="quiz-deque">
+  <h4>理解度チェック</h4>
+  <p>後ろに頻繁に追加し、前から削除するデータ構造が必要です。最良の選択はどれですか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">list</button>
+    <button class="quiz-option" data-correct="false">dict</button>
+    <button class="quiz-option" data-correct="true">collections.deque</button>
+    <button class="quiz-option" data-correct="false">set</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+</section>
+
+<!-- ===== CH 21 ===== -->
+<section id="ch21" data-ch="21">
+<h2><span class="ch-label">第21章</span> ハッシュテーブル（Hash Table）、集合（Set）とマップ（Map）</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念</div>
+<p><code>dict</code>はPythonで最も強力なデータ構造です。内部がどう動くかを理解することで、いつO(1)で、いつ劣化し、なぜある値が辞書キーになれないかを知ることができます。<code>if x in my_dict</code>と書いて即座に結果が返るたびに、ハッシュテーブルが仕事をしています。<code>TypeError: unhashable type: 'list'</code>が出るたびに、それはハッシュテーブルがイミュータブルなキーを必要とするからです。この章でその理由を説明します。</p>
+</div>
+
+<h3>ハッシュの仕組み</h3>
+<p><strong>ハッシュ関数（Hash Function）</strong>はキー（任意のイミュータブルな値）を<strong>ハッシュコード（Hash Code）</strong>と呼ばれる整数に変換します。その整数をテーブルサイズで割った余りが、キーと値のペアが入る<strong>バケット（Bucket）</strong>を決定します。</p>
+
+<pre style="overflow-x:auto"><code># Python's built-in hash function
+print(hash("hello"))     # e.g., 2534023372954268
+print(hash("hello") % 8) # e.g., 4 — bucket 4 in an 8-bucket table
+print(hash(42))          # 42 — integers hash to themselves
+print(hash((1, 2, 3)))   # tuples are hashable because they're immutable</code></pre>
+
+<p><code>my_dict["hello"]</code>を検索するプロセス：</p>
+<ol>
+<li><code>hash("hello")</code>を計算 &rarr; 何らかの大きな整数</li>
+<li><code>hash_code % table_size</code>を計算 &rarr; バケットインデックス（例：4）</li>
+<li>バケット4に直接行き、値を見つける</li>
+</ol>
+<p>スキャンも他のキーとの比較もありません。これが辞書の検索がO(1)である理由です。</p>
+
+<h3>衝突の解決（Collision Resolution）</h3>
+<p>2つの異なるキーが同じバケットにハッシュされることがあります。これを<strong>衝突（Collision）</strong>と呼びます。<code>hash("hello") % 8 == 4</code>かつ<code>hash("world") % 8 == 4</code>なら、両キーがバケット4にマッピングされます。ハッシュテーブルはこれを処理しなければなりません。</p>
+
+<p>主な2つの戦略があります：</p>
+<ul>
+<li><strong>チェイニング（Chaining）：</strong> 各バケットはエントリの連結リスト（または小さな配列）を保持します。衝突が発生すると、新しいエントリがチェーンに追加されます。検索はチェーンをスキャン——O(k)（kはチェーンの長さ）。ハッシュ関数が均等に分散すれば、チェーンは短いまま保たれます。</li>
+<li><strong>オープンアドレス法（Open Addressing）：</strong> 衝突が発生すると、決定論的なシーケンス（線形プロービング、二次プロービング、または二重ハッシュ）を使って次の空きスロットを探します。CPythonは擬似ランダムなプローブシーケンスを使ったオープンアドレス法の変形を使用しています。</li>
+</ul>
+
+<p>両戦略にはトレードオフがあります：チェイニングはノードポインタでメモリを無駄にし、オープンアドレス法は<strong>クラスタリング（Clustering）</strong>（占有スロットが固まり、プローブシーケンスが長くなる）に悩まされます。実際には、テーブルがあまりいっぱいでない限り、どちらもうまく機能します。</p>
+
+<h3>負荷率（Load Factor）と再ハッシュ（Rehashing）</h3>
+<p><strong>負荷率（Load Factor）</strong>はエントリ数とバケット数の比率：<code>n / table_size</code>です。負荷率が上がると衝突が増え、パフォーマンスはO(n)に向かって劣化します。</p>
+
+<p>CPythonは負荷率を約2/3（0.67）以下に保ちます。新しいエントリの挿入がこのしきい値を超えると、テーブルは<strong>再ハッシュ（Rehash）</strong>します：新しい大きなテーブル（通常は2倍のサイズ）を割り当て、既存のすべてのエントリを再挿入します。これはO(n)の操作ですが、稀にしか起きません——挿入ごとの均しコストはO(1)、動的配列のリサイズと同じパターンです。</p>
+
+<pre style="overflow-x:auto"><code># You can observe rehashing indirectly via memory usage
+import sys
+
+d = {}
+prev = sys.getsizeof(d)
+for i in range(100):
+    d[i] = i
+    curr = sys.getsizeof(d)
+    if curr != prev:
+        print(f"At {i} entries: dict size jumped from {prev} to {curr} bytes")
+        prev = curr
+# You'll see jumps at approximately 5, 10, 21, 42, 85 entries</code></pre>
+
+<h3>Python辞書の内部</h3>
+<p>CPython 3.6以降、辞書は2つの別々の配列を持つ<strong>コンパクトレイアウト</strong>を使用します：</p>
+<ul>
+<li>密な配列へのインデックスを格納する<strong>疎なハッシュテーブル</strong>（大部分が空）</li>
+<li>挿入順にキーと値を格納する<strong>密なエントリ配列</strong></li>
+</ul>
+<p>これがPythonの辞書が3.7以降で挿入順を保持する理由です——密な配列が追加された順にエントリを記録します。また、辞書が予想より多くのメモリを使う理由も説明します：疎なハッシュテーブルは負荷率を低く保つために空きスロットを持っています。</p>
+
+<p>Pythonの辞書についての重要な事実：</p>
+<ul>
+<li>平均的な検索、挿入、削除：O(1)</li>
+<li>最悪ケース（すべてのキーが衝突）：O(n)——しかしPythonのハッシュ関数ではこれは事実上起きない</li>
+<li>反復はO(n)で挿入順に従う</li>
+<li>メモリ使用量はエントリごとに約50〜70バイト（リストよりずっと多い）</li>
+</ul>
+
+<h3>集合（Set）</h3>
+<p><strong>集合（Set）</strong>は値なしのハッシュテーブルです——キーのみを格納します。これによりO(1)のメンバーシップテストが可能になります。これがリストよりも集合を使う最もよくある理由です。</p>
+
+<pre style="overflow-x:auto"><code># O(n) — membership test on a list
+def has_overdue_list(task_ids, overdue_ids_list):
+    for tid in task_ids:
+        if tid in overdue_ids_list:  # O(n) each time
+            return True
+    return False
+# Total: O(n * m) where n = task_ids, m = overdue list
+
+# O(n) — membership test on a set
+def has_overdue_set(task_ids, overdue_ids_set):
+    for tid in task_ids:
+        if tid in overdue_ids_set:  # O(1) each time
+            return True
+    return False
+# Total: O(n) where n = task_ids</code></pre>
+
+<p>集合は効率的な数学的操作もサポートします：</p>
+<pre style="overflow-x:auto"><code>team_a = {"Alice", "Bob", "Carol"}
+team_b = {"Bob", "Dave", "Carol"}
+
+print(team_a & team_b)   # Intersection: {"Bob", "Carol"}
+print(team_a | team_b)   # Union: {"Alice", "Bob", "Carol", "Dave"}
+print(team_a - team_b)   # Difference: {"Alice"}
+print(team_a ^ team_b)   # Symmetric diff: {"Alice", "Dave"}</code></pre>
+
+<p><strong>集合対リストの使い分け：</strong> コレクションに「Xが含まれているか？」を頻繁に確認する必要があるなら、集合に変換してください。100要素なら差は無視できます。100万要素なら<code>x in my_list</code>はミリ秒かかりますが、<code>x in my_set</code>はマイクロ秒——1000倍の差です。</p>
+
+<h3>ハッシュが機能しないとき</h3>
+<p>ハッシュテーブルには知っておくべき失敗モードがあります：</p>
+<ul>
+<li><strong>ミュータブルなキーは禁止。</strong> リストを辞書キーとして使った後に変更できると、そのハッシュが変わり辞書が見つけられなくなります。Pythonはこれを防ぎます：<code>TypeError: unhashable type: 'list'</code>。先にタプルに変換してください。</li>
+<li><strong>ハッシュ衝突攻撃（Hash Collision Attack）。</strong> ハッシュ関数を知っている攻撃者は、すべてが同じバケットにマップされる入力を作成でき、O(1)をO(n)に劣化させます。Pythonはハッシュランダム化（プロセスごとに異なるシード）でこれを軽減しています。</li>
+<li><strong>病的な分布。</strong> 良いハッシュ関数があっても多くのキーが同じバケットにハッシュされると、パフォーマンスが劣化します。Pythonのハッシュでは極めて稀ですが、デバッグのために知っておく価値があります。</li>
+</ul>
+
+<pre style="overflow-x:auto"><code># This fails: lists are mutable, so unhashable
+try:
+    d = {[1, 2, 3]: "value"}
+except TypeError as e:
+    print(e)  # unhashable type: 'list'
+
+# This works: tuples are immutable, so hashable
+d = {(1, 2, 3): "value"}
+print(d[(1, 2, 3)])  # "value"</code></pre>
+
+<div class="diagram">
+<svg viewBox="0 0 700 340" xmlns="http://www.w3.org/2000/svg" aria-label="Hash table diagram with 8 buckets showing 5 key-value pairs, with 2 pairs colliding in bucket 3 forming a chain. Labels show the hash function, modulo operation, and chaining.">
+  <!-- Title -->
+  <text class="label-text" x="350" y="20" text-anchor="middle">チェイニングを使ったハッシュテーブル</text>
+
+  <!-- Hash function box -->
+  <rect class="node-accent" x="30" y="40" width="160" height="50" rx="8"/>
+  <text class="label-text" x="110" y="62" text-anchor="middle">hash(key) % 8</text>
+  <text class="sub-text" x="110" y="78" text-anchor="middle">Hash Function</text>
+
+  <!-- Arrow from hash function to buckets -->
+  <line x1="190" y1="65" x2="240" y2="65" class="arrow"/>
+
+  <!-- Buckets (8 slots) -->
+  <rect x="250" y="35" width="60" height="28" rx="4" fill="none" stroke="var(--border-accent)" stroke-width="1"/>
+  <text class="sub-text" x="255" y="53">[0]</text>
+  <text class="sub-text" x="320" y="53" fill="var(--text-muted)">empty</text>
+
+  <rect x="250" y="67" width="60" height="28" rx="4" fill="none" stroke="var(--border-accent)" stroke-width="1"/>
+  <text class="sub-text" x="255" y="85">[1]</text>
+  <!-- Entry in bucket 1 -->
+  <rect class="node-fill" x="320" y="69" width="150" height="24" rx="4"/>
+  <text class="sub-text" x="395" y="85" text-anchor="middle">"age": 30</text>
+
+  <rect x="250" y="99" width="60" height="28" rx="4" fill="none" stroke="var(--border-accent)" stroke-width="1"/>
+  <text class="sub-text" x="255" y="117">[2]</text>
+  <text class="sub-text" x="320" y="117" fill="var(--text-muted)">empty</text>
+
+  <rect x="250" y="131" width="60" height="28" rx="4" fill="var(--accent)" opacity="0.15" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="sub-text" x="255" y="149">[3]</text>
+  <!-- Collision chain in bucket 3 -->
+  <rect class="node-accent" x="320" y="133" width="150" height="24" rx="4"/>
+  <text class="sub-text" x="395" y="149" text-anchor="middle">"name": "Alice"</text>
+  <line x1="470" y1="145" x2="495" y2="145" class="arrow"/>
+  <rect class="node-accent" x="500" y="133" width="160" height="24" rx="4"/>
+  <text class="sub-text" x="580" y="149" text-anchor="middle">"city": "Boston"</text>
+  <!-- Collision label -->
+  <text x="490" y="175" fill="var(--accent)" font-size="11" text-anchor="middle">衝突！バケット3に2つのキー</text>
+
+  <rect x="250" y="195" width="60" height="28" rx="4" fill="none" stroke="var(--border-accent)" stroke-width="1"/>
+  <text class="sub-text" x="255" y="213">[4]</text>
+  <text class="sub-text" x="320" y="213" fill="var(--text-muted)">empty</text>
+
+  <rect x="250" y="227" width="60" height="28" rx="4" fill="none" stroke="var(--border-accent)" stroke-width="1"/>
+  <text class="sub-text" x="255" y="245">[5]</text>
+  <!-- Entry in bucket 5 -->
+  <rect class="node-fill" x="320" y="229" width="150" height="24" rx="4"/>
+  <text class="sub-text" x="395" y="245" text-anchor="middle">"email": "a@b.c"</text>
+
+  <rect x="250" y="259" width="60" height="28" rx="4" fill="none" stroke="var(--border-accent)" stroke-width="1"/>
+  <text class="sub-text" x="255" y="277">[6]</text>
+  <!-- Entry in bucket 6 -->
+  <rect class="node-fill" x="320" y="261" width="150" height="24" rx="4"/>
+  <text class="sub-text" x="395" y="277" text-anchor="middle">"role": "dev"</text>
+
+  <rect x="250" y="291" width="60" height="28" rx="4" fill="none" stroke="var(--border-accent)" stroke-width="1"/>
+  <text class="sub-text" x="255" y="309">[7]</text>
+  <text class="sub-text" x="320" y="309" fill="var(--text-muted)">empty</text>
+
+  <!-- Summary label -->
+  <text class="sub-text" x="350" y="335" text-anchor="middle" fill="var(--text-muted)">8バケットに5エントリ &mdash; 負荷率 = 0.625（しきい値0.67以下）</text>
+</svg>
+<div class="diagram-caption">8バケットに5つのキーと値のペアを保持するハッシュテーブル。バケット3に衝突があります：2つのキーが同じインデックスにハッシュされました。チェイニングがそれらをチェーンで繋ぎます。検索はバケットをチェックし、必要に応じてチェーンを辿ります。低い負荷率では、チェーンは短いまま保たれ、検索はO(1)のままです。</div>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">補足</div>
+<p>検索に<code>dict</code>、<code>set</code>、<code>list</code>のどれを選ぶかは日々のエンジニアリングの判断です。<code>if x in my_list</code>はO(n)です。<code>if x in my_set</code>はO(1)です。100要素では問題になりません。100万要素では1秒と1マイクロ秒の差です。AIが生成したコードがユニークなIDをリストに格納してループ内でメンバーシップをチェックしているのを見たら、集合に置き換えるべきだと分かります。これがスケールする最適化です。</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">ヒント</div>
+<p>タスクにタグベースのインデックスを構築してください。辞書がタグ文字列をタスクIDのリストにマッピングします：<code>{"urgent": [1, 3, 7], "backend": [2, 3]}</code>。"urgent"タグが付いたすべてのタスクが必要なとき、辞書がすべてのタスクをスキャンする代わりにO(1)で答えを返します。これはデータベースがインデックスに使うパターンと同じです——あなたは手動でそれを構築しています。</p>
+</div>
+
+<h3>ミニ演習</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう1：集合対リストのメンバーシップ</div>
+<p>この O(n&sup2;)の関数を集合を使ってO(n)に変換してください：</p>
+<pre style="overflow-x:auto"><code># O(n^2) — checking membership in a list inside a loop
+def find_common(list_a, list_b):
+    common = []
+    for item in list_a:
+        if item in list_b:  # O(n) for each check
+            common.append(item)
+    return common
+
+# Your O(n) version:
+def find_common_fast(list_a, list_b):
+    set_b = set(list_b)       # O(m) one-time conversion
+    common = []
+    for item in list_a:
+        if item in set_b:     # O(1) for each check
+            common.append(item)
+    return common
+    # Total: O(n + m) instead of O(n * m)</code></pre>
+</div>
+
+<div class="pq">辞書はただのデータ構造ではありません——設計パターンです。キーによる高速検索が必要なときは常に、ハッシュテーブルが必要です。このパターンを一度見ると、至る所でそれが見えるようになります。</div>
+
+<h3>インタラクティブ演習</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="21" data-ex="tag-index">
+  <div class="exercise-header">
+    <h4>設計チャレンジ：「TaskForgeタグインデックス」</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">タグをタスクIDの集合にマッピングする辞書を管理する<code>TagIndex</code>クラスを構築してください。<code>add_task(task_id, tags)</code>、<code>remove_task(task_id, tags)</code>、タスクIDの集合を返す<code>search(tag)</code>を実装してください。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+class TagIndex:
+    def __init__(self):
+        self.index = {}  # tag -> set of task_ids
+
+    def add_task(self, task_id, tags):
+        """Add task_id to the index under each tag."""
+        # Your code here
+        pass
+
+    def remove_task(self, task_id, tags):
+        """Remove task_id from the index under each tag."""
+        # Your code here
+        pass
+
+    def search(self, tag):
+        """Return the set of task_ids for a given tag. Empty set if tag not found."""
+        # Your code here
+        pass
+
+# Test it
+idx = TagIndex()
+idx.add_task(1, ["urgent", "backend"])
+idx.add_task(2, ["backend", "bug"])
+idx.add_task(3, ["urgent", "frontend"])
+print("urgent:", idx.search("urgent"))
+print("backend:", idx.search("backend"))
+idx.remove_task(1, ["urgent", "backend"])
+print("urgent after remove:", idx.search("urgent"))
+</script>
+    <script type="text/plain" class="test-code">
+idx = TagIndex()
+idx.add_task(1, ["urgent", "backend"])
+idx.add_task(2, ["backend", "bug"])
+idx.add_task(3, ["urgent", "frontend"])
+assert idx.search("urgent") == {1, 3}, f"urgent should be {{1, 3}}, got {idx.search('urgent')}"
+assert idx.search("backend") == {1, 2}, f"backend should be {{1, 2}}"
+assert idx.search("bug") == {2}, f"bug should be {{2}}"
+assert idx.search("nonexistent") == set(), "Missing tag should return empty set"
+idx.remove_task(1, ["urgent", "backend"])
+assert idx.search("urgent") == {3}, "After removing task 1, urgent should be {3}"
+assert idx.search("backend") == {2}, "After removing task 1, backend should be {2}"
+idx.add_task(4, ["urgent"])
+assert idx.search("urgent") == {3, 4}, "After adding task 4, urgent should be {3, 4}"
+print("All tests passed!")
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">確認</button>
+    <button class="ex-hint" data-level="0">ヒント</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint"><code>add_task</code>では、タグをループします。各タグに対して、<code>self.index</code>にない場合は空の集合を作成します。次にtask_idを集合に追加します。</p>
+    <p class="hint">各タグに対して<code>self.index.setdefault(tag, set()).add(task_id)</code>を使うと簡潔な1行になります。</p>
+    <p class="hint"><code>search</code>では、欠損タグを適切に処理するために<code>self.index.get(tag, set())</code>を返します。</p>
+  </div>
+</div>
+
+<div class="quiz" data-ch="21" data-ex="quiz-hash">
+  <h4>理解度チェック</h4>
+  <p>Pythonでリストを辞書キーとして使えないのはなぜですか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">リストが大きすぎる</button>
+    <button class="quiz-option" data-correct="true">リストはミュータブルなのでハッシュが変わる可能性がある</button>
+    <button class="quiz-option" data-correct="false">Pythonが速度上の理由でサポートしていない</button>
+    <button class="quiz-option" data-correct="false">リストにはデフォルトで__hash__メソッドがない</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+</section>
+
+<!-- ===== CH 22 ===== -->
+<section id="ch22" data-ch="22">
+<h2><span class="ch-label">第22章</span> 木構造（Tree）</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念</div>
+<p>木構造は気づかないところに至る所にあります。あなたのファイルシステムは木です。データベースのインデックスは木です。HTMLのDOMは木です。JSONは木です。<code>os.walk()</code>でディレクトリを走査するとき、あなたは木を走査しています。木を理解することは、これらすべてのシステムがどのようにパフォーマンスを発揮するか、そしてなぜ数百万行のテーブルでもデータベースクエリが速いかを理解することです。</p>
+</div>
+
+<h3>二分木（Binary Tree）の基礎</h3>
+<p><strong>二分木（Binary Tree）</strong>は、各ノードが最大2つの子を持つ階層構造で、慣例的に<strong>左（left）</strong>と<strong>右（right）</strong>と呼ばれます。最上位のノードを<strong>ルート（root）</strong>といいます。子を持たないノードを<strong>リーフ（leaf）</strong>（葉）といいます。ノードの<strong>深さ（depth）</strong>はルートからの距離です。木の<strong>高さ（height）</strong>は最も深いリーフの深さです。</p>
+
+<pre style="overflow-x:auto"><code>class TreeNode:
+    def __init__(self, value, left=None, right=None):
+        self.value = value
+        self.left = left
+        self.right = right
+
+# Build a small tree:
+#        8
+#       / \
+#      3   10
+#     / \    \
+#    1   6    14
+root = TreeNode(8,
+    TreeNode(3, TreeNode(1), TreeNode(6)),
+    TreeNode(10, None, TreeNode(14))
+)</code></pre>
+
+<h4>木の走査（Tree Traversal）</h4>
+<p>木のすべてのノードを訪問する標準的な方法が4つあります。各走査順序は異なる目的に役立ちます：</p>
+
+<pre style="overflow-x:auto"><code>def inorder(node):
+    """Left -> Root -> Right. For BSTs, visits nodes in sorted order."""
+    if node is None:
+        return []
+    return inorder(node.left) + [node.value] + inorder(node.right)
+
+def preorder(node):
+    """Root -> Left -> Right. Copies the tree structure."""
+    if node is None:
+        return []
+    return [node.value] + preorder(node.left) + preorder(node.right)
+
+def postorder(node):
+    """Left -> Right -> Root. Safe for deletion (children before parent)."""
+    if node is None:
+        return []
+    return postorder(node.left) + postorder(node.right) + [node.value]
+
+def levelorder(node):
+    """Layer by layer (BFS). Uses a queue."""
+    from collections import deque
+    if node is None:
+        return []
+    result, queue = [], deque([node])
+    while queue:
+        current = queue.popleft()
+        result.append(current.value)
+        if current.left:
+            queue.append(current.left)
+        if current.right:
+            queue.append(current.right)
+    return result
+
+# Using our tree from above:
+print("Inorder:   ", inorder(root))    # [1, 3, 6, 8, 10, 14] — sorted!
+print("Preorder:  ", preorder(root))   # [8, 3, 1, 6, 10, 14]
+print("Postorder: ", postorder(root))  # [1, 6, 3, 14, 10, 8]
+print("Levelorder:", levelorder(root)) # [8, 3, 10, 1, 6, 14]</code></pre>
+
+<h3>二分探索木（Binary Search Tree：BST）</h3>
+<p><strong>二分探索木（Binary Search Tree：BST）</strong>は順序規則を強制します：すべてのノードについて、左部分木の値はすべて小さく、右部分木の値はすべて大きい。この規則により、検索・挿入・削除はすべてO(h)（hは木の高さ）になります。</p>
+
+<pre style="overflow-x:auto"><code>def bst_search(node, target):
+    """Search a BST — O(h) where h = height."""
+    if node is None:
+        return False
+    if target == node.value:
+        return True
+    elif target < node.value:
+        return bst_search(node.left, target)   # go left
+    else:
+        return bst_search(node.right, target)  # go right
+
+def bst_insert(node, value):
+    """Insert into a BST — O(h)."""
+    if node is None:
+        return TreeNode(value)
+    if value < node.value:
+        node.left = bst_insert(node.left, value)
+    elif value > node.value:
+        node.right = bst_insert(node.right, value)
+    # if value == node.value, duplicate — skip or handle as you wish
+    return node
+
+# Build a BST from scratch
+tree = None
+for val in [8, 3, 10, 1, 6, 14]:
+    tree = bst_insert(tree, val)
+
+print(bst_search(tree, 6))   # True
+print(bst_search(tree, 7))   # False
+print(inorder(tree))          # [1, 3, 6, 8, 10, 14] — always sorted</code></pre>
+
+<h3>バランスが重要な理由</h3>
+<p>BSTのパフォーマンスは完全にその<strong>高さ</strong>に依存します。nノードのバランスの取れたBSTは高さlog nとなり、O(log n)の操作を実現します。しかしBSTにソート済みデータを挿入すると、すべてのノードが右に行き、事実上高さnの連結リストになる退化した木（Degenerate Tree）が作られます。</p>
+
+<pre style="overflow-x:auto"><code># Balanced insertion: [8, 3, 10, 1, 6, 14]
+# Creates a nice tree with height 3:
+#        8
+#       / \
+#      3   10
+#     / \    \
+#    1   6    14
+# Search: O(log n) = O(log 6) ≈ 3 comparisons
+
+# Sorted insertion: [1, 3, 6, 8, 10, 14]
+# Creates a degenerate tree with height 6:
+#    1
+#     \
+#      3
+#       \
+#        6
+#         \
+#          8
+#           \
+#            10
+#              \
+#               14
+# Search: O(n) = 6 comparisons — it's a linked list!</code></pre>
+
+<p><strong>自己平衡木（Self-Balancing Tree）</strong>（AVL木、赤黒木）は挿入・削除後に自動的に構造を変えてO(log n)の高さを保証します。自分で実装することはほぼありません——それらはライブラリとデータベースの内部に存在します。しかし、なぜ存在するかを知る必要があります：O(n)の退化したケースを防ぐためです。Pythonの<code>sorted containers</code>ライブラリとC++の<code>std::map</code>は赤黒木を使っています。データベースのインデックスはB木（後述）を使っています。</p>
+
+<h3>ヒープ（Heap）と優先度付きキュー（Priority Queue）</h3>
+<p><strong>最小ヒープ（Min-Heap）</strong>は、すべての親がその子以下である完全二分木です。最小値は常にルートにあります。ヒープはインデックス演算を使って配列として格納されます：</p>
+<ul>
+<li>ノードiの子：インデックス2i+1と2i+2</li>
+<li>ノードiの親：インデックス(i-1)//2</li>
+</ul>
+
+<p>Pythonの<code>heapq</code>モジュールは通常のリストによって支援される最小ヒープを提供します：</p>
+<pre style="overflow-x:auto"><code>import heapq
+
+# Build a heap from a list
+tasks = [(3, "Low priority task"),
+         (1, "URGENT task"),
+         (2, "Medium task")]
+heapq.heapify(tasks)  # O(n) — rearranges in place
+
+# Pop the smallest (highest priority)
+print(heapq.heappop(tasks))  # (1, "URGENT task")
+print(heapq.heappop(tasks))  # (2, "Medium task")
+print(heapq.heappop(tasks))  # (3, "Low priority task")
+
+# Push a new item
+heapq.heappush(tasks, (0, "Critical fix"))
+
+# Get top-K without sorting the whole list
+data = [42, 17, 93, 5, 68, 31, 84, 2]
+print(heapq.nsmallest(3, data))  # [2, 5, 17] — O(n log k)
+print(heapq.nlargest(3, data))   # [93, 84, 68]</code></pre>
+
+<div style="overflow-x:auto">
+<table>
+<caption>ヒープ操作の時間計算量</caption>
+<tr><th>ヒープ操作</th><th>時間計算量</th></tr>
+<tr><td><code>heapify(list)</code></td><td>O(n)</td></tr>
+<tr><td><code>heappush(heap, item)</code></td><td>O(log n)</td></tr>
+<tr><td><code>heappop(heap)</code></td><td>O(log n)</td></tr>
+<tr><td><code>nsmallest(k, iterable)</code></td><td>O(n log k)</td></tr>
+<tr><td>最小値へのアクセス</td><td>O(1) &mdash; <code>heap[0]</code>です</td></tr>
+</table>
+</div>
+
+<p>重要な洞察：最小値（または最大値）だけを繰り返し必要とする場合、ヒープはソートより優れています。ソートはすべての要素を順に与えます（O(n log n)）。ヒープはO(1)で最小値だけを与え、O(log n)でそれを削除できます。「10,000件のタスクの中で最も重要な上位10件を取得する」には、ヒープが適切なツールです。</p>
+
+<h3>トライ木（Trie）</h3>
+<p><strong>トライ木（Trie）</strong>（「トライ」と発音）は各ノードが文字を表す木です。ルートからノードへのパスがプレフィックスを綴ります。トライ木はオートコンプリート機能を支えます：「pro」で始まるすべての単語を見つけるには、p-r-oのパスを辿ってその下のすべてを返します。</p>
+
+<p>重要な特性：検索時間はO(m)（mはキーの長さ）で、格納されているキーの数に関係ありません。100万単語のトライ木は「programming」をちょうど11ステップで見つけます。</p>
+
+<pre style="overflow-x:auto"><code>class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.is_end = False
+
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+
+    def insert(self, word):
+        node = self.root
+        for char in word:
+            if char not in node.children:
+                node.children[char] = TrieNode()
+            node = node.children[char]
+        node.is_end = True
+
+    def search(self, word):
+        node = self.root
+        for char in word:
+            if char not in node.children:
+                return False
+            node = node.children[char]
+        return node.is_end
+
+    def starts_with(self, prefix):
+        node = self.root
+        for char in prefix:
+            if char not in node.children:
+                return False
+            node = node.children[char]
+        return True
+
+t = Trie()
+for word in ["task", "tag", "test", "team"]:
+    t.insert(word)
+print(t.search("task"))       # True
+print(t.search("tas"))        # False (prefix, not complete word)
+print(t.starts_with("ta"))    # True
+print(t.starts_with("te"))    # True
+print(t.starts_with("tx"))    # False</code></pre>
+
+<h3>B木（B-Tree）：概念的理解</h3>
+<p>データベースはBSTを使いません。<strong>B木（B-Tree）</strong>——ディスクベースのストレージ向けに設計された、幅広く浅い木——を使います。</p>
+
+<p>ディスク上のBSTの問題：各ノードは1回の比較で、ノードをディスクから読み取るのに約10ミリ秒（機械式ディスク）または約0.1ms（SSD）かかります。100万ノードのバランスBSTは高さ20で、20回のディスク読み取りが必要です。1回0.1msで、1クエリあたり2ms——許容範囲ですが理想的ではありません。</p>
+
+<p>B木はノードを<strong>幅広く</strong>することでこれを解決します：各ノードは数百のキーを保持し、数百の子を持ちます。分岐係数100で3レベルのB木は100&sup3; = 100万キーを検索あたり<strong>3回のディスク読み取り</strong>のみで保持できます。これが<code>SELECT * FROM tasks WHERE id = 42</code>が数百万行のテーブルでも即座に返る理由です。</p>
+
+<p>B木を実装することはありません。データベース（SQLite、PostgreSQL）を通じて使います。しかし存在を知ることで、データベースインデックスが速い理由と、<code>CREATE INDEX</code>がクエリを高速化する理由が分かります——インデックスを付ける列にB木を構築するからです。</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg" aria-label="Comparison of balanced BST with height 3 versus degenerate BST with height 7, built from the same 7 numbers inserted in different orders. Labels show O(log n) versus O(n) search time.">
+  <!-- Title -->
+  <text class="label-text" x="350" y="20" text-anchor="middle">BSTの形状は挿入順に依存する</text>
+
+  <!-- LEFT SIDE: Balanced -->
+  <text class="label-text" x="175" y="48" text-anchor="middle" fill="var(--accent)">ランダム順：[4,2,6,1,3,5,7]</text>
+  <text class="sub-text" x="175" y="65" text-anchor="middle">高さ = 3 &mdash; 検索：O(log n)</text>
+
+  <!--        4       -->
+  <circle cx="175" cy="95" r="16" fill="var(--accent)" opacity="0.2" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="label-text" x="175" y="100" text-anchor="middle">4</text>
+  <!--       / \      -->
+  <line x1="162" y1="108" x2="115" y2="138" stroke="var(--accent)" stroke-width="1.5"/>
+  <line x1="188" y1="108" x2="235" y2="138" stroke="var(--accent)" stroke-width="1.5"/>
+  <!--      2   6     -->
+  <circle cx="110" cy="150" r="16" fill="var(--accent)" opacity="0.2" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="label-text" x="110" y="155" text-anchor="middle">2</text>
+  <circle cx="240" cy="150" r="16" fill="var(--accent)" opacity="0.2" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="label-text" x="240" y="155" text-anchor="middle">6</text>
+  <!--     / \ / \    -->
+  <line x1="98" y1="163" x2="72" y2="188" stroke="var(--accent)" stroke-width="1.5"/>
+  <line x1="122" y1="163" x2="148" y2="188" stroke="var(--accent)" stroke-width="1.5"/>
+  <line x1="228" y1="163" x2="202" y2="188" stroke="var(--accent)" stroke-width="1.5"/>
+  <line x1="252" y1="163" x2="278" y2="188" stroke="var(--accent)" stroke-width="1.5"/>
+  <!--    1  3  5  7  -->
+  <circle cx="68" cy="200" r="16" fill="var(--accent)" opacity="0.2" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="label-text" x="68" y="205" text-anchor="middle">1</text>
+  <circle cx="152" cy="200" r="16" fill="var(--accent)" opacity="0.2" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="label-text" x="152" y="205" text-anchor="middle">3</text>
+  <circle cx="198" cy="200" r="16" fill="var(--accent)" opacity="0.2" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="label-text" x="198" y="205" text-anchor="middle">5</text>
+  <circle cx="282" cy="200" r="16" fill="var(--accent)" opacity="0.2" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="label-text" x="282" y="205" text-anchor="middle">7</text>
+
+  <!-- RIGHT SIDE: Degenerate -->
+  <text class="label-text" x="525" y="48" text-anchor="middle" fill="#e53e3e">ソート済み順：[1,2,3,4,5,6,7]</text>
+  <text class="sub-text" x="525" y="65" text-anchor="middle">高さ = 7 &mdash; 検索：O(n)</text>
+
+  <!-- Degenerate chain: each node links only to the right -->
+  <circle cx="430" cy="90" r="14" fill="#e53e3e" opacity="0.15" stroke="#e53e3e" stroke-width="1.5"/>
+  <text class="label-text" x="430" y="95" text-anchor="middle">1</text>
+  <line x1="442" y1="100" x2="458" y2="118" stroke="#e53e3e" stroke-width="1.5"/>
+
+  <circle cx="462" cy="128" r="14" fill="#e53e3e" opacity="0.15" stroke="#e53e3e" stroke-width="1.5"/>
+  <text class="label-text" x="462" y="133" text-anchor="middle">2</text>
+  <line x1="474" y1="138" x2="490" y2="156" stroke="#e53e3e" stroke-width="1.5"/>
+
+  <circle cx="494" cy="166" r="14" fill="#e53e3e" opacity="0.15" stroke="#e53e3e" stroke-width="1.5"/>
+  <text class="label-text" x="494" y="171" text-anchor="middle">3</text>
+  <line x1="506" y1="176" x2="522" y2="194" stroke="#e53e3e" stroke-width="1.5"/>
+
+  <circle cx="526" cy="204" r="14" fill="#e53e3e" opacity="0.15" stroke="#e53e3e" stroke-width="1.5"/>
+  <text class="label-text" x="526" y="209" text-anchor="middle">4</text>
+  <line x1="538" y1="214" x2="554" y2="232" stroke="#e53e3e" stroke-width="1.5"/>
+
+  <circle cx="558" cy="242" r="14" fill="#e53e3e" opacity="0.15" stroke="#e53e3e" stroke-width="1.5"/>
+  <text class="label-text" x="558" y="247" text-anchor="middle">5</text>
+  <line x1="570" y1="252" x2="586" y2="268" stroke="#e53e3e" stroke-width="1.5"/>
+
+  <circle cx="590" cy="278" r="14" fill="#e53e3e" opacity="0.15" stroke="#e53e3e" stroke-width="1.5"/>
+  <text class="label-text" x="590" y="283" text-anchor="middle">6</text>
+  <line x1="600" y1="290" x2="610" y2="300" stroke="#e53e3e" stroke-width="1.5"/>
+
+  <circle cx="616" cy="310" r="14" fill="#e53e3e" opacity="0.15" stroke="#e53e3e" stroke-width="1.5"/>
+  <text class="label-text" x="616" y="315" text-anchor="middle">7</text>
+</svg>
+<div class="diagram-caption">同じ7つの数値が挿入順によって非常に異なる木を生み出します。ランダム順はO(log n)の検索を持つバランスの取れた木を生みます。ソート済み順は事実上の連結リストとなる退化した木を生み、O(n)の検索になります。自己平衡木は退化したケースを防ぎます。</div>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">補足</div>
+<p>木を自分で実装することはほぼありません。しかし理解は不可欠です：データベースインデックスはB木で、ファイルシステムは木構造で、<code>heapq</code>は「最も重要なタスクトップ10を取得する」の適切なツールです。AIが最大値を見つけるためだけにリストをソートするコードを生成したとき、単一の<code>max()</code>呼び出しがO(n)であることを知っており、さらに言えば、アイテムが変化するにつれて繰り返し最大値が必要なら、ヒープは更新ごとにO(log n)で、O(n log n)での再ソートより優れています。構造を知ることは適切なツールを知ることです。</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">ヒント</div>
+<p><code>heapq</code>を使って優先度ベースのタスクスケジューリングを実装してください。優先度番号が低いタスクが最初に処理されます（優先度1 = 最緊急）。<code>add_task(priority, name)</code>と最高優先度のタスクを返す<code>next_task()</code>をサポートしてください。これは次のタスクが欲しいたびにタスクリスト全体をソートするという素朴なアプローチを置き換えます。</p>
+</div>
+
+<h3>ミニ演習</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう1：走査の練習</div>
+<p>この木を与えて、コードを実行する前に各走査の出力を予測してください：</p>
+<pre style="overflow-x:auto"><code>#       10
+#      /  \
+#     5    15
+#    / \     \
+#   2   7    20
+
+root = TreeNode(10,
+    TreeNode(5, TreeNode(2), TreeNode(7)),
+    TreeNode(15, None, TreeNode(20))
+)
+
+print("Inorder:   ", inorder(root))    # ?
+print("Preorder:  ", preorder(root))   # ?
+print("Postorder: ", postorder(root))  # ?</code></pre>
+<p><strong>解答：</strong> 中順：[2, 5, 7, 10, 15, 20]。前順：[10, 5, 2, 7, 15, 20]。後順：[2, 7, 5, 20, 15, 10]。</p>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう2：上位K件にヒープを使う</div>
+<p><code>heapq.nlargest</code>を使って最も優先度が高い（数値が大きい）3つのタスクを見つけてください：</p>
+<pre style="overflow-x:auto"><code>import heapq
+tasks = [(3, "Low"), (10, "Critical"), (1, "Trivial"),
+         (7, "High"), (5, "Medium"), (9, "Urgent")]
+top_3 = heapq.nlargest(3, tasks)
+print(top_3)  # [(10, 'Critical'), (9, 'Urgent'), (7, 'High')]</code></pre>
+</div>
+
+<div class="pq">木はデータを階層的に整理し効率的に検索することを可能にします。バランスの取れた木と退化した木の差は、O(log n)とO(n)の差——データベースインデックスを速くするものと同じ差です。</div>
+
+<h3>インタラクティブ演習</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="22" data-ex="priority-queue">
+  <div class="exercise-header">
+    <h4>設計チャレンジ：「TaskForge優先スケジューラ」</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt"><code>heapq</code>を使った<code>TaskScheduler</code>クラスを構築してください。<code>add_task(priority, name)</code>でタスクを追加します。<code>next_task()</code>は最高優先度（最小番号）のタスクを<code>(priority, name)</code>タプルとして返して削除するか、空なら<code>None</code>を返します。<code>peek()</code>は削除せずに次のタスクを返します。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+import heapq
+
+class TaskScheduler:
+    def __init__(self):
+        self.heap = []
+        self.counter = 0  # tiebreaker for equal priorities
+
+    def add_task(self, priority, name):
+        """Add a task with given priority (lower = more urgent)."""
+        # Your code here
+        pass
+
+    def next_task(self):
+        """Remove and return (priority, name) of most urgent task, or None."""
+        # Your code here
+        pass
+
+    def peek(self):
+        """Return (priority, name) of most urgent task without removing, or None."""
+        # Your code here
+        pass
+
+    def __len__(self):
+        return len(self.heap)
+
+# Test it
+sched = TaskScheduler()
+sched.add_task(3, "Low priority bug")
+sched.add_task(1, "Server is down!")
+sched.add_task(2, "Feature request")
+print(f"Next: {sched.next_task()}")  # Should be (1, "Server is down!")
+print(f"Next: {sched.next_task()}")  # Should be (2, "Feature request")
+print(f"Next: {sched.next_task()}")  # Should be (3, "Low priority bug")
+</script>
+    <script type="text/plain" class="test-code">
+sched = TaskScheduler()
+sched.add_task(3, "Low")
+sched.add_task(1, "Critical")
+sched.add_task(2, "Medium")
+assert len(sched) == 3, "Should have 3 tasks"
+p = sched.peek()
+assert p[0] == 1, f"Peek should return priority 1, got {p[0]}"
+assert len(sched) == 3, "Peek should not remove"
+t = sched.next_task()
+assert t[0] == 1, f"First should be priority 1, got {t[0]}"
+assert t[1] == "Critical", f"Should be 'Critical', got {t[1]}"
+t = sched.next_task()
+assert t[0] == 2, f"Second should be priority 2, got {t[0]}"
+t = sched.next_task()
+assert t[0] == 3, f"Third should be priority 3, got {t[0]}"
+assert sched.next_task() is None, "Empty scheduler should return None"
+assert sched.peek() is None, "Empty peek should return None"
+# Test equal priorities (FIFO tiebreaker)
+sched.add_task(1, "First added")
+sched.add_task(1, "Second added")
+t1 = sched.next_task()
+t2 = sched.next_task()
+assert t1[1] == "First added", "Equal priorities should use FIFO order"
+print("All tests passed!")
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">確認</button>
+    <button class="ex-hint" data-level="0">ヒント</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint"><code>heapq.heappush(self.heap, (priority, self.counter, name))</code>を使います。カウンタは同優先度のタイブレーカーとして機能します（FIFO順）。</p>
+    <p class="hint"><code>next_task</code>では、<code>heapq.heappop(self.heap)</code>を使います（<code>(priority, counter, name)</code>を返す）。呼び出し元には<code>(priority, name)</code>を返します。</p>
+    <p class="hint"><code>peek</code>では、ポップせずに<code>self.heap[0]</code>にアクセスします。<code>(self.heap[0][0], self.heap[0][2])</code>を返します。</p>
+  </div>
+</div>
+
+<div class="quiz" data-ch="22" data-ex="quiz-tree">
+  <h4>理解度チェック</h4>
+  <p>BSTに100万ノードあり、完全にバランスが取れています。検索は最大何回の比較が必要ですか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">1,000,000</button>
+    <button class="quiz-option" data-correct="false">1,000</button>
+    <button class="quiz-option" data-correct="true">約20回（100万の2を底とする対数）</button>
+    <button class="quiz-option" data-correct="false">100</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+</section>
+
+<!-- ===== CH 23 ===== -->
+<section id="ch23" data-ch="23">
+<h2><span class="ch-label">第23章</span> グラフ（Graph）</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念</div>
+<p>すべての関係が階層的なわけではありません。ソーシャルネットワーク、フライトルート、タスクの依存関係、Webページのリンク——これらはすべて<strong>グラフ（Graph）</strong>です。「AはBに依存する」「アリスはボブを知っている」「XからYへの道路がある」をモデル化する必要があるとき、木ではうまくいきません。木はサイクル、複数のパス、またはピアツーピアの関係を表現できないからです。グラフは接続をモデル化するための最も汎用的なデータ構造です。</p>
+</div>
+
+<h3>グラフの用語</h3>
+<p><strong>グラフ（Graph）</strong>は<strong>エッジ（Edge）</strong>（辺）で接続された<strong>ノード（Node）</strong>（頂点：Vertex）の集合です。これが定義のすべてです。それ以外はすべて特殊化です：</p>
+
+<ul>
+<li><strong>有向対無向（Directed vs Undirected）：</strong> 有向グラフでは、エッジA&rarr;Bは一方向（AはBに依存するが、BはAに依存しない）。無向グラフでは、エッジは双方向（アリスがボブを知ることは、ボブがアリスを知ることを意味する）。</li>
+<li><strong>重み付き対重みなし（Weighted vs Unweighted）：</strong> 重み付きエッジは値（距離、コスト、時間）を持ちます。重みなしエッジは接続のみを表します。</li>
+<li><strong>パス（Path）：</strong> 2つのノードを接続するエッジのシーケンス。「AからDに行けるか？」はパスが存在するかどうかの問いです。</li>
+<li><strong>サイクル（Cycle）：</strong> 同じノードで始まり終わるパス。サイクルのないグラフは<strong>非巡回（Acyclic）</strong>です。</li>
+<li><strong>連結成分（Connected Component）：</strong> すべてのノードが他のすべてのノードに到達できるノードのグループ。グラフは複数の非連結成分を持つことがあります。</li>
+<li><strong>次数（Degree）：</strong> ノードに接続されているエッジの数。有向グラフでは、<strong>入次数（In-Degree）</strong>は入ってくるエッジを、<strong>出次数（Out-Degree）</strong>は出ていくエッジを数えます。</li>
+</ul>
+
+<h3>グラフの表現方法</h3>
+<p>コードでグラフを格納する標準的な方法が2つあります。どちらも同じ情報を表しますが、パフォーマンス特性が異なります。</p>
+
+<h4>隣接リスト（Adjacency List）</h4>
+<p>各ノードをその隣接ノードのリスト（または集合）にマッピングする辞書です。これが最も一般的な表現方法で、デフォルトとすべきものです。</p>
+<pre style="overflow-x:auto"><code># Directed graph: A->B, A->C, B->C, C->D
+adj_list = {
+    "A": ["B", "C"],
+    "B": ["C"],
+    "C": ["D"],
+    "D": []
+}
+
+# Checking neighbors of A: O(1) dict lookup
+print(adj_list["A"])  # ["B", "C"]
+
+# Checking if edge A->B exists: O(degree of A)
+print("B" in adj_list["A"])  # True</code></pre>
+
+<h4>隣接行列（Adjacency Matrix）</h4>
+<p>ノードiからノードjへのエッジがある場合に<code>matrix[i][j] = 1</code>（または重み）、そうでない場合は0の2Dグリッドです。</p>
+<pre style="overflow-x:auto"><code># Same graph: A=0, B=1, C=2, D=3
+#       A  B  C  D
+adj_matrix = [
+    [0, 1, 1, 0],  # A -> B, A -> C
+    [0, 0, 1, 0],  # B -> C
+    [0, 0, 0, 1],  # C -> D
+    [0, 0, 0, 0],  # D -> (none)
+]
+
+# Checking if edge A->B exists: O(1)
+print(adj_matrix[0][1])  # 1 — edge exists</code></pre>
+
+<div style="overflow-x:auto">
+<table>
+<caption>隣接リスト対隣接行列の操作コスト</caption>
+<tr><th>操作</th><th>隣接リスト</th><th>隣接行列</th></tr>
+<tr><td>空間</td><td>O(V + E)</td><td>O(V&sup2;)</td></tr>
+<tr><td>エッジの存在確認</td><td>O(次数)</td><td>O(1)</td></tr>
+<tr><td>すべての隣接ノードを見つける</td><td>O(次数)</td><td>O(V)</td></tr>
+<tr><td>エッジを追加</td><td>O(1)</td><td>O(1)</td></tr>
+<tr><td>最適な用途</td><td>疎なグラフ（少ないエッジ）</td><td>密なグラフ（多いエッジ）</td></tr>
+</table>
+</div>
+
+<p>ほとんどの現実のグラフは<strong>疎（Sparse）</strong>です：10億ユーザーのソーシャルネットワークは1人あたり10億人の友達を持ちません。隣接リストがデフォルトです。O(1)のエッジ検索が必要でグラフが密な場合のみ行列を使いましょう。</p>
+
+<h3>グラフクラスの構築</h3>
+<pre style="overflow-x:auto"><code>class Graph:
+    def __init__(self, directed=False):
+        self.adj = {}
+        self.directed = directed
+
+    def add_node(self, node):
+        if node not in self.adj:
+            self.adj[node] = set()
+
+    def add_edge(self, u, v):
+        self.add_node(u)
+        self.add_node(v)
+        self.adj[u].add(v)
+        if not self.directed:
+            self.adj[v].add(u)
+
+    def neighbors(self, node):
+        return self.adj.get(node, set())
+
+    def has_edge(self, u, v):
+        return v in self.adj.get(u, set())
+
+    def nodes(self):
+        return list(self.adj.keys())
+
+    def __repr__(self):
+        lines = []
+        for node, neighbors in self.adj.items():
+            for n in neighbors:
+                lines.append(f"  {node} -> {n}")
+        return "Graph:\n" + "\n".join(lines)
+
+# Example: social network (undirected)
+social = Graph(directed=False)
+social.add_edge("Alice", "Bob")
+social.add_edge("Bob", "Carol")
+social.add_edge("Alice", "Carol")
+print(social.neighbors("Alice"))  # {"Bob", "Carol"}
+print(social.has_edge("Bob", "Alice"))  # True (undirected)
+
+# Example: task dependencies (directed)
+deps = Graph(directed=True)
+deps.add_edge("Write code", "Run tests")
+deps.add_edge("Run tests", "Deploy")
+deps.add_edge("Write code", "Code review")
+print(deps.neighbors("Write code"))  # {"Run tests", "Code review"}
+print(deps.has_edge("Deploy", "Write code"))  # False (directed)</code></pre>
+
+<h3>現実の問題をグラフとしてモデル化する</h3>
+<p>グラフの力は、同じコードで現実の非常に様々な問題をモデル化できることです：</p>
+
+<div style="overflow-x:auto">
+<table>
+<caption>グラフとしてモデル化された現実の問題</caption>
+<tr><th>問題</th><th>ノード</th><th>エッジ</th><th>種類</th></tr>
+<tr><td>タスクの依存関係</td><td>タスク</td><td>AはBの前に終わる必要がある</td><td>有向、重みなし</td></tr>
+<tr><td>ソーシャルネットワーク</td><td>人</td><td>友好関係</td><td>無向、重みなし</td></tr>
+<tr><td>フライトルート</td><td>都市</td><td>距離・コストのある便</td><td>有向または無向、重み付き</td></tr>
+<tr><td>Webリンク</td><td>ページ</td><td>ハイパーリンク</td><td>有向、重みなし</td></tr>
+<tr><td>パッケージ依存関係</td><td>パッケージ</td><td>AはBを必要とする</td><td>有向、重みなし（DAG）</td></tr>
+</table>
+</div>
+
+<h3>有向非巡回グラフ（Directed Acyclic Graph：DAG）</h3>
+<p><strong>DAG</strong>はサイクルのない有向グラフです。DAGは依存関係のモデリングに不可欠です：タスクAがBに依存し、BがCに依存するのは問題ありません。しかしCもAに依存する場合、サイクルがあり——有効な実行順序が存在しません。</p>
+
+<pre style="overflow-x:auto"><code># Valid DAG (no cycles):
+#   Write code -> Run tests -> Deploy
+#   Write code -> Code review -> Deploy
+
+# Invalid (cycle):
+#   A -> B -> C -> A
+# No task can go first because each depends on another</code></pre>
+
+<p>サイクルの検出は重要なバリデーションステップです：依存関係に基づいてタスクをスケジューリングする前に、依存グラフがDAGであることを確認してください。サイクルが含まれていれば、ユーザーは不可能な要件セットを持っています。</p>
+
+<h3>深さ優先探索（DFS）によるサイクル検出</h3>
+<p><strong>再帰スタック（Recursion Stack）</strong>を使った深さ優先探索（Depth-First Search：DFS）で有向グラフのサイクルを検出できます。アイデア：DFSでより深く探索するとき、現在の探索パスにあるすべてのノードを追跡します。すでに現在のパスにあるノードに到達したら、サイクルを見つけたことになります。</p>
+
+<pre style="overflow-x:auto"><code>def has_cycle(graph):
+    """Detect cycles in a directed graph using DFS.
+
+    Uses three states per node:
+    - unvisited: not yet explored
+    - in_stack: currently on the DFS path (ancestors of current node)
+    - done: fully explored, no cycles through this node
+    """
+    visited = set()
+    in_stack = set()
+
+    def dfs(node):
+        visited.add(node)
+        in_stack.add(node)
+
+        for neighbor in graph.neighbors(node):
+            if neighbor not in visited:
+                if dfs(neighbor):
+                    return True
+            elif neighbor in in_stack:
+                return True  # found a cycle!
+
+        in_stack.remove(node)
+        return False
+
+    for node in graph.nodes():
+        if node not in visited:
+            if dfs(node):
+                return True
+    return False
+
+# Test: valid DAG
+dag = Graph(directed=True)
+dag.add_edge("A", "B")
+dag.add_edge("B", "C")
+dag.add_edge("A", "C")
+print(has_cycle(dag))  # False
+
+# Test: graph with cycle
+cyclic = Graph(directed=True)
+cyclic.add_edge("A", "B")
+cyclic.add_edge("B", "C")
+cyclic.add_edge("C", "A")  # creates cycle
+print(has_cycle(cyclic))  # True</code></pre>
+
+<div class="diagram">
+<svg viewBox="0 0 700 330" xmlns="http://www.w3.org/2000/svg" aria-label="Same 5-node graph shown as adjacency list representation on the left and adjacency matrix representation on the right, with directed and undirected edges.">
+  <!-- Title -->
+  <text class="label-text" x="350" y="20" text-anchor="middle">同じグラフの2つの表現方法</text>
+
+  <!-- THE GRAPH (center-top) -->
+  <text class="sub-text" x="350" y="42" text-anchor="middle" fill="var(--text-muted)">5ノードと6エッジを持つ有向グラフ</text>
+
+  <!-- Nodes arranged in a pentagon -->
+  <!-- A (top) -->
+  <circle cx="350" cy="75" r="18" fill="var(--accent)" opacity="0.2" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="label-text" x="350" y="80" text-anchor="middle">A</text>
+  <!-- B (top-right) -->
+  <circle cx="440" cy="115" r="18" fill="var(--accent)" opacity="0.2" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="label-text" x="440" y="120" text-anchor="middle">B</text>
+  <!-- C (bottom-right) -->
+  <circle cx="410" cy="180" r="18" fill="var(--accent)" opacity="0.2" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="label-text" x="410" y="185" text-anchor="middle">C</text>
+  <!-- D (bottom-left) -->
+  <circle cx="290" cy="180" r="18" fill="var(--accent)" opacity="0.2" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="label-text" x="290" y="185" text-anchor="middle">D</text>
+  <!-- E (top-left) -->
+  <circle cx="260" cy="115" r="18" fill="var(--accent)" opacity="0.2" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="label-text" x="260" y="120" text-anchor="middle">E</text>
+
+  <!-- Directed edges: A->B, A->E, B->C, C->D, D->E, A->C -->
+  <line x1="365" y1="83" x2="424" y2="105" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="335" y1="83" x2="276" y2="105" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="432" y1="132" x2="418" y2="163" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="392" y1="183" x2="308" y2="183" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="280" y1="166" x2="268" y2="132" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="358" y1="91" x2="402" y2="165" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- ADJACENCY LIST (left) -->
+  <text class="label-text" x="110" y="220" text-anchor="middle" fill="var(--accent)">隣接リスト（辞書）</text>
+  <rect class="node-fill" x="20" y="230" width="180" height="90" rx="6"/>
+  <text class="sub-text" x="30" y="248" font-family="JetBrains Mono, monospace">A: [B, E, C]</text>
+  <text class="sub-text" x="30" y="265" font-family="JetBrains Mono, monospace">B: [C]</text>
+  <text class="sub-text" x="30" y="282" font-family="JetBrains Mono, monospace">C: [D]</text>
+  <text class="sub-text" x="30" y="299" font-family="JetBrains Mono, monospace">D: [E]</text>
+  <text class="sub-text" x="30" y="316" font-family="JetBrains Mono, monospace">E: []</text>
+
+  <!-- ADJACENCY MATRIX (right) -->
+  <text class="label-text" x="560" y="220" text-anchor="middle" fill="var(--accent)">隣接行列</text>
+  <!-- Header row -->
+  <text class="sub-text" x="490" y="242" font-family="JetBrains Mono, monospace">A B C D E</text>
+  <!-- Matrix rows -->
+  <text class="sub-text" x="470" y="258" font-family="JetBrains Mono, monospace">A [0 1 1 0 1]</text>
+  <text class="sub-text" x="470" y="274" font-family="JetBrains Mono, monospace">B [0 0 1 0 0]</text>
+  <text class="sub-text" x="470" y="290" font-family="JetBrains Mono, monospace">C [0 0 0 1 0]</text>
+  <text class="sub-text" x="470" y="306" font-family="JetBrains Mono, monospace">D [0 0 0 0 1]</text>
+  <text class="sub-text" x="470" y="322" font-family="JetBrains Mono, monospace">E [0 0 0 0 0]</text>
+</svg>
+<div class="diagram-caption">同じ有向グラフを隣接リスト（左）と隣接行列（右）で示しています。隣接リストはエッジ数に比例したスペースを使います。行列はエッジが何本あっても関係なくV&sup2;のスペースを使います。この疎なグラフ（6エッジ、25の行列セル）では、リストの方が空間効率が良いです。</div>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">補足</div>
+<p>グラフはプロフェッショナルなエンジニアリングの至る所に現れます。<code>pip</code>はDAGとトポロジカルソートを使ってパッケージ依存関係を解決します。Google Mapsは重み付きグラフと最短経路アルゴリズム（ダイクストラ法）を使ってルートを見つけます。LinkedInの「知り合いかも」はソーシャルグラフのBFSを使います。DockerのレイヤーシステムはダウンDAGを形成します。GitのコミットヒストリーもDAGで、各コミットはその親を指しています。これらのアルゴリズムのいくつかはフェーズ6で実装します。</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">ヒント</div>
+<p>タスクの依存関係をDAGとしてモデル化してください。タスクBがタスクAに依存する場合、有向エッジA &rarr; Bを追加します（AはBの前に完了する必要がある）。スケジューリング前に<code>has_cycle()</code>でDAGを検証してください——サイクルは依存関係が不可能であることを意味します。フェーズ6では、すべてのタスクの有効な実行順序を見つけるトポロジカルソートを学びます。</p>
+</div>
+
+<h3>ミニ演習</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう1：グラフを構築する</div>
+<p>このシナリオをグラフとしてモデル化し、質問に答えてください：</p>
+<p>「タスクAは何にも依存しない。タスクBはAに依存する。タスクCはAに依存する。タスクDはBとCの両方に依存する。」</p>
+<pre style="overflow-x:auto"><code>g = Graph(directed=True)
+g.add_edge("A", "B")   # A must finish before B
+g.add_edge("A", "C")   # A must finish before C
+g.add_edge("B", "D")   # B must finish before D
+g.add_edge("C", "D")   # C must finish before D
+print(has_cycle(g))     # False — valid DAG
+print(g.neighbors("A")) # {"B", "C"}
+# Valid execution orders: A, B, C, D  or  A, C, B, D</code></pre>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう2：無効な依存関係を検出する</div>
+<p>DからAに戻るエッジを追加するとどうなりますか？</p>
+<pre style="overflow-x:auto"><code>g.add_edge("D", "A")    # D depends on A, but A depends on B/C which depend on D!
+print(has_cycle(g))      # True — impossible dependency cycle</code></pre>
+</div>
+
+<div class="pq">グラフは学ぶ最も柔軟なデータ構造です。関係、接続、依存関係を含むどんな問題もグラフとしてモデル化し、グラフアルゴリズムで解くことができます。</div>
+
+<h3>インタラクティブ演習</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="23" data-ex="task-dag">
+  <div class="exercise-header">
+    <h4>設計チャレンジ：「TaskForge依存関係グラフ」</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">タスクをノード、依存関係を有向エッジとして管理する<code>TaskGraph</code>クラスを構築してください。<code>add_task(name)</code>、<code>add_dependency(task, depends_on)</code>、依存グラフにサイクルがある場合にTrueを返す<code>has_cycle()</code>を実装してください。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+class TaskGraph:
+    def __init__(self):
+        self.adj = {}  # task -> set of tasks it depends on
+
+    def add_task(self, name):
+        """Add a task node."""
+        # Your code here
+        pass
+
+    def add_dependency(self, task, depends_on):
+        """task depends on depends_on (depends_on must finish first).
+        Edge direction: depends_on -> task"""
+        # Your code here
+        pass
+
+    def get_dependencies(self, task):
+        """Return set of tasks that 'task' depends on."""
+        # Your code here
+        pass
+
+    def has_cycle(self):
+        """Return True if the graph has a cycle."""
+        # Your code here — use DFS with a recursion stack
+        pass
+
+# Test it
+tg = TaskGraph()
+tg.add_task("Design")
+tg.add_task("Code")
+tg.add_task("Test")
+tg.add_task("Deploy")
+tg.add_dependency("Code", "Design")
+tg.add_dependency("Test", "Code")
+tg.add_dependency("Deploy", "Test")
+print("Has cycle:", tg.has_cycle())  # False
+
+# Add a circular dependency
+tg.add_dependency("Design", "Deploy")
+print("Has cycle:", tg.has_cycle())  # True
+</script>
+    <script type="text/plain" class="test-code">
+# Test 1: Valid DAG
+tg = TaskGraph()
+tg.add_task("A")
+tg.add_task("B")
+tg.add_task("C")
+tg.add_dependency("B", "A")
+tg.add_dependency("C", "B")
+assert tg.has_cycle() == False, "Linear chain should have no cycle"
+
+# Test 2: Cycle
+tg.add_dependency("A", "C")
+assert tg.has_cycle() == True, "A->B->C->A should be a cycle"
+
+# Test 3: Fresh graph with diamond (no cycle)
+tg2 = TaskGraph()
+tg2.add_task("A")
+tg2.add_task("B")
+tg2.add_task("C")
+tg2.add_task("D")
+tg2.add_dependency("B", "A")
+tg2.add_dependency("C", "A")
+tg2.add_dependency("D", "B")
+tg2.add_dependency("D", "C")
+assert tg2.has_cycle() == False, "Diamond DAG should have no cycle"
+
+# Test 4: Self-loop
+tg3 = TaskGraph()
+tg3.add_task("X")
+tg3.add_dependency("X", "X")
+assert tg3.has_cycle() == True, "Self-loop is a cycle"
+
+print("All tests passed!")
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">確認</button>
+    <button class="ex-hint" data-level="0">ヒント</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">グラフを<code>self.adj[node] = set()</code>として格納します。集合にはそのノードがエッジを持つノードが含まれます。<code>add_dependency("B", "A")</code>では、エッジA -> Bを追加します（AはBの前に終わる必要がある）。</p>
+    <p class="hint">サイクル検出では、2つの集合でDFSを実装します：<code>visited</code>（見たすべてのノード）と<code>in_stack</code>（現在のDFSパスにあるノード）。<code>in_stack</code>にあるノードに到達したら、サイクルを見つけたことになります。</p>
+    <p class="hint">外側のループで、1つの開始ノードだけでなく、すべてのノードを反復することを忘れないでください。グラフには非連結成分が含まれる場合があります。</p>
+  </div>
+</div>
+
+<div class="quiz" data-ch="23" data-ex="quiz-graph">
+  <h4>理解度チェック</h4>
+  <p>都市間のフライトルートを距離とともにモデル化しています。最も適切なグラフの表現はどれですか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">無向・重みなし</button>
+    <button class="quiz-option" data-correct="false">有向・重みなし</button>
+    <button class="quiz-option" data-correct="false">有向・重み付き</button>
+    <button class="quiz-option" data-correct="true">ルートが一方通行かどうかによって、無向・重み付きまたは有向・重み付き</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+</section>
+
+<!-- ===== PHASE 5 GATE ===== -->
+<section id="gate5">
+<h2><span class="ch-label">フェーズ5ゲート</span> チェックポイント &amp; TaskForgeデータ構造</h2>
+<div class="card">
+<h4>最低限の能力</h4>
+<p>任意のPython関数の時間計算量と空間計算量を分析する。特定の問題に適切なデータ構造を選ぶ。配列、連結リスト、ハッシュテーブル、木、グラフが内部でどう動くかを理解する。アンドゥシステム、タグインデックス、優先度付きキュー、依存グラフを実装する。</p>
+</div>
+<div class="card">
+<h4>あなたの成果物</h4>
+<p>TaskForgeを依存関係システムで拡張してください：タスクをDAGとしてモデル化し（第23章）、ヒープで優先度によるスケジューリングを行い（第22章）、すべての操作でアンドゥをサポートします（第20章）。システムは循環依存関係を検出し、依存関係の制約内で優先度順にタスクを処理し、ユーザーが最後の10操作をアンドゥできるようにする必要があります。</p>
+</div>
+<div class="card">
+<h4>検証</h4>
+<p>循環依存関係を追加するとエラーが発生するか警告が返る。<code>next_task()</code>はすべての依存関係が完了している最高優先度のタスクを返す。<code>undo()</code>は最後の操作を取り消して以前の状態を復元する。タグインデックス（第21章）はすべてのタスクをスキャンする代わりにO(1)で一致するタスクを返す。</p>
+</div>
+<div role="note" class="callout critical">
+<div class="callout-title">注意</div>
+<p><code>list.pop(0)</code>がO(n)で<code>deque.popleft()</code>がO(1)である理由、または<code>x in my_list</code>がO(n)で<code>x in my_set</code>がO(1)である理由を説明できない場合は、第19〜21章に戻ってください。これらのパフォーマンスの区別は、フェーズ6のすべてのアルゴリズム議論の基礎です。</p>
+</div>
+
+<h3>今できるようになったこと</h3>
+<div class="card">
+<ul>
+<li>Big-O記法を使って時間計算量と空間計算量を分析する</li>
+<li>配列、連結リスト、スタック、キュー、デックの中から選択する</li>
+<li>O(1)の検索に辞書と集合を使い、カスタムインデックスを構築する</li>
+<li>優先度ベースのスケジューリングにヒープを使う</li>
+<li>関係と依存関係をグラフとしてモデル化する</li>
+<li>有向グラフのサイクルを検出して依存関係を検証する</li>
+</ul>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">補足</div>
+<p>これで構造を知りました。フェーズ6ではそれらを操作するアルゴリズムを学びます——探索、ソート、動的計画法、グラフ走査です。これらはデータ構造をストレージコンテナから問題解決マシンに変えるツールです。ソート済み配列の二分探索、グラフのBFSとDFS、シーケンスの動的計画法を実装します。フェーズ6のすべてのアルゴリズムは、ここで学んだデータ構造の上に直接構築されます。</p>
+</div>
+
+</section>
+
+<nav class="phase-nav">
+  <a href="phase-4.html" class="phase-nav-link prev"><span class="phase-nav-label">前のフェーズ</span>&larr; フェーズ4：構築とデプロイ</a>
+  <a href="phase-6.html" class="phase-nav-link next"><span class="phase-nav-label">次のフェーズ</span>フェーズ6：アルゴリズム &rarr;</a>
+</nav>
+
+</div>
+</div>
+
+<footer>
+<p>ゼロからヒーロー：プログラミングからマルチエージェントClaude Codeへ &middot; 2026年3月</p>
+</footer>
+
+<script src="../js/progress.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ace-builds@1.36.5/src-min-noconflict/ace.js"></script>
+<script src="../js/theme.js"></script>
+<script src="../js/sidebar.js"></script>
+<script src="../js/shared.js"></script>
+<script src="../js/ace-init.js"></script>
+<script src="../js/pyodide-runner.js"></script>
+<script src="../js/quiz.js"></script>
+<script src="../js/exercise-runner.js"></script>
+</body>
+</html>

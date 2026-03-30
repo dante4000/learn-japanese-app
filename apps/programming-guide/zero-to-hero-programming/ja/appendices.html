@@ -1,0 +1,1505 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="付録 — プログラミングとAI用語集、Claude Code用プロンプトライブラリ、自己評価クイズ、トラブルシューティングガイド、厳選リソース集。">
+<title>付録 — ゼロからヒーロー</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/design-system.css">
+<script>try{if(localStorage.getItem('zth-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+<script>try{var z=localStorage.getItem('zth-zoom');if(z&&+z>=50&&+z<=200)document.documentElement.style.zoom=+z/100}catch(e){}</script>
+</head>
+<body>
+
+<!-- SVG Arrow Defs -->
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+<marker id="arrowhead-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--a5)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<!-- SIDEBAR — identical across all files -->
+<aside class="sidebar" id="sidebar">
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo"><span>ゼロからヒーロー</span>プログラミング &rarr; マルチエージェントAI</a>
+  <div class="toc-group">
+    <div class="toc-group-title">基礎</div>
+    <a href="phase-1.html#ch01" class="toc-link"><span class="toc-num">01</span>プログラミングとは何か</a>
+    <a href="phase-1.html#ch02" class="toc-link"><span class="toc-num">02</span>コンピュータがコードを実行する仕組み</a>
+    <a href="phase-1.html#ch03" class="toc-link"><span class="toc-num">03</span>環境のセットアップ</a>
+    <a href="phase-1.html#ch04" class="toc-link"><span class="toc-num">04</span>書く前にコードを読む</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Python</div>
+    <a href="phase-2.html#ch05" class="toc-link"><span class="toc-num">05</span>関数、ロジック、制御フロー</a>
+    <a href="phase-2.html#ch06" class="toc-link"><span class="toc-num">06</span>データ構造</a>
+    <a href="phase-2.html#ch07" class="toc-link"><span class="toc-num">07</span>クラスとオブジェクト指向プログラミング</a>
+    <a href="phase-2.html#ch08" class="toc-link"><span class="toc-num">08</span>ファイル、モジュール、標準ライブラリ</a>
+    <a href="phase-2.html#ch09" class="toc-link"><span class="toc-num">09</span>エラー処理、デバッグ、テスト</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">開発ツール</div>
+    <a href="phase-3.html#ch10" class="toc-link"><span class="toc-num">10</span>ターミナルとシェル</a>
+    <a href="phase-3.html#ch11" class="toc-link"><span class="toc-num">11</span>Gitの基礎</a>
+    <a href="phase-3.html#ch12" class="toc-link"><span class="toc-num">12</span>GitリモートとGitHub</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">構築とデプロイ</div>
+    <a href="phase-4.html#ch13" class="toc-link"><span class="toc-num">13</span>APIとHTTP</a>
+    <a href="phase-4.html#ch14" class="toc-link"><span class="toc-num">14</span>FlaskでAPIを構築する</a>
+    <a href="phase-4.html#ch15" class="toc-link"><span class="toc-num">15</span>データベースの基礎</a>
+    <a href="phase-4.html#ch16" class="toc-link"><span class="toc-num">16</span>Dockerとコンテナ</a>
+    <a href="phase-4.html#ch17" class="toc-link"><span class="toc-num">17</span>CI/CDとGitHub Actions</a>
+    <a href="phase-4.html#ch18" class="toc-link"><span class="toc-num">18</span>プロジェクトアーキテクチャ</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">データ構造</div>
+    <a href="phase-5.html#ch19" class="toc-link"><span class="toc-num">19</span>計算量分析</a>
+    <a href="phase-5.html#ch20" class="toc-link"><span class="toc-num">20</span>線形構造</a>
+    <a href="phase-5.html#ch21" class="toc-link"><span class="toc-num">21</span>ハッシュテーブルとマップ</a>
+    <a href="phase-5.html#ch22" class="toc-link"><span class="toc-num">22</span>木構造</a>
+    <a href="phase-5.html#ch23" class="toc-link"><span class="toc-num">23</span>グラフ</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">アルゴリズム</div>
+    <a href="phase-6.html#ch24" class="toc-link"><span class="toc-num">24</span>探索とソート</a>
+    <a href="phase-6.html#ch25" class="toc-link"><span class="toc-num">25</span>再帰と動的計画法</a>
+    <a href="phase-6.html#ch26" class="toc-link"><span class="toc-num">26</span>アルゴリズムパターン</a>
+    <a href="phase-6.html#ch27" class="toc-link"><span class="toc-num">27</span>グラフアルゴリズム</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">エンジニアリングの技術</div>
+    <a href="phase-7.html#ch28" class="toc-link"><span class="toc-num">28</span>デザインパターンとSOLID</a>
+    <a href="phase-7.html#ch29" class="toc-link"><span class="toc-num">29</span>SQLとクエリマスタリー</a>
+    <a href="phase-7.html#ch30" class="toc-link"><span class="toc-num">30</span>トランザクションとNoSQL</a>
+    <a href="phase-7.html#ch31" class="toc-link"><span class="toc-num">31</span>ネットワークとインターネット</a>
+    <a href="phase-7.html#ch32" class="toc-link"><span class="toc-num">32</span>並行性と並列処理</a>
+    <a href="phase-7.html#ch33" class="toc-link"><span class="toc-num">33</span>セキュリティエンジニアリング</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">システムとスケール</div>
+    <a href="phase-8.html#ch34" class="toc-link"><span class="toc-num">34</span>システム設計</a>
+    <a href="phase-8.html#ch35" class="toc-link"><span class="toc-num">35</span>分散システム</a>
+    <a href="phase-8.html#ch36" class="toc-link"><span class="toc-num">36</span>パフォーマンスと可観測性</a>
+    <a href="phase-8.html#ch37" class="toc-link"><span class="toc-num">37</span>大規模コードベースのナビゲーション</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AIレベル1〜5</div>
+    <a href="phase-9.html#ch38" class="toc-link"><span class="toc-num">38</span>AIコードの評価と指示</a>
+    <a href="phase-9.html#ch39" class="toc-link"><span class="toc-num">39</span>レベル1&amp;2 — タブ補完とエージェントIDE</a>
+    <a href="phase-9.html#ch40" class="toc-link"><span class="toc-num">40</span>レベル3 — コンテキストエンジニアリング</a>
+    <a href="phase-9.html#ch41" class="toc-link"><span class="toc-num">41</span>レベル4 — 複合エンジニアリング</a>
+    <a href="phase-9.html#ch42" class="toc-link"><span class="toc-num">42</span>レベル5 — MCP、スキル、機能</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AIレベル6〜8</div>
+    <a href="phase-10.html#ch43" class="toc-link"><span class="toc-num">43</span>レベル6 — ハーネスエンジニアリング</a>
+    <a href="phase-10.html#ch44" class="toc-link"><span class="toc-num">44</span>レベル7 — バックグラウンドエージェント</a>
+    <a href="phase-10.html#ch45" class="toc-link"><span class="toc-num">45</span>DockerでのClaude Code</a>
+    <a href="phase-10.html#ch46" class="toc-link"><span class="toc-num">46</span>レベル8 — 自律エージェントチーム</a>
+    <a href="phase-10.html#ch47" class="toc-link"><span class="toc-num">47</span>マルチプレイヤー効果</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">リファレンス</div>
+    <a href="appendices.html#glossary" class="toc-link"><span class="toc-num">&oplus;</span>用語集</a>
+    <a href="appendices.html#prompt-library" class="toc-link"><span class="toc-num">&oplus;</span>プロンプトライブラリ</a>
+    <a href="appendices.html#self-assessment" class="toc-link"><span class="toc-num">&oplus;</span>自己評価</a>
+    <a href="appendices.html#common-mistakes" class="toc-link"><span class="toc-num">&oplus;</span>よくある間違い</a>
+    <a href="appendices.html#appendix-d" class="toc-link"><span class="toc-num">&oplus;</span>トラブルシューティング</a>
+    <a href="appendices.html#appendix-e" class="toc-link"><span class="toc-num">&oplus;</span>リソース</a>
+  </div>
+</aside>
+</aside>
+
+<div class="main">
+<section class="hero hero-sm">
+  <div class="hero-badge">リファレンス</div>
+  <h1><em>付録</em></h1>
+  <p class="hero-sub">用語集、プロンプトライブラリ、自己評価クイズ、トラブルシューティングガイド、リソース集。すべてを一か所にまとめました。</p>
+</section>
+
+<div class="content-wrap">
+<div class="appendix-tabs-wrap">
+
+<div class="app-tabs">
+  <button class="app-tab active" data-tab="glossary">用語集</button>
+  <button class="app-tab" data-tab="prompt-library">プロンプトライブラリ</button>
+  <button class="app-tab" data-tab="self-assessment">自己評価</button>
+  <button class="app-tab" data-tab="common-mistakes">よくある間違い</button>
+  <button class="app-tab" data-tab="appendix-d">トラブルシューティング</button>
+  <button class="app-tab" data-tab="appendix-e">リソース</button>
+</div>
+
+<div class="app-tab-panel active" id="glossary">
+<h2><span class="ch-label">付録 A</span> 用語集</h2>
+<p>このドキュメントで使用するすべての技術用語を収録しています。文字ボタンをクリックしてジャンプするか、検索してフィルタリングしてください。</p>
+
+<div id="glossary-content">
+<input type="text" class="glossary-search" placeholder="用語を検索..." aria-label="用語集のフィルタリング">
+
+<div class="letter-bar" role="navigation" aria-label="文字へジャンプ">
+  <button class="letter-btn" data-letter="A">A</button>
+  <button class="letter-btn" data-letter="B">B</button>
+  <button class="letter-btn" data-letter="C">C</button>
+  <button class="letter-btn" data-letter="D">D</button>
+  <button class="letter-btn" data-letter="E">E</button>
+  <button class="letter-btn" data-letter="F">F</button>
+  <button class="letter-btn" data-letter="G">G</button>
+  <button class="letter-btn" data-letter="H">H</button>
+  <button class="letter-btn" data-letter="I">I</button>
+  <button class="letter-btn" data-letter="J">J</button>
+  <button class="letter-btn" data-letter="K">K</button>
+  <button class="letter-btn" data-letter="L">L</button>
+  <button class="letter-btn" data-letter="M">M</button>
+  <button class="letter-btn" data-letter="N">N</button>
+  <button class="letter-btn" data-letter="O">O</button>
+  <button class="letter-btn" data-letter="P">P</button>
+  <button class="letter-btn" data-letter="Q">Q</button>
+  <button class="letter-btn" data-letter="R">R</button>
+  <button class="letter-btn" data-letter="S">S</button>
+  <button class="letter-btn" data-letter="T">T</button>
+  <button class="letter-btn" data-letter="U">U</button>
+  <button class="letter-btn" data-letter="V">V</button>
+  <button class="letter-btn" data-letter="W">W</button>
+  <button class="letter-btn" data-letter="X">X</button>
+  <button class="letter-btn" data-letter="Y">Y</button>
+  <button class="letter-btn" data-letter="Z">Z</button>
+</div>
+
+<table class="glossary-table">
+<caption>プログラミング用語集：定義と初出章</caption>
+<thead><tr><th>用語</th><th>定義</th><th>初出</th></tr></thead>
+
+<tbody class="letter-group" id="letter-A">
+<tr><td colspan="3" class="letter-group-heading">A</td></tr>
+<tr class="glossary-term visible"><td><strong>抽象化（Abstraction）</strong></td><td>複雑さをシンプルなインターフェースの背後に隠す仕組みです。プログラミングの各レイヤーは、その下のレイヤーを隠蔽します。</td><td>Ch 01</td></tr>
+<tr class="glossary-term visible"><td><strong>隣接リスト（Adjacency list）</strong></td><td>隣接ノードのリストを辞書で管理するグラフの表現方法です。</td><td>Phase 5</td></tr>
+<tr class="glossary-term visible"><td><strong>エージェントIDE（Agent IDE / L2）</strong></td><td>コードベースに接続されたチャットインターフェースです。自然言語から複数ファイルの編集を生成します。</td><td>Ch 39</td></tr>
+<tr class="glossary-term visible"><td><strong>エージェントチーム（Agent Teams / L8）</strong></td><td>実験的機能：共有メールボックスを介したピアツーピア連携を持つエージェント群です。</td><td>Ch 46</td></tr>
+<tr class="glossary-term visible"><td><strong>API</strong></td><td>Application Programming Interface（アプリケーションプログラミングインターフェース）。ソフトウェアコンポーネント間の通信方法を定義する契約です。</td><td>Ch 13</td></tr>
+<tr class="glossary-term visible"><td><strong>アサーション（Assertion）</strong></td><td>条件が真であることを検証する文です。テストで使用します：<code>assert result == expected</code></td><td>Ch 08</td></tr>
+</tbody>
+
+<tbody class="letter-group" id="letter-B">
+<tr><td colspan="3" class="letter-group-heading">B</td></tr>
+<tr class="glossary-term visible"><td><strong>バックエンド（Backend）</strong></td><td>Webアプリケーションのサーバーサイド部分です。リクエストを処理し、ビジネスロジックを適用し、データベースと通信します。</td><td>Ch 01</td></tr>
+<tr class="glossary-term visible"><td><strong>バックプレッシャー（Backpressure / L6）</strong></td><td>エージェントが人間のレビューなしに自己修正できるようにする自動フィードバック（リンター、テスト、フックなど）です。</td><td>Ch 43</td></tr>
+<tr class="glossary-term visible"><td><strong>BeautifulSoup</strong></td><td>HTMLを解析してWebページからデータを抽出するPythonライブラリです。</td><td>Ch 13</td></tr>
+<tr class="glossary-term visible"><td><strong>BFS（幅優先探索）</strong></td><td>Breadth-First Search。深く進む前にすべての隣接ノードを訪問するグラフ探索手法です。</td><td>Phase 5</td></tr>
+<tr class="glossary-term visible"><td><strong>二分探索木（Binary search tree）</strong></td><td>左の子 &lt; 親 &lt; 右の子 という順序が保たれた木構造で、O(log n) の検索を可能にします。</td><td>Phase 5</td></tr>
+<tr class="glossary-term visible"><td><strong>ブランチ（Branch）</strong></td><td>並行した開発ラインです。<code>main</code> がデフォルトです。フィーチャーブランチは作業を分離します。</td><td>Ch 11</td></tr>
+</tbody>
+
+<tbody class="letter-group" id="letter-C">
+<tr><td colspan="3" class="letter-group-heading">C</td></tr>
+<tr class="glossary-term visible"><td><strong>CI/CD</strong></td><td>継続的インテグレーション / 継続的デプロイメント。自動化されたビルド・テスト・デプロイのパイプラインです。</td><td>Ch 17</td></tr>
+<tr class="glossary-term visible"><td><strong>クラス（Class）</strong></td><td>オブジェクトを作成するための設計図で、データ（属性）と振る舞い（メソッド）をひとまとめにします。</td><td>Ch 07</td></tr>
+<tr class="glossary-term visible"><td><strong>CLAUDE.md</strong></td><td>Claude Codeがセッション開始時に読み込む永続的な指示ファイルです。プロジェクト固有のルールやコンテキストを記述します。</td><td>Ch 40</td></tr>
+<tr class="glossary-term visible"><td><strong>クローン（Clone）</strong></td><td>リモートリポジトリの完全な履歴を含めたローカルコピーを作成することです。</td><td>Ch 12</td></tr>
+<tr class="glossary-term visible"><td><strong>クロージャ（Closure）</strong></td><td>囲んでいるスコープが終了した後でも、そのスコープの変数を記憶し続ける関数です。</td><td>Ch 05</td></tr>
+<tr class="glossary-term visible"><td><strong>コード化（Codify）</strong></td><td>学んだ教訓を永続的なルール（CLAUDE.md、ルールファイル、スキル、ドキュメントなど）に変換することです。</td><td>Ch 41</td></tr>
+<tr class="glossary-term visible"><td><strong>衝突（Collision）</strong></td><td>ハッシュテーブルで異なる2つのキーが同じインデックスにハッシュされるときに発生する現象です。</td><td>Phase 5</td></tr>
+<tr class="glossary-term visible"><td><strong>コミット（Commit）</strong></td><td>特定の時点でのプロジェクトのスナップショットです。何が変更されたかを説明するメッセージを持ちます。</td><td>Ch 11</td></tr>
+<tr class="glossary-term visible"><td><strong>コンパイラ（Compiler）</strong></td><td>実行前にソースコード全体を機械語に変換するプログラムです（例：Rust、C）。</td><td>Ch 01</td></tr>
+<tr class="glossary-term visible"><td><strong>複利エンジニアリング（Compounding engineering / L4）</strong></td><td>学んだ教訓をコード化することで、セッションを重ねるごとに生産性が向上する実践手法です。</td><td>Ch 41</td></tr>
+<tr class="glossary-term visible"><td><strong>制約ベースのプロンプティング（Constraint-based prompting）</strong></td><td>ステップバイステップの指示の代わりに、成功の条件（制約）をモデルに伝えるアプローチです。</td><td>Ch 43</td></tr>
+<tr class="glossary-term visible"><td><strong>コンストラクタ（Constructor / __init__）</strong></td><td>クラスの新しいインスタンスが作成されたときに自動的に呼び出される特別なメソッドです。</td><td>Ch 07</td></tr>
+<tr class="glossary-term visible"><td><strong>コンテナ（Container）</strong></td><td>Dockerイメージの実行インスタンスです。独自のファイルシステム、ネットワーク、依存関係を持つ分離されたプロセスです。</td><td>Ch 16</td></tr>
+<tr class="glossary-term visible"><td><strong>コンテキストエンジニアリング（Context engineering / L3）</strong></td><td>すべてのトークンが有用な作業をするよう、モデルが見るものを制御することです。</td><td>Ch 40</td></tr>
+<tr class="glossary-term visible"><td><strong>コンテキストウィンドウ（Context window）</strong></td><td>モデルが一度に処理できるテキスト（トークン）の総量です。固定の上限があります。</td><td>Ch 40</td></tr>
+<tr class="glossary-term visible"><td><strong>制御フロー（Control flow）</strong></td><td>文が実行される順序です。逐次実行、条件分岐（if/else）、ループ（for/while）があります。</td><td>Ch 05</td></tr>
+<tr class="glossary-term visible"><td><strong>CSS</strong></td><td>Cascading Style Sheets（カスケーディングスタイルシート）。HTMLドキュメントの視覚的な表示を記述するための言語です。</td><td>Ch 14</td></tr>
+</tbody>
+
+<tbody class="letter-group" id="letter-D">
+<tr><td colspan="3" class="letter-group-heading">D</td></tr>
+<tr class="glossary-term visible"><td><strong>データ構造（Data structure）</strong></td><td>データを整理する方法です。リスト（順序あり）、辞書（キーと値）、セット（重複なし）、タプル（変更不可）などがあります。</td><td>Ch 06</td></tr>
+<tr class="glossary-term visible"><td><strong>データ型（Data type）</strong></td><td>データの分類（整数、文字列、真偽値など）で、有効な操作を決定します。</td><td>Ch 02</td></tr>
+<tr class="glossary-term visible"><td><strong>データベース（Database）</strong></td><td>永続的なデータストレージです。SQLデータベース（PostgreSQL、SQLite）はスキーマを持つテーブルを使用し、NoSQL（MongoDB）は柔軟なドキュメント形式を使用します。</td><td>Ch 15</td></tr>
+<tr class="glossary-term visible"><td><strong>デコレータ（Decorator）</strong></td><td>別の関数をラップして動作を変更する関数で、<code>@</code> 構文で適用します。</td><td>Ch 07</td></tr>
+<tr class="glossary-term visible"><td><strong>DFS（深さ優先探索）</strong></td><td>Depth-First Search。バックトラックの前に各ブランチをできる限り深く探索するグラフ探索手法です。</td><td>Phase 5</td></tr>
+<tr class="glossary-term visible"><td><strong>差分（Diff）</strong></td><td>2つのバージョン間の変更を行単位で比較したものです。<code>+</code> = 追加、<code>-</code> = 削除。</td><td>Ch 38</td></tr>
+<tr class="glossary-term visible"><td><strong>ディスパッチ（Dispatch / L7）</strong></td><td>バックグラウンドエージェントにタスクを送るツールです。ワーカーは新鮮なコンテキストで実行されます。</td><td>Ch 44</td></tr>
+<tr class="glossary-term visible"><td><strong>Docker</strong></td><td>アプリケーションをコンテナにパッケージ化するプラットフォームです。軽量でポータブルなユニットがどこでも同じように動作します。</td><td>Ch 16</td></tr>
+<tr class="glossary-term visible"><td><strong>docker-compose</strong></td><td>YAMLの設定ファイルを使って複数コンテナのDockerアプリケーションを定義・実行するツールです。</td><td>Ch 16</td></tr>
+<tr class="glossary-term visible"><td><strong>Dockerfile</strong></td><td>Dockerイメージをレイヤー単位で構築するための手順を記述したテキストファイルです。</td><td>Ch 16</td></tr>
+</tbody>
+
+<tbody class="letter-group" id="letter-E">
+<tr><td colspan="3" class="letter-group-heading">E</td></tr>
+<tr class="glossary-term visible"><td><strong>エンドポイント（Endpoint）</strong></td><td>APIが応答する特定のURL（例：<code>/api/tasks</code>）です。</td><td>Ch 13</td></tr>
+<tr class="glossary-term visible"><td><strong>環境変数（Environment variable）</strong></td><td>すべてのプロセスから利用可能な名前付きの値です。設定やシークレットの管理に使用します。</td><td>Ch 10</td></tr>
+<tr class="glossary-term visible"><td><strong>例外（Exception）</strong></td><td>通常の実行を中断するエラーです。try/exceptで捕捉します。</td><td>Ch 08</td></tr>
+</tbody>
+
+<tbody class="letter-group" id="letter-F">
+<tr><td colspan="3" class="letter-group-heading">F</td></tr>
+<tr class="glossary-term visible"><td><strong>f文字列（f-string）</strong></td><td><code>f</code> を先頭に付けたフォーマット済み文字列リテラルで、波括弧内に式を埋め込めます：<code>f"Hello {name}"</code></td><td>Ch 05</td></tr>
+<tr class="glossary-term visible"><td><strong>FIFO（先入れ先出し）</strong></td><td>First In, First Out。キューが使用する原則です。</td><td>Phase 5</td></tr>
+<tr class="glossary-term visible"><td><strong>第一級の値（First-class value）</strong></td><td>変数に代入でき、引数として渡せ、関数から返すことができるオブジェクトです。</td><td>Ch 05</td></tr>
+<tr class="glossary-term visible"><td><strong>Flask</strong></td><td>APIやWebアプリを構築するための軽量なPython Webフレームワークです。</td><td>Ch 14</td></tr>
+<tr class="glossary-term visible"><td><strong>フォーク（Fork）</strong></td><td>GitHub上で他者のリポジトリを自分のアカウントにコピーすることです。オープンソースへの貢献に使用します。</td><td>Ch 12</td></tr>
+<tr class="glossary-term visible"><td><strong>フロントエンド（Frontend）</strong></td><td>Webアプリケーションのユーザー向け部分です。ブラウザ上で動作するHTML、CSS、JavaScriptで構成されます。</td><td>Ch 01</td></tr>
+<tr class="glossary-term visible"><td><strong>関数（Function）</strong></td><td>入力（パラメータ）を受け取り、処理を行い、出力を返す再利用可能なコードブロックです。</td><td>Ch 05</td></tr>
+</tbody>
+
+<tbody class="letter-group" id="letter-G">
+<tr><td colspan="3" class="letter-group-heading">G</td></tr>
+<tr class="glossary-term visible"><td><strong>.gitignore</strong></td><td>gitが追跡しないファイルやディレクトリのパターンを列挙したファイルです（例：<code>__pycache__/</code>、<code>.env</code>）。</td><td>Ch 12</td></tr>
+<tr class="glossary-term visible"><td><strong>グラフ（Graph）</strong></td><td>ノード（頂点）とエッジ（辺）でそれら間の関係を表すデータ構造です。</td><td>Phase 5</td></tr>
+</tbody>
+
+<tbody class="letter-group" id="letter-H">
+<tr><td colspan="3" class="letter-group-heading">H</td></tr>
+<tr class="glossary-term visible"><td><strong>ハーネス（Harness）</strong></td><td>エージェントを取り囲む自動チェックの集合体です。型チェッカー、リンター、テスト、CIなどが含まれます。</td><td>Ch 43</td></tr>
+<tr class="glossary-term visible"><td><strong>ハッシュ関数（Hash function）</strong></td><td>キーを配列のインデックスに変換する関数で、O(1) のストレージと取得を実現します。</td><td>Phase 5</td></tr>
+<tr class="glossary-term visible"><td><strong>ハッシュテーブル（Hash table）</strong></td><td>ハッシュ関数を使ってキーを値にマッピングするデータ構造で、平均O(1) の検索を実現します。</td><td>Phase 5</td></tr>
+<tr class="glossary-term visible"><td><strong>高階関数（Higher-order function）</strong></td><td>他の関数を引数に取るか、関数を返す関数です。</td><td>Ch 05</td></tr>
+<tr class="glossary-term visible"><td><strong>フック（Hook）</strong></td><td>ライフサイクルのポイント（コミット前、保存後など）で自動的に実行されるスクリプトです。</td><td>Ch 42</td></tr>
+<tr class="glossary-term visible"><td><strong>HTML</strong></td><td>HyperText Markup Language（ハイパーテキストマークアップ言語）。Webページを作成するための標準マークアップ言語です。</td><td>Ch 14</td></tr>
+<tr class="glossary-term visible"><td><strong>HTTP</strong></td><td>Hypertext Transfer Protocol（ハイパーテキスト転送プロトコル）。Webのリクエスト/レスポンスプロトコルです。</td><td>Ch 13</td></tr>
+<tr class="glossary-term visible"><td><strong>ハブアンドスポーク（Hub-and-spoke）</strong></td><td>すべてのワーカーが単一のオーケストレーターに報告する連携パターンです（Dispatchパターン）。</td><td>Ch 46</td></tr>
+</tbody>
+
+<tbody class="letter-group" id="letter-I">
+<tr><td colspan="3" class="letter-group-heading">I</td></tr>
+<tr class="glossary-term visible"><td><strong>IDE</strong></td><td>統合開発環境（Integrated Development Environment）。組み込みツールを持つコードエディターです（VS Code、Cursorなど）。</td><td>Ch 03</td></tr>
+<tr class="glossary-term visible"><td><strong>イメージ（Image）</strong></td><td>コンテナを作成するために使用する、アプリケーションコード・ランタイム・依存関係を含んだ読み取り専用のテンプレートです。</td><td>Ch 16</td></tr>
+<tr class="glossary-term visible"><td><strong>継承（Inheritance）</strong></td><td>新しいクラスが既存の親クラスから属性とメソッドを引き継ぐ仕組みです。</td><td>Ch 07</td></tr>
+<tr class="glossary-term visible"><td><strong>挿入ソート（Insertion sort）</strong></td><td>各要素を正しい位置に挿入しながらソート済みリストを一つずつ構築するソートアルゴリズムです。最良O(n)、最悪O(n²)。</td><td>Phase 6</td></tr>
+<tr class="glossary-term visible"><td><strong>インスタンス（Instance）</strong></td><td>クラスの具体的な実体です。Pythonでは「オブジェクト」と「インスタンス」は同義です。</td><td>Ch 07</td></tr>
+<tr class="glossary-term visible"><td><strong>命令スキャフォールド（Instruction scaffold）</strong></td><td>非決定論的なモデルがほぼ毎回同じ正しい出力を生成できるほど精密なドキュメントです。</td><td>Ch 40, Ch 43</td></tr>
+<tr class="glossary-term visible"><td><strong>インタープリタ（Interpreter）</strong></td><td>ソースコードを行単位で読み取り実行するプログラムです（例：Python）。コンパイラと対比されます。</td><td>Ch 01</td></tr>
+<tr class="glossary-term visible"><td><strong>iTerm2</strong></td><td>分割ペイン、検索、プロファイルなどの高度な機能を持つmacOSのターミナルエミュレーターです。</td><td>Ch 03</td></tr>
+</tbody>
+
+<tbody class="letter-group" id="letter-J">
+<tr><td colspan="3" class="letter-group-heading">J</td></tr>
+<tr class="glossary-term visible"><td><strong>JSON</strong></td><td>JavaScript Object Notation。構造化データのテキスト形式です：<code>{"key": "value"}</code></td><td>Ch 08</td></tr>
+<tr class="glossary-term visible"><td><strong>JSON API</strong></td><td>データをJSON形式で受け取り返すAPIです。現代のWebサービスで最も一般的なパターンです。</td><td>Ch 14</td></tr>
+</tbody>
+
+<tbody class="letter-group" id="letter-L">
+<tr><td colspan="3" class="letter-group-heading">L</td></tr>
+<tr class="glossary-term visible"><td><strong>ラムダ（Lambda）</strong></td><td>通常、短い使い捨て操作に使用される無名（名前なし）関数です。</td><td>Ch 05</td></tr>
+<tr class="glossary-term visible"><td><strong>大規模言語モデル（LLM）</strong></td><td>コンテキストに基づいて次のトークンを予測するモデルです。有用なコードを生成しますが、プロジェクトを「理解」しているわけではありません。出力品質はコンテキスト・制約・検証に依存します。</td><td>Ch 38</td></tr>
+<tr class="glossary-term visible"><td><strong>LIFO（後入れ先出し）</strong></td><td>Last In, First Out。スタックが使用する原則です。</td><td>Phase 5</td></tr>
+<tr class="glossary-term visible"><td><strong>連結リスト（Linked list）</strong></td><td>各ノードがデータと次のノードへのポインタを持つデータ構造です。</td><td>Phase 5</td></tr>
+<tr class="glossary-term visible"><td><strong>リスト内包表記（List Comprehension）</strong></td><td>イテラブルからリストを作成する簡潔な構文です：<code>[x for x in items if condition]</code></td><td>Ch 06</td></tr>
+</tbody>
+
+<tbody class="letter-group" id="letter-M">
+<tr><td colspan="3" class="letter-group-heading">M</td></tr>
+<tr class="glossary-term visible"><td><strong>MCP</strong></td><td>Model Context Protocol（モデルコンテキストプロトコル）。Claude Codeが外部ツールと連携するための標準化されたコネクターです。</td><td>Ch 42</td></tr>
+<tr class="glossary-term visible"><td><strong>マージ（Merge）</strong></td><td>あるブランチの変更を別のブランチに統合することです。</td><td>Ch 11</td></tr>
+<tr class="glossary-term visible"><td><strong>マージコンフリクト（Merge conflict）</strong></td><td>2つのブランチが同じ行を変更したときに発生します。手動で解決する必要があります。</td><td>Ch 11</td></tr>
+<tr class="glossary-term visible"><td><strong>メソッド（Method）</strong></td><td>クラス内で定義され、インスタンスのデータを操作する関数です。</td><td>Ch 07</td></tr>
+<tr class="glossary-term visible"><td><strong>モジュール（Module）</strong></td><td>他のファイルにインポートできるPythonファイルです。コードを再利用可能な単位に整理します。</td><td>Ch 07</td></tr>
+<tr class="glossary-term visible"><td><strong>メモ化（Memoization）</strong></td><td>コストの高い関数呼び出しの結果をキャッシュし、同じ引数での再呼び出しを即時に返す手法です。</td><td>Phase 6</td></tr>
+<tr class="glossary-term visible"><td><strong>マルチモデルディスパッチ（Multi-model dispatch）</strong></td><td>それぞれの強みに基づいて異なるAIモデルに異なるタスクを割り当てることです。</td><td>Ch 44</td></tr>
+</tbody>
+
+<tbody class="letter-group" id="letter-N">
+<tr><td colspan="3" class="letter-group-heading">N</td></tr>
+<tr class="glossary-term visible"><td><strong>非決定論的（Non-deterministic）</strong></td><td>同じ入力から実行ごとに異なる出力を生成することです。LLMは本質的に非決定論的であり、同じプロンプトが異なるコードを生成することがあります。</td><td>Ch 38</td></tr>
+</tbody>
+
+<tbody class="letter-group" id="letter-O">
+<tr><td colspan="3" class="letter-group-heading">O</td></tr>
+<tr class="glossary-term visible"><td><strong>オブジェクト（Object）</strong></td><td>クラスの特定のインスタンスです。独自のデータ値を持ちますが、クラスの設計図から振る舞いを共有します。</td><td>Ch 07</td></tr>
+<tr class="glossary-term visible"><td><strong>ORM</strong></td><td>オブジェクトリレーショナルマッパー（Object-Relational Mapper）。Pythonオブジェクトとデータベースレコードをマッピングします（例：SQLAlchemy）。</td><td>Ch 15</td></tr>
+</tbody>
+
+<tbody class="letter-group" id="letter-P">
+<tr><td colspan="3" class="letter-group-heading">P</td></tr>
+<tr class="glossary-term visible"><td><strong>パッケージマネージャー（Package manager）</strong></td><td>ソフトウェアのインストールと管理を行うツールです：pip（Python）、npm（Node.js）、brew（macOS）。</td><td>Ch 03</td></tr>
+<tr class="glossary-term visible"><td><strong>パラメータ（Parameter）</strong></td><td>関数定義内の変数で、関数が呼び出されたときに値を受け取ります。</td><td>Ch 05</td></tr>
+<tr class="glossary-term visible"><td><strong>PATH</strong></td><td>シェルが実行ファイルを探すディレクトリを列挙した環境変数です。</td><td>Ch 03</td></tr>
+<tr class="glossary-term visible"><td><strong>ピアツーピア（Peer-to-peer）</strong></td><td>エージェント同士が直接通信する連携パターンです（エージェントチームパターン）。</td><td>Ch 46</td></tr>
+<tr class="glossary-term visible"><td><strong>パイプ（Pipe / | ）</strong></td><td>あるコマンドの出力を次のコマンドの入力として送るシェル演算子です。</td><td>Ch 10</td></tr>
+<tr class="glossary-term visible"><td><strong>プリコミットフック（Pre-commit hook）</strong></td><td>各gitコミットの前に自動的に実行されるスクリプトです。問題を早期に検出します。</td><td>Ch 43</td></tr>
+<tr class="glossary-term visible"><td><strong>プル（Pull）</strong></td><td>リモートリポジトリからコミットをダウンロードし、ローカルブランチにマージすることです。</td><td>Ch 12</td></tr>
+<tr class="glossary-term visible"><td><strong>プルリクエスト（Pull Request）</strong></td><td>あるブランチの変更を別のブランチにマージする提案で、コードレビューと議論を伴います。</td><td>Ch 12</td></tr>
+<tr class="glossary-term visible"><td><strong>プッシュ（Push）</strong></td><td>ローカルのコミットをリモートリポジトリにアップロードして他者がアクセスできるようにすることです。</td><td>Ch 12</td></tr>
+</tbody>
+
+<tbody class="letter-group" id="letter-Q">
+<tr><td colspan="3" class="letter-group-heading">Q</td></tr>
+<tr class="glossary-term visible"><td><strong>キュー（Queue）</strong></td><td>後方に要素を追加し、前方から削除するFIFO（先入れ先出し）データ構造です。</td><td>Phase 5</td></tr>
+<tr class="glossary-term visible"><td><strong>クイックソート（Quicksort）</strong></td><td>ピボットを選んでその前後に要素を分割し、再帰的に処理する分割統治ソートアルゴリズムです。平均O(n log n)。</td><td>Phase 6</td></tr>
+</tbody>
+
+<tbody class="letter-group" id="letter-R">
+<tr><td colspan="3" class="letter-group-heading">R</td></tr>
+<tr class="glossary-term visible"><td><strong>Ralphループ（Ralph Loop）</strong></td><td>自律エージェントのループです。PRDが完了するまで実行を続け、各イテレーションは新鮮なコンテキストで開始してウィンドウの枯渇を防ぎます。</td><td>Ch 44</td></tr>
+<tr class="glossary-term visible"><td><strong>リモート（Remote）</strong></td><td>サーバー上でホストされているリポジトリのバージョンです（例：GitHub）。プッシュとプルの対象になります。</td><td>Ch 12</td></tr>
+<tr class="glossary-term visible"><td><strong>REPL</strong></td><td>Read-Eval-Print Loop（読み取り・評価・出力ループ）。コードを入力してすぐに結果を確認できる対話型プロンプトです（<code>python3</code> → <code>&gt;&gt;&gt;</code>）。</td><td>Ch 03</td></tr>
+<tr class="glossary-term visible"><td><strong>リポジトリ（Repository / repo）</strong></td><td>gitで管理されるプロジェクトです。すべてのファイルとその完全な履歴を含みます。</td><td>Ch 11</td></tr>
+<tr class="glossary-term visible"><td><strong>REST</strong></td><td>Representational State Transfer（表現的状態転送）。HTTPメソッド（GET、POST、PUT、DELETE）を使用するAPIスタイルです。</td><td>Ch 13</td></tr>
+<tr class="glossary-term visible"><td><strong>REST API</strong></td><td>REST規約に従うAPIです。リソースをURLで識別し、HTTPメソッドで操作します。</td><td>Ch 14</td></tr>
+<tr class="glossary-term visible"><td><strong>戻り値（Return value）</strong></td><td>関数が呼び出し元に返す出力です。</td><td>Ch 05</td></tr>
+<tr class="glossary-term visible"><td><strong>ルート（Route）</strong></td><td>Webフレームワークでハンドラ関数にマッピングされるURLパターンです。各URLでどのコードが実行されるかを定義します。</td><td>Ch 14</td></tr>
+</tbody>
+
+<tbody class="letter-group" id="letter-S">
+<tr><td colspan="3" class="letter-group-heading">S</td></tr>
+<tr class="glossary-term visible"><td><strong>スコープ（Scope）</strong></td><td>変数が参照できる範囲です。ローカルスコープ＝関数の内部、グローバルスコープ＝どこからでも。</td><td>Ch 05</td></tr>
+<tr class="glossary-term visible"><td><strong>self</strong></td><td>Pythonクラスのすべてのメソッドの第一パラメータで、現在のインスタンスを参照します。</td><td>Ch 07</td></tr>
+<tr class="glossary-term visible"><td><strong>スキル（Skill）</strong></td><td>必要に応じて読み込まれる再利用可能な命令セットです（<code>.claude/skills/[名前]/SKILL.md</code>）。</td><td>Ch 42</td></tr>
+<tr class="glossary-term visible"><td><strong>仕様書（Specification / spec）</strong></td><td>システムが何をすべきか、その入力・出力・制約を定義した文書です。</td><td>Ch 41</td></tr>
+<tr class="glossary-term visible"><td><strong>SQL</strong></td><td>Structured Query Language（構造化クエリ言語）。リレーショナルデータベースのデータを作成・読み取り・更新・削除するための標準言語です。</td><td>Ch 15</td></tr>
+<tr class="glossary-term visible"><td><strong>SQLite</strong></td><td>サーバー不要の軽量なファイルベースのSQLデータベースエンジンです。小規模アプリとプロトタイピングに最適です。</td><td>Ch 15</td></tr>
+<tr class="glossary-term visible"><td><strong>SSHキー（SSH Key）</strong></td><td>リモートgitサーバーへのパスワードレス認証に使用する暗号鍵ペアです。</td><td>Ch 12</td></tr>
+<tr class="glossary-term visible"><td><strong>スタック（Stack）</strong></td><td>上部から要素を追加・削除するLIFO（後入れ先出し）データ構造です。</td><td>Phase 5</td></tr>
+<tr class="glossary-term visible"><td><strong>標準ライブラリ（Standard library）</strong></td><td>Pythonに同梱された組み込みモジュールです（json、os、sys、pathlibなど）。</td><td>Ch 07</td></tr>
+<tr class="glossary-term visible"><td><strong>ステータスコード（Status code）</strong></td><td>HTTPレスポンス番号：200 = 成功、404 = 見つからない、500 = サーバーエラー。</td><td>Ch 13</td></tr>
+<tr class="glossary-term visible"><td><strong>サブエージェント（Subagent）</strong></td><td>制限されたツールと特定の役割を持つ専門化されたエージェントです（<code>.claude/agents/*.md</code>）。</td><td>Ch 42</td></tr>
+</tbody>
+
+<tbody class="letter-group" id="letter-T">
+<tr><td colspan="3" class="letter-group-heading">T</td></tr>
+<tr class="glossary-term visible"><td><strong>タブ補完（Tab complete / L1）</strong></td><td>入力中にインラインでコード候補を表示します。Tabキーで確定します。</td><td>Ch 39</td></tr>
+<tr class="glossary-term visible"><td><strong>ターミナル / シェル（Terminal / Shell）</strong></td><td>コマンドを実行するテキストベースのインターフェースです。シェルがコマンドを解釈します（bash、zsh）。</td><td>Ch 03</td></tr>
+<tr class="glossary-term visible"><td><strong>テスト駆動開発（TDD）</strong></td><td>最初にテストを書き、それを通過するコードを書く開発手法です。レッド → グリーン → リファクタリング。</td><td>Ch 08</td></tr>
+<tr class="glossary-term visible"><td><strong>トポロジカルソート（Topological sort）</strong></td><td>すべてのエッジが前方を向くように有向グラフのノードを順序付けることです。依存関係の解決に使用します。</td><td>Phase 6</td></tr>
+</tbody>
+
+<tbody class="letter-group" id="letter-V">
+<tr><td colspan="3" class="letter-group-heading">V</td></tr>
+<tr class="glossary-term visible"><td><strong>変数（Variable）</strong></td><td>値を保持する名前付きのコンテナです。名前はメモリ上の場所を指します。</td><td>Ch 02</td></tr>
+<tr class="glossary-term visible"><td><strong>仮想環境（Virtual Environment）</strong></td><td>プロジェクトの依存関係をシステムのPythonから分離する独立したPython環境です。</td><td>Ch 03</td></tr>
+<tr class="glossary-term visible"><td><strong>ボリューム（Volume / Docker）</strong></td><td>コンテナの再起動後も持続する永続ストレージ機構です。データベースやユーザーデータに使用します。</td><td>Ch 16</td></tr>
+</tbody>
+
+<tbody class="letter-group" id="letter-W">
+<tr><td colspan="3" class="letter-group-heading">W</td></tr>
+<tr class="glossary-term visible"><td><strong>Webスクレイピング（Web scraping）</strong></td><td>Webページをプログラムで取得し、HTMLから構造化データを抽出する手法です。</td><td>Ch 13</td></tr>
+<tr class="glossary-term visible"><td><strong>ワークツリー（Worktree）</strong></td><td>同じリポジトリにリンクされた別の作業ディレクトリです。スタッシュなしで並行作業を可能にします。</td><td>Ch 11</td></tr>
+</tbody>
+
+</table>
+</div><!-- /glossary-content -->
+</div><!-- /glossary panel -->
+
+<div class="app-tab-panel" id="prompt-library">
+<h2><span class="ch-label">付録 B</span> プロンプトライブラリ</h2>
+<p>このドキュメントに登場するすべてのプロンプト・パターン・テンプレートをフェーズ別に整理しています。コピー&amp;ペーストしてすぐに使えます。これらは出発点として活用し、自分のプロジェクトに合わせて変更してください。最良のプロンプトは汎用的なものではなく、自分のコンテキストに特化したものです。</p>
+
+<div class="app-subtabs">
+  <button class="app-subtab active" data-subtab="pl-p1">Phase 1</button>
+  <button class="app-subtab" data-subtab="pl-p2">Phase 2</button>
+  <button class="app-subtab" data-subtab="pl-p3">Phase 3</button>
+  <button class="app-subtab" data-subtab="pl-p4">Phase 4</button>
+  <button class="app-subtab" data-subtab="pl-p9">Phase 9</button>
+  <button class="app-subtab" data-subtab="pl-p10">Phase 10</button>
+</div>
+
+<div class="app-subtab-panel active" data-subtab-panel="pl-p1">
+<h3>フェーズ1 — 基礎</h3>
+
+<h4>Ch 3: 環境の確認</h4>
+<div class="prompt-block"><pre><code>python3 --version
+node --version
+git --version
+code --version</code></pre></div>
+
+<h4>Ch 4: 三段階コード読解</h4>
+<div class="prompt-block"><pre><code># 第1段階：構造 — どんな関数があるか？それぞれは何をするか？
+# 第2段階：フロー — 実行はどこから始まるか？何が何を呼ぶか？
+# 第3段階：データ — 何が入るか？何が出るか？どんな変換が起きるか？</code></pre></div>
+
+<h4>Ch 4: コード分析テンプレート</h4>
+<div class="prompt-block"><pre><code>このコードを三段階の方法で分析してください：
+
+```python
+[ここにコードを貼り付ける]
+```
+
+第1段階 — 構造：
+- すべての関数/クラスとその目的を一文で列挙する。
+
+第2段階 — フロー：
+- 実行はどこから始まるか？
+- エントリーポイントから出力までの呼び出しチェーンを追跡する。
+
+第3段階 — データ：
+- 入力は何か（型、形式）？
+- どんな変換が起きるか？
+- 最終的な出力は何か？
+
+要約：このプログラムは何をするか、一段落で説明する。</code></pre></div>
+</div><!-- /pl-p1 -->
+
+<div class="app-subtab-panel" data-subtab-panel="pl-p2">
+<h3>フェーズ2 — Python</h3>
+
+<h4>Ch 5: 関数テンプレート</h4>
+<div class="prompt-block"><pre><code>def function_name(param1: type, param2: type) -> return_type:
+    """この関数が何をするかの一行説明。"""
+    # ここにロジックを書く
+    return result</code></pre></div>
+
+<h4>Ch 09: テスト駆動開発パターン</h4>
+<div class="prompt-block"><pre><code># 1. 最初にテストを書く
+def test_feature():
+    result = my_function(input)
+    assert result == expected
+
+# 2. 実行：python3 -m pytest（失敗を確認 — RED）
+# 3. テストを通過する最小限のコードを書く
+# 4. 実行：python3 -m pytest（通過を確認 — GREEN）
+# 5. 必要に応じてリファクタリング</code></pre></div>
+
+<h4>Ch 08: JSONファイル操作</h4>
+<div class="prompt-block"><pre><code>import json
+from pathlib import Path
+
+def load_data(filepath: str) -> list[dict]:
+    """ファイルからJSONデータを読み込む。ファイルがなければ空リストを返す。"""
+    path = Path(filepath)
+    if not path.exists():
+        return []
+    return json.loads(path.read_text())
+
+def save_data(filepath: str, data: list[dict]) -> None:
+    """データを整形されたJSONファイルに書き出す。"""
+    Path(filepath).write_text(json.dumps(data, indent=2))
+
+# 使用例
+tasks = load_data("tasks.json")
+tasks.append({"id": len(tasks) + 1, "title": "新しいタスク", "status": "todo"})
+save_data("tasks.json", tasks)</code></pre></div>
+
+<h4>Ch 6: 文字列処理パターン</h4>
+<div class="prompt-block"><pre><code># データクリーニングの一般的な文字列操作
+def clean_and_parse(raw: str) -> dict:
+    """空白を除去し、区切り文字で分割し、構造化データを返す。"""
+    line = raw.strip()
+    parts = line.split(",")
+    return {
+        "name": parts[0].strip().title(),
+        "email": parts[1].strip().lower(),
+        "role": parts[2].strip() if len(parts) > 2 else "unknown",
+    }
+
+# f文字列のフォーマット
+summary = f"{task['title']} ({task['status']}) — 期限 {task['due_date']}"
+
+# 文字列メソッドのチェーン
+normalized = user_input.strip().lower().replace(" ", "_")</code></pre></div>
+
+<h4>Ch 09: TaskForgeテストの例</h4>
+<div class="prompt-block"><pre><code>def test_filter_tasks_by_status():
+    tasks = [
+        {"id": 1, "title": "Buy milk", "status": "todo"},
+        {"id": 2, "title": "Walk dog", "status": "done"},
+    ]
+    result = filter_tasks(tasks, status="done")
+    assert len(result) == 1
+    assert result[0]["title"] == "Walk dog"</code></pre></div>
+</div><!-- /pl-p2 -->
+
+<div class="app-subtab-panel" data-subtab-panel="pl-p3">
+<h3>フェーズ3 — 開発ツール</h3>
+
+<h4>Ch 10: パイプの組み合わせ</h4>
+<div class="prompt-block"><pre><code># 「TODO」を含むPythonファイルを検索してカウント
+grep -r "TODO" --include="*.py" . | wc -l
+
+# src/ 内で最大の5つのファイルを一覧表示
+du -sh src/* | sort -rh | head -5</code></pre></div>
+
+<h4>Ch 11: Gitワークフロー</h4>
+<div class="prompt-block"><pre><code>git checkout -b feature/add-tags
+# ... make changes ...
+git add src/taskforge/models.py tests/test_tags.py
+git commit -m "feat: add tag support with filtering"
+git checkout main
+git merge feature/add-tags</code></pre></div>
+
+<h4>Ch 12: Gitリモートワークフロー</h4>
+<div class="prompt-block"><pre><code># リモートを設定してプッシュ
+git remote add origin git@github.com:username/taskforge.git
+git push -u origin main
+
+# リモートを使ったフィーチャーブランチワークフロー
+git checkout -b feature/api-endpoints
+# ... 変更を行い、ローカルにコミット ...
+git push -u origin feature/api-endpoints
+
+# プルリクエストを作成（GitHub CLIを使用）
+gh pr create --title "APIエンドポイントを追加" --body "タスクのREST APIを実装"
+
+# PRのレビューとマージ後、ローカルのmainを更新
+git checkout main
+git pull origin main
+git branch -d feature/api-endpoints</code></pre></div>
+</div><!-- /pl-p3 -->
+
+<div class="app-subtab-panel" data-subtab-panel="pl-p4">
+<h3>フェーズ4 — 構築とデプロイ</h3>
+
+<h4>Ch 13: curlを使ったAPIテスト</h4>
+<div class="prompt-block"><pre><code># GETリクエスト — データの取得
+curl -s https://httpbin.org/get | python3 -m json.tool
+
+# POSTリクエスト — JSONデータの送信
+curl -s -X POST https://httpbin.org/post \
+  -H "Content-Type: application/json" \
+  -d '{"title": "新しいタスク", "status": "todo"}'
+
+# ローカルAPIのテスト
+curl -s http://localhost:5000/api/tasks | python3 -m json.tool
+
+# ローカルAPIへのPOST
+curl -s -X POST http://localhost:5000/api/tasks \
+  -H "Content-Type: application/json" \
+  -d '{"title": "テストタスク", "status": "todo"}'
+
+# レスポンスヘッダーの確認
+curl -I http://localhost:5000/api/tasks</code></pre></div>
+
+<h4>Ch 13: APIリクエストパターン</h4>
+<div class="prompt-block"><pre><code>import requests
+
+response = requests.get(
+    "https://api.github.com/repos/owner/repo",
+    headers={"Accept": "application/vnd.github.v3+json"}
+)
+if response.status_code == 200:
+    data = response.json()
+    print(data["description"])
+else:
+    print(f"Error: {response.status_code}")</code></pre></div>
+
+<h4>Ch 14: Flask APIエンドポイント</h4>
+<div class="prompt-block"><pre><code>from flask import Flask, jsonify, request
+
+app = Flask(__name__)
+
+tasks = []
+
+@app.route("/api/tasks", methods=["GET"])
+def get_tasks():
+    """すべてのタスクを返す。ステータスでフィルタリング可能。"""
+    status = request.args.get("status")
+    if status:
+        filtered = [t for t in tasks if t["status"] == status]
+        return jsonify(filtered)
+    return jsonify(tasks)
+
+@app.route("/api/tasks", methods=["POST"])
+def create_task():
+    """JSONボディから新しいタスクを作成する。"""
+    data = request.get_json()
+    if not data or "title" not in data:
+        return jsonify({"error": "titleは必須です"}), 400
+    task = {
+        "id": len(tasks) + 1,
+        "title": data["title"],
+        "status": data.get("status", "todo"),
+    }
+    tasks.append(task)
+    return jsonify(task), 201
+
+if __name__ == "__main__":
+    app.run(debug=True)</code></pre></div>
+
+<h4>Ch 16: Dockerビルドパターン</h4>
+<div class="prompt-block"><pre><code># Dockerfile
+FROM python:3.12-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+EXPOSE 5000
+
+CMD ["python3", "-m", "flask", "run", "--host=0.0.0.0"]</code></pre></div>
+
+<div class="prompt-block"><pre><code># docker-compose.yml
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - FLASK_ENV=development</code></pre></div>
+
+<div class="prompt-block"><pre><code># ビルドと実行
+docker build -t taskforge .
+docker run -p 5000:5000 taskforge
+
+# またはdocker-composeを使用
+docker compose up --build</code></pre></div>
+</div><!-- /pl-p4 -->
+
+<div class="app-subtab-panel" data-subtab-panel="pl-p9">
+<h3>フェーズ9 — AIを活用した開発</h3>
+
+<h4>Ch 38: 実装仕様テンプレート</h4>
+<div class="prompt-block"><pre><code>**What（何を）:** [機能名と一文の説明]
+**Inputs（入力）:** [型付きパラメータ]
+**Outputs（出力）:** [戻り値と形式]
+**Constraints（制約）:** [制限、バリデーションルール、セキュリティ要件]
+**Edge cases（エッジケース）:** [空の入力、無効なデータ、境界条件]
+**Acceptance criteria（受入基準）:** [具体的なテスト可能な条件]</code></pre></div>
+
+<h4>Ch 39: Claude Codeとの最初のやり取り</h4>
+<div class="prompt-block"><pre><code># プロジェクトに移動
+cd ~/projects/taskforge
+
+# Claude Codeを起動
+claude
+
+# まずプランモードを試す
+> IDでタスクを削除するdelete_task(task_id)関数を追加してください。
+> まず計画を立て、承認後に実装してください。</code></pre></div>
+
+<h4>Ch 40: CLAUDE.mdテンプレート</h4>
+<div class="prompt-block"><pre><code># プロジェクト名
+一文の説明。
+
+## コマンド
+- `python3 -m pytest` — テストの実行
+- `python3 -m flask run` — サーバーの起動
+
+## アーキテクチャ
+- src/ — コアロジック
+- tests/ — テストファイル
+- data/ — 永続ストレージ（gitignore対象）
+
+## コードスタイル
+- すべての関数シグネチャに型ヒントを付ける
+- すべてのパブリック関数にdocstringを付ける
+- 裸のtry/exceptは使わない
+
+## 注意点
+- [Claudeが間違えやすい具体的なこと]
+- [別の具体的な注意点]</code></pre></div>
+
+<h4>Ch 42: スキルテンプレート</h4>
+<div class="prompt-block"><pre><code># .claude/skills/[名前]/SKILL.md
+---
+name: スキル名
+description: このスキルが何をするかの一文説明。
+tools: Read, Glob, Grep, Bash
+model: opus
+---
+あなたは[役割]です。あなたの仕事は[タスク]することです。
+
+## ステップ
+1. [最初のステップ]
+2. [2番目のステップ]
+
+## 出力形式
+[出力の形式]</code></pre></div>
+
+<h4>Ch 42: サブエージェントテンプレート</h4>
+<div class="prompt-block"><pre><code># .claude/agents/[名前].md
+---
+name: エージェント名
+description: 一文の説明。
+tools: Read, Glob, Write
+model: sonnet
+---
+[サブエージェントへの指示]</code></pre></div>
+</div><!-- /pl-p9 -->
+
+<div class="app-subtab-panel" data-subtab-panel="pl-p10">
+<h3>フェーズ10 — AIオーケストレーション</h3>
+
+<h4>Ch 43: 制約ベースのプロンプト</h4>
+<div class="prompt-block"><pre><code>[プロジェクト]に[機能]を追加してください。
+
+要件：
+- [制約1]
+- [制約2]
+
+受入基準：
+- 既存のすべてのテストが通過すること
+- 新しいテストが以下をカバーすること：[ケース]
+
+実行：`python3 -m pytest` がクリーンに通過するまで作業を続けてください。
+失敗は自分で修正してください。本当に詰まったときだけ聞いてください。</code></pre></div>
+
+<h4>Ch 43: プリコミット設定</h4>
+<div class="prompt-block"><pre><code># .pre-commit-config.yaml
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.3.0
+    hooks:
+      - id: ruff
+      - id: ruff-format
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest
+        entry: python3 -m pytest
+        language: system
+        pass_filenames: false
+        always_run: true</code></pre></div>
+
+<h4>Ch 44: ディスパッチパターン</h4>
+<div class="prompt-block"><pre><code>/dispatch [説明]：
+1) [タスク1] — [モデル]を使用、ワークツリー
+2) [タスク2] — [モデル]を使用
+3) [タスク3] — [モデル]を使用</code></pre></div>
+
+<h4>Ch 46: エージェント判断ツリーテンプレート</h4>
+<div class="prompt-block"><pre><code># エージェント判断ツリー
+
+## シンプルな1ファイルのタスク
+- **パターン：** シングルセッション
+- **前提条件：** なし
+- **適用場面：** バグ修正、小さな機能追加、設定変更
+
+## 探索が必要なタスク
+- **パターン：** サブエージェント
+- **前提条件：** レベル3以上（コンテキスト管理）
+- **適用場面：** 不慣れなコードの理解、調査タスク
+
+## 複数の独立した機能
+- **パターン：** ディスパッチ（レベル7）
+- **前提条件：** レベル6（バックプレッシャー用ハーネス）
+- **適用場面：** 独立した作業項目のスプリント
+
+## 実装 + QA
+- **パターン：** ビルダー・バリデーター（異なるモデル）
+- **前提条件：** レベル5以上（サブエージェント設定）
+- **適用場面：** 品質保証が必要な機能
+
+## 非常に大規模なプロジェクト
+- **パターン：** エージェントチーム（レベル8、実験的）
+- **前提条件：** レベル7、強力なCI、明確なアーキテクチャ
+- **適用場面：** 連携が必要な複数システムの変更</code></pre></div>
+</div><!-- /pl-p10 -->
+
+</div><!-- /prompt-library panel -->
+
+<div class="app-tab-panel" id="self-assessment">
+<h2><span class="ch-label">付録 C</span> 自己評価クイズ</h2>
+<p>現在のレベルを確認しましょう。すべての項目を自信を持って実践できる最高レベルを選んでください。あなたのレベルは、すべてのチェックが入る最高レベルです。</p>
+
+<div class="card">
+<h4>レベル1 — タブ補完</h4>
+<ul>
+<li>インラインのコード補完（Copilot、Codeium、Supermaven）を使用しています</li>
+<li>候補を受け入れ、拒否、または修正できます</li>
+<li>候補は確率的なものであり、正確性が保証されないことを理解しています</li>
+</ul>
+<p><strong>次のステップ：</strong> Claude CodeまたはCursorをインストールし、チャットベースのAI編集を始めましょう。</p>
+</div>
+
+<div class="card">
+<h4>レベル2 — エージェントIDE</h4>
+<ul>
+<li>チャットベースのAI（Claude Code、Cursor）を複数ファイルの編集に使用しています</li>
+<li>自然言語で機能を説明し、出力をレビューできます</li>
+<li>AIに実装させる前にプランモードを使用しています</li>
+<li>変更を受け入れる前に差分をレビューしています</li>
+</ul>
+<p><strong>次のステップ：</strong> メインプロジェクトにCLAUDE.mdを作成し、意図的にコンテキストを管理し始めましょう。</p>
+</div>
+
+<div class="card">
+<h4>レベル3 — コンテキストエンジニアリング</h4>
+<ul>
+<li>実行可能な指示を含む200行以内のCLAUDE.mdを維持しています</li>
+<li><code>/compact</code>を使ってコンテキストウィンドウの使用量を管理しています</li>
+<li>コードベース全体ではなく、関連するファイルを選択的に含めています</li>
+<li>コンテキストウィンドウの予算を理解し、重要な情報を先頭と末尾に配置しています</li>
+</ul>
+<p><strong>次のステップ：</strong> コード化ループを開始しましょう。各セッション後にCLAUDE.mdを学んだ教訓で更新してください。</p>
+</div>
+
+<div class="card">
+<h4>レベル4 — 複利エンジニアリング</h4>
+<ul>
+<li>何かうまくいかなかったセッションの後は毎回CLAUDE.mdやルールを更新しています</li>
+<li>Claudeが必要に応じて発見できるアーキテクチャドキュメントを維持しています</li>
+<li>ドメイン固有の指示に<code>.claude/rules/*.md</code>を使用しています</li>
+<li>Claudeとの各セッションが前回より明確に改善されています</li>
+</ul>
+<p><strong>次のステップ：</strong> 最初のスキルとサブエージェントを作成し、毎日使うツールのMCPを設定しましょう。</p>
+</div>
+
+<div class="card">
+<h4>レベル5 — MCP・スキル・機能</h4>
+<ul>
+<li><code>.claude/skills/</code>にカスタムスキルが少なくとも1つあります</li>
+<li><code>.claude/agents/</code>にカスタムサブエージェントが少なくとも1つあります</li>
+<li>MCP（データベース、GitHub、ブラウザなど）を少なくとも1つ設定しています</li>
+<li>トークン効率に関するCLI対MCPのトレードオフを理解しています</li>
+</ul>
+<p><strong>次のステップ：</strong> プリコミットフックとテストスイートを設定し、バックプレッシャーでClaudeが自己修正できるようにしましょう。</p>
+</div>
+
+<div class="card">
+<h4>レベル6 — ハーネスエンジニアリング</h4>
+<ul>
+<li>毎回のコミットでリンター＋テストを実行するプリコミットフックを設定しています</li>
+<li>ステップバイステップの指示の代わりに制約ベースのプロンプトを使用しています</li>
+<li>機能を委任してClaudeが介入なしに完成させられるようになっています</li>
+<li>CIパイプラインが統合の失敗を自動的に検出します</li>
+</ul>
+<p><strong>次のステップ：</strong> Dispatchをインストールし、バックグラウンドエージェントにタスクを送り始めましょう。</p>
+</div>
+
+<div class="card">
+<h4>レベル7 — バックグラウンドエージェント</h4>
+<ul>
+<li>2つ以上のタスクをバックグラウンドエージェントに同時にディスパッチしています</li>
+<li>タスクに応じて異なるモデルを使用しています（アーキテクチャにはOpus、実装にはSonnet）</li>
+<li>同じモデルに実装とレビューの両方をさせることはありません</li>
+<li>エージェントの出力をレビューしてマージし、コンフリクトを解決できます</li>
+</ul>
+<p><strong>次のステップ：</strong> 大規模プロジェクト向けのエージェントチームを試し、チームのレジストリにスキルを共有しましょう。</p>
+</div>
+
+<div class="card">
+<h4>レベル8 — 自律エージェントチーム</h4>
+<ul>
+<li>ピアツーピア連携を持つエージェントチームを使用または試験しています</li>
+<li>チームが適切な場面とやり過ぎになる場面を明確に説明できます</li>
+<li>PRレビュー済みのスキルを持つチームスキルレジストリを維持しています</li>
+<li>AIワークフローを共有・標準化することでチーム全体を引き上げています</li>
+</ul>
+<p><strong>次のステップ：</strong> あなたはフロンティアにいます。自分自身だけでなく、チームを効果的にすることに集中しましょう。</p>
+</div>
+
+<h3>スコアの計算</h3>
+<p>あなたのレベル＝<strong>すべての</strong>チェックが入る最高レベルです。レベル5で3/4の項目をチェックしてもレベル4ですべてチェックできれば、あなたはレベル4です。部分的なチェックは、次に取り組むべきことを示しています。</p>
+
+<div role="note" class="callout info">
+<div class="callout-title">覚えておいてください</div>
+<p>レベルは順位ではなく、能力を表しています。プロフェッショナルな作業のほとんどはレベル3〜6で行われます。レベル7以上は、連携のオーバーヘッドを正当化できるプロジェクトのためのものです。レベル5で効果的に働けることは、レベル8を表面的にかじることより価値があります。</p>
+</div>
+
+<div class="pq">
+<blockquote>「コンピュータプログラマーは、自分だけが立法者となる宇宙の創造者である。どんな劇作家も、物事を組み合わせる者も、独自の法則を持つ完全な宇宙を生み出したことはない。」<br>&mdash;ジョセフ・ワイゼンバウム、<em>コンピュータの力と人間の理性</em></blockquote>
+</div>
+</div><!-- /self-assessment panel -->
+
+<div class="app-tab-panel" id="common-mistakes">
+<h2><span class="ch-label">付録 C.5</span> レベル別よくある間違い</h2>
+<p>各レベルで最もよくある間違い、その検出方法、カリキュラムでの解説箇所をまとめたクイックリファレンス表です。問題に直面したときに、既知のパターンかどうかを確認するために参照してください。</p>
+
+<table>
+<caption>スキルレベル別のよくある間違いと検出方法</caption>
+<tr><th>レベル</th><th>よくある間違い</th><th>検出方法</th><th>章</th></tr>
+<tr><td><strong>0（基礎）</strong></td><td><code>==</code>の代わりに<code>=</code>を使う</td><td>条件文でPythonが<code>SyntaxError</code>を発生させます</td><td>Ch05</td></tr>
+<tr><td><strong>0</strong></td><td><code>if</code>/<code>for</code>の後のインデントエラー</td><td>トレースバックを読む — 正確な行を指しています</td><td>Ch02</td></tr>
+<tr><td><strong>1（タブ補完）</strong></td><td>候補を読まずに受け入れる</td><td>実行前に出力を予測する。できなければ読んでいない証拠です</td><td>Ch38</td></tr>
+<tr><td><strong>2（エージェントIDE）</strong></td><td>曖昧なプロンプトを与える（「より良くして」など）</td><td>プロンプトが入力・出力・制約を指定していなければ、曖昧すぎます</td><td>Ch39</td></tr>
+<tr><td><strong>3（コンテキスト）</strong></td><td>CLAUDE.mdがない、または古くなっている</td><td>エージェントがプロジェクトの規約に違反するコードを生成します</td><td>Ch40</td></tr>
+<tr><td><strong>3</strong></td><td>1つのプロンプトに無関係なタスクを詰め込む</td><td>「かつ」が3回以上出てきたら分割してください</td><td>Ch40</td></tr>
+<tr><td><strong>4（複利）</strong></td><td>AIにコードを変更させる前にテストがない</td><td>AIの変更が何かを壊しても検出する手段がありません</td><td>Ch41</td></tr>
+<tr><td><strong>4</strong></td><td>本当のエラーを隠す裸の<code>except:</code>句</td><td>リンターまたは<code>flake8 --select=E722</code></td><td>Ch09</td></tr>
+<tr><td><strong>5（MCP/スキル）</strong></td><td>AIが出力するパッケージ名の幻覚</td><td><code>pip install</code>が404で失敗します</td><td>Ch38</td></tr>
+<tr><td><strong>5</strong></td><td>過剰設計なAIソリューション</td><td>「半分の行数でできないか？」と自問しましょう</td><td>Ch38</td></tr>
+<tr><td><strong>6（ハーネス）</strong></td><td>制約が緩すぎる（エージェントが大きな変更を加える）</td><td><code>git diff --stat</code>を確認 — 10ファイル以上に触れていたら制約が広すぎます</td><td>Ch43</td></tr>
+<tr><td><strong>7（バックグラウンド）</strong></td><td>エージェントループの反復回数の上限がない</td><td>エージェントが無限に実行される。常に<code>max_iterations</code>を設定してください</td><td>Ch44</td></tr>
+<tr><td><strong>8（チーム）</strong></td><td>1つのエージェントで十分なタスクにマルチエージェントを使う</td><td>独立したサブタスクがなければ、1つのエージェントを使いましょう</td><td>Ch46</td></tr>
+</table>
+
+<div role="note" class="callout info">
+<div class="callout-title">この表の使い方</div>
+<p>何かうまくいかないとき、左列で現在のレベルを見つけてください。最もよくある間違いが隣に記載されています。修正方法がわからない場合は、章の参照先を確認して詳細な説明を読んでください。</p>
+</div>
+</div><!-- /common-mistakes panel -->
+
+<div class="app-tab-panel" id="appendix-d">
+<h2><span class="ch-label">付録 D</span> トラブルシューティング</h2>
+<p>フェーズ別によくある問題をまとめています。各項目には、表示される内容（症状）、問題の原因（原因）、および修正方法（修正）が含まれています。</p>
+
+<h3>フェーズ1の問題</h3>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>Pythonが見つからない</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>症状</dt>
+      <dd>ターミナルで<code>python3: command not found</code>または<code>'python3' is not recognized</code>と表示される。</dd>
+      <dt>原因</dt>
+      <dd>Pythonがインストールされていないか、インストールディレクトリがシステムのPATHに含まれていません。</dd>
+      <dt>修正</dt>
+      <dd><a href="https://python.org">python.org</a>からPythonを再インストールし、「Add to PATH」にチェックを入れてください。macOSでは<code>brew install python3</code>を実行します。<code>which python3</code>で確認してください。</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>「command not found」エラー</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>症状</dt>
+      <dd>インストール後にツール（<code>git</code>、<code>node</code>、<code>code</code>）が「command not found」を返す。</dd>
+      <dt>原因</dt>
+      <dd>実行ファイルのディレクトリがシェルのPATHに含まれていないか、シェルセッションが再起動されていません。</dd>
+      <dt>修正</dt>
+      <dd>ターミナルを閉じて再度開いてください。それでも解決しない場合は、インストールパスを<code>~/.zshrc</code>または<code>~/.bashrc</code>に追加し、<code>source ~/.zshrc</code>を実行してください。</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>REPLが起動しない</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>症状</dt>
+      <dd><code>python3</code>と入力するとハングするか、予期しないバージョンが表示される。</dd>
+      <dt>原因</dt>
+      <dd>複数のPythonインストールが競合しているか、エイリアスが誤ったバージョンを指しています。</dd>
+      <dt>修正</dt>
+      <dd><code>which python3</code>を実行して、どのバイナリが使われるか確認してください。フルパス（例：<code>/usr/local/bin/python3</code>）を使うか、シェル設定でPATHの順序を修正してください。</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>VS CodeがPythonを見つけられない</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>症状</dt>
+      <dd>VS Codeが「No Python interpreter selected」と表示するか、リンティングが失敗する。</dd>
+      <dt>原因</dt>
+      <dd>VS CodeのPython拡張機能がPythonのインストール場所を認識していません。</dd>
+      <dt>修正</dt>
+      <dd>コマンドパレット（Cmd+Shift+P）を開き、「Python: Select Interpreter」と入力して、正しいPython 3のインストールを選択してください。</dd>
+    </dl>
+  </div>
+</div>
+
+<h3>フェーズ2の問題</h3>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>IndentationError（インデントエラー）</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>症状</dt>
+      <dd><code>IndentationError: unexpected indent</code>または<code>unindent does not match</code>。</dd>
+      <dt>原因</dt>
+      <dd>ファイルでタブとスペースが混在してインデントされているか、インデントレベルが一貫していません。</dd>
+      <dt>修正</dt>
+      <dd>エディターをスペース4つ（タブ不使用）に設定してください。VS Codeでは：設定 → 「Editor: Tab Size」= 4、「Editor: Insert Spaces」= チェック済み。影響を受けたファイルを再インデントしてください。</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>ModuleNotFoundError（モジュール未検出エラー）</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>症状</dt>
+      <dd><code>ModuleNotFoundError: No module named 'requests'</code>（または任意のサードパーティパッケージ）。</dd>
+      <dt>原因</dt>
+      <dd>使用しているPython環境にパッケージがインストールされていないか、複数のPythonがインストールされています。</dd>
+      <dt>修正</dt>
+      <dd><code>python3 -m pip install requests</code>を実行してください（<code>python3 -m pip</code>を使うと正しいPythonにインストールされます）。仮想環境を使って依存関係を分離してください。</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>json.decoder.JSONDecodeError</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>症状</dt>
+      <dd>JSONファイルの読み取り時に<code>json.decoder.JSONDecodeError: Expecting value</code>。</dd>
+      <dt>原因</dt>
+      <dd>ファイルが空か、無効なJSON（末尾のカンマや二重引用符の代わりに単一引用符など）が含まれています。</dd>
+      <dt>修正</dt>
+      <dd><a href="https://jsonlint.com">jsonlint.com</a>でJSONを検証してください。ファイルが空でないことを確認してください。手動編集の代わりに<code>json.dumps()</code>でJSONを書き出してください。</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>pytestが見つからない</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>症状</dt>
+      <dd><code>python3 -m pytest</code>の実行時に<code>No module named pytest</code>。</dd>
+      <dt>原因</dt>
+      <dd>現在のPython環境にpytestがインストールされていません。</dd>
+      <dt>修正</dt>
+      <dd><code>python3 -m pip install pytest</code>を実行してください。仮想環境を使用している場合は、先に有効化してください（<code>source venv/bin/activate</code>）。</dd>
+    </dl>
+  </div>
+</div>
+
+<h3>フェーズ3の問題</h3>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>Permission denied（ファイル/SSH）</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>症状</dt>
+      <dd>ファイルの読み取りやSSH経由のgitリモートへの接続時に<code>Permission denied</code>。</dd>
+      <dt>原因</dt>
+      <dd>ファイルのパーミッションが制限的すぎるか、SSHキーがSSHエージェントまたはGitHubに追加されていません。</dd>
+      <dt>修正</dt>
+      <dd>ファイルの場合：<code>chmod 644 ファイル名</code>。SSHの場合：<code>ssh-add ~/.ssh/id_ed25519</code>を実行し、GitHubの設定 → SSH Keysでキーが追加されているか確認してください。</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>Gitの「detached HEAD」</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>症状</dt>
+      <dd>Gitが<code>HEAD detached at abc1234</code>と表示し、コミットが消えたように見える。</dd>
+      <dt>原因</dt>
+      <dd>ブランチの代わりに特定のコミットまたはタグをチェックアウトしたため、新しいコミットを追跡するブランチがありません。</dd>
+      <dt>修正</dt>
+      <dd>現在の位置からブランチを作成してください：<code>git checkout -b my-branch</code>。名前付きブランチに乗ればコミットは安全です。</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>マージコンフリクト</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>症状</dt>
+      <dd>ファイルに<code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>マーカーが表示され、gitがマージを完了しない。</dd>
+      <dt>原因</dt>
+      <dd>2つのブランチが同じ行を編集しました。Gitはどちらのバージョンを保持するか自動的に決定できません。</dd>
+      <dt>修正</dt>
+      <dd>コンフリクトしたファイルを開き、マーカー間の正しいコードを選択し、<code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code> / <code>=======</code> / <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code>の行をすべて削除してから<code>git add</code>と<code>git commit</code>を実行してください。</dd>
+    </dl>
+  </div>
+</div>
+
+<h3>フェーズ4・5の問題</h3>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>「ポートがすでに使用中」</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>症状</dt>
+      <dd>Flaskや他のサーバー起動時に<code>OSError: [Errno 48] Address already in use</code>。</dd>
+      <dt>原因</dt>
+      <dd>他のプロセスがすでにそのポートを使用しています（停止し忘れた以前のサーバーなど）。</dd>
+      <dt>修正</dt>
+      <dd>プロセスを検索：<code>lsof -i :5000</code>。強制終了：<code>kill -9 &lt;PID&gt;</code>。または別のポートでサーバーを起動：<code>flask run --port 5001</code>。</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>Claude Codeがインストールできない</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>症状</dt>
+      <dd><code>npm install -g @anthropic-ai/claude-code</code>がエンジンまたはバージョンエラーで失敗する。</dd>
+      <dt>原因</dt>
+      <dd>Node.jsのバージョンが古すぎます。Claude CodeはNode.js 18以降が必要です。</dd>
+      <dt>修正</dt>
+      <dd><code>node --version</code>で確認してください。<a href="https://nodejs.org">nodejs.org</a>から最新のLTSをインストールするか、<code>nvm install --lts</code>を使用してください。</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>CLAUDE.mdが読み込まれない</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>症状</dt>
+      <dd>Claude CodeがCLAUDE.mdのルールを無視する。動作が指示と一致しない。</dd>
+      <dt>原因</dt>
+      <dd>CLAUDE.mdファイルがプロジェクトのルートディレクトリにないか、別のディレクトリからClaude Codeを起動しています。</dd>
+      <dt>修正</dt>
+      <dd><code>pwd</code>で現在のディレクトリを確認してください。CLAUDE.mdが<code>claude</code>を実行するディレクトリと同じ場所にあることを確認してください。<code>ls CLAUDE.md</code>で確認できます。</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>APIキーエラー</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>症状</dt>
+      <dd>Claude Code起動時に<code>AuthenticationError</code>または「invalid API key」。</dd>
+      <dt>原因</dt>
+      <dd>APIキーが見つからない、期限切れ、または誤った環境変数に設定されています。</dd>
+      <dt>修正</dt>
+      <dd><code>claude</code>を実行して認証プロンプトに従ってください。APIキーを直接使用する場合は、シェル設定で<code>ANTHROPIC_API_KEY</code>が正しく設定されているか確認してください。</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>MCPサーバーへの接続失敗</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>症状</dt>
+      <dd>Claude Codeが「MCP server failed to connect」と報告するか、ツールが利用できない。</dd>
+      <dt>原因</dt>
+      <dd>MCPサーバープロセスがクラッシュした、設定ファイルにタイポがある、または必要な依存関係が不足しています。</dd>
+      <dt>修正</dt>
+      <dd><code>.claude/mcp.json</code>の構文エラーを確認してください。MCPサーバーコマンドを手動で実行してエラー出力を確認してください。すべての依存関係がインストールされていることを確認してください。</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>レート制限エラー</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>症状</dt>
+      <dd>Claude Code使用時に<code>429 Too Many Requests</code>または<code>RateLimitError</code>。</dd>
+      <dt>原因</dt>
+      <dd>APIのレート制限またはプランの使用量上限を超えています。</dd>
+      <dt>修正</dt>
+      <dd>60秒待ってから再試行してください。継続する場合はconsole.anthropic.comで使用量を確認してください。Claude MaxサブスクライバーはAPIキーユーザーより高い制限があります。演習中に制限に達した場合は新しい会話を開始してください — コンテキストが短いほどトークン消費が少なくなります。</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>ネットワーク / ファイアウォールによるブロック</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>症状</dt>
+      <dd>Claude Codeが接続しようとすると<code>ECONNREFUSED</code>、<code>ETIMEDOUT</code>、または<code>fetch failed</code>。</dd>
+      <dt>原因</dt>
+      <dd>ネットワークがapi.anthropic.comへのアウトバウンドHTTPS接続をブロックしているか、企業のファイアウォール/VPN内にいます。</dd>
+      <dt>修正</dt>
+      <dd><code>curl https://api.anthropic.com/v1/messages -I</code>で接続を確認してください。ブロックされている場合は、ファイアウォールの設定を確認するか、別のネットワークから試してください。企業のプロキシを使用している場合は<code>HTTPS_PROXY</code>環境変数を設定してください：<code>export HTTPS_PROXY=http://your-proxy:port</code></dd>
+    </dl>
+  </div>
+</div>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>プロキシ設定</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>症状</dt>
+      <dd>Claude CodeはインストールできるがAPIに接続できない。<code>npm install</code>自体がネットワークエラーで失敗する。</dd>
+      <dt>原因</dt>
+      <dd>npmとClaude Codeはプロキシ設定を別々に必要とします。</dd>
+      <dt>修正</dt>
+      <dd>npmの場合：<code>npm config set proxy http://your-proxy:port</code>と<code>npm config set https-proxy http://your-proxy:port</code>。Claude Codeの場合：シェル設定ファイル（<code>~/.zshrc</code>または<code>~/.bashrc</code>）に<code>HTTPS_PROXY</code>を設定し、<code>source ~/.zshrc</code>を実行してください。</dd>
+    </dl>
+  </div>
+</div>
+
+<h3>フェーズ9の問題</h3>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>Dispatchが見つからない</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>症状</dt>
+      <dd><code>dispatch: command not found</code>または<code>/dispatch</code>コマンドが認識されない。</dd>
+      <dt>原因</dt>
+      <dd>Dispatchツールがインストールされていないか、使用しているClaude Codeのバージョンで利用できません。</dd>
+      <dt>修正</dt>
+      <dd>Claude Codeを最新バージョンに更新してください：<code>npm update -g @anthropic-ai/claude-code</code>。プランの機能セットでDispatchの利用可否を確認してください。</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>バックグラウンドエージェントがサイレントに失敗する</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>症状</dt>
+      <dd>ディスパッチされたタスクが「完了」と表示されるが、出力がないか間違った結果を生成する。</dd>
+      <dt>原因</dt>
+      <dd>エージェントのコンテキストが不十分か、ハーネス（テスト/リンター）が失敗を検出できませんでした。</dd>
+      <dt>修正</dt>
+      <dd>エージェントの出力ログでエラーを確認してください。ハーネスに十分なテストカバレッジがあることを確認してください。失敗が明示的に表面化するよう、ディスパッチプロンプトに制約を追加してください。</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>並行エージェントからのマージコンフリクト</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>症状</dt>
+      <dd>複数のエージェントブランチがmainにマージするときにコンフリクトする。</dd>
+      <dt>原因</dt>
+      <dd>2つ以上のエージェントが同じファイルを変更しました。並行タスクをディスパッチする際には想定内の動作です。</dd>
+      <dt>修正</dt>
+      <dd>各エージェントを分離するためにワークツリーを使用してください。可能であればエージェントに重複しないファイルを割り当ててください。1ブランチずつマージしてコンフリクトを逐次解決してください。</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>Dockerのpermission denied</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>症状</dt>
+      <dd><code>permission denied while trying to connect to the Docker daemon socket</code>。</dd>
+      <dt>原因</dt>
+      <dd>ユーザーが<code>docker</code>グループに所属していないか、Docker Desktopが実行されていません。</dd>
+      <dt>修正</dt>
+      <dd>macOSの場合：Docker Desktopを起動してください。Linuxの場合：<code>sudo usermod -aG docker $USER</code>を実行してログアウト/ログインしてください。<code>docker ps</code>で確認できます。</dd>
+    </dl>
+  </div>
+</div>
+
+<h3>フェーズ10の問題</h3>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>エージェントチームが競合するファイル変更を生成する</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>症状</dt>
+      <dd>2つのエージェントが同じファイルを同時に編集し、一方が他方の変更を上書きする。</dd>
+      <dt>原因</dt>
+      <dd>並行エージェント間にファイルロックや連携がありません。</dd>
+      <dt>修正</dt>
+      <dd>Ch 46のハブアンドスポークパターンを使用してください。各エージェントに別々のファイルまたはセクションを割り当ててください。エージェントがファイルを共有しなければならない場合は、オーケストレーターを通じて書き込みを直列化してください。</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="ts-card">
+  <div class="ts-card-header">
+    <h5>バックグラウンドエージェントのタイムアウトまたはハング</h5>
+    <span class="ts-card-arrow">&#9654;</span>
+  </div>
+  <div class="ts-card-body">
+    <dl>
+      <dt>症状</dt>
+      <dd>バックグラウンドエージェントが出力を停止し、完了しない。</dd>
+      <dt>原因</dt>
+      <dd>エージェントが無限再試行ループに入った、レート制限に達した、または受け取れないユーザー入力を待っています。</dd>
+      <dt>修正</dt>
+      <dd>エージェント設定に<code>max_iterations</code>を設定してください。エージェントの出力ログを監視してください。詰まった場合はプロセスを停止し、より狭いタスクで新しいエージェントをディスパッチしてください。</dd>
+    </dl>
+  </div>
+</div>
+
+</div><!-- /appendix-d panel -->
+
+<div class="app-tab-panel" id="appendix-e">
+<h2><span class="ch-label">付録 E</span> リソースとさらなる学習</h2>
+<p>スキルを深めるための厳選リソースです。トピック別に整理し、各リソースの概要を簡潔に記載しています。</p>
+
+<h3>体系的な読書パス</h3>
+<p>このカリキュラムが紹介する基礎をさらに深める書籍です。推奨のペースで順番に読んでください。</p>
+
+<table>
+<caption>体系的な読書パス：カリキュラムのフェーズ順に並んだ書籍</caption>
+<tr><th>開始タイミング</th><th>書籍</th><th>得られるもの</th><th>読み方</th></tr>
+<tr>
+<td><strong>フェーズ2修了後</strong></td>
+<td><a href="https://composingprograms.com">Composing Programs</a>（無料オンライン）</td>
+<td>関数、データ抽象化、再帰、インタープリタの深い理解。</td>
+<td>第1〜2章を読み、すべての演習をこなす。</td>
+</tr>
+<tr>
+<td><strong>フェーズ2修了後</strong></td>
+<td><em>Code: The Hidden Language of Computer Hardware and Software</em> &mdash; Charles Petzold</td>
+<td>電信リレーからCPUまで、コンピュータが実際にどう動くかを解説。</td>
+<td>最初から最後まで通読。演習なし — 読んで吸収するだけ。</td>
+</tr>
+<tr>
+<td><strong>フェーズ4修了後</strong></td>
+<td><em>The Algorithm Design Manual</em> &mdash; Steven Skiena</td>
+<td>実践的なアルゴリズム思考。フェーズ6：アルゴリズムを補完。</td>
+<td>第I部（第1〜8章）を読む。初回は第II部をスキップ。</td>
+</tr>
+<tr>
+<td><strong>フェーズ4修了後</strong></td>
+<td><em>Computer Systems: A Programmer's Perspective</em>（CS:APP）</td>
+<td>プログラムがハードウェア上で実際にどう動くか。メモリ、プロセス、ネットワーキング。</td>
+<td>第1〜6章を読む。週1章のペースで問題ない。</td>
+</tr>
+<tr>
+<td><strong>フェーズ9修了後</strong></td>
+<td><em>Designing Data-Intensive Applications</em>（DDIA）&mdash; Martin Kleppmann</td>
+<td>実際のシステムがデータをスケールで扱う方法。</td>
+<td>まず第1〜2章を読み、システム構築時に第3〜9章を読む。</td>
+</tr>
+<tr>
+<td><strong>フェーズ10修了後</strong></td>
+<td><a href="https://craftinginterpreters.com">Crafting Interpreters</a>（無料オンライン）&mdash; Robert Nystrom</td>
+<td>プログラミング言語をゼロから構築する。</td>
+<td>まず第1〜4章を読む。時間ができたらインタープリタ全体を構築する。</td>
+</tr>
+</table>
+
+<div role="note" class="callout info">
+<div class="callout-title">AIとの関連性</div>
+<p>このリストの書籍はすべて、AIの監督者として優れたプログラマーになるための学習に役立ちます。<em>Composing Programs</em>はAIが生成するコードを読む力を養います。<em>The Algorithm Design Manual</em>はその効率を評価する力を養います。<em>DDIA</em>はそのアーキテクチャを批判的に検討する力を養います。理解が深まるほど、判断力が高まります。</p>
+</div>
+
+<h3>Python</h3>
+<ul>
+<li><strong><a href="https://docs.python.org/3/">Python公式ドキュメント</a></strong> &mdash; 言語、標準ライブラリ、組み込み関数の決定的なリファレンスです。</li>
+<li><strong><a href="https://docs.python.org/3/tutorial/">Pythonチュートリアル</a></strong> &mdash; コアチームが執筆した、Python基礎の公式入門ガイドです。</li>
+<li><strong><a href="https://realpython.com/">Real Python</a></strong> &mdash; 初心者から上級者まで幅広くカバーするPythonの詳細なチュートリアルと記事です。</li>
+</ul>
+
+<h3>Git</h3>
+<ul>
+<li><strong><a href="https://git-scm.com/book/en/v2">Pro Git（無料オンライン）</a></strong> &mdash; 基礎から内部構造まで網羅した、無料で閲覧できる包括的な書籍です。</li>
+<li><strong><a href="https://docs.github.com/">GitHub Docs</a></strong> &mdash; プルリクエスト、アクション、イシュー、コラボレーションワークフローを網羅したGitHubの公式ドキュメントです。</li>
+<li><strong><a href="https://www.atlassian.com/git/tutorials">Atlassian Gitチュートリアル</a></strong> &mdash; gitの概念とワークフローを視覚的にわかりやすく解説したチュートリアルです。</li>
+</ul>
+
+<h3>Web &amp; API</h3>
+<ul>
+<li><strong><a href="https://developer.mozilla.org/">MDN Web Docs</a></strong> &mdash; Mozillaが管理する、HTML、CSS、JavaScript、Web APIの権威あるリファレンスです。</li>
+<li><strong><a href="https://flask.palletsprojects.com/">Flaskドキュメント</a></strong> &mdash; クイックスタート、チュートリアル、APIリファレンスを含むFlask Webフレームワークの公式ドキュメントです。</li>
+<li><strong><a href="https://httpbin.org/">httpbin.org</a></strong> &mdash; APIコールの実験に役立つ無料のHTTPリクエスト・レスポンステストサービスです。</li>
+</ul>
+
+<h3>Claude Code</h3>
+<ul>
+<li><strong><a href="https://docs.anthropic.com/">Anthropicドキュメント</a></strong> &mdash; Claudeモデル、APIリファレンス、ベストプラクティスの公式ドキュメントです。</li>
+<li><strong><a href="https://docs.anthropic.com/en/docs/claude-code">Claude Code CLIドキュメント</a></strong> &mdash; セットアップ、設定、CLAUDE.mdの形式、MCP統合、高度な使い方を解説しています。</li>
+<li><strong><a href="https://sankalp.bearblog.dev/my-experience-with-claude-code-20-and-how-to-get-better-at-using-coding-agents/">SankalpのClaude Codeガイド</a></strong> &mdash; 日常的な重度使用からの実践的なヒント：プロンプトの構造化、コンテキスト管理、一貫した良い出力の得方。</li>
+<li><strong><a href="https://clune.org/posts/claude-code-manual/">Claude Codeの欠けているマニュアル</a></strong> &mdash; 公式ドキュメントにない機能、ワークフロー、パターンを網羅した包括的なリファレンスです。</li>
+<li><strong><a href="https://harper.blog/2025/02/16/my-llm-codegen-workflow-atm/">Harper Reed: LLMコードgen ワークフロー</a></strong> &mdash; 現代のAI支援開発を定義する仕様駆動ワークフロー（ブレインストーミング → 仕様 → 計画 → 実行）です。</li>
+</ul>
+
+<h3>Docker</h3>
+<ul>
+<li><strong><a href="https://docs.docker.com/">Docker公式ドキュメント</a></strong> &mdash; Docker Engine、Compose、Dockerfileの構文、ネットワーキングの完全なリファレンスです。</li>
+<li><strong><a href="https://docs.docker.com/get-started/">Dockerスタートガイド</a></strong> &mdash; 最初のコンテナのビルド、実行、デプロイを順を追って解説するハンズオンチュートリアルです。</li>
+</ul>
+
+<h3>データベース</h3>
+<ul>
+<li><strong><a href="https://www.sqlite.org/docs.html">SQLiteドキュメント</a></strong> &mdash; このガイド全体で使用する軽量なファイルベースデータベースの公式ドキュメントです。</li>
+<li><strong><a href="https://docs.sqlalchemy.org/en/20/tutorial/">SQLAlchemyチュートリアル</a></strong> &mdash; 最も人気のあるPython ORMのステップバイステップガイドで、CoreとORMの両パターンを解説します。</li>
+</ul>
+
+<h3>練習プラットフォーム</h3>
+<p>読書と演習だけでは十分ではありません — 量をこなす必要があります。これらのプラットフォームでは流暢さを身につけるための数百の問題が提供されています。</p>
+<ul>
+<li><strong><a href="https://neetcode.io">NeetCode</a></strong> &mdash; カテゴリと難易度別に整理されたアルゴリズムとデータ構造の問題集です。「NeetCode 150」ロードマップから始めてください。</li>
+<li><strong><a href="https://leetcode.com">LeetCode</a></strong> &mdash; 最大のアルゴリズム問題コレクションです。EasyとMediumに集中しましょう。</li>
+<li><strong><a href="https://learngitbranching.js.org">Learn Git Branching</a></strong> &mdash; Gitのブランチ操作、マージ、リモート操作のインタラクティブなビジュアルチュートリアルです。</li>
+<li><strong><a href="https://selectstarsql.com">Select Star SQL</a></strong> &mdash; 実データを使った無料のインタラクティブSQLチュートリアルです。Ch15と並行して学習してください。</li>
+</ul>
+
+<h3>一般的な学習</h3>
+<ul>
+<li><strong><a href="https://exercism.org/">exercism.org</a></strong> &mdash; メンターフィードバック付きの70以上の言語の無料コーディング演習です。流暢さの習得に最適です。</li>
+<li><strong><a href="https://adventofcode.com/">Advent of Code</a></strong> &mdash; 年次プログラミングパズルコンペティション（12月）。あらゆる言語での問題解決の練習に最適です。</li>
+<li><strong><a href="https://projecteuler.net/">Project Euler</a></strong> &mdash; アルゴリズム思考と整数論のスキルを磨く数学的なプログラミング課題です。</li>
+</ul>
+</div><!-- /appendix-e panel -->
+
+</div><!-- /appendix-tabs-wrap -->
+
+<nav class="phase-nav">
+  <a href="phase-10.html" class="phase-nav-link prev"><span class="phase-nav-label">前のフェーズ</span>&larr; フェーズ10：AIオーケストレーション</a>
+  <a href="index.html" class="phase-nav-link next"><span class="phase-nav-label">ホーム</span>ランディングページ &rarr;</a>
+</nav>
+
+</div>
+</div>
+
+<footer>
+<p>ゼロからヒーロー：プログラミングからマルチエージェントClaude Codeへ &middot; 2026年3月</p>
+</footer>
+
+<script src="../js/progress.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ace-builds@1.36.5/src-min-noconflict/ace.js"></script>
+<script src="../js/theme.js"></script>
+<script src="../js/sidebar.js"></script>
+<script src="../js/shared.js"></script>
+<script src="../js/ace-init.js"></script>
+<script src="../js/pyodide-runner.js"></script>
+<script src="../js/quiz.js"></script>
+<script src="../js/exercise-runner.js"></script>
+<script src="../js/appendix-tabs.js"></script>
+</body>
+</html>

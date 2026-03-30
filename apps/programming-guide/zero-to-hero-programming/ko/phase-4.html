@@ -1,0 +1,2555 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="4단계: 구축과 배포 — API, Flask, SQLite 데이터베이스, Docker 컨테이너, CI/CD 파이프라인, 프로젝트 아키텍처. 13~18장.">
+<title>4단계: 구축과 배포 — 제로 투 히어로</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/design-system.css">
+<script>try{if(localStorage.getItem('zth-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+<script>try{var z=localStorage.getItem('zth-zoom');if(z&&+z>=50&&+z<=200)document.documentElement.style.zoom=+z/100}catch(e){}</script>
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+<marker id="arrowhead-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--a5)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<button class="toggle" id="themeToggle" aria-label="테마 전환">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo"><span>제로 투 히어로</span>프로그래밍 &rarr; 멀티 에이전트 AI</a>
+  <div class="toc-group">
+    <div class="toc-group-title">기초</div>
+    <a href="phase-1.html#ch01" class="toc-link"><span class="toc-num">01</span>프로그래밍이란 무엇인가</a>
+    <a href="phase-1.html#ch02" class="toc-link"><span class="toc-num">02</span>컴퓨터가 코드를 실행하는 방법</a>
+    <a href="phase-1.html#ch03" class="toc-link"><span class="toc-num">03</span>환경 설정하기</a>
+    <a href="phase-1.html#ch04" class="toc-link"><span class="toc-num">04</span>쓰기 전에 코드 읽기</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Python</div>
+    <a href="phase-2.html#ch05" class="toc-link"><span class="toc-num">05</span>함수, 논리, 제어 흐름</a>
+    <a href="phase-2.html#ch06" class="toc-link"><span class="toc-num">06</span>자료 구조</a>
+    <a href="phase-2.html#ch07" class="toc-link"><span class="toc-num">07</span>클래스와 객체 지향 프로그래밍</a>
+    <a href="phase-2.html#ch08" class="toc-link"><span class="toc-num">08</span>파일, 모듈, 표준 라이브러리</a>
+    <a href="phase-2.html#ch09" class="toc-link"><span class="toc-num">09</span>에러 처리, 디버깅, 테스트</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">개발 도구</div>
+    <a href="phase-3.html#ch10" class="toc-link"><span class="toc-num">10</span>터미널과 셸</a>
+    <a href="phase-3.html#ch11" class="toc-link"><span class="toc-num">11</span>Git 기초</a>
+    <a href="phase-3.html#ch12" class="toc-link"><span class="toc-num">12</span>Git 원격 저장소와 GitHub</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">구축과 배포</div>
+    <a href="phase-4.html#ch13" class="toc-link"><span class="toc-num">13</span>API와 HTTP</a>
+    <a href="phase-4.html#ch14" class="toc-link"><span class="toc-num">14</span>Flask로 API 구축하기</a>
+    <a href="phase-4.html#ch15" class="toc-link"><span class="toc-num">15</span>데이터베이스 기초</a>
+    <a href="phase-4.html#ch16" class="toc-link"><span class="toc-num">16</span>Docker와 컨테이너</a>
+    <a href="phase-4.html#ch17" class="toc-link"><span class="toc-num">17</span>CI/CD와 GitHub Actions</a>
+    <a href="phase-4.html#ch18" class="toc-link"><span class="toc-num">18</span>프로젝트 아키텍처</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">자료 구조</div>
+    <a href="phase-5.html#ch19" class="toc-link"><span class="toc-num">19</span>복잡도 분석</a>
+    <a href="phase-5.html#ch20" class="toc-link"><span class="toc-num">20</span>선형 구조</a>
+    <a href="phase-5.html#ch21" class="toc-link"><span class="toc-num">21</span>해시 테이블과 맵</a>
+    <a href="phase-5.html#ch22" class="toc-link"><span class="toc-num">22</span>트리</a>
+    <a href="phase-5.html#ch23" class="toc-link"><span class="toc-num">23</span>그래프</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">알고리즘</div>
+    <a href="phase-6.html#ch24" class="toc-link"><span class="toc-num">24</span>탐색과 정렬</a>
+    <a href="phase-6.html#ch25" class="toc-link"><span class="toc-num">25</span>재귀와 동적 프로그래밍</a>
+    <a href="phase-6.html#ch26" class="toc-link"><span class="toc-num">26</span>알고리즘 패턴</a>
+    <a href="phase-6.html#ch27" class="toc-link"><span class="toc-num">27</span>그래프 알고리즘</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">엔지니어링 기술</div>
+    <a href="phase-7.html#ch28" class="toc-link"><span class="toc-num">28</span>디자인 패턴과 SOLID</a>
+    <a href="phase-7.html#ch29" class="toc-link"><span class="toc-num">29</span>SQL과 쿼리 마스터</a>
+    <a href="phase-7.html#ch30" class="toc-link"><span class="toc-num">30</span>트랜잭션과 NoSQL</a>
+    <a href="phase-7.html#ch31" class="toc-link"><span class="toc-num">31</span>네트워킹과 인터넷</a>
+    <a href="phase-7.html#ch32" class="toc-link"><span class="toc-num">32</span>동시성과 병렬 처리</a>
+    <a href="phase-7.html#ch33" class="toc-link"><span class="toc-num">33</span>보안 엔지니어링</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">시스템과 확장</div>
+    <a href="phase-8.html#ch34" class="toc-link"><span class="toc-num">34</span>시스템 설계</a>
+    <a href="phase-8.html#ch35" class="toc-link"><span class="toc-num">35</span>분산 시스템</a>
+    <a href="phase-8.html#ch36" class="toc-link"><span class="toc-num">36</span>성능과 관측 가능성</a>
+    <a href="phase-8.html#ch37" class="toc-link"><span class="toc-num">37</span>대규모 코드베이스 탐색</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AI 레벨 1~5</div>
+    <a href="phase-9.html#ch38" class="toc-link"><span class="toc-num">38</span>AI 코드 평가와 지시</a>
+    <a href="phase-9.html#ch39" class="toc-link"><span class="toc-num">39</span>레벨 1&amp;2 — 탭 자동완성과 에이전트 IDE</a>
+    <a href="phase-9.html#ch40" class="toc-link"><span class="toc-num">40</span>레벨 3 — 컨텍스트 엔지니어링</a>
+    <a href="phase-9.html#ch41" class="toc-link"><span class="toc-num">41</span>레벨 4 — 복합 엔지니어링</a>
+    <a href="phase-9.html#ch42" class="toc-link"><span class="toc-num">42</span>레벨 5 — MCP, 스킬, 기능</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AI 레벨 6~8</div>
+    <a href="phase-10.html#ch43" class="toc-link"><span class="toc-num">43</span>레벨 6 — 하네스 엔지니어링</a>
+    <a href="phase-10.html#ch44" class="toc-link"><span class="toc-num">44</span>레벨 7 — 백그라운드 에이전트</a>
+    <a href="phase-10.html#ch45" class="toc-link"><span class="toc-num">45</span>Docker에서의 Claude Code</a>
+    <a href="phase-10.html#ch46" class="toc-link"><span class="toc-num">46</span>레벨 8 — 자율 에이전트 팀</a>
+    <a href="phase-10.html#ch47" class="toc-link"><span class="toc-num">47</span>멀티플레이어 효과</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">참고 자료</div>
+    <a href="appendices.html#glossary" class="toc-link"><span class="toc-num">&oplus;</span>용어집</a>
+    <a href="appendices.html#prompt-library" class="toc-link"><span class="toc-num">&oplus;</span>프롬프트 라이브러리</a>
+    <a href="appendices.html#self-assessment" class="toc-link"><span class="toc-num">&oplus;</span>자기 평가</a>
+    <a href="appendices.html#common-mistakes" class="toc-link"><span class="toc-num">&oplus;</span>흔한 실수</a>
+    <a href="appendices.html#appendix-d" class="toc-link"><span class="toc-num">&oplus;</span>문제 해결</a>
+    <a href="appendices.html#appendix-e" class="toc-link"><span class="toc-num">&oplus;</span>리소스</a>
+  </div>
+</aside>
+</aside>
+
+<div class="main">
+<section class="hero hero-sm">
+  <div class="hero-badge">4단계 &mdash; 구축과 배포</div>
+  <h1>구축과 <em>배포</em></h1>
+  <p class="hero-sub">API, Flask, 데이터베이스, Docker, CI/CD, 그리고 전문적인 프로젝트 구조. 소프트웨어를 사용하는 단계에서 만들고 출시하는 단계로.</p>
+  <div class="hero-meta"><span>13~18장</span><span>단계 관문 + TaskForge</span></div>
+</section>
+<div class="content-wrap">
+
+<div role="note" class="callout info">
+<div class="callout-title">4단계를 시작하기 전에</div>
+<p>이 단계는 다음을 할 수 있다고 가정합니다: 터미널 탐색 및 기본 셸 명령 사용(10장), Git 저장소 생성, 커밋 및 GitHub 푸시(11~12장), 오류 처리와 테스트가 포함된 Python 함수 작성(5장, 9장).</p>
+</div>
+
+<!-- ===== CH 13 ===== -->
+<section id="ch13" data-ch="13">
+<h2><span class="ch-label">13장</span> API와 HTTP</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">지금 이것이 중요한 이유</div>
+<p>거의 모든 현대 애플리케이션은 인터넷을 통해 다른 애플리케이션과 통신합니다. 날씨 앱은 예보를 가져오고, 결제 시스템은 요금을 처리하고, AI 도구는 프롬프트를 보내고 완성된 결과를 받습니다. 이 모든 것이 공통으로 사용하는 언어가 HTTP이고, 따르는 대화 패턴을 API라고 합니다. API를 이해하면 자신의 컴퓨터에서만 실행되던 코드를 세상과 연결하는 코드로 발전시킬 수 있습니다.</p>
+</div>
+
+<h3>API란 무엇인가?</h3>
+<p><strong>API</strong>(Application Programming Interface, 애플리케이션 프로그래밍 인터페이스)는 두 프로그램 사이의 계약입니다. 한 프로그램이 "이 형식으로 요청을 보내면 저 형식으로 응답을 돌려주겠다"고 말하는 것입니다. API는 규칙을 정의합니다&mdash;무엇을 요청할 수 있는지, 어떻게 요청하는지, 무엇을 돌려받는지.</p>
+
+<p>사실 이미 모르는 사이에 API를 사용해 왔습니다. Python에서 <code>len([1, 2, 3])</code>을 호출할 때 함수 API를 사용하는 것입니다&mdash;리스트를 전달하면 길이를 반환합니다. 웹 API도 동일하게 작동하지만, 함수가 원격 서버에 있고 호출이 인터넷을 통해 전달된다는 점이 다릅니다.</p>
+
+<p>식당에 비유해 보겠습니다. 여러분(클라이언트(client))은 메뉴(API 문서(API documentation))를 읽고, 웨이터에게 주문을 합니다(요청(request) 전송). 주방(서버(server))이 음식을 준비하고, 웨이터가 가져다 줍니다(응답(response)). 여러분은 절대 주방에 들어가지 않습니다. 메뉴가 바로 계약입니다.</p>
+
+<h3>HTTP: 웹의 언어</h3>
+<p><strong>HTTP</strong>(HyperText Transfer Protocol, 하이퍼텍스트 전송 프로토콜)는 클라이언트와 서버가 통신할 때 사용하는 프로토콜입니다. 웹사이트를 방문할 때마다 브라우저는 HTTP 요청을 보내고 HTTP 응답을 받습니다. API도 동일한 프로토콜을 사용합니다.</p>
+
+<p>HTTP 교환은 두 부분으로 구성됩니다:</p>
+<ul>
+<li><strong>요청(Request)</strong>&mdash;클라이언트가 보냅니다. 메서드, URL, 헤더, 그리고 선택적으로 본문(body)을 포함합니다.</li>
+<li><strong>응답(Response)</strong>&mdash;서버가 보냅니다. 상태 코드(status code), 헤더, 그리고 본문을 포함합니다.</li>
+</ul>
+
+<div class="diagram">
+<svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" aria-label="HTTP request-response flow diagram showing client sending request to server and receiving response">
+  <!-- Client -->
+  <rect class="node-accent" x="30" y="40" width="150" height="80" rx="8"/>
+  <text class="label-text" x="105" y="68" text-anchor="middle">Client</text>
+  <text class="sub-text" x="105" y="88" text-anchor="middle">Your Python script</text>
+  <text class="sub-text" x="105" y="103" text-anchor="middle">or browser</text>
+  <!-- Request arrow (top) -->
+  <line x1="180" y1="62" x2="370" y2="62" class="arrow"/>
+  <text class="sub-text" x="275" y="52" text-anchor="middle">HTTP Request</text>
+  <text class="sub-text" x="275" y="38" text-anchor="middle" fill="var(--accent)">GET /tasks HTTP/1.1</text>
+  <!-- Server -->
+  <rect class="node-accent" x="370" y="40" width="150" height="80" rx="8"/>
+  <text class="label-text" x="445" y="68" text-anchor="middle">Server</text>
+  <text class="sub-text" x="445" y="88" text-anchor="middle">Remote application</text>
+  <text class="sub-text" x="445" y="103" text-anchor="middle">with the data</text>
+  <!-- Response arrow (bottom) -->
+  <line x1="370" y1="100" x2="180" y2="100" stroke="var(--a3)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text class="sub-text" x="275" y="118" text-anchor="middle" fill="var(--a3)">HTTP Response</text>
+  <text class="sub-text" x="275" y="134" text-anchor="middle" fill="var(--a3)">200 OK + JSON body</text>
+  <!-- Detail boxes -->
+  <rect class="node-fill" x="555" y="20" width="130" height="72" rx="6"/>
+  <text class="label-text" x="620" y="38" text-anchor="middle">Request has:</text>
+  <text class="sub-text" x="620" y="54" text-anchor="middle">Method + URL</text>
+  <text class="sub-text" x="620" y="68" text-anchor="middle">Headers</text>
+  <text class="sub-text" x="620" y="82" text-anchor="middle">Body (optional)</text>
+  <rect class="node-fill" x="555" y="108" width="130" height="72" rx="6"/>
+  <text class="label-text" x="620" y="126" text-anchor="middle">Response has:</text>
+  <text class="sub-text" x="620" y="142" text-anchor="middle">Status code</text>
+  <text class="sub-text" x="620" y="156" text-anchor="middle">Headers</text>
+  <text class="sub-text" x="620" y="170" text-anchor="middle">Body (the data)</text>
+</svg>
+<div class="diagram-caption">HTTP 요청-응답 주기: 클라이언트가 메서드와 URL을 포함한 요청을 보내면, 서버가 처리하고 상태 코드와 데이터가 담긴 응답을 반환합니다.</div>
+</div>
+
+<h3>HTTP 메서드</h3>
+<p><strong>메서드(method)</strong>는 서버에 무엇을 원하는지 알려줍니다. 알아야 할 네 가지가 있습니다:</p>
+<table>
+<caption>HTTP 메서드와 그 목적</caption>
+<tr><th>메서드</th><th>목적</th><th>예시</th></tr>
+<tr><td><code>GET</code></td><td>데이터 읽기/조회</td><td>할 일 목록 가져오기</td></tr>
+<tr><td><code>POST</code></td><td>새 데이터 생성</td><td>새 할 일 추가</td></tr>
+<tr><td><code>PUT</code></td><td>기존 데이터 수정</td><td>할 일을 완료로 표시</td></tr>
+<tr><td><code>DELETE</code></td><td>데이터 삭제</td><td>할 일 삭제</td></tr>
+</table>
+<p><code>GET</code>과 <code>DELETE</code>는 일반적으로 본문을 보내지 않습니다. <code>POST</code>와 <code>PUT</code>은 요청 본문에 데이터(보통 JSON)를 담아 보냅니다.</p>
+
+<h3>상태 코드</h3>
+<p>모든 HTTP 응답에는 <strong>상태 코드(status code)</strong>가 포함됩니다&mdash;클라이언트에게 무슨 일이 일어났는지 알려주는 세 자리 숫자입니다. 전부 외울 필요는 없고, 다음 다섯 그룹만 알면 됩니다:</p>
+<table>
+<caption>HTTP 상태 코드 범위와 의미</caption>
+<tr><th>범위</th><th>의미</th><th>주요 코드</th></tr>
+<tr><td><code>2xx</code></td><td>성공</td><td><code>200 OK</code>, <code>201 Created</code></td></tr>
+<tr><td><code>3xx</code></td><td>리다이렉트</td><td><code>301 Moved Permanently</code></td></tr>
+<tr><td><code>4xx</code></td><td>클라이언트 오류 (요청 측 실수)</td><td><code>400 Bad Request</code>, <code>404 Not Found</code></td></tr>
+<tr><td><code>5xx</code></td><td>서버 오류 (서버 측 문제)</td><td><code>500 Internal Server Error</code></td></tr>
+</table>
+<p>문제가 생겼을 때 가장 먼저 확인해야 할 것이 상태 코드입니다. <code>404</code>는 URL이 잘못됐다는 뜻입니다. <code>401</code>은 인증되지 않았다는 뜻입니다. <code>500</code>은 서버가 망가진 것이므로 여러분의 잘못이 아닙니다.</p>
+
+<h3>JSON: 데이터 형식</h3>
+<p>API는 데이터를 주고받기 위한 공통 형식이 필요합니다. 표준은 <strong>JSON</strong>(JavaScript Object Notation, 자바스크립트 객체 표기법)입니다. 이미 JSON을 알고 있습니다&mdash;Python 딕셔너리 및 리스트와 똑같이 생겼습니다:</p>
+<pre><code>{
+    "id": 1,
+    "title": "Buy groceries",
+    "done": false
+}</code></pre>
+<p>Python의 <code>json</code> 모듈은 JSON 문자열과 Python 객체 사이를 변환합니다. 아래에서 소개할 <code>requests</code> 라이브러리를 사용하면 이 변환이 자동으로 이루어집니다.</p>
+
+<h3>헤더</h3>
+<p><strong>헤더(headers)</strong>는 요청과 응답에 첨부된 메타데이터입니다. 데이터 자체가 아니라 메시지에 관한 정보를 전달합니다. 자주 보게 될 두 가지 헤더:</p>
+<ul>
+<li><code>Content-Type: application/json</code> &mdash; 서버에 "JSON을 보내고 있습니다"라고 알립니다.</li>
+<li><code>Authorization: Bearer &lt;token&gt;</code> &mdash; 신원을 증명합니다(비밀번호와 같은 역할).</li>
+</ul>
+<p>헤더를 직접 설정하는 경우는 드뭅니다&mdash;<code>requests</code> 라이브러리 같은 도구가 대부분을 처리해 줍니다.</p>
+
+<h3>Python의 requests 라이브러리 사용하기</h3>
+<p>Python의 <code>requests</code> 라이브러리는 HTTP 호출을 간단하게 만들어 줍니다. 표준 라이브러리에 포함되어 있지 않으므로 설치가 필요합니다:</p>
+
+<div role="note" class="callout info">
+<div class="callout-title">현재 도구 (2026년 3월)</div>
+<p><strong>requests</strong> (Python, 무료). Python에서 가장 널리 사용되는 HTTP 라이브러리입니다. 가상 환경 내에서 설치하세요: <code>pip install requests</code>.</p>
+</div>
+
+<div class="prompt-block"><span class="label">터미널</span># 먼저 가상 환경이 활성화되어 있는지 확인하세요
+pip install requests</div>
+
+<h4>GET 요청 만들기</h4>
+<pre><code>import requests
+
+response = requests.get("https://api.github.com/users/octocat")
+
+print(response.status_code)  # 200
+print(response.json())       # Python dict with user data</code></pre>
+<p><code>requests.get()</code>은 URL에 GET 요청을 보냅니다. 응답 객체는 <code>.status_code</code>로 상태 코드를, <code>.json()</code>으로 파싱된 JSON 본문을 제공합니다.</p>
+
+<h4>POST 요청 만들기</h4>
+<pre><code>import requests
+
+data = {"title": "Buy groceries", "done": False}
+response = requests.post("http://localhost:5000/tasks", json=data)
+
+print(response.status_code)  # 201
+print(response.json())       # {"id": 1, "title": "Buy groceries", "done": false}</code></pre>
+<p><code>json=data</code> 매개변수는 Python 딕셔너리를 JSON으로 자동 변환하고 <code>Content-Type</code> 헤더도 설정해 줍니다.</p>
+
+<h4>네 가지 메서드 모두 사용하기</h4>
+<pre><code>import requests
+
+BASE = "http://localhost:5000"
+
+# GET    - 읽기
+r = requests.get(f"{BASE}/tasks")
+
+# POST   - 생성
+r = requests.post(f"{BASE}/tasks", json={"title": "New task"})
+
+# PUT    - 수정
+r = requests.put(f"{BASE}/tasks/1/done")
+
+# DELETE - 삭제
+r = requests.delete(f"{BASE}/tasks/1")</code></pre>
+
+<h3>공개 API 사용하기</h3>
+<p>실제 공개 API를 사용해 보겠습니다. GitHub API는 무료이며 기본 요청에는 인증이 필요하지 않습니다:</p>
+<pre><code>import requests
+
+# GitHub 사용자의 공개 정보 가져오기
+response = requests.get("https://api.github.com/users/octocat")
+
+if response.status_code == 200:
+    user = response.json()
+    print(f"Name: {user['name']}")
+    print(f"Public repos: {user['public_repos']}")
+    print(f"Followers: {user['followers']}")
+else:
+    print(f"Error: {response.status_code}")</code></pre>
+<div class="api-demo" data-url="https://api.github.com/users/octocat">
+  <div class="api-demo-bar">
+    <button class="api-demo-btn">라이브로 시도해 보기</button>
+  </div>
+</div>
+<p>응답 데이터를 사용하기 전에 항상 상태 코드를 확인하세요. <code>200</code>은 성공을 의미합니다. 그 외의 코드는 무언가 잘못됐다는 뜻이며, <code>response.json()</code>이 예상한 내용을 담고 있지 않을 수 있습니다.</p>
+
+<h3>흔한 오해</h3>
+<div role="note" class="callout warn">
+<div class="callout-title">"API는 웹 개발자만 사용한다"</div>
+<p>API는 프로그램들이 서로 대화하는 방식입니다. 데이터 과학자는 API로 데이터셋을 가져오고, DevOps 엔지니어는 API로 클라우드 인프라를 관리하고, AI 에이전트는 API로 언어 모델을 호출합니다. 외부 서비스와 상호작용하는 코드를 작성한다면 API를 사용하는 것입니다.</p>
+</div>
+
+<div role="note" class="callout warn">
+<div class="callout-title">"GET과 POST는 서로 바꿔 쓸 수 있다"</div>
+<p>그렇지 않습니다. GET은 데이터를 조회하며 서버에서 아무것도 수정해서는 안 됩니다. POST는 새 데이터를 생성합니다. 잘못된 메서드를 사용하면 다른 개발자들이 혼란스러워하고, 이러한 관례에 의존하는 도구들이 오작동합니다. 메서드는 의도를 전달합니다.</p>
+</div>
+
+<h3>TaskForge 연계</h3>
+<p>현재 TaskForge는 CLI 도구입니다&mdash;터미널에서 상호작용합니다. 하지만 웹 프런트엔드, 모바일 앱, 또는 AI 에이전트가 할 일을 관리하고 싶다면 어떻게 할까요? API가 필요합니다. 14장에서 바로 그것을 만들 것입니다: TaskForge를 위한 Flask 웹 API. 그 전에, Python의 <code>requests</code> 라이브러리로 API를 사용하는 연습을 해서 대화의 양쪽을 모두 이해할 것입니다.</p>
+
+<h3>마이크로 연습</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">1: GitHub 사용자 가져오기</div>
+<p><code>requests</code>를 사용하여 임의의 GitHub 사용자 정보를 가져오고 이름과 공개 저장소 수를 출력하세요.</p>
+<pre><code>import requests
+
+response = requests.get("https://api.github.com/users/octocat")
+data = response.json()
+print(f"Name: {data['name']}")
+print(f"Repos: {data['public_repos']}")</code></pre>
+<div class="api-demo" data-url="https://api.github.com/users/{username}">
+  <div class="api-demo-bar">
+    <input class="api-demo-input" type="text" placeholder="GitHub 사용자 이름" value="octocat">
+    <button class="api-demo-btn">라이브로 시도해 보기</button>
+  </div>
+</div>
+<p><code>"octocat"</code>을 자신의 GitHub 사용자 이름으로 바꿔 보세요.</p>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">2: 상태 코드 확인하기</div>
+<p>존재하지 않는 URL을 요청하여 404를 받는지 확인하세요:</p>
+<pre><code>import requests
+
+response = requests.get("https://api.github.com/users/this-user-does-not-exist-999999")
+print(response.status_code)  # 404</code></pre>
+<p>이제 <code>https://api.github.com/</code>(루트)를 시도하여 <code>200</code>을 받는지 확인하세요.</p>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">직접 해보기</div>
+<p>GitHub 사용자의 가장 최근 공개 저장소 5개를 가져와서 이름과 스타 수를 출력하는 Python 스크립트를 작성하세요.</p>
+<div class="prompt-block"><span class="label">github_repos.py</span>import requests
+
+username = "octocat"
+url = f"https://api.github.com/users/{username}/repos"
+response = requests.get(url, params={"sort": "created", "per_page": 5})
+
+if response.status_code == 200:
+    repos = response.json()
+    for repo in repos:
+        stars = repo["stargazers_count"]
+        print(f"{repo['name']} - {stars} stars")
+else:
+    print(f"Error: {response.status_code}")</div>
+<div class="api-demo" data-url="https://api.github.com/users/{username}/repos?sort=created&per_page=5">
+  <div class="api-demo-bar">
+    <input class="api-demo-input" type="text" placeholder="GitHub 사용자 이름" value="octocat">
+    <button class="api-demo-btn">라이브로 시도해 보기</button>
+  </div>
+</div>
+<p><strong>확인:</strong> 스크립트를 실행하면 저장소 이름 5개와 스타 수가 출력됩니다. <code>username</code> 변수를 변경하고 다시 실행하면 다른 결과가 나와야 합니다.</p>
+<p><strong>작동하지 않을 경우:</strong> (1) <code>ModuleNotFoundError: No module named 'requests'</code> &rarr; 가상 환경이 활성화되어 있는지 확인하고 <code>pip install requests</code>를 실행하세요. (2) <code>ConnectionError</code> &rarr; 인터넷 연결을 확인하세요. (3) 상태 코드 <code>403</code> &rarr; GitHub API 요청 한도에 도달했습니다(비인증 사용자는 시간당 60회). 몇 분 기다렸다가 다시 시도하세요.</p>
+</div>
+
+<div class="pq">날씨를 확인하거나 AI에게 질문하는 것까지, 지금까지 사용했던 모든 웹 서비스는 HTTP 요청과 응답을 통해 작동합니다. 이제 인터넷을 연결하는 프로토콜을 이해하게 되었습니다.</div>
+
+<h3>인터랙티브 연습</h3>
+
+<div class="quiz" data-ch="13" data-ex="quiz-methods">
+  <h4>지식 확인</h4>
+  <p>새 리소스를 생성할 때 사용하는 HTTP 메서드는 무엇인가요?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">GET</button>
+    <button class="quiz-option" data-correct="true">POST</button>
+    <button class="quiz-option" data-correct="false">PUT</button>
+    <button class="quiz-option" data-correct="false">DELETE</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz" data-ch="13" data-ex="quiz-status">
+  <h4>지식 확인</h4>
+  <p>404 상태 코드는 무엇을 의미하나요?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">서버 오류</button>
+    <button class="quiz-option" data-correct="false">성공</button>
+    <button class="quiz-option" data-correct="true">리소스를 찾을 수 없음</button>
+    <button class="quiz-option" data-correct="false">인증되지 않음</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="13" data-ex="parse-api">
+  <div class="exercise-header">
+    <h4>설계 도전: "API 응답 파싱"</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">GitHub 저장소의 JSON 문자열을 파싱하여 스타 수 내림차순으로 정렬된 <code>(name, stars)</code> 튜플 리스트를 반환하는 <code>extract_repos(json_str)</code>를 작성하세요.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+import json
+
+def extract_repos(json_str):
+    # 여기에 코드를 작성하세요
+    pass
+
+# 테스트 데이터:
+sample = '[{"name": "flask", "stargazers_count": 65000}, {"name": "requests", "stargazers_count": 51000}, {"name": "django", "stargazers_count": 76000}]'
+print(extract_repos(sample))
+</script>
+    <script type="text/plain" class="test-code">
+import json
+sample = '[{"name": "flask", "stargazers_count": 65000}, {"name": "requests", "stargazers_count": 51000}, {"name": "django", "stargazers_count": 76000}]'
+result = extract_repos(sample)
+assert result[0] == ("django", 76000), "Django should be first (most stars)"
+assert result[1] == ("flask", 65000), "Flask second"
+assert result[2] == ("requests", 51000), "Requests third"
+assert extract_repos('[]') == [], "Empty list"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">실행</button>
+    <button class="ex-check">확인</button>
+    <button class="ex-hint" data-level="0">힌트</button>
+    <button class="ex-reset">초기화</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint"><code>json.loads()</code>를 사용하여 문자열을 Python 리스트로 파싱하세요.</p>
+    <p class="hint">리스트 컴프리헨션을 사용하여 <code>(name, stargazers_count)</code> 튜플을 추출하세요.</p>
+    <p class="hint"><code>sorted(items, key=lambda x: x[1], reverse=True)</code>로 정렬하세요.</p>
+  </div>
+</div>
+
+<h3>선택 사항: Python으로 웹 스크래핑</h3>
+<div role="note" class="callout info">
+<div class="callout-title">이 섹션은 선택 사항입니다</div>
+<p>웹 스크래핑(web scraping)은 이 장의 HTTP 기술을 확장하지만 이후 장에서는 필요하지 않습니다. 계속 진행하고 싶다면 건너뛰어도 됩니다. 웹 페이지에서 데이터를 추출해야 할 때 돌아오세요.</p>
+</div>
+
+<p>웹 스크래핑이란 웹 페이지에 HTTP 요청을 보내고 HTML에서 데이터를 추출하는 것을 말합니다. API와의 차이점: API는 구조화된 JSON을 반환하지만, 웹 페이지는 직접 파싱해야 하는 HTML을 반환합니다.</p>
+
+<h4>스크래핑 vs. API 사용 시점</h4>
+<p>사이트에 API가 있다면 <strong>API를 사용하세요</strong> — 더 빠르고, 더 안정적이고, 더 예의 바른 방법입니다. API가 없고 데이터가 공개적으로 접근 가능한 경우에만 스크래핑하세요.</p>
+
+<div role="note" class="callout warn">
+<div class="callout-title">스크래핑 윤리</div>
+<p><code>robots.txt</code>를 존중하고, <code>time.sleep()</code>으로 요청 빈도를 제한하고, 이용 약관을 확인하세요. 스크래핑은 도구이지 권리가 아닙니다.</p>
+</div>
+
+<h4>BeautifulSoup 기초</h4>
+<div role="note" class="callout info">
+<div class="callout-title">의존성 참고</div>
+<p><strong>참고:</strong> BeautifulSoup(<code>pip install beautifulsoup4</code>)은 연습 문제에 필요하지 않은 선택적 도구입니다. 아래 연습 문제는 Python의 내장 <code>html.parser</code>를 대신 사용합니다.</p>
+</div>
+<pre><code>import requests
+from bs4 import BeautifulSoup
+
+# 페이지 가져오기
+response = requests.get("https://example.com/data")
+soup = BeautifulSoup(response.text, "html.parser")
+
+# 요소 찾기
+title = soup.find("h1").text
+links = [a["href"] for a in soup.find_all("a")]
+rows = soup.select("table tr")  # CSS 선택자</code></pre>
+
+<p><strong>일반적인 패턴:</strong></p>
+<ul>
+<li><code>soup.find("tag")</code> &mdash; 첫 번째 일치하는 요소</li>
+<li><code>soup.find_all("tag")</code> &mdash; 모든 일치하는 요소</li>
+<li><code>soup.select(".class")</code> &mdash; CSS 선택자</li>
+<li><code>tag.text</code> 또는 <code>tag.get_text(strip=True)</code> &mdash; 텍스트 추출</li>
+<li><code>tag["href"]</code> &mdash; 속성 추출</li>
+</ul>
+
+<div class="exercise" data-type="pyodide" data-ch="13" data-ex="scraping">
+  <div class="exercise-header">
+    <h4>연습: HTML 데이터 파싱</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">HTML 문자열이 주어졌을 때, 모든 링크 텍스트와 URL을 딕셔너리 리스트로 추출하세요. 브라우저에서 BeautifulSoup을 사용할 수 없으므로 Python의 내장 <code>html.parser</code>를 사용합니다.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+from html.parser import HTMLParser
+
+def extract_links(html_string):
+    """Extract all <a> tags and return [{"text": ..., "href": ...}, ...]"""
+    links = []
+
+    class LinkParser(HTMLParser):
+        def __init__(self):
+            super().__init__()
+            self.current_href = None
+            self.current_text = ""
+            self.in_a = False
+
+        def handle_starttag(self, tag, attrs):
+            # TODO: tag가 "a"이면 self.in_a = True로 설정하고,
+            # self.current_text를 초기화하고, attrs에서 "href"를 추출하세요.
+            # attrs는 (name, value) 튜플의 리스트입니다.
+            pass
+
+        def handle_data(self, data):
+            if self.in_a:
+                self.current_text += data
+
+        def handle_endtag(self, tag):
+            if tag == "a" and self.in_a:
+                links.append({"text": self.current_text.strip(), "href": self.current_href})
+                self.in_a = False
+                self.current_href = None
+
+    parser = LinkParser()
+    parser.feed(html_string)
+    return links
+
+# Test HTML
+test_html = """
+<div>
+  <a href="https://python.org">Python</a>
+  <a href="https://github.com">GitHub</a>
+  <a href="/about">About</a>
+</div>
+"""
+</script>
+    <script type="text/plain" class="test-code">
+result = extract_links(test_html)
+assert len(result) == 3, f"Should find 3 links, found {len(result)}"
+assert result[0]["text"] == "Python", "First link text should be 'Python'"
+assert result[0]["href"] == "https://python.org", "First href should be python.org"
+assert result[1]["text"] == "GitHub", "Second link text should be 'GitHub'"
+assert result[2]["href"] == "/about", "Third href should be '/about'"
+print("All tests passed!")
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">실행</button>
+    <button class="ex-check">확인</button>
+    <button class="ex-hint" data-level="0">힌트</button>
+    <button class="ex-reset">초기화</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">handle_starttag 내부에서 <code>tag == "a"</code>인지 확인하세요. 그렇다면 <code>self.in_a = True</code>로 설정하고 <code>self.current_text = ""</code>로 초기화하세요.</p>
+    <p class="hint"><code>for name, value in attrs:</code>로 attrs를 반복하고 <code>if name == "href":</code>를 확인하여 URL을 가져오세요.</p>
+    <p class="hint">전체 해결책: <code>if tag == "a": self.in_a = True; self.current_text = ""; [set self.current_href = value for (name, value) in attrs if name == "href"]</code></p>
+  </div>
+</div>
+
+</section>
+
+<!-- ===== CH 14 ===== -->
+<section id="ch14" data-ch="14">
+<h2><span class="ch-label">14장</span> Flask로 웹 API 구축하기</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">지금 이것이 중요한 이유</div>
+<p>13장에서는 API를 사용하는 방법을 배웠습니다. 이제 직접 만들어 볼 차례입니다. 이것이 사용자에서 창작자로 가는 다리이며, 4단계 관문에서 요구하는 것입니다.</p>
+</div>
+
+<h3>Flask란 무엇인가?</h3>
+<p><strong>Flask</strong>는 최소한의 Python 웹 프레임워크(web framework)입니다. 몇 줄의 코드만으로 Python 함수를 API 엔드포인트(endpoint)로 만들 수 있습니다. 더 큰 프레임워크(Django)와 달리, Flask는 필요한 것만 제공하고 나머지는 개발자의 방식을 따릅니다.</p>
+
+<div role="note" class="callout info">
+<div class="callout-title">현재 도구 (2026년 3월)</div>
+<p><strong>Flask</strong> (Python, 무료). API와 웹 앱을 구축하기 위한 최소한의 웹 프레임워크입니다. 설치: <code>pip install flask</code>.</p>
+</div>
+
+<h3>첫 번째 Flask 앱</h3>
+<p>5줄로 완성하는 Flask 앱:</p>
+<pre><code>from flask import Flask
+
+app = Flask(__name__)
+
+@app.route("/")
+def hello():
+    return "Hello, World!"
+
+if __name__ == "__main__":
+    app.run(debug=True)</code></pre>
+<p><code>app.py</code>로 저장하고 <code>python3 app.py</code>로 실행하세요. 브라우저에서 <code>http://localhost:5000</code>을 열어보세요. 방금 웹 서버를 구축했습니다.</p>
+<p><code>@app.route("/")</code>는 <strong>데코레이터(decorator)</strong>입니다&mdash;어떤 URL이 어떤 함수를 실행할지 Flask에 알려줍니다. <code>debug=True</code>는 코드 변경 시 자동으로 다시 로드하고 유용한 오류 페이지를 표시합니다.</p>
+
+<h3>라우트와 메서드</h3>
+<p>각 엔드포인트는 URL + HTTP 메서드의 조합입니다. Flask는 기본적으로 GET만 허용합니다. 다른 메서드를 허용하려면 명시적으로 지정해야 합니다:</p>
+<pre><code>@app.route("/tasks", methods=["GET", "POST"])
+def handle_tasks():
+    if request.method == "GET":
+        # 모든 할 일 반환
+        pass
+    elif request.method == "POST":
+        # 새 할 일 생성
+        pass</code></pre>
+<p>더 깔끔하게, 메서드마다 별도의 함수를 사용할 수도 있습니다:</p>
+<pre><code>@app.route("/tasks", methods=["GET"])
+def get_tasks():
+    # 모든 할 일 반환
+    pass
+
+@app.route("/tasks", methods=["POST"])
+def create_task():
+    # 새 할 일 생성
+    pass</code></pre>
+
+<h3>JSON 반환하기</h3>
+<p>API는 HTML이 아닌 JSON을 반환합니다. Flask는 Python 딕셔너리를 올바른 <code>Content-Type</code> 헤더가 포함된 JSON 응답으로 변환하는 <code>jsonify()</code>를 제공합니다:</p>
+<pre><code>from flask import Flask, jsonify
+
+@app.route("/status")
+def status():
+    return jsonify({"status": "running", "version": "1.0"}), 200</code></pre>
+<p>두 번째 값(<code>200</code>)은 HTTP 상태 코드입니다. 주요 코드들:</p>
+<table>
+<caption>Flask API 응답에 사용되는 주요 HTTP 상태 코드</caption>
+<tr><th>코드</th><th>의미</th><th>사용 시점</th></tr>
+<tr><td><code>200</code></td><td>OK</td><td>GET 또는 PUT 성공</td></tr>
+<tr><td><code>201</code></td><td>Created</td><td>리소스를 생성하는 POST 성공</td></tr>
+<tr><td><code>400</code></td><td>Bad Request</td><td>클라이언트가 잘못된 데이터를 전송함</td></tr>
+<tr><td><code>404</code></td><td>Not Found</td><td>리소스가 존재하지 않음</td></tr>
+<tr><td><code>500</code></td><td>Server Error</td><td>서버 측에서 무언가 오류 발생</td></tr>
+</table>
+
+<h3>요청 데이터 읽기</h3>
+<p>클라이언트가 API에 데이터를 보내면 이를 읽어야 합니다. Flask는 두 가지 주요 방법을 제공합니다:</p>
+<pre><code>from flask import Flask, request, jsonify
+
+# JSON 본문 (POST/PUT 요청용)
+@app.route("/tasks", methods=["POST"])
+def create_task():
+    data = request.json          # JSON 본문 파싱
+    title = data.get("title")   # 안전하게 필드 가져오기
+    return jsonify({"title": title}), 201
+
+# 쿼리 파라미터 (GET 요청용)
+# GET /tasks?status=pending
+@app.route("/tasks", methods=["GET"])
+def get_tasks():
+    status = request.args.get("status", "all")  # 기본값은 "all"
+    return jsonify({"filter": status})</code></pre>
+<p><code>request.json</code>은 클라이언트가 보낸 JSON 본문을 파싱합니다. <code>request.args</code>는 URL 쿼리 파라미터(<code>?</code> 뒤의 모든 것)를 읽습니다.</p>
+
+<h3>TaskForge API 구축하기</h3>
+<p>TaskForge를 위한 완전한 REST API를 단계별로 구축해 보겠습니다. 데이터베이스 없이 메모리 내 리스트를 사용하여 할 일을 저장합니다.</p>
+
+<h4>1단계: 설정 및 데이터 저장소</h4>
+<pre><code>from flask import Flask, jsonify, request
+
+app = Flask(__name__)
+
+# 메모리 내 할 일 저장소
+tasks = []
+next_id = 1</code></pre>
+
+<h4>2단계: GET /tasks &mdash; 모든 할 일 목록</h4>
+<pre><code>@app.route("/tasks", methods=["GET"])
+def get_tasks():
+    return jsonify(tasks), 200</code></pre>
+<p>전체 할 일 목록을 JSON 배열로 반환합니다. 단순하고 직접적입니다.</p>
+
+<h4>3단계: POST /tasks &mdash; 할 일 추가</h4>
+<pre><code>@app.route("/tasks", methods=["POST"])
+def create_task():
+    global next_id
+    data = request.json
+
+    if not data or "title" not in data:
+        return jsonify({"error": "title is required"}), 400
+
+    task = {
+        "id": next_id,
+        "title": data["title"],
+        "done": False
+    }
+    tasks.append(task)
+    next_id += 1
+    return jsonify(task), 201</code></pre>
+<p>유효성 검사에 주목하세요: 클라이언트가 <code>title</code>을 보내지 않으면 명확한 오류 메시지와 함께 <code>400 Bad Request</code>를 반환합니다. 클라이언트 입력을 절대 신뢰하지 마세요.</p>
+
+<h4>4단계: PUT /tasks/&lt;id&gt;/done &mdash; 할 일 완료 처리</h4>
+<pre><code>@app.route("/tasks/&lt;int:task_id&gt;/done", methods=["PUT"])
+def complete_task(task_id):
+    for task in tasks:
+        if task["id"] == task_id:
+            task["done"] = True
+            return jsonify(task), 200
+
+    return jsonify({"error": "task not found"}), 404</code></pre>
+<p><code>&lt;int:task_id&gt;</code>는 <strong>URL 변수(URL variable)</strong>입니다&mdash;Flask가 URL에서 숫자를 추출하여 함수 매개변수로 전달합니다. 일치하는 할 일이 없으면 <code>404</code>를 반환합니다.</p>
+
+<h4>5단계: 실행하기</h4>
+<pre><code>if __name__ == "__main__":
+    app.run(debug=True)</code></pre>
+
+<div class="diagram">
+<svg viewBox="0 0 700 180" xmlns="http://www.w3.org/2000/svg" aria-label="Flask request routing diagram showing how a request is matched to a handler function">
+  <!-- Client -->
+  <rect class="node-accent" x="20" y="60" width="120" height="60" rx="8"/>
+  <text class="label-text" x="80" y="85" text-anchor="middle">Client</text>
+  <text class="sub-text" x="80" y="100" text-anchor="middle">curl / browser</text>
+  <!-- Request arrow -->
+  <line x1="140" y1="78" x2="230" y2="78" class="arrow"/>
+  <text class="sub-text" x="185" y="72" text-anchor="middle">HTTP Request</text>
+  <!-- Flask App box -->
+  <rect class="node-fill" x="230" y="20" width="260" height="140" rx="8"/>
+  <text class="label-text" x="360" y="42" text-anchor="middle">Flask App</text>
+  <!-- Route matching -->
+  <rect class="node-accent" x="250" y="55" width="220" height="36" rx="6"/>
+  <text class="sub-text" x="360" y="70" text-anchor="middle">Route Matching</text>
+  <text class="sub-text" x="360" y="82" text-anchor="middle">/tasks &rarr; get_tasks()</text>
+  <!-- Handler -->
+  <line x1="360" y1="91" x2="360" y2="105" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <rect class="node-fill" x="280" y="105" width="160" height="36" rx="6" style="stroke:var(--accent);stroke-width:1"/>
+  <text class="sub-text" x="360" y="120" text-anchor="middle">Handler Function</text>
+  <text class="sub-text" x="360" y="132" text-anchor="middle">return jsonify(data)</text>
+  <!-- Response arrow -->
+  <line x1="230" y1="102" x2="140" y2="102" stroke="var(--a3)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text class="sub-text" x="185" y="118" text-anchor="middle" fill="var(--a3)">JSON Response</text>
+  <!-- Response box -->
+  <rect class="node-fill" x="530" y="60" width="150" height="60" rx="8"/>
+  <text class="label-text" x="605" y="85" text-anchor="middle">Response</text>
+  <text class="sub-text" x="605" y="100" text-anchor="middle">200 + JSON body</text>
+  <line x1="490" y1="90" x2="530" y2="90" class="arrow"/>
+</svg>
+<div class="diagram-caption">요청이 도착하면 Flask가 URL을 라우트에 매칭하고, 핸들러 함수가 실행되어 데이터를 반환하며, 클라이언트는 JSON 응답을 받습니다.</div>
+</div>
+
+<h3>API 테스트하기</h3>
+<p>Flask 앱을 하나의 터미널에서 실행하고, 다른 터미널을 열어 <code>curl</code>로 테스트하세요:</p>
+<div class="prompt-block"><span class="label">터미널</span># 모든 할 일 목록 조회 (처음에는 비어 있음)
+curl http://localhost:5000/tasks
+
+# 할 일 추가
+curl -X POST -H "Content-Type: application/json" \
+  -d '{"title": "Buy groceries"}' \
+  http://localhost:5000/tasks
+
+# 할 일 하나 더 추가
+curl -X POST -H "Content-Type: application/json" \
+  -d '{"title": "Write tests"}' \
+  http://localhost:5000/tasks
+
+# 다시 목록 조회 (이제 2개 표시)
+curl http://localhost:5000/tasks
+
+# 할 일 1번 완료 처리
+curl -X PUT http://localhost:5000/tasks/1/done
+
+# 변경 확인
+curl http://localhost:5000/tasks</div>
+
+<p>13장에서 배운 Python <code>requests</code>로도 테스트할 수 있습니다:</p>
+<pre><code>import requests
+
+# 할 일 추가
+r = requests.post("http://localhost:5000/tasks",
+                   json={"title": "Test from Python"})
+print(r.status_code)  # 201
+print(r.json())       # {"id": 1, "title": "Test from Python", "done": false}
+
+# 모든 할 일 목록 조회
+r = requests.get("http://localhost:5000/tasks")
+print(r.json())       # [{"id": 1, ...}]</code></pre>
+
+<h3>API에서의 오류 처리</h3>
+<p>좋은 API는 클라이언트가 무엇이 잘못됐는지와 어떻게 수정해야 하는지 알 수 있도록 명확한 오류 응답을 반환합니다:</p>
+<pre><code># 잘못된 요청: 필수 필드 누락
+@app.route("/tasks", methods=["POST"])
+def create_task():
+    data = request.json
+    if not data or "title" not in data:
+        return jsonify({"error": "title is required"}), 400
+
+    if not isinstance(data["title"], str) or len(data["title"].strip()) == 0:
+        return jsonify({"error": "title must be a non-empty string"}), 400
+
+    # ... 할 일 생성
+
+# 찾을 수 없음
+@app.route("/tasks/&lt;int:task_id&gt;/done", methods=["PUT"])
+def complete_task(task_id):
+    for task in tasks:
+        if task["id"] == task_id:
+            task["done"] = True
+            return jsonify(task), 200
+    return jsonify({"error": f"task {task_id} not found"}), 404
+
+# 예상치 못한 오류 처리
+@app.errorhandler(500)
+def internal_error(e):
+    return jsonify({"error": "internal server error"}), 500</code></pre>
+
+<p>패턴: 항상 <code>"error"</code> 키와 적절한 상태 코드가 포함된 JSON을 반환하세요. API에서 빈 문자열이나 HTML 오류 페이지를 반환하지 마세요.</p>
+
+<h3>흔한 오해</h3>
+<div role="note" class="callout warn">
+<div class="callout-title">"Flask는 소규모 프로젝트에만 쓸 수 있다"</div>
+<p>Flask는 확장 가능합니다. Instagram, Pinterest, Netflix 모두 프로덕션 환경에서 Flask를 사용했습니다. 장난감 프로젝트와 프로덕션 앱의 차이는 아키텍처에 있지, 프레임워크에 있지 않습니다. Flask는 필요할 때만 복잡성을 추가할 수 있는 유연성을 제공합니다.</p>
+</div>
+
+<div role="note" class="callout warn">
+<div class="callout-title">"API에는 데이터베이스가 필요하다"</div>
+<p>처음부터 필요하지는 않습니다. TaskForge API는 Python 리스트를 사용합니다&mdash;학습과 프로토타이핑에는 완벽합니다. 서버를 재시작하면 데이터가 사라지지만, 그 문제는 15장에서 SQLite로 해결합니다. 단순하게 시작하고 필요할 때 복잡성을 추가하세요.</p>
+</div>
+
+<h3>TaskForge 연계</h3>
+<p>방금 TaskForge를 CLI 도구에서 웹 API로 탈바꿈시켰습니다. 이제 어떤 프로그램이든&mdash;웹 프런트엔드, 모바일 앱, 다른 Python 스크립트, 또는 AI 에이전트&mdash;HTTP 요청을 보내 할 일을 생성하고 관리할 수 있습니다. 4단계 관문에서 이 API는 필수 결과물의 일부입니다.</p>
+
+<h3>마이크로 연습</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">1: Hello API</div>
+<p><code>{"message": "Hello, World!"}</code>를 반환하는 단일 GET 엔드포인트를 가진 Flask 앱을 만드세요.</p>
+<pre><code>from flask import Flask, jsonify
+
+app = Flask(__name__)
+
+@app.route("/")
+def hello():
+    return jsonify({"message": "Hello, World!"})
+
+if __name__ == "__main__":
+    app.run(debug=True)</code></pre>
+<p>실행하고 브라우저에서 <code>http://localhost:5000</code>을 방문하세요. JSON 응답이 보여야 합니다.</p>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">2: 인사 엔드포인트</div>
+<p>JSON으로 이름을 받아 인사말을 반환하는 POST 엔드포인트를 추가하세요.</p>
+<pre><code>from flask import Flask, jsonify, request
+
+app = Flask(__name__)
+
+@app.route("/greet", methods=["POST"])
+def greet():
+    data = request.json
+    name = data.get("name", "stranger")
+    return jsonify({"greeting": f"Hello, {name}!"}), 200
+
+if __name__ == "__main__":
+    app.run(debug=True)</code></pre>
+<p>테스트: <code>curl -X POST -H "Content-Type: application/json" -d '{"name": "Alice"}' http://localhost:5000/greet</code></p>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">직접 해보기</div>
+<p>GET /tasks, POST /tasks, PUT /tasks/&lt;id&gt;/done 엔드포인트를 갖춘 완전한 TaskForge REST API를 구축하세요. curl로 각각 테스트하세요.</p>
+<div class="prompt-block"><span class="label">taskforge_api.py</span>from flask import Flask, jsonify, request
+
+app = Flask(__name__)
+tasks = []
+next_id = 1
+
+@app.route("/tasks", methods=["GET"])
+def get_tasks():
+    return jsonify(tasks), 200
+
+@app.route("/tasks", methods=["POST"])
+def create_task():
+    global next_id
+    data = request.json
+    if not data or "title" not in data:
+        return jsonify({"error": "title is required"}), 400
+    task = {"id": next_id, "title": data["title"], "done": False}
+    tasks.append(task)
+    next_id += 1
+    return jsonify(task), 201
+
+@app.route("/tasks/&lt;int:task_id&gt;/done", methods=["PUT"])
+def complete_task(task_id):
+    for task in tasks:
+        if task["id"] == task_id:
+            task["done"] = True
+            return jsonify(task), 200
+    return jsonify({"error": "task not found"}), 404
+
+if __name__ == "__main__":
+    app.run(debug=True)</div>
+<p><strong>확인:</strong> <code>curl http://localhost:5000/tasks</code>가 JSON 배열을 반환합니다. <code>curl -X POST -H "Content-Type: application/json" -d '{"title":"Test"}' http://localhost:5000/tasks</code>로 할 일을 생성합니다.</p>
+<p><strong>작동하지 않을 경우:</strong> (1) 포트 이미 사용 중 &rarr; 기존 프로세스를 종료하거나 <code>app.run(port=5001)</code>을 사용하세요. (2) 임포트 오류 &rarr; venv에 Flask가 설치되어 있는지 확인하세요(<code>pip install flask</code>). (3) <code>curl</code>이 JSON 대신 HTML을 반환 &rarr; 문자열을 직접 반환하는 게 아니라 <code>jsonify()</code>를 사용하고 있는지 확인하세요.</p>
+</div>
+
+<div class="pq">처음부터 웹 API를 구축했습니다. 이제 인터넷의 어떤 프로그램이든 TaskForge와 상호작용할 수 있습니다&mdash;GitHub부터 Anthropic의 Claude API까지 모든 웹 서비스의 뒤에 있는 동일한 패턴입니다.</div>
+
+<h3>인터랙티브 연습</h3>
+
+<div class="quiz" data-ch="14" data-ex="quiz-route">
+  <h4>지식 확인</h4>
+  <p>/tasks에 대한 GET 요청을 처리하는 함수를 만드는 데코레이터는 무엇인가요?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false"><code>@app.get('/tasks')</code></button>
+    <button class="quiz-option" data-correct="true"><code>@app.route('/tasks')</code></button>
+    <button class="quiz-option" data-correct="false"><code>@app.url('/tasks')</code></button>
+    <button class="quiz-option" data-correct="false"><code>@app.handle('/tasks')</code></button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz" data-ch="14" data-ex="quiz-201">
+  <h4>지식 확인</h4>
+  <p>리소스를 생성하는 POST 요청이 성공했을 때 반환해야 하는 상태 코드는 무엇인가요?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">200</button>
+    <button class="quiz-option" data-correct="true">201</button>
+    <button class="quiz-option" data-correct="false">301</button>
+    <button class="quiz-option" data-correct="false">404</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="14" data-ex="test-api">
+  <div class="exercise-header">
+    <h4>API 엔드포인트 테스트하기</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt"><code>get_tasks()</code>와 <code>add_task()</code>를 가진 간단한 TaskForge API가 있습니다. 다음을 검증하는 테스트 함수 4개를 작성하세요: (1) GET은 처음에 빈 목록을 반환, (2) POST는 할 일을 추가하고 201을 반환, (3) 제목 없이 POST하면 400을 반환, (4) 추가 후 GET은 해당 할 일을 반환. 테스트 헬퍼 <code>get(path)</code>와 <code>post(path, data)</code>가 제공됩니다.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+# 시뮬레이션 API (브라우저에서는 Flask 불필요)
+tasks = []
+
+def get(path):
+    if path == "/tasks":
+        return {"status": 200, "json": list(tasks)}
+    return {"status": 404, "json": {"error": "not found"}}
+
+def post(path, data=None):
+    if path == "/tasks":
+        if not data or not data.get("title"):
+            return {"status": 400, "json": {"error": "title required"}}
+        task = {"id": len(tasks) + 1, "title": data["title"], "status": "pending"}
+        tasks.append(task)
+        return {"status": 201, "json": task}
+    return {"status": 404, "json": {"error": "not found"}}
+
+# 아래에 테스트를 작성하세요:
+def test_get_empty():
+    tasks.clear()
+    pass  # 여기에 assertion 작성
+
+def test_add_task():
+    tasks.clear()
+    pass  # 여기에 assertion 작성
+
+def test_add_without_title():
+    tasks.clear()
+    pass  # 여기에 assertion 작성
+
+def test_get_after_add():
+    tasks.clear()
+    pass  # 여기에 assertion 작성
+</script>
+    <script type="text/plain" class="test-code">
+tasks.clear()
+test_get_empty()
+tasks.clear()
+test_add_task()
+tasks.clear()
+test_add_without_title()
+tasks.clear()
+test_get_after_add()
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">실행</button>
+    <button class="ex-check">확인</button>
+    <button class="ex-hint" data-level="0">힌트</button>
+    <button class="ex-reset">초기화</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint"><code>test_get_empty</code>: <code>get("/tasks")</code>를 호출하고 상태가 200이며 json이 <code>[]</code>인지 assert하세요.</p>
+    <p class="hint"><code>test_add_task</code>: <code>post("/tasks", {"title": "Test"})</code>를 호출하고 상태가 201이며 반환된 json에 title이 있는지 assert하세요.</p>
+    <p class="hint"><code>test_add_without_title</code>: <code>post("/tasks", {})</code>를 호출하고 상태가 400인지 assert하세요.</p>
+  </div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="14" data-ex="validate">
+  <div class="exercise-header">
+    <h4>설계 도전: "요청 유효성 검사기"</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">할 일 딕셔너리를 유효성 검사하는 <code>validate_task(data)</code>를 작성하세요: 'title'은 필수(비어 있지 않은 문자열), 'priority'는 선택사항('high', 'medium', 'low' 중 하나), 'due_date'는 선택사항(YYYY-MM-DD 형식이어야 함). 오류 문자열 리스트를 반환하고, 유효하면 빈 리스트를 반환하세요.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def validate_task(data):
+    errors = []
+    # 여기에 코드를 작성하세요
+    return errors
+</script>
+    <script type="text/plain" class="test-code">
+assert validate_task({"title": "Buy milk"}) == [], "Valid simple task"
+assert len(validate_task({})) > 0, "Missing title should error"
+assert len(validate_task({"title": ""})) > 0, "Empty title should error"
+assert validate_task({"title": "Test", "priority": "high"}) == [], "Valid priority"
+assert len(validate_task({"title": "Test", "priority": "urgent"})) > 0, "Invalid priority"
+assert validate_task({"title": "Test", "due_date": "2026-03-16"}) == [], "Valid date"
+assert len(validate_task({"title": "Test", "due_date": "March 16"})) > 0, "Invalid date format"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">실행</button>
+    <button class="ex-check">확인</button>
+    <button class="ex-hint" data-level="0">힌트</button>
+    <button class="ex-reset">초기화</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">'title' 키가 존재하는지 AND 비어 있지 않은 문자열인지 확인하세요.</p>
+    <p class="hint">priority의 경우 <code>if 'priority' in data and data['priority'] not in ('high', 'medium', 'low')</code>를 사용하세요.</p>
+    <p class="hint">due_date의 경우 try/except 내에서 <code>datetime.strptime(data['due_date'], '%Y-%m-%d')</code>를 시도하세요. 상단에서 datetime을 임포트하세요.</p>
+  </div>
+</div>
+
+<h3>프런트엔드를 API에 연결하기</h3>
+<p>API를 구축했습니다. 이제 웹 페이지에 연결해 보겠습니다. 자신의 API를 사용하는 데 필요한 최소한의 HTML, CSS, JavaScript만 있으면 됩니다 — 이것이 <em>최소 기능 프런트엔드(minimum viable frontend)</em>이지, 전체 웹 개발 과정이 아닙니다.</p>
+
+<h4>5분 만에 배우는 HTML</h4>
+<p>HTML은 문서의 구조를 설명하는 중첩된 태그의 트리입니다:</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;TaskForge&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;My Tasks&lt;/h1&gt;
+    &lt;ul id="task-list"&gt;&lt;/ul&gt;
+    &lt;input id="new-task" type="text" placeholder="New task..."&gt;
+    &lt;button id="add-btn"&gt;Add Task&lt;/button&gt;
+    &lt;script src="app.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+<div role="note" class="callout info">
+<div class="callout-title">참고</div>
+<p>AI는 HTML을 끊임없이 생성합니다. 완벽하게 숙달할 필요는 없고, 읽을 수 있으면 됩니다. 트리 구조 이해에 집중하세요: 어떤 태그가 부모이고, 어떤 태그가 자식인지, 그리고 <code>id</code>와 <code>class</code> 속성이 무엇을 하는지.</p>
+</div>
+
+<h4>2분 만에 배우는 CSS</h4>
+<p>CSS는 HTML의 외양을 제어합니다 &mdash; 색상, 레이아웃, 간격, 글꼴. AI가 CSS를 잘 생성하므로 처음부터 작성하기보다 주로 <em>읽는</em> 것이 필요합니다. 핵심 개념: HTML의 <code>&lt;link rel='stylesheet' href='style.css'&gt;</code> 태그는 선택자를 태그, 클래스, ID에 매칭시켜 요소의 스타일을 지정하는 CSS 파일을 가져옵니다.</p>
+
+<h4>5분 만에 배우는 JavaScript fetch()</h4>
+<p><code>fetch()</code>는 브라우저에서 API를 호출합니다. TaskForge Flask API와 통신하는 완전한 예시입니다:</p>
+<pre><code>// GET: 모든 할 일을 가져와서 표시
+fetch("http://localhost:5000/api/tasks")
+  .then(response =&gt; response.json())
+  .then(tasks =&gt; {
+    const list = document.getElementById("task-list");
+    list.innerHTML = "";
+    tasks.forEach(task =&gt; {
+      const li = document.createElement("li");
+      li.textContent = task.title;
+      list.appendChild(li);
+    });
+  });
+
+// POST: 새 할 일 추가
+function addTask(title) {
+  fetch("http://localhost:5000/api/tasks", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ title: title, status: "todo" })
+  })
+  .then(response =&gt; response.json())
+  .then(task =&gt; console.log("Created:", task));
+}</code></pre>
+
+<div role="note" class="callout info">
+<div class="callout-title">더 깊이 알고 싶다면: 프런트엔드 개발</div>
+<p>이 섹션은 API를 사용하는 데 필요한 최소한을 가르칩니다. 실제 프런트엔드를 구축하고 싶다면 <a href="https://developer.mozilla.org/">MDN Web Docs</a>부터 시작하세요 &mdash; HTML, CSS, JavaScript의 권위 있는 참고 자료입니다.</p>
+</div>
+
+</section>
+
+<!-- ===== CH 15 ===== -->
+<section id="ch15" data-ch="15">
+<h2><span class="ch-label">15장</span> 데이터베이스 기초</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">지금 이것이 중요한 이유</div>
+<p>TaskForge는 현재 닫을 때마다 모든 데이터를 잃어버립니다. 데이터베이스(database)가 이 문제를 영구적으로 해결합니다. 모든 실제 애플리케이션이 데이터베이스를 사용합니다.</p>
+</div>
+
+<h3>데이터베이스란 무엇인가?</h3>
+<p><strong>데이터베이스</strong>는 프로그램 실행이 종료된 이후에도 지속되는 구조화된 저장소입니다. Python 스크립트를 닫으면 변수가 사라집니다. 데이터베이스를 사용하는 프로그램을 닫아도 데이터는 남아 있습니다. TaskForge부터 GitHub, Anthropic API까지 모든 실제 애플리케이션은 데이터베이스에 데이터를 저장합니다.</p>
+
+<h3>SQL vs NoSQL</h3>
+<p>데이터베이스에는 두 가지 주요 계열이 있습니다. 이 과정에서는 SQL에 집중합니다.</p>
+<table>
+<caption>SQL과 NoSQL 데이터베이스 비교</caption>
+<tr><th>특징</th><th>SQL</th><th>NoSQL</th></tr>
+<tr><td>구조</td><td>행과 열이 있는 테이블</td><td>유연한 문서 또는 키-값 쌍</td></tr>
+<tr><td>스키마(Schema)</td><td>엄격함&mdash;데이터 삽입 전 컬럼 정의 필요</td><td>유연함&mdash;각 문서가 다를 수 있음</td></tr>
+<tr><td>쿼리 언어</td><td>SQL (Structured Query Language)</td><td>데이터베이스마다 다름</td></tr>
+<tr><td>예시</td><td>PostgreSQL, SQLite, MySQL</td><td>MongoDB, Redis, DynamoDB</td></tr>
+<tr><td>적합한 용도</td><td>관계가 있는 구조화된 데이터</td><td>빠르게 변하는 스키마, 캐싱</td></tr>
+</table>
+
+<h3>SQLite &mdash; 첫 번째 데이터베이스</h3>
+<p><strong>SQLite</strong>부터 시작하는 이유는 시작하는 모든 장벽을 없애주기 때문입니다:</p>
+<ul>
+<li><strong>서버 불필요</strong>&mdash;서비스가 아닌 라이브러리입니다. 설치, 설정, 비밀번호 없이 사용 가능합니다.</li>
+<li><strong>Python 내장</strong>&mdash;<code>import sqlite3</code>가 바로 작동합니다. <code>pip install</code> 불필요합니다.</li>
+<li><strong>파일 기반</strong>&mdash;전체 데이터베이스가 단일 파일입니다(<code>tasks.db</code>). 일반 파일처럼 복사, 백업, 삭제할 수 있습니다.</li>
+</ul>
+<p>SQLite는 장난감이 아닙니다. 모든 iPhone, 모든 Android 폰, 모든 웹 브라우저, 그리고 모든 Python 설치에서 프로덕션으로 사용됩니다. 학습용이나 TaskForge 같은 단일 사용자 애플리케이션에 적합한 선택입니다.</p>
+
+<h3>기본 SQL</h3>
+<p>SQL(Structured Query Language)은 데이터베이스와 대화하는 언어입니다. 핵심은 단 5개의 명령어입니다:</p>
+
+<h4>CREATE TABLE &mdash; 구조 정의하기</h4>
+<pre><code>CREATE TABLE tasks (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    done BOOLEAN DEFAULT 0
+);</code></pre>
+<p>세 개의 컬럼이 있는 테이블을 생성합니다. <code>PRIMARY KEY AUTOINCREMENT</code>는 각 할 일이 고유하게 자동 할당된 ID를 갖는다는 의미입니다. <code>NOT NULL</code>은 title이 필수임을 의미합니다. <code>DEFAULT 0</code>은 새 할 일이 미완료 상태로 시작한다는 의미입니다.</p>
+
+<h4>INSERT &mdash; 데이터 추가하기</h4>
+<pre><code>INSERT INTO tasks (title, done) VALUES ('Buy groceries', 0);
+INSERT INTO tasks (title, done) VALUES ('Write tests', 0);
+INSERT INTO tasks (title, done) VALUES ('Deploy API', 1);</code></pre>
+
+<h4>SELECT &mdash; 데이터 읽기</h4>
+<pre><code>-- 모든 할 일 가져오기
+SELECT * FROM tasks;
+
+-- 미완료 할 일만 가져오기
+SELECT * FROM tasks WHERE done = 0;
+
+-- 제목만 가져오기
+SELECT title FROM tasks WHERE done = 0;</code></pre>
+
+<h4>UPDATE &mdash; 데이터 수정하기</h4>
+<pre><code>UPDATE tasks SET done = 1 WHERE id = 1;</code></pre>
+<p>항상 <code>WHERE</code> 절을 포함하세요. 없으면 <em>모든</em> 행이 수정됩니다.</p>
+
+<h4>DELETE &mdash; 데이터 삭제하기</h4>
+<pre><code>DELETE FROM tasks WHERE id = 1;</code></pre>
+<p>동일한 규칙: 항상 <code>WHERE</code>를 사용하세요. WHERE 없이 <code>DELETE FROM tasks</code>를 실행하면 모든 것이 삭제됩니다.</p>
+
+<h3>Python의 sqlite3 모듈</h3>
+<p>Python은 표준 라이브러리에 <code>sqlite3</code>를 포함합니다. 작업 흐름은 다음과 같습니다:</p>
+<pre><code>import sqlite3
+
+# 1. 데이터베이스에 연결 (파일이 없으면 생성)
+conn = sqlite3.connect("tasks.db")
+
+# 2. 커서 생성 (SQL을 실행하는 객체)
+cursor = conn.cursor()
+
+# 3. SQL 실행
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS tasks (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        done BOOLEAN DEFAULT 0
+    )
+""")
+
+# 4. 데이터 삽입
+cursor.execute("INSERT INTO tasks (title, done) VALUES (?, ?)", ("Buy groceries", 0))
+
+# 5. 변경 사항 커밋 (디스크에 저장)
+conn.commit()
+
+# 6. 데이터 조회
+cursor.execute("SELECT * FROM tasks")
+rows = cursor.fetchall()
+for row in rows:
+    print(row)  # (1, 'Buy groceries', 0)
+
+# 7. 연결 종료
+conn.close()</code></pre>
+<p>주요 함수: <code>connect()</code>는 데이터베이스를 열고, <code>cursor()</code>는 실행자를 만들고, <code>execute()</code>는 SQL을 실행하고, <code>fetchall()</code>은 결과를 가져오고, <code>commit()</code>은 변경 사항을 저장하고, <code>close()</code>는 정리합니다.</p>
+
+<h3>매개변수화된 쿼리</h3>
+
+<div role="note" class="callout critical">
+<div class="callout-title">SQL 인젝션(SQL Injection) &mdash; 문자열 서식 절대 사용 금지</div>
+<p>항상 <code>?</code> 플레이스홀더를 사용하세요. f-문자열, <code>.format()</code>, 또는 <code>+</code> 연결로 SQL 문자열을 만들지 마세요. 문자열 서식을 사용하면 공격자가 악성 SQL을 데이터베이스에 주입할 수 있습니다. 이것은 이론적인 이야기가 아닙니다&mdash;SQL 인젝션은 실제 애플리케이션에서 가장 흔한 보안 취약점 중 하나입니다.</p>
+</div>
+
+<pre><code># 위험 — 절대 이렇게 하지 마세요
+title = input("Task title: ")
+cursor.execute(f"INSERT INTO tasks (title) VALUES ('{title}')")
+# 사용자가 입력할 수 있음: '); DROP TABLE tasks; --
+# 그러면 전체 테이블이 삭제됩니다.
+
+# 안전 — 항상 이렇게 하세요
+title = input("Task title: ")
+cursor.execute("INSERT INTO tasks (title) VALUES (?)", (title,))
+# ? 플레이스홀더가 이스케이프를 자동으로 처리합니다.</code></pre>
+<p><code>?</code> 플레이스홀더는 sqlite3에 값을 안전하게 이스케이프하도록 알려줍니다. 이 한 가지 규칙으로 보안 취약점의 전체 범주를 예방할 수 있습니다.</p>
+
+<h3>TaskForge 연계</h3>
+<p>TaskForge의 JSON 파일 저장소를 SQLite로 교체하세요. 전후 비교:</p>
+
+<h4>이전: JSON 파일 저장소</h4>
+<pre><code>import json
+
+def load_tasks(filepath):
+    try:
+        with open(filepath, "r") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return []
+
+def save_tasks(tasks, filepath):
+    with open(filepath, "w") as f:
+        json.dump(tasks, f, indent=2)
+
+def add_task(tasks, title, filepath):
+    task = {"id": len(tasks) + 1, "title": title, "done": False}
+    tasks.append(task)
+    save_tasks(tasks, filepath)
+    return task</code></pre>
+
+<h4>이후: SQLite 저장소</h4>
+<pre><code>import sqlite3
+
+def get_connection():
+    conn = sqlite3.connect("tasks.db")
+    conn.row_factory = sqlite3.Row  # 컬럼 이름으로 접근 가능
+    return conn
+
+def init_db():
+    conn = get_connection()
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS tasks (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            done BOOLEAN DEFAULT 0
+        )
+    """)
+    conn.commit()
+    conn.close()
+
+def add_task(title):
+    conn = get_connection()
+    conn.execute("INSERT INTO tasks (title) VALUES (?)", (title,))
+    conn.commit()
+    conn.close()
+
+def list_tasks():
+    conn = get_connection()
+    rows = conn.execute("SELECT * FROM tasks").fetchall()
+    conn.close()
+    return [dict(row) for row in rows]
+
+def complete_task(task_id):
+    conn = get_connection()
+    conn.execute("UPDATE tasks SET done = 1 WHERE id = ?", (task_id,))
+    conn.commit()
+    conn.close()</code></pre>
+<p>가장 큰 차이점: 더 이상 전체 파일을 메모리에 로드하지 않고, 매번 변경 시 전체 파일을 다시 쓰지 않아도 됩니다. 데이터베이스는 수천 개의 할 일이 있어도 읽기와 쓰기를 효율적으로 처리합니다.</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 160" xmlns="http://www.w3.org/2000/svg" aria-label="Diagram showing data flow from Python app through sqlite3 module to database file on disk">
+  <!-- Python App -->
+  <rect class="node-accent" x="30" y="45" width="160" height="60" rx="8"/>
+  <text class="label-text" x="110" y="70" text-anchor="middle">Python App</text>
+  <text class="sub-text" x="110" y="86" text-anchor="middle">taskforge.py</text>
+  <!-- Arrow with SQL -->
+  <line x1="190" y1="68" x2="300" y2="68" class="arrow"/>
+  <text class="sub-text" x="245" y="60" text-anchor="middle">SQL query</text>
+  <!-- sqlite3 module -->
+  <rect class="node-fill" x="300" y="45" width="160" height="60" rx="8"/>
+  <text class="label-text" x="380" y="70" text-anchor="middle">sqlite3 module</text>
+  <text class="sub-text" x="380" y="86" text-anchor="middle">import sqlite3</text>
+  <!-- Arrow to DB -->
+  <line x1="460" y1="68" x2="530" y2="68" class="arrow"/>
+  <text class="sub-text" x="495" y="60" text-anchor="middle">read/write</text>
+  <!-- Database file -->
+  <rect class="node-accent" x="530" y="35" width="150" height="80" rx="8"/>
+  <text class="label-text" x="605" y="62" text-anchor="middle">tasks.db</text>
+  <text class="sub-text" x="605" y="78" text-anchor="middle">SQLite Database</text>
+  <text class="sub-text" x="605" y="94" text-anchor="middle">File on disk</text>
+  <!-- Return arrow -->
+  <line x1="300" y1="98" x2="190" y2="98" stroke="var(--a3)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text class="sub-text" x="245" y="118" text-anchor="middle" fill="var(--a3)">rows / confirmation</text>
+</svg>
+<div class="diagram-caption">Python 코드가 sqlite3 모듈을 통해 SQL을 전송하고, sqlite3 모듈이 단일 데이터베이스 파일을 읽고 씁니다. 서버 불필요합니다.</div>
+</div>
+
+<h3>ORM &mdash; 미리 보기</h3>
+<p><strong>ORM</strong>(Object-Relational Mapper, 객체-관계형 매퍼)은 Python 객체와 데이터베이스 행 사이의 간격을 채웁니다. 원시 SQL을 작성하는 대신, 테이블에 매핑되는 Python 클래스를 정의합니다:</p>
+<pre><code># 원시 SQL (위에서 배운 방법)
+cursor.execute("SELECT * FROM tasks WHERE done = 0")
+rows = cursor.fetchall()
+
+# ORM 방식 (개념적 — SQLAlchemy)
+pending_tasks = Task.query.filter_by(done=False).all()</code></pre>
+<p>Python에서 가장 인기 있는 ORM은 <strong>SQLAlchemy</strong>입니다. 여기서는 깊이 다루지 않습니다&mdash;원시 SQL은 ORM이 내부적으로 무엇을 하는지 더 잘 이해하게 해줍니다. 하지만 ORM이 존재하며 대부분의 프로덕션 애플리케이션이 사용한다는 것을 알아두세요.</p>
+
+<h3>흔한 오해</h3>
+<div role="note" class="callout warn">
+<div class="callout-title">"JSON 파일도 저장소로 충분하다"</div>
+<p>간단한 경우에는 작동하지만, 동시 접근(두 프로세스가 동시에 쓰면 파일이 손상됨)을 처리하지 못하고, 전체 데이터셋을 메모리에 로드해야 하며, 쿼리 기능이 없습니다&mdash;모든 것을 로드하지 않고는 "미완료 할 일 모두 주세요"라고 요청할 수 없습니다. 데이터베이스는 이 세 가지 문제를 모두 해결합니다.</p>
+</div>
+
+<div role="note" class="callout warn">
+<div class="callout-title">"SQL은 어렵다"</div>
+<p>기본은 5개의 명령어입니다: CREATE, INSERT, SELECT, UPDATE, DELETE. 방금 배웠습니다. 고급 기능(조인, 인덱스, 트랜잭션)도 있지만, 기본만으로도 실제 애플리케이션을 구축할 수 있습니다.</p>
+</div>
+
+<h3>마이크로 연습</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">1: 생성하고 채우기</div>
+<p>Python sqlite3 모듈을 사용하여 <code>tasks</code> 테이블이 있는 SQLite 데이터베이스를 만들고 3개의 할 일을 삽입하세요.</p>
+<pre><code>import sqlite3
+
+conn = sqlite3.connect("practice.db")
+cursor = conn.cursor()
+
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS tasks (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        done BOOLEAN DEFAULT 0
+    )
+""")
+
+cursor.execute("INSERT INTO tasks (title) VALUES (?)", ("Buy groceries",))
+cursor.execute("INSERT INTO tasks (title) VALUES (?)", ("Write tests",))
+cursor.execute("INSERT INTO tasks (title) VALUES (?)", ("Deploy API",))
+conn.commit()
+
+# 확인
+rows = cursor.execute("SELECT * FROM tasks").fetchall()
+for row in rows:
+    print(row)
+
+conn.close()</code></pre>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">2: 미완료 할 일 조회하기</div>
+<p>미완료 할 일만 반환하는 쿼리를 작성하세요.</p>
+<pre><code>import sqlite3
+
+conn = sqlite3.connect("practice.db")
+cursor = conn.cursor()
+
+cursor.execute("SELECT * FROM tasks WHERE done = 0")
+incomplete = cursor.fetchall()
+for task in incomplete:
+    print(task)
+
+conn.close()</code></pre>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">직접 해보기</div>
+<p>TaskForge를 JSON 파일 대신 SQLite를 사용하도록 리팩터링하세요. 다음 함수들을 만드세요: <code>init_db()</code>, <code>add_task(title)</code>, <code>list_tasks()</code>, <code>complete_task(id)</code>.</p>
+<div class="prompt-block"><span class="label">taskforge_db.py</span>import sqlite3
+
+DB_PATH = "taskforge.db"
+
+def get_connection():
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    return conn
+
+def init_db():
+    conn = get_connection()
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS tasks (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            done BOOLEAN DEFAULT 0
+        )
+    """)
+    conn.commit()
+    conn.close()
+
+def add_task(title):
+    conn = get_connection()
+    conn.execute("INSERT INTO tasks (title) VALUES (?)", (title,))
+    conn.commit()
+    conn.close()
+
+def list_tasks():
+    conn = get_connection()
+    rows = conn.execute("SELECT * FROM tasks").fetchall()
+    conn.close()
+    return [dict(row) for row in rows]
+
+def complete_task(task_id):
+    conn = get_connection()
+    conn.execute("UPDATE tasks SET done = 1 WHERE id = ?", (task_id,))
+    conn.commit()
+    conn.close()
+
+if __name__ == "__main__":
+    init_db()
+    add_task("Buy groceries")
+    add_task("Write chapter 15")
+    print("All tasks:", list_tasks())
+    complete_task(1)
+    print("After completing task 1:", list_tasks())</div>
+<p><strong>확인:</strong> 프로그램 실행 사이에 할 일이 유지됩니다. 닫고 다시 열어도 할 일이 그대로입니다. 스크립트를 실행하고, <code>add_task</code> 줄을 주석 처리하고 다시 실행하세요&mdash;<code>list_tasks()</code>가 이전에 추가된 할 일을 여전히 반환합니다.</p>
+<p><strong>작동하지 않을 경우:</strong> (1) "database is locked"이 뜨면, <code>conn.close()</code>를 호출하거나 <code>with</code>문을 사용하고 있는지 확인하세요. (2) 테이블이 존재하지 않으면, 시작 시 <code>init_db()</code>를 호출하세요. (3) <code>sqlite3.OperationalError: no such table</code> &rarr; 테이블을 만든 파일과 다른 파일에 연결하고 있습니다. <code>DB_PATH</code>를 확인하세요.</p>
+</div>
+
+<div class="pq">취약한 JSON 파일을 실제 데이터베이스로 교체했습니다. TaskForge 데이터는 이제 재시작 후에도 살아남고, 쿼리를 효율적으로 처리하며, 인젝션 공격으로부터 보호됩니다. 이것이 모든 프로덕션 애플리케이션이 데이터를 저장하는 방식입니다.</div>
+
+<h3>인터랙티브 연습</h3>
+
+<div class="quiz" data-ch="15" data-ex="quiz-sql">
+  <h4>지식 확인</h4>
+  <p>테이블에서 데이터를 조회하는 SQL 명령어는 무엇인가요?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">INSERT</button>
+    <button class="quiz-option" data-correct="false">UPDATE</button>
+    <button class="quiz-option" data-correct="true">SELECT</button>
+    <button class="quiz-option" data-correct="false">CREATE</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="15" data-ex="sql-guided">
+  <div class="exercise-header">
+    <h4>안내 연습: "브라우저에서 SQL"</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">이 연습은 브라우저에서 실제 SQLite를 실행합니다. 'tasks' 테이블을 만들고 3개의 할 일을 삽입한 다음 미완료 항목을 조회하세요.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+import sqlite3
+
+conn = sqlite3.connect(':memory:')
+cursor = conn.cursor()
+
+# tasks 테이블 생성
+cursor.execute('''CREATE TABLE tasks (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    done BOOLEAN DEFAULT 0
+)''')
+
+# 할 일 3개 삽입
+cursor.execute("INSERT INTO tasks (title) VALUES (?)", ("Learn Python",))
+cursor.execute("INSERT INTO tasks (title) VALUES (?)", ("Build TaskForge",))
+cursor.execute("INSERT INTO tasks (title, done) VALUES (?, ?)", ("Setup Git", 1))
+conn.commit()
+
+# TODO: 미완료 할 일(done = 0)을 조회하여 출력하세요
+# 여기에 코드를 작성하세요
+
+conn.close()
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">실행</button>
+    <button class="ex-reset">초기화</button>
+  </div>
+  <div class="exercise-output"></div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="15" data-ex="taskdb">
+  <div class="exercise-header">
+    <h4>설계 도전: "TaskDB 클래스"</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">메모리 내 SQLite를 기반으로 하는 <code>TaskDB</code> 클래스를 구축하세요. 메서드: <code>add(title)</code>는 새 할 일 ID를 반환, <code>complete(task_id)</code>는 완료로 표시, <code>search(keyword)</code>는 제목 부분 문자열로 할 일 검색, <code>stats()</code>는 전체, 완료, 대기 수가 담긴 딕셔너리 반환.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+import sqlite3
+
+class TaskDB:
+    def __init__(self):
+        self.conn = sqlite3.connect(':memory:')
+        # 여기서 테이블 생성
+        pass
+
+    def add(self, title):
+        # 삽입하고 ID 반환
+        pass
+
+    def complete(self, task_id):
+        pass
+
+    def search(self, keyword):
+        # (id, title, done) 튜플 리스트 반환
+        pass
+
+    def stats(self):
+        # {"total": N, "completed": N, "pending": N} 반환
+        pass
+</script>
+    <script type="text/plain" class="test-code">
+db = TaskDB()
+id1 = db.add("Learn Python")
+id2 = db.add("Build API")
+id3 = db.add("Learn Docker")
+assert isinstance(id1, int), "add should return an integer ID"
+db.complete(id1)
+results = db.search("Learn")
+assert len(results) == 2, "Should find 2 tasks with 'Learn'"
+s = db.stats()
+assert s["total"] == 3, "3 total tasks"
+assert s["completed"] == 1, "1 completed"
+assert s["pending"] == 2, "2 pending"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">실행</button>
+    <button class="ex-check">확인</button>
+    <button class="ex-hint" data-level="0">힌트</button>
+    <button class="ex-reset">초기화</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">__init__에서 id, title, done 컬럼이 있는 테이블을 만드세요.</p>
+    <p class="hint">add의 경우, INSERT 후 <code>cursor.lastrowid</code>를 사용하여 새 ID를 가져오세요.</p>
+    <p class="hint">search의 경우, <code>f'%{keyword}%'</code>를 매개변수로 하여 <code>WHERE title LIKE ?</code>를 사용하세요.</p>
+  </div>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">연습: 인터랙티브 SQL</div>
+<p><a href="https://selectstarsql.com">Select Star SQL</a>을 완료하세요 &mdash; 실제 데이터를 사용하여 SQL을 가르치는 무료 인터랙티브 튜토리얼입니다. SELECT, WHERE, GROUP BY, JOIN, 서브쿼리를 다룹니다. 오후 한나절이면 끝낼 수 있습니다.</p>
+</div>
+
+</section>
+
+<!-- ===== CH 16 ===== -->
+<section id="ch16" data-ch="16">
+<h2><span class="ch-label">16장</span> Docker와 컨테이너</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">지금 이것이 중요한 이유</div>
+<p>Docker는 "내 컴퓨터에서는 됩니다" 문제를 영구적으로 해결합니다. 전문 팀이 일관된 환경을 보장하는 방법이며, 6단계에서 격리된 컨테이너에서 Claude Code 에이전트를 실행하는 방법입니다.</p>
+</div>
+
+<h3>Docker란 무엇인가?</h3>
+<p>Docker는 애플리케이션과 필요한 모든 것&mdash;Python 버전, 라이브러리, 시스템 도구&mdash;을 어떤 컴퓨터에서도 동일하게 실행되는 단일 <strong>컨테이너(container)</strong>로 패키징할 수 있게 해줍니다. 해운 컨테이너를 생각해 보세요: 배가 도쿄로 가든 로테르담으로 가든 상관없이, 박스는 동일하고 내용물은 그대로 도착합니다. Docker 컨테이너도 소프트웨어에서 동일하게 작동합니다.</p>
+
+<p>컨테이너는 가상 머신(VM)이 <em>아닙니다</em>. VM은 자체 커널이 있는 전체 운영 체제를 에뮬레이션합니다&mdash;무겁고 시작하는 데 느립니다. 컨테이너는 <strong>호스트 OS 커널을 공유</strong>하고 애플리케이션 레이어만 격리합니다. 이로 인해 컨테이너는 가볍고(기가바이트 대신 메가바이트) 빠르게 시작됩니다(분 대신 초).</p>
+
+<h3>핵심 개념</h3>
+<table>
+<caption>Docker 핵심 개념과 비유</caption>
+<tr><th>개념</th><th>무엇인가</th><th>비유</th></tr>
+<tr><td><strong>이미지(Image)</strong></td><td>환경의 스냅샷/청사진</td><td>Python의 클래스처럼&mdash;템플릿</td></tr>
+<tr><td><strong>컨테이너(Container)</strong></td><td>이미지의 실행 인스턴스</td><td>객체처럼&mdash;클래스로부터 생성된 살아있는 인스턴스</td></tr>
+<tr><td><strong>Dockerfile</strong></td><td>이미지를 빌드하는 지침</td><td>레시피처럼&mdash;단계별 빌드 지침</td></tr>
+<tr><td><strong>docker-compose</strong></td><td>여러 컨테이너를 함께 실행하는 도구</td><td>오케스트라 지휘자처럼&mdash;여러 연주자를 조율</td></tr>
+</table>
+
+<h3>Docker 설치하기</h3>
+<p>Docker 엔진, CLI, GUI 대시보드가 포함된 <strong>Docker Desktop</strong>을 설치하세요:</p>
+<ul>
+<li><strong>macOS:</strong> <code>docker.com/products/docker-desktop</code>에서 다운로드. 응용 프로그램 폴더로 드래그. Docker Desktop 실행&mdash;메뉴 바에 고래 아이콘이 나타납니다.</li>
+<li><strong>Windows:</strong> 같은 URL에서 설치 프로그램을 다운로드. 설정 중 WSL 2 백엔드를 활성화. 안내가 나오면 재시작.</li>
+</ul>
+<p>설치 확인:</p>
+<div class="prompt-block"><span class="label">터미널</span>docker --version
+docker compose version</div>
+
+<h3>첫 번째 컨테이너</h3>
+<p>Docker의 내장 테스트 이미지를 실행하여 모든 것이 작동하는지 확인하세요:</p>
+<div class="prompt-block"><span class="label">터미널</span>docker run hello-world</div>
+<p>Docker는 Docker Hub(이미지의 공개 레지스트리)에서 <code>hello-world</code> 이미지를 가져와, 컨테이너를 만들고, 실행하고, 성공 메시지를 출력합니다. 전체 작업 흐름이 바로 이것입니다: 풀, 생성, 실행.</p>
+
+<p>더 유용한 것을 시도해 보겠습니다&mdash;컨테이너 내부의 Python REPL:</p>
+<div class="prompt-block"><span class="label">터미널</span>docker run -it python:3.12 python3</div>
+<p><code>-it</code> 플래그는 인터랙티브 터미널을 제공합니다. 이제 호스트 머신과 완전히 격리된 Python 3.12 환경 내부에 있습니다. <code>exit()</code>을 입력하여 나가세요.</p>
+
+<h3>Dockerfile 작성하기</h3>
+<p><strong>Dockerfile</strong>은 Docker에게 이미지를 빌드하는 방법을 알려주는 텍스트 파일입니다. TaskForge용 예시입니다:</p>
+<pre><code>FROM python:3.12-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+COPY . .
+CMD ["python", "taskforge.py"]</code></pre>
+
+<p>각 줄은 하나의 지침입니다:</p>
+<table>
+<caption>Dockerfile 지침 한 줄씩 설명</caption>
+<tr><th>줄</th><th>하는 일</th></tr>
+<tr><td><code>FROM python:3.12-slim</code></td><td>공식 Python 3.12 이미지(slim 변형, 더 작은 크기)로 시작</td></tr>
+<tr><td><code>WORKDIR /app</code></td><td>컨테이너 내부 작업 디렉터리를 <code>/app</code>으로 설정</td></tr>
+<tr><td><code>COPY requirements.txt .</code></td><td>캐싱을 위해 requirements 파일을 먼저 컨테이너에 복사</td></tr>
+<tr><td><code>RUN pip install -r requirements.txt</code></td><td>컨테이너 내부에서 Python 의존성 설치</td></tr>
+<tr><td><code>COPY . .</code></td><td>모든 프로젝트 파일을 컨테이너에 복사</td></tr>
+<tr><td><code>CMD ["python", "taskforge.py"]</code></td><td>컨테이너 시작 시 기본 명령어</td></tr>
+</table>
+
+<p>왜 <code>requirements.txt</code>를 다른 것보다 먼저 복사할까요? Docker는 각 레이어를 캐싱합니다. 코드는 변경되었지만 의존성은 변경되지 않았다면, Docker는 캐시된 의존성 레이어를 재사용합니다&mdash;리빌드를 훨씬 빠르게 만듭니다.</p>
+
+<h3>빌드하고 실행하기</h3>
+<p>이미지를 빌드하고 그로부터 컨테이너를 실행하세요:</p>
+<div class="prompt-block"><span class="label">터미널</span># 현재 디렉터리에서 "taskforge"라는 이름의 이미지를 빌드
+docker build -t taskforge .
+
+# 이미지로부터 컨테이너 실행
+docker run -it taskforge</div>
+
+<p><code>-t taskforge</code> 플래그는 이미지에 이름(태그)을 부여합니다. <code>.</code>은 Docker에게 현재 디렉터리를 빌드 컨텍스트(Dockerfile과 복사할 파일을 찾을 위치)로 사용하라고 알립니다.</p>
+
+<h3>볼륨: 데이터 지속하기</h3>
+<p>컨테이너는 <strong>일시적(ephemeral)</strong>입니다&mdash;컨테이너를 중지하면 내부에서 생성된 모든 데이터가 손실됩니다. 이것은 TaskForge의 SQLite 데이터베이스에 문제가 됩니다. <strong>볼륨(volumes)</strong>은 호스트 디렉터리를 컨테이너에 마운트하여 재시작 후에도 데이터가 살아남게 합니다:</p>
+<div class="prompt-block"><span class="label">터미널</span>docker run -it -v $(pwd)/data:/app/data taskforge</div>
+<p>이는 호스트의 <code>./data</code>를 컨테이너 내부의 <code>/app/data</code>에 매핑합니다. SQLite 데이터베이스 파일이 이 공유 디렉터리에 있으므로 컨테이너가 중지되어도 지속됩니다.</p>
+
+<h3>Docker Compose 기초</h3>
+<p>프로젝트에 여러 서비스(웹 API, 데이터베이스 등)가 필요할 때, <strong>Docker Compose</strong>는 단일 파일로 모두 관리합니다:</p>
+<pre><code># docker-compose.yml
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./data:/app/data
+    command: ["python", "-m", "flask", "run", "--host=0.0.0.0"]</code></pre>
+
+<p>한 명령어로 모두 시작하세요:</p>
+<div class="prompt-block"><span class="label">터미널</span># 모든 서비스 시작
+docker compose up
+
+# 모든 서비스 중지
+docker compose down</div>
+
+<p><code>ports</code> 매핑 <code>"5000:5000"</code>은 다음을 의미합니다: 호스트의 포트 5000을 컨테이너의 포트 5000으로 전달합니다. 이를 통해 브라우저에서 Flask API에 접근합니다.</p>
+
+<h3>필수 명령어</h3>
+<table>
+<caption>필수 Docker 명령어</caption>
+<tr><th>명령어</th><th>하는 일</th></tr>
+<tr><td><code>docker build -t name .</code></td><td>Dockerfile로부터 이미지 빌드</td></tr>
+<tr><td><code>docker run -it name</code></td><td>컨테이너를 인터랙티브하게 실행</td></tr>
+<tr><td><code>docker ps</code></td><td>실행 중인 컨테이너 목록 표시</td></tr>
+<tr><td><code>docker stop id</code></td><td>실행 중인 컨테이너 중지</td></tr>
+<tr><td><code>docker rm id</code></td><td>중지된 컨테이너 삭제</td></tr>
+<tr><td><code>docker logs id</code></td><td>컨테이너 출력/로그 보기</td></tr>
+<tr><td><code>docker exec -it id bash</code></td><td>실행 중인 컨테이너 내부에서 셸 열기</td></tr>
+</table>
+
+<h3>.dockerignore</h3>
+<p><code>.gitignore</code>가 git에 건너뛸 파일을 알려주는 것처럼, <code>.dockerignore</code>는 Docker에 빌드 컨텍스트에서 제외할 파일을 알려줍니다. 이미지를 작게 유지하고 민감한 데이터가 복사되는 것을 방지합니다:</p>
+<pre><code>.venv
+__pycache__
+.git
+.env
+*.pyc
+.pytest_cache</code></pre>
+
+<h3>흔한 오해</h3>
+<div role="note" class="callout warn">
+<div class="callout-title">주의: "Docker는 배포에만 쓴다"</div>
+<p>Docker는 개발 중에도 똑같이 유용합니다. 팀의 모든 개발자가 동일한 환경을 갖도록 보장합니다&mdash;동일한 Python 버전, 동일한 라이브러리 버전, 동일한 시스템 도구. 더 이상 "제 컴퓨터에서는 되는데요"가 없습니다.</p>
+</div>
+
+<div role="note" class="callout warn">
+<div class="callout-title">주의: "컨테이너는 가상 머신이다"</div>
+<p>컨테이너는 호스트 OS 커널을 공유합니다. 하드웨어를 에뮬레이션하거나 전체 OS를 부팅하지 않습니다. 이 때문에 컨테이너는 초 단위로 시작하지만 VM은 분 단위가 걸리고, 컨테이너 이미지는 메가바이트이지만 VM 이미지는 기가바이트인 것입니다.</p>
+</div>
+
+<h3>TaskForge 연계</h3>
+<p>TaskForge를 컨테이너화하세요. Dockerfile을 작성하고, 이미지를 빌드하고, 실행하세요. TaskForge가 호스트 머신에서와 동일하게 컨테이너 내부에서 작동하는지 확인하세요. 이것이 6단계에서 Docker로 Claude Code 에이전트를 실행하기 위한 기반입니다.</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg" aria-label="Diagram showing three containers running on Docker Engine on top of the host operating system">
+  <!-- Host OS -->
+  <rect class="node-fill" x="50" y="220" width="600" height="44" rx="8"/>
+  <text class="label-text" x="350" y="247" text-anchor="middle">Host Operating System</text>
+  <!-- Docker Engine -->
+  <rect class="node-accent" x="80" y="145" width="540" height="44" rx="8"/>
+  <text class="label-text" x="350" y="172" text-anchor="middle">Docker Engine</text>
+  <!-- Container 1: TaskForge API -->
+  <rect class="node-fill" x="95" y="30" width="155" height="85" rx="6"/>
+  <text class="label-text" x="172" y="55" text-anchor="middle">TaskForge API</text>
+  <text class="sub-text" x="172" y="72" text-anchor="middle">Python 3.12</text>
+  <text class="sub-text" x="172" y="88" text-anchor="middle">Flask + SQLite</text>
+  <line class="arrow" x1="172" y1="115" x2="172" y2="145"/>
+  <!-- Container 2: Database -->
+  <rect class="node-fill" x="272" y="30" width="155" height="85" rx="6"/>
+  <text class="label-text" x="350" y="55" text-anchor="middle">Database</text>
+  <text class="sub-text" x="350" y="72" text-anchor="middle">PostgreSQL</text>
+  <text class="sub-text" x="350" y="88" text-anchor="middle">Persistent volume</text>
+  <line class="arrow" x1="350" y1="115" x2="350" y2="145"/>
+  <!-- Container 3: Claude Agent -->
+  <rect class="node-fill" x="449" y="30" width="155" height="85" rx="6"/>
+  <text class="label-text" x="527" y="55" text-anchor="middle">Claude Agent</text>
+  <text class="sub-text" x="527" y="72" text-anchor="middle">Node.js + Claude</text>
+  <text class="sub-text" x="527" y="88" text-anchor="middle">Code CLI</text>
+  <line class="arrow" x1="527" y1="115" x2="527" y2="145"/>
+  <!-- Connection between engine and host -->
+  <line class="arrow" x1="350" y1="189" x2="350" y2="220"/>
+</svg>
+<div class="diagram-caption">컨테이너는 격리되어 있지만 Docker 엔진과 호스트 OS를 공유합니다. 각 컨테이너는 고유한 파일시스템, 네트워크, 프로세스 공간을 갖지만 커널을 공유하기 때문에 가볍습니다.</div>
+</div>
+
+<h3>마이크로 연습</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">1: Docker에서 Python 실행하기</div>
+<p><code>docker run -it python:3.12 python3</code>을 실행하고 컨테이너 내부에서 <code>print('Hello from Docker!')</code>를 실행하세요. <code>exit()</code>을 입력하여 나가세요.</p>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">2: TaskForge 이미지 빌드하기</div>
+<p>TaskForge용 Dockerfile을 작성하고 <code>docker build -t taskforge .</code>으로 빌드하세요. <code>docker images</code>로 이미지가 나타나는지 확인하세요.</p>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">직접 해보기</div>
+<p>TaskForge의 Flask API를 포트 5000에서 실행하고 SQLite 데이터베이스를 위한 볼륨 마운트가 있는 <code>docker-compose.yml</code>을 만드세요:</p>
+<div class="prompt-block"><span class="label">docker-compose.yml</span>services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./data:/app/data
+    command: ["python", "-m", "flask", "run", "--host=0.0.0.0"]</div>
+<p><code>docker compose up</code>으로 시작하고, 다른 터미널에서 확인하세요:</p>
+<div class="prompt-block"><span class="label">터미널</span>curl http://localhost:5000/tasks</div>
+<p><strong>확인:</strong> TaskForge가 Docker 내부에서 실행되고 호스트 머신에서 접근 가능합니다. <code>docker compose down</code>과 <code>docker compose up</code> 사이에도 데이터가 유지됩니다.</p>
+<p><strong>작동하지 않을 경우:</strong> (1) 포트 충돌 &rarr; <code>"5000:5000"</code>을 <code>"5001:5000"</code>으로 변경하고 <code>curl http://localhost:5001/tasks</code>를 사용하세요. (2) <code>permission denied</code> &rarr; Docker Desktop이 실행 중인지 확인하세요. (3) 빌드 실패 &rarr; <code>requirements.txt</code>가 프로젝트 루트에 있는지 확인하세요.</p>
+</div>
+
+<div class="pq">어느 곳에서나 동일하게 실행되도록 애플리케이션을 컨테이너화했습니다&mdash;내 노트북, 팀원의 컴퓨터, 또는 클라우드 서버. 이것이 격리된 AI 에이전트 컨테이너를 가능하게 하는 인프라입니다.</div>
+
+<h3>인터랙티브 연습</h3>
+
+<div class="quiz" data-ch="16" data-ex="quiz-from">
+  <h4>지식 확인</h4>
+  <p>Dockerfile의 <code>FROM python:3.12</code>는 무엇을 하나요?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">내 컴퓨터에 Python 3.12를 설치한다</button>
+    <button class="quiz-option" data-correct="true">컨테이너의 베이스 이미지를 설정한다</button>
+    <button class="quiz-option" data-correct="false">Python 소스 코드를 다운로드한다</button>
+    <button class="quiz-option" data-correct="false">가상 환경을 만든다</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz" data-ch="16" data-ex="quiz-volume">
+  <h4>지식 확인</h4>
+  <p><code>docker run</code> 명령어에서 <code>-v $(pwd):/app</code>은 무엇을 하나요?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">/app이라는 새 디렉터리를 만든다</button>
+    <button class="quiz-option" data-correct="false">파일을 컨테이너로 복사한다</button>
+    <button class="quiz-option" data-correct="true">현재 디렉터리를 컨테이너의 /app에 마운트한다</button>
+    <button class="quiz-option" data-correct="false">작업 디렉터리를 /app으로 설정한다</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="checklist" data-ch="16" data-ex="docker-check">
+  <h4>Docker 작업 흐름</h4>
+  <label><input type="checkbox"><span>Docker 설치됨 — <code>docker --version</code>이 버전을 표시함</span></label>
+  <label><input type="checkbox"><span>Python 이미지 풀함 — <code>docker pull python:3.12</code></span></label>
+  <label><input type="checkbox"><span>TaskForge 이미지 빌드됨 — <code>docker build -t taskforge .</code></span></label>
+  <label><input type="checkbox"><span>컨테이너에서 TaskForge 성공적으로 실행됨</span></label>
+  <label><input type="checkbox"><span><code>docker ps</code>가 실행 중인 컨테이너를 표시함 (또는 <code>docker ps -a</code>가 기록 표시)</span></label>
+</div>
+
+</section>
+
+<!-- ===== CH 17 ===== -->
+<section id="ch17" data-ch="17">
+<h2><span class="ch-label">17장</span> CI/CD와 GitHub Actions</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">지금 이것이 중요한 이유</div>
+<p>GitHub에 푸시할 때마다 자동으로 테스트를 실행하고, 코드를 확인하고, 심지어 앱을 배포할 수 있습니다. CI/CD는 수동 품질 검사를 자동화된 파이프라인으로 전환합니다. 5단계에서는 이 인프라에 의존하는 CI 트리거 에이전트를 사용합니다.</p>
+</div>
+
+<h3>CI/CD란 무엇인가?</h3>
+<p><strong>CI(Continuous Integration, 지속적 통합)</strong>는 코드가 저장소에 푸시될 때마다 자동으로 테스트를 실행하는 것을 의미합니다. 머지 전에 <code>pytest</code>를 실행하는 것을 기억해야 하는 대신, 시스템이 항상, 예외 없이 해줍니다.</p>
+
+<p><strong>CD(Continuous Deployment/Delivery, 지속적 배포/전달)</strong>는 한 단계 더 나아갑니다: 테스트가 통과되면 코드가 자동으로 프로덕션에 배포되거나(deployment), 패키징되어 원클릭 배포가 가능한 상태가 됩니다(delivery).</p>
+
+<p>핵심 아이디어는 단순합니다: <strong>버그가 프로덕션에 도달하기 전에 잡아내는 것</strong>입니다. 테스트가 실패하면 파이프라인이 중단되고 알림을 보냅니다. 깨진 코드가 배포되지 않습니다. "테스트 실행을 잊었어요" 사고가 없습니다.</p>
+
+<table>
+<caption>CI/CD 용어와 파이프라인 단계</caption>
+<tr><th>용어</th><th>의미</th><th>실행 시점</th></tr>
+<tr><td><strong>CI</strong></td><td>테스트와 검사를 자동으로 실행</td><td>모든 푸시 또는 풀 리퀘스트 시</td></tr>
+<tr><td><strong>CD (전달)</strong></td><td>코드 패키징, 수동 배포 준비 완료</td><td>main 브랜치에서 CI 통과 후</td></tr>
+<tr><td><strong>CD (배포)</strong></td><td>프로덕션에 자동 배포</td><td>main 브랜치에서 CI 통과 후</td></tr>
+</table>
+
+<h3>GitHub Actions 기초</h3>
+<p>GitHub Actions는 GitHub의 내장 CI/CD 시스템입니다. 공개 저장소에는 무료이며 개인 저장소에는 넉넉한 무료 사용 시간을 제공합니다. 핵심 개념들:</p>
+
+<table>
+<caption>GitHub Actions 핵심 개념</caption>
+<tr><th>개념</th><th>무엇인가</th><th>비유</th></tr>
+<tr><td><strong>워크플로우(Workflow)</strong></td><td>자동화 파이프라인을 정의하는 YAML 파일</td><td>순서가 있는 단계들의 레시피</td></tr>
+<tr><td><strong>트리거(Trigger)</strong></td><td>워크플로우를 시작하는 이벤트</td><td>"시작" 신호</td></tr>
+<tr><td><strong>잡(Job)</strong></td><td>동일한 머신에서 실행되는 단계의 집합</td><td>한 스테이션의 한 요리사</td></tr>
+<tr><td><strong>스텝(Step)</strong></td><td>잡 내의 단일 명령어 또는 액션</td><td>레시피의 한 지침</td></tr>
+</table>
+
+<p>워크플로우는 저장소 내의 <code>.github/workflows/</code>에 있습니다. 각 워크플로우는 <strong>YAML 파일</strong>(중괄호 대신 들여쓰기를 사용하는 JSON과 유사한 사람이 읽을 수 있는 데이터 형식)입니다.</p>
+
+<p>일반적인 트리거:</p>
+<ul>
+<li><code>push</code> &mdash; 지정된 브랜치에 코드가 푸시될 때 실행</li>
+<li><code>pull_request</code> &mdash; PR이 열리거나 업데이트될 때 실행</li>
+<li><code>schedule</code> &mdash; cron 일정으로 실행(예: 야간 테스트)</li>
+</ul>
+
+<h3>첫 번째 워크플로우</h3>
+<p>모든 푸시와 풀 리퀘스트에서 테스트를 실행하는 완전하고 작동하는 GitHub Actions 워크플로우입니다:</p>
+
+<pre><code>name: Run Tests
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - run: python -m pytest</code></pre>
+
+<p>각 줄을 살펴보겠습니다:</p>
+<table>
+<caption>GitHub Actions 워크플로우 파일 한 줄씩 설명</caption>
+<tr><th>줄</th><th>하는 일</th></tr>
+<tr><td><code>name: Run Tests</code></td><td>GitHub Actions UI에 표시되는 사람이 읽을 수 있는 이름</td></tr>
+<tr><td><code>on: push: branches: [main]</code></td><td><code>main</code> 브랜치에 코드가 푸시되면 이 워크플로우 실행</td></tr>
+<tr><td><code>on: pull_request: branches: [main]</code></td><td>PR이 <code>main</code>을 대상으로 할 때도 실행</td></tr>
+<tr><td><code>jobs: test:</code></td><td><code>test</code>라는 잡 정의</td></tr>
+<tr><td><code>runs-on: ubuntu-latest</code></td><td>새로운 Ubuntu 가상 머신에서 실행(GitHub이 무료로 제공)</td></tr>
+<tr><td><code>uses: actions/checkout@v4</code></td><td>저장소 코드를 VM에 체크아웃&mdash;없으면 VM이 비어 있음</td></tr>
+<tr><td><code>uses: actions/setup-python@v5</code></td><td>VM에 지정된 Python 버전 설치</td></tr>
+<tr><td><code>with: python-version: '3.12'</code></td><td>Python 3.12 사용</td></tr>
+<tr><td><code>run: pip install -r requirements.txt</code></td><td>프로젝트 의존성 설치</td></tr>
+<tr><td><code>run: python -m pytest</code></td><td>테스트 스위트 실행&mdash;테스트가 실패하면 워크플로우 실패</td></tr>
+</table>
+
+<p>저장소에서 <code>.github/workflows/test.yml</code>로 저장하세요. GitHub에 푸시하면 워크플로우가 자동으로 실행됩니다.</p>
+
+<h3>더 많은 검사 추가하기</h3>
+<p>테스트만으로는 충분하지 않습니다. 전문적인 파이프라인은 코드 품질도 검사합니다:</p>
+
+<h4>ruff로 린팅하기</h4>
+<p><strong>린팅(Linting)</strong>은 코드를 실행하지 않고도 스타일 문제, 사용하지 않는 임포트, 잠재적 버그를 잡습니다. 워크플로우에 린팅 단계를 추가하세요:</p>
+<pre><code>      - run: pip install ruff
+      - run: ruff check .</code></pre>
+<p><code>ruff</code>는 빠르며 Python의 흔한 실수를 많이 잡아냅니다. 수년간 표준이었던 <code>flake8</code>이 대안입니다.</p>
+
+<h4>타입 검사</h4>
+<p>Python 코드에서 타입 힌트를 사용한다면, <code>mypy</code> 같은 도구가 CI에서 검사할 수 있습니다. 이것은 더 고급이므로&mdash;지금은 존재하며 또 다른 단계로 추가할 수 있다는 것만 알아두세요.</p>
+
+<h4>매트릭스 전략: 여러 Python 버전</h4>
+<p>코드가 Python 3.12에서는 작동하지만 3.11에서는 깨질 수 있습니다. <strong>매트릭스 전략(matrix strategy)</strong>은 여러 버전에 대해 병렬로 테스트합니다:</p>
+<pre><code>jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.11', '3.12', '3.13']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: pip install -r requirements.txt
+      - run: python -m pytest</code></pre>
+<p>각 Python 버전당 하나씩 세 개의 병렬 잡을 만듭니다. 하나라도 실패하면 어떤 버전에 문제가 있는지 정확히 알 수 있습니다.</p>
+
+<h3>상태 배지</h3>
+<p>테스트가 통과하는지 보여주는 배지를 <code>README.md</code>에 추가하세요:</p>
+<pre><code>![Tests](https://github.com/YOUR-USERNAME/YOUR-REPO/actions/workflows/test.yml/badge.svg)</code></pre>
+<p><code>YOUR-USERNAME</code>과 <code>YOUR-REPO</code>를 실제 GitHub 사용자 이름과 저장소 이름으로 바꾸세요. 배지는 테스트가 통과하면 초록색으로, 실패하면 빨간색으로 변합니다&mdash;저장소를 보는 누구에게나 보입니다.</p>
+
+<h3>시크릿 관리</h3>
+<p>일부 워크플로우는 API 키나 토큰이 필요합니다(예: 배포 또는 외부 서비스 호출). 워크플로우 파일이나 소스 코드에 <strong>자격 증명을 하드코딩하지 마세요</strong>.</p>
+
+<p>GitHub는 <strong>시크릿(Secrets)</strong>&mdash;저장소 설정에 저장되는 암호화된 변수&mdash;을 제공합니다. 추가하려면: GitHub에서 저장소로 이동하고, Settings, 그리고 Secrets and variables, Actions로 이동하고, "New repository secret"을 클릭하세요.</p>
+
+<p><code>${{ secrets.NAME }}</code> 구문으로 워크플로우에서 시크릿을 참조하세요:</p>
+<pre><code>      - run: python deploy.py
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}</code></pre>
+
+<div role="note" class="callout critical">
+<div class="callout-title">주의</div>
+<p>GitHub는 로그에서 시크릿을 자동으로 마스킹하지만, 워크플로우 단계에서 <code>echo $API_KEY</code>나 <code>print(os.environ["API_KEY"])</code>는 피하세요. 시크릿이 유출되면 즉시 교체(rotate)하세요.</p>
+</div>
+
+<h3>실패했을 때</h3>
+<p>워크플로우는 실패할 것입니다. 이것은 정상입니다&mdash;문제를 잡아내는 것이 워크플로우의 역할이기 때문입니다. 디버깅 방법은 다음과 같습니다:</p>
+
+<p><strong>로그 읽기:</strong> GitHub에서 Actions 탭으로 이동하고, 실패한 워크플로우 실행을 클릭하고, 실패한 잡을 클릭한 다음, 실패한 단계를 펼치세요. 로그에 정확한 오류와 줄 번호가 표시됩니다.</p>
+
+<p><strong>흔한 실패 원인:</strong></p>
+<table>
+<caption>흔한 CI/CD 파이프라인 실패와 해결 방법</caption>
+<tr><th>증상</th><th>가능한 원인</th><th>해결 방법</th></tr>
+<tr><td><code>ModuleNotFoundError</code></td><td>누락된 의존성</td><td><code>requirements.txt</code>에 패키지 추가</td></tr>
+<tr><td>Python 버전 오류</td><td>코드가 더 새로운 Python의 기능을 사용</td><td>워크플로우의 <code>python-version</code>을 개발 버전과 일치시키세요</td></tr>
+<tr><td>로컬에서는 테스트 통과, CI에서 실패</td><td>다른 OS, 누락된 환경 변수, 하드코딩된 경로</td><td>하드코딩된 경로 대신 <code>os.path.join()</code> 사용; 모든 환경 변수가 설정되었는지 확인</td></tr>
+<tr><td><code>Permission denied</code></td><td>스크립트가 실행 불가능하거나 보호된 경로에 쓰기 시도</td><td><code>chmod +x</code> 단계를 추가하거나 쓰기 가능한 디렉토리에 작성</td></tr>
+</table>
+
+<h3>흔한 오해</h3>
+<div role="note" class="callout warn">
+<div class="callout-title">주의</div>
+<p><strong>오해: "CI는 큰 팀에만 필요하다"</strong>&mdash;1인 프로젝트에서도 자동화된 테스트는 도움이 됩니다. 푸시하기 전에 테스트 실행을 잊을 수 있고, 연결되어 있는 줄 몰랐던 것을 깨뜨릴 수 있습니다. CI는 이러한 실수를 자동으로 잡아줍니다&mdash;50명의 팀만큼이나 1인 팀에게도 안전망이 됩니다.</p>
+</div>
+
+<div role="note" class="callout warn">
+<div class="callout-title">주의</div>
+<p><strong>오해: "로컬에서 테스트가 통과하면 CI에서도 통과할 것이다"</strong>&mdash;CI는 다른 운영체제(보통 Ubuntu), 다른 Python 버전, 그리고 남아 있는 상태가 없는 깨끗한 환경에서 실행됩니다. 로컬에서 설정한 환경 변수는 CI에 존재하지 않습니다. 저장소 밖의 파일도 존재하지 않습니다. 이것이 바로 핵심입니다&mdash;CI는 여러분의 컴퓨터가 아닌, 깨끗한 환경에서 코드가 작동하는지 증명합니다.</p>
+</div>
+
+<h3>TaskForge 연결</h3>
+<p>TaskForge에 매번 푸시와 풀 리퀘스트(Pull Request)마다 pytest를 실행하는 GitHub Actions 워크플로우를 추가하세요. TaskForge 저장소에 <code>.github/workflows/test.yml</code>로 저장하세요. 푸시한 후 GitHub의 Actions 탭을 방문하여 테스트가 자동으로 실행되는 것을 확인하세요. 이것은 Phase 5에서 CI 트리거 에이전트가 사용하는 것과 동일한 CI 인프라입니다.</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 140" xmlns="http://www.w3.org/2000/svg" aria-label="CI/CD pipeline diagram showing push to GitHub triggering tests with pass or fail outcomes">
+  <!-- Push Code -->
+  <rect class="node-fill" x="10" y="45" width="100" height="50" rx="8"/>
+  <text class="label-text" x="60" y="66" text-anchor="middle">Push</text>
+  <text class="sub-text" x="60" y="80" text-anchor="middle">Code</text>
+  <line class="arrow" x1="110" y1="70" x2="140" y2="70"/>
+  <!-- GitHub -->
+  <rect class="node-accent" x="140" y="45" width="100" height="50" rx="8"/>
+  <text class="label-text" x="190" y="74" text-anchor="middle">GitHub</text>
+  <line class="arrow" x1="240" y1="70" x2="270" y2="70"/>
+  <!-- Trigger Workflow -->
+  <rect class="node-fill" x="270" y="45" width="100" height="50" rx="8"/>
+  <text class="label-text" x="320" y="66" text-anchor="middle">Trigger</text>
+  <text class="sub-text" x="320" y="80" text-anchor="middle">Workflow</text>
+  <line class="arrow" x1="370" y1="70" x2="400" y2="70"/>
+  <!-- Run Tests -->
+  <rect class="node-fill" x="400" y="45" width="100" height="50" rx="8"/>
+  <text class="label-text" x="450" y="66" text-anchor="middle">Run</text>
+  <text class="sub-text" x="450" y="80" text-anchor="middle">Tests</text>
+  <line class="arrow" x1="500" y1="70" x2="530" y2="70"/>
+  <!-- Pass? diamond approximation -->
+  <rect class="node-accent" x="530" y="45" width="60" height="50" rx="8"/>
+  <text class="label-text" x="560" y="74" text-anchor="middle">Pass?</text>
+  <!-- Deploy (top branch) -->
+  <line x1="560" y1="45" x2="560" y2="20" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <rect class="node-fill" x="610" y="5" width="80" height="32" rx="6"/>
+  <text class="sub-text" x="650" y="25" text-anchor="middle">Deploy</text>
+  <line x1="590" y1="20" x2="610" y2="20" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="sub-text" x="582" y="14" text-anchor="middle" fill="var(--accent)">Yes</text>
+  <!-- Fail / Notify (bottom branch) -->
+  <line x1="560" y1="95" x2="560" y2="120" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <rect class="node-fill" x="610" y="108" width="80" height="32" rx="6"/>
+  <text class="sub-text" x="650" y="128" text-anchor="middle">Notify</text>
+  <line x1="590" y1="124" x2="610" y2="124" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="sub-text" x="582" y="134" text-anchor="middle" fill="var(--accent)">No</text>
+</svg>
+<div class="diagram-caption">CI/CD 파이프라인(Pipeline): 매번 푸시할 때마다 자동화된 테스트가 실행됩니다. 테스트가 통과하면 코드를 배포할 수 있습니다. 실패하면 프로덕션에서 문제가 발생하기 전에 알림을 받습니다.</div>
+</div>
+
+<h3>마이크로 연습</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">직접 해보기</div>
+<p>TaskForge 저장소에 <code>.github/workflows/test.yml</code> 파일을 다음 내용으로 생성하세요:</p>
+<pre><code>name: Run Tests
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - run: python -m pytest</code></pre>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">직접 해보기</div>
+<p>워크플로우에 ruff로 코드 포맷을 검사하는 단계를 추가하세요. <code>pip install</code> 단계 다음, <code>pytest</code> 단계 앞에 다음 줄을 삽입하세요:</p>
+<pre><code>      - run: pip install ruff
+      - run: ruff check .</code></pre>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">직접 해보기</div>
+<p>TaskForge를 GitHub에 푸시하고(Ch 12에서 배운 대로), 생성한 <code>.github/workflows/test.yml</code>을 푸시하세요. GitHub의 Actions 탭으로 이동하여 워크플로우가 실행되는 것을 확인하세요. 의도적으로 테스트를 실패시키고, 다시 푸시하여 빨간 X가 나타나는 것을 확인하세요.</p>
+<div class="prompt-block"><span class="label">Terminal</span># 워크플로우 디렉토리가 존재하는지 확인합니다
+mkdir -p .github/workflows
+
+# 워크플로우 파일을 생성합니다 (또는 연습 1에서 만든 것을 복사합니다)
+# 그런 다음 GitHub에 푸시합니다
+git add .github/workflows/test.yml
+git commit -m "Add CI workflow"
+git push
+
+# 의도적으로 테스트를 깨뜨립니다
+# 테스트에서 잘못된 assert를 작성합니다, 예:
+# assert 1 == 2
+git add -A
+git commit -m "Break a test intentionally"
+git push
+
+# GitHub > Actions 탭으로 이동하여 빨간 X가 나타나는지 확인합니다</div>
+<p><strong>확인 방법:</strong> 첫 번째 푸시에서 Actions 탭에 초록색 체크마크가 표시됩니다. 테스트를 깨뜨리고 다시 푸시하면 빨간 X가 표시됩니다. 로그에서 테스트 출력을 확인할 수 있습니다.</p>
+<p><strong>작동하지 않을 때:</strong> (1) 워크플로우가 트리거되지 않음 &rarr; <code>on:</code> 섹션이 브랜치 이름과 일치하는지 확인하세요 (예: <code>main</code> vs <code>master</code>). (2) Python을 찾을 수 없음 &rarr; <code>actions/setup-python</code> 단계가 포함되어 있는지 확인하세요. (3) 의존성 누락 &rarr; 테스트 전에 <code>pip install -r requirements.txt</code>가 실행되는지 확인하세요. (4) Actions 탭이 없음 &rarr; 저장소가 로컬이 아닌 GitHub에 있는지 확인하세요.</p>
+</div>
+
+<div class="pq">방금 매번 푸시할 때마다 품질 검사가 자동으로 실행되도록 설정했습니다&mdash;전문적인 워크플로우에서 CI 트리거 에이전트가 코드를 리뷰하고, 테스트를 실행하고, 프로덕션을 보호하는 데 사용하는 것과 동일한 인프라입니다.</div>
+
+<h3>대화형 연습</h3>
+
+<div class="quiz" data-ch="17" data-ex="quiz-trigger">
+  <h4>이해도 확인</h4>
+  <p>GitHub Actions 워크플로우에서 <code>on: push</code>는 무엇을 의미합니까?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">수동으로 트리거할 때만 실행</button>
+    <button class="quiz-option" data-correct="true">모든 브랜치에 푸시할 때마다 실행</button>
+    <button class="quiz-option" data-correct="false">풀 리퀘스트에서만 실행</button>
+    <button class="quiz-option" data-correct="false">스케줄에 따라 실행</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz" data-ch="17" data-ex="quiz-runner">
+  <h4>이해도 확인</h4>
+  <p><code>runs-on: ubuntu-latest</code>는 무엇을 지정합니까?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">프로그래밍 언어</button>
+    <button class="quiz-option" data-correct="true">CI 러너(Runner)의 운영체제</button>
+    <button class="quiz-option" data-correct="false">사용할 Docker 이미지</button>
+    <button class="quiz-option" data-correct="false">실행할 브랜치</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="checklist" data-ch="17" data-ex="cicd-check">
+  <h4>CI/CD 설정 체크리스트</h4>
+  <label><input type="checkbox"><span><code>.github/workflows/test.yml</code> 생성 완료</span></label>
+  <label><input type="checkbox"><span>워크플로우 파일을 GitHub에 푸시 완료</span></label>
+  <label><input type="checkbox"><span>GitHub Actions 탭에서 워크플로우 실행 확인</span></label>
+  <label><input type="checkbox"><span>통과한 실행에서 초록색 체크마크 확인</span></label>
+  <label><input type="checkbox"><span>의도적으로 테스트를 깨뜨리고 빨간 X 확인</span></label>
+</div>
+
+</section>
+
+<!-- ===== CH 18 ===== -->
+<section id="ch18" data-ch="18">
+<h2><span class="ch-label">Chapter 18</span> 프로젝트 아키텍처</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">핵심 개념</div>
+<p>이제 API를 구축하고, 데이터를 영속화하고, 애플리케이션을 컨테이너화하고, 자동화된 테스트를 실행할 수 있습니다. 하지만 프로젝트가 커지면 코드를 조직하는 방법이 코드 자체만큼 중요해집니다. 나쁜 아키텍처(Architecture)는 작동하는 프로젝트를 유지보수 불가능한 프로젝트로 만듭니다. 좋은 아키텍처는 여러분과 AI 코딩 도구가 자신 있게 탐색하고, 확장하고, 리팩터링할 수 있게 해줍니다.</p>
+</div>
+
+<h3>아키텍처가 중요한 이유</h3>
+<p>TaskForge가 단일 파일이었을 때는 프로그램 전체를 머릿속에 담을 수 있었습니다. 이제는 Flask API, 데이터베이스 함수, 테스트, Dockerfile, CI 파이프라인이 있습니다. 이 모든 것이 하나의 파일에 있다면, 코딩보다 스크롤하는 데 더 많은 시간을 보내게 될 것입니다.</p>
+
+<p><strong>아키텍처</strong>는 코드를 파일, 폴더, 모듈로 조직하여 각 부분이 명확한 목적을 갖도록 하는 방법입니다. 좋은 아키텍처는 세 가지를 제공합니다:</p>
+<ul>
+<li><strong>찾기 쉬움(Findability)</strong>&mdash;어떤 기능이든 빠르게 찾을 수 있습니다.</li>
+<li><strong>변경 용이성(Changeability)</strong>&mdash;다른 부분을 깨뜨리지 않고 한 부분을 수정할 수 있습니다.</li>
+<li><strong>가독성(Readability)</strong>&mdash;새로운 개발자(또는 코드베이스를 읽는 AI 에이전트)가 모든 줄을 읽지 않고도 구조를 이해할 수 있습니다.</li>
+</ul>
+
+<h3>관심사의 분리</h3>
+<p><strong>관심사의 분리(Separation of Concerns)</strong>란 각 파일이나 모듈이 하나의 책임만 처리한다는 의미입니다. API 계층은 HTTP 요청과 응답을 처리합니다. 데이터베이스 계층은 데이터 저장과 조회를 처리합니다. 비즈니스 로직은 애플리케이션의 규칙을 처리합니다. 이러한 관심사가 분리되면, 데이터 저장 방식을 변경해도 API 라우트를 변경할 필요가 없으며 그 반대도 마찬가지입니다.</p>
+
+<p>레스토랑으로 비유해 보겠습니다. 웨이터는 주문을 받고(API 계층), 주방은 음식을 요리하고(비즈니스 로직), 식료품 저장실은 재료를 보관합니다(데이터 계층). 식료품 저장실을 재정리해도 웨이터는 재교육이 필요 없습니다.</p>
+
+<h3>일반적인 패턴: 단순 스크립트에서 패키지로</h3>
+<p>프로젝트는 성장하면서 예측 가능한 단계를 거칩니다:</p>
+
+<h4>단계 1: 단일 파일</h4>
+<p>모든 것이 하나의 파일에 있습니다. 100줄 미만의 스크립트에는 적합합니다.</p>
+<pre><code># taskforge.py — everything in one file
+tasks = []
+
+def add_task(title):
+    tasks.append({"title": title, "done": False})
+
+def list_tasks():
+    return tasks
+
+if __name__ == "__main__":
+    add_task("Buy groceries")
+    print(list_tasks())</code></pre>
+
+<h4>단계 2: 여러 모듈</h4>
+<p>책임별로 분리합니다. 각 파일은 하나의 일만 합니다.</p>
+<pre><code># db.py — database operations
+# api.py — Flask routes
+# cli.py — command-line interface
+# models.py — data structures</code></pre>
+
+<h4>단계 3: 디렉토리 구조를 갖춘 패키지</h4>
+<p>관련 모듈을 디렉토리로 그룹화합니다. 최상위 수준에 설정, 테스트, 인프라 파일을 추가합니다.</p>
+
+<h3>디렉토리 구조 규칙</h3>
+<p>다음은 일반적인 Python 프로젝트 레이아웃입니다. 외울 필요는 없습니다&mdash;이 패턴이 존재한다는 것을 알아서 인식하고 따를 수 있으면 됩니다.</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 380" xmlns="http://www.w3.org/2000/svg" aria-label="Diagram showing TaskForge directory structure with files organized into source code, tests, and configuration categories">
+  <!-- Title -->
+  <text class="label-text" x="350" y="22" text-anchor="middle">TaskForge Project Structure</text>
+  <!-- Root -->
+  <rect class="node-accent" x="20" y="38" width="200" height="28" rx="4"/>
+  <text class="sub-text" x="30" y="56">taskforge/</text>
+  <!-- src package -->
+  <rect class="node-fill" x="50" y="74" width="280" height="28" rx="4"/>
+  <text class="sub-text" x="60" y="92">taskforge/           (Python package)</text>
+  <rect class="node-fill" x="80" y="108" width="250" height="28" rx="4"/>
+  <text class="sub-text" x="90" y="126">__init__.py        (marks as package)</text>
+  <rect class="node-fill" x="80" y="142" width="250" height="28" rx="4"/>
+  <text class="sub-text" x="90" y="160">api.py             (Flask routes)</text>
+  <rect class="node-fill" x="80" y="176" width="250" height="28" rx="4"/>
+  <text class="sub-text" x="90" y="194">db.py              (database layer)</text>
+  <rect class="node-fill" x="80" y="210" width="250" height="28" rx="4"/>
+  <text class="sub-text" x="90" y="228">cli.py             (CLI commands)</text>
+  <!-- tests -->
+  <rect class="node-fill" x="50" y="248" width="280" height="28" rx="4"/>
+  <text class="sub-text" x="60" y="266">tests/               (test suite)</text>
+  <rect class="node-fill" x="80" y="282" width="250" height="28" rx="4"/>
+  <text class="sub-text" x="90" y="300">test_api.py        (API tests)</text>
+  <rect class="node-fill" x="80" y="316" width="250" height="28" rx="4"/>
+  <text class="sub-text" x="90" y="334">test_db.py         (database tests)</text>
+  <!-- config files on the right -->
+  <rect class="node-accent" x="380" y="74" width="290" height="28" rx="4"/>
+  <text class="sub-text" x="390" y="92">Dockerfile           (container build)</text>
+  <rect class="node-accent" x="380" y="108" width="290" height="28" rx="4"/>
+  <text class="sub-text" x="390" y="126">docker-compose.yml   (multi-container)</text>
+  <rect class="node-accent" x="380" y="142" width="290" height="28" rx="4"/>
+  <text class="sub-text" x="390" y="160">requirements.txt     (dependencies)</text>
+  <rect class="node-accent" x="380" y="176" width="290" height="28" rx="4"/>
+  <text class="sub-text" x="390" y="194">.gitignore           (git exclusions)</text>
+  <rect class="node-accent" x="380" y="210" width="290" height="28" rx="4"/>
+  <text class="sub-text" x="390" y="228">.env                 (local config)</text>
+  <rect class="node-accent" x="380" y="248" width="290" height="28" rx="4"/>
+  <text class="sub-text" x="390" y="266">.github/workflows/   (CI pipelines)</text>
+  <rect class="node-accent" x="380" y="282" width="290" height="28" rx="4"/>
+  <text class="sub-text" x="390" y="300">README.md            (project docs)</text>
+  <!-- Labels -->
+  <text class="label-text" x="190" y="368" text-anchor="middle" fill="var(--accent)">Source Code &amp; Tests</text>
+  <text class="label-text" x="525" y="368" text-anchor="middle" fill="var(--accent)">Configuration &amp; Infrastructure</text>
+</svg>
+<div class="diagram-caption">일반적인 Python 프로젝트는 소스 코드와 테스트를 설정 및 인프라 파일과 분리합니다. 각 파일은 하나의 명확한 책임을 갖습니다.</div>
+</div>
+
+<p>주요 규칙:</p>
+<ul>
+<li><strong>소스 코드</strong>는 <code>__init__.py</code> 파일이 있는 패키지 디렉토리(프로젝트와 같은 이름)에 위치합니다.</li>
+<li><strong>테스트</strong>는 소스 구조를 반영하는 별도의 <code>tests/</code> 디렉토리에 위치합니다.</li>
+<li><strong>설정 파일</strong>(<code>Dockerfile</code>, <code>requirements.txt</code>, <code>.gitignore</code>)은 프로젝트 루트에 위치합니다.</li>
+<li><strong>CI 워크플로우</strong>는 <code>.github/workflows/</code>에 위치합니다.</li>
+</ul>
+
+<h3>설정 관리</h3>
+<p>애플리케이션에는 설정이 필요합니다: 데이터베이스 경로, API 키, 디버그 플래그 등입니다. 이러한 값을 소스 코드에 하드코딩하면 깨지기 쉽고 안전하지 않습니다. 두 가지 접근 방법이 있습니다:</p>
+
+<h4>환경 변수</h4>
+<p>코드 바깥, 프로그램이 실행되는 환경에서 설정을 지정합니다:</p>
+<pre><code>import os
+
+DB_PATH = os.environ.get("TASKFORGE_DB", "taskforge.db")
+DEBUG = os.environ.get("FLASK_DEBUG", "0") == "1"</code></pre>
+<p><code>os.environ.get()</code>는 기본값을 지정하여 환경 변수를 읽습니다. 이렇게 하면 동일한 코드가 개발 환경(기본값 사용)과 프로덕션 환경(Docker나 CI가 설정한 환경 변수 사용) 모두에서 작동합니다.</p>
+
+<h4>.env 파일</h4>
+<p>개발 중에는 프로젝트 루트의 <code>.env</code> 파일에 환경 변수를 저장할 수 있습니다:</p>
+<pre><code># .env — local development configuration
+TASKFORGE_DB=taskforge.db
+FLASK_DEBUG=1</code></pre>
+<p><code>.env</code>를 <code>.gitignore</code>에 추가하여 절대 커밋되지 않도록 하세요. 각 개발자는 자신만의 로컬 <code>.env</code>를 가집니다. 프로덕션에서는 배포 시스템이 설정한 실제 환경 변수를 사용합니다.</p>
+
+<div role="note" class="callout critical">
+<div class="callout-title">주의</div>
+<p>API 키, 데이터베이스 비밀번호, 토큰은 절대로 소스 코드에 나타나거나 git에 커밋되어서는 안 됩니다. 환경 변수나 시크릿 관리(Chapter 17)를 사용하세요. 실수로 시크릿을 커밋했다면 즉시 교체하세요&mdash;파일을 삭제한 후에도 시크릿은 git 히스토리에 영원히 남아 있습니다.</p>
+</div>
+
+<h3>TaskForge의 진화</h3>
+<p>TaskForge가 각 Phase를 거치며 어떻게 성장했는지, 그리고 각 구조 변경이 왜 필요했는지 살펴보겠습니다:</p>
+
+<table>
+<caption>Phase별 TaskForge 프로젝트 구조 변화</caption>
+<tr><th>Phase</th><th>구조</th><th>이유</th></tr>
+<tr><td>Phase 2</td><td>단일 파일: <code>taskforge.py</code></td><td>함수, 클래스, 데이터 구조를 배우는 동안 모든 것을 한 곳에 둡니다.</td></tr>
+<tr><td>Phase 3</td><td><code>.gitignore</code> 추가, GitHub에 푸시</td><td>버전 관리와 협업을 위해 추적하는 파일과 추적하지 않는 파일을 분리해야 합니다.</td></tr>
+<tr><td>Phase 4</td><td>여러 파일: <code>api.py</code>, <code>db.py</code>, <code>cli.py</code>, <code>tests/</code>, <code>Dockerfile</code>, <code>.github/workflows/</code></td><td>각 새로운 기능(API, 데이터베이스, 컨테이너, CI)은 자체 파일이 필요합니다. 섞으면 모든 파일이 거대해지고 모든 변경이 위험해집니다.</td></tr>
+</table>
+
+<p>이 진행은 자연스러운 것입니다: 파일이 너무 길어질 때, 두 부분이 서로 다른 이유로 변경될 때, 또는 부분을 독립적으로 테스트해야 할 때 코드를 분리합니다. 단순히 분리를 위해 재구성하지 마세요&mdash;현재 구조가 마찰을 일으킬 때 재구성하세요.</p>
+
+<h3>리팩터링할 때</h3>
+<p><strong>리팩터링(Refactoring)</strong>이란 코드가 하는 일을 바꾸지 않으면서 구조를 재편성하는 것을 의미합니다. 다음과 같을 때 리팩터링합니다:</p>
+<ul>
+<li>파일이 너무 길어서 탐색하기 어려울 때 (대략적인 기준: 200줄 이상).</li>
+<li>코드의 두 부분이 서로 다른 이유로 변경될 때 (예: API 라우트와 데이터베이스 쿼리).</li>
+<li>필요한 부분에 도달하기 위해 큰 코드 블록을 스크롤해야 할 때.</li>
+<li>모든 것이 얽혀 있어서 테스트 작성이 어려울 때.</li>
+</ul>
+<p>다음과 같을 때는 리팩터링하지 <em>않습니다</em>:</p>
+<ul>
+<li>현재 구조가 작동하고 이해하기 쉬울 때.</li>
+<li>기능을 추가하면서 동시에 재구성할 때 (한 번에 하나만 하세요).</li>
+<li>50줄짜리 스크립트에 "모범 사례" 구조를 복사하려 할 때. 단순한 코드는 단순한 구조를 갖는 것이 맞습니다.</li>
+</ul>
+
+<div role="note" class="callout warn">
+<div class="callout-title">주의</div>
+<p><strong>오해: "코드를 작성하기 전에 완벽한 아키텍처가 필요하다"</strong>&mdash;그렇지 않습니다. 작동하는 가장 단순한 구조로 시작하세요. 마찰을 느낄 때 재구성하세요&mdash;그 전이 아닙니다. 100줄짜리 스크립트에 디렉토리 구조를 과도하게 설계하는 것은 낭비입니다. 아키텍처는 이론적 이상이 아닌 실제 필요에서 나와야 합니다.</p>
+</div>
+
+<h3>흔한 오해</h3>
+<div role="note" class="callout warn">
+<div class="callout-title">주의</div>
+<p><strong>오해: "파일이 많을수록 항상 더 나은 구성이다"</strong>&mdash;30줄짜리 모듈을 5줄짜리 6개 파일로 나누면 프로젝트를 이해하기가 더 쉬워지는 것이 아니라 더 어려워집니다. 각 파일은 의미 있고 응집력 있는 기능 단위를 포함해야 합니다. 파일이 무엇을 하는지 한 문장으로 설명할 수 없다면, 너무 크거나(분리하세요) 너무 모호한 것입니다(관련된 것과 병합하세요).</p>
+</div>
+
+<h3>TaskForge 연결</h3>
+<p>Phase 2~4를 거치며 만든 TaskForge 코드를 위의 다이어그램에 보여준 일반적인 구조로 재구성하세요. <code>__init__.py</code>, <code>api.py</code>, <code>db.py</code>, <code>cli.py</code>가 있는 <code>taskforge/</code> 패키지 디렉토리를 생성하세요. 테스트를 <code>tests/</code> 디렉토리로 이동하세요. <code>Dockerfile</code>, <code>docker-compose.yml</code>, <code>requirements.txt</code>, <code>.github/workflows/</code>는 프로젝트 루트에 유지하세요. 재구성 후에도 <code>python -m pytest</code>와 <code>docker compose up</code>이 여전히 작동하는지 확인하세요.</p>
+
+<h3>마이크로 연습</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">직접 해보기</div>
+<p>지금까지 작성한 TaskForge 코드를 살펴보세요. 어떤 줄이 API 계층, 데이터베이스 계층, CLI 계층에 속하는지 식별하세요. 각 섹션 옆에 해당 계층을 표시하는 주석을 작성하세요.</p>
+<pre><code># In your current taskforge files, label sections like this:
+
+# --- API LAYER ---
+@app.route("/tasks", methods=["GET"])
+def get_tasks():
+    ...
+
+# --- DATABASE LAYER ---
+def init_db():
+    conn = sqlite3.connect(DB_PATH)
+    ...
+
+# --- CLI LAYER ---
+if __name__ == "__main__":
+    import sys
+    command = sys.argv[1]
+    ...</code></pre>
+<p>세 계층이 모두 하나의 파일에 있다면, 분리할 준비가 된 것입니다.</p>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">직접 해보기</div>
+<p>TaskForge의 디렉토리 구조를 생성하세요. 아직 코드를 이동할 필요는 없습니다&mdash;빈 파일만 생성하세요:</p>
+<div class="prompt-block"><span class="label">Terminal</span># 두 개의 폴더를 생성합니다: 하나는 코드용, 하나는 테스트용
+# -p는 "필요하면 부모 폴더도 생성" (이미 존재해도 오류 없음)
+mkdir -p taskforge tests
+
+# "touch"는 빈 파일을 생성합니다 (이미 존재하면 타임스탬프만 갱신)
+# __init__.py는 Python에게 이 폴더가 임포트 가능한 패키지임을 알려줍니다
+touch taskforge/__init__.py
+
+# 책임별로 하나의 파일: API 라우트, 데이터베이스 로직, CLI
+touch taskforge/api.py
+touch taskforge/db.py
+touch taskforge/cli.py
+
+# 모듈당 하나의 테스트 파일
+touch tests/test_api.py
+touch tests/test_db.py</div>
+<p><code>find . -name "*.py"</code>를 실행하여 구조가 올바른지 확인하세요.</p>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">직접 해보기</div>
+<p>TaskForge를 패키지 구조로 재구성하세요. 데이터베이스 함수를 <code>taskforge/db.py</code>로, Flask 라우트를 <code>taskforge/api.py</code>로, CLI 로직을 <code>taskforge/cli.py</code>로 이동하세요. 모든 것이 여전히 작동하도록 임포트를 업데이트하세요.</p>
+<div class="prompt-block"><span class="label">taskforge/db.py</span>import sqlite3
+import os
+
+DB_PATH = os.environ.get("TASKFORGE_DB", "taskforge.db")
+
+def get_connection():
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    return conn
+
+def init_db():
+    conn = get_connection()
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS tasks (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            done BOOLEAN DEFAULT 0
+        )
+    """)
+    conn.commit()
+    conn.close()
+
+def add_task(title):
+    conn = get_connection()
+    conn.execute("INSERT INTO tasks (title) VALUES (?)", (title,))
+    conn.commit()
+    conn.close()
+
+def list_tasks():
+    conn = get_connection()
+    rows = conn.execute("SELECT * FROM tasks").fetchall()
+    conn.close()
+    return [dict(row) for row in rows]
+
+def complete_task(task_id):
+    conn = get_connection()
+    conn.execute("UPDATE tasks SET done = 1 WHERE id = ?", (task_id,))
+    conn.commit()
+    conn.close()</div>
+<div class="prompt-block"><span class="label">taskforge/api.py</span>from flask import Flask, jsonify, request
+from taskforge.db import init_db, add_task, list_tasks, complete_task
+
+app = Flask(__name__)
+init_db()
+
+@app.route("/tasks", methods=["GET"])
+def get_tasks():
+    return jsonify(list_tasks()), 200
+
+@app.route("/tasks", methods=["POST"])
+def create_task():
+    data = request.json
+    if not data or "title" not in data:
+        return jsonify({"error": "title is required"}), 400
+    add_task(data["title"])
+    return jsonify({"status": "created"}), 201
+
+@app.route("/tasks/&lt;int:task_id&gt;/done", methods=["PUT"])
+def mark_complete(task_id):
+    complete_task(task_id)
+    return jsonify({"status": "updated"}), 200</div>
+<p><strong>확인 방법:</strong> 프로젝트 루트에서 <code>python -m pytest</code>를 실행하세요&mdash;모든 테스트가 통과해야 합니다. <code>flask --app taskforge.api run</code>을 실행하고 <code>curl http://localhost:5000/tasks</code>로 테스트하세요&mdash;API가 작동해야 합니다. <code>docker compose up</code>을 실행하세요&mdash;컨테이너가 성공적으로 시작되어야 합니다.</p>
+<p><strong>작동하지 않을 때:</strong> (1) <code>ModuleNotFoundError: No module named 'taskforge'</code> &rarr; <code>taskforge/__init__.py</code>가 존재하고 프로젝트 루트에서 명령을 실행하고 있는지 확인하세요. (2) 순환 임포트(Circular imports) &rarr; <code>db.py</code>가 <code>api.py</code>에서 임포트하지 않는지 확인하세요. 의존성은 한 방향으로 흘러야 합니다: <code>api.py</code>가 <code>db.py</code>에서 임포트하며, 그 반대가 아닙니다. (3) 테스트가 모듈을 찾지 못함 &rarr; <code>pip install -e .</code>로 패키지를 편집 가능 모드(editable mode)로 설치하거나, 루트 디렉토리에서 <code>python -m pytest</code>를 실행하세요.</p>
+</div>
+
+<div class="pq">아키텍처는 규칙을 따르는 것이 아니라, 미래의 자신의 삶을 더 쉽게 만드는 것입니다. 잘 구조화된 프로젝트란 모든 파일이 명확한 목적을 갖고 모든 변경이 예측 가능한 위치에 있는 프로젝트입니다.</div>
+
+<h3>대화형 연습</h3>
+
+<div class="quiz" data-ch="18" data-ex="quiz-soc">
+  <h4>이해도 확인</h4>
+  <p>관심사의 분리(Separation of Concerns)란 무엇입니까?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">간결함을 위해 모든 코드를 하나의 파일에 작성하는 것</button>
+    <button class="quiz-option" data-correct="true">각 모듈이 하나의 책임을 처리하도록 코드를 구성하는 것</button>
+    <button class="quiz-option" data-correct="false">프런트엔드와 백엔드를 분리하는 것</button>
+    <button class="quiz-option" data-correct="false">마이크로서비스를 사용하는 것</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="18" data-ex="refactor">
+  <div class="exercise-header">
+    <h4>설계 도전: "모놀리스 리팩터링"</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">이 30줄짜리 스크립트는 입력 파싱, 유효성 검사, 출력 포맷팅을 섞고 있습니다. 3개의 함수로 리팩터링하세요: <code>parse_input(raw)</code>, <code>validate(data)</code>, <code>format_output(data)</code>. 메인 로직은 이 3개의 함수를 호출하기만 해야 합니다.</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+def process(raw_input):
+    """Currently does everything. Refactor into 3 functions."""
+    # Parse
+    parts = raw_input.strip().split(',')
+    data = {'name': parts[0].strip(), 'age': parts[1].strip()}
+
+    # Validate
+    if not data['name']:
+        return "Error: name required"
+    if not data['age'].isdigit():
+        return "Error: age must be a number"
+    data['age'] = int(data['age'])
+
+    # Format
+    return f"{data['name']} is {data['age']} years old"
+
+# Refactor into: parse_input, validate, format_output
+# Then rewrite process() to use them.
+
+print(process("  Alice , 30  "))
+</script>
+    <script type="text/plain" class="test-code">
+assert callable(parse_input), "parse_input function must exist"
+assert callable(validate), "validate function must exist"
+assert callable(format_output), "format_output function must exist"
+p = parse_input("  Alice , 30  ")
+assert p == {'name': 'Alice', 'age': '30'} or p == {'name': 'Alice', 'age': 30}, "parse_input extracts name and age"
+assert format_output({'name': 'Bob', 'age': 25}) == "Bob is 25 years old", "format_output"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">parse_input은 분리와 공백 제거만 해야 합니다 — 유효성 검사는 하지 않습니다.</p>
+    <p class="hint">validate는 데이터 딕셔너리를 검사하고 오류 문자열 또는 None을 반환해야 합니다.</p>
+    <p class="hint">format_output은 검증된 딕셔너리를 받아서 포맷된 문자열을 반환합니다.</p>
+  </div>
+</div>
+
+<div class="checklist" data-ch="18" data-ex="arch-check">
+  <h4>아키텍처 검토 체크리스트</h4>
+  <label><input type="checkbox"><span>TaskForge가 CLI, API, 데이터베이스 로직에 대해 별도의 파일을 가지고 있음</span></label>
+  <label><input type="checkbox"><span>30줄 이상인 함수가 없음</span></label>
+  <label><input type="checkbox"><span>각 파일의 최상단에 임포트가 위치함</span></label>
+  <label><input type="checkbox"><span>재구성 후에도 <code>python -m pytest</code>가 통과함</span></label>
+</div>
+
+</section>
+
+<!-- ===== PHASE 4 GATE ===== -->
+<section id="gate4">
+<h2><span class="ch-label">Phase 4 Gate</span> 체크포인트 &amp; TaskForge 풀 스택</h2>
+<div class="card">
+<h4>최소 역량</h4>
+<p>Flask로 REST API를 구축하고, SQLite로 데이터를 영속화하고, Docker로 컨테이너화하고, CI를 통해 자동화된 테스트를 실행할 수 있어야 합니다. 프로젝트 디렉토리 구조와 관심사의 분리를 이해해야 합니다.</p>
+</div>
+<div class="card">
+<h4>결과물</h4>
+<p>다음을 갖춘 TaskForge: Flask REST API(GET/POST/PUT 엔드포인트), SQLite 데이터베이스 영속성, Dockerfile, docker-compose.yml, 푸시 시 테스트를 실행하는 GitHub Actions 워크플로우, 그리고 깔끔한 프로젝트 구조.</p>
+</div>
+<div class="card">
+<h4>검증</h4>
+<p><code>curl http://localhost:5000/tasks</code>가 JSON을 반환합니다. 서버 재시작 후에도 데이터가 유지됩니다. <code>docker compose up</code>이 TaskForge를 실행합니다. GitHub Actions가 초록색 체크마크를 보여줍니다.</p>
+</div>
+<div role="note" class="callout critical">
+<div class="callout-title">주의</div>
+<p>API가 JSON 대신 HTML을 반환하거나, 재시작 시 데이터가 사라지거나, Docker 빌드가 실패하면 &rarr; 해당 주제를 다루는 장으로 돌아가세요.</p>
+</div>
+<h3>TaskForge 체크포인트</h3>
+<p>TaskForge는 이제 풀 스택(Full-Stack) 애플리케이션입니다: CLI, REST API, 데이터베이스, 컨테이너, CI 파이프라인. Phase 5의 데이터 구조와 알고리즘을 위한 준비가 되었습니다.</p>
+
+<h3>이제 할 수 있는 것</h3>
+<div class="card">
+<ul>
+<li>REST API를 사용하고 구축할 수 있습니다</li>
+<li>SQL 데이터베이스로 데이터를 영속화할 수 있습니다</li>
+<li>Docker로 애플리케이션을 컨테이너화할 수 있습니다</li>
+<li>CI/CD 파이프라인으로 테스트를 자동화할 수 있습니다</li>
+<li>유지보수성을 위해 프로젝트를 구조화할 수 있습니다</li>
+</ul>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">참고</div>
+<p>이제 전문적인 인프라를 갖춘 풀 스택 애플리케이션을 가지게 되었습니다. Phase 5에서는 지금까지 구축한 모든 것을 구동하는 데이터 구조(Data Structures)와 알고리즘(Algorithms)을 다룹니다&mdash;리스트, 해시 테이블, 트리가 내부적으로 어떻게 작동하는지, 그리고 성능을 어떻게 측정하고 비교하는지 배웁니다. 이러한 기초를 이해하면 직접 코드를 작성하든 AI가 생성한 솔루션을 평가하든 더 강력한 엔지니어가 됩니다.</p>
+</div>
+
+<h3>브릿지 연습: 사람이 작성한 코드 vs AI 코드</h3>
+<p>지금까지 TaskForge를 직접 만들어 왔습니다. 이제 동일한 기능의 AI 생성 버전과 여러분의 접근 방식을 비교해 보세요. 이것이 바로 Phase 5 전반에서 연습하게 될 기술입니다.</p>
+
+<div class="exercise" data-ch="gate4" data-ex="bridge-ai" data-type="pyodide">
+  <div class="exercise-header"><h4>차이점 찾기</h4></div>
+  <p>아래에 <code>get_task_stats</code> 함수의 두 가지 구현이 있습니다. 하나는 이 가이드의 패턴을 따라 사람이 작성한 것이고, 다른 하나는 AI가 생성한 것입니다. 둘 다 읽은 다음, 세 개의 키를 가진 딕셔너리를 반환하는 <code>evaluate()</code> 함수를 작성하세요: <code>"missing_validation"</code>(어느 버전이 입력 유효성 검사를 건너뛰는지&mdash;<code>"human"</code> 또는 <code>"ai"</code>), <code>"over_engineered"</code>(어느 버전이 불필요한 복잡성을 추가하는지), <code>"better_for_production"</code>(여러분의 판단).</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+# Human version
+def get_task_stats_human(tasks):
+    total = len(tasks)
+    done = sum(1 for t in tasks if t["status"] == "done")
+    pending = total - done
+    return {"total": total, "done": done, "pending": pending}
+
+# AI-generated version
+def get_task_stats_ai(tasks):
+    from collections import Counter
+    from datetime import datetime
+    stats = Counter(t.get("status", "unknown") for t in tasks)
+    return {
+        "total": sum(stats.values()),
+        "done": stats.get("done", 0),
+        "pending": stats.get("pending", 0),
+        "in_progress": stats.get("in_progress", 0),
+        "unknown": stats.get("unknown", 0),
+        "generated_at": datetime.now().isoformat(),
+        "categories": dict(stats)
+    }
+
+def evaluate():
+    # Return a dict with three keys:
+    # "missing_validation" -> "human" or "ai"
+    # "over_engineered"    -> "human" or "ai"
+    # "better_for_production" -> "human" or "ai"
+    pass
+</script>
+    <script type="text/plain" class="test-code">
+result = evaluate()
+assert isinstance(result, dict), "evaluate() must return a dictionary"
+assert result.get("missing_validation") == "human", "The human version assumes 'status' key exists and only has two states"
+assert result.get("over_engineered") == "ai", "The AI version imports datetime, adds generated_at, and tracks categories nobody asked for"
+assert result.get("better_for_production") in ("human", "ai"), "Choose which is better for production"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">각 함수가 입력에 대해 무엇을 가정하는지 살펴보세요. 사람 버전은 누락된 키를 처리합니까? AI 버전은 아무도 요청하지 않은 필드를 추가합니까?</p>
+    <p class="hint">사람 버전은 <code>t["status"]</code>를 사용하여(키가 없으면 크래시) 두 가지 상태만 가정합니다. AI 버전은 datetime을 임포트하고 아무도 요청하지 않은 타임스탬프를 추가합니다.</p>
+  </div>
+</div>
+
+</section>
+
+<nav class="phase-nav">
+  <a href="phase-3.html" class="phase-nav-link prev"><span class="phase-nav-label">이전 Phase</span>&larr; Phase 3: 개발 도구</a>
+  <a href="phase-5.html" class="phase-nav-link next"><span class="phase-nav-label">다음 Phase</span>Phase 5: 데이터 구조 &rarr;</a>
+</nav>
+
+</div>
+</div>
+
+<footer>
+<p>Zero to Hero: 프로그래밍에서 멀티 에이전트 Claude Code까지 &middot; 2026년 3월</p>
+</footer>
+
+<script src="../js/progress.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ace-builds@1.36.5/src-min-noconflict/ace.js"></script>
+<script src="../js/theme.js"></script>
+<script src="../js/sidebar.js"></script>
+<script src="../js/shared.js"></script>
+<script src="../js/ace-init.js"></script>
+<script src="../js/pyodide-runner.js"></script>
+<script src="../js/quiz.js"></script>
+<script src="../js/exercise-runner.js"></script>
+<script src="../js/api-demo.js"></script>
+</body>
+</html>

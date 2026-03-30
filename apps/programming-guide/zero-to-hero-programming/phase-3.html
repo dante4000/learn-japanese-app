@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Phase 3: Master the terminal, Git version control, and GitHub collaboration — the professional tools that Claude Code uses. Chapters 10–12.">
+<title>Phase 3: Development Tools — Zero to Hero</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/design-system.css">
+<script>try{if(localStorage.getItem('zth-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+<script>try{var z=localStorage.getItem('zth-zoom');if(z&&+z>=50&&+z<=200)document.documentElement.style.zoom=+z/100}catch(e){}</script>
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+<marker id="arrowhead-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--a5)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo"><span>Zero to Hero</span>Programming &rarr; Multi-Agent AI</a>
+  <div class="toc-group">
+    <div class="toc-group-title">Foundations</div>
+    <a href="phase-1.html#ch01" class="toc-link"><span class="toc-num">01</span>What Programming Actually Is</a>
+    <a href="phase-1.html#ch02" class="toc-link"><span class="toc-num">02</span>How Computers Execute Code</a>
+    <a href="phase-1.html#ch03" class="toc-link"><span class="toc-num">03</span>Setting Up Your Environment</a>
+    <a href="phase-1.html#ch04" class="toc-link"><span class="toc-num">04</span>Reading Code Before Writing It</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Python</div>
+    <a href="phase-2.html#ch05" class="toc-link"><span class="toc-num">05</span>Functions, Logic &amp; Control Flow</a>
+    <a href="phase-2.html#ch06" class="toc-link"><span class="toc-num">06</span>Data Structures</a>
+    <a href="phase-2.html#ch07" class="toc-link"><span class="toc-num">07</span>Classes &amp; OOP Basics</a>
+    <a href="phase-2.html#ch08" class="toc-link"><span class="toc-num">08</span>Files, Modules &amp; Standard Library</a>
+    <a href="phase-2.html#ch09" class="toc-link"><span class="toc-num">09</span>Error Handling, Debugging &amp; Testing</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Development Tools</div>
+    <a href="#ch10" class="toc-link"><span class="toc-num">10</span>The Terminal &amp; Shell</a>
+    <a href="#ch11" class="toc-link"><span class="toc-num">11</span>Git Fundamentals</a>
+    <a href="#ch12" class="toc-link"><span class="toc-num">12</span>Git Remote &amp; GitHub</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Building &amp; Deploying</div>
+    <a href="phase-4.html#ch13" class="toc-link"><span class="toc-num">13</span>APIs &amp; HTTP</a>
+    <a href="phase-4.html#ch14" class="toc-link"><span class="toc-num">14</span>Building APIs with Flask</a>
+    <a href="phase-4.html#ch15" class="toc-link"><span class="toc-num">15</span>Database Basics</a>
+    <a href="phase-4.html#ch16" class="toc-link"><span class="toc-num">16</span>Docker &amp; Containers</a>
+    <a href="phase-4.html#ch17" class="toc-link"><span class="toc-num">17</span>CI/CD &amp; GitHub Actions</a>
+    <a href="phase-4.html#ch18" class="toc-link"><span class="toc-num">18</span>Project Architecture</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Data Structures</div>
+    <a href="phase-5.html#ch19" class="toc-link"><span class="toc-num">19</span>Complexity Analysis</a>
+    <a href="phase-5.html#ch20" class="toc-link"><span class="toc-num">20</span>Linear Structures</a>
+    <a href="phase-5.html#ch21" class="toc-link"><span class="toc-num">21</span>Hash Tables &amp; Maps</a>
+    <a href="phase-5.html#ch22" class="toc-link"><span class="toc-num">22</span>Trees</a>
+    <a href="phase-5.html#ch23" class="toc-link"><span class="toc-num">23</span>Graphs</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Algorithms</div>
+    <a href="phase-6.html#ch24" class="toc-link"><span class="toc-num">24</span>Searching &amp; Sorting</a>
+    <a href="phase-6.html#ch25" class="toc-link"><span class="toc-num">25</span>Recursion &amp; DP</a>
+    <a href="phase-6.html#ch26" class="toc-link"><span class="toc-num">26</span>Algorithm Patterns</a>
+    <a href="phase-6.html#ch27" class="toc-link"><span class="toc-num">27</span>Graph Algorithms</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Engineering Craft</div>
+    <a href="phase-7.html#ch28" class="toc-link"><span class="toc-num">28</span>Design Patterns &amp; SOLID</a>
+    <a href="phase-7.html#ch29" class="toc-link"><span class="toc-num">29</span>SQL &amp; Query Mastery</a>
+    <a href="phase-7.html#ch30" class="toc-link"><span class="toc-num">30</span>Transactions &amp; NoSQL</a>
+    <a href="phase-7.html#ch31" class="toc-link"><span class="toc-num">31</span>Networking &amp; the Internet</a>
+    <a href="phase-7.html#ch32" class="toc-link"><span class="toc-num">32</span>Concurrency &amp; Parallelism</a>
+    <a href="phase-7.html#ch33" class="toc-link"><span class="toc-num">33</span>Security Engineering</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Systems &amp; Scale</div>
+    <a href="phase-8.html#ch34" class="toc-link"><span class="toc-num">34</span>System Design</a>
+    <a href="phase-8.html#ch35" class="toc-link"><span class="toc-num">35</span>Distributed Systems</a>
+    <a href="phase-8.html#ch36" class="toc-link"><span class="toc-num">36</span>Performance &amp; Observability</a>
+    <a href="phase-8.html#ch37" class="toc-link"><span class="toc-num">37</span>Navigating Large Codebases</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AI Levels 1&ndash;5</div>
+    <a href="phase-9.html#ch38" class="toc-link"><span class="toc-num">38</span>Evaluating &amp; Directing AI Code</a>
+    <a href="phase-9.html#ch39" class="toc-link"><span class="toc-num">39</span>Levels 1 &amp; 2 &mdash; Tab Complete &amp; Agent IDE</a>
+    <a href="phase-9.html#ch40" class="toc-link"><span class="toc-num">40</span>Level 3 &mdash; Context Engineering</a>
+    <a href="phase-9.html#ch41" class="toc-link"><span class="toc-num">41</span>Level 4 &mdash; Compounding Engineering</a>
+    <a href="phase-9.html#ch42" class="toc-link"><span class="toc-num">42</span>Level 5 &mdash; MCP, Skills &amp; Capabilities</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AI Levels 6&ndash;8</div>
+    <a href="phase-10.html#ch43" class="toc-link"><span class="toc-num">43</span>Level 6 &mdash; Harness Engineering</a>
+    <a href="phase-10.html#ch44" class="toc-link"><span class="toc-num">44</span>Level 7 &mdash; Background Agents</a>
+    <a href="phase-10.html#ch45" class="toc-link"><span class="toc-num">45</span>Claude Code in Docker</a>
+    <a href="phase-10.html#ch46" class="toc-link"><span class="toc-num">46</span>Level 8 &mdash; Autonomous Agent Teams</a>
+    <a href="phase-10.html#ch47" class="toc-link"><span class="toc-num">47</span>The Multiplayer Effect</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Reference</div>
+    <a href="appendices.html#glossary" class="toc-link"><span class="toc-num">&oplus;</span>Glossary</a>
+    <a href="appendices.html#prompt-library" class="toc-link"><span class="toc-num">&oplus;</span>Prompt Library</a>
+    <a href="appendices.html#self-assessment" class="toc-link"><span class="toc-num">&oplus;</span>Self-Assessment</a>
+    <a href="appendices.html#common-mistakes" class="toc-link"><span class="toc-num">&oplus;</span>Common Mistakes</a>
+    <a href="appendices.html#appendix-d" class="toc-link"><span class="toc-num">&oplus;</span>Troubleshooting</a>
+    <a href="appendices.html#appendix-e" class="toc-link"><span class="toc-num">&oplus;</span>Resources</a>
+  </div>
+</aside>
+
+<div class="main">
+<section class="hero hero-sm">
+  <div class="hero-badge">Phase 3 &mdash; Development Tools</div>
+  <h1>Development <em>Tools</em></h1>
+  <p class="hero-sub">Master the terminal, Git version control, and GitHub collaboration&mdash;the infrastructure every developer and AI agent depends on.</p>
+  <div class="hero-meta"><span>Chapters 10–12</span><span>Phase Gate + TaskForge</span></div>
+</section>
+<div class="content-wrap">
+
+<div role="note" class="callout info">
+<div class="callout-title">Before You Begin Phase 3</div>
+<p>This phase assumes you can: write functions with parameters and return values (Ch 05), use lists and dictionaries (Ch 06), and handle errors with try/except (Ch 09). You'll also need a working Python environment from Ch 03.</p>
+</div>
+
+<!-- ===== CH 10 ===== -->
+<section id="ch10" data-ch="10">
+<h2><span class="ch-label">Chapter 10</span> The Terminal and Shell Scripting</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>Claude Code runs entirely in the terminal. Every command it executes, every file it reads, every test it runs&mdash;all happen through the same shell commands you'll learn here. Terminal fluency isn't optional for AI-assisted development; it's the interface.</p>
+</div>
+
+<p>You used the terminal in Chapter 03 to run Python. Now you'll learn it as a <strong>power tool</strong>. The ~15 commands below are the ones professionals use daily. Everything else you can look up.</p>
+
+<h3>Essential Commands</h3>
+<table>
+<caption>Essential terminal commands for daily use</caption>
+<tr><th>Command</th><th>What It Does</th><th>Example</th></tr>
+<tr><td><code>cd</code></td><td>Change directory</td><td><code>cd ~/projects</code></td></tr>
+<tr><td><code>ls</code></td><td>List files</td><td><code>ls -la</code></td></tr>
+<tr><td><code>pwd</code></td><td>Print current directory</td><td><code>pwd</code></td></tr>
+<tr><td><code>mkdir</code></td><td>Create directory</td><td><code>mkdir src</code></td></tr>
+<tr><td><code>rm</code></td><td>Remove file</td><td><code>rm old.txt</code></td></tr>
+<tr><td><code>cp</code></td><td>Copy</td><td><code>cp a.py b.py</code></td></tr>
+<tr><td><code>mv</code></td><td>Move/rename</td><td><code>mv old.py new.py</code></td></tr>
+<tr><td><code>cat</code></td><td>Print file contents</td><td><code>cat README.md</code></td></tr>
+<tr><td><code>grep</code></td><td>Search text in files</td><td><code>grep "def " *.py</code></td></tr>
+<tr><td><code>head</code></td><td>Show first N lines</td><td><code>head -20 log.txt</code></td></tr>
+<tr><td><code>tail</code></td><td>Show last N lines</td><td><code>tail -f server.log</code></td></tr>
+<tr><td><code>find</code></td><td>Find files</td><td><code>find . -name "*.py"</code></td></tr>
+</table>
+
+<h3>Shell Scripts</h3>
+<p>A <strong>shell script</strong> is a file of commands that run in sequence. Start every script with a <em>shebang</em> line that tells the OS which interpreter to use:</p>
+<pre><code>#!/bin/bash
+echo "Running tests..."
+python3 -m pytest
+echo "Done."</code></pre>
+<p>Save as <code>run_tests.sh</code>, make executable with <code>chmod +x run_tests.sh</code>, then run with <code>./run_tests.sh</code>.</p>
+
+<h3>Piping: Composing Small Tools</h3>
+<p>The <code>|</code> operator sends the output of one command to the input of another. <code>&gt;</code> writes output to a file.</p>
+
+<div class="dw">
+<svg viewBox="0 0 700 100" xmlns="http://www.w3.org/2000/svg" aria-label="Pipeline showing commands piped together: cat access.log filters through grep POST, grep 500, and wc -l to count matching lines">
+  <rect class="node-fill" x="10" y="25" width="140" height="50" rx="8"/>
+  <text class="label-text" x="80" y="46" text-anchor="middle">cat access.log</text>
+  <text class="sub-text" x="80" y="62" text-anchor="middle">10,000 lines</text>
+  <line class="arrow" x1="150" y1="50" x2="185" y2="50"/>
+  <rect class="node-fill" x="185" y="25" width="140" height="50" rx="8"/>
+  <text class="label-text" x="255" y="46" text-anchor="middle">grep "POST"</text>
+  <text class="sub-text" x="255" y="62" text-anchor="middle">2,400 lines</text>
+  <line class="arrow" x1="325" y1="50" x2="360" y2="50"/>
+  <rect class="node-fill" x="360" y="25" width="140" height="50" rx="8"/>
+  <text class="label-text" x="430" y="46" text-anchor="middle">grep "500"</text>
+  <text class="sub-text" x="430" y="62" text-anchor="middle">47 lines</text>
+  <line class="arrow" x1="500" y1="50" x2="535" y2="50"/>
+  <rect class="node-accent" x="535" y="25" width="140" height="50" rx="8"/>
+  <text class="label-text" x="605" y="46" text-anchor="middle">wc -l</text>
+  <text class="sub-text" x="605" y="62" text-anchor="middle">47</text>
+</svg>
+<div class="diagram-caption">Pipes compose small tools into powerful workflows. Each stage filters or transforms the data for the next.</div>
+</div>
+
+<h3>Environment Variables and PATH</h3>
+<p><strong>Environment variables</strong> are system-wide settings. <code>PATH</code> tells the shell where to find commands. When you get <code>command not found</code>, it means the program isn't in any directory listed in <code>PATH</code>.</p>
+<pre><code>export API_KEY="sk-abc123"   # set a variable
+echo $PATH                    # see your PATH</code></pre>
+
+<h3>SSH Basics</h3>
+<p><strong>SSH</strong> (Secure Shell) lets you connect to remote machines via the terminal. You'll encounter it when deploying code or accessing cloud servers. Generate a key pair with <code>ssh-keygen -t ed25519</code>, then add the public key (<code>~/.ssh/id_ed25519.pub</code>) to remote services (you'll set this up with a specific service in Chapter 12). Connect: <code>ssh user@hostname</code>.</p>
+
+<h3>tmux: Terminal Multiplexer</h3>
+
+<p><strong>Concept:</strong> A terminal multiplexer lets you run multiple persistent shell sessions inside a single terminal window. You can split panes, switch between tabs, and detach entirely&mdash;leaving everything running in the background. This is essential for any workflow where you need to monitor multiple processes simultaneously, and it becomes critical when orchestrating multiple AI agents.</p>
+
+<div role="note" class="callout info">
+<div class="callout-title">Current Tool (March 2026)</div>
+<p><strong>tmux</strong> (all platforms, free). Install: <code>brew install tmux</code> (macOS) or <code>sudo apt install tmux</code> (Linux). The standard terminal multiplexer for multi-agent workflows in Phase 5.</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why tmux Matters for AI Development</div>
+<p>In Phase 5, you'll run multiple Claude Code agents simultaneously. Each needs its own terminal session. Without tmux, you'd need multiple terminal windows, and closing your laptop kills them all. With tmux, sessions persist in the background&mdash;you can disconnect, reconnect, and your agents keep running. tmux is the infrastructure that makes background agents possible.</p>
+</div>
+
+<h4>Installing tmux</h4>
+<div class="prompt-block"><span class="label">Terminal</span># macOS (via Homebrew)
+brew install tmux
+
+# Ubuntu/Debian
+sudo apt install tmux
+
+# Verify
+tmux -V</div>
+
+<h4>Core Concepts</h4>
+<p>tmux has three layers:</p>
+<table>
+<caption>tmux organizational layers: sessions, windows, and panes</caption>
+<tr><th>Concept</th><th>What It Is</th><th>Analogy</th></tr>
+<tr><td><strong>Session</strong></td><td>A named workspace that persists in the background</td><td>A project desk that stays set up even when you leave the room</td></tr>
+<tr><td><strong>Window</strong></td><td>A full-screen tab within a session</td><td>Different pages on the same desk</td></tr>
+<tr><td><strong>Pane</strong></td><td>A split within a window</td><td>Dividing one page into side-by-side columns</td></tr>
+</table>
+
+<h4>Getting Started</h4>
+<p>Every tmux command inside a session starts with the <strong>prefix key</strong>: <code>Ctrl + B</code>. You press the prefix, release it, then press the next key. This is the most common stumbling block&mdash;you're pressing a two-step combo, not holding everything at once.</p>
+
+<div class="prompt-block"><span class="label">Terminal</span># Start a new named session
+tmux new -s taskforge
+
+# You're now INSIDE tmux. The green bar at the bottom confirms it.
+
+# Detach (leave session running in background)
+# Press: Ctrl+B, then d
+
+# List running sessions
+tmux ls
+
+# Reattach to your session
+tmux attach -t taskforge
+
+# Kill a session when done
+tmux kill-session -t taskforge</div>
+
+<h4>tmux Hotkeys Reference</h4>
+<p>All hotkeys below assume you press <code>Ctrl + B</code> first (the prefix), release it, then press the next key.</p>
+
+<h5>Session Management</h5>
+<table>
+<caption>tmux hotkeys for session management</caption>
+<tr><th>Prefix +</th><th>Action</th><th>When to Use</th></tr>
+<tr><td><code>d</code></td><td>Detach from session</td><td>Leave the session running in the background. Your agents keep working.</td></tr>
+<tr><td><code>s</code></td><td>List and switch sessions</td><td>Interactive session picker. Arrow keys to navigate, Enter to select.</td></tr>
+<tr><td><code>$</code></td><td>Rename current session</td><td>Give meaningful names: <code>taskforge</code>, <code>api-server</code>, <code>agent-team</code>.</td></tr>
+<tr><td><code>(</code> / <code>)</code></td><td>Previous / next session</td><td>Cycle between sessions quickly.</td></tr>
+</table>
+
+<h5>Window Management (Tabs)</h5>
+<table>
+<caption>tmux hotkeys for window management</caption>
+<tr><th>Prefix +</th><th>Action</th><th>When to Use</th></tr>
+<tr><td><code>c</code></td><td>Create new window</td><td>Open a fresh full-screen terminal within the session.</td></tr>
+<tr><td><code>n</code></td><td>Next window</td><td>Cycle forward through windows.</td></tr>
+<tr><td><code>p</code></td><td>Previous window</td><td>Cycle backward through windows.</td></tr>
+<tr><td><code>0-9</code></td><td>Jump to window by number</td><td>Direct jump: prefix + <code>2</code> goes to window 2.</td></tr>
+<tr><td><code>,</code></td><td>Rename current window</td><td>Name windows by purpose: <code>code</code>, <code>tests</code>, <code>logs</code>.</td></tr>
+<tr><td><code>w</code></td><td>Window list (interactive)</td><td>Visual picker showing all windows across all sessions.</td></tr>
+<tr><td><code>&amp;</code></td><td>Close current window</td><td>Confirm with <code>y</code>. Closes all panes in the window.</td></tr>
+</table>
+
+<h5>Pane Management (Splits)</h5>
+<table>
+<caption>tmux hotkeys for pane management</caption>
+<tr><th>Prefix +</th><th>Action</th><th>When to Use</th></tr>
+<tr><td><code>%</code></td><td>Split vertically (left/right)</td><td>Code on the left, test output on the right.</td></tr>
+<tr><td><code>"</code></td><td>Split horizontally (top/bottom)</td><td>Command on top, log stream on the bottom.</td></tr>
+<tr><td><code>Arrow keys</code></td><td>Move to adjacent pane</td><td>Navigate between splits using direction.</td></tr>
+<tr><td><code>x</code></td><td>Close current pane</td><td>Confirm with <code>y</code>. Closes just this pane.</td></tr>
+<tr><td><code>z</code></td><td>Toggle pane zoom (fullscreen)</td><td>Temporarily maximize one pane to see more detail. Press again to restore.</td></tr>
+<tr><td><code>o</code></td><td>Cycle through panes</td><td>Quick hop to the next pane without arrow keys.</td></tr>
+<tr><td><code>{</code> / <code>}</code></td><td>Swap pane left / right</td><td>Rearrange pane positions without recreating them.</td></tr>
+<tr><td><code>Space</code></td><td>Cycle through layouts</td><td>Toggle between even-horizontal, even-vertical, main-horizontal, etc.</td></tr>
+<tr><td><code>Ctrl + Arrow</code></td><td>Resize pane by 1 cell</td><td>Fine-tune pane sizes. Hold for continuous resize.</td></tr>
+</table>
+
+<h5>Copy Mode and Scrollback</h5>
+<table>
+<caption>tmux hotkeys for copy mode and scrollback</caption>
+<tr><th>Prefix +</th><th>Action</th><th>When to Use</th></tr>
+<tr><td><code>[</code></td><td>Enter copy mode</td><td>Scroll through output history. Use arrow keys or Page Up/Down. Press <code>q</code> to exit.</td></tr>
+<tr><td><code>]</code></td><td>Paste from tmux buffer</td><td>Paste text you copied in copy mode.</td></tr>
+</table>
+<p>In copy mode, navigate with arrow keys. Press <code>Space</code> to start selection, move to select text, press <code>Enter</code> to copy. Press <code>q</code> to exit copy mode.</p>
+
+<h4>Recommended tmux Configuration</h4>
+<p>Create <code>~/.tmux.conf</code> with these settings to make tmux more usable:</p>
+<pre><code># ~/.tmux.conf
+
+# Use Ctrl+A as prefix instead of Ctrl+B (easier to reach)
+unbind C-b
+set -g prefix C-a
+bind C-a send-prefix
+
+# Split panes with | and - (easier to remember)
+bind | split-window -h -c "#{pane_current_path}"
+bind - split-window -v -c "#{pane_current_path}"
+
+# New windows open in current directory
+bind c new-window -c "#{pane_current_path}"
+
+# Navigate panes with Alt+Arrow (no prefix needed)
+bind -n M-Left select-pane -L
+bind -n M-Right select-pane -R
+bind -n M-Up select-pane -U
+bind -n M-Down select-pane -D
+
+# Enable mouse support (click to select pane, scroll to scroll)
+set -g mouse on
+
+# Start window numbering at 1 (not 0)
+set -g base-index 1
+setw -g pane-base-index 1
+
+# Renumber windows when one is closed
+set -g renumber-windows on
+
+# Increase scrollback buffer
+set -g history-limit 50000
+
+# Reduce escape delay (faster for vim/nano users)
+set -sg escape-time 10
+
+# Status bar styling
+set -g status-style bg=black,fg=white
+set -g status-left "[#S] "
+set -g status-right "%H:%M"</code></pre>
+<p>After saving, reload with <code>tmux source-file ~/.tmux.conf</code> (or start a new session).</p>
+
+<div role="note" class="callout warn">
+<div class="callout-title">If You Used the Config Above</div>
+<p>The config changes the prefix from <code>Ctrl + B</code> to <code>Ctrl + A</code> and splits with <code>|</code> and <code>-</code> instead of <code>%</code> and <code>"</code>. All the hotkey tables above use the default bindings. If you use this config, substitute <code>Ctrl + A</code> for <code>Ctrl + B</code> everywhere, and use <code>|</code>/<code>-</code> for splits.</p>
+</div>
+
+<h4>Real-World tmux Workflow</h4>
+<p>Here's how a typical multi-agent development session looks:</p>
+<div class="prompt-block"><span class="label">Terminal</span># Create a session for your project
+tmux new -s taskforge
+
+# Window 1 (default): Claude Code main session
+claude
+
+# Create Window 2 for tests (prefix + c)
+# Name it "tests" (prefix + ,)
+python3 -m pytest --watch
+
+# Create Window 3 for server (prefix + c)
+# Name it "server" (prefix + ,)
+python3 -m flask run
+
+# Split Window 1 to watch git log (prefix + %)
+# In the right pane:
+watch -n 2 git log --oneline -10
+
+# Detach and go to lunch (prefix + d)
+# Everything keeps running.
+
+# Come back, reattach:
+tmux attach -t taskforge</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">tmux Practice Drill</div>
+<p><strong>Goal:</strong> Create a session with 3 panes. <strong>Steps:</strong> (1) <code>tmux new -s practice</code> (2) Prefix + <code>%</code> to split vertically (3) Prefix + <code>"</code> to split the right pane horizontally (4) Prefix + arrow keys to navigate between all 3 panes (5) Prefix + <code>z</code> to zoom one pane, then <code>z</code> again to unzoom (6) Prefix + <code>d</code> to detach (7) <code>tmux attach -t practice</code> to reattach. <strong>Verification:</strong> All 3 panes are still there with their content after reattaching.</p>
+</div>
+
+<h3>Terminal Speed: Advanced Hotkeys</h3>
+<p>You learned basic shell hotkeys in Chapter 03. Here are the advanced ones that make a real difference when you're working all day in the terminal:</p>
+
+<table>
+<caption>Advanced terminal hotkeys for editing and navigation</caption>
+<tr><th>Hotkey</th><th>Action</th><th>Example</th></tr>
+<tr><td><code>Ctrl + R</code></td><td>Reverse search history</td><td>Start typing any part of a past command. Press <code>Ctrl + R</code> again to cycle through matches. Press <code>Enter</code> to execute, <code>Ctrl + G</code> to cancel.</td></tr>
+<tr><td><code>Ctrl + X, Ctrl + E</code></td><td>Open current command in $EDITOR</td><td>For long, complex commands: edit in a full editor, save, and it executes. Set <code>export EDITOR=nano</code> if not set.</td></tr>
+<tr><td><code>Alt + .</code></td><td>Insert last argument of previous command</td><td>Just ran <code>mkdir -p src/components/auth</code>? Type <code>cd</code> then <code>Alt + .</code> to get <code>cd src/components/auth</code>.</td></tr>
+<tr><td><code>Ctrl + T</code></td><td>Swap two characters before cursor</td><td>Fix typos like <code>sl</code> &rarr; <code>ls</code> without retyping.</td></tr>
+<tr><td><code>Alt + T</code></td><td>Swap two words before cursor</td><td>Fix word-order mistakes.</td></tr>
+<tr><td><code>Ctrl + _</code></td><td>Undo last edit</td><td>Undo a <code>Ctrl + W</code> or <code>Ctrl + U</code> that deleted too much.</td></tr>
+<tr><td><code>fc</code></td><td>Open last command in editor</td><td>Fix and re-run a complex command. Saves/closes to execute.</td></tr>
+</table>
+
+<h4>History Power Moves</h4>
+<table>
+<caption>Shell history shortcuts and expansion commands</caption>
+<tr><th>Command</th><th>Action</th><th>Example</th></tr>
+<tr><td><code>!!</code></td><td>Repeat entire last command</td><td><code>sudo !!</code> &mdash; re-runs previous command with sudo.</td></tr>
+<tr><td><code>!$</code></td><td>Last argument of previous command</td><td><code>cat file.py</code> then <code>vim !$</code> opens the same file in vim.</td></tr>
+<tr><td><code>!^</code></td><td>First argument of previous command</td><td>Less common, but available.</td></tr>
+<tr><td><code>!:2</code></td><td>Second argument of previous command</td><td>Access specific positional arguments.</td></tr>
+<tr><td><code>^old^new</code></td><td>Replace and re-run</td><td>Ran <code>git diff mian</code>? Type <code>^mian^main</code> to fix the typo and re-execute.</td></tr>
+<tr><td><code>history | grep pytest</code></td><td>Search history for a pattern</td><td>Find all past pytest commands.</td></tr>
+</table>
+
+<h3>TaskForge Connection</h3>
+<p>You'll use pipes and grep to inspect TaskForge: <code>grep "def " taskforge.py</code> lists all function definitions. When you manage agents in Phase 5, you'll use tmux to run multiple Claude Code sessions simultaneously&mdash;one session per agent, each in its own tmux window, all within a single session you can detach from and reattach to.</p>
+
+<h3>Micro-Exercises</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">1: Pipe Words</div>
+<pre><code>echo 'hello world' | wc -w</code></pre>
+<p>The pipe sends echo's output to the word-counter. Result: <code>2</code>.</p>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">2: List First 5 Files</div>
+<pre><code>ls | head -5</code></pre>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">Try This Now</div>
+<p>In one line, find all Python files that contain the word <code>import</code> and count them:</p>
+<div class="prompt-block"><span class="label">Terminal</span>grep -rl 'import' . --include='*.py' | wc -l</div>
+<p><strong>Verification:</strong> A number prints (the count of matching files).</p>
+<p><strong>If this doesn't work:</strong> (1) <code>grep: No such file or directory</code> &rarr; you're in an empty directory. <code>cd</code> to a project first. (2) Count is 0 &rarr; no Python files in the current tree.</p>
+</div>
+
+<div class="pq">You just composed multiple commands into a pipeline&mdash;the same technique you'll use to inspect logs, filter test output, and monitor AI agent activity.</div>
+
+<h3>Interactive Exercises</h3>
+
+<div class="quiz" data-ch="10" data-ex="quiz-head">
+  <h4>Knowledge Check</h4>
+  <p>Which command shows only the first 10 lines of a file?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">tail file.txt</button>
+    <button class="quiz-option" data-correct="true">head file.txt</button>
+    <button class="quiz-option" data-correct="false">cat -n file.txt</button>
+    <button class="quiz-option" data-correct="false">less file.txt</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz" data-ch="10" data-ex="quiz-pipe">
+  <h4>Knowledge Check</h4>
+  <p>What does the pipe operator <code>|</code> do in <code>cat file.txt | grep error</code>?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">Writes output to a file</button>
+    <button class="quiz-option" data-correct="true">Sends the output of the left command as input to the right command</button>
+    <button class="quiz-option" data-correct="false">Runs both commands simultaneously</button>
+    <button class="quiz-option" data-correct="false">Combines two files together</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz" data-ch="10" data-ex="quiz-grep">
+  <h4>Knowledge Check</h4>
+  <p>Which flag makes <code>grep</code> search case-insensitively?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">-r</button>
+    <button class="quiz-option" data-correct="true">-i</button>
+    <button class="quiz-option" data-correct="false">-n</button>
+    <button class="quiz-option" data-correct="false">-v</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="checklist" data-ch="10" data-ex="terminal-check">
+  <h4>Terminal Proficiency</h4>
+  <label><input type="checkbox"><span>Navigated to a directory with <code>cd</code> and back with <code>cd ..</code></span></label>
+  <label><input type="checkbox"><span>Listed files with <code>ls -la</code> and read the output</span></label>
+  <label><input type="checkbox"><span>Created a file with <code>touch</code> or <code>echo &gt; file.txt</code></span></label>
+  <label><input type="checkbox"><span>Used <code>grep</code> to search for text in a file</span></label>
+  <label><input type="checkbox"><span>Used a pipe <code>|</code> to chain two commands</span></label>
+</div>
+
+<div class="exercise" data-type="output-match" data-ch="10" data-ex="file-count" data-pattern="^total\s+\d+">
+  <div class="exercise-header">
+    <h4>File Count</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Run <code>ls -la</code> in your TaskForge directory and paste the output below.</p>
+  <textarea class="exercise-paste" placeholder="Paste your output here..."></textarea>
+  <div class="exercise-controls">
+    <button class="ex-verify">Verify</button>
+  </div>
+  <div class="exercise-feedback"></div>
+</div>
+
+</section>
+
+<!-- ===== CH 11 ===== -->
+<section id="ch11" data-ch="11">
+<h2><span class="ch-label">Chapter 11</span> Version Control with Git</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>Git is not optional. Claude Code creates branches, makes commits, and reads your project history to understand your codebase. Without Git, you can't use Claude Code effectively&mdash;and without understanding Git, you can't supervise what Claude Code does with your code.</p>
+</div>
+
+<div role="note" class="callout warn">
+<div class="callout-title">What Happens Without Version Control</div>
+<p>You spend 3 hours refactoring a file. You break something. You can't remember what the working version looked like. You try to undo manually and break it worse. With Git, one command (<code>git checkout -- file.py</code>) restores the last working version. Without it, you're gambling with every edit.</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">Current Tool (March 2026)</div>
+<p><strong>Git</strong> is the universal version control system. Virtually all professional projects use it. Install: <code>brew install git</code> (macOS), <code>apt install git</code> (Linux), or git-scm.com (Windows).</p>
+</div>
+
+<p><strong>Git</strong> tracks every change to your code. Think of it as a time machine for your project&mdash;you can go back to any previous state. Branches are like parallel timelines: you can work on a new feature in one timeline while keeping the main timeline stable. If the experiment fails, you discard that timeline. If it succeeds, you merge it back. This is how AI agents work on your code without breaking what already works.</p>
+
+<div role="note" class="callout warn">
+<div class="callout-title">Git Is the #1 Prerequisite for Claude Code</div>
+<p>Claude Code reads your git history, makes commits, creates branches, and resolves conflicts. If you don't understand what it's doing with git, you can't supervise it.</p>
+</div>
+
+<h3>Core Commands</h3>
+<table>
+<caption>Core Git commands for version control</caption>
+<tr><th>Command</th><th>What It Does</th></tr>
+<tr><td><code>git init</code></td><td>Create a new repo</td></tr>
+<tr><td><code>git add .</code></td><td>Stage all changes</td></tr>
+<tr><td><code>git commit -m "msg"</code></td><td>Save a snapshot</td></tr>
+<tr><td><code>git status</code></td><td>See what's changed</td></tr>
+<tr><td><code>git log --oneline</code></td><td>View commit history</td></tr>
+<tr><td><code>git diff</code></td><td>See unstaged changes</td></tr>
+<tr><td><code>git branch name</code></td><td>Create a branch</td></tr>
+<tr><td><code>git switch name</code></td><td>Switch to a branch</td></tr>
+<tr><td><code>git merge name</code></td><td>Merge a branch into current</td></tr>
+</table>
+
+<div class="diagram">
+<svg viewBox="0 0 700 140" xmlns="http://www.w3.org/2000/svg" aria-label="Git branching diagram showing a feature branch diverging from main, adding commits, then merging back">
+  <!-- Main branch -->
+  <circle cx="80" cy="40" r="14" class="node-fill"/>
+  <text class="sub-text" x="80" y="44" text-anchor="middle">c1</text>
+  <line class="arrow" x1="94" y1="40" x2="146" y2="40"/>
+  <circle cx="160" cy="40" r="14" class="node-accent"/>
+  <text class="sub-text" x="160" y="44" text-anchor="middle">c2</text>
+  <line class="arrow" x1="174" y1="40" x2="226" y2="40"/>
+  <circle cx="240" cy="40" r="14" class="node-fill"/>
+  <text class="sub-text" x="240" y="44" text-anchor="middle">c3</text>
+  <line class="arrow" x1="254" y1="40" x2="386" y2="40"/>
+  <circle cx="400" cy="40" r="14" class="node-accent"/>
+  <text class="sub-text" x="400" y="44" text-anchor="middle">m</text>
+  <!-- Feature branch -->
+  <line x1="168" y1="52" x2="220" y2="95" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <circle cx="240" cy="100" r="14" class="node-fill"/>
+  <text class="sub-text" x="240" y="104" text-anchor="middle">f1</text>
+  <line class="arrow" x1="254" y1="100" x2="306" y2="100"/>
+  <circle cx="320" cy="100" r="14" class="node-fill"/>
+  <text class="sub-text" x="320" y="104" text-anchor="middle">f2</text>
+  <line x1="332" y1="92" x2="388" y2="52" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <!-- Labels -->
+  <text class="sub-text" x="460" y="44" fill="var(--accent)" style="font-weight:600">main</text>
+  <text class="sub-text" x="370" y="104" fill="var(--a2)" style="font-weight:600">feature</text>
+</svg>
+<div class="diagram-caption">Branches let you work on features without affecting main. Merging brings the work back. This is how AI agents work in parallel.</div>
+</div>
+
+<h3>Merge Conflicts</h3>
+<p>When two branches change the same line, git can't decide which version to keep. It marks the conflict with <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>/<code>=======</code>/<code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code> markers. You choose the correct version, delete the markers, and commit.</p>
+
+<h3>Worktrees</h3>
+<p><code>git worktree add ../feature-branch feature</code> creates a separate working directory for a branch. Claude Code multi-agent setups use worktrees so each agent has its own filesystem.</p>
+
+<h3>TaskForge Connection</h3>
+<p>In the Phase 3 Gate, you'll turn TaskForge into a git repo with 3+ commits and a merged branch. This is how every professional project is managed.</p>
+
+<h3>Micro-Exercises</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">1: Your First Repo</div>
+<pre><code>git init
+echo "# My Project" > README.md
+git add README.md
+git commit -m "initial commit"
+git log --oneline</code></pre>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">2: Branch and Switch</div>
+<pre><code>git branch feature
+git switch feature
+echo "new feature" > feature.txt
+git add feature.txt
+git commit -m "add feature"
+git switch main</code></pre>
+<p>The file <code>feature.txt</code> disappears&mdash;it's on the other branch.</p>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">Try This Now</div>
+<p>Init a repo, commit a file, create branch <code>test</code>, modify line 1 on <code>test</code>, switch to <code>main</code>, modify the same line 1 differently, <code>git merge test</code>. You'll get a conflict. Open the file, resolve it, commit.</p>
+<p><strong>Verification:</strong> <code>git log --oneline</code> shows at least 4 commits. The conflict markers are gone.</p>
+<p><strong>If this doesn't work:</strong> (1) <code>fatal: not a git repository</code> &rarr; you forgot <code>git init</code>. (2) No conflict &rarr; you modified different lines, not the same line. (3) <code>CONFLICT</code> message but file looks normal &rarr; open the file in an editor to see the markers.</p>
+</div>
+
+<div class="pq">You just created a branch, made changes, caused a merge conflict, and resolved it. This is exactly what happens when multiple AI agents work on the same codebase&mdash;and now you know how to handle it.</div>
+
+<h3>Interactive Exercises</h3>
+
+<div class="quiz" data-ch="11" data-ex="quiz-staging">
+  <h4>Knowledge Check</h4>
+  <p>What is the Git staging area (index)?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">A backup of your last commit</button>
+    <button class="quiz-option" data-correct="true">A holding area for changes you want to include in the next commit</button>
+    <button class="quiz-option" data-correct="false">The remote repository</button>
+    <button class="quiz-option" data-correct="false">The same as the working directory</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz" data-ch="11" data-ex="quiz-diff">
+  <h4>Knowledge Check</h4>
+  <p>What does <code>git diff --staged</code> show?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">All changes since the last push</button>
+    <button class="quiz-option" data-correct="false">Changes between working directory and last commit</button>
+    <button class="quiz-option" data-correct="true">Changes that are staged for the next commit</button>
+    <button class="quiz-option" data-correct="false">Differences between two branches</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="checklist" data-ch="11" data-ex="git-check">
+  <h4>Git Fundamentals</h4>
+  <label><input type="checkbox"><span>Initialized a git repository with <code>git init</code></span></label>
+  <label><input type="checkbox"><span>Made at least 3 commits with descriptive messages</span></label>
+  <label><input type="checkbox"><span>Created a branch with <code>git checkout -b</code> or <code>git switch -c</code></span></label>
+  <label><input type="checkbox"><span>Merged a branch back into main</span></label>
+  <label><input type="checkbox"><span>Resolved a merge conflict (edited conflict markers, then committed)</span></label>
+</div>
+
+<div class="exercise" data-type="output-match" data-ch="11" data-ex="git-log" data-pattern="^[0-9a-f]{7,}">
+  <div class="exercise-header">
+    <h4>Git Log</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Run <code>git log --oneline</code> in your TaskForge repo and paste the output.</p>
+  <textarea class="exercise-paste" placeholder="Paste your output here..."></textarea>
+  <div class="exercise-controls">
+    <button class="ex-verify">Verify</button>
+  </div>
+  <div class="exercise-feedback"></div>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">Practice: Interactive Git</div>
+<p>Complete the "Main" section of <a href="https://learngitbranching.js.org">Learn Git Branching</a>. It's an interactive visual tutorial that makes branching and merging click in a way that reading alone cannot.</p>
+</div>
+
+</section>
+
+<!-- ===== CH 12 ===== -->
+<section id="ch12" data-ch="12">
+<h2><span class="ch-label">Chapter 12</span> Git Remote and GitHub</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">Why This Matters Now</div>
+<p>Every professional project lives on a remote repository. Claude Code workflows in later phases involve pull requests, remote branches, and CI pipelines&mdash;all of which require understanding remote Git.</p>
+</div>
+
+<h3>What Is a Remote?</h3>
+<p>So far, all your Git work has been <strong>local</strong>&mdash;commits, branches, and merges living only on your machine. A <strong>remote</strong> is a copy of your repository hosted on another server, typically GitHub. Your local repo is where you work. The remote repo is where you share, back up, and collaborate. Think of it this way: your local repo is your notebook; the remote is the shared whiteboard everyone on the team can see.</p>
+
+<p>When you push, you copy your commits to the remote. When you pull, you copy the remote's commits to your local repo. The two stay in sync through these explicit actions&mdash;nothing happens automatically.</p>
+
+<h3>GitHub Account Setup</h3>
+<p>If you don't have a GitHub account yet:</p>
+<ol>
+<li>Go to <a href="https://github.com">github.com</a> and click <strong>Sign up</strong>.</li>
+<li>Choose a username, enter your email, and set a password.</li>
+<li>Once logged in, click the <strong>+</strong> icon (top right) &rarr; <strong>New repository</strong>.</li>
+<li>Name it <code>taskforge</code>, leave it public, and do <strong>not</strong> initialize with a README (you already have one locally).</li>
+<li>GitHub shows you the commands to connect your local repo. You'll use those next.</li>
+</ol>
+
+<h3>Connecting Local to Remote</h3>
+<p>After creating an empty repository on GitHub, connect your local repo to it:</p>
+<pre><code>git remote add origin https://github.com/YOUR-USERNAME/taskforge.git</code></pre>
+<p><code>origin</code> is the conventional name for your primary remote. You can name it anything, but <code>origin</code> is universal. Verify the connection:</p>
+<pre><code>git remote -v</code></pre>
+<p>You should see two lines&mdash;one for <code>fetch</code> and one for <code>push</code>&mdash;both pointing to your GitHub URL.</p>
+
+<h3>Push and Pull</h3>
+<p><strong>Push</strong> sends your local commits to the remote. <strong>Pull</strong> fetches the remote's commits and merges them into your local branch.</p>
+<pre><code># Send your commits to GitHub
+git push origin main
+
+# Get new commits from GitHub
+git pull origin main</code></pre>
+
+<p>The first time you push a brand-new branch, use <code>-u</code> to set up tracking:</p>
+<pre><code>git push -u origin main</code></pre>
+<p>After that, <code>git push</code> and <code>git pull</code> work without specifying the remote and branch every time.</p>
+
+<div role="note" class="callout warn">
+<div class="callout-title">The "Rejected Because Remote Contains Work" Error</div>
+<p>If you see <code>! [rejected] main -&gt; main (fetch first)</code>, it means the remote has commits you don't have locally. Fix it:</p>
+<pre><code>git pull origin main    # fetch and merge remote changes
+git push origin main    # now push succeeds</code></pre>
+<p>If the pull creates a merge conflict, resolve it the same way you learned in Chapter 11: edit the file, remove the conflict markers, <code>git add</code>, and <code>git commit</code>.</p>
+</div>
+
+<h3>Cloning</h3>
+<p><code>git clone</code> downloads an entire repository&mdash;all files, all history, all branches&mdash;from a remote to your machine:</p>
+<pre><code>git clone https://github.com/someone/their-project.git</code></pre>
+<p>This creates a new directory named <code>their-project/</code> with a fully functional Git repo inside. The remote <code>origin</code> is already set up, pointing back to the URL you cloned from. This is how you get someone else's project onto your machine.</p>
+
+<h3>Branches on Remotes</h3>
+<p>Branches exist independently on your local machine and on the remote. To push a local branch to GitHub:</p>
+<pre><code>git push origin feature-branch</code></pre>
+<p>This creates the branch on GitHub if it doesn't exist. To set up <strong>tracking</strong> (so Git knows the local branch corresponds to the remote one):</p>
+<pre><code>git push -u origin feature-branch</code></pre>
+<p>After tracking is set, <code>git push</code> and <code>git pull</code> automatically know which remote branch to use. To see all branches, including remote ones:</p>
+<pre><code>git branch -a</code></pre>
+
+<h3>.gitignore</h3>
+<p>A <code>.gitignore</code> file tells Git which files and directories to <strong>never track</strong>. This keeps your repository clean by excluding generated files, secrets, and environment-specific artifacts.</p>
+
+<pre><code># Byte-compiled Python files
+*.pyc
+__pycache__/
+
+# Virtual environments
+.venv/
+venv/
+
+# Environment variables / secrets
+.env
+
+# IDE settings
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+
+# Node (if applicable)
+node_modules/</code></pre>
+
+<p><strong>Pattern syntax:</strong></p>
+<table>
+<caption>.gitignore pattern syntax and matching rules</caption>
+<tr><th>Pattern</th><th>What It Matches</th></tr>
+<tr><td><code>*.pyc</code></td><td>All files ending in <code>.pyc</code>, in any directory</td></tr>
+<tr><td><code>__pycache__/</code></td><td>Any directory named <code>__pycache__</code> and everything inside it</td></tr>
+<tr><td><code>.env</code></td><td>A file named <code>.env</code> in the project root</td></tr>
+<tr><td><code>.venv/</code></td><td>The <code>.venv</code> directory and all its contents</td></tr>
+<tr><td><code>node_modules/</code></td><td>The <code>node_modules</code> directory (JavaScript dependencies)</td></tr>
+</table>
+
+<div role="note" class="callout critical">
+<div class="callout-title">Why .gitignore Matters</div>
+<p>Without <code>.gitignore</code>, you risk committing secrets (<code>.env</code> files with API keys), bloating your repo with hundreds of megabytes of dependencies (<code>node_modules/</code>, <code>.venv/</code>), and pushing OS junk (<code>.DS_Store</code>) that clutters every diff. Add <code>.gitignore</code> before your first commit.</p>
+</div>
+
+<h3>Pull Requests</h3>
+<p>A <strong>pull request</strong> (PR) is a proposal to merge one branch into another. It's the core of code review: you show your changes, teammates review them, and only after approval does the code merge into <code>main</code>. The workflow:</p>
+<ol>
+<li><strong>Branch:</strong> Create a feature branch locally. <code>git switch -c add-delete-feature</code></li>
+<li><strong>Work:</strong> Make changes, commit them.</li>
+<li><strong>Push:</strong> <code>git push -u origin add-delete-feature</code></li>
+<li><strong>Open PR:</strong> Go to GitHub. You'll see a banner: "Compare &amp; pull request." Click it. Write a description of what you changed and why.</li>
+<li><strong>Review:</strong> Teammates read your code, leave comments, request changes.</li>
+<li><strong>Merge:</strong> Once approved, click "Merge pull request" on GitHub.</li>
+</ol>
+<p>Even solo developers use PRs&mdash;they create a clean record of what changed and why, and they're how Claude Code submits work for your review in later phases.</p>
+
+<h3>SSH Keys</h3>
+<p>GitHub supports two connection methods: <strong>HTTPS</strong> and <strong>SSH</strong>. HTTPS asks for credentials on every push. SSH uses a key pair so you authenticate automatically.</p>
+
+<p>Generate an SSH key:</p>
+<pre><code>ssh-keygen -t ed25519 -C "your-email@example.com"</code></pre>
+<p>Press Enter to accept the default location. Set a passphrase or leave it empty. Then add the public key to GitHub:</p>
+<ol>
+<li>Copy your public key: <code>cat ~/.ssh/id_ed25519.pub</code></li>
+<li>GitHub &rarr; Settings &rarr; SSH and GPG keys &rarr; New SSH key</li>
+<li>Paste the key and save.</li>
+</ol>
+<p>Test the connection:</p>
+<pre><code>ssh -T git@github.com</code></pre>
+<p>You should see: <code>Hi username! You've successfully authenticated</code>. Now you can use SSH URLs (<code>git@github.com:user/repo.git</code>) instead of HTTPS.</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg" aria-label="Diagram showing push, pull, and clone operations between a local repo, GitHub remote, and a new local copy">
+  <!-- Local repo -->
+  <rect class="node-accent" x="30" y="30" width="200" height="70" rx="10"/>
+  <text class="label-text" x="130" y="58" text-anchor="middle">Local Repo</text>
+  <text class="sub-text" x="130" y="78" text-anchor="middle">your machine</text>
+  <!-- GitHub remote -->
+  <rect class="node-fill" x="470" y="30" width="200" height="70" rx="10"/>
+  <text class="label-text" x="570" y="58" text-anchor="middle">GitHub</text>
+  <text class="sub-text" x="570" y="78" text-anchor="middle">remote server</text>
+  <!-- Push arrow (left to right) -->
+  <line x1="230" y1="52" x2="470" y2="52" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text class="sub-text" x="350" y="45" text-anchor="middle" fill="var(--accent)" style="font-weight:600">push</text>
+  <!-- Pull arrow (right to left) -->
+  <line x1="470" y1="80" x2="230" y2="80" stroke="var(--a3)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text class="sub-text" x="350" y="96" text-anchor="middle" fill="var(--a3)" style="font-weight:600">pull</text>
+  <!-- Clone target -->
+  <rect class="node-accent" x="30" y="150" width="200" height="50" rx="10"/>
+  <text class="label-text" x="130" y="172" text-anchor="middle">New Local Copy</text>
+  <text class="sub-text" x="130" y="188" text-anchor="middle">another machine</text>
+  <!-- Clone arrow -->
+  <line x1="470" y1="100" x2="230" y2="158" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text class="sub-text" x="380" y="140" text-anchor="middle" fill="var(--accent)" style="font-weight:600">clone</text>
+</svg>
+<div class="diagram-caption">Push sends commits from local to GitHub. Pull brings commits from GitHub to local. Clone creates a brand-new local copy from a remote repository.</div>
+</div>
+
+<h3>Common Misconceptions</h3>
+<div role="note" class="callout warn">
+<div class="callout-title">"git push uploads my whole project"</div>
+<p>No. <code>git push</code> only sends commits the remote doesn't already have. If you've made 100 commits and the remote has 98, push sends only the 2 new ones. Git is efficient&mdash;it transfers the minimum necessary data.</p>
+</div>
+
+<div role="note" class="callout warn">
+<div class="callout-title">"Deleting a file locally deletes it from GitHub"</div>
+<p>No. Deleting a file on your machine changes nothing on the remote. The deletion only reaches GitHub after you <code>git add</code> the deletion, <code>git commit</code>, and <code>git push</code>. Until then, the file still exists on GitHub exactly as it was.</p>
+</div>
+
+<h3>TaskForge Connection</h3>
+<p>Push TaskForge to a GitHub repository. Create a <code>.gitignore</code> that excludes <code>__pycache__/</code>, <code>.venv/</code>, <code>*.pyc</code>, and <code>.env</code>. Create a feature branch, push it to GitHub, and open a pull request&mdash;even if you're the only reviewer. This is the same workflow you'll use when Claude Code creates branches and PRs for your review in Phase 4.</p>
+
+<h3>Micro-Exercises</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">1: Push TaskForge to GitHub</div>
+<p>Create a new GitHub repository and push TaskForge to it:</p>
+<pre><code>git remote add origin https://github.com/YOUR-USERNAME/taskforge.git
+git push -u origin main</code></pre>
+<p>Verify by visiting your GitHub repo URL&mdash;your files and commits should appear.</p>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">2: Add a .gitignore</div>
+<p>Create a <code>.gitignore</code> file in your TaskForge project root:</p>
+<pre><code>__pycache__/
+.venv/
+*.pyc</code></pre>
+<p>Stage, commit, and push:</p>
+<pre><code>git add .gitignore
+git commit -m "add .gitignore"
+git push</code></pre>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">3: Branch, Push, and PR</div>
+<p>Create a branch, push it, and open a pull request on GitHub:</p>
+<pre><code>git switch -c add-delete-feature
+# make a change (e.g., add a delete command to TaskForge)
+git add .
+git commit -m "add delete feature"
+git push -u origin add-delete-feature</code></pre>
+<p>Then go to GitHub. Click "Compare &amp; pull request." Write a description and submit. You now have a PR&mdash;even if you merge it yourself.</p>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">Try This Now</div>
+<p>Fork a public Python repository on GitHub. Clone your fork. Create a branch, make a small improvement (fix a typo, improve a docstring), push your branch, and open a pull request.</p>
+<div class="prompt-block"><span class="label">Terminal</span># 1. Fork a repo on GitHub (click "Fork" on the repo page)
+# 2. Clone your fork
+git clone https://github.com/YOUR-USERNAME/forked-repo.git
+cd forked-repo
+
+# 3. Create a branch
+git switch -c fix-typo
+
+# 4. Make a small change (fix a typo, improve a docstring)
+# Edit a file with your editor
+
+# 5. Commit and push
+git add .
+git commit -m "fix typo in README"
+git push -u origin fix-typo
+
+# 6. Go to GitHub and open a pull request</div>
+<p><strong>Verification:</strong> You have a PR visible on GitHub with your changes.</p>
+<p><strong>If this doesn't work:</strong> (1) If push is rejected, try <code>git pull --rebase origin main</code> first. (2) If SSH fails, check <code>ssh -T git@github.com</code> to verify your key is set up. (3) If you can't find the fork button, make sure you're logged into GitHub and viewing someone else's public repository.</p>
+</div>
+
+<div class="pq">You just pushed code to GitHub, created a branch on a remote, and opened a pull request&mdash;the exact workflow that powers professional collaboration and AI-assisted development with Claude Code.</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">Reading Diffs: A Preview of AI Supervision</div>
+<p>In Phase 5, you'll review <code>git diff</code> output from AI agents every day. The format below is the same one Git uses when you run <code>git diff</code>. Lines starting with <code>+</code> were added. Lines starting with <code>-</code> were removed. The <code>@@</code> line shows where in the file the change happened. Practice reading this now&mdash;it's the same skill, just a different context.</p>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="12" data-ex="diff-review">
+  <div class="exercise-header">
+    <h4>Review an AI Agent's Diff</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">An AI agent was asked: "Add error handling to the <code>delete_task</code> function." Below is the diff it produced. Read it carefully, then write a function <code>evaluate_diff()</code> that returns a dict with three keys: <code>"correct_changes"</code> (list of line numbers with valid error-handling additions), <code>"unrelated_change"</code> (the line number of a change that wasn't requested), and <code>"missing"</code> (a string describing what the agent forgot to handle).</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">
+# The AI's diff output:
+DIFF = """
+@@ -10,12 +10,14 @@ def delete_task(task_id, tasks):
+-def delete_task(task_id, tasks):
+-    for i, task in enumerate(tasks):
+-        if task["id"] == task_id:
+-            return tasks.pop(i)
+-    return None
++def delete_task(task_id, tasks):
++    if not isinstance(task_id, int):
++        raise TypeError("task_id must be an integer")
++    for i, task in enumerate(tasks):
++        if task["id"] == task_id:
++            return tasks.pop(i)
++    return None
+
+-def list_tasks(tasks):
++def list_tasks(tasks, verbose=False):
+     return [t["title"] for t in tasks]
+"""
+
+def evaluate_diff():
+    return {
+        "correct_changes": [],       # Line numbers of valid error-handling additions
+        "unrelated_change": 0,       # Line number of the change that wasn't asked for
+        "missing": ""                # What error case did the agent forget?
+    }
+
+print(evaluate_diff())
+</script>
+    <script type="text/plain" class="test-code">
+result = evaluate_diff()
+assert isinstance(result, dict), "Must return a dict"
+assert 12 in result["correct_changes"] or 13 in result["correct_changes"], "The TypeError check IS valid error handling"
+assert result["unrelated_change"] == 19 or result["unrelated_change"] == 20, "list_tasks signature change was not requested"
+assert "empty" in result["missing"].lower() or "none" in result["missing"].lower() or "list" in result["missing"].lower(), "Agent didn't handle empty tasks list"
+</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">Lines with <code>+</code> are additions. The <code>isinstance</code> check is relevant error handling. But what about the <code>list_tasks</code> change?</p>
+    <p class="hint">The agent was only asked to add error handling to <code>delete_task</code>. Changing <code>list_tasks</code> is scope creep&mdash;an unrelated change.</p>
+    <p class="hint">What happens if <code>tasks</code> is <code>None</code> or not a list? The agent added a type check for <code>task_id</code> but forgot to validate <code>tasks</code> itself.</p>
+  </div>
+</div>
+
+<h3>Interactive Exercises</h3>
+
+<div class="quiz" data-ch="12" data-ex="quiz-push">
+  <h4>Knowledge Check</h4>
+  <p>What does the <code>-u</code> flag do in <code>git push -u origin main</code>?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">Forces the push</button>
+    <button class="quiz-option" data-correct="false">Updates the remote URL</button>
+    <button class="quiz-option" data-correct="true">Sets the upstream tracking branch so future pushes work without arguments</button>
+    <button class="quiz-option" data-correct="false">Pushes all branches</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz" data-ch="12" data-ex="quiz-pr">
+  <h4>Knowledge Check</h4>
+  <p>What is the primary purpose of a pull request?</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">To download code from a remote</button>
+    <button class="quiz-option" data-correct="false">To merge code directly without review</button>
+    <button class="quiz-option" data-correct="true">To propose changes and request code review before merging</button>
+    <button class="quiz-option" data-correct="false">To create a backup of your branch</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="checklist" data-ch="12" data-ex="github-check">
+  <h4>GitHub Workflow</h4>
+  <label><input type="checkbox"><span>TaskForge repository visible on GitHub</span></label>
+  <label><input type="checkbox"><span>Pushed at least 3 commits to remote</span></label>
+  <label><input type="checkbox"><span>Created a feature branch and pushed it</span></label>
+  <label><input type="checkbox"><span>Opened a pull request on GitHub</span></label>
+  <label><input type="checkbox"><span>.gitignore file present and working</span></label>
+</div>
+
+<div class="exercise" data-type="output-match" data-ch="12" data-ex="remote-url" data-pattern="origin\s+.+(github|gitlab)">
+  <div class="exercise-header">
+    <h4>Remote URL</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">Run <code>git remote -v</code> in your TaskForge repo and paste the output.</p>
+  <textarea class="exercise-paste" placeholder="Paste your output here..."></textarea>
+  <div class="exercise-controls">
+    <button class="ex-verify">Verify</button>
+  </div>
+  <div class="exercise-feedback"></div>
+</div>
+
+</section>
+
+<!-- ===== PHASE 3 GATE ===== -->
+<section id="gate3">
+<h2><span class="ch-label">Phase 3 Gate</span> Checkpoint &amp; TaskForge on GitHub</h2>
+
+<div class="card">
+<h4>Minimum Competency</h4>
+<p>Use terminal commands fluently, create git branches and resolve conflicts, push to a remote repository, and collaborate via pull requests.</p>
+</div>
+
+<div class="card">
+<h4>Your Artifact</h4>
+<p>TaskForge pushed to GitHub with a <code>.gitignore</code>, at least 3 commits, and a feature branch merged via pull request.</p>
+</div>
+
+<div class="card">
+<h4>Verification</h4>
+<p>Your TaskForge repo is visible on GitHub. <code>git log --oneline</code> shows 3+ commits. The merged PR is visible in the Pull Requests tab.</p>
+</div>
+
+<div role="note" class="callout critical">
+<div class="callout-title">Failure Signal</div>
+<p>If you can't push to GitHub or create a PR &rarr; return to Chapter 12.</p>
+</div>
+
+<h3>What You Can Now Do</h3>
+<div class="card">
+<ul>
+<li>Navigate and compose terminal commands fluently</li>
+<li>Use Git for version control: commits, branches, merges, conflict resolution</li>
+<li>Push code to GitHub and pull remote changes</li>
+<li>Collaborate through pull requests and code review</li>
+<li>Keep repositories clean with <code>.gitignore</code></li>
+</ul>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">Bridge to Phase 4</div>
+<p>You now have the development tools that professional workflows depend on. Phase 4 builds on this foundation with APIs and HTTP, building APIs with Flask, database basics, Docker containers, CI/CD with GitHub Actions, and project architecture. You'll go from pushing code to GitHub to deploying full applications.</p>
+</div>
+</section>
+
+<nav class="phase-nav">
+  <a href="phase-2.html" class="phase-nav-link prev"><span class="phase-nav-label">Previous Phase</span>&larr; Phase 2: Writing Python</a>
+  <a href="phase-4.html" class="phase-nav-link next"><span class="phase-nav-label">Next Phase</span>Phase 4: Building &amp; Deploying &rarr;</a>
+</nav>
+
+</div>
+</div>
+
+<footer>
+<p>Zero to Hero: Programming to Multi-Agent Claude Code &middot; March 2026</p>
+<p>Structured around the 8 Levels of Agentic Engineering.</p>
+</footer>
+
+<script src="js/progress.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ace-builds@1.36.5/src-min-noconflict/ace.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/shared.js"></script>
+<script src="js/ace-init.js"></script>
+<script src="js/pyodide-runner.js"></script>
+<script src="js/quiz.js"></script>
+<script src="js/exercise-runner.js"></script>
+</body>
+</html>

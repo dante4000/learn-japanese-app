@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="フェーズ1：コードとは何か、コンピュータがどのように実行するか、環境のセットアップ、コードを書く前に読む方法を学びます。第01〜04章。">
+<title>フェーズ1：コードとは何か — ゼロからヒーロー</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/design-system.css">
+<script>try{if(localStorage.getItem('zth-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+<script>try{var z=localStorage.getItem('zth-zoom');if(z&&+z>=50&&+z<=200)document.documentElement.style.zoom=+z/100}catch(e){}</script>
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+<marker id="arrowhead-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--a5)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="テーマを切り替える">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo"><span>ゼロからヒーロー</span>プログラミング &rarr; マルチエージェントAI</a>
+  <div class="toc-group">
+    <div class="toc-group-title">基礎</div>
+    <a href="phase-1.html#ch01" class="toc-link"><span class="toc-num">01</span>プログラミングとは何か</a>
+    <a href="phase-1.html#ch02" class="toc-link"><span class="toc-num">02</span>コンピュータがコードを実行する仕組み</a>
+    <a href="phase-1.html#ch03" class="toc-link"><span class="toc-num">03</span>環境のセットアップ</a>
+    <a href="phase-1.html#ch04" class="toc-link"><span class="toc-num">04</span>書く前にコードを読む</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Python</div>
+    <a href="phase-2.html#ch05" class="toc-link"><span class="toc-num">05</span>関数、ロジック、制御フロー</a>
+    <a href="phase-2.html#ch06" class="toc-link"><span class="toc-num">06</span>データ構造</a>
+    <a href="phase-2.html#ch07" class="toc-link"><span class="toc-num">07</span>クラスとオブジェクト指向プログラミング</a>
+    <a href="phase-2.html#ch08" class="toc-link"><span class="toc-num">08</span>ファイル、モジュール、標準ライブラリ</a>
+    <a href="phase-2.html#ch09" class="toc-link"><span class="toc-num">09</span>エラー処理、デバッグ、テスト</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">開発ツール</div>
+    <a href="phase-3.html#ch10" class="toc-link"><span class="toc-num">10</span>ターミナルとシェル</a>
+    <a href="phase-3.html#ch11" class="toc-link"><span class="toc-num">11</span>Gitの基礎</a>
+    <a href="phase-3.html#ch12" class="toc-link"><span class="toc-num">12</span>GitリモートとGitHub</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">構築とデプロイ</div>
+    <a href="phase-4.html#ch13" class="toc-link"><span class="toc-num">13</span>APIとHTTP</a>
+    <a href="phase-4.html#ch14" class="toc-link"><span class="toc-num">14</span>FlaskでAPIを構築する</a>
+    <a href="phase-4.html#ch15" class="toc-link"><span class="toc-num">15</span>データベースの基礎</a>
+    <a href="phase-4.html#ch16" class="toc-link"><span class="toc-num">16</span>Dockerとコンテナ</a>
+    <a href="phase-4.html#ch17" class="toc-link"><span class="toc-num">17</span>CI/CDとGitHub Actions</a>
+    <a href="phase-4.html#ch18" class="toc-link"><span class="toc-num">18</span>プロジェクトアーキテクチャ</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">データ構造</div>
+    <a href="phase-5.html#ch19" class="toc-link"><span class="toc-num">19</span>計算量分析</a>
+    <a href="phase-5.html#ch20" class="toc-link"><span class="toc-num">20</span>線形構造</a>
+    <a href="phase-5.html#ch21" class="toc-link"><span class="toc-num">21</span>ハッシュテーブルとマップ</a>
+    <a href="phase-5.html#ch22" class="toc-link"><span class="toc-num">22</span>木構造</a>
+    <a href="phase-5.html#ch23" class="toc-link"><span class="toc-num">23</span>グラフ</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">アルゴリズム</div>
+    <a href="phase-6.html#ch24" class="toc-link"><span class="toc-num">24</span>探索とソート</a>
+    <a href="phase-6.html#ch25" class="toc-link"><span class="toc-num">25</span>再帰と動的計画法</a>
+    <a href="phase-6.html#ch26" class="toc-link"><span class="toc-num">26</span>アルゴリズムパターン</a>
+    <a href="phase-6.html#ch27" class="toc-link"><span class="toc-num">27</span>グラフアルゴリズム</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">エンジニアリングの技術</div>
+    <a href="phase-7.html#ch28" class="toc-link"><span class="toc-num">28</span>デザインパターンとSOLID</a>
+    <a href="phase-7.html#ch29" class="toc-link"><span class="toc-num">29</span>SQLとクエリマスタリー</a>
+    <a href="phase-7.html#ch30" class="toc-link"><span class="toc-num">30</span>トランザクションとNoSQL</a>
+    <a href="phase-7.html#ch31" class="toc-link"><span class="toc-num">31</span>ネットワークとインターネット</a>
+    <a href="phase-7.html#ch32" class="toc-link"><span class="toc-num">32</span>並行性と並列処理</a>
+    <a href="phase-7.html#ch33" class="toc-link"><span class="toc-num">33</span>セキュリティエンジニアリング</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">システムとスケール</div>
+    <a href="phase-8.html#ch34" class="toc-link"><span class="toc-num">34</span>システム設計</a>
+    <a href="phase-8.html#ch35" class="toc-link"><span class="toc-num">35</span>分散システム</a>
+    <a href="phase-8.html#ch36" class="toc-link"><span class="toc-num">36</span>パフォーマンスと可観測性</a>
+    <a href="phase-8.html#ch37" class="toc-link"><span class="toc-num">37</span>大規模コードベースのナビゲーション</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AIレベル1〜5</div>
+    <a href="phase-9.html#ch38" class="toc-link"><span class="toc-num">38</span>AIコードの評価と指示</a>
+    <a href="phase-9.html#ch39" class="toc-link"><span class="toc-num">39</span>レベル1&amp;2 — タブ補完とエージェントIDE</a>
+    <a href="phase-9.html#ch40" class="toc-link"><span class="toc-num">40</span>レベル3 — コンテキストエンジニアリング</a>
+    <a href="phase-9.html#ch41" class="toc-link"><span class="toc-num">41</span>レベル4 — 複合エンジニアリング</a>
+    <a href="phase-9.html#ch42" class="toc-link"><span class="toc-num">42</span>レベル5 — MCP、スキル、機能</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AIレベル6〜8</div>
+    <a href="phase-10.html#ch43" class="toc-link"><span class="toc-num">43</span>レベル6 — ハーネスエンジニアリング</a>
+    <a href="phase-10.html#ch44" class="toc-link"><span class="toc-num">44</span>レベル7 — バックグラウンドエージェント</a>
+    <a href="phase-10.html#ch45" class="toc-link"><span class="toc-num">45</span>DockerでのClaude Code</a>
+    <a href="phase-10.html#ch46" class="toc-link"><span class="toc-num">46</span>レベル8 — 自律エージェントチーム</a>
+    <a href="phase-10.html#ch47" class="toc-link"><span class="toc-num">47</span>マルチプレイヤー効果</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">リファレンス</div>
+    <a href="appendices.html#glossary" class="toc-link"><span class="toc-num">&oplus;</span>用語集</a>
+    <a href="appendices.html#prompt-library" class="toc-link"><span class="toc-num">&oplus;</span>プロンプトライブラリ</a>
+    <a href="appendices.html#self-assessment" class="toc-link"><span class="toc-num">&oplus;</span>自己評価</a>
+    <a href="appendices.html#common-mistakes" class="toc-link"><span class="toc-num">&oplus;</span>よくある間違い</a>
+    <a href="appendices.html#appendix-d" class="toc-link"><span class="toc-num">&oplus;</span>トラブルシューティング</a>
+    <a href="appendices.html#appendix-e" class="toc-link"><span class="toc-num">&oplus;</span>リソース</a>
+  </div>
+</aside>
+
+<div class="main">
+<section class="hero hero-sm">
+  <div class="hero-badge">フェーズ1 &mdash; 基礎</div>
+  <h1><em>コード</em>とは何か？</h1>
+  <p class="hero-sub">フェーズ1が終わる頃には、30行のPython関数を読み、その動作を説明できるようになります。正確なテストはフェーズ1ゲートをご確認ください。</p>
+  <div class="hero-meta"><span>第01〜04章</span><span>フェーズゲート + TaskForge</span></div>
+</section>
+
+<div class="content-wrap">
+
+<!-- ===== CH 01 ===== -->
+<section id="ch01" data-ch="01">
+<h2><span class="ch-label">第01章</span> プログラミングとは本当に何か</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念</div>
+<p>AIが生成したコードが良いか悪いかを判断するには、まずコードが<em>何であるか</em>を知る必要があります。この章では、カリキュラム全体を理解するための基本的なメンタルモデルを身につけます。</p>
+</div>
+
+<p>プログラミングとは、<strong>常識がゼロの機械</strong>に指示を書くことです。ピーナッツバターのサンドイッチを作るよう誰かに頼む場面を想像してみてください。人間なら瓶を手に取り、蓋を開け、ナイフを持ちます。コンピュータは？「蓋を開ける」と言わなかったので、密封された瓶を前にして止まったままです。すべての指示は、明示的・文字通り・順序正しく書かなければなりません。</p>
+
+<p><strong>プログラム（program）</strong>はこれらの指示を含むテキストファイルです。謎めいたバイナリの塊ではなく、どのエディタでも開ける普通のテキストファイルです。<strong>インタープリタ（interpreter）</strong>（Pythonなどの言語用）や<strong>コンパイラ（compiler）</strong>（Rustなどの言語用）が、人間が読めるテキストをプロセッサが実行できる命令に変換します。</p>
+
+<h3>なぜコードが存在するのか</h3>
+<p>コンピュータが理解できるのは電圧パターンだけです。高電圧 = 1、低電圧 = 0。それだけです。プログラミング言語は、人間が0と1で考えなくて済むように存在します。あなたが書くPythonコードとCPU内で切り替わる電圧の間には、いくつかの翻訳レイヤーがあり、下位のレイヤーを直接触る必要はありません。</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg" aria-label="Translation layers from human thought to CPU: Python code, bytecode, machine code, and voltage switches">
+  <rect class="node-accent" x="230" y="10" width="240" height="42" rx="8"/>
+  <text class="label-text" x="350" y="36" text-anchor="middle">Human Thought</text>
+  <line class="arrow" x1="350" y1="52" x2="350" y2="72"/>
+  <rect class="node-accent" x="230" y="72" width="240" height="42" rx="8"/>
+  <text class="label-text" x="350" y="92" text-anchor="middle">Python Code</text>
+  <text class="sub-text" x="350" y="106" text-anchor="middle">speed = 85</text>
+  <line class="arrow" x1="350" y1="114" x2="350" y2="134"/>
+  <rect class="node-fill" x="230" y="134" width="240" height="42" rx="8"/>
+  <text class="label-text" x="350" y="154" text-anchor="middle">Bytecode</text>
+  <text class="sub-text" x="350" y="168" text-anchor="middle">LOAD_CONST 85 / STORE_NAME</text>
+  <line class="arrow" x1="350" y1="176" x2="350" y2="196"/>
+  <rect class="node-fill" x="230" y="196" width="240" height="42" rx="8"/>
+  <text class="label-text" x="350" y="216" text-anchor="middle">Machine Code</text>
+  <text class="sub-text" x="350" y="230" text-anchor="middle">MOV EAX, 0x55</text>
+  <line class="arrow" x1="350" y1="238" x2="350" y2="252"/>
+  <rect class="node-fill" x="230" y="252" width="240" height="24" rx="6"/>
+  <text class="label-text" x="350" y="268" text-anchor="middle">CPU Voltage Switches</text>
+</svg>
+<div class="diagram-caption">あなたはPythonを書きます。4つの翻訳レイヤーを経て、CPUがスイッチを切り替えます。下位のレイヤーを直接触る必要はありません。</div>
+</div>
+
+<h3>プログラミング言語の全体像</h3>
+<p>用途によってプログラミング言語が異なります。ネジにはドライバー、釘にはハンマーを使うのと同じです。主なカテゴリは以下の通りです。</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 160" xmlns="http://www.w3.org/2000/svg" aria-label="Programming language categories: Web, Systems, Data/AI, Mobile, and Databases, with Python highlighted as your starting point">
+  <rect class="node-fill" x="10" y="10" width="120" height="70" rx="8"/>
+  <text class="label-text" x="70" y="32" text-anchor="middle">Web</text>
+  <text class="sub-text" x="70" y="48" text-anchor="middle">JavaScript</text>
+  <text class="sub-text" x="70" y="62" text-anchor="middle">HTML / CSS</text>
+  <rect class="node-fill" x="150" y="10" width="120" height="70" rx="8"/>
+  <text class="label-text" x="210" y="32" text-anchor="middle">Systems</text>
+  <text class="sub-text" x="210" y="48" text-anchor="middle">Rust · C · Go</text>
+  <rect class="node-accent" x="290" y="10" width="120" height="70" rx="8"/>
+  <text class="label-text" x="350" y="32" text-anchor="middle">Data / AI</text>
+  <text class="sub-text" x="350" y="48" text-anchor="middle">Python</text>
+  <text class="sub-text" x="350" y="62" text-anchor="middle">R</text>
+  <rect class="node-fill" x="430" y="10" width="120" height="70" rx="8"/>
+  <text class="label-text" x="490" y="32" text-anchor="middle">Mobile</text>
+  <text class="sub-text" x="490" y="48" text-anchor="middle">Swift · Kotlin</text>
+  <rect class="node-fill" x="570" y="10" width="120" height="70" rx="8"/>
+  <text class="label-text" x="630" y="32" text-anchor="middle">Databases</text>
+  <text class="sub-text" x="630" y="48" text-anchor="middle">SQL</text>
+  <text class="sub-text" x="350" y="110" text-anchor="middle" fill="var(--accent)" style="font-size:10px;font-weight:600">&#x2191; Your starting point</text>
+</svg>
+<div class="diagram-caption">用途ごとに異なる言語を使います。Pythonがあなたの出発点です。AI、スクリプティング、Webバックエンドをカバーします。</div>
+</div>
+
+<h3>ソフトウェアの実際の姿</h3>
+<p>上の図は言語のカテゴリを示しています。では、それらで実際に何が作られているのでしょうか？ほとんどのソフトウェアはいくつかの主要なカテゴリに分類され、実際の製品はそれらを組み合わせています。</p>
+
+<h4>Webシステム（フロントエンド + バックエンド）</h4>
+<p><strong>Webアプリケーション（web application）</strong>とは、ブラウザで使うすべてのもの——Gmail、YouTube、GitHub、オンラインバンキング——のことです。2つの部分から構成されています。</p>
+<ul>
+<li><strong>フロントエンド（frontend）</strong> &mdash; あなたが見る部分。HTMLがページの構造を作り、CSSがスタイルを適用し、JavaScriptが操作可能にします。ボタンをクリックしてページを再読み込みせずにメニューが現れる場合、それはブラウザ上でJavaScriptが動いています。</li>
+<li><strong>バックエンド（backend）</strong> &mdash; 見えない部分。サーバー（Python、Node.js、Go、Rustなどで書かれることが多い）がリクエストを処理し、ビジネスロジックを適用し、データベースと通信します。ログインするとき、バックエンドがパスワードを確認します。コメントを投稿するとき、バックエンドがそれを保存します。</li>
+</ul>
+<p>フロントエンドとバックエンドは<strong>HTTP</strong>を通じて通信します——第13章で学ぶプロトコルです。あなたが訪問するすべてのURLは、どこかのバックエンドへのHTTPリクエストを引き起こします。</p>
+<p><strong>実際の例：</strong>Twitter/X。フロントエンドはブラウザでタイムラインを表示します。バックエンドは認証を処理し、ツイートをデータベースに保存し、レコメンデーションアルゴリズムを実行し、タイムラインデータをHTTP経由でJSONとして配信します。数百万のユーザー、数千のバックエンドサーバー、一つのシームレスな体験。</p>
+
+<h4>モバイルアプリケーション</h4>
+<p>スマートフォン上のアプリです。2つのアプローチがあります。</p>
+<ul>
+<li><strong>ネイティブアプリ（native apps）</strong> &mdash; 特定のプラットフォーム専用に作られます。iOSはSwift、AndroidはKotlinを使います。最高のパフォーマンスを持ち、デバイスのハードウェア（カメラ、GPS、センサー）に完全にアクセスできます。Instagram、iOSの計算機、Apple Healthはネイティブです。</li>
+<li><strong>クロスプラットフォームアプリ（cross-platform apps）</strong> &mdash; 一つのコードベースで両方のプラットフォームに対応します。React Native（JavaScript）やFlutter（Dart）が同じコードからiOSとAndroidのバージョンを生成します。開発が速い反面、少し完成度が落ちます。多くのスタートアップがこれを使います。</li>
+</ul>
+<p>ほとんどのモバイルアプリもバックエンドが必要です——HTTP経由で同じ種類のサーバーと通信する、異なるフロントエンドに過ぎません。</p>
+
+<h4>データベース</h4>
+<p><strong>データベース（database）</strong>は、整理された永続的なストレージです。データベースがなければ、プログラムが終了するとデータが消えてしまいます。主に2つの系統があります。</p>
+<ul>
+<li><strong>リレーショナル型（SQL）</strong> &mdash; 行と列を持つテーブルにデータが格納されます。厳格なルールを持つスプレッドシートのようなものです。PostgreSQL、MySQL、SQLiteがあります。データが明確な関係を持つ場合（ユーザーが注文を持ち、注文が商品を持つ）に最適です。第15章でSQLiteを使います。</li>
+<li><strong>非リレーショナル型（NoSQL）</strong> &mdash; 柔軟な構造：ドキュメント（MongoDB）、キーバリューペア（Redis）、グラフ（Neo4j）など。非構造化データ、キャッシング、テーブルにきれいに収まらない関係に最適です。</li>
+</ul>
+<p><strong>実際の例：</strong>Shopifyのようなeコマースサイトは、商品・注文・顧客（構造化されたリレーショナルデータ）にリレーショナルデータベースを使います。商品ページを瞬時に読み込むためのキャッシングにRedis（NoSQL）を、商品検索にElasticsearchを使うこともあります。</p>
+
+<h4>それらの組み合わせ方</h4>
+<p>現代のアプリケーションは通常、これら3つを組み合わせています。Uberのような配車アプリを考えてみましょう。</p>
+<ul>
+<li><strong>モバイルアプリ</strong>（フロントエンド）&mdash; 地図を表示し、乗車を依頼し、ドライバーの位置をリアルタイムに表示する</li>
+<li><strong>バックエンドサーバー</strong> &mdash; 乗客とドライバーをマッチングし、料金を計算し、支払いを処理し、サージ料金のロジックを処理する</li>
+<li><strong>データベース</strong> &mdash; ユーザープロフィール、乗車履歴、支払い方法、ドライバーの評価を保存する</li>
+<li><strong>Webダッシュボード</strong> &mdash; ドライバーがアカウントを管理し、管理者がシステムを監視できるようにする</li>
+</ul>
+<p>このカリキュラムはPythonのバックエンドとSQLiteデータベースに焦点を当てています。それが基礎だからです。バックエンドがリクエストを処理してデータを保存する方法を理解すれば、フロントエンド・モバイルアプリ・クラウドインフラなど、すべては同じパターンの変形に過ぎないとわかります。</p>
+
+<h3>よくある誤解</h3>
+<div role="note" class="callout warn">
+<div class="callout-title">注意：「数学が得意でないといけない」という誤解</div>
+<p>プログラミングは方程式を解くよりも、レシピを書くことに近いです。ほとんどのコードは<em>情報の整理</em>と<em>プロセスの記述</em>であり、微積分ではありません。数学が重要な作業（機械学習、物理シミュレーション）は専門分野であり、前提条件ではありません。</p>
+</div>
+
+<div role="note" class="callout warn">
+<div class="callout-title">注意：「コードは難解なもの」という誤解</div>
+<p>プログラムはテキストファイルです。このコースで作る<code>taskforge.py</code>をメモ帳で開いて、すべての行を読むことができます。隠されたものは何もありません。後でAIがコードを生成するとき、これを思い出すことで冷静でいられます——それはあなたが読んで判断できる、ただのテキストです。</p>
+</div>
+
+<h3>ミニ演習1</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう：初めての命令</div>
+<p>ブラウザを開きます。<strong>F12</strong>を押すか、右クリック → 検証を選びます。<strong>コンソール</strong>タブをクリックし、以下を入力してEnterを押します。</p>
+<div class="prompt-block"><span class="label">ブラウザコンソール</span>"hello" + " " + "world"</div>
+<p>ブラウザは2つのテキスト文字列を<strong>連結（concatenate）</strong>（結合）しました。あなたは機械に命令を与え、機械はそれを文字通り実行しました。「hello」と「world」が何を意味するかは「理解」していません——あなたがそうするよう命令したから、2つのテキスト片をつなげただけです。</p>
+</div>
+
+<h3>ミニ演習2</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう：文字通りの解釈</div>
+<p>同じコンソールで<code>2 + 2</code>と入力してEnterを押します。次に<code>"2" + "2"</code>（引用符付き）と入力します。なぜ結果が異なるのでしょうか？</p>
+<p><strong>答え：</strong><code>2 + 2</code>は数値を加算します（結果：<code>4</code>）。<code>"2" + "2"</code>は文字列を連結します（結果：<code>"22"</code>）。引用符が<strong>データ型（data type）</strong>を変え、機械はそれを文字通りに受け取ります。</p>
+</div>
+
+<h3>TaskForgeとの関係</h3>
+<p>このコースを通じて、<strong>TaskForge</strong>——コマンドラインのタスク管理ツール——を構築します。40行のPythonファイルとして始まり、フェーズ5ではマルチエージェントプロジェクトへと成長します。今は、TaskForgeが命令を含むテキストファイルだということだけを知っておいてください。この章の終わりまでに、それが何を意味するかがわかるようになります。</p>
+
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう</div>
+<p>ブラウザを開きます。F12を押し、コンソールをクリックします。以下の2行を、それぞれEnterを押しながら入力します。</p>
+<div class="prompt-block"><span class="label">ブラウザコンソール</span>2 + 2
+console.log('I wrote code')</div>
+<p><strong>確認：</strong>コンソールに<code>4</code>、次に<code>I wrote code</code>が表示されれば成功です。出力を生成するプログラムを実行しました。</p>
+<p><strong>うまくいかない場合：</strong>F12で開発者ツールが開かない場合は、右クリック → 検証 → コンソールタブを試してください。Safariでは、まず開発者メニューを有効にしてください（設定 → 詳細 → Webデベロッパ用の機能を表示）。</p>
+</div>
+
+<div class="pq">コードを実行しました。チュートリアルのサンドボックスではなく、プロの開発者が使うのと同じ環境で。これが始まりです。</div>
+
+<h3>インタラクティブ演習</h3>
+
+<p>以下の演習は、<strong>Pyodide</strong>（Webページ内で動くようコンパイルされたPython）を使ってブラウザ上でPythonを直接実行します。追加のインストールは不要です。今すぐ試してみましょう。</p>
+
+<div class="exercise" data-type="pyodide" data-ch="01" data-ex="hello">
+  <div class="exercise-header">
+    <h4>ブラウザでHello Python</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">1行目に<code>print(2 + 2)</code>、2行目に<code>print('Hello, world!')</code>と入力します。<strong>実行</strong>をクリックして出力を確認し、<strong>チェック</strong>で検証します。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code"># ここに最初のPythonを入力してください</script>
+    <script type="text/plain" class="test-code">assert '4' in __stdout, "Should print 4"
+assert 'Hello' in __stdout, "Should print Hello"</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">チェック</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+</div>
+
+<div role="note" class="callout warn">
+<div class="callout-title">演習が読み込まれない場合</div>
+<p><strong>実行</strong>をクリックしても何も起きない、または「Failed to load Python runtime」と表示される場合、ブラウザがPyodideの読み込みをブロックしています。これは、HTMLファイルを直接開いたとき（アドレスバーに<code>file:///</code>と表示される場合）に一部のブラウザで発生します。解決策は、<strong>ローカルWebサーバー</strong>——あなたのコンピュータで動作し、実際のWebサイトと同じようにブラウザにファイルを渡す小さなプログラム——を通じてファイルを提供することです。複雑に聞こえますが、ターミナルコマンド1つで済みます。以下の手順に従えば、ガイド全体のすべての演習が動作します。</p>
+
+<p>演習が<em>正常に動作した</em>場合は、このセクションをスキップして次の演習に進んでください。</p>
+
+<details>
+<summary><strong>ローカルサーバーの起動方法（クリックして展開）</strong></summary>
+
+<h4>ステップ1：ターミナルを開く</h4>
+<ul>
+<li><strong>Mac：</strong><strong>Cmd + Space</strong>を押し、<strong>Terminal</strong>と入力してEnterを押します。</li>
+<li><strong>Windows：</strong><strong>Win + R</strong>を押し、<strong>cmd</strong>と入力してEnterを押します。（スタートメニューで「コマンドプロンプト」を検索してもOK）</li>
+<li><strong>Linux：</strong><strong>Ctrl + Alt + T</strong>を押します。</li>
+</ul>
+
+<h4>ステップ2：ファイルが入っているフォルダに移動する</h4>
+<p>HTMLファイルがどこにあるかをターミナルに伝える必要があります。<code>cd</code>（ディレクトリ変更）コマンドの後に<code>src</code>フォルダへのパスを続けます。例えば：</p>
+<div class="prompt-block"><span class="label">Mac / Linux</span>cd ~/Desktop/zero-to-hero-programming/src</div>
+<div class="prompt-block"><span class="label">Windows</span>cd C:\Users\YourName\Desktop\zero-to-hero-programming\src</div>
+<p>パスは実際にファイルを保存した場所に合わせて変更してください。わからない場合は、ファイルエクスプローラーで<code>src</code>フォルダを見つけて：</p>
+<ul>
+<li><strong>Mac：</strong><code>src</code>フォルダを右クリックし、<strong>Option</strong>を押したまま「&lsquo;src&rsquo;のパス名をコピー」をクリック。ターミナルで<code>cd </code>と入力してペーストします。</li>
+<li><strong>Windows：</strong>ファイルエクスプローラーのアドレスバーをクリックしてパスをコピー。ターミナルで<code>cd </code>と入力してペーストします。</li>
+</ul>
+
+<h4>ステップ3：サーバーを起動する</h4>
+<p>このコマンドを入力してEnterを押します：</p>
+<div class="prompt-block"><span class="label">ターミナル</span>python3 -m http.server 8000</div>
+
+<p>各部分が何を意味するか説明します。ここに魔法はありません。</p>
+<ul>
+<li><code>python3</code> &mdash; 第01章でインストールしたPythonプログラムを実行します。後でコードを書くのと同じPythonです。</li>
+<li><code>-m</code> &mdash; このフラグはPythonに「名前で組み込みモジュール（Pythonにプリインストールされたミニプログラム）を実行する」よう指示します。追加のダウンロードは不要です。<code>-m</code>は「<strong>m</strong>odule（モジュール）を実行」と覚えてください。</li>
+<li><code>http.server</code> &mdash; 組み込みモジュールの名前です。あなたのコンピュータを小さなWebサーバーに変えます。<strong>サーバー</strong>とは、リクエストを待ってファイルを返すだけのプログラムです——どのWebサイトにアクセスしても起きることと同じです。違いは、このサーバーが<em>あなたの</em>コンピュータで動き、<em>あなただけ</em>がアクセスできることです。</li>
+<li><code>8000</code> &mdash; <strong>ポート番号</strong>です。あなたのコンピュータを何千もの番号付きドアを持つビルだと思ってください。ポート8000は、サーバーに待機するよう指示するドアです。8000という数字はローカル開発の慣習であり、ほぼ任意の番号でも構いませんが、ほとんどのチュートリアルが8000を使うので、それに合わせます。</li>
+</ul>
+
+<p><strong>表示されるもの：</strong>Enterを押すと、ターミナルに以下のような内容が表示されます：</p>
+<div class="prompt-block"><span class="label">出力</span>Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...</div>
+<p>これはサーバーが実行中で待機していることを意味します。ターミナルが「フリーズ」しているように見えますが、正常です。フリーズしているのではなく、リクエストを<em>待機</em>しています。サーバーが動いている間は、そのターミナルウィンドウでコマンドを入力できません。（これは想定通りです。後でCtrl + Cで停止します。）</p>
+
+<p><strong><code>python3</code>が動かない場合：</strong></p>
+<ul>
+<li><strong>Windows：</strong>代わりに<code>python -m http.server 8000</code>を試してください（Windowsでは<code>3</code>なしで<code>python</code>としてインストールされることがあります）。</li>
+<li><strong>「command not found」エラー：</strong>Pythonがまだインストールされていないか、システムのPATHにありません。この章の最初のPythonインストール手順に戻って再試行してください。Macでは<code>python3 --version</code>でPythonがインストールされているか確認できます。</li>
+<li><strong>「Address already in use」エラー：</strong>別のプログラムがポート8000を使っています。別のポート番号を試してください：<code>python3 -m http.server 8080</code>。別のポートを使う場合は、ステップ4の<code>8000</code>をそのポート番号に変えてください。</li>
+</ul>
+
+<h4>ステップ4：ブラウザで開く</h4>
+<p>ターミナルは実行したままにします（サーバーは起動し続ける必要があります）。Webブラウザ（Chrome、Firefox、Safari、Edgeのどれでも可）を開き、<strong>アドレスバー</strong>（URLを入力する一番上のバー、検索バーではありません）に以下を入力します：</p>
+<div class="prompt-block"><span class="label">ブラウザアドレスバー</span>http://localhost:8000</div>
+<p>これも分解して説明します：</p>
+<ul>
+<li><code>http://</code> &mdash; HTTPプロトコル（すべてのWebサイトが使うもの）を使うようブラウザに指示します。</li>
+<li><code>localhost</code> &mdash; 「このコンピュータ」を意味する特別な名前です。インターネットに出るのではなく、ブラウザはあなたのマシンで起動したサーバーと通信します。</li>
+<li><code>:8000</code> &mdash; ステップ3のポート番号です。ブラウザにどの「ドア」をノックするか伝えます。</li>
+</ul>
+<p><strong>表示されるもの：</strong><code>src</code>フォルダ内のすべてのファイル（<code>phase-1.html</code>、<code>phase-2.html</code>など）が一覧表示されたシンプルなページが表示されます。<code>phase-1.html</code>をクリックしてこのページに戻ると——インタラクティブ演習が動作するようになります。</p>
+
+<h4>動作していることを確認する方法</h4>
+<p>ブラウザのアドレスバーを確認します。<code>http://localhost:8000/phase-1.html</code>と表示されているはずです。まだ<code>file:///...</code>と表示されている場合、サーバー経由ではなく直接ファイルを開いたことになります——ステップ4に戻り、<code>localhost</code>アドレスを入力してください。</p>
+
+<h4>終了するとき</h4>
+<p>サーバーが動いているターミナルウィンドウに戻り、<strong>Ctrl + C</strong>（Controlキーを押しながらCを押す）を押します。これはサーバーへの「停止」シグナルを送ります。ターミナルが通常の状態に戻り、新しいコマンドを受け付けられるようになります。サーバーが停止するとブラウザでの演習は動作しなくなります——これは想定通りです。</p>
+<p>次回演習を使いたいときは、ステップ2〜4を繰り返してください。数回やれば10秒程度で済みます。</p>
+
+</details>
+</div>
+
+<div class="quiz" data-ch="01" data-ex="quiz-lang">
+  <h4>知識チェック</h4>
+  <p>次のうち、プログラミング言語でないものはどれですか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">Python</button>
+    <button class="quiz-option" data-correct="true">HTML</button>
+    <button class="quiz-option" data-correct="false">JavaScript</button>
+    <button class="quiz-option" data-correct="false">C++</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+</section>
+
+<!-- ===== CH 02 ===== -->
+<section id="ch02" data-ch="02">
+<h2><span class="ch-label">第02章</span> コンピュータがコードを実行する仕組み</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念</div>
+<p>Claude Codeが関数を生成したとき、頭の中でトレースする必要があります。何が入って、何が変わり、何が出てくるのか。この章では、機械がどのように考えるかを——文字通り、一歩一歩——学びます。</p>
+</div>
+
+<p>プログラムが命令を含むテキストファイルだとわかったところで、機械が実際にどのようにその命令を<em>実行する</em>かを見てみましょう。重要な概念：<strong>逐次実行（sequential execution）</strong>——コンピュータはコードを上から下へ、あなたが書いた通りの順序で、一行ずつ読み取ります。</p>
+
+<h3>変数：ラベル付きの箱</h3>
+<p><strong>変数（variable）</strong>は値を保持するラベル付きの箱です。アパートの郵便受けの列を想像してください。それぞれに名前が付いており、ラベルを変えずに中身を入れ替えることができます。Pythonでは、<code>=</code>記号で作成します。</p>
+<pre><code># これはPythonです — このガイドを通して使う言語です
+speed = 85
+name = "TaskForge"
+running = True</code></pre>
+<p>ラベル（<code>speed</code>）は変わりません。中の値は置き換えることができます。<code>speed = 90</code>は同じ箱に新しい値を入れ——古い<code>85</code>は消えます。</p>
+
+<div class="dw">
+<svg viewBox="0 0 700 180" xmlns="http://www.w3.org/2000/svg" aria-label="Variables as labeled boxes: x holds 10, y holds hello, z holds True, and reassigning x = x + 5 changes its value to 15">
+  <!-- Variable boxes -->
+  <rect class="node-fill" x="50" y="20" width="140" height="60" rx="8"/>
+  <text class="sub-text" x="120" y="40" text-anchor="middle">x</text>
+  <text class="label-text" x="120" y="62" text-anchor="middle">10</text>
+  <rect class="node-fill" x="280" y="20" width="140" height="60" rx="8"/>
+  <text class="sub-text" x="350" y="40" text-anchor="middle">y</text>
+  <text class="label-text" x="350" y="62" text-anchor="middle">"hello"</text>
+  <rect class="node-fill" x="510" y="20" width="140" height="60" rx="8"/>
+  <text class="sub-text" x="580" y="40" text-anchor="middle">z</text>
+  <text class="label-text" x="580" y="62" text-anchor="middle">True</text>
+  <!-- Reassignment -->
+  <text class="sub-text" x="120" y="110" text-anchor="middle">x = x + 5</text>
+  <line class="arrow" x1="120" y1="116" x2="120" y2="130"/>
+  <rect class="node-accent" x="50" y="130" width="140" height="40" rx="8"/>
+  <text class="label-text" x="120" y="156" text-anchor="middle">15</text>
+</svg>
+<div class="diagram-caption">変数はラベル付きの箱です。代入は箱に新しい値を入れます。古い値は消えます。</div>
+</div>
+
+<h3>データ型：箱の形</h3>
+<p>値の<strong>型（type）</strong>によって、有効な操作が決まります。</p>
+<table>
+<caption>Pythonの主なデータ型</caption>
+<tr><th>型</th><th>例</th><th>意味</th></tr>
+<tr><td><strong>整数（Integer）</strong></td><td><code>42</code></td><td>整数</td></tr>
+<tr><td><strong>浮動小数点数（Float）</strong></td><td><code>3.14</code></td><td>小数を含む数</td></tr>
+<tr><td><strong>文字列（String）</strong></td><td><code>"hello"</code></td><td>テキスト（常に引用符で囲む）</td></tr>
+<tr><td><strong>ブール値（Boolean）</strong></td><td><code>True</code> / <code>False</code></td><td>真または偽</td></tr>
+</table>
+
+<h3>演算子と式</h3>
+<p>箱に値が入ったところで、それらを<strong>組み合わせる</strong>必要があります。<strong>式（expression）</strong>とは、値を生成するコードの任意の部分です。<code>2 + 3</code>は<code>5</code>を生成する式です。</p>
+
+<h4>算術演算子</h4>
+<table>
+<caption>Pythonの算術演算子</caption>
+<tr><th>演算子</th><th>意味</th><th>例</th><th>結果</th></tr>
+<tr><td><code>+</code></td><td>加算（または文字列の連結）</td><td><code>3 + 4</code></td><td><code>7</code></td></tr>
+<tr><td><code>-</code></td><td>減算</td><td><code>10 - 3</code></td><td><code>7</code></td></tr>
+<tr><td><code>*</code></td><td>乗算</td><td><code>5 * 6</code></td><td><code>30</code></td></tr>
+<tr><td><code>/</code></td><td>除算（常にfloatを返す）</td><td><code>10 / 3</code></td><td><code>3.333...</code></td></tr>
+<tr><td><code>//</code></td><td>整数除算（切り捨て）</td><td><code>10 // 3</code></td><td><code>3</code></td></tr>
+<tr><td><code>%</code></td><td>余り（モジュロ）</td><td><code>10 % 3</code></td><td><code>1</code></td></tr>
+<tr><td><code>**</code></td><td>べき乗</td><td><code>2 ** 3</code></td><td><code>8</code></td></tr>
+</table>
+<pre><code>price = 29.99
+quantity = 3
+total = price * quantity  # 89.97
+print(total)</code></pre>
+<p>注意：<code>+</code>は型によって動作が異なります。<code>3 + 4</code>は数値を加算します。<code>"hello" + " world"</code>は文字列を結合します。型を混ぜる（<code>"3" + 4</code>）と<code>TypeError</code>が発生します——機械はあなたの言葉を文字通りに受け取ります。</p>
+
+<h3>ミニ演習3</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう：出力を予測する</div>
+<p>実行前に<code>result</code>の値を予測してください。</p>
+<pre><code>a = 17
+b = 5
+result = a // b
+remainder = a % b
+print(result, remainder)</code></pre>
+<p><strong>答え：</strong><code>3 2</code> &mdash; 17を5で割ると商は3で余りは2です。整数除算（<code>//</code>）は小数部分を切り捨て、モジュロ（<code>%</code>）は余りを返します。</p>
+</div>
+
+<h3>エラーはフィードバック</h3>
+<p>コードが間違っているとき、コンピュータは教えてくれます——聞き方を知っていれば。エラーには3つの種類があります。</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 120" xmlns="http://www.w3.org/2000/svg" aria-label="Three types of programming errors: syntax errors caught before running, runtime errors that crash during execution, and logic errors that run but give wrong answers">
+  <rect x="10" y="15" width="200" height="90" rx="8" fill="var(--bg-card)" stroke="var(--a5)" stroke-width="2"/>
+  <text class="label-text" x="110" y="40" text-anchor="middle">Syntax Error</text>
+  <text class="sub-text" x="110" y="58" text-anchor="middle">Caught before running.</text>
+  <text class="sub-text" x="110" y="72" text-anchor="middle">Typo or bad grammar.</text>
+  <text class="sub-text" x="110" y="90" text-anchor="middle">print("hi"</text>
+  <rect x="250" y="15" width="200" height="90" rx="8" fill="var(--bg-card)" stroke="var(--a4)" stroke-width="2"/>
+  <text class="label-text" x="350" y="40" text-anchor="middle">Runtime Error</text>
+  <text class="sub-text" x="350" y="58" text-anchor="middle">Crashes during execution.</text>
+  <text class="sub-text" x="350" y="72" text-anchor="middle">Impossible operation.</text>
+  <text class="sub-text" x="350" y="90" text-anchor="middle">10 / 0</text>
+  <rect x="490" y="15" width="200" height="90" rx="8" fill="var(--bg-card)" stroke="var(--accent)" stroke-width="2"/>
+  <text class="label-text" x="590" y="40" text-anchor="middle">Logic Error</text>
+  <text class="sub-text" x="590" y="58" text-anchor="middle">Runs fine. Wrong answer.</text>
+  <text class="sub-text" x="590" y="72" text-anchor="middle">Hardest to find.</text>
+  <text class="sub-text" x="590" y="90" text-anchor="middle">total = price - tax</text>
+</svg>
+<div class="diagram-caption">AIが生成したコードは構文エラーや実行時エラーをほとんど起こしません。ロジックエラー——動くけれど間違ったことをするコード——がAIが失敗する場所であり、あなたのレビューが重要な場所です。</div>
+</div>
+
+<div role="note" class="callout critical">
+<div class="callout-title">AIにとっての重要な意味</div>
+<p>Claude CodeなどのAIツールがコードを生成するとき、構文エラー（タイプ1）や実行時クラッシュ（タイプ2）はほとんど起きません。危険なのは<strong>ロジックエラー</strong>——完全に動くのに間違った結果を生成するコード——です。だからこそ、<em>あなた</em>がコードが何をすべきかを理解し、AIが間違えた箇所を見つけられる必要があります。</p>
+</div>
+
+<h3>ミニ演習1</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう：出力を予測する</div>
+<p>実行前に<code>b</code>が何になるか書き留めてください。</p>
+<pre><code>a = 3
+b = a
+a = 7
+print(b)</code></pre>
+<p><strong>答え：</strong><code>3</code>、<code>7</code>ではありません。<code>b = a</code>が実行されたとき、<code>b</code>はその時点での<code>a</code>の値の<em>コピー</em>を受け取りました。後で<code>a</code>を変更しても<code>b</code>には影響しません。</p>
+</div>
+
+<h3>ミニ演習2</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう：出力を予測する</div>
+<pre><code>name = 'world'
+print('Hello, ' + name + '!')</code></pre>
+<p><strong>答え：</strong><code>Hello, world!</code> &mdash; 文字列の連結が3つの部分をつなぎます。</p>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう</div>
+<p>実行<strong>前</strong>に3つのスニペットの出力を予測してください。予測を書き留めてから確認します。</p>
+<div class="prompt-block"><span class="label">スニペット1</span>x = 10
+x = x * 2
+print(x)</div>
+<div class="prompt-block"><span class="label">スニペット2</span>a = 'py'
+b = 'thon'
+print(a + b)</div>
+<div class="prompt-block"><span class="label">スニペット3</span>x = 5
+y = 0
+print(x / y)</div>
+<p><strong>確認：</strong><code>20</code>、<code>python</code>、エラー（<code>ZeroDivisionError</code>）と予測できたなら、逐次実行・文字列連結・実行時エラーを理解しています。</p>
+<p><strong>うまくいかない場合：</strong>Pythonがまだインストールされていない場合は、先に第03章を行ってから戻ってください。または<strong>replit.com</strong>のブラウザコンソールを使ってください（無料、インストール不要）。</p>
+</div>
+
+<div class="pq">実行前にプログラムの出力を予測しました。それがコードレビューのコアスキルです——フェーズ4でAIが生成したコードを評価するときに使うのと同じスキルです。</div>
+
+<h3>TaskForgeとの関係</h3>
+<p>TaskForge v0.1では、<code>task = {"id": len(tasks) + 1, "description": description, "status": "pending"}</code>という行がこの章のすべての概念を使っています。変数（<code>task</code>）、整数（<code>len(tasks) + 1</code>）、文字列（<code>"pending"</code>）、代入（<code>=</code>）です。第04章でそのコードを読むころには、これらはなじみ深いパターンになっているでしょう。</p>
+
+<h3>インタラクティブ演習</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="02" data-ex="predict">
+  <div class="exercise-header">
+    <h4>予測してから検証する</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">実行をクリックする前に、各行が何を表示するか予測してください。コードを実行して予測と比較します。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">x = 10
+x = x + 5
+print(x)
+
+first = "Hello"
+last = "World"
+print(first + " " + last)
+
+a = 3
+b = a
+a = 7
+print(b)</script>
+    <script type="text/plain" class="test-code">assert '15' in __stdout, "x should be 15"
+assert 'Hello World' in __stdout, "Should print Hello World"
+assert '3' in __stdout, "b should still be 3"</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">チェック</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+</div>
+
+<div class="exercise" data-type="pyodide" data-ch="02" data-ex="swap">
+  <div class="exercise-header">
+    <h4>変数の入れ替え</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt"><code>a</code>と<code>b</code>という2つの変数があります。<code>a</code>が<code>b</code>の元の値を持ち、<code>b</code>が<code>a</code>の元の値を持つように入れ替えてください。変数と代入だけを使い、関数や組み込みのトリックは使わないでください。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">a = 10
+b = 25
+
+# ここでaとbの値を入れ替えてください：
+
+
+# この行は変更しないでください：
+print(a)
+print(b)</script>
+    <script type="text/plain" class="test-code">assert '25' in __stdout.split('\n')[0], "a should now be 25"
+assert '10' in __stdout.split('\n')[1], "b should now be 10"</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">チェック</button>
+    <button class="ex-hint" data-level="0">ヒント</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint"><code>a = b</code>と書くだけでは、<code>a</code>の元の値が失われます。まずそれを保持する一時的な箱が必要です。</p>
+    <p class="hint">3番目の変数を作ります：<code>temp = a</code>、次に<code>a = b</code>、そして<code>b = temp</code>。</p>
+  </div>
+</div>
+
+<div class="quiz" data-ch="02" data-ex="quiz-var">
+  <h4>知識チェック</h4>
+  <p><code>a = 3; b = a; a = 7</code>を実行した後、<code>b</code>の値は何ですか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">7</button>
+    <button class="quiz-option" data-correct="true">3</button>
+    <button class="quiz-option" data-correct="false">10</button>
+    <button class="quiz-option" data-correct="false">エラー</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+</section>
+
+<!-- ===== CH 03 ===== -->
+<section id="ch03" data-ch="03">
+<h2><span class="ch-label">第03章</span> 環境のセットアップ</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念</div>
+<p>AIコーディングツール——Claude Code、Cursor、Copilot——はすべて開発環境で動作します。環境が整っていなければ、このカリキュラムの他の何もうまく機能しません。この章であなたのマシンを準備します。</p>
+</div>
+
+<p>Pythonコードを実行するには、2つのものが必要です：<strong>ターミナル（terminal）</strong>（コマンドを入力する場所）と<strong>Python</strong>（コードを実行するインタープリタ）。この章では、この2つを準備します。</p>
+
+<h3>ターミナル</h3>
+<p>ターミナルはコンピュータへのテキストベースのインターフェースです。ファイル → 新規フォルダをクリックする代わりに、<code>mkdir new_folder</code>と入力します。速く、スクリプト化でき、そして決定的に——すべてのAIコーディングツールが動作する方法です。Claude Codeはすべてターミナルで動作します。</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg" aria-label="Terminal window showing a command prompt, running python3 hello.py, and receiving Hello World output">
+  <!-- Terminal window frame -->
+  <rect class="node-fill" x="100" y="10" width="500" height="200" rx="10"/>
+  <!-- Title bar -->
+  <rect x="100" y="10" width="500" height="30" rx="10" fill="var(--border-accent)" stroke="var(--border-accent)"/>
+  <rect x="100" y="30" width="500" height="10" fill="var(--border-accent)"/>
+  <circle cx="122" cy="25" r="5" fill="var(--a5)" opacity=".6"/>
+  <circle cx="138" cy="25" r="5" fill="var(--a4)" opacity=".6"/>
+  <circle cx="154" cy="25" r="5" fill="var(--a3)" opacity=".6"/>
+  <!-- Prompt line -->
+  <text class="sub-text" x="120" y="62" style="font-size:11px" fill="var(--a3)">~/projects $</text>
+  <text class="sub-text" x="215" y="62" style="font-size:11px" fill="var(--heading)">python3 hello.py</text>
+  <!-- Output -->
+  <text class="sub-text" x="120" y="84" style="font-size:11px" fill="var(--text)">Hello, World!</text>
+  <!-- Next prompt -->
+  <text class="sub-text" x="120" y="106" style="font-size:11px" fill="var(--a3)">~/projects $</text>
+  <rect x="215" y="96" width="8" height="14" rx="2" fill="var(--accent)" class="anim-cursor"/>
+  <!-- Labels -->
+  <line x1="88" y1="55" x2="50" y2="55" stroke="var(--accent)" stroke-width="1"/>
+  <text class="sub-text" x="46" y="59" text-anchor="end" fill="var(--accent)" style="font-size:9px">Prompt</text>
+  <line x1="335" y1="55" x2="620" y2="55" stroke="var(--accent)" stroke-width="1"/>
+  <text class="sub-text" x="624" y="59" fill="var(--accent)" style="font-size:9px">Command</text>
+  <line x1="270" y1="84" x2="620" y2="84" stroke="var(--a3)" stroke-width="1"/>
+  <text class="sub-text" x="624" y="88" fill="var(--a3)" style="font-size:9px">Output</text>
+  <line x1="88" y1="99" x2="50" y2="99" stroke="var(--accent)" stroke-width="1"/>
+  <text class="sub-text" x="46" y="103" text-anchor="end" fill="var(--accent)" style="font-size:9px">Ready</text>
+</svg>
+<div class="diagram-caption">ターミナルは会話です。コマンドを入力すると、コンピュータが応答します。プロンプトは次のコマンドの準備ができたことを示します。</div>
+</div>
+
+<h3>ターミナルエミュレータのアップグレード</h3>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念：ターミナルエミュレータ</div>
+<p><strong>ターミナルエミュレータ（terminal emulator）</strong>はシェルへのウィンドウを提供します。シェルはコマンドを解釈するプログラム（<code>bash</code>、<code>zsh</code>）であり、ターミナルエミュレータはシェルを表示して入力を処理するアプリケーションです。すべてのOSにデフォルトのものが付属していますが、サードパーティのターミナルエミュレータは分割ペイン、検索、インスタントリプレイなどの機能を追加し、毎日何時間もターミナルで作業するようになると大きな違いをもたらします。</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">現在のツール（2026年3月）</div>
+<p><strong>macOS：iTerm2</strong>（無料、iterm2.comから）。分割ペイン、ペースト履歴、インスタントリプレイ、無制限スクロールバック。毎日使えば1週間で元を取れるターミナルのアップグレードです。</p>
+<p><strong>Windows：Windows Terminal</strong>（Windows 11にプリインストール、Windows 10ではMicrosoft Storeから無料）。タブ、分割ペイン（<code>Alt + Shift + D</code>）、プロファイルをサポートします。これが現代のデフォルトです——レガシーの<code>cmd.exe</code>は使わないでください。</p>
+<p><strong>Linux：AlacrittyまたはKitty</strong>（両方無料、GPU加速、設定ファイルベース）。パッケージマネージャーでインストールします。</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">なぜ重要か</div>
+<p>1つのペインでClaude Codeを実行し、別のペインでテスト出力を確認し、3つ目のペインでログを追跡する——同時に——そのときにより良いターミナルがなぜ重要かわかります。iTerm2はこれをネイティブに処理します。デフォルトのターミナルはそうではありません。</p>
+</div>
+
+<h4>iTerm2のインストール</h4>
+<div class="prompt-block"><span class="label">ターミナル</span># オプション1：Homebrew（推奨）
+brew install --cask iterm2
+
+# オプション2：iterm2.comからダウンロード
+# Downloadをクリック、Applicationsにドラッグ、Applicationsから開く</div>
+<p>インストール後、iTerm2を開いてデフォルトに設定します：<strong>iTerm2 &rarr; Make iTerm2 Default Term</strong>（メニューバー）。</p>
+
+<h4>iTerm2の必須設定</h4>
+<p>環境設定（<strong>Cmd + ,</strong>）を開き、以下の設定を適用します：</p>
+<table>
+<caption>iTerm2の必須設定</caption>
+<tr><th>設定</th><th>場所</th><th>変更内容</th></tr>
+<tr><td><strong>無制限スクロールバック</strong></td><td>Profiles &rarr; Terminal</td><td>「Unlimited scrollback」にチェック。これがないと、長いコマンド出力が失われます。</td></tr>
+<tr><td><strong>前のディレクトリを再利用</strong></td><td>Profiles &rarr; General &rarr; Working Directory</td><td>「Reuse previous session's directory」を選択。新しいタブが現在の場所で開きます。</td></tr>
+<tr><td><strong>自然なテキスト編集</strong></td><td>Profiles &rarr; Keys &rarr; Key Mappings</td><td>Presets &rarr; Natural Text Editingをクリック。Option+Arrowが単語単位で移動できるようになります（他のmacOSアプリと同様）。</td></tr>
+<tr><td><strong>フォント</strong></td><td>Profiles &rarr; Text</td><td><strong>JetBrains Mono</strong>または<strong>MesloLGS NF</strong>を13〜14ptに設定。等幅フォントはコードの整列を見やすくします。</td></tr>
+<tr><td><strong>カラースキーム</strong></td><td>Profiles &rarr; Colors</td><td>Color Presets &rarr; Solarized DarkまたはTango Darkを選択。デフォルトはコントラストが低すぎます。</td></tr>
+</table>
+
+<h4>毎日使うiTerm2のホットキー</h4>
+<table>
+<caption>日常的に使うiTerm2のホットキー</caption>
+<tr><th>ホットキー</th><th>操作</th><th>なぜ重要か</th></tr>
+<tr><td><code>Cmd + D</code></td><td>ペインを縦に分割</td><td>左にコード、右にテスト。またはClaude Codeを左に、ログ出力を右に表示できます。</td></tr>
+<tr><td><code>Cmd + Shift + D</code></td><td>ペインを横に分割</td><td>上下にペインを重ねます。複数のログを監視するのに便利です。</td></tr>
+<tr><td><code>Cmd + ]</code> / <code>Cmd + [</code></td><td>ペイン間を移動</td><td>マウスに触れずにフォーカスを移動できます。</td></tr>
+<tr><td><code>Cmd + Option + Arrow</code></td><td>特定のペインに移動</td><td>左右上下の目的のペインに直接ジャンプします。</td></tr>
+<tr><td><code>Cmd + T</code></td><td>新しいタブ</td><td>プロジェクトごとにコンテキストを分離できます。</td></tr>
+<tr><td><code>Cmd + W</code></td><td>タブ/ペインを閉じる</td><td>作業が終わったら片付けましょう。</td></tr>
+<tr><td><code>Cmd + 1/2/3</code></td><td>タブ1/2/3に切り替え</td><td>プロジェクト間を瞬時に切り替えられます。</td></tr>
+<tr><td><code>Cmd + Shift + H</code></td><td>ペースト履歴</td><td>コピーしたすべてのものを閲覧できます。検索も可能です。</td></tr>
+<tr><td><code>Cmd + F</code></td><td>ターミナル出力内を検索</td><td>スクロールバック内のエラー、URL、特定の出力を検索できます。</td></tr>
+<tr><td><code>Cmd + Shift + Enter</code></td><td>ペインの最大化/復元</td><td>一つのペインを一時的にフルスクリーンにし、分割に戻せます。</td></tr>
+<tr><td><code>Cmd + /</code></td><td>カーソル位置を表示</td><td>大量のテキストの中でカーソルを見失ったときに使います。</td></tr>
+<tr><td><code>Cmd + Option + B</code></td><td>インスタントリプレイ</td><td>ターミナルの履歴を動画のように巻き戻して確認できます。スクロールで流れた出力も確認可能です。</td></tr>
+</table>
+
+<div role="note" class="callout warn">
+<div class="callout-title">注意：WindowsとLinuxのユーザーの方へ</div>
+<p><strong>Windows：</strong><strong>Windows Terminal</strong>を使いましょう（Windows 11にはプリインストール、Windows 10ではMicrosoft Storeから無料で入手可能）。タブ、分割ペイン（<code>Alt + Shift + D</code>）、プロファイルに対応しています。<strong>Linux：</strong><strong>Alacritty</strong>（GPU加速、設定ファイルベース）または<strong>Kitty</strong>（高速、分割機能内蔵）を使いましょう。どちらもパッケージマネージャーでインストールできます。</p>
+</div>
+
+<h3>ターミナル操作の高速化：シェルのホットキー</h3>
+<p>以下のキー操作は、どのターミナルでも使えます——iTerm2、デフォルトのターミナル、Windows Terminal、Linuxのターミナルすべてで共通です。<strong>readline</strong>のキーバインディングを使用しており、bashでもzshでも同じです。これらを覚えれば、コマンド入力中にマウスに手を伸ばすことはなくなります。</p>
+
+<table>
+<caption>ターミナルナビゲーション用のシェルreadlineホットキー</caption>
+<tr><th>ホットキー</th><th>操作</th><th>使用例</th></tr>
+<tr><td><code>Ctrl + A</code></td><td>行頭にジャンプ</td><td>長いコマンドを入力した後、先頭に<code>sudo</code>を追加したいとき。</td></tr>
+<tr><td><code>Ctrl + E</code></td><td>行末にジャンプ</td><td>先頭を編集した後、末尾に戻りたいとき。</td></tr>
+<tr><td><code>Ctrl + W</code></td><td>単語を後方削除</td><td>バックスペースを20回押さずに最後の引数を消せます。</td></tr>
+<tr><td><code>Ctrl + U</code></td><td>カーソルから行頭まで削除</td><td>入力途中のコマンドを消してやり直せます。</td></tr>
+<tr><td><code>Ctrl + K</code></td><td>カーソルから行末まで削除</td><td>コマンド名を残して、すべての引数を消せます。</td></tr>
+<tr><td><code>Ctrl + Y</code></td><td>最後に削除したテキストを貼り付け</td><td><code>Ctrl + U</code>や<code>Ctrl + W</code>で削除したものを復元できます。</td></tr>
+<tr><td><code>Ctrl + R</code></td><td>履歴の逆方向検索</td><td>過去のコマンドの一部を入力すると、履歴から自動補完されます。<strong>最も時間を節約できる操作です。</strong></td></tr>
+<tr><td><code>Ctrl + C</code></td><td>現在のコマンドをキャンセル</td><td>実行中のプロセスを終了したり、入力途中の行を破棄したりします。</td></tr>
+<tr><td><code>Ctrl + D</code></td><td>終了 / EOFを送信</td><td>現在のシェルセッションを閉じます（<code>exit</code>と入力するのと同じです）。</td></tr>
+<tr><td><code>Ctrl + L</code></td><td>画面をクリア</td><td>履歴を失わずに画面をきれいにします。<code>clear</code>と同じですが、より速いです。</td></tr>
+<tr><td><code>Ctrl + Z</code></td><td>プロセスを一時停止</td><td>実行中のプロセスを一時停止します。<code>fg</code>で再開できます。</td></tr>
+<tr><td><code>Option + Left/Right</code></td><td>単語単位で移動</td><td>引数間をすばやく移動できます（iTerm2ではNatural Text Editingの設定が必要です）。</td></tr>
+<tr><td><code>!!</code></td><td>直前のコマンドを再実行</td><td><code>sudo !!</code>で直前のコマンドをsudo付きで再実行します。</td></tr>
+<tr><td><code>!$</code></td><td>直前のコマンドの最後の引数</td><td><code>mkdir new-dir && cd !$</code>でディレクトリを作成して移動します。</td></tr>
+<tr><td><code>Tab</code></td><td>自動補完</td><td>ファイル名やコマンドの最初の数文字を入力してTabを押すと補完されます。Tabを2回押すとすべての候補が表示されます。</td></tr>
+<tr><td><code>Up/Down Arrow</code></td><td>コマンド履歴をナビゲート</td><td>過去のコマンドをスクロールできます。<code>Ctrl + R</code>と組み合わせるとさらに強力です。</td></tr>
+</table>
+
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう：ホットキーの練習</div>
+<p>次の長いコマンドを入力してください（Enterは押しません）：<code>python3 -m pytest tests/ -v --tb=short</code>。続けて練習しましょう：<code>Ctrl + A</code>（行頭へ）、<code>Ctrl + E</code>（行末へ）、<code>Ctrl + W</code>（最後の単語を削除）、<code>Ctrl + U</code>（すべて削除）、<code>Ctrl + Y</code>（貼り付けて復元）。身体が覚えるまで5回繰り返しましょう。</p>
+</div>
+
+<h3>Pythonのインストール</h3>
+<table>
+<caption>OS別Pythonインストールコマンド</caption>
+<tr><th>OS</th><th>インストールコマンド</th><th>確認方法</th></tr>
+<tr><td><strong>macOS</strong></td><td><code>brew install python3</code>またはpython.orgからダウンロード</td><td><code>python3 --version</code></td></tr>
+<tr><td><strong>Windows</strong></td><td>python.orgからダウンロード &mdash; 「Add to PATH」にチェック</td><td><code>python --version</code></td></tr>
+<tr><td><strong>Linux</strong></td><td><code>sudo apt install python3</code></td><td><code>python3 --version</code></td></tr>
+</table>
+
+<h3>REPL</h3>
+<p>ターミナルで<code>python3</code>と入力してください。<code>&gt;&gt;&gt;</code>プロンプトが表示されます——これが<strong>REPL（Read-Eval-Print Loop）</strong>です。あなたのサンドボックスです。Pythonの式を入力すると、即座に結果が表示されます。<code>exit()</code>と入力して終了します。</p>
+
+<h3>最初のファイル</h3>
+<p><code>hello.py</code>というファイルを作成し、以下の1行を書きます。</p>
+<pre><code>print("Hello, World!")</code></pre>
+<p>実行します：<code>python3 hello.py</code>。ターミナルに<code>Hello, World!</code>と表示されます。これだけです——プログラムを書いて実行しました。</p>
+
+<h3>仮想環境（virtual environment）</h3>
+<p>Pythonパッケージをインストールする前に、<strong>仮想環境</strong>を理解する必要があります。仮想環境とは、特定のプロジェクト専用のPythonの自己完結型コピーです。仮想環境がないと、インストールしたすべてのパッケージが一つのグローバルな場所に入ります——やがて2つのプロジェクトが同じパッケージの異なるバージョンを必要とし、問題が起きます。仮想環境はこの問題を完全に防ぎます。</p>
+
+<div role="note" class="callout warn">
+<div class="callout-title">注意：<code>pip install</code>の前に必ずvenvを作成しましょう</div>
+<p>仮想環境の外で<code>pip install</code>を実行してはいけません。パッケージをグローバルにインストールすると、パッケージが積み重なり、競合し、やがて診断が難しい形で問題が発生します。仮想環境は各プロジェクトのパッケージを隔離してくれます。</p>
+</div>
+
+<h4>仮想環境の作成</h4>
+<div class="prompt-block"><span class="label">ターミナル</span># まずプロジェクトディレクトリに移動します
+cd ~/my-project
+
+# .venvという名前の仮想環境を作成します
+python3 -m venv .venv</div>
+<p>これにより、プロジェクト内に<code>.venv</code>フォルダが作成されます。Pythonのプライベートコピーと、空のパッケージセットが含まれています。フォルダ名<code>.venv</code>は慣習です——ドットで始まるため隠しフォルダになり、ファイル一覧を散らかしません。</p>
+
+<h4>仮想環境の有効化</h4>
+<div class="prompt-block"><span class="label">macOS / Linux</span>source .venv/bin/activate</div>
+<div class="prompt-block"><span class="label">Windows</span>.venv\Scripts\activate</div>
+
+<h4>仮想環境が有効になっているかの確認方法</h4>
+<p>2つの手がかりで確認できます。</p>
+<pre><code># 1. プロンプトが変わります — 先頭に(.venv)が表示されます：
+(.venv) ~/my-project $
+
+# 2. which pythonがグローバルではなくvenv内のPythonを指します：
+(.venv) ~/my-project $ which python
+/Users/you/my-project/.venv/bin/python</code></pre>
+
+<h4>無効化</h4>
+<p>プロジェクトの作業が終わったら、<code>deactivate</code>と入力してグローバルのPythonに戻ります。</p>
+<div class="prompt-block"><span class="label">ターミナル</span>deactivate</div>
+<p>プロンプトから<code>(.venv)</code>のプレフィックスが消え、<code>which python</code>がシステムのPythonを指すようになります。</p>
+
+<h3>ミニ演習3</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう：仮想環境を作成して有効化しましょう</div>
+<p>各行を一つずつ実行してください。各コマンドの後、次に進む前にターミナルの出力を読みましょう。</p>
+<div class="prompt-block"><span class="label">ターミナル</span># 1. 練習用の一時フォルダを作成します
+mkdir venv-test
+cd venv-test
+
+# 2. 仮想環境を作成します（このフォルダ専用のPythonのプライベートコピー）
+python3 -m venv .venv
+
+# 3. 有効化します — プロンプトが(.venv)付きに変わるはずです
+source .venv/bin/activate    # Windows: .venv\Scripts\activate
+
+# 4. 確認："which python"が.venv/フォルダ内を指しているはずです
+which python
+
+# 5. 確認："pip list"がほぼ何も表示しないはずです（pipとsetuptoolsだけ）
+pip list
+
+# 6. 無効化 — 仮想環境から出ます
+deactivate
+
+# 7. 確認："which python"がシステムのPythonに戻っているはずです
+which python</div>
+<p><strong>確認：</strong>ステップ4の後、パスに<code>.venv/</code>が含まれているはずです。ステップ5の後、<code>pip</code>と<code>setuptools</code>だけが表示されるはずです。ステップ7の後、パスがステップ4と異なるはずです（システムのPythonに戻っています）。3つすべて一致すれば成功です。</p>
+</div>
+
+<h3>コードエディタ</h3>
+<p>コードはどんなテキストエディタでも書けますが、<strong>コードエディタ（code editor）</strong>は構文をハイライトし、タイプミスを検出し、ターミナルと統合してくれます。まずは<strong>VS Code</strong>（無料、code.visualstudio.comから入手可能）から始めましょう。<strong>Cursor</strong>や<strong>Windsurf</strong>のようなAIネイティブエディタは、AIアシスタント機能を直接組み込んでいます——フェーズ4で使います。</p>
+
+<h4>時間を節約するVS Codeのホットキー</h4>
+<p>プロが常に使っているショートカットです。macOSでは<code>Cmd</code> = <code>&#8984;</code>です。Windows/Linuxでは<code>Cmd</code>を<code>Ctrl</code>に置き換えてください。</p>
+<table>
+<caption>VS Codeのキーボードショートカット</caption>
+<tr><th>ホットキー</th><th>操作</th><th>なぜ重要か</th></tr>
+<tr><td><code>Cmd + P</code></td><td>ファイル名でクイックオープン</td><td>ファイル名の一部を入力して即座に開けます。既知のファイルにはファイルツリーを使わないようにしましょう。</td></tr>
+<tr><td><code>Cmd + Shift + P</code></td><td>コマンドパレット</td><td>VS Codeのすべてのアクションをここから検索できます。「ドキュメントのフォーマット」「ターミナルの切り替え」「言語モードの変更」など。</td></tr>
+<tr><td><code>Cmd + `</code></td><td>統合ターミナルの切り替え</td><td>VS Codeを離れずにエディタとターミナルを切り替えられます。</td></tr>
+<tr><td><code>Cmd + B</code></td><td>サイドバーの切り替え</td><td>ファイルエクスプローラーの表示/非表示を切り替えて、エディタのスペースを広げられます。</td></tr>
+<tr><td><code>Cmd + D</code></td><td>次の出現箇所を選択</td><td>単語を選択し、<code>Cmd + D</code>を繰り返し押すと、すべてのインスタンスを同時に選択・編集できます。</td></tr>
+<tr><td><code>Cmd + Shift + K</code></td><td>行全体を削除</td><td>選択せずに行を削除できます。</td></tr>
+<tr><td><code>Option + Up/Down</code></td><td>行を上下に移動</td><td>カット＆ペーストなしでコードを並べ替えられます。</td></tr>
+<tr><td><code>Cmd + Shift + F</code></td><td>全ファイルを検索</td><td>プロジェクト全体で関数や変数のすべての使用箇所を見つけられます。</td></tr>
+<tr><td><code>Cmd + /</code></td><td>コメントの切り替え</td><td>現在の行や選択範囲のコメント/コメント解除を切り替えます。</td></tr>
+<tr><td><code>Cmd + Shift + \\</code></td><td>対応する括弧にジャンプ</td><td>ネストしたコードブロックをすばやく移動できます。</td></tr>
+<tr><td><code>Ctrl + G</code></td><td>行番号にジャンプ</td><td>エラーメッセージが「line 142」と言ったとき、直接142行目にジャンプできます。</td></tr>
+<tr><td><code>F12</code></td><td>定義に移動</td><td>関数が定義されている場所にジャンプします。<code>Cmd + Click</code>でも同じことができます。</td></tr>
+<tr><td><code>Cmd + Z</code> / <code>Cmd + Shift + Z</code></td><td>元に戻す / やり直す</td><td>どこでも使えますが、特に重要です。不要なAI生成の変更を元に戻せます。</td></tr>
+</table>
+
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう：VS Codeの練習</div>
+<p>VS CodeでPythonファイルを開きましょう。<code>Cmd + P</code>で別のファイルを開きます。<code>Cmd + Shift + F</code>で「def」を検索します。<code>Cmd + `</code>でターミナルを開きます。<code>Ctrl + G</code>で1行目にジャンプします。マウスに触れずに3回繰り返しましょう。</p>
+</div>
+
+<h3>パッケージのインストール</h3>
+<p><code>pip</code>はパッケージ（package）をインストールします&mdash;他の人が書いたコードをあなたが使えるようにするものです。例えば、<code>pip install requests</code>はWebリクエスト（web request）を行うためのライブラリをインストールします。これは第11章で使います。</p>
+
+<div role="note" class="callout info">
+<div class="callout-title">補足</div>
+<p>Claude CodeにはPythonに加えてNode.jsが必要です。二度手間を避けるために今インストールしましょう。<strong>nodejs.org</strong>にアクセスしてLTS版をダウンロードしてください。確認方法: <code>node --version</code>。</p>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">補足</div>
+<p>Node.jsをインストールしました。フェーズ5では、これを使ってClaude Code&mdash;ターミナル上で動くAIアシスタント&mdash;を実行します。Claude Codeのセッションは以下のようになります:</p>
+<pre><code>$ claude
+╭──────────────────────────────────────╮
+│ Claude Code                          │
+│                                      │
+│ /home/you/taskforge                  │
+╰──────────────────────────────────────╯
+
+> Explain the architecture of this project in one paragraph.
+
+This project is a command-line task manager built in Python...
+</code></pre>
+<p>まだこれを使う準備はできていません&mdash;まずコードとは何か、どう読むかを理解する必要があります。それが次の15章の目的です。しかしフェーズ5に到達したとき、セットアップはコマンド1つで済みます: <code>npm install -g @anthropic-ai/claude-code</code>。</p>
+</div>
+
+<h3>ミニ演習 1</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう</div>
+<p>ターミナルを開きましょう。<code>pwd</code>（Mac/Linux）または<code>cd</code>（Windows）と入力して、現在のディレクトリ（directory）を確認してください。デスクトップに移動しましょう: <code>cd ~/Desktop</code>。</p>
+</div>
+
+<h3>ミニ演習 2</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう</div>
+<div class="prompt-block"><span class="label">Terminal</span># Create a new folder called "my-project"
+mkdir my-project
+
+# Move into that folder (cd = "change directory")
+cd my-project
+
+# Create a file called test.py containing one line of Python
+echo 'print(42)' > test.py
+
+# Run the file — Python reads it and executes the print statement
+python3 test.py</div>
+<p><strong>確認:</strong> <code>42</code>が表示されれば、すべて正常に動作しています。フォルダを作成し、Pythonファイルを書き込み、それを実行しました。</p>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう</div>
+<p>自分の名前、年、プログラミングを学ぶ理由を表示する<code>me.py</code>を作成しましょう（<code>print</code>文を3つ使います）。実行: <code>python3 me.py</code>。</p>
+<div class="prompt-block"><span class="label">Example: me.py</span>print("Alice")
+print("2026")
+print("I want to orchestrate AI coding agents")</div>
+<p><strong>確認:</strong> ターミナルに3行すべてが表示されれば、環境は正常に動作しています。</p>
+<p><strong>うまくいかない場合:</strong> (1) <code>python3: command not found</code> &rarr; Pythonがインストールされていないか、PATHに含まれていません。Windowsでは<code>3</code>なしの<code>python</code>を試してください。Macでは<code>brew install python3</code>を実行してください。(2) <code>SyntaxError</code> &rarr; 引用符や括弧の不足を確認してください。(3) File not found &rarr; ファイルと同じディレクトリにいるか確認してください（<code>ls</code>で確認できます）。</p>
+</div>
+
+<div class="pq">Pythonプログラムをゼロから作成して実行しました。これはすべての開発者が毎日使うワークフローと同じです&mdash;ファイルを書き、実行し、出力を読む。</div>
+
+<h3>TaskForgeとのつながり</h3>
+<p>これでTaskForge v0.1を実行するために必要なものがすべて揃いました。この章の後、<code>python3 taskforge.py</code>コマンドがあなたのマシンで動作します。第04章でまさにそれを行います。</p>
+
+<h3>インタラクティブ演習</h3>
+
+<div class="checklist" data-ch="03" data-ex="setup">
+  <h4>環境セットアップ完了チェック</h4>
+  <label><input type="checkbox"><span>Python 3.10以上がインストール済み — <code>python3 --version</code>でバージョン番号が表示される</span></label>
+  <label><input type="checkbox"><span>VS Code（または別のエディタ）がインストール済みで、ファイルを開ける</span></label>
+  <label><input type="checkbox"><span>ターミナルが開き、コマンドに応答する</span></label>
+  <label><input type="checkbox"><span>仮想環境（virtual environment）を作成済み — <code>python3 -m venv venv</code>が成功した</span></label>
+  <label><input type="checkbox"><span>仮想環境を有効化済み — プロンプトに(venv)と表示される</span></label>
+</div>
+
+<div class="quiz" data-ch="03" data-ex="quiz-venv">
+  <h4>理解度チェック</h4>
+  <p><code>source venv/bin/activate</code>は何をしますか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">システムにPythonをインストールする</button>
+    <button class="quiz-option" data-correct="false">新しい仮想環境を作成する</button>
+    <button class="quiz-option" data-correct="true">仮想環境を有効化して、<code>pip install</code>がそこにインストールされるようにする</button>
+    <button class="quiz-option" data-correct="false">仮想環境を削除する</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+</section>
+
+<!-- ===== CH 04 ===== -->
+<section id="ch04" data-ch="04">
+<h2><span class="ch-label">第04章</span> 書く前にコードを読む</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念</div>
+<p>AIコーディングツールの時代では、書くよりも<em>読む</em>コードの方がはるかに多くなります。Claude Codeが200行を生成したとき、あなたの仕事はそれを評価すること&mdash;タイプすることではありません。この章では、受動的な受け入れ者ではなく、有能なAIの監督者になるためのスキルを身につけます。</p>
+</div>
+
+<p>ここにパラダイムシフト（paradigm shift）があります。従来の教育はコードを<em>書く</em>ことから始まります。AI支援の作業はコードを<em>読む</em>ことから始まります。Claude Codeがあなたのために200行のPythonを生成したとき、その行を書くのではなく&mdash;<strong>読み、評価し、受け入れるかどうかを判断</strong>します。コードを読むことがあなたの主要なスキルです。</p>
+
+<h3>コードの読み方</h3>
+<p>1行目から順番に読み進めないでください。この3パス（three-pass）アプローチを使いましょう:</p>
+<div class="pr"><div class="pn">1</div><div class="pb2"><h5>構造パス</h5><p>関数定義（<code>def</code>）、クラス、インポートを探します。構成要素は何ですか？</p></div></div>
+<div class="pr"><div class="pn">2</div><div class="pb2"><h5>ロジックパス</h5><p>関数を1つ選びます。データを追跡しましょう: 何が入り、何が出て、途中で何が変わりますか？</p></div></div>
+<div class="pr"><div class="pn">3</div><div class="pb2"><h5>エッジパス</h5><p>空の入力では何が起きますか？巨大な入力では？無効なデータでは？ここにバグ（bug）が潜んでおり&mdash;AIのコードが最も失敗しやすい箇所です。</p></div></div>
+
+<h3>パターン認識</h3>
+<div role="note" class="callout info">
+<div class="callout-title">補足</div>
+<p>以下の表には、まだ正式に学んでいないパターンが含まれています&mdash;関数、ループ、条件分岐、リスト、辞書はすべてフェーズ2で個別の章があります。これは意図的なものです。今の目標は<strong>認識であり、書くことではありません</strong>。<code>for item in list:</code>のような行を見て「これはループだ&mdash;何かを繰り返している」と言えるようになればよいのです。ゼロから書ける必要はまだありません。外国語のメニューを読むようなものだと考えてください: スペイン語の動詞の活用を知らなくても、<em>pollo</em>が鶏肉だと認識できます。</p>
+</div>
+<p>コードを暗記して書ける必要はありません。見たときにパターンを<strong>認識</strong>できる必要があります:</p>
+<table>
+<caption>認識すべきPythonコードの一般的なパターン</caption>
+<tr><th>パターン</th><th>見た目</th><th>何をするか</th></tr>
+<tr><td><strong>関数（Function）</strong></td><td><code>def name(params):</code></td><td>再利用可能なロジックのブロック</td></tr>
+<tr><td><strong>ループ（Loop）</strong></td><td><code>for item in list:</code></td><td>各要素に対して繰り返す</td></tr>
+<tr><td><strong>条件分岐（Conditional）</strong></td><td><code>if condition:</code></td><td>パスを選択する</td></tr>
+<tr><td><strong>インポート（Import）</strong></td><td><code>import json</code></td><td>外部コードを読み込む</td></tr>
+<tr><td><strong>エントリポイント（Entry point）</strong></td><td><code>if __name__ == "__main__":</code></td><td>ファイルが直接実行されたときに動く</td></tr>
+</table>
+
+<h3>比較: 弱い読み方 vs. 強い読み方</h3>
+<div class="pe">
+<div class="pb"><div class="ph">弱い読み方</div><div class="pp">「タスクに関する何かをしている。」</div></div>
+<div class="pg"><div class="ph">強い読み方</div><div class="pp">「このスクリプトはタスクの辞書のリストを管理しています。<code>add_task</code>はid、description、'pending'ステータスを持つdictを作成します。<code>complete_task</code>はリストを走査して一致するidを見つけ、ステータスを更新します。<code>main</code>関数は4つのコマンドを持つ入力ループを実行します。エッジケース（edge case）: <code>done</code>でタスクIDに整数以外を入力すると、<code>try/except</code>がないため<code>ValueError</code>でクラッシュします。」</div></div>
+</div>
+
+<h3>ミニ演習 1</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう</div>
+<p>この関数は何をしますか？ <code>double(5)</code>は何を返しますか？ <code>double('hi')</code>は何を返しますか？</p>
+<pre><code>def double(x):
+    return x * 2</code></pre>
+<p><strong>答え:</strong> 入力を2倍にします。<code>double(5)</code>は<code>10</code>を返します。<code>double('hi')</code>は<code>'hihi'</code>を返します&mdash;文字列に対する<code>*</code>は繰り返しを意味するためです。コンピュータは文字通りに解釈します。</p>
+</div>
+
+<h3>ミニ演習 2</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう</div>
+<pre><code>for item in ['a', 'b', 'c']:
+    print(item.upper())</code></pre>
+<p><code>print</code>は何回実行されますか？出力は何ですか？</p>
+<p><strong>答え:</strong> 3回です。出力: <code>A</code>、<code>B</code>、<code>C</code>（それぞれ改行されます）。ループが各要素を処理し、<code>.upper()</code>が大文字に変換します。</p>
+</div>
+
+<h3>TaskForge v0.1 &mdash; コード</h3>
+<p>以下がTaskForge v0.1の完全なソースコードです。これはコース全体を通して構築していく背骨プロジェクト（spine project）です。3パスアプローチを使って今読みましょう。</p>
+
+<pre><code># taskforge.py &mdash; v0.1
+# A minimal command-line task manager
+
+tasks = []
+
+def add_task(description):
+    task = {"id": len(tasks) + 1, "description": description, "status": "pending"}
+    tasks.append(task)
+    return task
+
+def complete_task(task_id):
+    for task in tasks:
+        if task["id"] == task_id:
+            task["status"] = "complete"
+            return task
+    return None
+
+def list_tasks():
+    return tasks
+
+def main():
+    while True:
+        command = input("\nTaskForge> ").strip().lower()
+        if command == "add":
+            desc = input("Description: ")
+            task = add_task(desc)
+            print(f"Added: #{task['id']} &mdash; {task['description']}")
+        elif command == "done":
+            task_id = int(input("Task ID: "))
+            result = complete_task(task_id)
+            if result:
+                print(f"Completed: #{result['id']}")
+            else:
+                print("Task not found.")
+        elif command == "list":
+            for t in list_tasks():
+                status = "&#10003;" if t["status"] == "complete" else " "
+                print(f"  [{status}] #{t['id']} &mdash; {t['description']}")
+        elif command == "quit":
+            break
+        else:
+            print("Commands: add, done, list, quit")
+
+if __name__ == "__main__":
+    main()</code></pre>
+
+<div role="note" class="callout info">
+<div class="callout-title">補足</div>
+<p><code>while True:</code>は無限ループ（infinite loop）を作成し、ユーザーが"quit"と入力したとき（<code>break</code>が発動したとき）にのみ停止します。whileループについては第5章で正式に学びますが、パターンはシンプルです: <code>break</code>が発生するまでこのブロックを永遠に繰り返します。今は形を認識するだけで十分です&mdash;先頭に<code>while True:</code>、内部のどこかに<code>break</code>。</p>
+</div>
+
+<h3>TaskForgeを自分で実行しましょう</h3>
+<div role="note" class="callout critical">
+<div class="callout-title">重要な概念</div>
+<p>ここまではコードを読んで出力を予測してきました。これが本物のプログラムを実行する瞬間です。以下の手順を正確に実行してください。</p>
+</div>
+
+<div class="pr"><div class="pn">1</div><div class="pb2"><h5>ファイルを作成する</h5><p>ターミナルを開いて、<code>taskforge.py</code>という新しいファイルを作成しましょう:</p>
+<div class="prompt-block"><span class="label">Terminal</span># Go to your Desktop (~ means your home folder)
+cd ~/Desktop
+
+# Create a folder for the project
+mkdir taskforge-project
+
+# Move into it — all files you create will go here
+cd taskforge-project</div>
+<p>エディタで<code>taskforge.py</code>を開き（VS Code: <code>code taskforge.py</code>）、上に示したTaskForge v0.1のソースコード全体を貼り付けてください。</p></div></div>
+
+<div class="pr"><div class="pn">2</div><div class="pb2"><h5>実行する</h5>
+<div class="prompt-block"><span class="label">Terminal</span>python3 taskforge.py</div>
+<p><code>TaskForge></code>プロンプトが入力待ちの状態で表示されるはずです。</p></div></div>
+
+<div class="pr"><div class="pn">3</div><div class="pb2"><h5>タスクを追加する</h5>
+<pre><code>TaskForge> add
+Description: Buy groceries
+Added: #1 &mdash; Buy groceries</code></pre></div></div>
+
+<div class="pr"><div class="pn">4</div><div class="pb2"><h5>タスクを一覧表示する</h5>
+<pre><code>TaskForge> list
+  [ ] #1 &mdash; Buy groceries</code></pre></div></div>
+
+<div class="pr"><div class="pn">5</div><div class="pb2"><h5>タスクを完了にする</h5>
+<pre><code>TaskForge> done
+Task ID: 1
+Completed: #1</code></pre></div></div>
+
+<div class="pr"><div class="pn">6</div><div class="pb2"><h5>動作を確認する</h5>
+<pre><code>TaskForge> list
+  [&#10003;] #1 &mdash; Buy groceries
+
+TaskForge> quit</code></pre>
+<p>チェックマークはステータスが"pending"から"complete"に変わったことを確認するものです。<code>quit</code>と入力して終了してください。</p></div></div>
+
+<div role="note" class="callout warn">
+<div class="callout-title">注意</div>
+<p><strong><code>python3: command not found</code></strong> &mdash; Pythonがインストールされていません。第03章の「Pythonのインストール」セクションに戻ってください。Windowsでは<code>python3</code>の代わりに<code>python</code>を試してください。</p>
+<p><strong><code>SyntaxError</code></strong> &mdash; 貼り付け時に何か問題が発生しました。インデント（indent）が一貫しているか確認してください（すべてスペース、タブが混在しないように）。コードを慎重に再コピーしてください。</p>
+<p><strong><code>FileNotFoundError</code></strong> &mdash; <code>taskforge.py</code>と同じディレクトリにいません。<code>ls</code>で確認してから、<code>cd</code>で正しいフォルダに移動してください。</p>
+</div>
+
+<h3>3パスリーディングの実例</h3>
+<p>TaskForgeを自分で分析する前に、短い関数に3パス手法を適用した例を見てみましょう。各パスがどのように異なる理解の層を明らかにするか観察してください。</p>
+
+<pre><code>def find_max(numbers):
+    if len(numbers) == 0:
+        return None
+    biggest = numbers[0]
+    for num in numbers:
+        if num > biggest:
+            biggest = num
+    return biggest</code></pre>
+
+<div class="pr"><div class="pn">1</div><div class="pb2"><h5>構造パス</h5><p><code>find_max</code>という関数が1つ。パラメータは1つ: <code>numbers</code>。内部にループあり。何かを返す。全8行。</p></div></div>
+<div class="pr"><div class="pn">2</div><div class="pb2"><h5>ロジックパス</h5><p>リストが空なら<code>None</code>を返す。そうでなければ、最初の要素が最大だと仮定して開始。すべての数値を走査し&mdash;現在の最大値より大きい数値があれば、最大値を更新。すべての数値をチェックした後、見つかった最大値を返す。</p></div></div>
+<div class="pr"><div class="pn">3</div><div class="pb2"><h5>エッジパス</h5><p>空のリスト: <code>None</code>を返す（明示的に処理済み）。要素1つのリスト: 正常に動作&mdash;ループは1回実行され、<code>biggest</code>はその唯一の要素のまま。すべて同じ値: 正常に動作&mdash;<code>num > biggest</code>がTrueになることはなく、最初の値が返される。負の数: 正常に動作&mdash;正の値を前提にしていない。数値以外の入力（例: 文字列）: 型が混在していると<code>></code>の比較でクラッシュする。入力型のバリデーション（validation）なし。</p></div></div>
+
+<p>3パス、合計60秒程度で、関数を完全に理解できます。同じ方法を以下のTaskForgeに適用しましょう。</p>
+
+<div class="pq"><blockquote>"Indeed, the ratio of time spent reading versus writing is well over 10 to 1. We are constantly reading old code as part of the effort to write new code."<br>&mdash;Robert C. Martin, <em>Clean Code</em></blockquote></div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう</div>
+<p>上のTaskForge v0.1のコードを読みましょう。以下の4つの質問に答えるコード分析を書いてください:</p>
+<ol>
+<li>このプログラムは何をしますか？</li>
+<li>タスクを格納するデータ構造（data structure）は何ですか？</li>
+<li><code>done</code>を入力して数値の代わりに<code>abc</code>と入力するとどうなりますか？</li>
+<li>リストが空の状態で<code>list</code>と入力するとどうなりますか？</li>
+</ol>
+<p><strong>確認:</strong> 分析で以下を特定できるはずです: コマンドラインのタスクマネージャー、辞書のリスト、整数以外の入力でクラッシュ（<code>ValueError</code>）、空のリストでは出力なし。4つのうち3つ正解できれば合格です。</p>
+<p><strong>うまくいかない場合:</strong> コードがまったく理解できない場合は、第02章に戻って変数と関数のセクションを読み直してください。TaskForgeのパターンは第02章と同じパターンを大きな規模で使っているだけです。</p>
+</div>
+
+<div class="pq">1行も書かずに40行のプログラムを読んで分析しました。これはウォーミングアップではありません&mdash;AI支援開発の主要なスキルです。書くよりもはるかに多くのコードを読むことになります。</div>
+
+<h3>インタラクティブ演習</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="04" data-ex="debug">
+  <div class="exercise-header">
+    <h4>バグを修正しましょう</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt">この関数はリスト内で指定された長さより長い単語の数を数えるはずです。3つのバグがあります。すべて見つけて修正しましょう。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">def count_long_words(words, min_length):
+    count = 1
+    for word in words:
+        if len(word) > min_length:
+            count + 1
+    return counts
+
+# Test it:
+print(count_long_words(["hi", "hello", "hey", "wonderful"], 3))  # Should print 2</script>
+    <script type="text/plain" class="test-code">assert count_long_words(["hi", "hello", "hey", "wonderful"], 3) == 2, "Should find 2 words longer than 3"
+assert count_long_words([], 5) == 0, "Empty list should return 0"
+assert count_long_words(["a", "b"], 0) == 2, "All words longer than 0"
+assert count_long_words(["test"], 4) == 0, "Equal length should not count"</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">Run</button>
+    <button class="ex-check">Check</button>
+    <button class="ex-hint" data-level="0">Hint</button>
+    <button class="ex-reset">Reset</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint"><code>count</code>の初期値は0と1のどちらにすべきですか？</p>
+    <p class="hint"><code>count + 1</code>は計算しますが、結果を保存しません。変数を更新するにはどうしますか？</p>
+    <p class="hint">return行の変数名を確認してください &mdash; 定義した変数名と同じですか？</p>
+  </div>
+</div>
+
+<div class="quiz" data-ch="04" data-ex="quiz-tf">
+  <h4>理解度チェック</h4>
+  <p>TaskForge v0.1では、タスクのリストを格納するデータ構造は何ですか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">文字列のタプル（tuple）</button>
+    <button class="quiz-option" data-correct="false">タスクIDをキーとする辞書（dictionary）</button>
+    <button class="quiz-option" data-correct="true">辞書のリスト（list of dictionaries）</button>
+    <button class="quiz-option" data-correct="false">Taskオブジェクトを持つクラス（class）</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+</section>
+
+<!-- ===== PHASE 1 GATE ===== -->
+<section id="gate1">
+<h2><span class="ch-label">フェーズ1ゲート</span> チェックポイント &amp; TaskForge v0.1</h2>
+
+<div class="card">
+<h4>最低限の能力</h4>
+<p>30行のPython関数を読んで、何をするか説明し、入出力を特定し、エッジケースを1つ見つけられること。</p>
+</div>
+
+<div class="card">
+<h4>あなたの成果物</h4>
+<p>第04章の演習で書いたTaskForge v0.1の分析です。これがフェーズ1ゲートの証明になります。</p>
+</div>
+
+<div class="card">
+<h4>検証</h4>
+<p>分析で4つの要素のうち少なくとも3つを特定できること: 目的、データ構造、クラッシュケース、空のケース。</p>
+</div>
+
+<div role="note" class="callout critical">
+<div class="callout-title">注意</div>
+<p><code>x = 5; x = x + 1; print(x)</code>の出力を予測できない場合 &rarr; 第02章に戻ってください。</p>
+</div>
+
+<h3>TaskForgeチェックポイント</h3>
+<p>TaskForge v0.1を<strong>読んで分析</strong>しました。まだ変更はしていません。プロジェクトはテストなし、gitなし、構造なしの単一の<code>.py</code>ファイルとして存在しています。これがベースラインです。フェーズ2では、コードを書いてこれを拡張していきます。</p>
+
+<h3>今できるようになったこと</h3>
+<div class="card">
+<ul>
+<li>プログラムとは何か、どのように実行されるかを説明できる</li>
+<li>変数、データ型、関数、ループ、条件分岐を読める</li>
+<li>Pythonの開発環境をセットアップして使える</li>
+<li>40行のプログラムを分析してエッジケースを特定できる</li>
+</ul>
+</div>
+
+<div role="note" class="callout info">
+<div class="callout-title">補足</div>
+<p>コードを読めるようになりました。次は<em>書く</em>必要があります。なぜでしょうか？AIが関数を生成したとき、バグを修正したり、欠けているケースを追加したり、動作を検証するテストを書いたりする必要があるからです。フェーズ2ではPython&mdash;Claude Codeが最も頻繁に使う言語&mdash;の記述力を身につけます。</p>
+</div>
+
+<div class="pq">
+フェーズ1は完了です。あなたはコードを読めるようになりました。これは小さなことではありません&mdash;これから続くすべての土台です。ここからの各章は、あなたが認識できるようになったパターンの上に築かれていきます。
+</div>
+</section>
+
+<nav class="phase-nav">
+  <a href="index.html" class="phase-nav-link prev"><span class="phase-nav-label">ホーム</span>&larr; ランディングページ</a>
+  <a href="phase-2.html" class="phase-nav-link next"><span class="phase-nav-label">次のフェーズ</span>フェーズ2: Pythonを書く &rarr;</a>
+</nav>
+
+</div>
+</div>
+
+<footer>
+<p>Zero to Hero: プログラミングからマルチエージェントClaude Codeへ &middot; 2026年3月</p>
+<p>エージェントエンジニアリングの8つのレベルに基づいて構成されています。</p>
+</footer>
+
+<script src="../js/progress.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ace-builds@1.36.5/src-min-noconflict/ace.js"></script>
+<script src="../js/theme.js"></script>
+<script src="../js/sidebar.js"></script>
+<script src="../js/shared.js"></script>
+<script src="../js/ace-init.js"></script>
+<script src="../js/pyodide-runner.js"></script>
+<script src="../js/quiz.js"></script>
+<script src="../js/exercise-runner.js"></script>
+</body>
+</html>

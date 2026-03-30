@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="フェーズ10：AIオーケストレーション — ハーネスエンジニアリング、バックグラウンドエージェント、Docker上のClaude Code、自律マルチエージェントチーム。第43〜47章。">
+<title>フェーズ10：AIオーケストレーション — ゼロからヒーローへ</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/design-system.css">
+<script>try{if(localStorage.getItem('zth-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+<script>try{var z=localStorage.getItem('zth-zoom');if(z&&+z>=50&&+z<=200)document.documentElement.style.zoom=+z/100}catch(e){}</script>
+</head>
+<body>
+
+<!-- SVG Arrow Defs -->
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0"><defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--accent)"/></marker>
+<marker id="arrowhead-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--a5)"/></marker>
+</defs></svg>
+
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="テーマを切り替え">
+<svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<!-- サイドバー — 全ファイル共通 -->
+<aside class="sidebar" id="sidebar">
+  <a href="../index.html" class="sidebar-logo"><span>ゼロからヒーローへ</span>プログラミング &rarr; マルチエージェントAI</a>
+  <div class="toc-group">
+    <div class="toc-group-title">基礎</div>
+    <a href="../phase-1.html#ch01" class="toc-link"><span class="toc-num">01</span>プログラミングとは何か</a>
+    <a href="../phase-1.html#ch02" class="toc-link"><span class="toc-num">02</span>コンピュータはどのようにコードを実行するか</a>
+    <a href="../phase-1.html#ch03" class="toc-link"><span class="toc-num">03</span>環境のセットアップ</a>
+    <a href="../phase-1.html#ch04" class="toc-link"><span class="toc-num">04</span>書く前にコードを読む</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">Python</div>
+    <a href="../phase-2.html#ch05" class="toc-link"><span class="toc-num">05</span>関数・ロジック・制御フロー</a>
+    <a href="../phase-2.html#ch06" class="toc-link"><span class="toc-num">06</span>データ構造</a>
+    <a href="../phase-2.html#ch07" class="toc-link"><span class="toc-num">07</span>クラスとOOPの基礎</a>
+    <a href="../phase-2.html#ch08" class="toc-link"><span class="toc-num">08</span>ファイル・モジュール・標準ライブラリ</a>
+    <a href="../phase-2.html#ch09" class="toc-link"><span class="toc-num">09</span>エラー処理・デバッグ・テスト</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">開発ツール</div>
+    <a href="../phase-3.html#ch10" class="toc-link"><span class="toc-num">10</span>ターミナルとシェル</a>
+    <a href="../phase-3.html#ch11" class="toc-link"><span class="toc-num">11</span>Gitの基礎</a>
+    <a href="../phase-3.html#ch12" class="toc-link"><span class="toc-num">12</span>Gitリモートとgithub</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">構築とデプロイ</div>
+    <a href="../phase-4.html#ch13" class="toc-link"><span class="toc-num">13</span>APIとHTTP</a>
+    <a href="../phase-4.html#ch14" class="toc-link"><span class="toc-num">14</span>FlaskでAPIを構築する</a>
+    <a href="../phase-4.html#ch15" class="toc-link"><span class="toc-num">15</span>データベースの基礎</a>
+    <a href="../phase-4.html#ch16" class="toc-link"><span class="toc-num">16</span>Dockerとコンテナ</a>
+    <a href="../phase-4.html#ch17" class="toc-link"><span class="toc-num">17</span>CI/CDとGitHub Actions</a>
+    <a href="../phase-4.html#ch18" class="toc-link"><span class="toc-num">18</span>プロジェクトアーキテクチャ</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">データ構造</div>
+    <a href="../phase-5.html#ch19" class="toc-link"><span class="toc-num">19</span>計算量の分析</a>
+    <a href="../phase-5.html#ch20" class="toc-link"><span class="toc-num">20</span>線形構造</a>
+    <a href="../phase-5.html#ch21" class="toc-link"><span class="toc-num">21</span>ハッシュテーブルとマップ</a>
+    <a href="../phase-5.html#ch22" class="toc-link"><span class="toc-num">22</span>木構造</a>
+    <a href="../phase-5.html#ch23" class="toc-link"><span class="toc-num">23</span>グラフ</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">アルゴリズム</div>
+    <a href="../phase-6.html#ch24" class="toc-link"><span class="toc-num">24</span>探索とソート</a>
+    <a href="../phase-6.html#ch25" class="toc-link"><span class="toc-num">25</span>再帰と動的計画法</a>
+    <a href="../phase-6.html#ch26" class="toc-link"><span class="toc-num">26</span>アルゴリズムのパターン</a>
+    <a href="../phase-6.html#ch27" class="toc-link"><span class="toc-num">27</span>グラフアルゴリズム</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">エンジニアリングの技巧</div>
+    <a href="../phase-7.html#ch28" class="toc-link"><span class="toc-num">28</span>デザインパターンとSOLID</a>
+    <a href="../phase-7.html#ch29" class="toc-link"><span class="toc-num">29</span>SQLとクエリの習得</a>
+    <a href="../phase-7.html#ch30" class="toc-link"><span class="toc-num">30</span>トランザクションとNoSQL</a>
+    <a href="../phase-7.html#ch31" class="toc-link"><span class="toc-num">31</span>ネットワークとインターネット</a>
+    <a href="../phase-7.html#ch32" class="toc-link"><span class="toc-num">32</span>並行性と並列性</a>
+    <a href="../phase-7.html#ch33" class="toc-link"><span class="toc-num">33</span>セキュリティエンジニアリング</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">システムとスケール</div>
+    <a href="../phase-8.html#ch34" class="toc-link"><span class="toc-num">34</span>システム設計</a>
+    <a href="../phase-8.html#ch35" class="toc-link"><span class="toc-num">35</span>分散システム</a>
+    <a href="../phase-8.html#ch36" class="toc-link"><span class="toc-num">36</span>パフォーマンスと可観測性</a>
+    <a href="../phase-8.html#ch37" class="toc-link"><span class="toc-num">37</span>大規模コードベースのナビゲーション</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AIレベル1〜5</div>
+    <a href="../phase-9.html#ch38" class="toc-link"><span class="toc-num">38</span>AIコードの評価と指示</a>
+    <a href="../phase-9.html#ch39" class="toc-link"><span class="toc-num">39</span>レベル1・2 — タブ補完とエージェントIDE</a>
+    <a href="../phase-9.html#ch40" class="toc-link"><span class="toc-num">40</span>レベル3 — コンテキストエンジニアリング</a>
+    <a href="../phase-9.html#ch41" class="toc-link"><span class="toc-num">41</span>レベル4 — 複合エンジニアリング</a>
+    <a href="../phase-9.html#ch42" class="toc-link"><span class="toc-num">42</span>レベル5 — MCP・スキル・ケイパビリティ</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">AIレベル6〜8</div>
+    <a href="#ch43" class="toc-link"><span class="toc-num">43</span>レベル6 — ハーネスエンジニアリング</a>
+    <a href="#ch44" class="toc-link"><span class="toc-num">44</span>レベル7 — バックグラウンドエージェント</a>
+    <a href="#ch45" class="toc-link"><span class="toc-num">45</span>DockerでのClaude Code</a>
+    <a href="#ch46" class="toc-link"><span class="toc-num">46</span>レベル8 — 自律エージェントチーム</a>
+    <a href="#ch47" class="toc-link"><span class="toc-num">47</span>マルチプレイヤー効果</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">参考資料</div>
+    <a href="../appendices.html#glossary" class="toc-link"><span class="toc-num">&oplus;</span>用語集</a>
+    <a href="../appendices.html#prompt-library" class="toc-link"><span class="toc-num">&oplus;</span>プロンプトライブラリ</a>
+    <a href="../appendices.html#self-assessment" class="toc-link"><span class="toc-num">&oplus;</span>自己評価</a>
+    <a href="../appendices.html#common-mistakes" class="toc-link"><span class="toc-num">&oplus;</span>よくある間違い</a>
+    <a href="../appendices.html#appendix-d" class="toc-link"><span class="toc-num">&oplus;</span>トラブルシューティング</a>
+    <a href="../appendices.html#appendix-e" class="toc-link"><span class="toc-num">&oplus;</span>参考リソース</a>
+  </div>
+</aside>
+
+<div class="main">
+<section class="hero hero-sm">
+  <div class="hero-badge">フェーズ10 &mdash; AIオーケストレーション</div>
+  <h1><em>エージェントエンジニアリング</em>のレベル6〜8</h1>
+  <p class="hero-sub">このフェーズは高度なオーケストレーションパターンのリファレンス資料です。フェーズ9直後にすべてを実践できるとは限りません。プロジェクトが成長するにつれて戻ってきてください。レベル5からレベル6への進歩は、通常、数日ではなく数ヶ月の日々の練習を要します。</p>
+  <div class="hero-meta"><span>第43〜47章</span><span>フェーズゲート + TaskForge</span></div>
+</section>
+
+<div class="content-wrap">
+
+<div role="note" class="callout info">
+<div class="callout-title">補足</div>
+<p>このフェーズは次のことができることを前提としています：AIが生成したコードを評価して一般的な失敗パターンを特定できる（第38章）、効果的なCLAUDE.mdファイルを書いてコンテキストを管理できる（第40章）、テストを含む単一タスク開発にClaude Codeを使用できる（第39〜42章）。フェーズ10はリファレンス資料です — プロジェクトが成長するにつれて戻ってきてください。</p>
+</div>
+
+<!-- ===== BRIDGE: Why Multiple Agents ===== -->
+<div role="note" class="callout info">
+<div class="callout-title">重要な概念</div>
+<p><strong>なぜ1つのエージェントでは不十分なのか</strong> — 単一のClaude Codeセッションは強力です。しかし、一部の作業は1つのセッションに収まりません：</p>
+<ul>
+<li><strong>コンテキストの制限：</strong>1つのセッションは大規模なコードベース全体を保持できません。専門エージェントは特定の領域に集中します。</li>
+<li><strong>関心の分離：</strong>コードを書いたエージェントが自分の作業を採点すべきではありません。実装とレビューを分けることでより多くのバグを発見できます。</li>
+<li><strong>並列性：</strong>3つの独立した機能を同時に構築すると、1つの場合の時間で完了します。</li>
+<li><strong>専門化：</strong>セキュリティ監査用に設定されたエージェントは、後付けでセキュリティを確認するよう求められた汎用エージェントより良い結果を出します。</li>
+</ul>
+<p>会社のチームのように考えてください：ある人がコードを書き、別の人がレビューし、別の人がテストを書き、別の人がドキュメントを更新します。人数が多いほどスループットが増しますが、調整のオーバーヘッドも増します。制約なしに多くのエージェントを使うと、生産性ではなく混乱が生じます。だからこそ、このフェーズでは作業の振り分けと同様に、ハーネス（harness）とガードレール（guardrail）に焦点を当てています。</p>
+</div>
+
+<!-- ===== CH 43 ===== -->
+<section id="ch43" data-ch="43">
+<h2><span class="ch-label">第43章</span> レベル6 &mdash; ハーネスエンジニアリングと自動フィードバックループ</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">なぜ今重要なのか</div>
+<p>レベル1〜5では、あなたが品質ゲートです — すべての変更をレビューします。これは単一の機能には機能しますが、スケールしません。レベル6では、エージェントが自分の間違いを発見できる自動品質ゲートを構築し、ラインごとのレビューではなく設計上の意思決定に集中できるようにします。</p>
+</div>
+
+<p>レベル5では、エージェントにケイパビリティを与えました。レベル6では、エージェントに<strong>自分の作業を検証できるガードレール</strong>を与えます。転換点：あなたの役割がコードをレビューすることからharnessを設計することに移ります。</p>
+
+<h3>バックプレッシャー</h3>
+<p><strong>バックプレッシャー</strong>とは、人間の介入なしにエージェントが自己修正できる自動フィードバックです。コードレビューでエラーを発見するのではなく、ツールが即座に発見します：</p>
+
+<table>
+<caption>自動エージェント修正のためのバックプレッシャーメカニズム</caption>
+<tr><th>メカニズム</th><th>発見するもの</th></tr>
+<tr><td>TypeScript strict / mypy</td><td>型エラー</td></tr>
+<tr><td>リンター（ESLint、Ruff）</td><td>スタイル違反</td></tr>
+<tr><td>テストスイート</td><td>動作の退行</td></tr>
+<tr><td>プリコミットフック</td><td>コミット前のフォーマット・リント・型チェック</td></tr>
+<tr><td>CIパイプライン</td><td>統合の失敗</td></tr>
+</table>
+
+<p>エージェントが<code>git commit</code>を実行してプリコミットフックが失敗すると、エージェントはエラーを確認し、コードを修正して、再試行します。これがバックプレッシャーの動作です。</p>
+
+<div role="note" class="callout warn">
+<div class="callout-title">警告：バックプレッシャーがない場合</div>
+<p>エージェントに機能の追加を依頼します。エージェントは微妙な型エラーを含むコードを書きます。型チェッカーがなければ、コードは問題なく見えます。デプロイします。本番環境でクラッシュします。プリコミットフックが型チェッカーを実行していれば、エージェントはエラーがあなたに届く前に発見して修正します。修正は数時間ではなく数秒で済みます。</p>
+</div>
+
+<h3>制約 &gt; 指示</h3>
+<p>ステップバイステップの指示は、モデルに<em>どのように</em>作業するかを伝えます。制約は<em>成功がどのように見えるか</em>を伝え、方法はモデルに任せます。制約はモデルが問題へのアプローチを適応させるため、よりスケールします。</p>
+
+<div class="pe">
+<div class="pb"><div class="ph">ステップバイステップ（脆弱）</div><div class="pp">1. ユーザーモデルを読む。<br>2. メールフィールドを追加する。<br>3. RFC 5322バリデーションを追加する。<br>4. マイグレーションを更新する。<br>5. テストを更新する。</div></div>
+<div class="pg"><div class="ph">制約ベース（堅牢）</div><div class="pp">ユーザーモデルにメールを追加する。<br><br><strong>要件：</strong> RFC 5322バリデーション、ユニーク制約。<br><strong>受け入れ基準：</strong> すべてのテストがパス、有効/無効/重複/nullのための新しいテスト。<br><strong>実行：</strong> <code>npm test</code>がパスするまで作業する。</div></div>
+</div>
+
+<h3>セキュリティの境界</h3>
+<p>エージェント、コード、シークレットは別々の信頼ドメインに存在します。エージェントに本番環境の認証情報への直接アクセスを与えないでください。環境変数、シークレットマネージャー、最小権限アクセスを使用してください。</p>
+
+<h3>ドキュメントをナビゲーションとして使う</h3>
+<p>CLAUDE.mdを約100行の目次として使用します。詳細なドキュメントは別の場所に（architecture.md、APIドキュメント、デプロイガイド）。モデルは第22章の<strong>プログレッシブディスクロージャー</strong>パターンを通じてオンデマンドで発見します。</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 240" xmlns="http://www.w3.org/2000/svg" aria-label="図：検証harnessツール（型チェッカー、リンター、テストスイート、CIパイプライン、プリコミット）に囲まれたエージェント">
+  <!-- Center Agent node -->
+  <rect class="node-accent" x="280" y="90" width="140" height="50" rx="8"/>
+  <text class="label-text" x="350" y="120" text-anchor="middle">エージェント</text>
+  <!-- Type Checker - top -->
+  <rect class="node-fill" x="270" y="5" width="160" height="40" rx="6"/>
+  <text class="label-text" x="350" y="30" text-anchor="middle">型チェッカー</text>
+  <line class="arrow" x1="340" y1="45" x2="340" y2="90"/>
+  <line class="arrow" x1="360" y1="90" x2="360" y2="45"/>
+  <!-- Linter - left -->
+  <rect class="node-fill" x="40" y="95" width="140" height="40" rx="6"/>
+  <text class="label-text" x="110" y="120" text-anchor="middle">リンター</text>
+  <line class="arrow" x1="180" y1="110" x2="280" y2="110"/>
+  <line class="arrow" x1="280" y1="120" x2="180" y2="120"/>
+  <!-- Test Suite - right -->
+  <rect class="node-fill" x="520" y="95" width="140" height="40" rx="6"/>
+  <text class="label-text" x="590" y="120" text-anchor="middle">テストスイート</text>
+  <line class="arrow" x1="420" y1="110" x2="520" y2="110"/>
+  <line class="arrow" x1="520" y1="120" x2="420" y2="120"/>
+  <!-- CI Pipeline - bottom left -->
+  <rect class="node-fill" x="100" y="185" width="160" height="40" rx="6"/>
+  <text class="label-text" x="180" y="210" text-anchor="middle">CIパイプライン</text>
+  <line class="arrow" x1="260" y1="185" x2="310" y2="140"/>
+  <line class="arrow" x1="300" y1="140" x2="250" y2="185"/>
+  <!-- Pre-commit - bottom right -->
+  <rect class="node-fill" x="440" y="185" width="160" height="40" rx="6"/>
+  <text class="label-text" x="520" y="210" text-anchor="middle">プリコミット</text>
+  <line class="arrow" x1="440" y1="185" x2="390" y2="140"/>
+  <line class="arrow" x1="400" y1="140" x2="450" y2="185"/>
+</svg>
+<div class="diagram-caption">harnessによってエージェントは自分の作業を検証できます。あなたの役割はコードのレビューからharnessの設計に移ります。</div>
+</div>
+
+<h3>TaskForgeとの接続</h3>
+<p>TaskForgeのためにRuff（リンター）とpytestを実行するプリコミットフックを設定します。これによりClaude Codeは機能追加時に自己修正できます。</p>
+
+<h3>ケーススタディ：Dockerスキャフォールド</h3>
+<p>この章と第21章のスキャフォールドセクションのすべての原則を適用した実世界の指示スキャフォールドを示します。目標：マルチエージェント開発のためにあらゆるプロジェクトをコンテナ化する方法をClaude Codeに伝えること。このスキャフォールドは、Claudeが間違いを犯した数十回の反復を経て洗練されました — 各失敗が新しい制約になりました。</p>
+
+<h4>なぜ機能するのか</h4>
+<p>スキャフォールドはCLAUDE.mdファイルで、約300行です。各セクションが存在する理由：</p>
+
+<div class="pr"><div class="pn">1</div><div class="pb2"><h5>一文のゴール</h5><p>「1つのコンテナ。execで入ると、リポジトリを指すClaude Codeが使える。CMDはsleep infinity。」解釈の余地がありません。モデルは「完了」がどのように見えるかを知っています。</p></div></div>
+<div class="pr"><div class="pn">2</div><div class="pb2"><h5>説明ではなく正確なファイル内容</h5><p>Dockerfile、docker-composeサービス、シェルスクリプトは逐語的に提供されます — 説明されません。<code>FROM debian:bookworm-slim</code>であり「Debianベースのイメージを使用」ではありません。<code>curl -fsSL https://claude.ai/install.sh | bash</code>であり「Claude Codeをインストール」ではありません。モデルがゼロから生成するすべての行は、実行ごとに変わる可能性のある行です。</p></div></div>
+<div class="pr"><div class="pn">3</div><div class="pb2"><h5>実際の失敗からの明示的な禁止事項</h5><p>各「NEVER」行は、Claudeが実際に間違ったことをしたために存在します：
+<ul>
+<li>「NEVER npm install を使う — 認証/PATHの破損を引き起こす」— Claudeのトレーニングデータには古いnpmベースのチュートリアルが含まれています</li>
+<li>「CLAUDE_MODELを環境ブロックに追加しない — 実際の環境変数ではない」— Claudeはこの環境変数を繰り返しハルシネーションしました</li>
+<li>「NEVER .envを上書きする — 追記のみ」— Claudeはファイルを書き直すことで既存の設定を破壊しました</li>
+<li>「claudeサービスにenvironment:ブロックを追加しない」— Claudeはenv_fileと競合する冗長な環境変数を追加しました</li>
+</ul></p></div></div>
+<div class="pr"><div class="pn">4</div><div class="pb2"><h5>失敗モードテーブル</h5><p>認証リファレンステーブルは症状から原因、修正方法をマッピングします。「オンボーディングウィザードが表示される」→「.claude.jsonが見つからない」→「DockerfileがあらかじめそれをCREATEしている。」これにより、モデルはビルドレシピだけでなくデバッグプレイブックを持てます。</p></div></div>
+<div class="pr"><div class="pn">5</div><div class="pb2"><h5>バリデーションチェックリスト</h5><p>正確性を検証する15のyes/noチェック：「ベースイメージはdebian:bookworm-slimか？」「.envは上書きされていないか？」「agent.shは--dangerously-skip-permissionsを使用しているか？」これらは決定論的なガードレールです。モデルはチェックリストを回避することで合理化できません。</p></div></div>
+
+<div role="note" class="callout critical">
+<div class="callout-title">重要な概念：非決定論の原則（実践）</div>
+<p>このスキャフォールドが機能するのは、モデルが行う必要のある決定を最小化するからです。曖昧な「Dockerを設定して」はClaude に無数の可能な設定を与えます。スキャフォールドはそれを本質的に1つに絞ります。これが基本的なパターンです：<strong>制約が厳しいほど、出力はより決定論的になります</strong>。指定されていない詳細はすべてコイントスです。良いスキャフォールドはコイントスをなくします。</p>
+</div>
+
+<p>スキャフォールドは指示するだけでなく、<strong>保護します</strong>。.envのappend-onlyルールはデータ損失を防ぎます。別のDockerfile.claudeはプロジェクトの既存のDocker設定を上書きすることを防ぎます。認証のためのボリュームマウントは、再起動ごとの再認証を防ぎます。スキャフォールドは防御的なエンジニアリングです：モデルが破壊的なことをしようとすることを前提とし、構造的にそれを不可能にします。</p>
+
+<p>デプロイ、テスト、コード生成、または反復可能なタスクのための独自のスキャフォールドを構築するときは、このパターンに従ってください：<strong>ゴール → 正確な内容 → 禁止事項 → 失敗モード → バリデーション</strong>。より具体的であればあるほど、あらゆる実行で、モデルの非決定論に関わらず、出力はより信頼できるものになります。</p>
+
+<h3>マイクロ演習</h3>
+<div role="note" class="callout ok"><div class="callout-title">1：プリコミットをインストールする</div><p>Ruffリンターステップを含むTaskForgeの<code>.pre-commit-config.yaml</code>を作成します。<code>pre-commit install</code>を実行します。意図的なスタイル違反を作成してコミットします — 発見されるのを確認してください。</p></div>
+<div role="note" class="callout ok"><div class="callout-title">2：制約プロンプトを書く</div><p>TaskForgeに機能を追加するための制約ベースのプロンプト（ステップバイステップではない）を書きます。含めるもの：何を構築するか、受け入れ基準、検証コマンド。</p></div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう</div>
+<p>TaskForgeのプリコミット（リンター + pytest）を設定します。次にClaude Codeに依頼します：</p>
+<div class="prompt-block"><pre><code>Add a `priority` field to tasks (high/medium/low) with validation.
+Work on it until pre-commit passes cleanly.
+Fix failures yourself. Don't ask me unless genuinely stuck.</code></pre></div>
+<p>バックプレッシャーを通じてエージェントが自己修正するのを観察してください。</p>
+<p><strong>検証：</strong>プリコミットフックがパスします。機能が動作します。介入しませんでした。</p>
+<p><strong>うまくいかない場合：</strong>（1）プリコミットが実行されない → <code>pre-commit install</code>はgitリポジトリ内で実行する必要があります。（2）エージェントが無限ループに入る → 制約が矛盾している可能性があります。単純化してください。（3）エージェントがすぐに助けを求める → CLAUDE.mdに必要なコンテキストが不足している可能性があります。</p>
+</div>
+
+<div class="pq">自動フィードバックを通じてエージェントが自己修正するのを見ました — あなたの介入なしに。あなたの役割はコードのレビューから、コードをレビューするシステムの設計に移りました。これがレベル6の転換です。</div>
+
+<h3>インタラクティブ演習</h3>
+
+<div class="exercise" data-type="pyodide" data-ch="43" data-ex="validator">
+  <div class="exercise-header">
+    <h4>コードバリデーター</h4>
+    <span class="exercise-status"></span>
+  </div>
+  <p class="exercise-prompt"><code>validate_code(code_str)</code>を書いてください。Pythonコードの一般的な問題をチェックし、問題文字列のリストを返します。チェック対象：裸の<code>except:</code>（例外タイプを指定すべき）、<code>from X import *</code>、30行より長い関数、TODOコメント。</p>
+  <div class="exercise-editor">
+    <script type="text/plain" class="starter-code">def validate_code(code_str):
+    issues = []
+    lines = code_str.split('\n')
+    # ここにコードを書く
+    return issues</script>
+    <script type="text/plain" class="test-code">assert validate_code("x = 1") == [], "Clean code"
+assert any("except" in i.lower() for i in validate_code("try:\n    x = 1\nexcept:\n    pass")), "Bare except"
+assert any("import *" in i.lower() for i in validate_code("from os import *")), "Star import"
+assert any("todo" in i.lower() for i in validate_code("x = 1  # TODO fix this")), "TODO comment"
+long_fn = "def f():\n" + "\n".join(["    x = " + str(i) for i in range(35)])
+assert any("long" in i.lower() or "30" in i for i in validate_code(long_fn)), "Long function"</script>
+  </div>
+  <div class="exercise-controls">
+    <button class="ex-run">実行</button>
+    <button class="ex-check">チェック</button>
+    <button class="ex-hint" data-level="0">ヒント</button>
+    <button class="ex-reset">リセット</button>
+  </div>
+  <div class="exercise-output"></div>
+  <div class="exercise-tests"></div>
+  <div class="exercise-hints">
+    <p class="hint">行をイテレートします。各行のパターンをチェックします。</p>
+    <p class="hint">裸のexceptの場合：<code>except:</code>（コロンがあり、例外タイプがない）に一致する行を探します。</p>
+    <p class="hint">関数の長さの場合：<code>def</code>が始まる時点を追跡し、次の<code>def</code>またはインデントされていない行までインデントされた行を数えます。</p>
+  </div>
+</div>
+
+<div class="quiz" data-ch="43" data-ex="quiz-backpressure">
+  <h4>知識チェック</h4>
+  <p>エージェントエンジニアリングにおける「バックプレッシャー」とは何ですか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">AIがあなたの指示に反論する場合</button>
+    <button class="quiz-option" data-correct="false">エージェント呼び出し間のネットワーク遅延</button>
+    <button class="quiz-option" data-correct="true">エージェントを強制的に自己修正させる自動制約（リンター、テスト、フック）</button>
+    <button class="quiz-option" data-correct="false">大きなコンテキストウィンドウによるメモリ圧迫</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="checklist" data-ch="43" data-ex="harness-check">
+  <h4>harnessのセットアップ</h4>
+  <label><input type="checkbox"><span>TaskForgeにプリコミットフックをインストールした</span></label>
+  <label><input type="checkbox"><span>コミット時にリンター（ruffまたは類似）が実行される</span></label>
+  <label><input type="checkbox"><span>コミット時にpytestが実行される</span></label>
+  <label><input type="checkbox"><span>エージェントがバックプレッシャーを通じて自己修正した（リントまたはテストの失敗を自動的に修正した）</span></label>
+</div>
+</section>
+
+<!-- ===== CH 44 ===== -->
+<section id="ch44" data-ch="44">
+<h2><span class="ch-label">第44章</span> レベル7 &mdash; バックグラウンドエージェント</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">なぜ今重要なのか</div>
+<p>レベル7は、AIがあなたが使うツールから、あなたが管理するチームへと変わる段階です。1度に1つのエージェントと作業する代わりに、プロジェクトマネージャーが異なる専門知識を持つチームメンバーにタスクを割り当てるように、専門家を派遣します。各エージェントは独自のスペースで作業し、結果はレビューのためにあなたに返ってきます。</p>
+</div>
+
+<p>レベル6では、エージェントは自己修正します。レベル7では、<strong>セッションをスリムに保ちながら、複数のエージェントを独立したタスクに派遣します</strong>。ここでレバレッジが倍増します。</p>
+
+<h3>バックグラウンドエージェントのオーケストレーション</h3>
+<p>メインセッションはコマンドセンターになります。ワーカーは分離されたコンテキスト（新しいコンテキストウィンドウ、別々のワークツリー）で実行されます。詰まったワーカーはあなたに質問を返します。</p>
+
+<p>覚えておいてください：各「バックグラウンドエージェント」は、新しいコンテキスト、特定のタスク、プロジェクトのファイルとツールへのアクセスを持つClaude Codeセッションに過ぎません。魔法はありません — 同じモデル、同じCLAUDE.md、同じテストスイートを使用します。レバレッジは並列性と専門化から来ており、新しいケイパビリティからではありません。</p>
+
+<div role="note" class="callout info">
+<div class="callout-title">現在のツール（2026年3月）</div>
+<p><strong>Dispatch</strong>。インストール：<code>npx skills add bassimeledath/dispatch -g</code>。ワーカーは新しいコンテキストウィンドウを取得します。詰まったワーカーは質問を返します。</p>
+</div>
+
+<pre><code>/dispatch pre-launch sweep for TaskForge:
+1) security audit the auth flow — use opus, worktree
+2) write missing integration tests — use sonnet
+3) update documentation — use haiku</code></pre>
+
+<h3>マルチモデルDispatch</h3>
+<p>タスクに応じて異なるモデルを使用します。それぞれに強みがあります：</p>
+<table>
+<caption>マルチモデルdispatchのためのAIモデルの強み</caption>
+<tr><th>モデル</th><th>最適な用途</th></tr>
+<tr><td>Opus</td><td>アーキテクチャ、セキュリティ監査、複雑な推論</td></tr>
+<tr><td>Sonnet</td><td>実装、機能構築、テスト作成</td></tr>
+<tr><td>Haiku</td><td>フォーマット、ドキュメント、シンプルな変換</td></tr>
+<tr><td>Gemini</td><td>リサーチ、大規模コンテキスト分析</td></tr>
+<tr><td>Codex</td><td>コードレビュー、並列生成</td></tr>
+</table>
+
+<h3>タスクに適したモデルを選ぶ</h3>
+<p>すべてのタスクに最も強力なモデルが必要なわけではありません。モデルのケイパビリティをタスクの複雑さに合わせることで、品質を犠牲にすることなくコストを節約し、多くの場合速度が向上します。</p>
+
+<table>
+<caption>タスクの複雑さ別の推奨モデル層</caption>
+<tr><th>タスクタイプ</th><th>推奨層</th><th>理由</th><th>例</th></tr>
+<tr>
+<td>アーキテクチャ上の決定、複雑なリファクタリング、曖昧な仕様</td>
+<td><strong>最高ケイパビリティ</strong>（例：Opus）</td>
+<td>深い推論、曖昧さの処理、多くのファイルにわたる整合性の維持が必要</td>
+<td>「TaskForgeのストレージ層をJSONファイルからSQLiteに再設計し、既存のテストをすべて維持する」</td>
+</tr>
+<tr>
+<td>機能実装、バグ修正、テスト作成</td>
+<td><strong>中間層</strong>（例：Sonnet）</td>
+<td>明確な受け入れ基準を持つ明確に定義されたタスク；より低いコストで強いケイパビリティ</td>
+<td>「<code>add</code>コマンドに<code>--priority</code>フラグを追加し、low/medium/highの値を持つ」</td>
+</tr>
+<tr>
+<td>ドキュメント、フォーマット、ボイラープレート、シンプルな編集</td>
+<td><strong>高速/軽量</strong>（例：Haiku）</td>
+<td>深い推論より速度が重要な機械的なタスク</td>
+<td>「<code>taskforge/api.py</code>のすべてのパブリック関数にdocstringを追加する」</td>
+</tr>
+</table>
+
+<div role="note" class="callout info">
+<div class="callout-title">注意：ここでも2層パターンが適用される</div>
+<p>モデル名は変わります。「Opus」「Sonnet」「Haiku」は2026年3月現在のものです。原則は安定しています：<strong>モデルのケイパビリティをタスクの複雑さに合わせる。</strong>曖昧または重要な作業には最も強力なモデルを使用し、明確に定義された機械的なタスクには高速なモデルを使用してください。現在のラインアップについては<a href="https://docs.anthropic.com/en/docs/about-claude/models">docs.anthropic.com/models</a>を確認してください。</p>
+</div>
+
+<p><strong>迷った場合は、中間層モデルを使用してください。</strong>開発タスクの80%を適切に処理します。タスクが曖昧、多くのファイルに触れる、またはアーキテクチャ上の判断が必要な場合のみ最高層にエスカレートします。どちらにしても出力をレビューするような大量操作には軽量層に落としてください。</p>
+
+<h3>実装者/レビュワーの分離</h3>
+<p>同じモデルに自分の試験を採点させないでください。SonnetがコードをREVIEWするなら、OpusまたはClaude の別のモデルを使ってレビューしてください。偏った自己評価は既知の失敗モードです。</p>
+
+<h3>Ralphループ</h3>
+<p>自律的なエージェントループ：PRD（製品要求文書）が完成するまで実行し、各反復は新しいコンテキストを取得します。<strong>注意：</strong>仕様が不明確なPRDは後で問題を引き起こします。ループは曖昧さを増幅します — 曖昧な要件は、10回の反復にわたって繰り返される自信を持って間違った実装になります。</p>
+
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう：Ralphループを構築する</div>
+<p>Ralphループは自律的なループエージェントパターンです：エージェントはタスクを実行し、成功基準に対して結果を確認し、基準が満たされていない場合は反復します — 問題を修正して再確認します — タスクが成功するか最大反復制限に達するまで。各反復は新しいコンテキストウィンドウを取得し、失敗した試みからのコンテキスト汚染を防ぎます。重要な洞察は、ループが<em>自己修正</em>であることです：エージェントは盲目的に再試行するのではなく、失敗の出力を読んでアプローチを適応させます。これにより、明確でテスト可能な成功基準を持つタスクに対して強力です。</p>
+<p>TaskForgeのためのシンプルなRalphループを設定します：</p>
+<div class="prompt-block"><pre><code>claude --background "Fix all failing tests in TaskForge.
+Run: python3 -m pytest
+If any tests fail, read the failure output, fix the code, and re-run.
+Repeat until all tests pass.
+Maximum 5 iterations. If still failing after 5, stop and report what's left."</code></pre></div>
+<p>これをテストするには、まず意図的に何かを壊してください：<code>models.py</code>にバグを導入します（例：戻り値を変更する、バリデーションチェックを壊す）。次にループを起動して、エージェントがそれを発見して修正するのを観察してください。</p>
+<p><strong>検証：</strong>エージェントの最終出力はすべてのテストがパスしていることを示します。<code>git diff</code>を確認して修正が合理的かを確認してください — 失敗したテストを削除するようなハックではないこと。</p>
+<p><strong>うまくいかない場合：</strong>（1）エージェントが永遠にループする → 反復制限は必須です、決して省略しないでください。（2）エージェントがコードを修正するのではなくテストを削除する → プロンプトに追加：「テストを削除またはスキップしないでください。ソースコードを修正してください。」（3）<code>--background</code>が利用できない → 代わりにdispatchを使用：<code>/dispatch fix all failing tests, max 5 iterations — use sonnet</code>。</p>
+</div>
+
+<div role="note" class="callout warn">
+<div class="callout-title">警告：常に反復制限を設ける</div>
+<p>最大反復回数のないRalphループは無限に実行され、APIクレジットを消費し、各パスでコードベースをより悪化させる可能性があります。常にハードリミットを指定してください（ほとんどのタスクには3〜5回の反復）。エージェントが5回で修正できない場合、その問題は人間の判断が必要であり、より多くの反復ではありません。</p>
+</div>
+
+<h3>CIトリガーエージェント</h3>
+<p>リポジトリイベントでアクティブになるエージェント：プルリクエストでのPRレビューボット、マージ時のドキュメント更新者、依存関係の変更時のセキュリティスキャナー。</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg" aria-label="図：中央セッションが並列ワーカー（Opusはセキュリティ、SonnetはテストS、HaikuはDocs、CodexはReview）にタスクをdispatchする">
+  <!-- Center: Your Session -->
+  <rect class="node-accent" x="270" y="80" width="160" height="50" rx="8"/>
+  <text class="label-text" x="350" y="110" text-anchor="middle">あなたのセッション</text>
+  <!-- Opus: Security - top left -->
+  <rect class="node-fill" x="40" y="10" width="160" height="44" rx="6"/>
+  <text class="label-text" x="120" y="30" text-anchor="middle">Opus: セキュリティ</text>
+  <text class="sub-text" x="120" y="44" text-anchor="middle">worktree</text>
+  <line class="arrow" x1="200" y1="42" x2="280" y2="80"/>
+  <text class="sub-text" x="220" y="52" fill="var(--a3)">結果</text>
+  <!-- Sonnet: Tests - top right -->
+  <rect class="node-fill" x="500" y="10" width="160" height="44" rx="6"/>
+  <text class="label-text" x="580" y="30" text-anchor="middle">Sonnet: テスト</text>
+  <line class="arrow" x1="420" y1="80" x2="500" y2="42"/>
+  <text class="sub-text" x="480" y="52" fill="var(--a3)">タスク</text>
+  <!-- Haiku: Docs - bottom left -->
+  <rect class="node-fill" x="40" y="165" width="160" height="44" rx="6"/>
+  <text class="label-text" x="120" y="192" text-anchor="middle">Haiku: ドキュメント</text>
+  <line class="arrow" x1="280" y1="130" x2="200" y2="170"/>
+  <text class="sub-text" x="220" y="160" fill="var(--a3)">タスク</text>
+  <!-- Codex: Review - bottom right -->
+  <rect class="node-fill" x="500" y="165" width="160" height="44" rx="6"/>
+  <text class="label-text" x="580" y="192" text-anchor="middle">Codex: レビュー</text>
+  <line class="arrow" x1="500" y1="178" x2="420" y2="130"/>
+  <text class="sub-text" x="480" y="160" fill="var(--a3)">結果</text>
+</svg>
+<div class="diagram-caption">あなたのセッションはコマンドセンターになります。ワーカーは新しいコンテキストで実行されます。質問はあなたに返ってきます。結果は完了時に返ってきます。</div>
+</div>
+
+<h3>TaskForgeとの接続</h3>
+<p>異なるモデルを使用してTaskForgeに複数の独立した改善をdispatchします。これはTaskForgeが並列AI開発から恩恵を受ける初めての機会です。</p>
+
+<h3>マイクロ演習</h3>
+<div role="note" class="callout ok"><div class="callout-title">1：Dispatchをインストールする</div><p><code>npx skills add bassimeledath/dispatch -g</code>を実行します。次に：<code>/dispatch use sonnet to list all functions in the project without docstrings</code>。</p></div>
+<div role="note" class="callout ok"><div class="callout-title">2：マルチモデル比較</div><p>異なるモデルに2つのタスクを同時にdispatchします。出力品質を比較します。どのモデルがどのタスクに優れていましたか？</p></div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう</div>
+<p>3つの独立したTaskForge改善をdispatchします：</p>
+<div class="prompt-block"><pre><code>/dispatch three TaskForge improvements:
+1) add due dates with reminder logic — use sonnet
+2) add tags with filtering — use sonnet
+3) improve error handling across all functions — use haiku</code></pre></div>
+<p>3つの出力すべてをレビューします。競合はありますか？それらを修正します。</p>
+<p><strong>検証：</strong>3つの機能がすべて動作します。テストがパスします。マージされた結果に競合がありません。</p>
+<p><strong>うまくいかない場合：</strong>（1）Dispatchが見つからない → インストールが完了していることを確認し、Claude Codeを再起動します。（2）ワーカーがサイレントに失敗する → <code>.dispatch/</code>でログを確認します。（3）マージ競合 → 並列作業では予想されます。手動で解決します。</p>
+</div>
+
+<div class="pq">並列AIワーカーをdispatchして結果をマージしました。1つの時間で3つの機能が構築されました — これがレベル7の乗数です。</div>
+
+<h3>インタラクティブ演習</h3>
+
+<div class="quiz" data-ch="44" data-ex="quiz-ralph">
+  <h4>知識チェック</h4>
+  <p>Ralphループとは何ですか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">無限ループのデバッグ技術</button>
+    <button class="quiz-option" data-correct="true">自律的な反復サイクル：実装、テスト、修正、繰り返し</button>
+    <button class="quiz-option" data-correct="false">Pythonのforループの一種</button>
+    <button class="quiz-option" data-correct="false">コードレビューのプロセス</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz" data-ch="44" data-ex="quiz-maxiter">
+  <h4>知識チェック</h4>
+  <p>自律エージェントループに最大反復回数を設ける理由は何ですか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">API呼び出しのコストを節約するため</button>
+    <button class="quiz-option" data-correct="true">失敗した試みの無限ループを防ぐため</button>
+    <button class="quiz-option" data-correct="false">制限があるとエージェントがより良く動作するから</button>
+    <button class="quiz-option" data-correct="false">APIによって必要とされているから</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="checklist" data-ch="44" data-ex="bg-check">
+  <h4>バックグラウンドエージェントの使用</h4>
+  <label><input type="checkbox"><span>少なくとも1つのバックグラウンドエージェントタスクをdispatchした</span></label>
+  <label><input type="checkbox"><span>エージェントの出力をレビューした</span></label>
+  <label><input type="checkbox"><span>出力の少なくとも1つの問題を特定した</span></label>
+  <label><input type="checkbox"><span>必要な修正をドキュメント化した</span></label>
+</div>
+</section>
+
+<!-- ===== CH 45 ===== -->
+<section id="ch45" data-ch="45">
+<h2><span class="ch-label">第45章</span> DockerでのClaude Code</h2>
+
+<div role="note" class="callout info">
+<div class="callout-title">なぜ今重要なのか</div>
+<p>DockerでClaude Codeを実行することで、分離された再現可能なAIコーディング環境が得られます。これは、ローカルマシンを汚染することなく1つのエージェントから多数にスケールする方法です。</p>
+</div>
+
+<h3>なぜDockerでClaude Codeを実行するのか？</h3>
+<p>ホストマシンでClaude Codeを直接実行することは単一セッションでは問題なく機能します。しかし、複数のエージェントにスケールするにつれて、Dockerは避けられない問題を解決します：</p>
+<ul>
+<li><strong>プロジェクト/エージェントごとの分離された環境：</strong>各エージェントは独自のファイルシステム、ツール、依存関係を取得します — クロス汚染はありません。</li>
+<li><strong>再現可能なセットアップ：</strong>同じツール、同じ設定、毎回。マシン間またはセッション間でのドリフトがありません。</li>
+<li><strong><code>--dangerously-skip-permissions</code>を使った安全な実験：</strong>コンテナの分離によりこのフラグが安全になります — エージェントはコンテナの外に触れることができません。</li>
+<li><strong>複数の並列エージェント：</strong>ボリュームマウントを使用して同じコードベース上で複数のエージェントを同時に実行します。</li>
+<li><strong>CI/CD統合：</strong>パイプラインからClaude Codeエージェントをトリガーします — 自動コードレビュー、テスト生成、ドキュメント更新。</li>
+</ul>
+
+<h3>前提条件</h3>
+<p>続ける前に、以下を確認してください：</p>
+<ul>
+<li><strong>Dockerがインストール</strong>されて実行中（第16章）</li>
+<li><strong>Claude MaxまたはProサブスクリプション</strong>（またはAnthropicのAPIキー）</li>
+</ul>
+
+<h3>Dockerfile.claudeパターン</h3>
+<p>コンテナでClaude Codeを実行するための本番グレードのDockerfileです。これは第43章のスキャフォールドパターンの結果であり、すべての行は省略することが失敗を引き起こしたために存在します。</p>
+<pre><code>FROM debian:bookworm-slim
+
+# システムパッケージ — Claude Codeが動作するための最小セット
+RUN apt-get update &amp;&amp; apt-get install -y --no-install-recommends \
+    git bash curl ca-certificates build-essential \
+    jq tree ripgrep python3 python3-pip \
+    &amp;&amp; rm -rf /var/lib/apt/lists/*
+
+# 非rootユーザー
+RUN groupadd -r claude &amp;&amp; useradd -r -g claude -m -s /bin/bash claude
+
+# Claude Codeをインストール（ネイティブインストーラー — npmは使わない）
+USER claude
+WORKDIR /home/claude
+RUN curl -fsSL https://claude.ai/install.sh | bash
+ENV PATH="/home/claude/.local/bin:/home/claude/.claude/bin:${PATH}"
+
+# オンボーディングウィザードが表示されないよう認証を事前設定する
+RUN mkdir -p /home/claude/.claude &amp;&amp; \
+    echo '{"hasCompletedOnboarding":true,"installMethod":"native"}' \
+      > /home/claude/.claude/.claude.json &amp;&amp; \
+    ln -sf /home/claude/.claude/.claude.json /home/claude/.claude.json &amp;&amp; \
+    echo '{"permissions":{"allow":["*"],"deny":[]},"env":{"CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC":"1"}}' \
+      > /home/claude/.claude/settings.json
+
+WORKDIR /workspace
+CMD ["sleep", "infinity"]</code></pre>
+
+<p>各決定が重要な理由：</p>
+<table>
+<caption>ヘッドレスClaude Code用のDockerfile設計上の決定</caption>
+<tr><th>決定</th><th>理由</th></tr>
+<tr><td><code>debian:bookworm-slim</code></td><td>glibcベースである必要があります。Alpine/muslはネイティブClaude Codeバイナリを壊します。</td></tr>
+<tr><td>npmではなくネイティブインストーラー</td><td>npmパッケージは異なる設定パスを使用し、認証の破損を引き起こします。ネイティブインストーラーはAnthropicの公式方法です。</td></tr>
+<tr><td>非rootの<code>claude</code>ユーザー</td><td>セキュリティのベストプラクティス。何か問題が起きた場合の影響範囲を制限します。</td></tr>
+<tr><td>事前作成された<code>.claude.json</code></td><td>なければ、オンボーディングウィザードが毎回表示され、ヘッドレス操作がブロックされます。シンリンクは異なるバージョンがチェックする両方の設定パスをカバーします。</td></tr>
+<tr><td><code>"allow":["*"]</code>の<code>settings.json</code></td><td>設定に焼き込まれた<code>--dangerously-skip-permissions</code>と同等です。ヘッドレスモードでプロンプトなし。</td></tr>
+<tr><td><code>CMD ["sleep", "infinity"]</code></td><td>コンテナが生き続けます。各セッションに<code>docker exec</code>で入ります。複数のexec = 複数のClaude Codeセッション、すべてがワークスペースを共有します。</td></tr>
+</table>
+
+<div role="note" class="callout critical">
+<div class="callout-title">重要な概念：非決定論の教訓</div>
+<p>このDockerfileはスキャフォールドパターンの実践です。曖昧な「Claude CodeのDockerfileを作成して」という指示は、まったく異なる結果を生み出します：npmvs ネイティブ、Alpine vs Debian、root vs 非root、ENTRYPOINT vs CMD。各間違った選択は特定の失敗を引き起こします — 認証ループ、バイナリクラッシュ、権限エラー。スキャフォールドはすべてのコイントスを排除します。これが非決定論的な出力を信頼できるものにする方法です。</p>
+</div>
+
+<h3>認証方法</h3>
+<p>Claude Codeには認証が必要です。2つのアプローチがあり、同じ<code>.env</code>に共存させてはなりません：</p>
+
+<h4>OAuthトークン（Claude Max/Pro）</h4>
+<p>ホストマシンでトークンを生成し、環境変数として渡します：</p>
+<div class="prompt-block"><span class="label">ターミナル（ホスト上）</span>claude setup-token</div>
+<p>結果のトークンを<code>.env</code>ファイルに追加します：</p>
+<pre><code>CLAUDE_CODE_OAUTH_TOKEN=sk-ant-oat01-your-token-here</code></pre>
+<p>トークンはdocker-compose.ymlの<code>env_file: .env</code>を通じてコンテナに渡されます。Dockerイメージには<strong>決して</strong>焼き込まれません。</p>
+
+<h4>APIキー</h4>
+<p>トークンごとの課金（サブスクリプションなし）の場合：</p>
+<pre><code>ANTHROPIC_API_KEY=sk-ant-api03-your-key-here</code></pre>
+
+<div role="note" class="callout critical">
+<div class="callout-title">重要な概念：両方設定しない</div>
+<p><code>ANTHROPIC_API_KEY</code>と<code>CLAUDE_CODE_OAUTH_TOKEN</code>の両方が存在する場合、APIキーが優先され、サブスクリプションを使用する代わりにトークンごとに課金されます。どちらか一方を選んでください。</p>
+</div>
+
+<h3>単一のClaude agentを実行する</h3>
+<p>パターン：コンテナを一度起動し、各セッションで<code>docker exec</code>で入ります。各execは同じワークスペースを共有する独立したClaude Codeセッションです。</p>
+<div class="prompt-block"><span class="label">ターミナル</span># コンテナのビルドと起動
+docker compose up -d claude
+
+# インタラクティブなClaude Codeセッションを開く
+docker exec -it claude-myproject claude --dangerously-skip-permissions
+
+# 2番目のターミナルペインで別のセッションを開く
+docker exec -it claude-myproject claude --dangerously-skip-permissions</div>
+
+<p><code>-v $(pwd):/workspace</code>ボリュームマウントは現在のディレクトリをコンテナにマップします。エージェントがコンテナ内で行った変更はすぐにホストファイルシステムに表示されます。</p>
+
+<h3>--dangerously-skip-permissionsで実行する</h3>
+<p><code>--dangerously-skip-permissions</code>フラグは、Claude Codeにすべての権限プロンプトをスキップするよう伝えます — ファイルの書き込み、コマンドの実行、ネットワークリクエスト。エージェントは尋ねることなく動作します。</p>
+
+<div role="note" class="callout warn">
+<div class="callout-title">警告：このフラグを使うタイミング</div>
+<p>ホストマシンでは、このフラグは本当に危険です — エージェントは任意のファイルを変更し、任意のコマンドを実行できます。Dockerコンテナ内では、リスクは封じ込められています：エージェントはコンテナのファイルシステムとマウントされたボリュームにのみ影響を与えることができます。これがコンテナと<code>--dangerously-skip-permissions</code>が自然なペアである理由です：コンテナの分離が自律的な操作を安全にします。</p>
+</div>
+
+<p>完全な自律性で非インタラクティブタスクを実行する：</p>
+<div class="prompt-block"><span class="label">ターミナル</span>docker run -it -e ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY -v $(pwd):/workspace claude-agent --dangerously-skip-permissions -p "fix all failing tests"</div>
+
+<p><code>-p</code>フラグは、インタラクティブセッションを開く代わりにプロンプトを直接渡します。<code>--dangerously-skip-permissions</code>と組み合わせることで、エージェントは完全に自律的に動作できます：ファイルを読み、コードを編集し、テストを実行し、完了するまで反復します。</p>
+
+<h3>Docker Composeのセットアップ</h3>
+<p>composeファイルは既存のプロジェクトサービスとともにclaudeサービスを定義します：</p>
+<pre><code># docker-compose.yml
+services:
+  claude:
+    build:
+      context: .
+      dockerfile: Dockerfile.claude
+    container_name: claude-${COMPOSE_PROJECT_NAME:-agents}
+    env_file: .env
+    volumes:
+      - .:/workspace
+      - claude-auth:/home/claude/.claude
+    working_dir: /workspace
+    stdin_open: true
+    tty: true
+
+volumes:
+  claude-auth:
+    name: claude-auth-${COMPOSE_PROJECT_NAME:-default}</code></pre>
+
+<p>重要な詳細：<code>claude-auth</code>ボリュームはコンテナの再起動をまたいで認証を維持します。<code>.:/workspace</code>はプロジェクトをマウントします。<code>env_file: .env</code>はOAuthトークンを渡します。コンテナ名にはプロジェクトディレクトリ名が含まれているため、各リポジトリは一意のコンテナを取得します。</p>
+
+<div class="prompt-block"><span class="label">ターミナル</span># コンテナを起動する
+docker compose up -d claude
+
+# 複数のエージェントセッションを実行する（各自のターミナルペインで）
+docker exec -it claude-myproject claude --dangerously-skip-permissions --model claude-opus-4-6
+docker exec -it claude-myproject claude --dangerously-skip-permissions --model claude-opus-4-6</div>
+
+<div role="note" class="callout warn">
+<div class="callout-title">警告：調整の課題</div>
+<p>複数のエージェントが同じボリュームマウントを共有する場合、同じファイルに同時に書き込むことができます。これにより競合が生じる可能性があります — 一方のエージェントがもう一方の変更を上書きします。戦略：（1）エージェントを重ならないディレクトリに割り当てる、（2）gitワークツリーを使用して各エージェントが独自の作業コピーを持つようにする、（3）並列ではなくパイプラインで順番にエージェントを実行する。</p>
+</div>
+
+<h3>agent.shパターン</h3>
+<p>コンテナが実行されていることを確認してからexecで入る薄い便利スクリプトです。モデルは<code>--model</code>フラグで強制されます（環境変数はモデル選択に機能しません）。</p>
+<pre><code>#!/usr/bin/env bash
+set -euo pipefail
+
+PROJECT_NAME="${COMPOSE_PROJECT_NAME:-$(basename "$(pwd)")}"
+CONTAINER="claude-${PROJECT_NAME}"
+
+# 実行中でなければコンテナを起動する
+if ! docker ps --format '{{.Names}}' | grep -q "^${CONTAINER}$"; then
+  docker compose up -d claude
+  sleep 2
+fi
+
+# インタラクティブまたはワンショット
+if [ $# -gt 0 ]; then
+  docker exec -it "$CONTAINER" claude \
+    --dangerously-skip-permissions --model claude-opus-4-6 -p "$*"
+else
+  docker exec -it "$CONTAINER" claude \
+    --dangerously-skip-permissions --model claude-opus-4-6
+fi</code></pre>
+<p>使用方法：</p>
+<div class="prompt-block"><span class="label">ターミナル</span>./agent.sh                              # インタラクティブセッション
+./agent.sh "refactor the auth module"   # ワンショットプロンプト</div>
+<p>複数のエージェントを実行するには、ターミナルペインをさらに開いてそれぞれで<code>./agent.sh</code>を実行します。各execは独立したセッションで、すべてが同じワークスペースを共有します。</p>
+
+<h3>実践的なパターン</h3>
+
+<h4>順次パイプライン</h4>
+<p>エージェント1がコードを書き、エージェント2がレビューし、エージェント3がテストを書きます。各エージェントの出力が次のエージェントの入力になります。これによりテストの前にレビューが確保され、問題が早期に発見されます。</p>
+
+<h4>並列ワーカー</h4>
+<p>複数のエージェントが独立した機能を同時に作業します。すべてが完了したら、結果をマージします。機能がファイルを共有しない場合に最適です。</p>
+
+<h4>ウォッチャーエージェント</h4>
+<p>テスト結果（またはCI出力）を監視し、テストが失敗したときに修正エージェントをdispatchするエージェント。これにより自己修復パイプラインが生まれます：何かを壊すと、ウォッチャーがエージェントを割り当てて修正します。</p>
+
+<h3>リソース管理</h3>
+<p>Dockerを使用すると、暴走したエージェントがマシン全体を消費しないよう、コンテナごとにリソースを制限できます：</p>
+<pre><code># docker-compose.yml
+services:
+  agent-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.claude
+    command: ["--dangerously-skip-permissions", "-p", "implement API endpoints"]
+    volumes:
+      - .:/workspace
+    environment:
+      - ANTHROPIC_API_KEY
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: "1.0"</code></pre>
+
+<p>ディスクスペースを回収するために定期的に停止したコンテナをクリーンアップします：</p>
+<div class="prompt-block"><span class="label">ターミナル</span># 停止したすべてのコンテナを削除
+docker container prune
+
+# 未使用のイメージを削除
+docker image prune</div>
+
+<h3>一般的な失敗モード</h3>
+<table>
+<caption>一般的なDockerコンテナの失敗モードと修正</caption>
+<tr><th>症状</th><th>原因</th><th>修正</th></tr>
+<tr><td>オンボーディングウィザードが表示される</td><td><code>.claude.json</code>が見つからないか不正形式</td><td>Dockerfileは事前作成と両方のパスへのシンリンクが必要</td></tr>
+<tr><td>再起動時にトークンが期限切れ</td><td>認証ファイルが永続化されていない</td><td><code>/home/claude/.claude</code>に<code>claude-auth</code>ボリューム</td></tr>
+<tr><td>サブスクリプションの代わりにAPIで課金される</td><td><code>ANTHROPIC_API_KEY</code>とOAuthトークンの両方が.envにある</td><td>APIキーを削除；OAuthトークンのみを残す</td></tr>
+<tr><td>起動時にバイナリがクラッシュする</td><td>Alpine/muslベースイメージ</td><td><code>debian:bookworm-slim</code>（glibc）を使用する</td></tr>
+<tr><td>npm installが認証フローを壊す</td><td>npmバージョンは異なる設定パスを使用する</td><td>ネイティブインストーラーのみを使用する</td></tr>
+</table>
+
+<h3>TaskForgeとの接続</h3>
+<p>2つのClaude agentをDocker上で同時に実行します — 1つはTaskForgeに新機能を追加し、もう1つは既存機能のテストを書きます。次に結果をマージします。これは完全なコンテナ分離であなた自身のプロジェクトで初めて並列AI開発を見る機会です。</p>
+
+<div class="diagram">
+<svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg" aria-label="図：Docker Composeがプロジェクトボリュームを共有する並列Claude agent（Backend、Test、Review）をオーケストレーションする">
+  <!-- Developer -->
+  <rect class="node-accent" x="270" y="10" width="160" height="44" rx="8"/>
+  <text class="label-text" x="350" y="37" text-anchor="middle">開発者</text>
+  <!-- docker-compose -->
+  <rect class="node-fill" x="245" y="95" width="210" height="44" rx="8"/>
+  <text class="label-text" x="350" y="122" text-anchor="middle">docker-compose.yml</text>
+  <line class="arrow" x1="350" y1="54" x2="350" y2="95"/>
+  <!-- Agent 1: Backend -->
+  <rect class="node-fill" x="40" y="185" width="170" height="55" rx="6"/>
+  <text class="label-text" x="125" y="208" text-anchor="middle">バックエンドエージェント</text>
+  <text class="sub-text" x="125" y="224" text-anchor="middle">機能を実装</text>
+  <line class="arrow" x1="280" y1="139" x2="160" y2="185"/>
+  <!-- Agent 2: Test -->
+  <rect class="node-fill" x="265" y="185" width="170" height="55" rx="6"/>
+  <text class="label-text" x="350" y="208" text-anchor="middle">テストエージェント</text>
+  <text class="sub-text" x="350" y="224" text-anchor="middle">テストスイートを書く</text>
+  <line class="arrow" x1="350" y1="139" x2="350" y2="185"/>
+  <!-- Agent 3: Review -->
+  <rect class="node-fill" x="490" y="185" width="170" height="55" rx="6"/>
+  <text class="label-text" x="575" y="208" text-anchor="middle">レビューエージェント</text>
+  <text class="sub-text" x="575" y="224" text-anchor="middle">コード品質を監査</text>
+  <line class="arrow" x1="420" y1="139" x2="540" y2="185"/>
+  <!-- Shared Volume -->
+  <rect class="node-accent" x="170" y="280" width="360" height="34" rx="6"/>
+  <text class="label-text" x="350" y="302" text-anchor="middle">共有ボリューム：プロジェクトコード</text>
+  <line x1="125" y1="240" x2="230" y2="280" stroke="var(--a5)" stroke-width="1.5" marker-end="url(#arrowhead-muted)"/>
+  <line x1="350" y1="240" x2="350" y2="280" stroke="var(--a5)" stroke-width="1.5" marker-end="url(#arrowhead-muted)"/>
+  <line x1="575" y1="240" x2="470" y2="280" stroke="var(--a5)" stroke-width="1.5" marker-end="url(#arrowhead-muted)"/>
+</svg>
+<div class="diagram-caption">Docker Composeは複数のClaude Codeエージェントをオーケストレーションします。各エージェントは独自のコンテナで実行されますが、マウントされたボリュームを通じてプロジェクトコードを共有します。開発者は個々のエージェントではなく、コンポジションを管理します。</div>
+</div>
+
+<h3>マイクロ演習</h3>
+<div role="note" class="callout ok">
+<div class="callout-title">1：Dockerfile.claudeを構築する</div>
+<p>上記のパターンを使用してTaskForgeの<code>Dockerfile.claude</code>を作成します。<code>docker compose build claude</code>でビルドします。コンテナが起動することを確認：<code>docker compose up -d claude &amp;&amp; docker exec claude-taskforge-project echo "ok"</code>。</p>
+</div>
+<div role="note" class="callout ok">
+<div class="callout-title">2：DockerでClaude Codeを実行する</div>
+<p><code>./agent.sh "list all Python files in the project"</code>を実行して出力を調べます。エージェントが<code>/workspace</code>内のプロジェクトファイルを見つけたことを確認します。</p>
+</div>
+
+<div role="note" class="callout ok">
+<div class="callout-title">やってみよう</div>
+<p>TaskForgeのための完全なDockerスキャフォールドをセットアップします：<code>Dockerfile.claude</code>、<code>docker-compose.yml</code>（claude-authボリューム付き）、<code>agent.sh</code>、OAuthトークンを含む<code>.env</code>。次に2つのターミナルペインを開いて実行します：</p>
+<div class="prompt-block"><span class="label">ターミナルペイン1</span>./agent.sh "add a delete_task function to TaskForge that removes a task by ID"</div>
+<div class="prompt-block"><span class="label">ターミナルペイン2</span>./agent.sh "write comprehensive pytest tests for the add_task function"</div>
+<p>両方のセッションが同じコンテナとワークスペースを共有します。</p>
+<p><strong>検証：</strong>両方のエージェントがタスクを完了します。<code>git diff</code>は両方のエージェントからの変更を示します。コンテナは実行し続けました。</p>
+<p><strong>うまくいかない場合：</strong>（1）オンボーディングウィザードが表示される → <code>docker compose down -v &amp;&amp; docker compose build --no-cache claude &amp;&amp; docker compose up -d claude</code>。（2）トークンが期限切れ → ホストで<code>claude setup-token</code>を実行し、<code>.env</code>を更新し、コンテナを再起動します。（3）エージェントが同じファイルで競合する → 予想されます；手動で解決するか、gitワークツリーを使用します。</p>
+</div>
+
+<div class="pq">複数のAIエージェントを分離されたコンテナで実行し、それぞれがプロジェクトで同時に作業するのを見ました。これが2つのエージェントから20のエージェントにスケールするパターンです — コンテナの分離が安全にし、Docker Composeが管理可能にします。</div>
+
+<h3>インタラクティブ演習</h3>
+
+<div class="quiz" data-ch="45" data-ex="quiz-perms">
+  <h4>知識チェック</h4>
+  <p>なぜDockerコンテナ内では<code>--dangerously-skip-permissions</code>が許容されるのですか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">実際には危険ではないから</button>
+    <button class="quiz-option" data-correct="true">Dockerコンテナはすでに分離されている — エージェントはホストにエスケープできない</button>
+    <button class="quiz-option" data-correct="false">Dockerが動作するために必要だから</button>
+    <button class="quiz-option" data-correct="false">エージェントが高速になるから</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz" data-ch="45" data-ex="quiz-mount">
+  <h4>知識チェック</h4>
+  <p>DockerでClaude Codeを実行するとき、<code>-v $(pwd):/workspace</code>は何をしますか？</p>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">コードのバックアップを作成する</button>
+    <button class="quiz-option" data-correct="true">ローカルコードをコンテナにマウントして、エージェントがそれを読み書きできるようにする</button>
+    <button class="quiz-option" data-correct="false">コンテナ内に依存関係をインストールする</button>
+    <button class="quiz-option" data-correct="false">コンテナのホスト名を設定する</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="checklist" data-ch="45" data-ex="docker-agent-check">
+  <h4>Dockerエージェント</h4>
+  <label><input type="checkbox"><span>TaskForgeのDockerfile.claudeを構築した</span></label>
+  <label><input type="checkbox"><span>DockerコンテナでClaude Codeを実行した</span></label>
+  <label><input type="checkbox"><span>エージェントは/workspace内のファイルを正常に読み取った</span></label>
+  <label><input type="checkbox"><span>エージェントの変更はホストマシンで表示された</span></label>
+</div>
+</section>
