@@ -113,12 +113,22 @@ try {
 
   /* ---------- 9. blob persistence round-trip ---------- */
   console.log('\n[9] Blob persistence');
-  // poll until the debounced POST lands in Blob (cold function can take ~1s)
+  // Poll until the debounced POST for both grades lands in Blob. A production
+  // deployment can briefly expose the first save before the second debounce
+  // finishes, so wait for the full expected state instead of stopping at any
+  // saved card.
   let remote = null;
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < 30; i++) {
     await page.waitForTimeout(500);
     remote = await page.evaluate(async ([slug, pin]) => (await fetch('/api/state?user=' + slug + '&pin=' + pin, { cache: 'no-store' })).json(), [SLUG, PIN]);
-    if (remote && remote.state && remote.state.srs && Object.keys(remote.state.srs).length >= 1) break;
+    if (
+      remote &&
+      remote.state &&
+      remote.state.srs &&
+      Object.keys(remote.state.srs).length >= 1 &&
+      remote.state.session &&
+      remote.state.session.reviewed >= 2
+    ) break;
   }
   ok(remote && remote.state && remote.state.srs && Object.keys(remote.state.srs).length >= 1, `state saved to Blob (${remote && remote.state && remote.state.srs ? Object.keys(remote.state.srs).length : 0} cards)`);
   ok(remote && remote.state && remote.state.session && remote.state.session.reviewed >= 2, 'session reviewed >= 2 saved to Blob');
