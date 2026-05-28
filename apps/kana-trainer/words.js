@@ -1,5 +1,5 @@
 // Words Trainer — Anki-style spaced-repetition vocabulary deck.
-// Name + PIN login; per-user SRS state persisted to Vercel Blob (via
+// Name-only login; per-user SRS state persisted to Vercel Blob (via
 // /api/state) with a localStorage cache for instant load + offline resilience.
 
 (function () {
@@ -18,7 +18,6 @@
 
   const LS = {
     user: "wt.user",
-    pin: (u) => `wt.pin.${u}`,
     cache: (u) => `wt.cache.${u}`,
     filter: (dim, val) => `wt.filter.${dim}.${val}`,
   };
@@ -35,7 +34,6 @@
   /* ---------------- state ---------------- */
   let user = "";                  // slug of current user ("" = logged out)
   let displayName = "";           // raw name as typed
-  let pin = "";                   // user's PIN, sent with every API call
   let srs = {};                   // id -> { ease, interval, due, reps, lapses, stage, step }
   let session = { reviewed: 0, again: 0, correct: 0 };
   let pool = [], current = null, flipped = false, recent = [];
@@ -192,7 +190,7 @@
   }
 
   async function pushBlob(opts){
-    if (!user || !pin || !dirty) return;
+    if (!user || !dirty) return;
     if (pushInFlight) return;
 
     pushInFlight = true;
@@ -203,10 +201,9 @@
       const res = await fetch("/api/state", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user, pin, state: payload }),
+        body: JSON.stringify({ user, state: payload }),
         keepalive: !!(opts && opts.keepalive),
       });
-      if (res.status === 401) { setSync("auth failed", "warn"); return; }
       if (!res.ok) throw new Error("HTTP " + res.status);
       if (saveVersion === startedVersion) {
         dirty = false;
@@ -222,7 +219,6 @@
     }
   }
 
-  // Returns { ok, status }: status 401 means bad PIN, surfaced to caller.
   async function loadUserState(){
     ready = false;
     setSync("loading…", "busy");
@@ -230,13 +226,10 @@
     let remote = null;
     let status = 0;
     try {
-      const qs = "user=" + encodeURIComponent(user) + "&pin=" + encodeURIComponent(pin);
-      const res = await fetch("/api/state?" + qs, { cache: "no-store" });
+      const res = await fetch("/api/state?user=" + encodeURIComponent(user), { cache: "no-store" });
       status = res.status;
       if (res.ok) { const data = await res.json(); remote = data && data.state; }
     } catch { /* offline / file:// — fall back to cache */ }
-
-    if (status === 401) { setSync("auth failed", "warn"); return { ok: false, status: 401 }; }
 
     let chosen = null, source = "fresh";
     if (remote && cache){ chosen = (remote.updatedAt || 0) >= (cache.updatedAt || 0) ? remote : cache; source = chosen === remote ? "cloud" : "local"; }
@@ -344,17 +337,14 @@
     $("words-user-name").textContent = displayName || user;
   }
 
-  async function doLogin(name, pinInput){
+  async function doLogin(name){
     const raw = String(name || "").trim();
     const u = slug(raw);
-    const p = String(pinInput || "").trim();
     const msg = $("login-msg");
     if (msg) msg.textContent = "";
     if (!u){ if (msg) msg.textContent = "Please enter a name (letters or numbers)."; return; }
-    if (p.length < 4){ if (msg) msg.textContent = "PIN must be at least 4 characters."; return; }
-    user = u; displayName = raw; pin = p;
+    user = u; displayName = raw;
     lsSet(LS.user, JSON.stringify({ user, displayName }));
-    lsSet(LS.pin(user), pin);
     showDeck();
     $("fc-word").textContent = "…";
     $("fc-hint").textContent = "Loading deck…";
@@ -362,44 +352,28 @@
     catch { $("fc-hint").textContent = "Could not load vocabulary data."; return; }
     $("fc-hint").textContent = "Loading your deck…";
     recent = [];
-    const result = await loadUserState();
-    if (!result.ok && result.status === 401) {
-      // bad PIN — kick back to login and drop the stored credential
-      lsDel(LS.pin(user));
-      user = ""; pin = "";
-      showLogin();
-      if (msg) msg.textContent = "That PIN doesn't match this name. Try again.";
-      return;
-    }
-    // Trigger an initial save so a brand-new user is registered (the POST is
-    // what claims the name + PIN on the server).
-    if (!dirty && session && session.reviewed === 0) { markDirty(); pushBlob(); }
+    await loadUserState();
     showCard();
   }
   function signOut(){
     if (dirty) pushBlob({ keepalive: true });
-    const prevUser = user;
-    user = ""; displayName = ""; pin = ""; srs = {}; session = { reviewed: 0, again: 0, correct: 0 }; ready = false;
+    user = ""; displayName = ""; srs = {}; session = { reviewed: 0, again: 0, correct: 0 }; ready = false;
     lsDel(LS.user);
-    if (prevUser) lsDel(LS.pin(prevUser));
     setSync("", "");
     showLogin();
   }
 
   async function deleteAccount(){
-    if (!user || !pin) return;
+    if (!user) return;
     if (!confirm("Delete your saved progress? This cannot be undone.")) return;
     setSync("deleting…", "busy");
     try {
-      const qs = "user=" + encodeURIComponent(user) + "&pin=" + encodeURIComponent(pin);
-      const res = await fetch("/api/state?" + qs, { method: "DELETE" });
-      if (res.status === 401) { setSync("auth failed", "warn"); return; }
+      const res = await fetch("/api/state?user=" + encodeURIComponent(user), { method: "DELETE" });
       if (!res.ok) throw new Error("HTTP " + res.status);
       // wipe local cache too
       lsDel(LS.cache(user));
-      lsDel(LS.pin(user));
       lsDel(LS.user);
-      user = ""; pin = ""; displayName = "";
+      user = ""; displayName = "";
       srs = {}; session = { reviewed: 0, again: 0, correct: 0 }; ready = false;
       setSync("", "");
       showLogin();
@@ -415,21 +389,19 @@
     if (initialized) return; initialized = true;
     loadFilters();
 
-    // restore saved user + PIN (if any)
+    // restore saved user (if any)
     try {
       const saved = JSON.parse(lsGet(LS.user) || "null");
       if (saved && saved.user){
         user = saved.user;
         displayName = saved.displayName || saved.user;
-        pin = lsGet(LS.pin(user)) || "";
       }
     } catch {}
 
     // login form
-    const submitLogin = () => doLogin($("login-name").value, $("login-pin").value);
+    const submitLogin = () => doLogin($("login-name").value);
     $("login-start").addEventListener("click", submitLogin);
     $("login-name").addEventListener("keydown", (e) => { if (e.key === "Enter"){ e.preventDefault(); submitLogin(); } });
-    $("login-pin").addEventListener("keydown", (e) => { if (e.key === "Enter"){ e.preventDefault(); submitLogin(); } });
     $("words-signout").addEventListener("click", signOut);
 
     // Delete saved progress (DELETE /api/state)
@@ -461,29 +433,14 @@
     window.addEventListener("pagehide", flush);
     document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") flush(); });
 
-    if (user && pin){
+    if (user){
       showDeck();
       $("fc-word").textContent = "…";
       $("fc-hint").textContent = "Loading your deck…";
       ensureWordsLoaded()
         .then(loadUserState)
-        .then((r) => {
-          if (r && r.ok === false && r.status === 401) {
-            lsDel(LS.pin(user));
-            user = ""; pin = "";
-            showLogin();
-            const msg = $("login-msg");
-            if (msg) msg.textContent = "Saved PIN didn't match. Please sign in again.";
-            return;
-          }
-          showCard();
-        })
+        .then(showCard)
         .catch(() => { $("fc-hint").textContent = "Could not load vocabulary data."; });
-    } else if (user && !pin) {
-      // Have a stored name but no PIN — prompt for it.
-      showLogin();
-      const inp = $("login-name"); if (inp) inp.value = displayName || user;
-      const pinInp = $("login-pin"); if (pinInp && document.body.dataset.mode === "words") pinInp.focus();
     } else { showLogin(); }
   }
 

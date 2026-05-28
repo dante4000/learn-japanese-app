@@ -663,12 +663,10 @@
   <section id="words-login" class="card" aria-label="Sign in">
     <div class="login-box">
       <h2 class="login-title">Vocabulary deck</h2>
-      <p class="login-sub">Enter a name and a PIN to load your progress. Your learning schedule is saved to the cloud so it follows you across devices. New here? Pick any name and a PIN you'll remember.</p>
+      <p class="login-sub">Enter a name to load your progress. Your learning schedule is saved to the cloud so it follows you across devices.</p>
       <div class="login-row">
-        <input type="text" id="login-name" autocomplete="username" autocapitalize="off" spellcheck="false"
+        <input type="text" id="login-name" autocomplete="nickname" autocapitalize="off" spellcheck="false"
           aria-label="Your name" placeholder="your name" maxlength="40" />
-        <input type="password" id="login-pin" autocomplete="current-password" inputmode="text"
-          aria-label="Your PIN" placeholder="PIN" minlength="4" maxlength="32" />
         <button type="button" id="login-start" class="login-btn">Start</button>
       </div>
       <p id="login-msg" class="login-msg" aria-live="polite"></p>

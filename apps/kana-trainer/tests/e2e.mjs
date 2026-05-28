@@ -9,7 +9,6 @@ mkdirSync(SHOTS, { recursive: true });
 
 const NAME = 'E2E ' + Date.now();          // unique user each run -> fresh session counters
 const SLUG = NAME.toLowerCase().replace(/\s+/g, '-');
-const PIN = '1234';
 console.log('test user:', NAME, '->', SLUG);
 
 let pass = 0, fail = 0;
@@ -52,7 +51,6 @@ try {
   /* ---------- 4. login by name ---------- */
   console.log('\n[4] Login by name');
   await page.locator('#login-name').fill(NAME);
-  await page.locator('#login-pin').fill(PIN);
   await page.locator('#login-start').click();
   await page.waitForSelector('#flashcard:visible', { timeout: 8000 });
   // wait for the async deck load to populate a real word (not the "…" loading placeholder)
@@ -120,7 +118,7 @@ try {
   let remote = null;
   for (let i = 0; i < 30; i++) {
     await page.waitForTimeout(500);
-    remote = await page.evaluate(async ([slug, pin]) => (await fetch('/api/state?user=' + slug + '&pin=' + pin, { cache: 'no-store' })).json(), [SLUG, PIN]);
+    remote = await page.evaluate(async (slug) => (await fetch('/api/state?user=' + slug, { cache: 'no-store' })).json(), SLUG);
     if (
       remote &&
       remote.state &&
