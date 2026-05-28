@@ -4,9 +4,13 @@
   "private": true,
   "type": "module",
   "description": "Kana + vocabulary trainer with Anki-style SRS and Vercel Blob persistence",
+  "engines": {
+    "node": "22.x"
+  },
   "scripts": {
     "validate": "node tools/validate-words.mjs",
     "build-data": "node tools/build-words.mjs",
+    "test": "node --test tests/unit.mjs",
     "test:e2e": "node tests/e2e.mjs"
   },
   "dependencies": {

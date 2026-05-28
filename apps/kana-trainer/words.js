@@ -1,6 +1,6 @@
 // Words Trainer — Anki-style spaced-repetition vocabulary deck.
-// Name-only login; per-user SRS state persisted to Vercel Blob (via /api/state)
-// with a localStorage cache for instant load + offline resilience.
+// Name + PIN login; per-user SRS state persisted to Vercel Blob (via
+// /api/state) with a localStorage cache for instant load + offline resilience.
 
 (function () {
   "use strict";
@@ -18,6 +18,7 @@
 
   const LS = {
     user: "wt.user",
+    pin: (u) => `wt.pin.${u}`,
     cache: (u) => `wt.cache.${u}`,
     filter: (dim, val) => `wt.filter.${dim}.${val}`,
   };
@@ -34,10 +35,12 @@
   /* ---------------- state ---------------- */
   let user = "";                  // slug of current user ("" = logged out)
   let displayName = "";           // raw name as typed
+  let pin = "";                   // user's PIN, sent with every API call
   let srs = {};                   // id -> { ease, interval, due, reps, lapses, stage, step }
   let session = { reviewed: 0, again: 0, correct: 0 };
   let pool = [], current = null, flipped = false, recent = [];
   let initialized = false, saveTimer = null, dirty = false, ready = false;
+  let saveVersion = 0, pushInFlight = false;
 
   function stateFor(id){
     if (!srs[id]) srs[id] = { ease: START_EASE, interval: 0, due: 0, reps: 0, lapses: 0, stage: "new", step: 0 };
@@ -94,6 +97,24 @@
     if (grade === 1) return fmtMs(Math.max(MIN, s.interval * HARD_MULT));
     if (grade === 2) return fmtMs(Math.max(MIN, s.interval * s.ease));
     return fmtMs(Math.max(MIN, s.interval * s.ease * EASY_BONUS));
+  }
+
+  /* ---------------- lazy data load ---------------- */
+  // words-data.js (~250 KB) is fetched on first Words-mode entry to keep the
+  // Kana/Kanji users off that bandwidth.
+  let wordsLoadPromise = null;
+  function ensureWordsLoaded(){
+    if (typeof WORDS !== "undefined") return Promise.resolve();
+    if (wordsLoadPromise) return wordsLoadPromise;
+    wordsLoadPromise = new Promise((resolve, reject) => {
+      const s = document.createElement("script");
+      s.src = "words-data.js";
+      s.defer = true;
+      s.onload = () => resolve();
+      s.onerror = () => reject(new Error("words-data.js failed to load"));
+      document.head.appendChild(s);
+    });
+    return wordsLoadPromise;
   }
 
   /* ---------------- filters + pool ---------------- */
@@ -158,41 +179,64 @@
     el.dataset.kind = kind || "";
   }
 
-  function scheduleSave(){
+  function markDirty(){
     dirty = true;
+    saveVersion += 1;
     writeCache();
+  }
+
+  function scheduleSave(){
+    markDirty();
     if (saveTimer) clearTimeout(saveTimer);
     saveTimer = setTimeout(pushBlob, SAVE_DEBOUNCE);
   }
 
   async function pushBlob(opts){
-    if (!user || !dirty) return;
+    if (!user || !pin || !dirty) return;
+    if (pushInFlight) return;
+
+    pushInFlight = true;
+    const startedVersion = saveVersion;
     setSync("saving…", "busy");
     const payload = snapshot();
     try {
       const res = await fetch("/api/state", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user, state: payload }),
+        body: JSON.stringify({ user, pin, state: payload }),
         keepalive: !!(opts && opts.keepalive),
       });
+      if (res.status === 401) { setSync("auth failed", "warn"); return; }
       if (!res.ok) throw new Error("HTTP " + res.status);
-      dirty = false;
-      setSync("saved", "ok");
+      if (saveVersion === startedVersion) {
+        dirty = false;
+        setSync("saved", "ok");
+      }
     } catch {
       setSync("saved locally", "warn"); // cache already written; will retry on next change
+    } finally {
+      pushInFlight = false;
+      if (dirty && saveVersion !== startedVersion && !(opts && opts.keepalive)) {
+        pushBlob();
+      }
     }
   }
 
+  // Returns { ok, status }: status 401 means bad PIN, surfaced to caller.
   async function loadUserState(){
     ready = false;
     setSync("loading…", "busy");
     const cache = readCache();
     let remote = null;
+    let status = 0;
     try {
-      const res = await fetch("/api/state?user=" + encodeURIComponent(user), { cache: "no-store" });
-      if (res.ok){ const data = await res.json(); remote = data && data.state; }
+      const qs = "user=" + encodeURIComponent(user) + "&pin=" + encodeURIComponent(pin);
+      const res = await fetch("/api/state?" + qs, { cache: "no-store" });
+      status = res.status;
+      if (res.ok) { const data = await res.json(); remote = data && data.state; }
     } catch { /* offline / file:// — fall back to cache */ }
+
+    if (status === 401) { setSync("auth failed", "warn"); return { ok: false, status: 401 }; }
 
     let chosen = null, source = "fresh";
     if (remote && cache){ chosen = (remote.updatedAt || 0) >= (cache.updatedAt || 0) ? remote : cache; source = chosen === remote ? "cloud" : "local"; }
@@ -202,11 +246,11 @@
     srs = (chosen && chosen.srs && typeof chosen.srs === "object") ? chosen.srs : {};
     session = (chosen && chosen.session && typeof chosen.session === "object") ? chosen.session : { reviewed: 0, again: 0, correct: 0 };
 
-    // If cache was newer than (or present without) cloud, push it up.
-    if (source === "local"){ dirty = true; writeCache(); pushBlob(); }
+    if (source === "local"){ markDirty(); pushBlob(); }
     else { dirty = false; writeCache(); }
     ready = true;
-    setSync(remote ? "synced" : "offline", remote ? "ok" : "warn");
+    setSync(remote ? "synced" : (status === 0 ? "offline" : "new"), remote || status === 200 ? "ok" : "warn");
+    return { ok: true, status };
   }
 
   /* ---------------- flashcard UI ---------------- */
@@ -300,26 +344,70 @@
     $("words-user-name").textContent = displayName || user;
   }
 
-  async function doLogin(name){
+  async function doLogin(name, pinInput){
     const raw = String(name || "").trim();
     const u = slug(raw);
+    const p = String(pinInput || "").trim();
     const msg = $("login-msg");
+    if (msg) msg.textContent = "";
     if (!u){ if (msg) msg.textContent = "Please enter a name (letters or numbers)."; return; }
-    user = u; displayName = raw;
+    if (p.length < 4){ if (msg) msg.textContent = "PIN must be at least 4 characters."; return; }
+    user = u; displayName = raw; pin = p;
     lsSet(LS.user, JSON.stringify({ user, displayName }));
+    lsSet(LS.pin(user), pin);
     showDeck();
     $("fc-word").textContent = "…";
+    $("fc-hint").textContent = "Loading deck…";
+    try { await ensureWordsLoaded(); }
+    catch { $("fc-hint").textContent = "Could not load vocabulary data."; return; }
     $("fc-hint").textContent = "Loading your deck…";
     recent = [];
-    await loadUserState();
+    const result = await loadUserState();
+    if (!result.ok && result.status === 401) {
+      // bad PIN — kick back to login and drop the stored credential
+      lsDel(LS.pin(user));
+      user = ""; pin = "";
+      showLogin();
+      if (msg) msg.textContent = "That PIN doesn't match this name. Try again.";
+      return;
+    }
+    // Trigger an initial save so a brand-new user is registered (the POST is
+    // what claims the name + PIN on the server).
+    if (!dirty && session && session.reviewed === 0) { markDirty(); pushBlob(); }
     showCard();
   }
   function signOut(){
     if (dirty) pushBlob({ keepalive: true });
-    user = ""; displayName = ""; srs = {}; session = { reviewed: 0, again: 0, correct: 0 }; ready = false;
+    const prevUser = user;
+    user = ""; displayName = ""; pin = ""; srs = {}; session = { reviewed: 0, again: 0, correct: 0 }; ready = false;
     lsDel(LS.user);
+    if (prevUser) lsDel(LS.pin(prevUser));
     setSync("", "");
     showLogin();
+  }
+
+  async function deleteAccount(){
+    if (!user || !pin) return;
+    if (!confirm("Delete your saved progress? This cannot be undone.")) return;
+    setSync("deleting…", "busy");
+    try {
+      const qs = "user=" + encodeURIComponent(user) + "&pin=" + encodeURIComponent(pin);
+      const res = await fetch("/api/state?" + qs, { method: "DELETE" });
+      if (res.status === 401) { setSync("auth failed", "warn"); return; }
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      // wipe local cache too
+      lsDel(LS.cache(user));
+      lsDel(LS.pin(user));
+      lsDel(LS.user);
+      user = ""; pin = ""; displayName = "";
+      srs = {}; session = { reviewed: 0, again: 0, correct: 0 }; ready = false;
+      setSync("", "");
+      showLogin();
+      const msg = $("login-msg");
+      if (msg) msg.textContent = "Your data has been deleted.";
+    } catch {
+      setSync("delete failed", "warn");
+    }
   }
 
   /* ---------------- init / wiring ---------------- */
@@ -327,16 +415,26 @@
     if (initialized) return; initialized = true;
     loadFilters();
 
-    // restore saved user (if any)
+    // restore saved user + PIN (if any)
     try {
       const saved = JSON.parse(lsGet(LS.user) || "null");
-      if (saved && saved.user){ user = saved.user; displayName = saved.displayName || saved.user; }
+      if (saved && saved.user){
+        user = saved.user;
+        displayName = saved.displayName || saved.user;
+        pin = lsGet(LS.pin(user)) || "";
+      }
     } catch {}
 
     // login form
-    $("login-start").addEventListener("click", () => doLogin($("login-name").value));
-    $("login-name").addEventListener("keydown", (e) => { if (e.key === "Enter"){ e.preventDefault(); doLogin($("login-name").value); } });
+    const submitLogin = () => doLogin($("login-name").value, $("login-pin").value);
+    $("login-start").addEventListener("click", submitLogin);
+    $("login-name").addEventListener("keydown", (e) => { if (e.key === "Enter"){ e.preventDefault(); submitLogin(); } });
+    $("login-pin").addEventListener("keydown", (e) => { if (e.key === "Enter"){ e.preventDefault(); submitLogin(); } });
     $("words-signout").addEventListener("click", signOut);
+
+    // Delete saved progress (DELETE /api/state)
+    const delBtn = $("words-delete");
+    if (delBtn) delBtn.addEventListener("click", deleteAccount);
 
     // card interactions
     const disp = $("fc-display");
@@ -363,8 +461,30 @@
     window.addEventListener("pagehide", flush);
     document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") flush(); });
 
-    if (user){ showDeck(); $("fc-word").textContent = "…"; $("fc-hint").textContent = "Loading your deck…"; loadUserState().then(showCard); }
-    else { showLogin(); }
+    if (user && pin){
+      showDeck();
+      $("fc-word").textContent = "…";
+      $("fc-hint").textContent = "Loading your deck…";
+      ensureWordsLoaded()
+        .then(loadUserState)
+        .then((r) => {
+          if (r && r.ok === false && r.status === 401) {
+            lsDel(LS.pin(user));
+            user = ""; pin = "";
+            showLogin();
+            const msg = $("login-msg");
+            if (msg) msg.textContent = "Saved PIN didn't match. Please sign in again.";
+            return;
+          }
+          showCard();
+        })
+        .catch(() => { $("fc-hint").textContent = "Could not load vocabulary data."; });
+    } else if (user && !pin) {
+      // Have a stored name but no PIN — prompt for it.
+      showLogin();
+      const inp = $("login-name"); if (inp) inp.value = displayName || user;
+      const pinInp = $("login-pin"); if (pinInp && document.body.dataset.mode === "words") pinInp.focus();
+    } else { showLogin(); }
   }
 
   // keyboard (only while in words mode and logged in)

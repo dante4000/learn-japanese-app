@@ -1,0 +1,14 @@
+{
+  "name": "Learn Japanese — Kana, Kanji & Vocabulary Trainer",
+  "short_name": "Learn JP",
+  "description": "Drill hiragana, katakana, kanji, and Japanese vocabulary with an Anki-style spaced-repetition trainer.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#eef5ed",
+  "theme_color": "#eef5ed",
+  "icons": [
+    { "src": "favicon-32.png", "sizes": "32x32", "type": "image/png" },
+    { "src": "favicon.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "apple-touch-icon.png", "sizes": "180x180", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

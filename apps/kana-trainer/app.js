@@ -138,6 +138,45 @@ function saveFontChecks() {
   document.querySelectorAll('input.fontcheck').forEach((cb) => {
     safeSet(STORE.font(cb.id), cb.checked ? '1' : '0');
   });
+  // If a non-default font is now selected, ensure Google Fonts CSS is loaded.
+  if (hasNonDefaultFontEnabled()) ensureGoogleFontsLoaded();
+}
+
+function hasNonDefaultFontEnabled() {
+  return [...document.querySelectorAll('input.fontcheck')].some((cb) => cb.checked && cb.id !== 'font-default');
+}
+
+// Inject the Google Fonts <link> on demand instead of every page load.
+let googleFontsLoaded = false;
+function ensureGoogleFontsLoaded() {
+  if (googleFontsLoaded || document.getElementById('kt-google-fonts')) {
+    googleFontsLoaded = true;
+    return;
+  }
+  googleFontsLoaded = true;
+
+  const pre1 = document.createElement('link');
+  pre1.rel = 'preconnect'; pre1.href = 'https://fonts.googleapis.com';
+  const pre2 = document.createElement('link');
+  pre2.rel = 'preconnect'; pre2.href = 'https://fonts.gstatic.com'; pre2.crossOrigin = '';
+
+  const css = document.createElement('link');
+  css.id = 'kt-google-fonts';
+  css.rel = 'stylesheet';
+  css.href =
+    'https://fonts.googleapis.com/css2?' +
+    'family=DotGothic16&family=Hina+Mincho&family=Klee+One&family=Kosugi+Maru' +
+    '&family=Noto+Sans+JP&family=Noto+Serif+JP&family=Reggae+One&family=Shippori+Mincho' +
+    '&family=Stick&family=Yomogi&family=Zen+Kaku+Gothic+New' +
+    '&text=' + encodeURIComponent(
+      'あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん' +
+      'がぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽゃゅょっ' +
+      'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン' +
+      'ガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポャュョッ'
+    ) +
+    '&display=swap';
+
+  document.head.append(pre1, pre2, css);
 }
 
 function activeFonts() {
@@ -334,7 +373,16 @@ function checkAnswer() {
       wrongOnCurrent = true;
       recordResult(current[0], false);
     }
-    $('message').innerHTML = `<span id="wrong">${current[0]} = ${reading}</span> &nbsp;<span class="hint">— press space to continue</span>`;
+    const msg = $('message');
+    msg.textContent = '';
+    const wrong = document.createElement('span');
+    wrong.id = 'wrong';
+    wrong.lang = 'ja';
+    wrong.append(current[0], ' = ', reading);
+    const hint = document.createElement('span');
+    hint.className = 'hint';
+    hint.textContent = ' — press space to continue';
+    msg.append(wrong, ' ', hint);
     return;
   }
 
@@ -418,77 +466,87 @@ function strokeSearchUrl(ch) {
   return `https://commons.wikimedia.org/w/index.php?search=${encodeURIComponent(ch)}+stroke+order&title=Special:MediaSearch&go=Go&type=image`;
 }
 
+function prefersReducedMotion() {
+  return window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+function setNote(noteEl, base, mark, ch) {
+  if (!mark) {
+    noteEl.hidden = true;
+    noteEl.textContent = '';
+    return;
+  }
+  noteEl.hidden = false;
+  noteEl.textContent = '';
+  noteEl.append('Showing base ');
+  const a = document.createElement('span'); a.className = 'accent'; a.lang = 'ja'; a.textContent = base;
+  noteEl.append(a, ' — add ', mark, ' to get ');
+  const b = document.createElement('span'); b.className = 'accent'; b.lang = 'ja'; b.textContent = ch;
+  noteEl.append(b, '.');
+}
+
+function setStatusFallback(statusEl, ch) {
+  statusEl.textContent = 'Animation not available. ';
+  const link = document.createElement('a');
+  link.href = strokeSearchUrl(ch);
+  link.target = '_blank';
+  link.rel = 'noopener noreferrer';
+  link.textContent = 'Search Wikimedia';
+  statusEl.append(link);
+}
+
+function loadStrokeImage(filename, ch, img, statusEl) {
+  img.hidden = true;
+  img.onload = () => { statusEl.hidden = true; img.hidden = false; };
+  img.onerror = () => { img.hidden = true; statusEl.hidden = false; setStatusFallback(statusEl, ch); };
+  img.alt = `Stroke order animation for ${ch}`;
+  img.src = strokeImageUrl(filename);
+}
+
 function openStrokeOrder() {
   if (!current) return;
+  const modal = $('stroke-modal');
+  if (modal.open) return; // re-entry guard
   const ch = current[0];
   if (ch.length > 1) return; // combos already hide the button
   const filename = strokeFileName(ch);
   if (!filename) return;
 
-  const modal = $('stroke-modal');
   const img = $('stroke-modal-img');
-  const status = $('stroke-modal-status');
-  const filePageUrl = strokeFilePageUrl(filename);
+  const statusEl = $('stroke-modal-status');
 
   $('stroke-modal-char').textContent = ch;
   $('stroke-modal-romaji').textContent = current[1];
-  $('stroke-modal-source').href = filePageUrl;
+  $('stroke-modal-source').href = strokeFilePageUrl(filename);
 
-  const base = strokeBaseChar(ch);
-  const mark = strokeMarkLabel(ch);
-  const note = $('stroke-modal-note');
-  if (mark) {
-    note.hidden = false;
-    note.innerHTML =
-      `Showing base <span class="accent">${base}</span> — add ` +
-      `${mark} to get <span class="accent">${ch}</span>.`;
-  } else {
-    note.hidden = true;
-    note.textContent = '';
-  }
+  setNote($('stroke-modal-note'), strokeBaseChar(ch), strokeMarkLabel(ch), ch);
 
   img.hidden = true;
   img.removeAttribute('src');
-  status.hidden = false;
-  status.textContent = 'Loading…';
+  statusEl.hidden = false;
+  statusEl.textContent = '';
 
-  img.onload = () => {
-    status.hidden = true;
-    img.hidden = false;
-  };
-  img.onerror = () => {
-    img.hidden = true;
-    status.hidden = false;
-    const searchUrl = strokeSearchUrl(ch);
-    status.innerHTML =
-      `Animation not available. ` +
-      `<a href="${searchUrl}" target="_blank" rel="noopener noreferrer">Search Wikimedia</a>`;
-  };
-  img.alt = `Stroke order animation for ${ch}`;
-  img.src = strokeImageUrl(filename);
+  if (prefersReducedMotion()) {
+    const playBtn = document.createElement('button');
+    playBtn.type = 'button';
+    playBtn.className = 'stroke-modal-playbtn';
+    playBtn.textContent = '▶ Play stroke animation';
+    playBtn.addEventListener('click', () => {
+      statusEl.textContent = 'Loading…';
+      loadStrokeImage(filename, ch, img, statusEl);
+    }, { once: true });
+    statusEl.append(playBtn);
+  } else {
+    statusEl.textContent = 'Loading…';
+    loadStrokeImage(filename, ch, img, statusEl);
+  }
 
-  modal.hidden = false;
-  document.body.classList.add('modal-open');
-  const closeBtn = modal.querySelector('.stroke-modal-close');
-  if (closeBtn) closeBtn.focus();
-}
-
-function closeStrokeOrder() {
-  const modal = $('stroke-modal');
-  if (modal.hidden) return;
-  modal.hidden = true;
-  document.body.classList.remove('modal-open');
-  // Cancel any in-flight image load so its handlers don't fire later
-  const img = $('stroke-modal-img');
-  img.onload = null;
-  img.onerror = null;
-  img.removeAttribute('src');
-  $('input-box').focus();
+  modal.showModal();
 }
 
 function isStrokeModalOpen() {
   const modal = $('stroke-modal');
-  return modal && !modal.hidden;
+  return !!(modal && modal.open);
 }
 
 // --- check-all / uncheck-all ---
@@ -523,6 +581,11 @@ function toggleTheme() {
 
 // --- init ---
 function init() {
+  // Tag Japanese-text elements so TTS/screen-reader/font fallback picks ja.
+  document.querySelectorAll('.kana-table .kana, .font-preview').forEach((el) => {
+    el.setAttribute('lang', 'ja');
+  });
+
   // Theme
   const storedTheme = safeGet(STORE.theme);
   if (storedTheme) applyTheme(storedTheme);
@@ -554,9 +617,18 @@ function init() {
 
   // Fonts
   loadFontChecks();
+  if (hasNonDefaultFontEnabled()) ensureGoogleFontsLoaded();
   document.querySelectorAll('input.fontcheck').forEach((cb) => {
     cb.addEventListener('change', saveFontChecks);
   });
+  // The Fonts table's preview swatches need the Google webfonts. Load them the
+  // moment the user opens the Options panel.
+  const optionsDetails = $('options-details');
+  if (optionsDetails) {
+    optionsDetails.addEventListener('toggle', () => {
+      if (optionsDetails.open) ensureGoogleFontsLoaded();
+    }, { once: true });
+  }
 
   // Row tools (kana + fonts)
   document.querySelectorAll('button[data-action]').forEach((btn) => {
@@ -578,9 +650,20 @@ function init() {
   $('tool-stroke').addEventListener('click', openStrokeOrder);
   $('tool-skip').addEventListener('click', () => { forceNext(); $('input-box').focus(); });
 
-  // Stroke order modal close handlers (click backdrop or × button)
-  $('stroke-modal').addEventListener('click', (e) => {
-    if (e.target.hasAttribute('data-stroke-close')) closeStrokeOrder();
+  // Stroke order modal: <dialog> handles Esc/× via form method="dialog".
+  // Backdrop click closes it too. On close, cancel in-flight image load and
+  // refocus the kana input.
+  const strokeModal = $('stroke-modal');
+  strokeModal.addEventListener('click', (e) => {
+    // Click on the dialog element itself (not its children) = backdrop click.
+    if (e.target === strokeModal) strokeModal.close();
+  });
+  strokeModal.addEventListener('close', () => {
+    const img = $('stroke-modal-img');
+    img.onload = null;
+    img.onerror = null;
+    img.removeAttribute('src');
+    $('input-box').focus();
   });
 
   // Kana hover / tap to reveal
@@ -607,22 +690,19 @@ function init() {
   input.addEventListener('input', checkAnswer);
   input.focus();
 
-  // Global keys: Space/Enter advances; otherwise refocus input
+  // Global keys: Space/Enter advances; printable a-z refocuses the input.
+  // Constrained so it doesn't fight browser shortcuts, screen-reader nav, or
+  // typing in unrelated inputs.
   document.body.addEventListener('keydown', (e) => {
-    // Only act in Kana mode — Words mode has its own keyboard handler.
-    if (document.body.dataset.mode === 'words') return;
-    // While the stroke-order modal is open, let the user use the keyboard
-    // for the modal (Escape to close) without interfering with the quiz.
-    if (isStrokeModalOpen()) {
-      if (e.key === 'Escape') {
-        e.preventDefault();
-        closeStrokeOrder();
-      }
-      return;
-    }
-    // Don't steal focus inside the options details (e.g. typing into a label)
+    // Only act in Kana mode — Words and Kanji modes have their own handlers.
+    if (document.body.dataset.mode && document.body.dataset.mode !== 'kana') return;
+    // <dialog> handles Esc/backdrop natively; back off entirely while open.
+    if (isStrokeModalOpen()) return;
+    // Don't fight modifier-key shortcuts (Cmd/Ctrl/Alt + X, F-keys, IME etc.)
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    // Don't steal focus from other inputs (font/kana checkboxes are inputs).
     if (e.target.tagName === 'INPUT' && e.target.id !== 'input-box') return;
-    if (e.target.tagName === 'BUTTON' || e.target.tagName === 'SUMMARY') return;
+    if (e.target.tagName === 'BUTTON' || e.target.tagName === 'SUMMARY' || e.target.tagName === 'A') return;
 
     if (e.key === ' ' || e.key === 'Enter') {
       e.preventDefault();
@@ -632,9 +712,11 @@ function init() {
       input.focus();
       return;
     }
-    // Keep focus in the input for any printable key
-    if (e.key.length === 1 && document.activeElement !== input) {
-      input.focus();
+    // Only refocus on a-z / 0-9 (romaji-bearing keys), and only when focus is
+    // on body/main, so Tab nav and quick-find aren't hijacked.
+    if (/^[a-z0-9]$/i.test(e.key) && document.activeElement !== input) {
+      const ae = document.activeElement;
+      if (!ae || ae === document.body || ae.tagName === 'MAIN') input.focus();
     }
   });
 

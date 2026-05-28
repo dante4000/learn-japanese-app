@@ -537,37 +537,30 @@ h3 {
 
 /* --- stroke order modal --- */
 
-body.modal-open { overflow: hidden; }
-
-
+/* Native <dialog>: browser handles focus trap, Esc, backdrop click via form method="dialog". */
 .stroke-modal {
-  position: fixed;
-  inset: 0;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
+  border: none;
+  background: var(--surface);
+  color: var(--text);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  padding: 0;
+  width: min(440px, 92vw);
+  max-width: 92vw;
+  max-height: 92dvh;
 }
-.stroke-modal[hidden] { display: none; }
-
-.stroke-modal-backdrop {
-  position: absolute;
-  inset: 0;
+.stroke-modal::backdrop {
   background: rgba(15, 18, 22, 0.55);
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
 }
 
 .stroke-modal-card {
-  position: relative;
+  margin: 0;
   background: var(--surface);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow);
   padding: 1.1rem 1.2rem 1rem;
-  width: min(440px, 92vw);
-  max-height: 92dvh;
-  overflow: auto;
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
@@ -673,9 +666,25 @@ body.modal-open { overflow: hidden; }
   .stroke-modal-frame { min-height: 220px; }
 }
 
+.stroke-modal-playbtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 0.95rem;
+  font: inherit;
+  font-weight: 600;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 999px;
+  cursor: pointer;
+}
+.stroke-modal-playbtn:hover { border-color: var(--accent); color: var(--accent); }
+.stroke-modal-playbtn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; animation: none !important; }
-  .stroke-modal-backdrop { backdrop-filter: none; -webkit-backdrop-filter: none; }
+  .stroke-modal::backdrop { backdrop-filter: none; -webkit-backdrop-filter: none; }
 }
 
 /* ===================== Words mode ===================== */
@@ -717,8 +726,8 @@ body.modal-open { overflow: hidden; }
 .login-title { color: var(--heading); margin: 0 0 0.4rem; font-size: 1.4rem; }
 .login-sub { color: var(--text-muted); font-size: 0.92rem; margin: 0 0 1.2rem; line-height: 1.5; }
 .login-row { display: flex; gap: 0.5rem; }
-#login-name {
-  flex: 1;
+#login-name,
+#login-pin {
   padding: 0.7rem 0.9rem;
   font-size: 1.05rem;
   border: 1px solid var(--border);
@@ -726,7 +735,10 @@ body.modal-open { overflow: hidden; }
   color: var(--text);
   border-radius: var(--radius);
 }
-#login-name:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--focus-ring); }
+#login-name { flex: 2; min-width: 0; }
+#login-pin  { flex: 1; min-width: 5rem; letter-spacing: 0.15em; }
+#login-name:focus,
+#login-pin:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--focus-ring); }
 .login-btn {
   padding: 0.7rem 1.3rem;
   font: inherit;
@@ -839,4 +851,239 @@ ul#fc-tools button:focus-visible { outline: 2px solid var(--focus-ring); outline
   .grade-when { font-size: 0.62rem; }
   .fc-grades { gap: 0.35rem; }
   .login-row { flex-direction: column; }
+}
+
+/* ============================================================
+   KANJI MODE
+   All selectors scoped to #kanji-mode or kj- prefixed to avoid
+   collision with the kana/words panels' styles.
+   ============================================================ */
+
+#kanji-mode {
+  --on-color: #b04646;
+  --kun-color: #2f6ea3;
+}
+[data-theme="dark"] #kanji-mode,
+:root:not([data-theme="light"]) #kanji-mode {
+  --on-color: #ff8c8c;
+  --kun-color: #7fb8e8;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) #kanji-mode {
+    --on-color: #ff8c8c;
+    --kun-color: #7fb8e8;
+  }
+}
+
+#kj-quiz {
+  padding: clamp(1rem, 3vw, 1.4rem) clamp(1rem, 4vw, 1.8rem) clamp(0.9rem, 3vw, 1.3rem);
+  text-align: center;
+}
+
+.kj-mode-switcher {
+  display: inline-flex;
+  background: var(--surface-2);
+  border-radius: 999px;
+  padding: 4px;
+  margin: 0 auto 1rem;
+  border: 1px solid var(--border);
+}
+.kj-mode-tab {
+  background: none;
+  border: none;
+  padding: 0.4rem 1rem;
+  font: 600 0.85rem inherit;
+  color: var(--text-muted);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+  min-width: 80px;
+}
+.kj-mode-tab:hover { color: var(--text); }
+.kj-mode-tab.active {
+  background: var(--surface);
+  color: var(--heading-strong);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+.kj-mode-tab:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+
+.kj-prompt-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 0.2rem;
+  text-transform: lowercase;
+  letter-spacing: 0.02em;
+}
+
+.kj-kanji-display {
+  font-size: clamp(5rem, 22vw, 8rem);
+  line-height: 1.05;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  border-radius: var(--radius);
+  outline: none;
+  padding: 0.05em 0;
+}
+.kj-kanji-display:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+#kj-kanji {
+  font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  font-weight: 400;
+  display: inline-block;
+}
+
+.kj-answer {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin: 0.2rem 0 0.3rem;
+  min-height: 1.5em;
+  visibility: hidden;
+  line-height: 1.45;
+}
+.kj-answer.show { visibility: visible; }
+
+.kj-answer .ans-on,
+.kj-answer .ans-kun {
+  display: inline-block;
+  margin: 0 0.4rem;
+}
+.kj-answer .ans-on  { color: var(--on-color);  font-family: "Noto Sans JP", sans-serif; }
+.kj-answer .ans-kun { color: var(--kun-color); font-family: "Noto Sans JP", sans-serif; }
+.kj-answer .ans-on .label,
+.kj-answer .ans-kun .label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+  opacity: 0.65;
+  margin-right: 0.3em;
+}
+.kj-answer .ans-meanings {
+  display: block;
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 500;
+  margin-top: 0.15rem;
+}
+
+#kj-input-box {
+  width: min(100%, 18rem);
+  padding: 0.7rem 0.9rem;
+  font-size: 1.05rem;
+  text-align: center;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--input-text, var(--text));
+  border-radius: var(--radius);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+#kj-input-box::placeholder { color: var(--text-muted); opacity: 0.6; }
+#kj-input-box:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+.kj-message {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin: 0.9rem 0 0;
+  min-height: 1.3em;
+}
+#kj-wrong { color: var(--danger); font-weight: 600; }
+.kj-message .hint { color: var(--text-muted); font-weight: 400; font-size: 0.85em; }
+
+.kj-tools {
+  list-style: none; padding: 0; margin: 0;
+  display: flex; flex-wrap: wrap; gap: 0.2rem 1.1rem;
+}
+.kj-tools button {
+  background: none; border: none;
+  padding: 0.35rem 0;
+  font: 600 inherit;
+  color: var(--accent);
+  cursor: pointer;
+  min-height: 32px;
+}
+.kj-tools button:hover { color: var(--accent-hover); }
+.kj-tools button:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: 3px; }
+
+.kj-count {
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.kj-details-panel {
+  margin-top: 0.8rem;
+  padding: 0.7rem 0.9rem;
+  background: var(--surface-2);
+  border: 1px solid var(--border-soft, var(--border));
+  border-radius: var(--radius);
+  font-size: 0.85rem;
+  text-align: left;
+}
+.kj-details-panel[hidden] { display: none; }
+.kj-details-panel dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 0.2rem 0.8rem; }
+.kj-details-panel dt { color: var(--text-muted); font-weight: 600; }
+.kj-details-panel dd { margin: 0; color: var(--text); }
+.kj-details-panel .reading-on  { color: var(--on-color); font-family: "Noto Sans JP", sans-serif; }
+.kj-details-panel .reading-kun { color: var(--kun-color); font-family: "Noto Sans JP", sans-serif; }
+.kj-details-panel .reading-romaji { opacity: 0.6; }
+
+.kj-filter-help {
+  font-size: 0.83rem;
+  color: var(--text-muted);
+  margin: 0 0 0.6rem;
+  line-height: 1.45;
+}
+
+.kj-filter-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-bottom: 0.5rem;
+}
+
+.kj-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  min-height: 36px;
+  user-select: none;
+}
+.kj-filter-chip:hover { border-color: var(--accent); }
+.kj-filter-chip input { margin: 0; accent-color: var(--accent); }
+.kj-filter-chip span { line-height: 1; display: inline-flex; align-items: center; gap: 0.4em; }
+.kj-filter-chip em { font-style: normal; color: var(--text-muted); font-size: 0.85em; }
+.kj-filter-chip:has(input:checked) {
+  background: color-mix(in srgb, var(--accent) 12%, var(--surface));
+  border-color: var(--accent);
+  color: var(--heading-strong);
+}
+
+.kj-danger-btn {
+  background: none;
+  border: 1px solid var(--rule-dotted, var(--border));
+  color: var(--danger);
+  border-radius: var(--radius);
+  padding: 0.5rem 0.9rem;
+  font: 600 0.9rem inherit;
+  cursor: pointer;
+}
+.kj-danger-btn:hover { background: color-mix(in srgb, var(--danger) 8%, transparent); }
+
+@media (max-width: 480px) {
+  .kj-mode-tab { padding: 0.45rem 0.8rem; min-width: 70px; font-size: 0.85rem; }
+  .kj-filter-chip { padding: 0.5rem 0.75rem; font-size: 0.85rem; }
+}
+@media (hover: none) {
+  .kj-kanji-display { -webkit-tap-highlight-color: transparent; }
 }

@@ -7,15 +7,19 @@
 <meta name="theme-color" content="#0f1216" media="(prefers-color-scheme: dark)" />
 <title>Learn Japanese — hiragana, katakana, kanji &amp; vocabulary</title>
 <meta name="description" content="A fast, mobile-friendly trainer for learning Japanese — drill hiragana and katakana by typing romaji, and learn thousands of words and kanji with an Anki-style spaced-repetition flashcard deck. Dark mode included." />
+<meta property="og:title" content="Learn Japanese" />
+<meta property="og:description" content="Drill hiragana and katakana, learn kanji and vocabulary with an Anki-style SRS deck." />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="apple-touch-icon.png" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Learn Japanese" />
+<meta name="twitter:description" content="Drill hiragana and katakana, learn kanji and vocabulary with an Anki-style SRS deck." />
+<meta name="twitter:image" content="apple-touch-icon.png" />
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png" />
 <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link
-  href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Hina+Mincho&family=Klee+One&family=Kosugi+Maru&family=Noto+Sans+JP&family=Noto+Serif+JP&family=Reggae+One&family=Shippori+Mincho&family=Stick&family=Yomogi&family=Zen+Kaku+Gothic+New&text=あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをんがぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽゃゅょっアイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポャュョッ&display=swap"
-  rel="stylesheet"
-/>
+<link rel="manifest" href="manifest.webmanifest" />
+<!-- Google Fonts are injected lazily by app.js when a non-default font is selected. -->
 <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -29,6 +33,7 @@
 
 <nav class="mode-tabs" role="tablist" aria-label="Trainer mode">
   <button id="tab-kana"  class="mode-tab is-active" role="tab" type="button" aria-selected="true"  aria-controls="kana-mode">Kana</button>
+  <button id="tab-kanji" class="mode-tab"           role="tab" type="button" aria-selected="false" aria-controls="kanji-mode">Kanji</button>
   <button id="tab-words" class="mode-tab"           role="tab" type="button" aria-selected="false" aria-controls="words-mode">Words</button>
 </nav>
 
@@ -39,7 +44,7 @@
 <section id="quiz" class="card" aria-label="Practice">
   <div id="answer" aria-live="polite">&nbsp;</div>
   <div id="kana-display" role="button" tabindex="0" aria-label="Show romanization">
-    <span id="kana"></span>
+    <span id="kana" lang="ja"></span>
   </div>
   <div class="input-row">
     <input
@@ -63,7 +68,7 @@
       <li><button id="tool-stroke" type="button">Stroke order</button></li>
       <li><button id="tool-skip" type="button">Skip</button></li>
     </ul>
-    <div id="count" aria-live="polite"></div>
+    <div id="count"></div>
   </div>
 </section>
 
@@ -524,15 +529,146 @@
 
 </div><!-- /#kana-mode -->
 
+<div id="kanji-mode" class="mode-panel" role="tabpanel" aria-labelledby="tab-kanji" hidden>
+
+<section id="kj-quiz" class="card" aria-label="Kanji practice">
+
+  <div class="kj-mode-switcher" role="tablist" aria-label="Drill mode">
+    <button id="kj-mode-meaning" type="button" class="kj-mode-tab active" role="tab" aria-selected="true">Meaning</button>
+    <button id="kj-mode-reading" type="button" class="kj-mode-tab" role="tab" aria-selected="false">Reading</button>
+  </div>
+
+  <div id="kj-prompt-label" class="kj-prompt-label">type the meaning (English)</div>
+
+  <div id="kj-kanji-display" class="kj-kanji-display" role="button" tabindex="0" aria-label="Show answer">
+    <span id="kj-kanji" lang="ja">—</span>
+  </div>
+
+  <div id="kj-answer" class="kj-answer" aria-live="polite"></div>
+
+  <div class="input-row">
+    <input
+      type="text"
+      id="kj-input-box"
+      autocomplete="off"
+      autocorrect="off"
+      autocapitalize="off"
+      spellcheck="false"
+      inputmode="latin"
+      aria-label="Type the answer"
+      placeholder="meaning…"
+    />
+  </div>
+
+  <p id="kj-message" class="kj-message">Tap or hover the kanji to reveal the answer. Press space or enter to skip.</p>
+  <div id="kj-leech-badge" class="leech-badge" hidden>tricky one</div>
+
+  <div class="quiz-footer">
+    <ul id="kj-tools" class="kj-tools">
+      <li><button id="kj-tool-sound" type="button">Play sound</button></li>
+      <li><button id="kj-tool-info" type="button">Details</button></li>
+      <li><button id="kj-tool-skip" type="button">Skip</button></li>
+    </ul>
+    <div id="kj-count" class="kj-count"></div>
+  </div>
+
+  <div id="kj-details-panel" class="kj-details-panel" hidden></div>
+</section>
+
+<section id="kj-options" class="card">
+  <details id="kj-options-details">
+    <summary>
+      <span>Options</span>
+      <span class="hint">show / hide</span>
+    </summary>
+
+    <div class="options-body">
+
+      <h3>
+        JLPT level
+        <span class="rowtools">
+          <button type="button" data-kj-action="check" data-kj-target="jlpt">check all</button>
+          <span class="sep">|</span>
+          <button type="button" data-kj-action="uncheck" data-kj-target="jlpt">uncheck all</button>
+        </span>
+      </h3>
+      <p class="kj-filter-help">Lower number = harder. Pre-2010 JLPT scale.</p>
+      <div class="kj-filter-grid">
+        <label class="kj-filter-chip"><input type="checkbox" data-axis="jlpt" data-value="5" checked /><span>N5 <em>easiest</em></span></label>
+        <label class="kj-filter-chip"><input type="checkbox" data-axis="jlpt" data-value="4" checked /><span>N4</span></label>
+        <label class="kj-filter-chip"><input type="checkbox" data-axis="jlpt" data-value="3" checked /><span>N3</span></label>
+        <label class="kj-filter-chip"><input type="checkbox" data-axis="jlpt" data-value="2" checked /><span>N2</span></label>
+        <label class="kj-filter-chip"><input type="checkbox" data-axis="jlpt" data-value="1" checked /><span>N1 <em>hardest</em></span></label>
+        <label class="kj-filter-chip"><input type="checkbox" data-axis="jlpt" data-value="none" checked /><span>unrated</span></label>
+      </div>
+
+      <h3>
+        School grade
+        <span class="rowtools">
+          <button type="button" data-kj-action="check" data-kj-target="grade">check all</button>
+          <span class="sep">|</span>
+          <button type="button" data-kj-action="uncheck" data-kj-target="grade">uncheck all</button>
+        </span>
+      </h3>
+      <p class="kj-filter-help">Year a Japanese student first learns the kanji.</p>
+      <div class="kj-filter-grid">
+        <label class="kj-filter-chip"><input type="checkbox" data-axis="grade" data-value="1" checked /><span>1st</span></label>
+        <label class="kj-filter-chip"><input type="checkbox" data-axis="grade" data-value="2" checked /><span>2nd</span></label>
+        <label class="kj-filter-chip"><input type="checkbox" data-axis="grade" data-value="3" checked /><span>3rd</span></label>
+        <label class="kj-filter-chip"><input type="checkbox" data-axis="grade" data-value="4" checked /><span>4th</span></label>
+        <label class="kj-filter-chip"><input type="checkbox" data-axis="grade" data-value="5" checked /><span>5th</span></label>
+        <label class="kj-filter-chip"><input type="checkbox" data-axis="grade" data-value="6" checked /><span>6th</span></label>
+        <label class="kj-filter-chip"><input type="checkbox" data-axis="grade" data-value="8" checked /><span>JHS / general use</span></label>
+        <label class="kj-filter-chip"><input type="checkbox" data-axis="grade" data-value="none" checked /><span>other</span></label>
+      </div>
+
+      <h3>
+        Frequency band
+        <span class="rowtools">
+          <button type="button" data-kj-action="check" data-kj-target="freq">check all</button>
+          <span class="sep">|</span>
+          <button type="button" data-kj-action="uncheck" data-kj-target="freq">uncheck all</button>
+        </span>
+      </h3>
+      <p class="kj-filter-help">Rank in everyday Japanese (1 = most common). Newspaper-corpus ranking.</p>
+      <div class="kj-filter-grid">
+        <label class="kj-filter-chip"><input type="checkbox" data-axis="freq" data-value="0-100" checked /><span>1 – 100</span></label>
+        <label class="kj-filter-chip"><input type="checkbox" data-axis="freq" data-value="100-300" checked /><span>101 – 300</span></label>
+        <label class="kj-filter-chip"><input type="checkbox" data-axis="freq" data-value="300-600" checked /><span>301 – 600</span></label>
+        <label class="kj-filter-chip"><input type="checkbox" data-axis="freq" data-value="600-1000" checked /><span>601 – 1000</span></label>
+      </div>
+
+      <h3>Reset</h3>
+      <p class="kj-filter-help">Clear your per-kanji stats and start over.</p>
+      <button id="kj-reset-stats" type="button" class="kj-danger-btn">Reset kanji history</button>
+
+      <h3>How the kanji trainer works</h3>
+      <div class="prose">
+        <p><strong>Two modes.</strong> <em>Meaning</em> shows the kanji and you type an English meaning. <em>Reading</em> shows the kanji and you type any valid reading in romaji — the trainer accepts any of its on'yomi or kun'yomi.</p>
+        <p><strong>Adaptive recall.</strong> Kanji you miss come back more often. Stats persist per kanji in your browser's localStorage (separate from the kana trainer's history).</p>
+        <p><strong>Tricky-one flag.</strong> A kanji caught out by you five+ times (with misses outpacing successes) gets a small badge. Slow down, write it on paper, then come back. The flag clears once you recover.</p>
+        <p><strong>Filters compound.</strong> A kanji is in the pool only if it matches your selections on <em>all three</em> axes.</p>
+        <p><strong>Data.</strong> Kanji metadata from <a href="https://www.edrdg.org/wiki/index.php/KANJIDIC_Project" rel="noopener noreferrer" target="_blank">KANJIDIC2</a> by EDRDG, used under <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="noopener noreferrer" target="_blank">CC BY-SA 4.0</a>.</p>
+      </div>
+    </div>
+  </details>
+</section>
+
+</div><!-- /#kanji-mode -->
+
+
+
 <div id="words-mode" class="mode-panel" role="tabpanel" aria-labelledby="tab-words" hidden>
 
   <section id="words-login" class="card" aria-label="Sign in">
     <div class="login-box">
       <h2 class="login-title">Vocabulary deck</h2>
-      <p class="login-sub">Enter a name to load your progress. Your learning schedule is saved to the cloud, so it follows you across devices.</p>
+      <p class="login-sub">Enter a name and a PIN to load your progress. Your learning schedule is saved to the cloud so it follows you across devices. New here? Pick any name and a PIN you'll remember.</p>
       <div class="login-row">
-        <input type="text" id="login-name" autocomplete="nickname" autocapitalize="off" spellcheck="false"
+        <input type="text" id="login-name" autocomplete="username" autocapitalize="off" spellcheck="false"
           aria-label="Your name" placeholder="your name" maxlength="40" />
+        <input type="password" id="login-pin" autocomplete="current-password" inputmode="text"
+          aria-label="Your PIN" placeholder="PIN" minlength="4" maxlength="32" />
         <button type="button" id="login-start" class="login-btn">Start</button>
       </div>
       <p id="login-msg" class="login-msg" aria-live="polite"></p>
@@ -543,9 +679,9 @@
     <div class="fc-badges" id="fc-badges"></div>
 
     <div id="fc-display" class="fc-display" role="button" tabindex="0" aria-label="Flip card to reveal reading and meaning">
-      <div class="fc-word" id="fc-word"></div>
+      <div class="fc-word" id="fc-word" lang="ja"></div>
       <div class="fc-back" id="fc-back" hidden>
-        <div class="fc-reading" id="fc-reading"></div>
+        <div class="fc-reading" id="fc-reading" lang="ja"></div>
         <div class="fc-romaji" id="fc-romaji"></div>
         <div class="fc-meaning" id="fc-meaning"></div>
       </div>
@@ -564,7 +700,7 @@
         <li><button id="fc-sound" type="button">Play sound</button></li>
         <li><button id="fc-skip" type="button">Skip</button></li>
       </ul>
-      <div id="fc-count" class="fc-count" aria-live="polite"></div>
+      <div id="fc-count" class="fc-count"></div>
     </div>
   </section>
 
@@ -627,6 +763,13 @@
 
         <p class="font-help" id="pool-summary"></p>
 
+        <h3>Danger zone
+          <span class="rowtools">
+            <button type="button" id="words-delete" class="kj-danger-btn">Delete my saved progress</button>
+          </span>
+        </h3>
+        <p class="font-help">Permanently deletes your cloud-saved schedule. The local cache also clears. This cannot be undone.</p>
+
         <h3>How this deck works</h3>
         <div class="prose">
           <p>This is an <strong>Anki-style</strong> spaced-repetition deck. A card shows a word; tap it (or press <kbd>Space</kbd>) to flip and reveal the reading, romaji, and meaning. Then grade how well you knew it: <em>Again</em>, <em>Hard</em>, <em>Good</em>, or <em>Easy</em>.</p>
@@ -641,12 +784,11 @@
 
 </main>
 
-<div id="stroke-modal" class="stroke-modal" hidden role="dialog" aria-modal="true" aria-labelledby="stroke-modal-title">
-  <div class="stroke-modal-backdrop" data-stroke-close></div>
-  <div class="stroke-modal-card" role="document">
-    <button type="button" class="stroke-modal-close" data-stroke-close aria-label="Close stroke order">&times;</button>
+<dialog id="stroke-modal" class="stroke-modal" aria-labelledby="stroke-modal-title">
+  <form method="dialog" class="stroke-modal-card">
+    <button type="submit" class="stroke-modal-close" aria-label="Close stroke order" formnovalidate>&times;</button>
     <h2 id="stroke-modal-title" class="stroke-modal-title">
-      <span id="stroke-modal-char"></span>
+      <span id="stroke-modal-char" lang="ja"></span>
       <span id="stroke-modal-romaji" class="stroke-modal-romaji"></span>
     </h2>
     <p id="stroke-modal-note" class="stroke-modal-note" hidden></p>
@@ -655,15 +797,17 @@
       <img id="stroke-modal-img" alt="" decoding="async" hidden />
     </div>
     <a id="stroke-modal-source" class="stroke-modal-source" href="#" target="_blank" rel="noopener noreferrer">View on Wikimedia Commons</a>
-  </div>
-</div>
+  </form>
+</dialog>
 
 <footer class="site-footer">
   <p>Built from scratch as an open Japanese trainer — kana drilling plus an Anki-style vocabulary deck. Kana score and selections persist locally; vocabulary progress syncs to your account.</p>
 </footer>
 
-<script src="app.js"></script>
-<script src="words-data.js"></script>
-<script src="words.js"></script>
+<script src="app.js" defer></script>
+<!-- words-data.js (~250 KB) is injected by words.js on first Words-mode entry. -->
+<script src="words.js" defer></script>
+<script src="kanji.js" defer></script>
+<script src="kanji-tab.js" defer></script>
 </body>
 </html>

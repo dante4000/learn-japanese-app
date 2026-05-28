@@ -5,6 +5,7 @@ import { mkdirSync } from 'node:fs';
 
 const BASE = process.env.BASE || 'http://localhost:3000';
 const SHOTS = new URL('./shots/', import.meta.url).pathname;
+const PIN = '1234';
 mkdirSync(SHOTS, { recursive: true });
 
 const findings = [];
@@ -72,6 +73,7 @@ try {
   console.log('\n[F] Words login + flip + grade');
   if (await page.locator('#words-login').isVisible()) {
     await page.locator('#login-name').fill('Audit ' + Date.now());
+    await page.locator('#login-pin').fill(PIN);
     await page.locator('#login-start').click();
   }
   await page.waitForFunction(() => {
@@ -117,5 +119,5 @@ try {
   await browser.close();
   console.log(`\n==== AUDIT COMPLETE: ${findings.length} findings ====`);
   findings.forEach((f) => console.log('  ' + f));
-  process.exit(0);
+  process.exit(findings.length ? 1 : 0);
 }
