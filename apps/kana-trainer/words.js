@@ -222,11 +222,16 @@
     if (foot) foot.textContent = `${session.reviewed} reviewed`;
   }
   function renderBadges(e){
-    $("fc-badges").innerHTML = e
-      ? `<span class="badge">${e.lvl}</span><span class="badge">${escapeHtml(e.pos)}</span><span class="badge">${escapeHtml(e.s)}</span>`
-      : "";
+    const host = $("fc-badges");
+    host.textContent = "";
+    if (!e) return;
+    for (const text of [e.lvl, e.pos, e.s]) {
+      const span = document.createElement("span");
+      span.className = "badge";
+      span.textContent = text;
+      host.append(span);
+    }
   }
-  function escapeHtml(s){ return String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
 
   function showCard(){
     refreshPool();
@@ -387,33 +392,8 @@
   };
 })();
 
-/* ===================== page mode switch ===================== */
-(function () {
-  "use strict";
-  const KEY = "kt.mode";
-  function lsGet(k){ try { return localStorage.getItem(k); } catch { return null; } }
-  function lsSet(k,v){ try { localStorage.setItem(k,v); } catch {} }
-
-  function setMode(mode){
-    const isWords = mode === "words";
-    document.body.dataset.mode = mode;
-    const km = document.getElementById("kana-mode"), wm = document.getElementById("words-mode");
-    if (km) km.hidden = isWords;
-    if (wm) wm.hidden = !isWords;
-    const tk = document.getElementById("tab-kana"), tw = document.getElementById("tab-words");
-    if (tk){ tk.classList.toggle("is-active", !isWords); tk.setAttribute("aria-selected", String(!isWords)); }
-    if (tw){ tw.classList.toggle("is-active", isWords); tw.setAttribute("aria-selected", String(isWords)); }
-    lsSet(KEY, mode);
-    if (isWords && window.WordsMode){ window.WordsMode.init(); window.WordsMode.refresh(); }
-    if (!isWords){ const inp = document.getElementById("input-box"); if (inp) inp.focus(); }
-  }
-
-  function init(){
-    const tk = document.getElementById("tab-kana"), tw = document.getElementById("tab-words");
-    if (tk) tk.addEventListener("click", () => setMode("kana"));
-    if (tw) tw.addEventListener("click", () => setMode("words"));
-    setMode(lsGet(KEY) === "words" ? "words" : "kana");
-  }
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
-  else init();
-})();
+// NOTE: The page-level mode switch (Kana / Words / Kanji) is owned solely by
+// kanji-tab.js, which is the unified 3-way controller. An earlier binary
+// (Kana/Words-only) controller used to live here, but it overwrote
+// localStorage["kt.mode"] on load and corrupted the persisted "kanji" choice,
+// so it was removed. kanji-tab.js calls WordsMode.init()/refresh() on entry.

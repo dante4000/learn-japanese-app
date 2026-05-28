@@ -1,0 +1,8 @@
+node_modules
+.vercel
+tests
+tools
+docs
+data/gen
+.DS_Store
+*.log
