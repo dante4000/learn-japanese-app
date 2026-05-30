@@ -71,6 +71,31 @@ try {
   await page.locator('#input-box').press(' ');
   await page.waitForTimeout(150);
 
+  /* ---------- 2d. miss feedback escalates + names the typed confusable ---------- */
+  console.log('\n[2d] Miss escalation + why-line');
+  // Drive the renderer deterministically through the test seam (wrong = the
+  // post-increment miss count the live code uses when renderMiss runs).
+  const render = (wrong, leech, typed) => page.evaluate(({ wrong, leech, typed }) => {
+    window.__kana.current = ['し', 'shi'];
+    document.getElementById('kana').textContent = 'し';
+    window.__kana.stats['し'] = { correct: 0, wrong, lastSeen: 0, leech };
+    window.__kana.renderMiss('し', 'shi', typed);
+  }, { wrong, leech, typed });
+
+  await render(1, false, 'zzz');
+  ok(await page.locator('#miss-card .miss-why').count() === 0, 'stage 1: no why-line');
+  ok(await page.locator('#miss-card .miss-ex-item').count() === 1, 'stage 1: one example');
+
+  await render(2, false, 'tsu');
+  ok(await page.locator('#miss-card .miss-why').count() === 1, 'stage 2: why-line appears');
+  const why = (await page.locator('#miss-card .miss-why').textContent()) || '';
+  ok(/tsu/i.test(why) && why.includes('つ'), 'stage 2: why-line names typed confusable つ/tsu');
+
+  await render(3, true, 'tsu');
+  ok(await page.locator('#miss-card .miss-pic').count() === 1, 'stage 3: emoji picture');
+  ok(await page.locator('#miss-card .miss-ex-item').count() === 3, 'stage 3: three examples');
+  await page.evaluate(() => window.__kana && (document.getElementById('miss-card').hidden = true));
+
   /* ---------- 3. switch to words mode -> login ---------- */
   console.log('\n[3] Switch to Words mode');
   await page.locator('#tab-words').click();
