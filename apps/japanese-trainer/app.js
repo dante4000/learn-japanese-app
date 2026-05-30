@@ -313,6 +313,7 @@ function showKana() {
   const next = pickNext();
   if (!next) return;
 
+  clearMiss();
   current = next;
   wrongOnCurrent = false;
 
@@ -353,6 +354,140 @@ function updateCount() {
 function showAnswer() { $('answer').classList.add('show'); }
 function hideAnswer() { $('answer').classList.remove('show'); }
 
+// --- Miss feedback: mnemonic + why + examples, deepening with repeated misses ---
+
+// Look up a mnemonic record, decomposing dakuten/handakuten/yōon to the base
+// kana the dataset is keyed on (the data covers single base kana only).
+function mnemonicFor(kana) {
+  const M = (typeof KANA_MNEMONICS !== 'undefined') ? KANA_MNEMONICS : {};
+  if (M[kana]) return M[kana];
+  const base = strokeBaseChar(kana);          // NFD base for だ→た etc.
+  if (M[base]) return M[base];
+  if (kana.length > 1 && M[kana[0]]) return M[kana[0]]; // きゃ → き
+  return null;
+}
+
+// Romaji for a single kana, by scanning the KANA group tables.
+function kanaReading(ch) {
+  for (const group of Object.values(KANA)) {
+    if (group[ch]) return group[ch];
+  }
+  return null;
+}
+
+// Curated examples first; top up from the WORDS dataset (when loaded) for
+// coverage on rare kana. Each example is { w, r, m }.
+function resolveExamples(kana, rec, n) {
+  const out = (rec && rec.examples) ? rec.examples.slice(0, n) : [];
+  if (out.length >= n || typeof WORDS === 'undefined') return out;
+  const seen = new Set(out.map((e) => e.w));
+  for (const word of WORDS) {
+    if (out.length >= n) break;
+    const r = word.r || '';
+    if (r.includes(kana) && !seen.has(r)) {
+      seen.add(r);
+      out.push({ w: r, r: word.o, m: word.m });
+    }
+  }
+  return out;
+}
+
+// If what they typed is the reading of a known confusable, say so by name.
+function whyLine(rec, typed) {
+  if (!rec || !rec.confusables) return null;
+  for (const c of rec.confusables) {
+    if (c.k && typed && kanaReading(c.k) === typed) {
+      return `You typed “${typed}” — that's ${c.k}. ${c.hint}`;
+    }
+  }
+  // No exact typed-match: fall back to the primary confusable contrast.
+  const c = rec.confusables[0];
+  return c ? `Don't mix it up with ${c.k}: ${c.hint}` : null;
+}
+
+function clearMiss() {
+  const c = $('miss-card');
+  if (c) { c.hidden = true; c.textContent = ''; }
+}
+
+function renderMiss(kana, reading, typed) {
+  const card = $('miss-card');
+  if (!card) return;
+  card.textContent = '';
+  card.hidden = false;
+
+  const rec = mnemonicFor(kana);
+  const s = stats[kana] || { wrong: 1, leech: false };
+  const stage = (s.leech || s.wrong >= 3) ? 3 : (s.wrong >= 2 ? 2 : 1);
+
+  // Header: the kana, what they typed, and the correct reading.
+  const head = document.createElement('div');
+  head.className = 'miss-head';
+  const big = document.createElement('span');
+  big.className = 'miss-kana'; big.lang = 'ja'; big.textContent = kana;
+  const cross = document.createElement('span');
+  cross.className = 'miss-x'; cross.textContent = ` ✗ ${typed} → `;
+  const right = document.createElement('b'); right.textContent = reading;
+  head.append(big, cross, right);
+  card.append(head);
+
+  // Mnemonic line (all stages).
+  if (rec) {
+    const mn = document.createElement('div');
+    mn.className = 'miss-mnemonic';
+    mn.textContent = `${rec.emoji} ${rec.mnemonic}`;
+    card.append(mn);
+  }
+
+  // Why-you-slipped (stage 2+).
+  if (stage >= 2) {
+    const why = whyLine(rec, typed);
+    if (why) {
+      const w = document.createElement('div');
+      w.className = 'miss-why';
+      w.textContent = why;
+      card.append(w);
+    }
+  }
+
+  // Big emoji picture + personalized error count (stage 3 / leech).
+  if (stage >= 3 && rec) {
+    const pic = document.createElement('div');
+    pic.className = 'miss-pic';
+    pic.textContent = rec.emoji;
+    card.append(pic);
+    if (s.wrong >= 2) {
+      const note = document.createElement('div');
+      note.className = 'miss-note';
+      note.textContent = `You've missed ${kana} ${s.wrong}× — slow down and trace it.`;
+      card.append(note);
+    }
+  }
+
+  // Example words (1 / 2 / 3 by stage).
+  const exs = resolveExamples(kana, rec, stage);
+  if (exs.length) {
+    const ex = document.createElement('div');
+    ex.className = 'miss-ex';
+    for (const e of exs) {
+      const item = document.createElement('span');
+      item.className = 'miss-ex-item';
+      const jp = document.createElement('span');
+      jp.className = 'jp'; jp.lang = 'ja'; jp.textContent = e.w;
+      const meta = document.createElement('span');
+      meta.className = 'miss-ex-meta'; meta.textContent = ` ${e.r} · ${e.m}`;
+      item.append(jp, meta);
+      ex.append(item);
+    }
+    card.append(ex);
+  }
+
+  const hint = document.createElement('div');
+  hint.className = 'miss-hint';
+  hint.textContent = 'press space to continue ›';
+  card.append(hint);
+}
+
 function checkAnswer() {
   if (!current) return;
   const typed = ($('input-box').value || '').toLowerCase().trim();
@@ -373,16 +508,8 @@ function checkAnswer() {
       wrongOnCurrent = true;
       recordResult(current[0], false);
     }
-    const msg = $('message');
-    msg.textContent = '';
-    const wrong = document.createElement('span');
-    wrong.id = 'wrong';
-    wrong.lang = 'ja';
-    wrong.append(current[0], ' = ', reading);
-    const hint = document.createElement('span');
-    hint.className = 'hint';
-    hint.textContent = ' — press space to continue';
-    msg.append(wrong, ' ', hint);
+    $('message').textContent = '';
+    renderMiss(current[0], reading, typed);
     return;
   }
 
@@ -730,6 +857,18 @@ function init() {
   // Score
   loadScore();
   showKana();
+}
+
+// Test seam: lets e2e drive a specific prompt / miss-count deterministically.
+if (typeof window !== 'undefined') {
+  window.__kana = {
+    get current() { return current; },
+    set current(v) { current = v; },
+    get stats() { return stats; },
+    set stats(v) { stats = v; },
+    KANA,
+    renderMiss,
+  };
 }
 
 if (document.readyState === 'loading') {

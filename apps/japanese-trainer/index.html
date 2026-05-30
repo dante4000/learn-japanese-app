@@ -61,6 +61,7 @@
     />
   </div>
   <p id="message">Tap or hover the character to reveal its reading. Type the romaji, then press space or enter to skip.</p>
+  <div id="miss-card" class="miss-card" hidden aria-live="polite"></div>
   <div id="leech-badge" class="leech-badge" hidden>tricky one</div>
   <div class="quiz-footer">
     <ul id="tools">
@@ -802,6 +803,7 @@
   <p>Built from scratch as an open Japanese trainer — kana drilling plus an Anki-style vocabulary deck. Kana score and selections persist locally; vocabulary progress syncs to your account.</p>
 </footer>
 
+<script src="kana-mnemonics.js" defer></script>
 <script src="app.js" defer></script>
 <!-- words-data.js (~250 KB) is injected by words.js on first Words-mode entry. -->
 <script src="words.js" defer></script>
