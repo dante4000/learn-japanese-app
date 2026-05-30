@@ -706,9 +706,16 @@ function init() {
 
     if (e.key === ' ' || e.key === 'Enter') {
       e.preventDefault();
-      if (wrongOnCurrent) forceNext();
-      else if (input.value === '') forceNext();
-      else checkAnswer();
+      // Exact correct answers already auto-advance on the input event, but a
+      // complete answer that arrived without one still submits here. Anything
+      // else — a shown miss, an empty box, or a half-typed prefix the user is
+      // giving up on — advances. (Previously a prefix routed to checkAnswer(),
+      // which no-ops on a non-exact prefix, so "press space to continue" did
+      // nothing once you'd typed part of the reading.)
+      const typed = (input.value || '').toLowerCase().trim();
+      const exact = !!current && new Set([current[1], ...(ALT_ROMAJI[current[1]] || [])]).has(typed);
+      if (exact) checkAnswer();
+      else forceNext();
       input.focus({ preventScroll: true });
       return;
     }

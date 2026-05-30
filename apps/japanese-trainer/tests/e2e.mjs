@@ -39,6 +39,38 @@ try {
   await page.waitForTimeout(200);
   ok((await page.locator('#count').textContent()).includes('/'), `typing "${romaji}" advanced & updated score`);
 
+  /* ---------- 2b. "press space to continue" advances after a partial guess ---------- */
+  console.log('\n[2b] Space advances after a half-typed prefix (regression)');
+  // Find a kana whose reading is >=2 chars, type only its first letter (a valid
+  // prefix — not exact, not wrong), then press space to give up.
+  let pfxBefore = null;
+  for (let i = 0; i < 8; i++) {
+    const r = (await page.locator('#answer').textContent()).trim();
+    if (r.length >= 2) {
+      pfxBefore = (await page.locator('#kana').textContent()).trim();
+      await page.locator('#input-box').fill(r[0]);
+      await page.waitForTimeout(120);
+      await page.locator('#input-box').press(' ');
+      await page.waitForTimeout(150);
+      break;
+    }
+    await page.locator('#input-box').fill(r);   // advance to a new kana
+    await page.waitForTimeout(120);
+  }
+  const pfxAfter = (await page.locator('#kana').textContent()).trim();
+  ok(pfxBefore && (pfxAfter !== pfxBefore || (await page.locator('#input-box').inputValue()) === ''),
+     'space advanced after a half-typed prefix');
+
+  /* ---------- 2c. wrong answer shows a mnemonic + example ---------- */
+  console.log('\n[2c] Miss feedback: mnemonic + example');
+  await page.locator('#input-box').fill('zzz');
+  await page.waitForTimeout(150);
+  ok(await page.locator('#miss-card .miss-mnemonic').count() > 0, 'mnemonic shown on miss');
+  ok(await page.locator('#miss-card .miss-ex-item').count() > 0, 'example word shown on miss');
+  await shot(page, '0A-miss-card');
+  await page.locator('#input-box').press(' ');
+  await page.waitForTimeout(150);
+
   /* ---------- 3. switch to words mode -> login ---------- */
   console.log('\n[3] Switch to Words mode');
   await page.locator('#tab-words').click();
