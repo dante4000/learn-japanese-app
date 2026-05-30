@@ -50,12 +50,12 @@
     const initialRender = !!(opts && opts.initial);
     if (!initialRender) {
       if (mode === "kana") {
-        const inp = $("input-box"); if (inp) inp.focus();
+        const inp = $("input-box"); if (inp) inp.focus({ preventScroll: true });
       } else if (mode === "kanji") {
-        const inp = $("kj-input-box"); if (inp) inp.focus();
+        const inp = $("kj-input-box"); if (inp) inp.focus({ preventScroll: true });
       } else if (mode === "words") {
         const card = $("fc-display") || $("login-name");
-        if (card) card.focus();
+        if (card) card.focus({ preventScroll: true });
       }
     }
   }

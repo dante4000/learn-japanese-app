@@ -427,7 +427,7 @@ function playSound() {
   } catch {
     // ignore
   }
-  $('input-box').focus();
+  $('input-box').focus({ preventScroll: true });
 }
 
 // Wikimedia only hosts animations for the base kana, not dakuten/handakuten
@@ -648,7 +648,7 @@ function init() {
   // Tools
   $('tool-sound').addEventListener('click', playSound);
   $('tool-stroke').addEventListener('click', openStrokeOrder);
-  $('tool-skip').addEventListener('click', () => { forceNext(); $('input-box').focus(); });
+  $('tool-skip').addEventListener('click', () => { forceNext(); $('input-box').focus({ preventScroll: true }); });
 
   // Stroke order modal: <dialog> handles Esc/× via form method="dialog".
   // Backdrop click closes it too. On close, cancel in-flight image load and
@@ -663,7 +663,7 @@ function init() {
     img.onload = null;
     img.onerror = null;
     img.removeAttribute('src');
-    $('input-box').focus();
+    $('input-box').focus({ preventScroll: true });
   });
 
   // Kana hover / tap to reveal
@@ -676,7 +676,7 @@ function init() {
   display.addEventListener('click', () => {
     if ($('answer').classList.contains('show')) hideAnswer();
     else showAnswer();
-    $('input-box').focus();
+    $('input-box').focus({ preventScroll: true });
   });
   display.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -688,7 +688,7 @@ function init() {
   // Input
   const input = $('input-box');
   input.addEventListener('input', checkAnswer);
-  input.focus();
+  input.focus({ preventScroll: true });
 
   // Global keys: Space/Enter advances; printable a-z refocuses the input.
   // Constrained so it doesn't fight browser shortcuts, screen-reader nav, or
@@ -709,14 +709,14 @@ function init() {
       if (wrongOnCurrent) forceNext();
       else if (input.value === '') forceNext();
       else checkAnswer();
-      input.focus();
+      input.focus({ preventScroll: true });
       return;
     }
     // Only refocus on a-z / 0-9 (romaji-bearing keys), and only when focus is
     // on body/main, so Tab nav and quick-find aren't hijacked.
     if (/^[a-z0-9]$/i.test(e.key) && document.activeElement !== input) {
       const ae = document.activeElement;
-      if (!ae || ae === document.body || ae.tagName === 'MAIN') input.focus();
+      if (!ae || ae === document.body || ae.tagName === 'MAIN') input.focus({ preventScroll: true });
     }
   });
 

@@ -327,7 +327,7 @@
     $("words-options").hidden = true;
     $("words-user").hidden = true;
     const inp = $("login-name");
-    if (inp){ inp.value = displayName || ""; if (document.body.dataset.mode === "words") inp.focus(); }
+    if (inp){ inp.value = displayName || ""; if (document.body.dataset.mode === "words") inp.focus({ preventScroll: true }); }
   }
   function showDeck(){
     $("words-login").hidden = true;

@@ -374,7 +374,7 @@
       u.rate = 0.85;
       speechSynthesis.speak(u);
     } catch {}
-    const ib = $('input-box'); if (ib) ib.focus();
+    const ib = $('input-box'); if (ib) ib.focus({ preventScroll: true });
   }
 
   function toggleDetails() {
@@ -389,8 +389,8 @@
   function wireEvents() {
     // Mode pill switcher
     const mm = $('mode-meaning'), mr = $('mode-reading'), ib = $('input-box');
-    if (mm) mm.addEventListener('click', () => { setMode('meaning'); if (ib) ib.focus(); });
-    if (mr) mr.addEventListener('click', () => { setMode('reading'); if (ib) ib.focus(); });
+    if (mm) mm.addEventListener('click', () => { setMode('meaning'); if (ib) ib.focus({ preventScroll: true }); });
+    if (mr) mr.addEventListener('click', () => { setMode('reading'); if (ib) ib.focus({ preventScroll: true }); });
 
     // Filter checkboxes (scoped to kanji panel)
     panelAll('input[data-axis]').forEach((cb) => {
@@ -416,7 +416,7 @@
     // Tools
     const ts = $('tool-sound'); if (ts) ts.addEventListener('click', playSound);
     const ti = $('tool-info'); if (ti) ti.addEventListener('click', toggleDetails);
-    const tk = $('tool-skip'); if (tk) tk.addEventListener('click', () => { forceNext(); if (ib) ib.focus(); });
+    const tk = $('tool-skip'); if (tk) tk.addEventListener('click', () => { forceNext(); if (ib) ib.focus({ preventScroll: true }); });
 
     // Kanji display: hover/tap reveals the answer
     const display = $('kanji-display');
@@ -429,7 +429,7 @@
         const a = $('answer');
         if (a && a.classList.contains('show')) hideAnswer();
         else showAnswer();
-        if (ib) ib.focus();
+        if (ib) ib.focus({ preventScroll: true });
       });
       display.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showAnswer(); }
@@ -477,10 +477,10 @@
       e.preventDefault();
       if (wrongOnCurrent || ib.value === '') forceNext();
       else checkAnswer();
-      ib.focus();
+      ib.focus({ preventScroll: true });
       return;
     }
-    if (e.key.length === 1 && document.activeElement !== ib) ib.focus();
+    if (e.key.length === 1 && document.activeElement !== ib) ib.focus({ preventScroll: true });
   });
 
   async function init() {
@@ -501,13 +501,13 @@
     if (pool.length) showKanji();
 
     const ib = $('input-box');
-    if (ib && document.body.dataset.mode === 'kanji') ib.focus();
+    if (ib && document.body.dataset.mode === 'kanji') ib.focus({ preventScroll: true });
   }
 
   function refresh() {
     // Called when the tab is re-entered; keep current state but refocus.
     const ib = $('input-box');
-    if (ib && document.body.dataset.mode === 'kanji') ib.focus();
+    if (ib && document.body.dataset.mode === 'kanji') ib.focus({ preventScroll: true });
   }
 
   window.KanjiMode = { init, refresh };
