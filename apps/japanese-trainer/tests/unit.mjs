@@ -64,3 +64,31 @@ test('BASE / COMBO tables: complete kana coverage', () => {
     assert.ok(COMBO[row], `missing combo ${row}`);
   }
 });
+
+// --- kana-mnemonics dataset ---
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
+
+const __d = dirname(fileURLToPath(import.meta.url));
+const mnemSrc = readFileSync(join(__d, '..', 'kana-mnemonics.js'), 'utf8');
+const { KANA_MNEMONICS } = new Function(mnemSrc + '\nreturn { KANA_MNEMONICS };')();
+
+test('kana-mnemonics: every base kana has mnemonic + emoji + example', () => {
+  const HIRA = 'あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん';
+  const KATA = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+  for (const k of [...HIRA, ...KATA]) {
+    const e = KANA_MNEMONICS[k];
+    assert.ok(e, `missing mnemonic entry for ${k}`);
+    assert.ok(e.mnemonic && e.emoji, `${k} needs mnemonic + emoji`);
+    assert.ok(e.examples.length >= 1, `${k} needs an example`);
+  }
+});
+
+test('kana-mnemonics: example romaji matches kanaToRomaji(word)', () => {
+  for (const [k, e] of Object.entries(KANA_MNEMONICS)) {
+    for (const ex of e.examples) {
+      assert.equal(kanaToRomaji(ex.w), ex.r, `${k}: ${ex.w} should read ${kanaToRomaji(ex.w)}`);
+    }
+  }
+});
