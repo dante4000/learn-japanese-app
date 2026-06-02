@@ -795,16 +795,18 @@ function init() {
 
   // Kana hover / tap to reveal
   const display = $('kana-display');
+  // Hover-peek on desktop.
   display.addEventListener('mouseenter', showAnswer);
   display.addEventListener('mouseleave', hideAnswer);
-  display.addEventListener('focus', showAnswer);
-  display.addEventListener('blur', hideAnswer);
-  // Touch: tap to toggle
+  // Tap/click reveals and stays revealed. This used to toggle, but the click
+  // also refocuses the input below and the old focus/blur listeners fought the
+  // toggle — so tap never revealed on touch devices. Reveal-only is robust and
+  // matches the "tap to reveal" copy; the answer clears on the next kana.
   display.addEventListener('click', () => {
-    if ($('answer').classList.contains('show')) hideAnswer();
-    else showAnswer();
+    showAnswer();
     $('input-box').focus({ preventScroll: true });
   });
+  // Keyboard reveal for users tabbed onto the display.
   display.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();

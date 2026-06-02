@@ -685,7 +685,7 @@
         <div class="fc-meaning" id="fc-meaning"></div>
       </div>
     </div>
-    <p class="fc-hint" id="fc-hint">Tap the card (or press Space) to reveal.</p>
+    <p class="fc-hint" id="fc-hint" aria-live="polite">Tap the card (or press Space) to reveal.</p>
 
     <div id="fc-grades" class="fc-grades" hidden>
       <button type="button" class="grade-btn grade-again" data-grade="0"><span class="grade-label">Again</span><span class="grade-when" data-when="0"></span></button>
@@ -712,7 +712,7 @@
       </span>
     </div>
 
-    <details id="words-options-details" open>
+    <details id="words-options-details">
       <summary><span>Filters</span><span class="hint">show / hide</span></summary>
       <div class="options-body">
 
@@ -773,7 +773,7 @@
         <div class="prose">
           <p>This is an <strong>Anki-style</strong> spaced-repetition deck. A card shows a word; tap it (or press <kbd>Space</kbd>) to flip and reveal the reading, romaji, and meaning. Then grade how well you knew it: <em>Again</em>, <em>Hard</em>, <em>Good</em>, or <em>Easy</em>.</p>
           <p>New cards start with short <strong>learning steps</strong> (a minute, then ten) and graduate to day-scale intervals once you get them right. Cards you find easy come back rarely; cards you miss reset to short intervals and resurface quickly. Your schedule is saved to your account and syncs across devices.</p>
-          <p class="kbd-hint">Keyboard: <kbd>Space</kbd> flips; then <kbd>1</kbd> Again, <kbd>2</kbd> Hard, <kbd>3</kbd> Good, <kbd>4</kbd> Easy (<kbd>Space</kbd> = Good).</p>
+          <p class="kbd-hint">Keyboard: <kbd>Space</kbd> reveals the answer; then <kbd>1</kbd> Again, <kbd>2</kbd> Hard, <kbd>3</kbd> Good, <kbd>4</kbd> Easy moves to the next card.</p>
         </div>
       </div>
     </details>

@@ -130,7 +130,8 @@ try {
   await page.waitForTimeout(150);
   ok(await page.locator('#fc-back').isVisible(), 'back (reading/romaji/meaning) revealed');
   ok(await page.locator('#fc-grades').isVisible(), 'grade buttons revealed');
-  ok((await page.locator('#fc-reading').textContent()).trim().length > 0, 'reading shown');
+  ok(await page.locator('#fc-hint').isVisible(), 'hint stays visible after reveal (not blanked)');
+  ok(/pick|next card/i.test(await page.locator('#fc-hint').textContent()), 'post-reveal prompt guides to the next card');
   ok((await page.locator('#fc-meaning').textContent()).trim().length > 0, 'meaning shown');
   const previews = await page.locator('#fc-grades .grade-when').allTextContents();
   ok(previews.every((t) => t.trim().length > 0), `interval previews populated: [${previews.join(', ')}]`);
@@ -153,6 +154,10 @@ try {
 
   /* ---------- 8. filter: katakana only ---------- */
   console.log('\n[8] Filter to katakana-only');
+  // Filters start collapsed (card stays the focus); open the panel to reach them.
+  ok(!(await page.locator('#words-options-details').evaluate((d) => d.open)), 'filters collapsed by default');
+  await page.locator('#words-options-details > summary').click();
+  await page.waitForTimeout(150);
   await page.locator('button[data-wf-action="uncheck"][data-wf-group="s"]').click();
   await page.waitForTimeout(120);
   await page.locator('input.wfilter[data-dim="s"][value="katakana"]').check();

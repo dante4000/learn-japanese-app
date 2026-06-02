@@ -421,16 +421,18 @@
     // Kanji display: hover/tap reveals the answer
     const display = $('kanji-display');
     if (display) {
+      // Hover-peek on desktop.
       display.addEventListener('mouseenter', showAnswer);
       display.addEventListener('mouseleave', hideAnswer);
-      display.addEventListener('focus', showAnswer);
-      display.addEventListener('blur', hideAnswer);
+      // Tap/click reveals and stays revealed. This used to toggle, but the click
+      // also refocuses the input and the old focus/blur listeners fought the
+      // toggle — so tap never revealed on touch devices. Reveal-only is robust;
+      // the answer clears on the next kanji.
       display.addEventListener('click', () => {
-        const a = $('answer');
-        if (a && a.classList.contains('show')) hideAnswer();
-        else showAnswer();
+        showAnswer();
         if (ib) ib.focus({ preventScroll: true });
       });
+      // Keyboard reveal for users tabbed onto the display.
       display.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showAnswer(); }
       });
