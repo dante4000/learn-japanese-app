@@ -147,16 +147,19 @@
     if (due.length) return due[0];
     const fresh = pool.filter((e) => !srs[idOf(e)]).filter(notRecent);
     if (fresh.length) return fresh[0];
-    const ahead = pool.map((e) => ({ e, s: stateFor(idOf(e)) }))
-      .sort((a, b) => a.s.due - b.s.due).map(({ e }) => e).filter(notRecent);
+    // Soonest-due fallback. Read srs directly — do NOT call stateFor(), which
+    // would materialise "new" entries for unreviewed cards as a side effect and
+    // corrupt the saved state + the new/due summary counts.
+    const ahead = pool.map((e) => ({ e, due: (srs[idOf(e)] || { due: 0 }).due }))
+      .sort((a, b) => a.due - b.due).map(({ e }) => e).filter(notRecent);
     return ahead[0] || pool[0];
   }
   function poolCounts(){
     const t = Date.now(); let neu = 0, due = 0;
     for (const e of pool){
       const s = srs[idOf(e)];
-      if (!s) neu++;
-      else if (s.stage === "learning" || s.due <= t) due += (s.due <= t ? 1 : 0);
+      if (!s || s.stage === "new") neu++;
+      else if (s.due <= t) due++;
     }
     return { total: pool.length, neu, due };
   }
@@ -283,7 +286,11 @@
     }
     renderBadges(current);
     $("fc-word").textContent = current.w;
-    $("fc-reading").textContent = current.r;
+    // For kana words the reading equals the written form — showing it again on
+    // the back is pure duplication, so hide that line when they match.
+    const reading = $("fc-reading");
+    reading.textContent = current.r;
+    reading.hidden = (current.r === current.w);
     $("fc-romaji").textContent = current.o;
     $("fc-meaning").textContent = current.m;
     hint.textContent = "Tap the card (or press Space) to reveal.";
@@ -293,7 +300,9 @@
     if (!current || flipped) return;
     flipped = true;
     $("fc-back").hidden = false;
-    $("fc-hint").hidden = true;
+    // Keep the hint visible but switch it to an action prompt — the grade
+    // buttons ARE the "next" control, which isn't obvious to non-Anki users.
+    $("fc-hint").textContent = "How well did you know it? Pick a button to go to the next card.";
     const g = $("fc-grades"); g.hidden = false;
     const id = idOf(current);
     g.querySelectorAll(".grade-when").forEach((el) => { el.textContent = previewInterval(id, Number(el.dataset.when)); });
@@ -458,7 +467,9 @@
     else if (e.key === "2"){ e.preventDefault(); grade(1); }
     else if (e.key === "3"){ e.preventDefault(); grade(2); }
     else if (e.key === "4"){ e.preventDefault(); grade(3); }
-    else if (e.key === " " || e.key === "Enter"){ e.preventDefault(); grade(2); } // Space = Good
+    // Once flipped, Space/Enter do nothing: a fast double-tap of Space used to
+    // reveal then instantly grade "Good", skipping the card before it was read.
+    else if (e.key === " " || e.key === "Enter"){ e.preventDefault(); }
   });
 
   window.WordsMode = {
