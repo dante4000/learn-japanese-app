@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LLM-Powered HMI Design for Mitsubishi Fuso — Expert Reference</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#0a0c12;--bg-card:#10131c;--border:#1a1f30;--border-accent:#252d45;--text:#b8bfce;--text-muted:#5e6880;--text-bright:#dce1ec;--heading:#eef1f8;--accent:#4a90e2;--accent-glow:rgba(74,144,226,.1);--a2:#7c6dd8;--a3:#2ebd80;--a4:#e8943a;--a5:#e05c7a;--code-bg:#141825;--serif:'Instrument Serif',Georgia,serif;--sans:'DM Sans',-apple-system,sans-serif;--mono:'JetBrains Mono',monospace;--df:#141a28;--dl:#2a3350;--sidebar-w:260px}
@@ -15,8 +16,8 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:
 
 .sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--bg-card);border-right:1px solid var(--border);overflow-y:auto;z-index:150;padding:1.5rem 0 2rem}
 .sidebar::-webkit-scrollbar{width:3px}.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
-.sidebar-logo{padding:0 1.2rem .8rem;font-family:var(--serif);font-size:1rem;color:var(--heading);line-height:1.3;border-bottom:1px solid var(--border);margin-bottom:.6rem}
-.sidebar-logo span{font-size:.7rem;color:var(--accent);font-family:var(--mono);display:block;margin-bottom:.15rem;letter-spacing:.05em;text-transform:uppercase}
+.sidebar-logo{box-sizing:border-box;width:calc(100% - 2.4rem);max-width:14rem;padding:0 1.2rem 1rem;font-family:var(--serif);font-size:1.06rem;color:var(--heading);line-height:1.08;letter-spacing:.01em;border-bottom:1px solid var(--border);margin:0 auto .85rem;display:flex;flex-direction:column;align-items:center;text-align:center;gap:.32rem;text-wrap:balance}
+.sidebar-logo span{font-size:.62rem;color:var(--accent);font-family:var(--mono);display:block;margin-bottom:0;letter-spacing:.18em;text-transform:uppercase;line-height:1}
 .toc-group-title{padding:.55rem 1.2rem .3rem;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);background:var(--accent-glow)}
 .toc-link{display:flex;align-items:baseline;gap:.5rem;padding:.35rem 1.2rem;font-size:.82rem;color:var(--text-muted);text-decoration:none;border-left:2px solid transparent;transition:all .2s}
 .toc-link:hover,.toc-link.active{color:var(--heading);background:var(--accent-glow);border-left-color:var(--accent)}
@@ -157,7 +158,7 @@ footer a{color:var(--accent);text-decoration:none}
 </button>
 
 <aside class="sidebar" id="sidebar">
-  <div class="sidebar-logo"><span>Expert Reference</span>FUSO HMI × LLMs</div>
+  <a href="/" class="sidebar-logo" style="text-decoration:none;cursor:pointer"><span>Expert Reference</span>FUSO HMI × LLMs</a>
   <div class="toc-group">
     <div class="toc-group-title">The Vehicle & Design</div>
     <a href="#ch01" class="toc-link"><span class="toc-num">01</span>FUSO Product & Platform Landscape</a>
@@ -1818,11 +1819,11 @@ What is the latest publicly available information about [ARCHION Corporation / C
 <script>
 (function(){
   var t=document.getElementById('themeToggle'),h=document.documentElement;
-  try{var saved=localStorage.getItem('fuso-hmi-theme');if(saved==='light') h.setAttribute('data-theme','light')}catch(e){}
+  try{var saved=localStorage.getItem('zth-theme');if(saved==='light') h.setAttribute('data-theme','light')}catch(e){}
   t.addEventListener('click',function(){
     var isLight=h.getAttribute('data-theme')==='light';
-    if(isLight){h.removeAttribute('data-theme');try{localStorage.setItem('fuso-hmi-theme','dark')}catch(e){}}
-    else{h.setAttribute('data-theme','light');try{localStorage.setItem('fuso-hmi-theme','light')}catch(e){}}
+    if(isLight){h.removeAttribute('data-theme');try{localStorage.setItem('zth-theme','dark')}catch(e){}}
+    else{h.setAttribute('data-theme','light');try{localStorage.setItem('zth-theme','light')}catch(e){}}
   });
   var ham=document.getElementById('hamburger'),sb=document.getElementById('sidebar'),ov=document.getElementById('sidebar-overlay');
   ham.addEventListener('click',function(){ham.classList.toggle('open');sb.classList.toggle('open');ov.classList.toggle('open')});

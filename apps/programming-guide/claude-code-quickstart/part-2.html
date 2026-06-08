@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Part 2 of Claude Code Quick Start: Git basics, a safe practice project, first Claude Code session, diff review, and CLAUDE.md.">
+<title>Claude Code Quick Start - Part 2</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/claude-code-quickstart/css/design-system.css">
+<script>try{if(localStorage.getItem('zth-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+<script>try{var z=localStorage.getItem('zth-zoom');if(z&&+z>=50&&+z<=200)document.documentElement.style.zoom=+z/100}catch(e){}</script>
+</head>
+<body>
+<a href="#main-content" class="skip-link">Skip to content</a>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0" aria-hidden="true">
+  <defs>
+    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="var(--accent)"></path>
+    </marker>
+  </defs>
+</svg>
+
+<button class="hamburger" id="hamburger" aria-label="Open navigation">
+  <span></span><span></span><span></span>
+</button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+  <svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+  <svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="/" class="sidebar-logo"><span>Learning Material</span>Claude Code Quick Start</a>
+
+  <div class="toc-group">
+    <div class="toc-group-title">Foundations and Setup</div>
+    <a href="/claude-code-quickstart/part-1.html#ch1" class="toc-link"><span class="toc-num">01</span>What Claude Code Is</a>
+    <a href="/claude-code-quickstart/part-1.html#ch2" class="toc-link"><span class="toc-num">02</span>Terminal, Shell, and Paths</a>
+    <a href="/claude-code-quickstart/part-1.html#ch3" class="toc-link"><span class="toc-num">03</span>Install the Basics</a>
+    <a href="/claude-code-quickstart/part-1.html#ch4" class="toc-link"><span class="toc-num">04</span>Login and Health Check</a>
+  </div>
+
+  <div class="toc-group">
+    <div class="toc-group-title">First Project and Workflow</div>
+    <a href="#ch5" class="toc-link"><span class="toc-num">05</span>Git Basics for AI Work</a>
+    <a href="#ch6" class="toc-link"><span class="toc-num">06</span>Safe Playground Project</a>
+    <a href="#ch7" class="toc-link"><span class="toc-num">07</span>First Claude Code Session</a>
+    <a href="#ch8" class="toc-link"><span class="toc-num">08</span>Review, Commit, Recover</a>
+    <a href="#ch9" class="toc-link"><span class="toc-num">09</span>Project Memory</a>
+  </div>
+
+  <div class="toc-group">
+    <div class="toc-group-title">Big Picture</div>
+    <a href="/claude-code-quickstart/part-3.html#ch10" class="toc-link"><span class="toc-num">10</span>How Claude Code Works</a>
+    <a href="/claude-code-quickstart/part-3.html#ch11" class="toc-link"><span class="toc-num">11</span>The Higher-Level Stack</a>
+    <a href="/claude-code-quickstart/part-3.html#ch12" class="toc-link"><span class="toc-num">12</span>What to Learn Next</a>
+  </div>
+
+  <div class="toc-group">
+    <div class="toc-group-title">Reference</div>
+    <a href="/claude-code-quickstart/appendices.html#appendix-a" class="toc-link"><span class="toc-num">A</span>Command Cheat Sheet</a>
+    <a href="/claude-code-quickstart/appendices.html#appendix-b" class="toc-link"><span class="toc-num">B</span>Troubleshooting</a>
+    <a href="/claude-code-quickstart/appendices.html#appendix-c" class="toc-link"><span class="toc-num">C</span>Install Matrix</a>
+    <a href="/claude-code-quickstart/appendices.html#appendix-d" class="toc-link"><span class="toc-num">D</span>Prompt Starter Pack</a>
+  </div>
+</aside>
+
+<div class="main" id="main-content">
+  <section class="hero hero-sm">
+    <div class="hero-badge">Part 2 &mdash; First Project and Safe Workflow</div>
+    <h1>Now you stop preparing and start using Claude Code</h1>
+    <p class="hero-sub">This part creates a throwaway practice repository, teaches the minimum Git loop around AI edits, and walks you through a real Claude Code session using plan mode first.</p>
+    <div class="hero-meta"><span>Chapters 5&ndash;9</span><span>Practice repo only</span><span>Small HTML and CSS target</span></div>
+  </section>
+
+  <div class="content-wrap">
+    <section id="ch5">
+      <div class="chapter-header">
+        <span class="chapter-label">Chapter 5</span>
+        <h2>Git basics for AI-assisted work</h2>
+      </div>
+      <p class="chapter-lead">This is not a full Git course. It is the minimum you need to work around AI edits without feeling blind. Think of Git as project memory plus change inspection.</p>
+
+      <div class="diagram" aria-label="Git flow from working tree to staged changes to commit history">
+        <svg viewBox="0 0 760 230" role="img">
+          <rect x="30" y="78" width="185" height="86" rx="16" class="node-accent"></rect>
+          <text x="122" y="112" text-anchor="middle" class="label-text">Working tree</text>
+          <text x="122" y="130" text-anchor="middle" class="sub-text">files you are editing now</text>
+          <text x="122" y="146" text-anchor="middle" class="sub-text">check with git status</text>
+
+          <rect x="288" y="78" width="185" height="86" rx="16" class="node-mint"></rect>
+          <text x="380" y="112" text-anchor="middle" class="label-text">Staged changes</text>
+          <text x="380" y="130" text-anchor="middle" class="sub-text">the snapshot you plan to save</text>
+          <text x="380" y="146" text-anchor="middle" class="sub-text">use git add</text>
+
+          <rect x="545" y="78" width="185" height="86" rx="16" class="node-fill"></rect>
+          <text x="637" y="112" text-anchor="middle" class="label-text">Commit history</text>
+          <text x="637" y="130" text-anchor="middle" class="sub-text">named checkpoints over time</text>
+          <text x="637" y="146" text-anchor="middle" class="sub-text">view with git log</text>
+
+          <path d="M215 121 L288 121" class="arrow"></path>
+          <path d="M473 121 L545 121" class="arrow"></path>
+        </svg>
+        <div class="diagram-caption">The minimum loop is simple: inspect what changed, stage what you want, then commit a named checkpoint.</div>
+      </div>
+
+      <div class="prompt-block"><span class="label">The six commands that matter first</span>git init
+git status
+git add .
+git diff
+git commit -m "message"
+git log --oneline</div>
+
+      <div class="card-grid">
+        <div class="summary-card">
+          <span class="eyebrow">Repository</span>
+          <h4>A project folder Git is tracking</h4>
+          <p>When you run <code>git init</code>, Git starts tracking history in this folder.</p>
+        </div>
+        <div class="summary-card">
+          <span class="eyebrow">Commit</span>
+          <h4>A named checkpoint</h4>
+          <p>A commit is a saved snapshot with a message, such as <code>Create first playground page</code>.</p>
+        </div>
+        <div class="summary-card">
+          <span class="eyebrow">Why it matters</span>
+          <h4>AI without Git is reckless</h4>
+          <p>If Claude Code changes a file and you are not tracking the before-and-after state, you lose the simplest way to inspect what happened.</p>
+        </div>
+      </div>
+
+      <div class="callout ok">
+        <div class="callout-title">Do this now</div>
+        <p>Open any empty folder, run <code>git init</code>, then <code>git status</code>. If Git says you are on branch <code>main</code> and the working tree is clean, the repository exists and Git is awake.</p>
+      </div>
+    </section>
+
+    <section id="ch6">
+      <div class="chapter-header">
+        <span class="chapter-label">Chapter 6</span>
+        <h2>Create a safe playground project</h2>
+      </div>
+      <p class="chapter-lead">Do not begin with a work repository, a team repo, or a complicated app. Start with a throwaway folder whose entire job is to let you learn the loop safely.</p>
+
+      <div class="prompt-block"><span class="label">Make the project</span>mkdir ~/claude-code-playground
+cd ~/claude-code-playground
+git init
+code .</div>
+
+      <div class="pr">
+        <div class="pn">1</div>
+        <div class="pb2">
+          <h5><code>mkdir ~/claude-code-playground</code></h5>
+          <p>Creates a new folder in your home directory. The <code>~</code> means home, so this becomes something like <code>/Users/you/claude-code-playground</code>.</p>
+        </div>
+      </div>
+
+      <div class="pr">
+        <div class="pn">2</div>
+        <div class="pb2">
+          <h5><code>cd ~/claude-code-playground</code></h5>
+          <p>Moves you into that new folder. Run <code>pwd</code> afterward if you want proof of your new location.</p>
+        </div>
+      </div>
+
+      <div class="pr">
+        <div class="pn">3</div>
+        <div class="pb2">
+          <h5><code>git init</code></h5>
+          <p>Turns the folder into a Git repository so every change can be inspected and checkpointed.</p>
+        </div>
+      </div>
+
+      <div class="pr">
+        <div class="pn">4</div>
+        <div class="pb2">
+          <h5><code>code .</code></h5>
+          <p>Opens the current folder in VS Code. The dot means "this folder right here," not some other location.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Create the starter files</h3>
+        <p>Inside VS Code, create three files in the Explorer panel:</p>
+        <ul class="list-tight">
+          <li><code>README.md</code></li>
+          <li><code>index.html</code></li>
+          <li><code>style.css</code></li>
+        </ul>
+        <p>Then place this text in <code>README.md</code>:</p>
+        <div class="prompt-block"><span class="label">README.md</span># Claude Code Playground
+
+This is my first practice project for learning Claude Code.
+Please explain things in plain English.
+Keep the project small and simple.</div>
+      </div>
+
+      <div class="callout info">
+        <div class="callout-title">Why HTML and CSS first</div>
+        <p>A tiny HTML and CSS page gives you a visible result without adding extra runtime complexity. You do not need Python, Node.js, or a framework to see whether the workflow works.</p>
+      </div>
+    </section>
+
+    <section id="ch7">
+      <div class="chapter-header">
+        <span class="chapter-label">Chapter 7</span>
+        <h2>First Claude Code session</h2>
+      </div>
+      <p class="chapter-lead">The safest beginner pattern is: start in plan mode, ask for a small plan, read it carefully, then start a normal session and approve a tiny implementation. This teaches you the loop without handing over too much power too early.</p>
+
+      <h3>Pass 1: plan only</h3>
+      <div class="prompt-block"><span class="label">Start in plan mode</span>claude --permission-mode plan</div>
+
+      <div class="prompt-block"><span class="label">Exact first prompt</span>I am brand new to coding.
+Please inspect this folder and propose the smallest possible starter website using only HTML and CSS.
+Do not edit anything yet.
+Explain the plan in plain English.
+Tell me which files you would change and why.</div>
+
+      <div class="card-grid">
+        <div class="summary-card">
+          <span class="eyebrow">Good behavior</span>
+          <h4>Small and explicit</h4>
+          <p>Claude explains the files, suggests a minimal plan, names <code>index.html</code> and <code>style.css</code>, and waits for approval.</p>
+        </div>
+        <div class="summary-card">
+          <span class="eyebrow">Suspicious behavior</span>
+          <h4>Too much too fast</h4>
+          <p>Claude proposes frameworks, dependencies, build tools, or a major redesign when you asked for a tiny starter page.</p>
+        </div>
+      </div>
+
+      <h3>Pass 2: small implementation</h3>
+      <p>Exit the plan-only session, then start a normal one:</p>
+      <div class="prompt-block"><span class="label">Normal session</span>claude</div>
+
+      <div class="prompt-block"><span class="label">Exact second prompt</span>Implement the simple starter website we discussed.
+Keep it extremely small.
+Use only index.html and style.css.
+After making the changes, explain what each file does in beginner language.</div>
+
+      <div class="callout warn">
+        <div class="callout-title">Beginner rule</div>
+        <p>If Claude wants to run a command you do not understand, reply with: <code>Explain the command before you run it.</code> That is a strong beginner habit, not a sign of weakness.</p>
+      </div>
+
+      <div class="card">
+        <h3>What to expect</h3>
+        <ul class="list-tight">
+          <li>Claude inspects the files in the current folder.</li>
+          <li>Claude proposes or directly requests permission to edit <code>index.html</code> and <code>style.css</code>.</li>
+          <li>You approve only if the scope still looks tiny.</li>
+          <li>Claude explains the outcome in plain English.</li>
+        </ul>
+      </div>
+
+      <details class="explain">
+        <summary>How to view the result in a browser</summary>
+        <div class="details-body">
+          <p>macOS: <code>open index.html</code></p>
+          <p>Linux: <code>xdg-open index.html</code></p>
+          <p>Windows: <code>start index.html</code></p>
+          <p>WSL: <code>explorer.exe .</code> and then double-click <code>index.html</code>.</p>
+        </div>
+      </details>
+    </section>
+
+    <section id="ch8">
+      <div class="chapter-header">
+        <span class="chapter-label">Chapter 8</span>
+        <h2>Review, approve, commit, recover</h2>
+      </div>
+      <p class="chapter-lead">The workflow does not end when Claude finishes editing. The whole safety point is that you inspect the change, understand it at a high level, and save a named checkpoint only when it looks right.</p>
+
+      <div class="prompt-block"><span class="label">Review loop</span>git status
+git diff
+git add .
+git commit -m "Create first Claude Code playground page"
+git log --oneline</div>
+
+      <div class="pr">
+        <div class="pn">1</div>
+        <div class="pb2">
+          <h5><code>git status</code></h5>
+          <p>Shows which files changed. This answers: "What did Claude touch?"</p>
+        </div>
+      </div>
+
+      <div class="pr">
+        <div class="pn">2</div>
+        <div class="pb2">
+          <h5><code>git diff</code></h5>
+          <p>Shows the actual before-and-after lines. This answers: "What changed inside those files?"</p>
+        </div>
+      </div>
+
+      <div class="pr">
+        <div class="pn">3</div>
+        <div class="pb2">
+          <h5><code>git add .</code> and <code>git commit -m</code></h5>
+          <p>These turn the current working state into a named checkpoint you can return to mentally and operationally later.</p>
+        </div>
+      </div>
+
+      <div class="callout critical">
+        <div class="callout-title">Do not learn panic commands first</div>
+        <p>As a beginner, you do not need destructive Git reset commands as your first recovery strategy. Use a practice repo, inspect first, commit often, and keep the changes small enough that you can reason about them.</p>
+      </div>
+
+      <div class="card">
+        <h3>Safe recovery mindset</h3>
+        <ul class="list-tight">
+          <li>If the result is confusing, ask Claude to explain the diff in plain English.</li>
+          <li>If the result is wrong, ask Claude to make a smaller correction instead of starting a bigger rewrite.</li>
+          <li>If the repo is just a practice repo and everything feels messy, it is acceptable to delete the playground folder and rebuild it from scratch. That is one reason we started with a throwaway project.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="ch9">
+      <div class="chapter-header">
+        <span class="chapter-label">Chapter 9</span>
+        <h2>Project memory and <code>CLAUDE.md</code></h2>
+      </div>
+      <p class="chapter-lead">Claude Code supports persistent instructions. The project-level memory file is usually named <code>CLAUDE.md</code>. The point is not to write a giant law book. The point is to give Claude a small, useful operating guide for this repo.</p>
+
+      <div class="prompt-block"><span class="label">Bootstrap project memory</span>/init</div>
+
+      <p>After running <code>/init</code>, keep the file short and beginner-friendly. For this playground repo, something like this is enough:</p>
+
+      <div class="prompt-block"><span class="label">Starter CLAUDE.md</span># Project Guide
+
+## Purpose
+- This is a beginner practice project.
+- Keep the project small and simple.
+
+## Technology
+- Use only HTML and CSS unless I explicitly approve something else.
+
+## Working Style
+- Explain changes in plain English.
+- Prefer small edits over big rewrites.
+- Ask before adding dependencies.
+- Explain shell commands before running them.
+
+## Safety
+- Do not use dangerous commands unless I explicitly approve them.
+- Do not change files outside this project.</div>
+
+      <div class="card-grid">
+        <div class="summary-card">
+          <span class="eyebrow">Project memory</span>
+          <h4>Shared with this repo</h4>
+          <p>These instructions travel with the project and help Claude understand local expectations.</p>
+        </div>
+        <div class="summary-card">
+          <span class="eyebrow">User memory</span>
+          <h4>Your broader preferences</h4>
+          <p>This can cover habits or preferences across projects. The important beginner lesson is simply that there are multiple instruction layers.</p>
+        </div>
+        <div class="summary-card">
+          <span class="eyebrow">Anti-pattern</span>
+          <h4>Rule dump</h4>
+          <p>If you stuff a giant wall of rules into <code>CLAUDE.md</code>, it becomes harder to maintain and easier to ignore mentally. Keep it sharp and useful.</p>
+        </div>
+      </div>
+
+      <div class="checklist">
+        <h4>Part 2 completion check</h4>
+        <label><input type="checkbox"><span>I created a throwaway Git repo just for learning.</span></label>
+        <label><input type="checkbox"><span>I started one Claude Code session in plan mode first.</span></label>
+        <label><input type="checkbox"><span>I reviewed the result with <code>git status</code> and <code>git diff</code>.</span></label>
+        <label><input type="checkbox"><span>I made a commit after the result looked acceptable.</span></label>
+        <label><input type="checkbox"><span>I understand what <code>CLAUDE.md</code> is for.</span></label>
+      </div>
+
+      <div class="sources">
+        Official references used for this page: <a href="https://docs.anthropic.com/en/docs/claude-code/memory">Claude Code memory</a>, <a href="https://docs.anthropic.com/en/docs/claude-code/terminal-config">Claude Code terminal config</a>, <a href="https://docs.anthropic.com/en/docs/claude-code/quickstart">Claude Code quickstart</a>, and the official Git book sections on installation and first-time setup.
+      </div>
+    </section>
+
+    <nav class="phase-nav">
+      <a href="/claude-code-quickstart/part-1.html" class="phase-nav-link"><span class="phase-nav-label">Previous</span>Part 1: Foundations and Setup</a>
+      <a href="/claude-code-quickstart/part-3.html" class="phase-nav-link"><span class="phase-nav-label">Next</span>Part 3: Big Picture and Orchestration</a>
+    </nav>
+
+    <footer>
+      <p>Claude Code Quick Start / Part 2 complete when you have made and committed one small Claude-assisted change in a practice repo.</p>
+    </footer>
+  </div>
+</div>
+
+<script src="/claude-code-quickstart/js/theme.js" defer></script>
+<script src="/claude-code-quickstart/js/sidebar.js" defer></script>
+<script src="/claude-code-quickstart/js/shared.js" defer></script>
+</body>
+</html>

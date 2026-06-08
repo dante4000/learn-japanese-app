@@ -159,9 +159,95 @@
     reset: reset
   };
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', restoreAll);
-  } else {
+  /* === CHAPTER COMPLETION === */
+  var CH_KEY = 'zth-chapters';
+
+  function loadChapters() {
+    try {
+      var raw = localStorage.getItem(CH_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) { return {}; }
+  }
+
+  function saveChapters(data) {
+    try { localStorage.setItem(CH_KEY, JSON.stringify(data)); } catch (e) {}
+  }
+
+  function toggleChapter(ch) {
+    var data = loadChapters();
+    data[ch] = !data[ch];
+    if (!data[ch]) delete data[ch];
+    saveChapters(data);
+    updateChapterUI(ch, !!data[ch]);
+  }
+
+  function updateChapterUI(ch, done) {
+    var btn = document.querySelector('.ch-check[data-chapter="' + ch + '"]');
+    if (btn) btn.classList.toggle('done', done);
+    document.querySelectorAll('.toc-check[data-chapter="' + ch + '"]').forEach(function (el) {
+      el.classList.toggle('done', done);
+    });
+    document.querySelectorAll('.phase-ch-item[data-chapter="' + ch + '"]').forEach(function (el) {
+      el.classList.toggle('done', done);
+    });
+  }
+
+  function injectChapterChecks() {
+    var chapters = loadChapters();
+    document.querySelectorAll('section[data-ch]').forEach(function (sec) {
+      var ch = sec.getAttribute('data-ch');
+      var h2 = sec.querySelector('h2');
+      if (!h2 || h2.querySelector('.ch-check')) return;
+      var btn = document.createElement('button');
+      btn.className = 'ch-check' + (chapters[ch] ? ' done' : '');
+      btn.setAttribute('data-chapter', ch);
+      btn.setAttribute('aria-label', 'Mark chapter ' + ch + ' complete');
+      btn.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        toggleChapter(ch);
+      });
+      h2.appendChild(btn);
+    });
+    document.querySelectorAll('.phase-ch-item[data-chapter]').forEach(function (el) {
+      var ch = el.getAttribute('data-chapter');
+      if (chapters[ch]) el.classList.add('done');
+    });
+    document.querySelectorAll('.toc-link').forEach(function (link) {
+      var href = link.getAttribute('href') || '';
+      var match = href.match(/#ch(\d+)/);
+      if (!match) return;
+      var ch = match[1];
+      if (link.querySelector('.toc-check')) return;
+      var span = document.createElement('span');
+      span.className = 'toc-check' + (chapters[ch] ? ' done' : '');
+      span.setAttribute('data-chapter', ch);
+      span.textContent = '\u2713';
+      link.appendChild(span);
+    });
+  }
+
+  window.ZTH = window.ZTH || {};
+  window.ZTH.progress = {
+    load: load,
+    save: save,
+    markComplete: markComplete,
+    isComplete: isComplete,
+    countPhase: countPhase,
+    countAll: countAll,
+    updateProgressBars: updateProgressBars,
+    restoreAll: restoreAll,
+    reset: reset
+  };
+
+  function initAll() {
     restoreAll();
+    injectChapterChecks();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAll);
+  } else {
+    initAll();
   }
 })();

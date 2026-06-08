@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Claude Code Quick Start - a beginner-first guide to terminal basics, Bash, Git, installation, and a safe first Claude Code workflow.">
+<title>Claude Code Quick Start</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/claude-code-quickstart/css/design-system.css">
+<script>try{if(localStorage.getItem('zth-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+<script>try{var z=localStorage.getItem('zth-zoom');if(z&&+z>=50&&+z<=200)document.documentElement.style.zoom=+z/100}catch(e){}</script>
+</head>
+<body>
+<a href="#main-content" class="skip-link">Skip to content</a>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0" aria-hidden="true">
+  <defs>
+    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="var(--accent)"></path>
+    </marker>
+  </defs>
+</svg>
+
+<button class="hamburger" id="hamburger" aria-label="Open navigation">
+  <span></span><span></span><span></span>
+</button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+  <svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+  <svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="/" class="sidebar-logo"><span>Learning Material</span>Claude Code Quick Start</a>
+
+  <div class="toc-group">
+    <div class="toc-group-title">Foundations and Setup</div>
+    <a href="/claude-code-quickstart/part-1.html#ch1" class="toc-link"><span class="toc-num">01</span>What Claude Code Is</a>
+    <a href="/claude-code-quickstart/part-1.html#ch2" class="toc-link"><span class="toc-num">02</span>Terminal, Shell, and Paths</a>
+    <a href="/claude-code-quickstart/part-1.html#ch3" class="toc-link"><span class="toc-num">03</span>Install the Basics</a>
+    <a href="/claude-code-quickstart/part-1.html#ch4" class="toc-link"><span class="toc-num">04</span>Login and Health Check</a>
+  </div>
+
+  <div class="toc-group">
+    <div class="toc-group-title">First Project and Workflow</div>
+    <a href="/claude-code-quickstart/part-2.html#ch5" class="toc-link"><span class="toc-num">05</span>Git Basics for AI Work</a>
+    <a href="/claude-code-quickstart/part-2.html#ch6" class="toc-link"><span class="toc-num">06</span>Safe Playground Project</a>
+    <a href="/claude-code-quickstart/part-2.html#ch7" class="toc-link"><span class="toc-num">07</span>First Claude Code Session</a>
+    <a href="/claude-code-quickstart/part-2.html#ch8" class="toc-link"><span class="toc-num">08</span>Review, Commit, Recover</a>
+    <a href="/claude-code-quickstart/part-2.html#ch9" class="toc-link"><span class="toc-num">09</span>Project Memory</a>
+  </div>
+
+  <div class="toc-group">
+    <div class="toc-group-title">Big Picture</div>
+    <a href="/claude-code-quickstart/part-3.html#ch10" class="toc-link"><span class="toc-num">10</span>How Claude Code Works</a>
+    <a href="/claude-code-quickstart/part-3.html#ch11" class="toc-link"><span class="toc-num">11</span>The Higher-Level Stack</a>
+    <a href="/claude-code-quickstart/part-3.html#ch12" class="toc-link"><span class="toc-num">12</span>What to Learn Next</a>
+  </div>
+
+  <div class="toc-group">
+    <div class="toc-group-title">Reference</div>
+    <a href="/claude-code-quickstart/appendices.html#appendix-a" class="toc-link"><span class="toc-num">A</span>Command Cheat Sheet</a>
+    <a href="/claude-code-quickstart/appendices.html#appendix-b" class="toc-link"><span class="toc-num">B</span>Troubleshooting</a>
+    <a href="/claude-code-quickstart/appendices.html#appendix-c" class="toc-link"><span class="toc-num">C</span>Install Matrix</a>
+    <a href="/claude-code-quickstart/appendices.html#appendix-d" class="toc-link"><span class="toc-num">D</span>Prompt Starter Pack</a>
+  </div>
+</aside>
+
+<div class="main" id="main-content">
+  <section class="hero home-hero">
+    <div class="hero-badge">Claude Code Quick Start &mdash; Verified April 8, 2026</div>
+    <h1>From zero terminal knowledge to your <em>first safe Claude Code session</em></h1>
+    <p class="hero-sub">This guide assumes you know nothing about Bash, Git, file paths, or Claude Code. It teaches the minimum real fundamentals, gets the tool installed correctly, and shows how to use it without gambling on blind AI edits.</p>
+    <div class="hero-meta"><span>2&ndash;3 hour follow-along</span><span>Terminal + Git included</span><span>Single project from scratch</span><span>High-level orchestration map</span></div>
+    <div class="hero-actions">
+      <a href="part-1.html" class="button primary">Start Part 1</a>
+      <a href="appendices.html" class="button secondary">Open cheat sheets</a>
+    </div>
+    <div class="hero-panel">
+      <div class="terminal-window" aria-label="Sample Claude Code session in a terminal">
+        <div class="terminal-top">
+          <div class="terminal-dots"><span></span><span></span><span></span></div>
+          <div class="terminal-title">claude-code-playground</div>
+        </div>
+        <div class="terminal-body">$ <span class="terminal-accent">claude --permission-mode plan</span>
+<br>&gt; I am brand new to coding. Please inspect this folder and propose the smallest possible starter website. Do not edit anything yet.
+<br>
+<br><span class="terminal-safe">Plan:</span>
+<br>1. Read the folder.
+<br>2. Explain what each file is for.
+<br>3. Propose a tiny HTML + CSS page.
+<br>4. Wait for your approval before editing.</div>
+      </div>
+      <div class="hero-note">The safe path comes first: practice repo, plan mode, small diffs, review, then commit.</div>
+    </div>
+  </section>
+
+  <div class="content-wrap">
+    <section id="overview">
+      <div class="chapter-header">
+        <span class="chapter-label">Overview</span>
+        <h2>What this guide actually does</h2>
+      </div>
+      <p class="chapter-lead">This is not a full programming course and it is not a bag of prompt tricks. It is a bridge. The goal is to move you from "I do not know what Bash or Git are" to "I can install Claude Code, launch it in the right folder, ask for a plan first, review the result, and understand the bigger map of what comes next."</p>
+
+      <div class="summary-grid">
+        <div class="summary-card">
+          <span class="eyebrow">You will do</span>
+          <h4>Real machine setup</h4>
+          <p>Install Git, VS Code, and Claude Code using the current recommended path. Learn how to verify that each step actually worked.</p>
+        </div>
+        <div class="summary-card">
+          <span class="eyebrow">You will learn</span>
+          <h4>Minimum Bash and Git</h4>
+          <p>Understand the handful of commands that make a beginner safe: <code>pwd</code>, <code>ls</code>, <code>cd</code>, <code>git status</code>, <code>git diff</code>, and basic commits.</p>
+        </div>
+        <div class="summary-card">
+          <span class="eyebrow">You will finish with</span>
+          <h4>A first working workflow</h4>
+          <p>Create a throwaway project, start in plan mode, approve a tiny HTML and CSS change, and save the checkpoint with Git.</p>
+        </div>
+      </div>
+
+      <div class="callout info">
+        <div class="callout-title">Important date stamp</div>
+        <p>Claude Code tooling changes over time. Every install and account-access statement in this guide is anchored to <strong>April 8, 2026</strong>. If you are reading later, verify volatile details against the official Anthropic docs linked in the appendices.</p>
+      </div>
+    </section>
+
+    <section id="promise">
+      <div class="chapter-header">
+        <span class="chapter-label">Approach</span>
+        <h2>The promise and the limits</h2>
+      </div>
+      <p class="chapter-lead">You do not need to become a full-time programmer before touching Claude Code. But you do need enough foundations to supervise it. This guide is built around that minimum honest threshold.</p>
+
+      <div class="card-grid">
+        <div class="stat-card">
+          <span class="stat-num">1</span>
+          <h3>Safe first</h3>
+          <p>We start with a practice repo and plan mode before any real file edits.</p>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num">2</span>
+          <h3>Plain English first</h3>
+          <p>Every technical term is defined before it becomes part of an instruction.</p>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num">3</span>
+          <h3>Map the future</h3>
+          <p>You also get the higher-level orchestration picture, so you know what worktrees, MCP, guardrails, and agent teams are for.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>What this guide does not try to do</h3>
+        <ul class="list-tight">
+          <li>It does not replace deeper programming fundamentals.</li>
+          <li>It does not teach every Git workflow.</li>
+          <li>It does not assume you are ready for advanced multi-agent orchestration on day one.</li>
+          <li>It does not ask you to trust AI output blindly.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="parts">
+      <div class="chapter-header">
+        <span class="chapter-label">Structure</span>
+        <h2>The three parts</h2>
+      </div>
+
+      <a href="/claude-code-quickstart/part-1.html" class="phase-card">
+        <div class="phase-num">Part 1</div>
+        <h3>Foundations and Setup</h3>
+        <p>What Claude Code is, what a terminal and shell are, the Bash commands you need first, how Git fits in, and how to install everything correctly on macOS, Linux, Windows, or WSL.</p>
+        <div class="phase-meta">Chapters 1-4 / install path / terminology / first health check</div>
+      </a>
+
+      <a href="/claude-code-quickstart/part-2.html" class="phase-card">
+        <div class="phase-num">Part 2</div>
+        <h3>First Project and Safe Workflow</h3>
+        <p>Initialize a practice repo, ask Claude Code for a plan, approve a tiny implementation, review the diff, commit the result, and create your first useful <code>CLAUDE.md</code>.</p>
+        <div class="phase-meta">Chapters 5-9 / practice repo / plan mode / Git review / memory</div>
+      </a>
+
+      <a href="/claude-code-quickstart/part-3.html" class="phase-card">
+        <div class="phase-num">Part 3</div>
+        <h3>Big Picture and Orchestration</h3>
+        <p>Understand the larger system around Claude Code: context, permissions, worktrees, MCP, plugins, guardrails, Docker, and how single-session work grows into more advanced orchestration.</p>
+        <div class="phase-meta">Chapters 10-12 / mental model / now vs later / next steps</div>
+      </a>
+    </section>
+
+    <section id="before-start">
+      <div class="chapter-header">
+        <span class="chapter-label">Preparation</span>
+        <h2>Before you start reading Part 1</h2>
+      </div>
+
+      <div class="checklist">
+        <h4>What to have open</h4>
+        <label><input type="checkbox"><span>A browser so you can keep this guide open while you follow along.</span></label>
+        <label><input type="checkbox"><span>Your operating system account password in case installers ask for it.</span></label>
+        <label><input type="checkbox"><span>About 2-3 hours of uninterrupted time.</span></label>
+        <label><input type="checkbox"><span>Permission to install software on this machine.</span></label>
+      </div>
+
+      <div class="callout ok">
+        <div class="callout-title">Best companion resource</div>
+        <p>Once this quick-start gets you moving, continue into <a href="/zero-to-hero-programming/index.html">Zero to Hero Programming</a> for the deeper fundamentals that make you a stronger Claude Code supervisor over time.</p>
+      </div>
+
+      <div class="sources">
+        Built from official Anthropic, Git, VS Code, Node.js, and Microsoft docs checked on April 8, 2026. The full source log lives in <a href="docs/SOURCE-LOG.md">docs/SOURCE-LOG.md</a>.
+      </div>
+    </section>
+
+    <nav class="phase-nav">
+      <a href="/" class="phase-nav-link"><span class="phase-nav-label">Back</span>Learning materials hub</a>
+      <a href="/claude-code-quickstart/part-1.html" class="phase-nav-link"><span class="phase-nav-label">Next</span>Part 1: Foundations and Setup</a>
+    </nav>
+
+    <footer>
+      <p>Claude Code Quick Start / beginner-first / verified baseline April 8, 2026</p>
+    </footer>
+  </div>
+</div>
+
+<script src="/claude-code-quickstart/js/theme.js" defer></script>
+<script src="/claude-code-quickstart/js/sidebar.js" defer></script>
+<script src="/claude-code-quickstart/js/shared.js" defer></script>
+</body>
+</html>

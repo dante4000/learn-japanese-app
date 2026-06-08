@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Part 1 of Claude Code Quick Start: foundations, terminal basics, Bash, Git setup, VS Code, and Claude Code installation.">
+<title>Claude Code Quick Start - Part 1</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/claude-code-quickstart/css/design-system.css">
+<script>try{if(localStorage.getItem('zth-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+<script>try{var z=localStorage.getItem('zth-zoom');if(z&&+z>=50&&+z<=200)document.documentElement.style.zoom=+z/100}catch(e){}</script>
+</head>
+<body>
+<a href="#main-content" class="skip-link">Skip to content</a>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0" aria-hidden="true">
+  <defs>
+    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="var(--accent)"></path>
+    </marker>
+  </defs>
+</svg>
+
+<button class="hamburger" id="hamburger" aria-label="Open navigation">
+  <span></span><span></span><span></span>
+</button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+  <svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+  <svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="/" class="sidebar-logo"><span>Learning Material</span>Claude Code Quick Start</a>
+
+  <div class="toc-group">
+    <div class="toc-group-title">Foundations and Setup</div>
+    <a href="#ch1" class="toc-link"><span class="toc-num">01</span>What Claude Code Is</a>
+    <a href="#ch2" class="toc-link"><span class="toc-num">02</span>Terminal, Shell, and Paths</a>
+    <a href="#ch3" class="toc-link"><span class="toc-num">03</span>Install the Basics</a>
+    <a href="#ch4" class="toc-link"><span class="toc-num">04</span>Login and Health Check</a>
+  </div>
+
+  <div class="toc-group">
+    <div class="toc-group-title">First Project and Workflow</div>
+    <a href="/claude-code-quickstart/part-2.html#ch5" class="toc-link"><span class="toc-num">05</span>Git Basics for AI Work</a>
+    <a href="/claude-code-quickstart/part-2.html#ch6" class="toc-link"><span class="toc-num">06</span>Safe Playground Project</a>
+    <a href="/claude-code-quickstart/part-2.html#ch7" class="toc-link"><span class="toc-num">07</span>First Claude Code Session</a>
+    <a href="/claude-code-quickstart/part-2.html#ch8" class="toc-link"><span class="toc-num">08</span>Review, Commit, Recover</a>
+    <a href="/claude-code-quickstart/part-2.html#ch9" class="toc-link"><span class="toc-num">09</span>Project Memory</a>
+  </div>
+
+  <div class="toc-group">
+    <div class="toc-group-title">Big Picture</div>
+    <a href="/claude-code-quickstart/part-3.html#ch10" class="toc-link"><span class="toc-num">10</span>How Claude Code Works</a>
+    <a href="/claude-code-quickstart/part-3.html#ch11" class="toc-link"><span class="toc-num">11</span>The Higher-Level Stack</a>
+    <a href="/claude-code-quickstart/part-3.html#ch12" class="toc-link"><span class="toc-num">12</span>What to Learn Next</a>
+  </div>
+
+  <div class="toc-group">
+    <div class="toc-group-title">Reference</div>
+    <a href="/claude-code-quickstart/appendices.html#appendix-a" class="toc-link"><span class="toc-num">A</span>Command Cheat Sheet</a>
+    <a href="/claude-code-quickstart/appendices.html#appendix-b" class="toc-link"><span class="toc-num">B</span>Troubleshooting</a>
+    <a href="/claude-code-quickstart/appendices.html#appendix-c" class="toc-link"><span class="toc-num">C</span>Install Matrix</a>
+    <a href="/claude-code-quickstart/appendices.html#appendix-d" class="toc-link"><span class="toc-num">D</span>Prompt Starter Pack</a>
+  </div>
+</aside>
+
+<div class="main" id="main-content">
+  <section class="hero hero-sm">
+    <div class="hero-badge">Part 1 &mdash; Foundations and Setup</div>
+    <h1>Build the floor before you ask Claude Code to build anything else</h1>
+    <p class="hero-sub">This part defines the vocabulary, teaches the first Bash commands, and gets Git, VS Code, and Claude Code installed with the current official guidance checked on April 8, 2026.</p>
+    <div class="hero-meta"><span>Chapters 1&ndash;4</span><span>OS-specific install paths</span><span>Zero assumptions</span></div>
+  </section>
+
+  <div class="content-wrap">
+    <section id="ch1">
+      <div class="chapter-header">
+        <span class="chapter-label">Chapter 1</span>
+        <h2>What Claude Code is</h2>
+      </div>
+      <p class="chapter-lead">Claude Code is an AI coding tool that lives in your terminal. You give it instructions inside a project folder. It can read files, suggest edits, run commands, and help with Git. The important part is not that it can act. The important part is that <strong>you</strong> stay in charge of what action is allowed.</p>
+
+      <div class="diagram" aria-label="Diagram showing the beginner supervision loop for Claude Code">
+        <svg viewBox="0 0 760 220" role="img">
+          <rect x="20" y="70" width="130" height="78" rx="16" class="node-accent"></rect>
+          <text x="85" y="103" text-anchor="middle" class="label-text">You</text>
+          <text x="85" y="122" text-anchor="middle" class="sub-text">goal, judgment, approval</text>
+
+          <rect x="180" y="70" width="150" height="78" rx="16" class="node-fill"></rect>
+          <text x="255" y="103" text-anchor="middle" class="label-text">Terminal</text>
+          <text x="255" y="122" text-anchor="middle" class="sub-text">where you type commands</text>
+
+          <rect x="360" y="58" width="170" height="102" rx="18" class="node-accent"></rect>
+          <text x="445" y="95" text-anchor="middle" class="label-text">Claude Code</text>
+          <text x="445" y="114" text-anchor="middle" class="sub-text">reads, plans, edits, asks</text>
+          <text x="445" y="131" text-anchor="middle" class="sub-text">permission based on mode</text>
+
+          <rect x="565" y="22" width="160" height="50" rx="14" class="node-fill"></rect>
+          <text x="645" y="48" text-anchor="middle" class="label-text">Files</text>
+          <text x="645" y="64" text-anchor="middle" class="sub-text">HTML, CSS, code, docs</text>
+
+          <rect x="565" y="85" width="160" height="50" rx="14" class="node-mint"></rect>
+          <text x="645" y="111" text-anchor="middle" class="label-text">Commands</text>
+          <text x="645" y="127" text-anchor="middle" class="sub-text">tests, install, inspect</text>
+
+          <rect x="565" y="148" width="160" height="50" rx="14" class="node-warn"></rect>
+          <text x="645" y="174" text-anchor="middle" class="label-text">Git</text>
+          <text x="645" y="190" text-anchor="middle" class="sub-text">diffs, commits, history</text>
+
+          <path d="M150 109 L180 109" class="arrow"></path>
+          <path d="M330 109 L360 109" class="arrow"></path>
+          <path d="M530 87 L565 48" class="arrow"></path>
+          <path d="M530 109 L565 109" class="arrow"></path>
+          <path d="M530 132 L565 173" class="arrow"></path>
+        </svg>
+        <div class="diagram-caption">Claude Code can touch files, commands, and Git. Your role is to define the goal, inspect the plan, approve the action, and review the result.</div>
+      </div>
+
+      <div class="card-grid">
+        <div class="summary-card">
+          <span class="eyebrow">What it can do</span>
+          <h4>Read and act in a repo</h4>
+          <p>Claude Code can inspect your files, explain them, propose edits, run shell commands, and help you review or create changes.</p>
+        </div>
+        <div class="summary-card">
+          <span class="eyebrow">What it is not</span>
+          <h4>Not a judgment replacement</h4>
+          <p>It can generate a plausible wrong answer. The most dangerous mistakes are not obvious syntax failures. They are confident, tidy, incorrect logic or bad decisions.</p>
+        </div>
+        <div class="summary-card">
+          <span class="eyebrow">Your job</span>
+          <h4>Supervise the loop</h4>
+          <p>Pick the folder, frame the task, inspect the plan, approve carefully, review the diff, and keep Git checkpoints.</p>
+        </div>
+      </div>
+
+      <div class="callout critical">
+        <div class="callout-title">Not magic</div>
+        <p>Do not treat Claude Code like an autonomous expert you can safely leave unsupervised. Treat it like a very fast teammate that still needs context, guardrails, and review.</p>
+      </div>
+
+      <div class="callout ok">
+        <div class="callout-title">Confidence check</div>
+        <p>If you can explain the difference between "Claude Code can make changes" and "Claude Code should be allowed to make changes," you are ready for the terminal fundamentals in Chapter 2.</p>
+      </div>
+    </section>
+
+    <section id="ch2">
+      <div class="chapter-header">
+        <span class="chapter-label">Chapter 2</span>
+        <h2>Terminal, shell, Bash, files, and paths</h2>
+      </div>
+      <p class="chapter-lead">To use Claude Code safely, you need to understand where you are, what program is reading your commands, and what a path points to. This is the minimum mental model.</p>
+
+      <details class="explain" open>
+        <summary>Terminal vs shell vs Bash</summary>
+        <div class="details-body">
+          <p><strong>Terminal:</strong> the window where you type text commands.</p>
+          <p><strong>Shell:</strong> the program inside the terminal that reads those commands.</p>
+          <p><strong>Bash:</strong> one specific shell. Many tutorials use Bash syntax, which is why learning a few Bash basics pays off quickly.</p>
+          <p><strong>zsh:</strong> another shell, common on macOS. For the beginner commands in this guide, Bash and zsh feel almost the same.</p>
+          <p><strong>PowerShell:</strong> a different shell, common on Windows. You can still use Claude Code there, but if you want the Unix-style command-line habits that most coding tutorials use, WSL plus Bash is a better fit.</p>
+        </div>
+      </details>
+
+      <div class="diagram" aria-label="Filesystem tree showing folders, files, and the current working directory">
+        <svg viewBox="0 0 760 280" role="img">
+          <rect x="28" y="26" width="220" height="228" rx="18" class="node-fill"></rect>
+          <text x="58" y="58" class="label-text">Home folder: ~</text>
+          <text x="58" y="84" class="sub-text">Desktop/</text>
+          <text x="58" y="104" class="sub-text">Downloads/</text>
+          <text x="58" y="124" class="sub-text">projects/</text>
+          <text x="92" y="146" class="sub-text">claude-code-playground/</text>
+          <text x="126" y="168" class="sub-text">README.md</text>
+          <text x="126" y="188" class="sub-text">index.html</text>
+          <text x="126" y="208" class="sub-text">style.css</text>
+
+          <rect x="302" y="70" width="180" height="76" rx="18" class="node-accent"></rect>
+          <text x="392" y="102" text-anchor="middle" class="label-text">Current working</text>
+          <text x="392" y="121" text-anchor="middle" class="label-text">directory</text>
+          <text x="392" y="138" text-anchor="middle" class="sub-text">the folder you are standing in now</text>
+
+          <rect x="538" y="38" width="182" height="52" rx="14" class="node-mint"></rect>
+          <text x="629" y="64" text-anchor="middle" class="label-text">Path example</text>
+          <text x="629" y="80" text-anchor="middle" class="sub-text">~/projects/claude-code-playground</text>
+
+          <rect x="538" y="116" width="182" height="52" rx="14" class="node-fill"></rect>
+          <text x="629" y="142" text-anchor="middle" class="label-text">File</text>
+          <text x="629" y="158" text-anchor="middle" class="sub-text">one item, like index.html</text>
+
+          <rect x="538" y="194" width="182" height="52" rx="14" class="node-fill"></rect>
+          <text x="629" y="220" text-anchor="middle" class="label-text">Directory</text>
+          <text x="629" y="236" text-anchor="middle" class="sub-text">same basic idea as folder</text>
+
+          <path d="M248 140 L302 108" class="arrow"></path>
+          <path d="M482 98 L538 64" class="arrow"></path>
+          <path d="M482 118 L538 142" class="arrow"></path>
+          <path d="M482 136 L538 220" class="arrow"></path>
+        </svg>
+        <div class="diagram-caption">You will use Claude Code inside one current working directory at a time. Paths tell your machine exactly where that directory or file lives.</div>
+      </div>
+
+      <h3>The first commands you need</h3>
+      <div class="prompt-block"><span class="label">Terminal basics</span>pwd
+
+ls
+
+cd Desktop
+
+cd ..
+
+cd ~
+
+mkdir practice-folder
+
+clear</div>
+
+      <div class="pr">
+        <div class="pn">1</div>
+        <div class="pb2">
+          <h5><code>pwd</code></h5>
+          <p>Shows your current working directory. In plain English: "Where am I right now?" You should see a path, such as <code>/Users/alice</code> or <code>/home/alice</code>.</p>
+        </div>
+      </div>
+
+      <div class="pr">
+        <div class="pn">2</div>
+        <div class="pb2">
+          <h5><code>ls</code></h5>
+          <p>Lists the files and folders in the current directory. In plain English: "What is here?" You should see names like <code>Desktop</code>, <code>Downloads</code>, or project folders.</p>
+        </div>
+      </div>
+
+      <div class="pr">
+        <div class="pn">3</div>
+        <div class="pb2">
+          <h5><code>cd</code></h5>
+          <p>Changes your location. <code>cd Desktop</code> moves into a folder named <code>Desktop</code>. <code>cd ..</code> moves up one level. <code>cd ~</code> returns to your home folder. The <code>~</code> symbol is shorthand for home.</p>
+        </div>
+      </div>
+
+      <div class="pr">
+        <div class="pn">4</div>
+        <div class="pb2">
+          <h5><code>mkdir</code></h5>
+          <p>Creates a new directory. If you run <code>mkdir practice-folder</code>, then <code>ls</code>, you should see <code>practice-folder</code> in the list.</p>
+        </div>
+      </div>
+
+      <details class="explain">
+        <summary>What the dot in <code>code .</code> means</summary>
+        <div class="details-body">
+          <p>The dot means "the current directory." If you are standing in <code>~/projects/claude-code-playground</code> and run <code>code .</code>, VS Code opens that exact folder.</p>
+        </div>
+      </details>
+
+      <div class="checklist">
+        <h4>Confidence check</h4>
+        <label><input type="checkbox"><span>I can explain the difference between a terminal window and the shell running inside it.</span></label>
+        <label><input type="checkbox"><span>I know that <code>pwd</code> means "where am I?"</span></label>
+        <label><input type="checkbox"><span>I know that <code>ls</code> means "what is in this folder?"</span></label>
+        <label><input type="checkbox"><span>I know that <code>cd</code> changes the current directory.</span></label>
+      </div>
+    </section>
+
+    <section id="ch3">
+      <div class="chapter-header">
+        <span class="chapter-label">Chapter 3</span>
+        <h2>Install the basics</h2>
+      </div>
+      <p class="chapter-lead">This chapter gets your machine ready. We will install Git, configure it once, install VS Code, and then install Claude Code using the current recommended path from the official docs checked on April 8, 2026.</p>
+
+      <div class="callout warn">
+        <div class="callout-title">Current install fact</div>
+        <p>As of <strong>April 8, 2026</strong>, Anthropic's official docs recommend the native Claude Code installer. The older npm installation path is deprecated. This guide follows the current official path, not older tutorials.</p>
+      </div>
+
+      <div class="os-grid">
+        <div class="os-card">
+          <span class="eyebrow">macOS</span>
+          <h4>Good default path</h4>
+          <p>Use Terminal.app or iTerm2. Git may already be available through Apple's command line tools.</p>
+        </div>
+        <div class="os-card">
+          <span class="eyebrow">Linux</span>
+          <h4>Ubuntu and Debian are easiest</h4>
+          <p>Use your system terminal. The commands in this guide match the official Debian and Ubuntu style closely.</p>
+        </div>
+        <div class="os-card">
+          <span class="eyebrow">Windows</span>
+          <h4>Choose your route deliberately</h4>
+          <p>If you want Unix-style Bash habits, choose WSL plus Ubuntu. If you want fewer moving parts, native Windows plus Git for Windows also works.</p>
+        </div>
+      </div>
+
+      <h3>Step 1: Git</h3>
+      <p>Git tracks your project history. It is the safety net around AI edits. Without Git, you have no clean before-and-after record and no trustworthy change review.</p>
+
+      <div class="prompt-block"><span class="label">Check first</span>git --version</div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>OS</th><th>Recommended move</th><th>Command or path</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>macOS</td><td>Run the version check first. If macOS prompts for command line tools, accept it.</td><td><code>git --version</code></td></tr>
+            <tr><td>Ubuntu / Debian</td><td>Install from apt.</td><td><code>sudo apt update</code><br><code>sudo apt install git</code></td></tr>
+            <tr><td>Windows</td><td>Install Git for Windows. Anthropic's docs explicitly require it for Claude Code on Windows.</td><td><a href="https://git-scm.com/download/win">git-scm.com/download/win</a></td></tr>
+            <tr><td>WSL</td><td>Open Ubuntu and install Git inside Linux too.</td><td><code>sudo apt update</code><br><code>sudo apt install git</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Step 2: Configure Git once</h3>
+      <div class="prompt-block"><span class="label">One-time Git identity</span>git config --global user.name "Your Name"
+git config --global user.email "you@example.com"
+git config --global init.defaultBranch main
+git config --list</div>
+      <p>What this does:</p>
+      <ul class="list-tight">
+        <li><code>user.name</code> tells Git whose commits these are.</li>
+        <li><code>user.email</code> adds your email to commit metadata.</li>
+        <li><code>init.defaultBranch main</code> makes new repositories start on <code>main</code>.</li>
+        <li><code>git config --list</code> lets you verify the values actually stuck.</li>
+      </ul>
+
+      <h3>Step 3: VS Code</h3>
+      <p>Install VS Code from the official download page. Then make sure the <code>code</code> command works in your terminal. That matters because we will use <code>code .</code> to open the current folder.</p>
+
+      <div class="card-grid">
+        <div class="summary-card">
+          <span class="eyebrow">Download</span>
+          <h4>VS Code</h4>
+          <p>Use the official download page: <a href="https://code.visualstudio.com/Download">code.visualstudio.com/Download</a>.</p>
+        </div>
+        <div class="summary-card">
+          <span class="eyebrow">macOS</span>
+          <h4>Add <code>code</code> to PATH</h4>
+          <p>Open VS Code, press <code>Cmd + Shift + P</code>, run <code>Shell Command: Install 'code' command in PATH</code>, then restart Terminal.</p>
+        </div>
+        <div class="summary-card">
+          <span class="eyebrow">Verify</span>
+          <h4>CLI test</h4>
+          <p>Run <code>code --version</code>. If you see a version number, the command is ready.</p>
+        </div>
+      </div>
+
+      <h3>Step 4: Homebrew (macOS only)</h3>
+      <p>A package manager for macOS. It lets you install developer tools with simple terminal commands instead of hunting for download links.</p>
+
+      <div class="prompt-block"><span class="label">Install Homebrew</span>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</div>
+
+      <div class="prompt-block"><span class="label">Verify</span>brew --version</div>
+
+      <div class="callout info">
+        <div class="callout-title">Other platforms</div>
+        <p>Linux users: your system's <code>apt</code> package manager serves the same purpose. Windows users: package management is handled through different tools.</p>
+      </div>
+
+      <h3>Step 5: Node.js and npm</h3>
+      <p>A runtime that lets you run JavaScript outside a browser. Many developer tools are built with it.</p>
+      <p>Some MCP servers, code formatters, and development tools require Node.js. While Claude Code's native installer doesn't need it, having Node available opens up more tools.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>OS</th><th>Install command</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>macOS</td><td><code>brew install node</code></td></tr>
+            <tr><td>Ubuntu / Debian</td><td><code>sudo apt install nodejs npm</code></td></tr>
+            <tr><td>Windows</td><td>Download from <a href="https://nodejs.org">nodejs.org</a> or <code>winget install OpenJS.NodeJS.LTS</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="prompt-block"><span class="label">Verify</span>node --version
+npm --version</div>
+
+      <h3>Step 6: Python and pip</h3>
+      <p>One of the most popular programming languages. Many AI tools, scripts, and utilities are written in Python.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>OS</th><th>Install command</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>macOS</td><td><code>brew install python</code> (or may already be available as <code>python3</code>)</td></tr>
+            <tr><td>Ubuntu / Debian</td><td><code>sudo apt install python3 python3-pip</code></td></tr>
+            <tr><td>Windows</td><td>Download from <a href="https://python.org">python.org</a> or <code>winget install Python.Python.3.12</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="prompt-block"><span class="label">Verify</span>python3 --version
+pip3 --version</div>
+
+      <div class="callout info">
+        <div class="callout-title">Command name variation</div>
+        <p>On some systems, use <code>python</code> and <code>pip</code> instead of <code>python3</code> and <code>pip3</code>.</p>
+      </div>
+
+      <h3>Step 7: Claude Code</h3>
+      <p>Use the official native installer path that Anthropic recommends as of April 8, 2026.</p>
+
+      <div class="prompt-block"><span class="label">macOS / Linux / WSL</span>curl -fsSL https://claude.ai/install.sh | bash</div>
+
+      <div class="prompt-block"><span class="label">Windows PowerShell</span>irm https://claude.ai/install.ps1 | iex</div>
+
+      <div class="prompt-block"><span class="label">Windows Command Prompt</span>curl -fsSL https://claude.ai/install.cmd -o install.cmd &amp;&amp; install.cmd &amp;&amp; del install.cmd</div>
+
+      <details class="explain">
+        <summary>What if Windows asks about WSL?</summary>
+        <div class="details-body">
+          <p>If you want the Bash-based workflow used in most coding tutorials, use WSL 2 plus Ubuntu. Microsoft's current install command is <code>wsl --install</code> from PowerShell run as Administrator, followed by a restart and first-time Ubuntu setup.</p>
+        </div>
+      </details>
+
+      <div class="checklist">
+        <h4>Step 8: Verification checklist</h4>
+        <label><input type="checkbox"><span><code>git --version</code> shows a version number</span></label>
+        <label><input type="checkbox"><span><code>code --version</code> shows a version number</span></label>
+        <label><input type="checkbox"><span><code>brew --version</code> shows a version number (macOS)</span></label>
+        <label><input type="checkbox"><span><code>node --version</code> shows a version number</span></label>
+        <label><input type="checkbox"><span><code>python3 --version</code> shows a version number</span></label>
+        <label><input type="checkbox"><span><code>claude --version</code> shows a version number</span></label>
+        <label><input type="checkbox"><span><code>git config user.name</code> shows your name</span></label>
+      </div>
+    </section>
+
+    <section id="ch4">
+      <div class="chapter-header">
+        <span class="chapter-label">Chapter 4</span>
+        <h2>Login, verification, and first health check</h2>
+      </div>
+      <p class="chapter-lead">Installation and account access are not the same thing. First make sure the command exists. Then confirm Claude Code can actually start and authenticate with an eligible account.</p>
+
+      <div class="prompt-block"><span class="label">Verify the install</span>claude --version
+claude doctor</div>
+
+      <div class="pr">
+        <div class="pn">1</div>
+        <div class="pb2">
+          <h5>Run <code>claude --version</code></h5>
+          <p>If the installation worked, you should see a version number. If the terminal says <code>claude: command not found</code>, the install did not finish correctly or your terminal needs to be restarted.</p>
+        </div>
+      </div>
+
+      <div class="pr">
+        <div class="pn">2</div>
+        <div class="pb2">
+          <h5>Run <code>claude doctor</code></h5>
+          <p>This checks installation health and helps catch common environment problems. It is the fastest way to confirm the command is not just present, but basically healthy.</p>
+        </div>
+      </div>
+
+      <div class="pr">
+        <div class="pn">3</div>
+        <div class="pb2">
+          <h5>Launch Claude Code</h5>
+          <p>Run <code>claude</code>. Follow the login prompts. If you need to switch accounts later, use <code>/login</code> inside Claude Code.</p>
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <div class="callout-title">Account access reality</div>
+        <p>As of April 8, 2026, having access to the free Claude website experience is not the same thing as having Claude Code access. The official docs indicate Claude Code access comes through eligible paid Claude.ai plans, funded Anthropic Console usage, or supported enterprise and provider setups.</p>
+      </div>
+
+      <div class="card-grid">
+        <div class="summary-card">
+          <span class="eyebrow">Good sign</span>
+          <h4>Command works</h4>
+          <p><code>claude --version</code> returns a version and <code>claude doctor</code> does not show a fatal setup issue.</p>
+        </div>
+        <div class="summary-card">
+          <span class="eyebrow">Good sign</span>
+          <h4>Login completes</h4>
+          <p>The app authenticates and returns you to a usable prompt inside Claude Code.</p>
+        </div>
+        <div class="summary-card">
+          <span class="eyebrow">Problem sign</span>
+          <h4>Entitlement confusion</h4>
+          <p>The command exists, but login fails because the account type or billing setup is not eligible.</p>
+        </div>
+      </div>
+
+      <details class="ts-card">
+        <summary><code>claude: command not found</code></summary>
+        <div class="details-body">
+          <p>Close the terminal fully, open a fresh terminal, and try <code>claude --version</code> again. If it still fails, rerun the official installer for your OS.</p>
+        </div>
+      </details>
+
+      <details class="ts-card">
+        <summary>PowerShell says <code>&amp;&amp;</code> is invalid</summary>
+        <div class="details-body">
+          <p>You used the Windows Command Prompt installer command inside PowerShell. Use the PowerShell command instead: <code>irm https://claude.ai/install.ps1 | iex</code>.</p>
+        </div>
+      </details>
+
+      <details class="ts-card">
+        <summary>Claude Code starts, but authentication still fails</summary>
+        <div class="details-body">
+          <p>That usually means your account setup is the issue, not the binary install. Re-check which Claude or Console plan you have and whether billing is active where required.</p>
+        </div>
+      </details>
+
+      <div class="checklist">
+        <h4>Part 1 completion check</h4>
+        <label><input type="checkbox"><span>I can explain terminal, shell, Bash, file, folder, path, and current working directory.</span></label>
+        <label><input type="checkbox"><span>I installed Git and configured my name and email.</span></label>
+        <label><input type="checkbox"><span>I installed VS Code and the <code>code</code> command works.</span></label>
+        <label><input type="checkbox"><span>I installed Claude Code using the native installer path.</span></label>
+        <label><input type="checkbox"><span>I verified the command with <code>claude --version</code> and <code>claude doctor</code>.</span></label>
+      </div>
+
+      <div class="sources">
+        Official references used for this page: <a href="https://docs.anthropic.com/en/docs/claude-code/setup">Claude Code setup</a>, <a href="https://docs.anthropic.com/en/docs/claude-code/quickstart">Claude Code quickstart</a>, <a href="https://docs.anthropic.com/en/docs/claude-code/settings">Claude Code settings</a>, <a href="https://git-scm.com/book/en/v2/Getting-Started-Installing-Git">Installing Git</a>, <a href="https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup">First-time Git setup</a>, <a href="https://code.visualstudio.com/docs/configure/command-line">VS Code command line</a>, <a href="https://learn.microsoft.com/en-us/windows/wsl/install">Microsoft WSL install</a>.
+      </div>
+    </section>
+
+    <nav class="phase-nav">
+      <a href="/claude-code-quickstart/index.html" class="phase-nav-link"><span class="phase-nav-label">Previous</span>Home</a>
+      <a href="/claude-code-quickstart/part-2.html" class="phase-nav-link"><span class="phase-nav-label">Next</span>Part 2: First Project and Safe Workflow</a>
+    </nav>
+
+    <footer>
+      <p>Claude Code Quick Start / Part 1 complete when your machine is ready and the command launches cleanly.</p>
+    </footer>
+  </div>
+</div>
+
+<script src="/claude-code-quickstart/js/theme.js" defer></script>
+<script src="/claude-code-quickstart/js/sidebar.js" defer></script>
+<script src="/claude-code-quickstart/js/shared.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+# Dev & build tools
+.env
+.env.example
+.playwright-mcp/
+.DS_Store
+Dockerfile.claude
+docker-compose.yml
+agent.sh
+
+# Documentation (not user-facing)
+INTERACTIVE-PLATFORM-PLAN.md
+zero-to-hero-programming/docs/
+zero-to-hero-programming/CLAUDE.md
+zero-to-hero-programming/SERVER-GUIDE.md
+zero-to-hero-programming/SERVER-GUIDE-KO.md
+zero-to-hero-programming/LICENSE
+zero-to-hero-programming/output/
+fuso-llm-docs/.playwright-mcp/
+fuso-llm-docs/fuso-hmi-improvement-instructions.md

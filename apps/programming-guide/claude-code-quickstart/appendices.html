@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Claude Code Quick Start appendices: command cheat sheet, troubleshooting, install matrix, prompt starter pack, and source links.">
+<title>Claude Code Quick Start - Appendices</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/claude-code-quickstart/css/design-system.css">
+<script>try{if(localStorage.getItem('zth-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+<script>try{var z=localStorage.getItem('zth-zoom');if(z&&+z>=50&&+z<=200)document.documentElement.style.zoom=+z/100}catch(e){}</script>
+</head>
+<body>
+<a href="#main-content" class="skip-link">Skip to content</a>
+
+<button class="hamburger" id="hamburger" aria-label="Open navigation">
+  <span></span><span></span><span></span>
+</button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+  <svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+  <svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="/" class="sidebar-logo"><span>Learning Material</span>Claude Code Quick Start</a>
+
+  <div class="toc-group">
+    <div class="toc-group-title">Foundations and Setup</div>
+    <a href="/claude-code-quickstart/part-1.html#ch1" class="toc-link"><span class="toc-num">01</span>What Claude Code Is</a>
+    <a href="/claude-code-quickstart/part-1.html#ch2" class="toc-link"><span class="toc-num">02</span>Terminal, Shell, and Paths</a>
+    <a href="/claude-code-quickstart/part-1.html#ch3" class="toc-link"><span class="toc-num">03</span>Install the Basics</a>
+    <a href="/claude-code-quickstart/part-1.html#ch4" class="toc-link"><span class="toc-num">04</span>Login and Health Check</a>
+  </div>
+
+  <div class="toc-group">
+    <div class="toc-group-title">First Project and Workflow</div>
+    <a href="/claude-code-quickstart/part-2.html#ch5" class="toc-link"><span class="toc-num">05</span>Git Basics for AI Work</a>
+    <a href="/claude-code-quickstart/part-2.html#ch6" class="toc-link"><span class="toc-num">06</span>Safe Playground Project</a>
+    <a href="/claude-code-quickstart/part-2.html#ch7" class="toc-link"><span class="toc-num">07</span>First Claude Code Session</a>
+    <a href="/claude-code-quickstart/part-2.html#ch8" class="toc-link"><span class="toc-num">08</span>Review, Commit, Recover</a>
+    <a href="/claude-code-quickstart/part-2.html#ch9" class="toc-link"><span class="toc-num">09</span>Project Memory</a>
+  </div>
+
+  <div class="toc-group">
+    <div class="toc-group-title">Big Picture</div>
+    <a href="/claude-code-quickstart/part-3.html#ch10" class="toc-link"><span class="toc-num">10</span>How Claude Code Works</a>
+    <a href="/claude-code-quickstart/part-3.html#ch11" class="toc-link"><span class="toc-num">11</span>The Higher-Level Stack</a>
+    <a href="/claude-code-quickstart/part-3.html#ch12" class="toc-link"><span class="toc-num">12</span>What to Learn Next</a>
+  </div>
+
+  <div class="toc-group">
+    <div class="toc-group-title">Reference</div>
+    <a href="#appendix-a" class="toc-link"><span class="toc-num">A</span>Command Cheat Sheet</a>
+    <a href="#appendix-b" class="toc-link"><span class="toc-num">B</span>Troubleshooting</a>
+    <a href="#appendix-c" class="toc-link"><span class="toc-num">C</span>Install Matrix</a>
+    <a href="#appendix-d" class="toc-link"><span class="toc-num">D</span>Prompt Starter Pack</a>
+  </div>
+</aside>
+
+<div class="main" id="main-content">
+  <section class="hero hero-sm">
+    <div class="hero-badge">Appendices</div>
+    <h1>Cheat sheets, install reference, troubleshooting, and copy-paste prompts</h1>
+    <p class="hero-sub">Use this page as a working companion while you go through the main guide. Every volatile Claude Code fact here is anchored to April 8, 2026.</p>
+  </section>
+
+  <div class="content-wrap">
+    <section id="appendix-a">
+      <div class="chapter-header">
+        <span class="chapter-label">Appendix A</span>
+        <h2>Command cheat sheet</h2>
+      </div>
+
+      <h3>Navigation</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Command</th><th>What it means</th><th>What you should see</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>pwd</code></td><td>Show the current working directory</td><td>A path like <code>/Users/you</code> or <code>/home/you</code></td></tr>
+            <tr><td><code>ls</code></td><td>List files and folders here</td><td>Names of items in the current folder</td></tr>
+            <tr><td><code>cd folder-name</code></td><td>Move into a folder</td><td>No output, but <code>pwd</code> changes</td></tr>
+            <tr><td><code>cd ..</code></td><td>Move up one folder level</td><td>No output, but <code>pwd</code> changes</td></tr>
+            <tr><td><code>cd ~</code></td><td>Return to your home directory</td><td>No output, but <code>pwd</code> becomes your home path</td></tr>
+            <tr><td><code>mkdir name</code></td><td>Create a new folder</td><td>The folder appears when you run <code>ls</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Git basics</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Command</th><th>What it means</th><th>What you should see</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>git init</code></td><td>Turn this folder into a Git repo</td><td>A message that the repository was initialized</td></tr>
+            <tr><td><code>git status</code></td><td>Show changed files and branch state</td><td>A summary of modified or untracked files</td></tr>
+            <tr><td><code>git diff</code></td><td>Show exact line changes</td><td>Added and removed lines</td></tr>
+            <tr><td><code>git add .</code></td><td>Stage all current changes</td><td>No output in normal success cases</td></tr>
+            <tr><td><code>git commit -m "message"</code></td><td>Save a named checkpoint</td><td>A commit summary with changed file count</td></tr>
+            <tr><td><code>git log --oneline</code></td><td>Show recent commit history</td><td>Short commit hashes and messages</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Claude Code basics</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Command</th><th>What it means</th><th>What you should see</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>claude --version</code></td><td>Check whether Claude Code is installed</td><td>A version number</td></tr>
+            <tr><td><code>claude doctor</code></td><td>Run the install health check</td><td>Diagnostic output about the current install</td></tr>
+            <tr><td><code>claude</code></td><td>Start a normal Claude Code session</td><td>The Claude Code interface in your terminal</td></tr>
+            <tr><td><code>claude --permission-mode plan</code></td><td>Start in plan-only mode</td><td>Claude can inspect and plan, not execute edits or commands</td></tr>
+            <tr><td><code>/init</code></td><td>Create starter project memory</td><td>A generated or scaffolded <code>CLAUDE.md</code> flow</td></tr>
+            <tr><td><code>/login</code></td><td>Change or refresh account login</td><td>Claude Code login flow</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="appendix-b">
+      <div class="chapter-header">
+        <span class="chapter-label">Appendix B</span>
+        <h2>Troubleshooting</h2>
+      </div>
+
+      <details class="ts-card">
+        <summary><code>claude: command not found</code></summary>
+        <div class="details-body">
+          <p>Close the terminal completely and open a new one. Run <code>claude --version</code> again. If it still fails, rerun the official installer for your operating system.</p>
+        </div>
+      </details>
+
+      <details class="ts-card">
+        <summary><code>git: command not found</code></summary>
+        <div class="details-body">
+          <p>Git is not installed or the terminal session predates the install. Install Git, reopen the terminal, and rerun <code>git --version</code>.</p>
+        </div>
+      </details>
+
+      <details class="ts-card">
+        <summary><code>code: command not found</code></summary>
+        <div class="details-body">
+          <p>On macOS, run <code>Shell Command: Install 'code' command in PATH</code> from the VS Code command palette, then restart Terminal. On Windows and Linux, reinstall VS Code with PATH integration enabled if needed.</p>
+        </div>
+      </details>
+
+      <details class="ts-card">
+        <summary>PowerShell says <code>&amp;&amp;</code> is invalid</summary>
+        <div class="details-body">
+          <p>You used the Windows Command Prompt installer line in PowerShell. Use the PowerShell installer instead: <code>irm https://claude.ai/install.ps1 | iex</code>.</p>
+        </div>
+      </details>
+
+      <details class="ts-card">
+        <summary>WSL install confusion</summary>
+        <div class="details-body">
+          <p>If your goal is Bash-style development on Windows, run <code>wsl --install</code> from PowerShell as Administrator, restart, then finish Ubuntu first-time setup. Install Git inside WSL too, not just on the Windows side.</p>
+        </div>
+      </details>
+
+      <details class="ts-card">
+        <summary>Claude Code launches but login still fails</summary>
+        <div class="details-body">
+          <p>The binary install and account entitlement are separate. Re-check whether your plan or funded Console account actually includes Claude Code access.</p>
+        </div>
+      </details>
+
+      <details class="ts-card">
+        <summary><code>git commit</code> complains about missing identity</summary>
+        <div class="details-body">
+          <p>Run:</p>
+          <div class="prompt-block"><span class="label">Set Git identity</span>git config --global user.name "Your Name"
+git config --global user.email "you@example.com"</div>
+        </div>
+      </details>
+
+      <details class="ts-card">
+        <summary>Claude cannot see the files you expected</summary>
+        <div class="details-body">
+          <p>You probably launched Claude in the wrong folder. Run <code>pwd</code> and <code>ls</code>, make sure you are in the project root you meant to use, then start Claude again there.</p>
+        </div>
+      </details>
+
+      <details class="ts-card">
+        <summary>Long pasted prompts behave strangely</summary>
+        <div class="details-body">
+          <p>Claude Code's terminal docs note several newline options. Try <code>Ctrl + J</code>, use <code>\</code> plus Enter, or run <code>/terminal-setup</code> where supported. For very long content, put the material in a file and ask Claude to read the file instead of pasting everything inline.</p>
+        </div>
+      </details>
+
+      <details class="ts-card">
+        <summary>You installed Claude Code with npm long ago</summary>
+        <div class="details-body">
+          <p>As of April 8, 2026, the official docs treat npm installation as deprecated. Migrate to the native installer:</p>
+          <div class="prompt-block"><span class="label">Migrate off npm</span>curl -fsSL https://claude.ai/install.sh | bash
+npm uninstall -g @anthropic-ai/claude-code</div>
+        </div>
+      </details>
+    </section>
+
+    <section id="appendix-c">
+      <div class="chapter-header">
+        <span class="chapter-label">Appendix C</span>
+        <h2>Install matrix</h2>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Platform</th><th>Terminal</th><th>Git</th><th>VS Code</th><th>Homebrew</th><th>Node.js</th><th>Python</th><th>Claude Code install</th><th>Special note</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>macOS</td>
+              <td>Terminal.app or iTerm2</td>
+              <td>Often available via command line tools</td>
+              <td>Install from official site</td>
+              <td><code>install script</code></td>
+              <td><code>brew install node</code></td>
+              <td><code>brew install python</code></td>
+              <td><code>curl -fsSL https://claude.ai/install.sh | bash</code></td>
+              <td>Run the VS Code PATH command so <code>code</code> works</td>
+            </tr>
+            <tr>
+              <td>Ubuntu / Debian</td>
+              <td>System terminal</td>
+              <td><code>sudo apt install git</code></td>
+              <td>Install from official site</td>
+              <td>N/A (use <code>apt</code>)</td>
+              <td><code>sudo apt install nodejs npm</code></td>
+              <td><code>sudo apt install python3 python3-pip</code></td>
+              <td><code>curl -fsSL https://claude.ai/install.sh | bash</code></td>
+              <td>Good fit for Bash-based learning</td>
+            </tr>
+            <tr>
+              <td>Windows native</td>
+              <td>PowerShell or Windows Terminal</td>
+              <td>Git for Windows required</td>
+              <td>Install from official site</td>
+              <td>N/A</td>
+              <td><code>winget install OpenJS.NodeJS.LTS</code></td>
+              <td><code>winget install Python.Python.3.12</code></td>
+              <td><code>irm https://claude.ai/install.ps1 | iex</code></td>
+              <td>Good if you want fewer moving parts</td>
+            </tr>
+            <tr>
+              <td>Windows with WSL</td>
+              <td>Ubuntu in WSL</td>
+              <td>Install Git inside WSL too</td>
+              <td>Install on Windows side</td>
+              <td>N/A (use <code>apt</code>)</td>
+              <td><code>sudo apt install nodejs npm</code></td>
+              <td><code>sudo apt install python3 python3-pip</code></td>
+              <td><code>curl -fsSL https://claude.ai/install.sh | bash</code></td>
+              <td>Best if you want the Bash workflow used in most tutorials</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout info">
+        <div class="callout-title">Date anchor</div>
+        <p>This matrix reflects the official guidance checked on <strong>April 8, 2026</strong>. Re-check the official docs if you are reading this later.</p>
+      </div>
+    </section>
+
+    <section id="appendix-d">
+      <div class="chapter-header">
+        <span class="chapter-label">Appendix D</span>
+        <h2>Beginner prompt starter pack</h2>
+      </div>
+
+      <div class="prompt-block"><span class="label">Explain this folder</span>Please inspect this folder and explain, in plain English, what each file appears to do.
+Assume I am brand new to coding.</div>
+
+      <div class="prompt-block"><span class="label">Plan before editing</span>I want you to propose a plan before making any edits.
+Explain the steps in plain English.
+Wait for my approval before changing files.</div>
+
+      <div class="prompt-block"><span class="label">Keep the scope small</span>Keep the change extremely small.
+Do not add frameworks, dependencies, or extra files unless I explicitly approve them.</div>
+
+      <div class="prompt-block"><span class="label">Explain commands before running them</span>Before you run a shell command, explain what it does and why it is needed.</div>
+
+      <div class="prompt-block"><span class="label">Describe this diff</span>Please explain this diff in beginner language.
+Tell me what changed, why it changed, and anything that looks risky.</div>
+
+      <div class="prompt-block"><span class="label">Help me understand CLAUDE.md</span>Please propose a short CLAUDE.md for this project.
+Keep it under 20 lines.
+Focus on small changes, plain-English explanations, and beginner-safe behavior.</div>
+
+      <h3>Prompts to avoid</h3>
+      <p>These prompts sound reasonable but create problems for beginners because they hand over too much control or create unmanageable scope.</p>
+
+      <div class="card">
+        <h4>"Rewrite everything"</h4>
+        <p>This discards your working code and replaces it with something you cannot review incrementally. Always prefer small, targeted changes.</p>
+      </div>
+
+      <div class="card">
+        <h4>"Make it production-ready"</h4>
+        <p>This is too vague and invites Claude to add complexity you do not understand yet: build tools, environment configs, error handling patterns, and more.</p>
+      </div>
+
+      <div class="card">
+        <h4>"Do whatever you think is best"</h4>
+        <p>This removes you from the supervision loop. Claude works best when you define the goal and constraints. Giving it full discretion is the opposite of the safe workflow.</p>
+      </div>
+
+      <div class="card">
+        <h4>"Fix all the problems"</h4>
+        <p>This creates unbounded scope. Claude may touch files you did not intend, introduce new patterns, or "fix" things that were not broken. Ask about one problem at a time.</p>
+      </div>
+
+      <div class="sources">
+        Official Anthropic sources used across this guide: <a href="https://docs.anthropic.com/en/docs/claude-code/quickstart">quickstart</a>, <a href="https://docs.anthropic.com/en/docs/claude-code/setup">setup</a>, <a href="https://docs.anthropic.com/en/docs/claude-code/memory">memory</a>, <a href="https://docs.anthropic.com/en/docs/claude-code/slash-commands">slash commands</a>, <a href="https://docs.anthropic.com/en/docs/claude-code/settings">settings</a>, <a href="https://docs.anthropic.com/en/docs/claude-code/terminal-config">terminal config</a>, and <a href="https://docs.anthropic.com/en/docs/claude-code/ide-integrations">IDE integrations</a>.
+      </div>
+    </section>
+
+    <nav class="phase-nav">
+      <a href="/claude-code-quickstart/part-3.html" class="phase-nav-link"><span class="phase-nav-label">Previous</span>Part 3: Big Picture and Orchestration</a>
+      <a href="/claude-code-quickstart/index.html" class="phase-nav-link"><span class="phase-nav-label">Back to start</span>Claude Code Quick Start home</a>
+    </nav>
+
+    <footer>
+      <p>Claude Code Quick Start / appendices / companion reference</p>
+    </footer>
+  </div>
+</div>
+
+<script src="/claude-code-quickstart/js/theme.js" defer></script>
+<script src="/claude-code-quickstart/js/sidebar.js" defer></script>
+<script src="/claude-code-quickstart/js/shared.js" defer></script>
+</body>
+</html>

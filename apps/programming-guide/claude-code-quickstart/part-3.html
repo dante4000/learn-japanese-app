@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Part 3 of Claude Code Quick Start: how Claude Code works at a high level, the broader orchestration stack, and what to learn next.">
+<title>Claude Code Quick Start - Part 3</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/claude-code-quickstart/css/design-system.css">
+<script>try{if(localStorage.getItem('zth-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+<script>try{var z=localStorage.getItem('zth-zoom');if(z&&+z>=50&&+z<=200)document.documentElement.style.zoom=+z/100}catch(e){}</script>
+</head>
+<body>
+<a href="#main-content" class="skip-link">Skip to content</a>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0" aria-hidden="true">
+  <defs>
+    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="var(--accent)"></path>
+    </marker>
+  </defs>
+</svg>
+
+<button class="hamburger" id="hamburger" aria-label="Open navigation">
+  <span></span><span></span><span></span>
+</button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<button class="toggle" id="themeToggle" aria-label="Toggle theme">
+  <svg class="is" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+  <svg class="im" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a href="/" class="sidebar-logo"><span>Learning Material</span>Claude Code Quick Start</a>
+
+  <div class="toc-group">
+    <div class="toc-group-title">Foundations and Setup</div>
+    <a href="/claude-code-quickstart/part-1.html#ch1" class="toc-link"><span class="toc-num">01</span>What Claude Code Is</a>
+    <a href="/claude-code-quickstart/part-1.html#ch2" class="toc-link"><span class="toc-num">02</span>Terminal, Shell, and Paths</a>
+    <a href="/claude-code-quickstart/part-1.html#ch3" class="toc-link"><span class="toc-num">03</span>Install the Basics</a>
+    <a href="/claude-code-quickstart/part-1.html#ch4" class="toc-link"><span class="toc-num">04</span>Login and Health Check</a>
+  </div>
+
+  <div class="toc-group">
+    <div class="toc-group-title">First Project and Workflow</div>
+    <a href="/claude-code-quickstart/part-2.html#ch5" class="toc-link"><span class="toc-num">05</span>Git Basics for AI Work</a>
+    <a href="/claude-code-quickstart/part-2.html#ch6" class="toc-link"><span class="toc-num">06</span>Safe Playground Project</a>
+    <a href="/claude-code-quickstart/part-2.html#ch7" class="toc-link"><span class="toc-num">07</span>First Claude Code Session</a>
+    <a href="/claude-code-quickstart/part-2.html#ch8" class="toc-link"><span class="toc-num">08</span>Review, Commit, Recover</a>
+    <a href="/claude-code-quickstart/part-2.html#ch9" class="toc-link"><span class="toc-num">09</span>Project Memory</a>
+  </div>
+
+  <div class="toc-group">
+    <div class="toc-group-title">Big Picture</div>
+    <a href="#ch10" class="toc-link"><span class="toc-num">10</span>How Claude Code Works</a>
+    <a href="#ch11" class="toc-link"><span class="toc-num">11</span>The Higher-Level Stack</a>
+    <a href="#ch12" class="toc-link"><span class="toc-num">12</span>What to Learn Next</a>
+  </div>
+
+  <div class="toc-group">
+    <div class="toc-group-title">Reference</div>
+    <a href="/claude-code-quickstart/appendices.html#appendix-a" class="toc-link"><span class="toc-num">A</span>Command Cheat Sheet</a>
+    <a href="/claude-code-quickstart/appendices.html#appendix-b" class="toc-link"><span class="toc-num">B</span>Troubleshooting</a>
+    <a href="/claude-code-quickstart/appendices.html#appendix-c" class="toc-link"><span class="toc-num">C</span>Install Matrix</a>
+    <a href="/claude-code-quickstart/appendices.html#appendix-d" class="toc-link"><span class="toc-num">D</span>Prompt Starter Pack</a>
+  </div>
+</aside>
+
+<div class="main" id="main-content">
+  <section class="hero hero-sm">
+    <div class="hero-badge">Part 3 &mdash; Big Picture and Orchestration</div>
+    <h1>See the map without pretending you need the whole map today</h1>
+    <p class="hero-sub">This part explains how Claude Code behaves at a high level and where it sits inside a broader stack of memory, permissions, Git workflows, worktrees, MCP, plugins, guardrails, and more advanced orchestration.</p>
+    <div class="hero-meta"><span>Chapters 10&ndash;12</span><span>Now vs later</span><span>Next-step roadmap</span></div>
+  </section>
+
+  <div class="content-wrap">
+    <section id="ch10">
+      <div class="chapter-header">
+        <span class="chapter-label">Chapter 10</span>
+        <h2>How Claude Code works at a high level</h2>
+      </div>
+      <p class="chapter-lead">Claude Code is not just "chat with code pasted in." It operates inside a loop. You give it a goal, it reads the project, forms a plan, uses tools, proposes or performs actions according to permissions, and then hands the result back for review.</p>
+
+      <div class="diagram" aria-label="Workflow loop showing prompt, context, tools, edits, and review">
+        <svg viewBox="0 0 760 290" role="img">
+          <rect x="280" y="115" width="200" height="70" rx="18" class="node-accent"></rect>
+          <text x="380" y="145" text-anchor="middle" class="label-text">Claude Code</text>
+          <text x="380" y="162" text-anchor="middle" class="sub-text">reads, plans, asks, edits</text>
+
+          <rect x="70" y="35" width="155" height="56" rx="16" class="node-fill"></rect>
+          <text x="148" y="62" text-anchor="middle" class="label-text">Your prompt</text>
+          <text x="148" y="79" text-anchor="middle" class="sub-text">goal and constraints</text>
+
+          <rect x="70" y="205" width="155" height="56" rx="16" class="node-mint"></rect>
+          <text x="148" y="232" text-anchor="middle" class="label-text">Review</text>
+          <text x="148" y="249" text-anchor="middle" class="sub-text">diff, output, judgment</text>
+
+          <rect x="535" y="28" width="165" height="58" rx="16" class="node-fill"></rect>
+          <text x="618" y="55" text-anchor="middle" class="label-text">Project context</text>
+          <text x="618" y="72" text-anchor="middle" class="sub-text">files, README, CLAUDE.md</text>
+
+          <rect x="535" y="116" width="165" height="58" rx="16" class="node-mint"></rect>
+          <text x="618" y="143" text-anchor="middle" class="label-text">Tools</text>
+          <text x="618" y="160" text-anchor="middle" class="sub-text">read, edit, bash, git</text>
+
+          <rect x="535" y="204" width="165" height="58" rx="16" class="node-warn"></rect>
+          <text x="618" y="231" text-anchor="middle" class="label-text">Permissions</text>
+          <text x="618" y="248" text-anchor="middle" class="sub-text">what may happen now</text>
+
+          <path d="M225 63 L320 115" class="arrow"></path>
+          <path d="M320 185 L225 232" class="arrow"></path>
+          <path d="M480 130 L535 57" class="arrow"></path>
+          <path d="M480 150 L535 145" class="arrow"></path>
+          <path d="M480 170 L535 233" class="arrow"></path>
+        </svg>
+        <div class="diagram-caption">Prompt plus project context plus permission rules determine what Claude Code can do in a session.</div>
+      </div>
+
+      <div class="pillars">
+        <div class="mini-card">
+          <span class="eyebrow">Context</span>
+          <h4>The model only sees what is in scope</h4>
+          <p>Your project files, the current folder, and memory files shape what Claude can reason about well.</p>
+        </div>
+        <div class="mini-card">
+          <span class="eyebrow">Permissions</span>
+          <h4>Behavior is gated</h4>
+          <p>Plan mode, default mode, and other permission modes are not small details. They change what Claude may attempt without you.</p>
+        </div>
+        <div class="mini-card">
+          <span class="eyebrow">Review</span>
+          <h4>The loop closes with you</h4>
+          <p>The tool is useful because it acts. It is safe because you inspect what it did.</p>
+        </div>
+      </div>
+
+      <div class="callout info">
+        <div class="callout-title">Simple mental model</div>
+        <p>Claude Code is best understood as a planning and execution layer attached to your repo, your terminal, and your permissions. It is more than chat, but it is still bounded by the information and rules you provide.</p>
+      </div>
+    </section>
+
+    <section id="ch11">
+      <div class="chapter-header">
+        <span class="chapter-label">Chapter 11</span>
+        <h2>The higher-level Claude Code stack</h2>
+      </div>
+      <p class="chapter-lead">You are not expected to use all of this on day one. The point of this chapter is to give you vocabulary and a mental ladder, so you know how a simple single-session workflow grows into more sophisticated orchestration later.</p>
+
+      <div class="diagram" aria-label="Ladder from single-session use to advanced Claude Code orchestration">
+        <svg viewBox="0 0 760 360" role="img">
+          <rect x="120" y="270" width="520" height="44" rx="14" class="node-accent"></rect>
+          <text x="380" y="296" text-anchor="middle" class="label-text">1. Single-session coding in one repo</text>
+
+          <rect x="150" y="214" width="460" height="40" rx="14" class="node-fill"></rect>
+          <text x="380" y="239" text-anchor="middle" class="label-text">2. Plan-first workflow, small diffs, Git checkpoints</text>
+
+          <rect x="182" y="160" width="396" height="36" rx="14" class="node-mint"></rect>
+          <text x="380" y="183" text-anchor="middle" class="label-text">3. Project memory, stronger prompts, repo-specific instructions</text>
+
+          <rect x="214" y="110" width="332" height="34" rx="14" class="node-fill"></rect>
+          <text x="380" y="132" text-anchor="middle" class="label-text">4. Worktrees, multiple branches, isolated experiments</text>
+
+          <rect x="246" y="64" width="268" height="30" rx="14" class="node-warn"></rect>
+          <text x="380" y="84" text-anchor="middle" class="label-text">5. MCP, plugins, tools, guardrails, Docker</text>
+
+          <rect x="278" y="24" width="204" height="24" rx="12" class="node-danger"></rect>
+          <text x="380" y="40" text-anchor="middle" class="label-text">6. Agent teams and orchestration</text>
+        </svg>
+        <div class="diagram-caption">The stack grows upward. Most beginners should master the bottom two levels before touching the top.</div>
+      </div>
+
+      <div class="ladder-grid">
+        <div class="ladder-card">
+          <span class="eyebrow">For now</span>
+          <h4>Single-session coding</h4>
+          <p>This is what you already practiced: one repo, one session, small tasks, plan first, review the diff, commit when done.</p>
+        </div>
+        <div class="ladder-card">
+          <span class="eyebrow">For soon</span>
+          <h4>Memory and context engineering</h4>
+          <p>Once you use Claude Code regularly, the next leap is better project instructions, better task framing, and better context control. That is where <code>CLAUDE.md</code> becomes more important.</p>
+        </div>
+        <div class="ladder-card">
+          <span class="eyebrow">For later</span>
+          <h4>Worktrees and isolated experiments</h4>
+          <p>Worktrees let you open multiple checked-out branches of one repository at the same time. This becomes useful when parallel tasks would otherwise step on each other.</p>
+        </div>
+        <div class="ladder-card">
+          <span class="eyebrow">For later</span>
+          <h4>MCP and plugins</h4>
+          <p>These extend what Claude Code can talk to. At a high level, they are part of the tool and capability layer around the core model.</p>
+        </div>
+        <div class="ladder-card">
+          <span class="eyebrow">For later</span>
+          <h4>Harnesses and guardrails</h4>
+          <p>As projects get more serious, teams wrap Claude Code with tests, linters, CI checks, sandbox policies, and safer operational defaults.</p>
+        </div>
+        <div class="ladder-card">
+          <span class="eyebrow">For much later</span>
+          <h4>Agent teams and orchestration</h4>
+          <p>This is where a lead agent, background agents, or multi-worktree workflows coordinate larger tasks. It is powerful, but it only makes sense once you already understand the single-session loop deeply.</p>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Concept</th><th>What it is</th><th>Use now or later?</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Plan mode</td><td>Read-only planning before execution</td><td><span class="pill good">Use now</span></td></tr>
+            <tr><td>Git checkpoints</td><td>Named snapshots and change review</td><td><span class="pill good">Use now</span></td></tr>
+            <tr><td><code>CLAUDE.md</code></td><td>Project-specific operating instructions</td><td><span class="pill good">Use now</span></td></tr>
+            <tr><td>Worktrees</td><td>Multiple checkouts of one repo</td><td><span class="pill warn">Later</span></td></tr>
+            <tr><td>MCP</td><td>Structured tool and context connections</td><td><span class="pill warn">Later</span></td></tr>
+            <tr><td>Docker</td><td>Isolated environments for repeatable setups</td><td><span class="pill warn">Later</span></td></tr>
+            <tr><td>Agent teams</td><td>Parallel and coordinated multi-agent workflows</td><td><span class="pill bad">Much later</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout warn">
+        <div class="callout-title">Important boundary</div>
+        <p>The existence of a more advanced layer does not mean you should rush into it. The highest-leverage beginner move is still a disciplined single-session workflow with clean prompts, plan mode, and Git review.</p>
+      </div>
+    </section>
+
+    <section id="ch12">
+      <div class="chapter-header">
+        <span class="chapter-label">Chapter 12</span>
+        <h2>What to learn next</h2>
+      </div>
+      <p class="chapter-lead">The next step depends on your goal. If your goal is just to get unstuck in projects, keep practicing the workflow you already learned. If your goal is to become genuinely strong at AI-assisted software work, now you need deeper fundamentals.</p>
+
+      <div class="tl">
+        <div class="ti">
+          <div class="ty">Next week</div>
+          <div class="tt">Repeat the same loop on a second tiny project</div>
+          <div class="td">The real proof is repetition. Set up another throwaway repo and do the plan -> implement -> diff -> commit loop again without rereading every sentence in this guide.</div>
+        </div>
+        <div class="ti">
+          <div class="ty">Next two weeks</div>
+          <div class="tt">Learn one real programming track</div>
+          <div class="td">Choose Python or JavaScript basics. Learn variables, functions, control flow, files, and debugging. The more code you can read, the stronger your Claude Code judgment becomes.</div>
+        </div>
+        <div class="ti">
+          <div class="ty">Next month</div>
+          <div class="tt">Go deeper on Git, tests, and debugging</div>
+          <div class="td">Those three skills multiply the value of AI tools because they improve how you detect, fix, and verify changes.</div>
+        </div>
+        <div class="ti">
+          <div class="ty">After that</div>
+          <div class="tt">Return to orchestration topics</div>
+          <div class="td">Worktrees, MCP, Docker, and agent teams make much more sense after you have a stable single-agent workflow and some real programming depth.</div>
+        </div>
+      </div>
+
+      <div class="resource-grid">
+        <div class="resource-card">
+          <span class="eyebrow">Best next destination</span>
+          <h4>Zero to Hero Programming</h4>
+          <p>If you want the real long-form path from no-code to strong AI-supervised engineering, continue into <a href="/zero-to-hero-programming/index.html">Zero to Hero Programming</a>.</p>
+        </div>
+        <div class="resource-card">
+          <span class="eyebrow">Daily habit</span>
+          <h4>Keep changes small</h4>
+          <p>The best way to get better quickly is not bigger prompts. It is more repetitions of small tasks with careful review.</p>
+        </div>
+        <div class="resource-card">
+          <span class="eyebrow">Mental model</span>
+          <h4>Speed plus guardrails</h4>
+          <p>Claude Code is useful when it accelerates work inside a loop you can still reason about. Keep that principle and the tool stays helpful.</p>
+        </div>
+      </div>
+
+      <div class="callout ok">
+        <div class="callout-title">Final confidence check</div>
+        <p>If you can set up a practice repo, start Claude in the right folder, ask for a plan first, inspect the diff, commit the result, and explain what advanced orchestration layers are for at a high level, this quick-start has done its job.</p>
+      </div>
+
+      <div class="sources">
+        Official references used for this page: <a href="https://docs.anthropic.com/en/docs/claude-code/memory">Claude Code memory</a>, <a href="https://docs.anthropic.com/en/docs/claude-code/settings">Claude Code settings</a>, <a href="https://docs.anthropic.com/en/docs/claude-code/quickstart">Claude Code quickstart</a>, and <a href="https://docs.anthropic.com/en/docs/claude-code/setup">Claude Code setup</a>.
+      </div>
+    </section>
+
+    <nav class="phase-nav">
+      <a href="/claude-code-quickstart/part-2.html" class="phase-nav-link"><span class="phase-nav-label">Previous</span>Part 2: First Project and Safe Workflow</a>
+      <a href="/claude-code-quickstart/appendices.html" class="phase-nav-link"><span class="phase-nav-label">Next</span>Appendices and cheat sheets</a>
+    </nav>
+
+    <footer>
+      <p>Claude Code Quick Start / Part 3 complete when you know what to do now and what to leave for later.</p>
+    </footer>
+  </div>
+</div>
+
+<script src="/claude-code-quickstart/js/theme.js" defer></script>
+<script src="/claude-code-quickstart/js/sidebar.js" defer></script>
+<script src="/claude-code-quickstart/js/shared.js" defer></script>
+</body>
+</html>

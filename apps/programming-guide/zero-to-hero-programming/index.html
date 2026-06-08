@@ -5,8 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="A complete, interactive guide from zero programming knowledge to orchestrating multi-agent AI coding systems. 47 chapters, 10 phases, 120+ exercises with in-browser Python execution.">
 <title>Zero to Hero — Programming to Multi-Agent Claude Code</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/design-system.css">
+<link rel="stylesheet" href="/zero-to-hero-programming/css/design-system.css">
 <script>try{if(localStorage.getItem('zth-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
 <script>try{var z=localStorage.getItem('zth-zoom');if(z&&+z>=50&&+z<=200)document.documentElement.style.zoom=+z/100}catch(e){}</script>
 </head>
@@ -28,92 +29,92 @@
 
 <!-- SIDEBAR — identical across all files -->
 <aside class="sidebar" id="sidebar">
-  <a href="index.html" class="sidebar-logo"><span>Zero to Hero</span>Programming &rarr; Multi-Agent AI</a>
+  <a href="/" class="sidebar-logo"><span>Zero to Hero</span>Programming &rarr; Multi-Agent AI</a>
   <div class="toc-group">
     <div class="toc-group-title">Foundations</div>
-    <a href="phase-1.html#ch01" class="toc-link"><span class="toc-num">01</span>What Programming Actually Is</a>
-    <a href="phase-1.html#ch02" class="toc-link"><span class="toc-num">02</span>How Computers Execute Code</a>
-    <a href="phase-1.html#ch03" class="toc-link"><span class="toc-num">03</span>Setting Up Your Environment</a>
-    <a href="phase-1.html#ch04" class="toc-link"><span class="toc-num">04</span>Reading Code Before Writing It</a>
+    <a href="/zero-to-hero-programming/phase-1.html#ch01" class="toc-link"><span class="toc-num">01</span>What Programming Actually Is</a>
+    <a href="/zero-to-hero-programming/phase-1.html#ch02" class="toc-link"><span class="toc-num">02</span>How Computers Execute Code</a>
+    <a href="/zero-to-hero-programming/phase-1.html#ch03" class="toc-link"><span class="toc-num">03</span>Setting Up Your Environment</a>
+    <a href="/zero-to-hero-programming/phase-1.html#ch04" class="toc-link"><span class="toc-num">04</span>Reading Code Before Writing It</a>
   </div>
   <div class="toc-group">
     <div class="toc-group-title">Python</div>
-    <a href="phase-2.html#ch05" class="toc-link"><span class="toc-num">05</span>Functions, Logic &amp; Control Flow</a>
-    <a href="phase-2.html#ch06" class="toc-link"><span class="toc-num">06</span>Data Structures</a>
-    <a href="phase-2.html#ch07" class="toc-link"><span class="toc-num">07</span>Classes &amp; OOP Basics</a>
-    <a href="phase-2.html#ch08" class="toc-link"><span class="toc-num">08</span>Files, Modules &amp; Standard Library</a>
-    <a href="phase-2.html#ch09" class="toc-link"><span class="toc-num">09</span>Error Handling, Debugging &amp; Testing</a>
+    <a href="/zero-to-hero-programming/phase-2.html#ch05" class="toc-link"><span class="toc-num">05</span>Functions, Logic &amp; Control Flow</a>
+    <a href="/zero-to-hero-programming/phase-2.html#ch06" class="toc-link"><span class="toc-num">06</span>Data Structures</a>
+    <a href="/zero-to-hero-programming/phase-2.html#ch07" class="toc-link"><span class="toc-num">07</span>Classes &amp; OOP Basics</a>
+    <a href="/zero-to-hero-programming/phase-2.html#ch08" class="toc-link"><span class="toc-num">08</span>Files, Modules &amp; Standard Library</a>
+    <a href="/zero-to-hero-programming/phase-2.html#ch09" class="toc-link"><span class="toc-num">09</span>Error Handling, Debugging &amp; Testing</a>
   </div>
   <div class="toc-group">
     <div class="toc-group-title">Development Tools</div>
-    <a href="phase-3.html#ch10" class="toc-link"><span class="toc-num">10</span>The Terminal &amp; Shell</a>
-    <a href="phase-3.html#ch11" class="toc-link"><span class="toc-num">11</span>Git Fundamentals</a>
-    <a href="phase-3.html#ch12" class="toc-link"><span class="toc-num">12</span>Git Remote &amp; GitHub</a>
+    <a href="/zero-to-hero-programming/phase-3.html#ch10" class="toc-link"><span class="toc-num">10</span>The Terminal &amp; Shell</a>
+    <a href="/zero-to-hero-programming/phase-3.html#ch11" class="toc-link"><span class="toc-num">11</span>Git Fundamentals</a>
+    <a href="/zero-to-hero-programming/phase-3.html#ch12" class="toc-link"><span class="toc-num">12</span>Git Remote &amp; GitHub</a>
   </div>
   <div class="toc-group">
     <div class="toc-group-title">Building &amp; Deploying</div>
-    <a href="phase-4.html#ch13" class="toc-link"><span class="toc-num">13</span>APIs &amp; HTTP</a>
-    <a href="phase-4.html#ch14" class="toc-link"><span class="toc-num">14</span>Building APIs with Flask</a>
-    <a href="phase-4.html#ch15" class="toc-link"><span class="toc-num">15</span>Database Basics</a>
-    <a href="phase-4.html#ch16" class="toc-link"><span class="toc-num">16</span>Docker &amp; Containers</a>
-    <a href="phase-4.html#ch17" class="toc-link"><span class="toc-num">17</span>CI/CD &amp; GitHub Actions</a>
-    <a href="phase-4.html#ch18" class="toc-link"><span class="toc-num">18</span>Project Architecture</a>
+    <a href="/zero-to-hero-programming/phase-4.html#ch13" class="toc-link"><span class="toc-num">13</span>APIs &amp; HTTP</a>
+    <a href="/zero-to-hero-programming/phase-4.html#ch14" class="toc-link"><span class="toc-num">14</span>Building APIs with Flask</a>
+    <a href="/zero-to-hero-programming/phase-4.html#ch15" class="toc-link"><span class="toc-num">15</span>Database Basics</a>
+    <a href="/zero-to-hero-programming/phase-4.html#ch16" class="toc-link"><span class="toc-num">16</span>Docker &amp; Containers</a>
+    <a href="/zero-to-hero-programming/phase-4.html#ch17" class="toc-link"><span class="toc-num">17</span>CI/CD &amp; GitHub Actions</a>
+    <a href="/zero-to-hero-programming/phase-4.html#ch18" class="toc-link"><span class="toc-num">18</span>Project Architecture</a>
   </div>
   <div class="toc-group">
     <div class="toc-group-title">Data Structures</div>
-    <a href="phase-5.html#ch19" class="toc-link"><span class="toc-num">19</span>Complexity Analysis</a>
-    <a href="phase-5.html#ch20" class="toc-link"><span class="toc-num">20</span>Linear Structures</a>
-    <a href="phase-5.html#ch21" class="toc-link"><span class="toc-num">21</span>Hash Tables &amp; Maps</a>
-    <a href="phase-5.html#ch22" class="toc-link"><span class="toc-num">22</span>Trees</a>
-    <a href="phase-5.html#ch23" class="toc-link"><span class="toc-num">23</span>Graphs</a>
+    <a href="/zero-to-hero-programming/phase-5.html#ch19" class="toc-link"><span class="toc-num">19</span>Complexity Analysis</a>
+    <a href="/zero-to-hero-programming/phase-5.html#ch20" class="toc-link"><span class="toc-num">20</span>Linear Structures</a>
+    <a href="/zero-to-hero-programming/phase-5.html#ch21" class="toc-link"><span class="toc-num">21</span>Hash Tables &amp; Maps</a>
+    <a href="/zero-to-hero-programming/phase-5.html#ch22" class="toc-link"><span class="toc-num">22</span>Trees</a>
+    <a href="/zero-to-hero-programming/phase-5.html#ch23" class="toc-link"><span class="toc-num">23</span>Graphs</a>
   </div>
   <div class="toc-group">
     <div class="toc-group-title">Algorithms</div>
-    <a href="phase-6.html#ch24" class="toc-link"><span class="toc-num">24</span>Searching &amp; Sorting</a>
-    <a href="phase-6.html#ch25" class="toc-link"><span class="toc-num">25</span>Recursion &amp; DP</a>
-    <a href="phase-6.html#ch26" class="toc-link"><span class="toc-num">26</span>Algorithm Patterns</a>
-    <a href="phase-6.html#ch27" class="toc-link"><span class="toc-num">27</span>Graph Algorithms</a>
+    <a href="/zero-to-hero-programming/phase-6.html#ch24" class="toc-link"><span class="toc-num">24</span>Searching &amp; Sorting</a>
+    <a href="/zero-to-hero-programming/phase-6.html#ch25" class="toc-link"><span class="toc-num">25</span>Recursion &amp; DP</a>
+    <a href="/zero-to-hero-programming/phase-6.html#ch26" class="toc-link"><span class="toc-num">26</span>Algorithm Patterns</a>
+    <a href="/zero-to-hero-programming/phase-6.html#ch27" class="toc-link"><span class="toc-num">27</span>Graph Algorithms</a>
   </div>
   <div class="toc-group">
     <div class="toc-group-title">Engineering Craft</div>
-    <a href="phase-7.html#ch28" class="toc-link"><span class="toc-num">28</span>Design Patterns &amp; SOLID</a>
-    <a href="phase-7.html#ch29" class="toc-link"><span class="toc-num">29</span>SQL &amp; Query Mastery</a>
-    <a href="phase-7.html#ch30" class="toc-link"><span class="toc-num">30</span>Transactions &amp; NoSQL</a>
-    <a href="phase-7.html#ch31" class="toc-link"><span class="toc-num">31</span>Networking &amp; the Internet</a>
-    <a href="phase-7.html#ch32" class="toc-link"><span class="toc-num">32</span>Concurrency &amp; Parallelism</a>
-    <a href="phase-7.html#ch33" class="toc-link"><span class="toc-num">33</span>Security Engineering</a>
+    <a href="/zero-to-hero-programming/phase-7.html#ch28" class="toc-link"><span class="toc-num">28</span>Design Patterns &amp; SOLID</a>
+    <a href="/zero-to-hero-programming/phase-7.html#ch29" class="toc-link"><span class="toc-num">29</span>SQL &amp; Query Mastery</a>
+    <a href="/zero-to-hero-programming/phase-7.html#ch30" class="toc-link"><span class="toc-num">30</span>Transactions &amp; NoSQL</a>
+    <a href="/zero-to-hero-programming/phase-7.html#ch31" class="toc-link"><span class="toc-num">31</span>Networking &amp; the Internet</a>
+    <a href="/zero-to-hero-programming/phase-7.html#ch32" class="toc-link"><span class="toc-num">32</span>Concurrency &amp; Parallelism</a>
+    <a href="/zero-to-hero-programming/phase-7.html#ch33" class="toc-link"><span class="toc-num">33</span>Security Engineering</a>
   </div>
   <div class="toc-group">
     <div class="toc-group-title">Systems &amp; Scale</div>
-    <a href="phase-8.html#ch34" class="toc-link"><span class="toc-num">34</span>System Design</a>
-    <a href="phase-8.html#ch35" class="toc-link"><span class="toc-num">35</span>Distributed Systems</a>
-    <a href="phase-8.html#ch36" class="toc-link"><span class="toc-num">36</span>Performance &amp; Observability</a>
-    <a href="phase-8.html#ch37" class="toc-link"><span class="toc-num">37</span>Navigating Large Codebases</a>
+    <a href="/zero-to-hero-programming/phase-8.html#ch34" class="toc-link"><span class="toc-num">34</span>System Design</a>
+    <a href="/zero-to-hero-programming/phase-8.html#ch35" class="toc-link"><span class="toc-num">35</span>Distributed Systems</a>
+    <a href="/zero-to-hero-programming/phase-8.html#ch36" class="toc-link"><span class="toc-num">36</span>Performance &amp; Observability</a>
+    <a href="/zero-to-hero-programming/phase-8.html#ch37" class="toc-link"><span class="toc-num">37</span>Navigating Large Codebases</a>
   </div>
   <div class="toc-group">
     <div class="toc-group-title">AI Levels 1&ndash;5</div>
-    <a href="phase-9.html#ch38" class="toc-link"><span class="toc-num">38</span>Evaluating &amp; Directing AI Code</a>
-    <a href="phase-9.html#ch39" class="toc-link"><span class="toc-num">39</span>Levels 1 &amp; 2 &mdash; Tab Complete &amp; Agent IDE</a>
-    <a href="phase-9.html#ch40" class="toc-link"><span class="toc-num">40</span>Level 3 &mdash; Context Engineering</a>
-    <a href="phase-9.html#ch41" class="toc-link"><span class="toc-num">41</span>Level 4 &mdash; Compounding Engineering</a>
-    <a href="phase-9.html#ch42" class="toc-link"><span class="toc-num">42</span>Level 5 &mdash; MCP, Skills &amp; Capabilities</a>
+    <a href="/zero-to-hero-programming/phase-9.html#ch38" class="toc-link"><span class="toc-num">38</span>Evaluating &amp; Directing AI Code</a>
+    <a href="/zero-to-hero-programming/phase-9.html#ch39" class="toc-link"><span class="toc-num">39</span>Levels 1 &amp; 2 &mdash; Tab Complete &amp; Agent IDE</a>
+    <a href="/zero-to-hero-programming/phase-9.html#ch40" class="toc-link"><span class="toc-num">40</span>Level 3 &mdash; Context Engineering</a>
+    <a href="/zero-to-hero-programming/phase-9.html#ch41" class="toc-link"><span class="toc-num">41</span>Level 4 &mdash; Compounding Engineering</a>
+    <a href="/zero-to-hero-programming/phase-9.html#ch42" class="toc-link"><span class="toc-num">42</span>Level 5 &mdash; MCP, Skills &amp; Capabilities</a>
   </div>
   <div class="toc-group">
     <div class="toc-group-title">AI Levels 6&ndash;8</div>
-    <a href="phase-10.html#ch43" class="toc-link"><span class="toc-num">43</span>Level 6 &mdash; Harness Engineering</a>
-    <a href="phase-10.html#ch44" class="toc-link"><span class="toc-num">44</span>Level 7 &mdash; Background Agents</a>
-    <a href="phase-10.html#ch45" class="toc-link"><span class="toc-num">45</span>Claude Code in Docker</a>
-    <a href="phase-10.html#ch46" class="toc-link"><span class="toc-num">46</span>Level 8 &mdash; Autonomous Agent Teams</a>
-    <a href="phase-10.html#ch47" class="toc-link"><span class="toc-num">47</span>The Multiplayer Effect</a>
+    <a href="/zero-to-hero-programming/phase-10.html#ch43" class="toc-link"><span class="toc-num">43</span>Level 6 &mdash; Harness Engineering</a>
+    <a href="/zero-to-hero-programming/phase-10.html#ch44" class="toc-link"><span class="toc-num">44</span>Level 7 &mdash; Background Agents</a>
+    <a href="/zero-to-hero-programming/phase-10.html#ch45" class="toc-link"><span class="toc-num">45</span>Claude Code in Docker</a>
+    <a href="/zero-to-hero-programming/phase-10.html#ch46" class="toc-link"><span class="toc-num">46</span>Level 8 &mdash; Autonomous Agent Teams</a>
+    <a href="/zero-to-hero-programming/phase-10.html#ch47" class="toc-link"><span class="toc-num">47</span>The Multiplayer Effect</a>
   </div>
   <div class="toc-group">
     <div class="toc-group-title">Reference</div>
-    <a href="appendices.html#glossary" class="toc-link"><span class="toc-num">&oplus;</span>Glossary</a>
-    <a href="appendices.html#prompt-library" class="toc-link"><span class="toc-num">&oplus;</span>Prompt Library</a>
-    <a href="appendices.html#self-assessment" class="toc-link"><span class="toc-num">&oplus;</span>Self-Assessment</a>
-    <a href="appendices.html#common-mistakes" class="toc-link"><span class="toc-num">&oplus;</span>Common Mistakes</a>
-    <a href="appendices.html#appendix-d" class="toc-link"><span class="toc-num">&oplus;</span>Troubleshooting</a>
-    <a href="appendices.html#appendix-e" class="toc-link"><span class="toc-num">&oplus;</span>Resources</a>
+    <a href="/zero-to-hero-programming/appendices.html#glossary" class="toc-link"><span class="toc-num">&oplus;</span>Glossary</a>
+    <a href="/zero-to-hero-programming/appendices.html#prompt-library" class="toc-link"><span class="toc-num">&oplus;</span>Prompt Library</a>
+    <a href="/zero-to-hero-programming/appendices.html#self-assessment" class="toc-link"><span class="toc-num">&oplus;</span>Self-Assessment</a>
+    <a href="/zero-to-hero-programming/appendices.html#common-mistakes" class="toc-link"><span class="toc-num">&oplus;</span>Common Mistakes</a>
+    <a href="/zero-to-hero-programming/appendices.html#appendix-d" class="toc-link"><span class="toc-num">&oplus;</span>Troubleshooting</a>
+    <a href="/zero-to-hero-programming/appendices.html#appendix-e" class="toc-link"><span class="toc-num">&oplus;</span>Resources</a>
   </div>
 </aside>
 
@@ -163,87 +164,154 @@
 
 <h2 class="section-heading">Choose Your Phase</h2>
 
-<a href="phase-1.html" class="phase-card">
+<a href="/zero-to-hero-programming/phase-1.html" class="phase-card">
   <div class="phase-num">Phase 1</div>
   <h3>What Is Code?</h3>
   <p>Understand what code IS and how computers execute it&mdash;so you can read, evaluate, and direct AI-generated code. You can't supervise what you can't read.</p>
   <div class="phase-chapters">Chapters 01–04 &middot; Foundations</div>
+  <div class="phase-ch-checks">
+    <span class="phase-ch-item" data-chapter="01">01</span>
+    <span class="phase-ch-item" data-chapter="02">02</span>
+    <span class="phase-ch-item" data-chapter="03">03</span>
+    <span class="phase-ch-item" data-chapter="04">04</span>
+  </div>
   <div class="progress-bar"><div class="progress-fill" data-phase="1" style="width:0%"></div></div>
 </a>
 
-<a href="phase-2.html" class="phase-card">
+<a href="/zero-to-hero-programming/phase-2.html" class="phase-card">
   <div class="phase-num">Phase 2</div>
   <h3>Writing Python</h3>
   <p>Working fluency in Python: functions, data structures, classes, files, and testing. Enough to read any function, write tests, and spot when AI-generated code has a subtle bug.</p>
   <div class="phase-chapters">Chapters 05–09 &middot; Python</div>
+  <div class="phase-ch-checks">
+    <span class="phase-ch-item" data-chapter="05">05</span>
+    <span class="phase-ch-item" data-chapter="06">06</span>
+    <span class="phase-ch-item" data-chapter="07">07</span>
+    <span class="phase-ch-item" data-chapter="08">08</span>
+    <span class="phase-ch-item" data-chapter="09">09</span>
+  </div>
   <div class="progress-bar"><div class="progress-fill" data-phase="2" style="width:0%"></div></div>
 </a>
 
-<a href="phase-3.html" class="phase-card">
+<a href="/zero-to-hero-programming/phase-3.html" class="phase-card">
   <div class="phase-num">Phase 3</div>
   <h3>Development Tools</h3>
   <p>Terminal, Git, and GitHub. The professional tools that Claude Code uses&mdash;and that you need to understand to supervise it.</p>
   <div class="phase-chapters">Chapters 10–12 &middot; Development Tools</div>
+  <div class="phase-ch-checks">
+    <span class="phase-ch-item" data-chapter="10">10</span>
+    <span class="phase-ch-item" data-chapter="11">11</span>
+    <span class="phase-ch-item" data-chapter="12">12</span>
+  </div>
   <div class="progress-bar"><div class="progress-fill" data-phase="3" style="width:0%"></div></div>
 </a>
 
-<a href="phase-4.html" class="phase-card">
+<a href="/zero-to-hero-programming/phase-4.html" class="phase-card">
   <div class="phase-num">Phase 4</div>
   <h3>Building &amp; Deploying</h3>
   <p>APIs, Flask, databases, Docker, CI/CD, and professional project structure. From consuming software to building and shipping it.</p>
   <div class="phase-chapters">Chapters 13–18 &middot; Building &amp; Deploying</div>
+  <div class="phase-ch-checks">
+    <span class="phase-ch-item" data-chapter="13">13</span>
+    <span class="phase-ch-item" data-chapter="14">14</span>
+    <span class="phase-ch-item" data-chapter="15">15</span>
+    <span class="phase-ch-item" data-chapter="16">16</span>
+    <span class="phase-ch-item" data-chapter="17">17</span>
+    <span class="phase-ch-item" data-chapter="18">18</span>
+  </div>
   <div class="progress-bar"><div class="progress-fill" data-phase="4" style="width:0%"></div></div>
 </a>
 
-<a href="phase-5.html" class="phase-card">
+<a href="/zero-to-hero-programming/phase-5.html" class="phase-card">
   <div class="phase-num">Phase 5</div>
   <h3>Data Structures &amp; Complexity</h3>
   <p>How data lives in memory: arrays, linked lists, hash tables, trees, and graphs. Big O notation and choosing the right structure for the job.</p>
   <div class="phase-chapters">Chapters 19–23 &middot; Data Structures &amp; Complexity</div>
+  <div class="phase-ch-checks">
+    <span class="phase-ch-item" data-chapter="19">19</span>
+    <span class="phase-ch-item" data-chapter="20">20</span>
+    <span class="phase-ch-item" data-chapter="21">21</span>
+    <span class="phase-ch-item" data-chapter="22">22</span>
+    <span class="phase-ch-item" data-chapter="23">23</span>
+  </div>
   <div class="progress-bar"><div class="progress-fill" data-phase="5" style="width:0%"></div></div>
 </a>
 
-<a href="phase-6.html" class="phase-card">
+<a href="/zero-to-hero-programming/phase-6.html" class="phase-card">
   <div class="phase-num">Phase 6</div>
   <h3>Algorithms</h3>
   <p>Searching, sorting, recursion, and graph traversal. The algorithmic thinking that lets you evaluate whether AI-generated code is efficient.</p>
   <div class="phase-chapters">Chapters 24–27 &middot; Algorithms</div>
+  <div class="phase-ch-checks">
+    <span class="phase-ch-item" data-chapter="24">24</span>
+    <span class="phase-ch-item" data-chapter="25">25</span>
+    <span class="phase-ch-item" data-chapter="26">26</span>
+    <span class="phase-ch-item" data-chapter="27">27</span>
+  </div>
   <div class="progress-bar"><div class="progress-fill" data-phase="6" style="width:0%"></div></div>
 </a>
 
-<a href="phase-7.html" class="phase-card">
+<a href="/zero-to-hero-programming/phase-7.html" class="phase-card">
   <div class="phase-num">Phase 7</div>
   <h3>Engineering Craft</h3>
   <p>Design patterns, database mastery, advanced testing, and code architecture. The professional practices that separate hobbyists from engineers.</p>
   <div class="phase-chapters">Chapters 28–33 &middot; Engineering Craft</div>
+  <div class="phase-ch-checks">
+    <span class="phase-ch-item" data-chapter="28">28</span>
+    <span class="phase-ch-item" data-chapter="29">29</span>
+    <span class="phase-ch-item" data-chapter="30">30</span>
+    <span class="phase-ch-item" data-chapter="31">31</span>
+    <span class="phase-ch-item" data-chapter="32">32</span>
+    <span class="phase-ch-item" data-chapter="33">33</span>
+  </div>
   <div class="progress-bar"><div class="progress-fill" data-phase="7" style="width:0%"></div></div>
 </a>
 
-<a href="phase-8.html" class="phase-card">
+<a href="/zero-to-hero-programming/phase-8.html" class="phase-card">
   <div class="phase-num">Phase 8</div>
   <h3>Systems &amp; Scale</h3>
   <p>System design, distributed architecture, networking, and performance. Understanding the systems that AI agents operate within.</p>
   <div class="phase-chapters">Chapters 34–37 &middot; Systems &amp; Scale</div>
+  <div class="phase-ch-checks">
+    <span class="phase-ch-item" data-chapter="34">34</span>
+    <span class="phase-ch-item" data-chapter="35">35</span>
+    <span class="phase-ch-item" data-chapter="36">36</span>
+    <span class="phase-ch-item" data-chapter="37">37</span>
+  </div>
   <div class="progress-bar"><div class="progress-fill" data-phase="8" style="width:0%"></div></div>
 </a>
 
-<a href="phase-9.html" class="phase-card">
+<a href="/zero-to-hero-programming/phase-9.html" class="phase-card">
   <div class="phase-num">Phase 9</div>
   <h3>AI-Assisted Development (Levels 1–5)</h3>
   <p>From evaluating AI output to custom skills and MCPs. The progression from "I can judge AI code" to "the AI has capabilities I've given it."</p>
   <div class="phase-chapters">Chapters 38–42 &middot; AI-Assisted Development</div>
+  <div class="phase-ch-checks">
+    <span class="phase-ch-item" data-chapter="38">38</span>
+    <span class="phase-ch-item" data-chapter="39">39</span>
+    <span class="phase-ch-item" data-chapter="40">40</span>
+    <span class="phase-ch-item" data-chapter="41">41</span>
+    <span class="phase-ch-item" data-chapter="42">42</span>
+  </div>
   <div class="progress-bar"><div class="progress-fill" data-phase="9" style="width:0%"></div></div>
 </a>
 
-<a href="phase-10.html" class="phase-card">
+<a href="/zero-to-hero-programming/phase-10.html" class="phase-card">
   <div class="phase-num">Phase 10</div>
   <h3>AI Orchestration (Levels 6–8)</h3>
   <p>Harness engineering, background agents, Claude Code in Docker, and autonomous agent teams. Return to this as your projects grow in complexity.</p>
   <div class="phase-chapters">Chapters 43–47 &middot; AI Orchestration</div>
+  <div class="phase-ch-checks">
+    <span class="phase-ch-item" data-chapter="43">43</span>
+    <span class="phase-ch-item" data-chapter="44">44</span>
+    <span class="phase-ch-item" data-chapter="45">45</span>
+    <span class="phase-ch-item" data-chapter="46">46</span>
+    <span class="phase-ch-item" data-chapter="47">47</span>
+  </div>
   <div class="progress-bar"><div class="progress-fill" data-phase="10" style="width:0%"></div></div>
 </a>
 
-<a href="appendices.html" class="phase-card">
+<a href="/zero-to-hero-programming/appendices.html" class="phase-card">
   <div class="phase-num">Reference</div>
   <h3>Appendices</h3>
   <p>Glossary, prompt library, and self-assessment quiz. Everything collected in one place.</p>
@@ -254,7 +322,7 @@
 Every chapter in Phases 1&ndash;8 exists to make Phases 9&ndash;10 possible. You need to understand functions because when Claude Code generates a 200-line function, you need to know whether it's doing what you asked. You need data structures and algorithms (Phases 5&ndash;6) because AI-generated code must be efficient. You need engineering craft and systems thinking (Phases 7&ndash;8) because agents operate within real architectures. You need Git, Docker, and APIs because Claude Code creates branches, runs in containers, and orchestrates services. There are no detours in this curriculum&mdash;only prerequisites.
 </div>
 <nav class="phase-nav">
-  <a href="phase-1.html" class="phase-nav-link next"><span class="phase-nav-label">Start Here</span>Phase 1: What Is Code? &rarr;</a>
+  <a href="/zero-to-hero-programming/phase-1.html" class="phase-nav-link next"><span class="phase-nav-label">Start Here</span>Phase 1: What Is Code? &rarr;</a>
 </nav>
 
 </div>
@@ -265,10 +333,10 @@ Every chapter in Phases 1&ndash;8 exists to make Phases 9&ndash;10 possible. You
 <p><button onclick="if(confirm('Reset all exercise progress?'))window.ZTH.progress.reset()" style="background:none;border:1px solid var(--border-accent);color:var(--text-muted);padding:.3rem .8rem;border-radius:4px;cursor:pointer;font-size:.75rem">Reset Progress</button></p>
 </footer>
 
-<script src="js/progress.js"></script>
-<script src="js/theme.js"></script>
-<script src="js/sidebar.js"></script>
-<script src="js/shared.js"></script>
+<script src="/zero-to-hero-programming/js/progress.js"></script>
+<script src="/zero-to-hero-programming/js/theme.js"></script>
+<script src="/zero-to-hero-programming/js/sidebar.js"></script>
+<script src="/zero-to-hero-programming/js/shared.js"></script>
 <script>
 /* Landing page progress dashboard */
 (function () {

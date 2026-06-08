@@ -5,8 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="フェーズ9: AIを活用した開発 — AIの出力を評価し、Claude Codeを使い、コンテキストエンジニアリング、複合ルール、MCPとカスタムスキルを学ぶ。第38〜42章。">
 <title>フェーズ9: AIを活用した開発 — Zero to Hero</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/design-system.css">
+<link rel="stylesheet" href="/zero-to-hero-programming/css/design-system.css">
 <script>try{if(localStorage.getItem('zth-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
 <script>try{var z=localStorage.getItem('zth-zoom');if(z&&+z>=50&&+z<=200)document.documentElement.style.zoom=+z/100}catch(e){}</script>
 </head>
@@ -25,67 +26,67 @@
 </button>
 
 <aside class="sidebar" id="sidebar">
-  <a href="index.html" class="sidebar-logo"><span>Zero to Hero</span>プログラミング &rarr; マルチエージェントAI</a>
+  <a href="/" class="sidebar-logo"><span>Zero to Hero</span>プログラミング &rarr; マルチエージェントAI</a>
   <div class="toc-group">
     <div class="toc-group-title">基礎</div>
-    <a href="phase-1.html#ch01" class="toc-link"><span class="toc-num">01</span>プログラミングとは何か</a>
-    <a href="phase-1.html#ch02" class="toc-link"><span class="toc-num">02</span>コンピュータはどうコードを実行するか</a>
-    <a href="phase-1.html#ch03" class="toc-link"><span class="toc-num">03</span>環境のセットアップ</a>
-    <a href="phase-1.html#ch04" class="toc-link"><span class="toc-num">04</span>書く前にコードを読む</a>
+    <a href="/zero-to-hero-programming/phase-1.html#ch01" class="toc-link"><span class="toc-num">01</span>プログラミングとは何か</a>
+    <a href="/zero-to-hero-programming/phase-1.html#ch02" class="toc-link"><span class="toc-num">02</span>コンピュータはどうコードを実行するか</a>
+    <a href="/zero-to-hero-programming/phase-1.html#ch03" class="toc-link"><span class="toc-num">03</span>環境のセットアップ</a>
+    <a href="/zero-to-hero-programming/phase-1.html#ch04" class="toc-link"><span class="toc-num">04</span>書く前にコードを読む</a>
   </div>
   <div class="toc-group">
     <div class="toc-group-title">Python</div>
-    <a href="phase-2.html#ch05" class="toc-link"><span class="toc-num">05</span>関数・ロジック・制御フロー</a>
-    <a href="phase-2.html#ch06" class="toc-link"><span class="toc-num">06</span>データ構造</a>
-    <a href="phase-2.html#ch07" class="toc-link"><span class="toc-num">07</span>クラスとOOPの基礎</a>
-    <a href="phase-2.html#ch08" class="toc-link"><span class="toc-num">08</span>ファイル・モジュール・標準ライブラリ</a>
-    <a href="phase-2.html#ch09" class="toc-link"><span class="toc-num">09</span>エラー処理・デバッグ・テスト</a>
+    <a href="/zero-to-hero-programming/phase-2.html#ch05" class="toc-link"><span class="toc-num">05</span>関数・ロジック・制御フロー</a>
+    <a href="/zero-to-hero-programming/phase-2.html#ch06" class="toc-link"><span class="toc-num">06</span>データ構造</a>
+    <a href="/zero-to-hero-programming/phase-2.html#ch07" class="toc-link"><span class="toc-num">07</span>クラスとOOPの基礎</a>
+    <a href="/zero-to-hero-programming/phase-2.html#ch08" class="toc-link"><span class="toc-num">08</span>ファイル・モジュール・標準ライブラリ</a>
+    <a href="/zero-to-hero-programming/phase-2.html#ch09" class="toc-link"><span class="toc-num">09</span>エラー処理・デバッグ・テスト</a>
   </div>
   <div class="toc-group">
     <div class="toc-group-title">開発ツール</div>
-    <a href="phase-3.html#ch10" class="toc-link"><span class="toc-num">10</span>ターミナルとシェル</a>
-    <a href="phase-3.html#ch11" class="toc-link"><span class="toc-num">11</span>Gitの基礎</a>
-    <a href="phase-3.html#ch12" class="toc-link"><span class="toc-num">12</span>Gitリモートと GitHub</a>
+    <a href="/zero-to-hero-programming/phase-3.html#ch10" class="toc-link"><span class="toc-num">10</span>ターミナルとシェル</a>
+    <a href="/zero-to-hero-programming/phase-3.html#ch11" class="toc-link"><span class="toc-num">11</span>Gitの基礎</a>
+    <a href="/zero-to-hero-programming/phase-3.html#ch12" class="toc-link"><span class="toc-num">12</span>Gitリモートと GitHub</a>
   </div>
   <div class="toc-group">
     <div class="toc-group-title">構築とデプロイ</div>
-    <a href="phase-4.html#ch13" class="toc-link"><span class="toc-num">13</span>APIとHTTP</a>
-    <a href="phase-4.html#ch14" class="toc-link"><span class="toc-num">14</span>FlaskでAPIを作る</a>
-    <a href="phase-4.html#ch15" class="toc-link"><span class="toc-num">15</span>データベースの基礎</a>
-    <a href="phase-4.html#ch16" class="toc-link"><span class="toc-num">16</span>Dockerとコンテナ</a>
-    <a href="phase-4.html#ch17" class="toc-link"><span class="toc-num">17</span>CI/CDとGitHub Actions</a>
-    <a href="phase-4.html#ch18" class="toc-link"><span class="toc-num">18</span>プロジェクトアーキテクチャ</a>
+    <a href="/zero-to-hero-programming/phase-4.html#ch13" class="toc-link"><span class="toc-num">13</span>APIとHTTP</a>
+    <a href="/zero-to-hero-programming/phase-4.html#ch14" class="toc-link"><span class="toc-num">14</span>FlaskでAPIを作る</a>
+    <a href="/zero-to-hero-programming/phase-4.html#ch15" class="toc-link"><span class="toc-num">15</span>データベースの基礎</a>
+    <a href="/zero-to-hero-programming/phase-4.html#ch16" class="toc-link"><span class="toc-num">16</span>Dockerとコンテナ</a>
+    <a href="/zero-to-hero-programming/phase-4.html#ch17" class="toc-link"><span class="toc-num">17</span>CI/CDとGitHub Actions</a>
+    <a href="/zero-to-hero-programming/phase-4.html#ch18" class="toc-link"><span class="toc-num">18</span>プロジェクトアーキテクチャ</a>
   </div>
   <div class="toc-group">
     <div class="toc-group-title">データ構造</div>
-    <a href="phase-5.html#ch19" class="toc-link"><span class="toc-num">19</span>計算量解析</a>
-    <a href="phase-5.html#ch20" class="toc-link"><span class="toc-num">20</span>線形構造</a>
-    <a href="phase-5.html#ch21" class="toc-link"><span class="toc-num">21</span>ハッシュテーブルとマップ</a>
-    <a href="phase-5.html#ch22" class="toc-link"><span class="toc-num">22</span>木構造</a>
-    <a href="phase-5.html#ch23" class="toc-link"><span class="toc-num">23</span>グラフ</a>
+    <a href="/zero-to-hero-programming/phase-5.html#ch19" class="toc-link"><span class="toc-num">19</span>計算量解析</a>
+    <a href="/zero-to-hero-programming/phase-5.html#ch20" class="toc-link"><span class="toc-num">20</span>線形構造</a>
+    <a href="/zero-to-hero-programming/phase-5.html#ch21" class="toc-link"><span class="toc-num">21</span>ハッシュテーブルとマップ</a>
+    <a href="/zero-to-hero-programming/phase-5.html#ch22" class="toc-link"><span class="toc-num">22</span>木構造</a>
+    <a href="/zero-to-hero-programming/phase-5.html#ch23" class="toc-link"><span class="toc-num">23</span>グラフ</a>
   </div>
   <div class="toc-group">
     <div class="toc-group-title">アルゴリズム</div>
-    <a href="phase-6.html#ch24" class="toc-link"><span class="toc-num">24</span>探索とソート</a>
-    <a href="phase-6.html#ch25" class="toc-link"><span class="toc-num">25</span>再帰と動的プログラミング</a>
-    <a href="phase-6.html#ch26" class="toc-link"><span class="toc-num">26</span>アルゴリズムパターン</a>
-    <a href="phase-6.html#ch27" class="toc-link"><span class="toc-num">27</span>グラフアルゴリズム</a>
+    <a href="/zero-to-hero-programming/phase-6.html#ch24" class="toc-link"><span class="toc-num">24</span>探索とソート</a>
+    <a href="/zero-to-hero-programming/phase-6.html#ch25" class="toc-link"><span class="toc-num">25</span>再帰と動的プログラミング</a>
+    <a href="/zero-to-hero-programming/phase-6.html#ch26" class="toc-link"><span class="toc-num">26</span>アルゴリズムパターン</a>
+    <a href="/zero-to-hero-programming/phase-6.html#ch27" class="toc-link"><span class="toc-num">27</span>グラフアルゴリズム</a>
   </div>
   <div class="toc-group">
     <div class="toc-group-title">エンジニアリングの技術</div>
-    <a href="phase-7.html#ch28" class="toc-link"><span class="toc-num">28</span>デザインパターンとSOLID</a>
-    <a href="phase-7.html#ch29" class="toc-link"><span class="toc-num">29</span>SQLとクエリの習熟</a>
-    <a href="phase-7.html#ch30" class="toc-link"><span class="toc-num">30</span>トランザクションとNoSQL</a>
-    <a href="phase-7.html#ch31" class="toc-link"><span class="toc-num">31</span>ネットワークとインターネット</a>
-    <a href="phase-7.html#ch32" class="toc-link"><span class="toc-num">32</span>並行処理と並列処理</a>
-    <a href="phase-7.html#ch33" class="toc-link"><span class="toc-num">33</span>セキュリティエンジニアリング</a>
+    <a href="/zero-to-hero-programming/phase-7.html#ch28" class="toc-link"><span class="toc-num">28</span>デザインパターンとSOLID</a>
+    <a href="/zero-to-hero-programming/phase-7.html#ch29" class="toc-link"><span class="toc-num">29</span>SQLとクエリの習熟</a>
+    <a href="/zero-to-hero-programming/phase-7.html#ch30" class="toc-link"><span class="toc-num">30</span>トランザクションとNoSQL</a>
+    <a href="/zero-to-hero-programming/phase-7.html#ch31" class="toc-link"><span class="toc-num">31</span>ネットワークとインターネット</a>
+    <a href="/zero-to-hero-programming/phase-7.html#ch32" class="toc-link"><span class="toc-num">32</span>並行処理と並列処理</a>
+    <a href="/zero-to-hero-programming/phase-7.html#ch33" class="toc-link"><span class="toc-num">33</span>セキュリティエンジニアリング</a>
   </div>
   <div class="toc-group">
     <div class="toc-group-title">システムとスケール</div>
-    <a href="phase-8.html#ch34" class="toc-link"><span class="toc-num">34</span>システム設計</a>
-    <a href="phase-8.html#ch35" class="toc-link"><span class="toc-num">35</span>分散システム</a>
-    <a href="phase-8.html#ch36" class="toc-link"><span class="toc-num">36</span>パフォーマンスと可観測性</a>
-    <a href="phase-8.html#ch37" class="toc-link"><span class="toc-num">37</span>大規模コードベースのナビゲーション</a>
+    <a href="/zero-to-hero-programming/phase-8.html#ch34" class="toc-link"><span class="toc-num">34</span>システム設計</a>
+    <a href="/zero-to-hero-programming/phase-8.html#ch35" class="toc-link"><span class="toc-num">35</span>分散システム</a>
+    <a href="/zero-to-hero-programming/phase-8.html#ch36" class="toc-link"><span class="toc-num">36</span>パフォーマンスと可観測性</a>
+    <a href="/zero-to-hero-programming/phase-8.html#ch37" class="toc-link"><span class="toc-num">37</span>大規模コードベースのナビゲーション</a>
   </div>
   <div class="toc-group">
     <div class="toc-group-title">AIレベル1〜5</div>
@@ -97,20 +98,20 @@
   </div>
   <div class="toc-group">
     <div class="toc-group-title">AIレベル6〜8</div>
-    <a href="phase-10.html#ch43" class="toc-link"><span class="toc-num">43</span>レベル6 &mdash; ハーネスエンジニアリング</a>
-    <a href="phase-10.html#ch44" class="toc-link"><span class="toc-num">44</span>レベル7 &mdash; バックグラウンドエージェント</a>
-    <a href="phase-10.html#ch45" class="toc-link"><span class="toc-num">45</span>DockerのClaude Code</a>
-    <a href="phase-10.html#ch46" class="toc-link"><span class="toc-num">46</span>レベル8 &mdash; 自律型エージェントチーム</a>
-    <a href="phase-10.html#ch47" class="toc-link"><span class="toc-num">47</span>マルチプレイヤー効果</a>
+    <a href="/zero-to-hero-programming/phase-10.html#ch43" class="toc-link"><span class="toc-num">43</span>レベル6 &mdash; ハーネスエンジニアリング</a>
+    <a href="/zero-to-hero-programming/phase-10.html#ch44" class="toc-link"><span class="toc-num">44</span>レベル7 &mdash; バックグラウンドエージェント</a>
+    <a href="/zero-to-hero-programming/phase-10.html#ch45" class="toc-link"><span class="toc-num">45</span>DockerのClaude Code</a>
+    <a href="/zero-to-hero-programming/phase-10.html#ch46" class="toc-link"><span class="toc-num">46</span>レベル8 &mdash; 自律型エージェントチーム</a>
+    <a href="/zero-to-hero-programming/phase-10.html#ch47" class="toc-link"><span class="toc-num">47</span>マルチプレイヤー効果</a>
   </div>
   <div class="toc-group">
     <div class="toc-group-title">リファレンス</div>
-    <a href="appendices.html#glossary" class="toc-link"><span class="toc-num">&oplus;</span>用語集</a>
-    <a href="appendices.html#prompt-library" class="toc-link"><span class="toc-num">&oplus;</span>プロンプトライブラリ</a>
-    <a href="appendices.html#self-assessment" class="toc-link"><span class="toc-num">&oplus;</span>自己評価</a>
-    <a href="appendices.html#common-mistakes" class="toc-link"><span class="toc-num">&oplus;</span>よくある間違い</a>
-    <a href="appendices.html#appendix-d" class="toc-link"><span class="toc-num">&oplus;</span>トラブルシューティング</a>
-    <a href="appendices.html#appendix-e" class="toc-link"><span class="toc-num">&oplus;</span>リソース</a>
+    <a href="/zero-to-hero-programming/appendices.html#glossary" class="toc-link"><span class="toc-num">&oplus;</span>用語集</a>
+    <a href="/zero-to-hero-programming/appendices.html#prompt-library" class="toc-link"><span class="toc-num">&oplus;</span>プロンプトライブラリ</a>
+    <a href="/zero-to-hero-programming/appendices.html#self-assessment" class="toc-link"><span class="toc-num">&oplus;</span>自己評価</a>
+    <a href="/zero-to-hero-programming/appendices.html#common-mistakes" class="toc-link"><span class="toc-num">&oplus;</span>よくある間違い</a>
+    <a href="/zero-to-hero-programming/appendices.html#appendix-d" class="toc-link"><span class="toc-num">&oplus;</span>トラブルシューティング</a>
+    <a href="/zero-to-hero-programming/appendices.html#appendix-e" class="toc-link"><span class="toc-num">&oplus;</span>リソース</a>
   </div>
 </aside>
 
@@ -1152,8 +1153,8 @@ Write comprehensive tests. Cover: happy path, edge cases, error cases.</code></p
 </section>
 
 <nav class="phase-nav">
-  <a href="phase-8.html" class="phase-nav-link prev"><span class="phase-nav-label">前のフェーズ</span>&larr; フェーズ8: システムとスケール</a>
-  <a href="phase-10.html" class="phase-nav-link next"><span class="phase-nav-label">次のフェーズ</span>フェーズ10: AIオーケストレーション &rarr;</a>
+  <a href="/zero-to-hero-programming/phase-8.html" class="phase-nav-link prev"><span class="phase-nav-label">前のフェーズ</span>&larr; フェーズ8: システムとスケール</a>
+  <a href="/zero-to-hero-programming/phase-10.html" class="phase-nav-link next"><span class="phase-nav-label">次のフェーズ</span>フェーズ10: AIオーケストレーション &rarr;</a>
 </nav>
 
 </div>
@@ -1163,14 +1164,14 @@ Write comprehensive tests. Cover: happy path, edge cases, error cases.</code></p
 <p>Zero to Hero: プログラミングからマルチエージェントClaude Codeへ &middot; 2026年3月</p>
 </footer>
 
-<script src="../js/progress.js"></script>
+<script src="/zero-to-hero-programming/js/progress.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/ace-builds@1.36.5/src-min-noconflict/ace.js"></script>
-<script src="../js/theme.js"></script>
-<script src="../js/sidebar.js"></script>
-<script src="../js/shared.js"></script>
-<script src="../js/ace-init.js"></script>
-<script src="../js/pyodide-runner.js"></script>
-<script src="../js/quiz.js"></script>
-<script src="../js/exercise-runner.js"></script>
+<script src="/zero-to-hero-programming/js/theme.js"></script>
+<script src="/zero-to-hero-programming/js/sidebar.js"></script>
+<script src="/zero-to-hero-programming/js/shared.js"></script>
+<script src="/zero-to-hero-programming/js/ace-init.js"></script>
+<script src="/zero-to-hero-programming/js/pyodide-runner.js"></script>
+<script src="/zero-to-hero-programming/js/quiz.js"></script>
+<script src="/zero-to-hero-programming/js/exercise-runner.js"></script>
 </body>
 </html>

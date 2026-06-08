@@ -5,8 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="페이즈 5: 자료 구조와 복잡도 — Big-O 분석, 배열, 연결 리스트, 스택, 큐, 해시 테이블, 트리, 그래프. 챕터 19–23.">
 <title>페이즈 5: 자료 구조 &amp; 복잡도 — 제로 투 히어로</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/design-system.css">
+<link rel="stylesheet" href="/zero-to-hero-programming/css/design-system.css">
 <script>try{if(localStorage.getItem('zth-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
 <script>try{var z=localStorage.getItem('zth-zoom');if(z&&+z>=50&&+z<=200)document.documentElement.style.zoom=+z/100}catch(e){}</script>
 </head>
@@ -26,92 +27,92 @@
 
 <aside class="sidebar" id="sidebar">
 <aside class="sidebar" id="sidebar">
-  <a href="index.html" class="sidebar-logo"><span>제로 투 히어로</span>프로그래밍 &rarr; 멀티 에이전트 AI</a>
+  <a href="/" class="sidebar-logo"><span>제로 투 히어로</span>프로그래밍 &rarr; 멀티 에이전트 AI</a>
   <div class="toc-group">
     <div class="toc-group-title">기초</div>
-    <a href="phase-1.html#ch01" class="toc-link"><span class="toc-num">01</span>프로그래밍이란 무엇인가</a>
-    <a href="phase-1.html#ch02" class="toc-link"><span class="toc-num">02</span>컴퓨터가 코드를 실행하는 방법</a>
-    <a href="phase-1.html#ch03" class="toc-link"><span class="toc-num">03</span>환경 설정하기</a>
-    <a href="phase-1.html#ch04" class="toc-link"><span class="toc-num">04</span>쓰기 전에 코드 읽기</a>
+    <a href="/zero-to-hero-programming/phase-1.html#ch01" class="toc-link"><span class="toc-num">01</span>프로그래밍이란 무엇인가</a>
+    <a href="/zero-to-hero-programming/phase-1.html#ch02" class="toc-link"><span class="toc-num">02</span>컴퓨터가 코드를 실행하는 방법</a>
+    <a href="/zero-to-hero-programming/phase-1.html#ch03" class="toc-link"><span class="toc-num">03</span>환경 설정하기</a>
+    <a href="/zero-to-hero-programming/phase-1.html#ch04" class="toc-link"><span class="toc-num">04</span>쓰기 전에 코드 읽기</a>
   </div>
   <div class="toc-group">
     <div class="toc-group-title">Python</div>
-    <a href="phase-2.html#ch05" class="toc-link"><span class="toc-num">05</span>함수, 논리, 제어 흐름</a>
-    <a href="phase-2.html#ch06" class="toc-link"><span class="toc-num">06</span>자료 구조</a>
-    <a href="phase-2.html#ch07" class="toc-link"><span class="toc-num">07</span>클래스와 객체 지향 프로그래밍</a>
-    <a href="phase-2.html#ch08" class="toc-link"><span class="toc-num">08</span>파일, 모듈, 표준 라이브러리</a>
-    <a href="phase-2.html#ch09" class="toc-link"><span class="toc-num">09</span>에러 처리, 디버깅, 테스트</a>
+    <a href="/zero-to-hero-programming/phase-2.html#ch05" class="toc-link"><span class="toc-num">05</span>함수, 논리, 제어 흐름</a>
+    <a href="/zero-to-hero-programming/phase-2.html#ch06" class="toc-link"><span class="toc-num">06</span>자료 구조</a>
+    <a href="/zero-to-hero-programming/phase-2.html#ch07" class="toc-link"><span class="toc-num">07</span>클래스와 객체 지향 프로그래밍</a>
+    <a href="/zero-to-hero-programming/phase-2.html#ch08" class="toc-link"><span class="toc-num">08</span>파일, 모듈, 표준 라이브러리</a>
+    <a href="/zero-to-hero-programming/phase-2.html#ch09" class="toc-link"><span class="toc-num">09</span>에러 처리, 디버깅, 테스트</a>
   </div>
   <div class="toc-group">
     <div class="toc-group-title">개발 도구</div>
-    <a href="phase-3.html#ch10" class="toc-link"><span class="toc-num">10</span>터미널과 셸</a>
-    <a href="phase-3.html#ch11" class="toc-link"><span class="toc-num">11</span>Git 기초</a>
-    <a href="phase-3.html#ch12" class="toc-link"><span class="toc-num">12</span>Git 원격 저장소와 GitHub</a>
+    <a href="/zero-to-hero-programming/phase-3.html#ch10" class="toc-link"><span class="toc-num">10</span>터미널과 셸</a>
+    <a href="/zero-to-hero-programming/phase-3.html#ch11" class="toc-link"><span class="toc-num">11</span>Git 기초</a>
+    <a href="/zero-to-hero-programming/phase-3.html#ch12" class="toc-link"><span class="toc-num">12</span>Git 원격 저장소와 GitHub</a>
   </div>
   <div class="toc-group">
     <div class="toc-group-title">구축과 배포</div>
-    <a href="phase-4.html#ch13" class="toc-link"><span class="toc-num">13</span>API와 HTTP</a>
-    <a href="phase-4.html#ch14" class="toc-link"><span class="toc-num">14</span>Flask로 API 구축하기</a>
-    <a href="phase-4.html#ch15" class="toc-link"><span class="toc-num">15</span>데이터베이스 기초</a>
-    <a href="phase-4.html#ch16" class="toc-link"><span class="toc-num">16</span>Docker와 컨테이너</a>
-    <a href="phase-4.html#ch17" class="toc-link"><span class="toc-num">17</span>CI/CD와 GitHub Actions</a>
-    <a href="phase-4.html#ch18" class="toc-link"><span class="toc-num">18</span>프로젝트 아키텍처</a>
+    <a href="/zero-to-hero-programming/phase-4.html#ch13" class="toc-link"><span class="toc-num">13</span>API와 HTTP</a>
+    <a href="/zero-to-hero-programming/phase-4.html#ch14" class="toc-link"><span class="toc-num">14</span>Flask로 API 구축하기</a>
+    <a href="/zero-to-hero-programming/phase-4.html#ch15" class="toc-link"><span class="toc-num">15</span>데이터베이스 기초</a>
+    <a href="/zero-to-hero-programming/phase-4.html#ch16" class="toc-link"><span class="toc-num">16</span>Docker와 컨테이너</a>
+    <a href="/zero-to-hero-programming/phase-4.html#ch17" class="toc-link"><span class="toc-num">17</span>CI/CD와 GitHub Actions</a>
+    <a href="/zero-to-hero-programming/phase-4.html#ch18" class="toc-link"><span class="toc-num">18</span>프로젝트 아키텍처</a>
   </div>
   <div class="toc-group">
     <div class="toc-group-title">자료 구조</div>
-    <a href="phase-5.html#ch19" class="toc-link"><span class="toc-num">19</span>복잡도 분석</a>
-    <a href="phase-5.html#ch20" class="toc-link"><span class="toc-num">20</span>선형 구조</a>
-    <a href="phase-5.html#ch21" class="toc-link"><span class="toc-num">21</span>해시 테이블과 맵</a>
-    <a href="phase-5.html#ch22" class="toc-link"><span class="toc-num">22</span>트리</a>
-    <a href="phase-5.html#ch23" class="toc-link"><span class="toc-num">23</span>그래프</a>
+    <a href="/zero-to-hero-programming/phase-5.html#ch19" class="toc-link"><span class="toc-num">19</span>복잡도 분석</a>
+    <a href="/zero-to-hero-programming/phase-5.html#ch20" class="toc-link"><span class="toc-num">20</span>선형 구조</a>
+    <a href="/zero-to-hero-programming/phase-5.html#ch21" class="toc-link"><span class="toc-num">21</span>해시 테이블과 맵</a>
+    <a href="/zero-to-hero-programming/phase-5.html#ch22" class="toc-link"><span class="toc-num">22</span>트리</a>
+    <a href="/zero-to-hero-programming/phase-5.html#ch23" class="toc-link"><span class="toc-num">23</span>그래프</a>
   </div>
   <div class="toc-group">
     <div class="toc-group-title">알고리즘</div>
-    <a href="phase-6.html#ch24" class="toc-link"><span class="toc-num">24</span>탐색과 정렬</a>
-    <a href="phase-6.html#ch25" class="toc-link"><span class="toc-num">25</span>재귀와 동적 프로그래밍</a>
-    <a href="phase-6.html#ch26" class="toc-link"><span class="toc-num">26</span>알고리즘 패턴</a>
-    <a href="phase-6.html#ch27" class="toc-link"><span class="toc-num">27</span>그래프 알고리즘</a>
+    <a href="/zero-to-hero-programming/phase-6.html#ch24" class="toc-link"><span class="toc-num">24</span>탐색과 정렬</a>
+    <a href="/zero-to-hero-programming/phase-6.html#ch25" class="toc-link"><span class="toc-num">25</span>재귀와 동적 프로그래밍</a>
+    <a href="/zero-to-hero-programming/phase-6.html#ch26" class="toc-link"><span class="toc-num">26</span>알고리즘 패턴</a>
+    <a href="/zero-to-hero-programming/phase-6.html#ch27" class="toc-link"><span class="toc-num">27</span>그래프 알고리즘</a>
   </div>
   <div class="toc-group">
     <div class="toc-group-title">엔지니어링 기술</div>
-    <a href="phase-7.html#ch28" class="toc-link"><span class="toc-num">28</span>디자인 패턴과 SOLID</a>
-    <a href="phase-7.html#ch29" class="toc-link"><span class="toc-num">29</span>SQL과 쿼리 마스터</a>
-    <a href="phase-7.html#ch30" class="toc-link"><span class="toc-num">30</span>트랜잭션과 NoSQL</a>
-    <a href="phase-7.html#ch31" class="toc-link"><span class="toc-num">31</span>네트워킹과 인터넷</a>
-    <a href="phase-7.html#ch32" class="toc-link"><span class="toc-num">32</span>동시성과 병렬 처리</a>
-    <a href="phase-7.html#ch33" class="toc-link"><span class="toc-num">33</span>보안 엔지니어링</a>
+    <a href="/zero-to-hero-programming/phase-7.html#ch28" class="toc-link"><span class="toc-num">28</span>디자인 패턴과 SOLID</a>
+    <a href="/zero-to-hero-programming/phase-7.html#ch29" class="toc-link"><span class="toc-num">29</span>SQL과 쿼리 마스터</a>
+    <a href="/zero-to-hero-programming/phase-7.html#ch30" class="toc-link"><span class="toc-num">30</span>트랜잭션과 NoSQL</a>
+    <a href="/zero-to-hero-programming/phase-7.html#ch31" class="toc-link"><span class="toc-num">31</span>네트워킹과 인터넷</a>
+    <a href="/zero-to-hero-programming/phase-7.html#ch32" class="toc-link"><span class="toc-num">32</span>동시성과 병렬 처리</a>
+    <a href="/zero-to-hero-programming/phase-7.html#ch33" class="toc-link"><span class="toc-num">33</span>보안 엔지니어링</a>
   </div>
   <div class="toc-group">
     <div class="toc-group-title">시스템과 확장</div>
-    <a href="phase-8.html#ch34" class="toc-link"><span class="toc-num">34</span>시스템 설계</a>
-    <a href="phase-8.html#ch35" class="toc-link"><span class="toc-num">35</span>분산 시스템</a>
-    <a href="phase-8.html#ch36" class="toc-link"><span class="toc-num">36</span>성능과 관측 가능성</a>
-    <a href="phase-8.html#ch37" class="toc-link"><span class="toc-num">37</span>대규모 코드베이스 탐색</a>
+    <a href="/zero-to-hero-programming/phase-8.html#ch34" class="toc-link"><span class="toc-num">34</span>시스템 설계</a>
+    <a href="/zero-to-hero-programming/phase-8.html#ch35" class="toc-link"><span class="toc-num">35</span>분산 시스템</a>
+    <a href="/zero-to-hero-programming/phase-8.html#ch36" class="toc-link"><span class="toc-num">36</span>성능과 관측 가능성</a>
+    <a href="/zero-to-hero-programming/phase-8.html#ch37" class="toc-link"><span class="toc-num">37</span>대규모 코드베이스 탐색</a>
   </div>
   <div class="toc-group">
     <div class="toc-group-title">AI 레벨 1~5</div>
-    <a href="phase-9.html#ch38" class="toc-link"><span class="toc-num">38</span>AI 코드 평가와 지시</a>
-    <a href="phase-9.html#ch39" class="toc-link"><span class="toc-num">39</span>레벨 1&amp;2 — 탭 자동완성과 에이전트 IDE</a>
-    <a href="phase-9.html#ch40" class="toc-link"><span class="toc-num">40</span>레벨 3 — 컨텍스트 엔지니어링</a>
-    <a href="phase-9.html#ch41" class="toc-link"><span class="toc-num">41</span>레벨 4 — 복합 엔지니어링</a>
-    <a href="phase-9.html#ch42" class="toc-link"><span class="toc-num">42</span>레벨 5 — MCP, 스킬, 기능</a>
+    <a href="/zero-to-hero-programming/phase-9.html#ch38" class="toc-link"><span class="toc-num">38</span>AI 코드 평가와 지시</a>
+    <a href="/zero-to-hero-programming/phase-9.html#ch39" class="toc-link"><span class="toc-num">39</span>레벨 1&amp;2 — 탭 자동완성과 에이전트 IDE</a>
+    <a href="/zero-to-hero-programming/phase-9.html#ch40" class="toc-link"><span class="toc-num">40</span>레벨 3 — 컨텍스트 엔지니어링</a>
+    <a href="/zero-to-hero-programming/phase-9.html#ch41" class="toc-link"><span class="toc-num">41</span>레벨 4 — 복합 엔지니어링</a>
+    <a href="/zero-to-hero-programming/phase-9.html#ch42" class="toc-link"><span class="toc-num">42</span>레벨 5 — MCP, 스킬, 기능</a>
   </div>
   <div class="toc-group">
     <div class="toc-group-title">AI 레벨 6~8</div>
-    <a href="phase-10.html#ch43" class="toc-link"><span class="toc-num">43</span>레벨 6 — 하네스 엔지니어링</a>
-    <a href="phase-10.html#ch44" class="toc-link"><span class="toc-num">44</span>레벨 7 — 백그라운드 에이전트</a>
-    <a href="phase-10.html#ch45" class="toc-link"><span class="toc-num">45</span>Docker에서의 Claude Code</a>
-    <a href="phase-10.html#ch46" class="toc-link"><span class="toc-num">46</span>레벨 8 — 자율 에이전트 팀</a>
-    <a href="phase-10.html#ch47" class="toc-link"><span class="toc-num">47</span>멀티플레이어 효과</a>
+    <a href="/zero-to-hero-programming/phase-10.html#ch43" class="toc-link"><span class="toc-num">43</span>레벨 6 — 하네스 엔지니어링</a>
+    <a href="/zero-to-hero-programming/phase-10.html#ch44" class="toc-link"><span class="toc-num">44</span>레벨 7 — 백그라운드 에이전트</a>
+    <a href="/zero-to-hero-programming/phase-10.html#ch45" class="toc-link"><span class="toc-num">45</span>Docker에서의 Claude Code</a>
+    <a href="/zero-to-hero-programming/phase-10.html#ch46" class="toc-link"><span class="toc-num">46</span>레벨 8 — 자율 에이전트 팀</a>
+    <a href="/zero-to-hero-programming/phase-10.html#ch47" class="toc-link"><span class="toc-num">47</span>멀티플레이어 효과</a>
   </div>
   <div class="toc-group">
     <div class="toc-group-title">참고 자료</div>
-    <a href="appendices.html#glossary" class="toc-link"><span class="toc-num">&oplus;</span>용어집</a>
-    <a href="appendices.html#prompt-library" class="toc-link"><span class="toc-num">&oplus;</span>프롬프트 라이브러리</a>
-    <a href="appendices.html#self-assessment" class="toc-link"><span class="toc-num">&oplus;</span>자기 평가</a>
-    <a href="appendices.html#common-mistakes" class="toc-link"><span class="toc-num">&oplus;</span>흔한 실수</a>
-    <a href="appendices.html#appendix-d" class="toc-link"><span class="toc-num">&oplus;</span>문제 해결</a>
-    <a href="appendices.html#appendix-e" class="toc-link"><span class="toc-num">&oplus;</span>리소스</a>
+    <a href="/zero-to-hero-programming/appendices.html#glossary" class="toc-link"><span class="toc-num">&oplus;</span>용어집</a>
+    <a href="/zero-to-hero-programming/appendices.html#prompt-library" class="toc-link"><span class="toc-num">&oplus;</span>프롬프트 라이브러리</a>
+    <a href="/zero-to-hero-programming/appendices.html#self-assessment" class="toc-link"><span class="toc-num">&oplus;</span>자기 평가</a>
+    <a href="/zero-to-hero-programming/appendices.html#common-mistakes" class="toc-link"><span class="toc-num">&oplus;</span>흔한 실수</a>
+    <a href="/zero-to-hero-programming/appendices.html#appendix-d" class="toc-link"><span class="toc-num">&oplus;</span>문제 해결</a>
+    <a href="/zero-to-hero-programming/appendices.html#appendix-e" class="toc-link"><span class="toc-num">&oplus;</span>리소스</a>
   </div>
 </aside>
 </aside>
@@ -2081,8 +2082,8 @@ print("All tests passed!")
 </section>
 
 <nav class="phase-nav">
-  <a href="phase-4.html" class="phase-nav-link prev"><span class="phase-nav-label">이전 페이즈</span>&larr; 페이즈 4: 구축과 배포</a>
-  <a href="phase-6.html" class="phase-nav-link next"><span class="phase-nav-label">다음 페이즈</span>페이즈 6: 알고리즘 &rarr;</a>
+  <a href="/zero-to-hero-programming/phase-4.html" class="phase-nav-link prev"><span class="phase-nav-label">이전 페이즈</span>&larr; 페이즈 4: 구축과 배포</a>
+  <a href="/zero-to-hero-programming/phase-6.html" class="phase-nav-link next"><span class="phase-nav-label">다음 페이즈</span>페이즈 6: 알고리즘 &rarr;</a>
 </nav>
 
 </div>
@@ -2092,14 +2093,14 @@ print("All tests passed!")
 <p>제로 투 히어로: 프로그래밍에서 멀티 에이전트 Claude Code까지 &middot; 2026년 3월</p>
 </footer>
 
-<script src="../js/progress.js"></script>
+<script src="/zero-to-hero-programming/js/progress.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/ace-builds@1.36.5/src-min-noconflict/ace.js"></script>
-<script src="../js/theme.js"></script>
-<script src="../js/sidebar.js"></script>
-<script src="../js/shared.js"></script>
-<script src="../js/ace-init.js"></script>
-<script src="../js/pyodide-runner.js"></script>
-<script src="../js/quiz.js"></script>
-<script src="../js/exercise-runner.js"></script>
+<script src="/zero-to-hero-programming/js/theme.js"></script>
+<script src="/zero-to-hero-programming/js/sidebar.js"></script>
+<script src="/zero-to-hero-programming/js/shared.js"></script>
+<script src="/zero-to-hero-programming/js/ace-init.js"></script>
+<script src="/zero-to-hero-programming/js/pyodide-runner.js"></script>
+<script src="/zero-to-hero-programming/js/quiz.js"></script>
+<script src="/zero-to-hero-programming/js/exercise-runner.js"></script>
 </body>
 </html>
