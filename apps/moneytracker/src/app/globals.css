@@ -1,0 +1,119 @@
+@import "tailwindcss";
+
+/* ───────────────────────────────────────────────────────────────────────────
+   "Private wealth terminal" — a calm, premium dark theme.
+   Deep ink-green canvas, warm cream ink, emerald for inflow, gold accent,
+   coral for spend. Serif display for figures, grotesque for UI, mono for data.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+@theme {
+  --color-ink: #0a0f0d;
+  --color-ink-2: #0e1512;
+  --color-surface: #121b17;
+  --color-surface-2: #16211c;
+  --color-line: #20302a;
+  --color-line-2: #2a3d35;
+
+  --color-cream: #f3efe6;
+  --color-cream-dim: #c4c9c1;
+  --color-muted: #7d8a83;
+  --color-faint: #55615b;
+
+  --color-emerald: #46d39a;
+  --color-emerald-deep: #1f9d6f;
+  --color-gold: #e3b341;
+  --color-gold-soft: #d9b878;
+  --color-coral: #f0796a;
+  --color-coral-deep: #d65543;
+
+  --font-display: var(--font-fraunces);
+  --font-sans: var(--font-hanken);
+  --font-mono: var(--font-jetbrains);
+
+  --radius-card: 18px;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    background-color: var(--color-ink);
+    color: var(--color-cream);
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+    font-feature-settings: "ss01";
+    /* atmosphere: layered radial glows + a faint grain */
+    background-image:
+      radial-gradient(900px 600px at 85% -10%, rgba(70, 211, 154, 0.07), transparent 60%),
+      radial-gradient(700px 500px at -10% 10%, rgba(227, 179, 65, 0.05), transparent 55%);
+    background-attachment: fixed;
+    min-height: 100dvh;
+  }
+  /* fine grain overlay for texture */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  ::selection {
+    background: var(--color-emerald);
+    color: var(--color-ink);
+  }
+  /* numbers default to tabular, lined */
+  .tnum {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+}
+
+@layer components {
+  .card {
+    background: linear-gradient(180deg, var(--color-surface), var(--color-ink-2));
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-card);
+    position: relative;
+  }
+  .card-hover {
+    transition: border-color 0.25s ease, transform 0.25s ease;
+  }
+  .card-hover:hover {
+    border-color: var(--color-line-2);
+    transform: translateY(-2px);
+  }
+  .hairline {
+    border-color: var(--color-line);
+  }
+  .label-eyebrow {
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    font-weight: 600;
+  }
+}
+
+/* staggered entrance for dashboard cards */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.rise {
+  animation: rise 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rise { animation: none; }
+  .card-hover { transition: none; }
+}
+
+/* scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line-2) transparent;
+}
