@@ -16,8 +16,6 @@ import { encrypt, decrypt } from "./crypto";
 const BLOB_PATH = "moneytracker/state.enc";
 const LOCAL_PATH = path.join(process.cwd(), ".data", "state.enc");
 
-let memo: { state: AppState } | null = null;
-
 function blobEnabled(): boolean {
   return !!process.env.BLOB_READ_WRITE_TOKEN;
 }
@@ -54,16 +52,17 @@ async function fetchFromBlob(): Promise<AppState | null> {
 }
 
 export async function loadState(): Promise<AppState> {
-  if (memo) return memo.state;
-  const state =
-    (blobEnabled() ? await fetchFromBlob() : await fetchFromFile()) ?? emptyState();
-  memo = { state };
-  return state;
+  // Always read from durable storage. A module-level cache would go stale across
+  // warm serverless instances (one instance writes, another serves an old copy),
+  // so for correctness we re-fetch every call. A single page render calls this
+  // once and threads the result through, so the cost is one fetch per request.
+  return (
+    (blobEnabled() ? await fetchFromBlob() : await fetchFromFile()) ?? emptyState()
+  );
 }
 
 export async function saveState(state: AppState): Promise<void> {
   state.updatedAt = new Date().toISOString();
-  memo = { state };
   const json = JSON.stringify(state);
   const body = canEncrypt() ? encrypt(json) : json;
   if (blobEnabled()) {
@@ -95,9 +94,4 @@ export async function mutateState(
   await fn(state);
   await saveState(state);
   return state;
-}
-
-/** Test/maintenance helper: drop the in-memory cache. */
-export function clearStateCache(): void {
-  memo = null;
 }
