@@ -82,6 +82,15 @@ export function cashFlowByMonth(
   return rows.slice(-months);
 }
 
+/** All months (yyyy-mm) that have any spending or income, oldest → newest. */
+export function availableMonths(state: AppState): string[] {
+  const set = new Set<string>();
+  for (const t of state.transactions) {
+    if (isSpend(t) || isIncome(t)) set.add(monthKey(t.date));
+  }
+  return [...set].sort((a, b) => a.localeCompare(b));
+}
+
 export interface CategorySpend {
   category: string;
   label: string;
@@ -115,6 +124,81 @@ export function spendingByCategory(
     row.count += 1;
   }
   return [...map.values()].sort((a, b) => b.total - a.total);
+}
+
+export interface MonthComposition {
+  month: string;
+  total: number;
+  segments: CategorySpend[]; // sorted desc, share computable from total
+}
+
+/** Per-month spending broken down by category — for the stacked habits chart. */
+export function monthlyComposition(
+  state: AppState,
+  monthsBack = 12,
+): MonthComposition[] {
+  const months = availableMonths(state).slice(-monthsBack);
+  return months.map((m) => {
+    const segments = spendingByCategory(state, m);
+    const total = segments.reduce((a, c) => a + c.total, 0);
+    return { month: m, total, segments };
+  });
+}
+
+export interface CategoryHabit {
+  category: string;
+  label: string;
+  color: string;
+  glyph: string;
+  total: number; // total over the window
+  monthlyAvg: number; // average per active month
+  monthsSeen: number; // how many months it appeared in (consistency)
+  share: number; // fraction of all spend in the window
+}
+
+/**
+ * Aggregate spending habits over the last N months: which categories you spend
+ * on, how much on average per month, and how consistently.
+ */
+export function categoryHabits(
+  state: AppState,
+  monthsBack = 12,
+): { habits: CategoryHabit[]; months: number; avgMonthlyTotal: number } {
+  const comp = monthlyComposition(state, monthsBack);
+  const months = comp.length || 1;
+  const grand = comp.reduce((a, c) => a + c.total, 0) || 1;
+
+  const acc = new Map<string, CategoryHabit>();
+  for (const m of comp) {
+    for (const seg of m.segments) {
+      const h =
+        acc.get(seg.category) ??
+        {
+          category: seg.category,
+          label: seg.label,
+          color: seg.color,
+          glyph: seg.glyph,
+          total: 0,
+          monthlyAvg: 0,
+          monthsSeen: 0,
+          share: 0,
+        };
+      h.total += seg.total;
+      h.monthsSeen += 1;
+      acc.set(seg.category, h);
+    }
+  }
+  const habits = [...acc.values()].map((h) => ({
+    ...h,
+    monthlyAvg: h.total / months,
+    share: h.total / grand,
+  }));
+  habits.sort((a, b) => b.total - a.total);
+  return {
+    habits,
+    months,
+    avgMonthlyTotal: grand / months,
+  };
 }
 
 export interface MerchantSpend {
