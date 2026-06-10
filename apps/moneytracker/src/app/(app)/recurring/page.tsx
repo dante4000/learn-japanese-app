@@ -108,7 +108,7 @@ export default async function RecurringPage() {
             <StatCard
               label="Recurring income"
               value={`${formatMoney(monthlyIncome, cur, { cents: false })}/mo`}
-              accent="emerald"
+              accent="blue"
               delay={60}
             />
           </div>

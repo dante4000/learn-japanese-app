@@ -15,7 +15,7 @@ function getSnapshot(): "dark" | "light" {
   return document.documentElement.dataset.theme === "light" ? "light" : "dark";
 }
 function getServerSnapshot(): "dark" | "light" {
-  return "dark";
+  return "light";
 }
 
 export function ThemeToggle({ className = "" }: { className?: string }) {

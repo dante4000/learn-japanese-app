@@ -41,21 +41,21 @@ export function NetWorthArea({
     >
       <defs>
         <linearGradient id="nwfill" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="var(--color-emerald)" stopOpacity="0.28" />
-          <stop offset="100%" stopColor="var(--color-emerald)" stopOpacity="0" />
+          <stop offset="0%" stopColor="var(--color-blue)" stopOpacity="0.28" />
+          <stop offset="100%" stopColor="var(--color-blue)" stopOpacity="0" />
         </linearGradient>
       </defs>
       <path d={area} fill="url(#nwfill)" />
       <path
         d={line}
         fill="none"
-        stroke="var(--color-emerald)"
+        stroke="var(--color-blue)"
         strokeWidth={2}
         strokeLinejoin="round"
         strokeLinecap="round"
       />
       {pts.map((p, i) => (
-        <circle key={i} cx={p[0]} cy={p[1]} r={2.5} fill="var(--color-emerald)">
+        <circle key={i} cx={p[0]} cy={p[1]} r={2.5} fill="var(--color-blue)">
           <title>
             {formatDate(snapshots[i].date)}:{" "}
             {formatMoney(snapshots[i].netWorth, currency)}

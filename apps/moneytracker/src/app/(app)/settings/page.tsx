@@ -30,8 +30,8 @@ export default async function SettingsPage() {
           ) : (
             <div className="rounded-xl border border-dashed hairline bg-surface p-4 text-sm text-muted">
               Plaid isn’t configured yet. Add{" "}
-              <code className="text-gold-soft">PLAID_CLIENT_ID</code> and{" "}
-              <code className="text-gold-soft">PLAID_SECRET</code> in your
+              <code className="text-slate-soft">PLAID_CLIENT_ID</code> and{" "}
+              <code className="text-slate-soft">PLAID_SECRET</code> in your
               environment, then redeploy. Until then, use CSV import →
             </div>
           )}
@@ -49,21 +49,21 @@ export default async function SettingsPage() {
       <SectionCard title="Security" delay={140} className="mt-4">
         <ul className="space-y-2.5 text-sm text-cream-dim">
           <li className="flex gap-2.5">
-            <span className="text-emerald">✓</span>
+            <span className="text-blue">✓</span>
             Single-user access, protected by your passphrase with login
             rate-limiting.
           </li>
           <li className="flex gap-2.5">
-            <span className="text-emerald">✓</span>
+            <span className="text-blue">✓</span>
             All data is AES-256-GCM encrypted at rest; the blob holds only
             ciphertext.
           </li>
           <li className="flex gap-2.5">
-            <span className="text-emerald">✓</span>
+            <span className="text-blue">✓</span>
             Plaid access tokens are encrypted and never sent to the browser.
           </li>
           <li className="flex gap-2.5">
-            <span className="text-emerald">✓</span>
+            <span className="text-blue">✓</span>
             Session cookie is HTTP-only, signed, and SameSite-strict over HTTPS.
           </li>
         </ul>

@@ -62,7 +62,7 @@ export default function OAuthReturnPage() {
   return (
     <main className="grid min-h-dvh place-items-center px-5 text-center">
       <div>
-        <div className="mx-auto mb-5 h-10 w-10 animate-spin rounded-full border-2 border-line border-t-emerald" />
+        <div className="mx-auto mb-5 h-10 w-10 animate-spin rounded-full border-2 border-line border-t-blue" />
         <p className="text-sm text-cream-dim">{msg}</p>
       </div>
     </main>

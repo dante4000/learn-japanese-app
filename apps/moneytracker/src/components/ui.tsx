@@ -28,16 +28,16 @@ export function StatCard({
   label: string;
   value: string;
   sub?: ReactNode;
-  accent?: "emerald" | "coral" | "gold" | "cream";
+  accent?: "blue" | "coral" | "slate" | "cream";
   delay?: number;
 }) {
   const color =
-    accent === "emerald"
-      ? "text-emerald"
+    accent === "blue"
+      ? "text-blue"
       : accent === "coral"
         ? "text-coral"
-        : accent === "gold"
-          ? "text-gold"
+        : accent === "slate"
+          ? "text-slate"
           : "text-cream";
   return (
     <div
@@ -87,7 +87,7 @@ export function SectionCard({
 export function EmptyState() {
   return (
     <div className="card rise grid place-items-center px-6 py-20 text-center">
-      <span className="mb-5 grid h-16 w-16 place-items-center rounded-2xl border hairline bg-surface-2 text-gold">
+      <span className="mb-5 grid h-16 w-16 place-items-center rounded-2xl border hairline bg-surface-2 text-slate">
         <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M3 7h18v12H3zM3 7l3-4h12l3 4M16 13h.01"/></svg>
       </span>
       <h2 className="font-display text-2xl text-cream">No accounts yet</h2>
@@ -97,7 +97,7 @@ export function EmptyState() {
       </p>
       <Link
         href="/settings"
-        className="mt-6 rounded-xl bg-emerald px-5 py-3 font-semibold text-ink transition-opacity hover:opacity-90"
+        className="mt-6 rounded-xl bg-blue px-5 py-3 font-semibold text-ink transition-opacity hover:opacity-90"
       >
         Connect an account
       </Link>

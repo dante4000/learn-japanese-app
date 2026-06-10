@@ -72,12 +72,12 @@ export function TransactionsView({
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="Search merchants…"
-          className="min-w-40 flex-1 rounded-xl border hairline bg-surface px-4 py-2.5 text-sm text-cream outline-none placeholder:text-faint focus:border-emerald"
+          className="min-w-40 flex-1 rounded-xl border hairline bg-surface px-4 py-2.5 text-sm text-cream outline-none placeholder:text-faint focus:border-blue"
         />
         <select
           value={cat}
           onChange={(e) => setCat(e.target.value)}
-          className="rounded-xl border hairline bg-surface px-3 py-2.5 text-sm text-cream outline-none focus:border-emerald"
+          className="rounded-xl border hairline bg-surface px-3 py-2.5 text-sm text-cream outline-none focus:border-blue"
         >
           <option value="ALL">All categories</option>
           {Object.values(CATEGORIES).map((c) => (
@@ -90,7 +90,7 @@ export function TransactionsView({
           <select
             value={acct}
             onChange={(e) => setAcct(e.target.value)}
-            className="rounded-xl border hairline bg-surface px-3 py-2.5 text-sm text-cream outline-none focus:border-emerald"
+            className="rounded-xl border hairline bg-surface px-3 py-2.5 text-sm text-cream outline-none focus:border-blue"
           >
             <option value="ALL">All accounts</option>
             {accounts.map((a) => (
@@ -137,7 +137,7 @@ export function TransactionsView({
                             </span>
                           )}
                           {t.pending && (
-                            <span className="rounded bg-surface-2 px-1.5 py-0.5 text-[0.6rem] text-gold-soft">
+                            <span className="rounded bg-surface-2 px-1.5 py-0.5 text-[0.6rem] text-slate-soft">
                               pending
                             </span>
                           )}
@@ -147,7 +147,7 @@ export function TransactionsView({
                           <span>·</span>
                           <button
                             onClick={() => setEditing(open ? null : t.id)}
-                            className="hover:text-emerald"
+                            className="hover:text-blue"
                             style={{ color: meta.color }}
                           >
                             {meta.label}
@@ -163,7 +163,7 @@ export function TransactionsView({
                         </div>
                       </div>
                       <span
-                        className={`tnum text-sm ${t.amount < 0 ? "text-emerald" : "text-cream"}`}
+                        className={`tnum text-sm ${t.amount < 0 ? "text-blue" : "text-cream"}`}
                       >
                         {formatMoney(-t.amount, currency, { sign: true })}
                       </span>

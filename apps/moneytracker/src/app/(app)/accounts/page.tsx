@@ -11,7 +11,7 @@ function AccountRow({ a, currency }: { a: Account; currency: string }) {
   const bal = a.balances.current ?? 0;
   return (
     <li className="flex items-center gap-3 py-3">
-      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border hairline bg-surface-2 text-xs uppercase text-gold-soft">
+      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border hairline bg-surface-2 text-xs uppercase text-slate-soft">
         {a.subtype?.slice(0, 2) ?? a.type.slice(0, 2)}
       </span>
       <div className="min-w-0">
@@ -50,7 +50,7 @@ export default async function AccountsPage() {
       <div className="mb-5 grid grid-cols-3 gap-4">
         <div className="card rise p-5">
           <div className="label-eyebrow">Assets</div>
-          <div className="tnum mt-2 text-xl text-emerald">
+          <div className="tnum mt-2 text-xl text-blue">
             {formatMoney(nw.totalAssets, cur, { cents: false })}
           </div>
         </div>

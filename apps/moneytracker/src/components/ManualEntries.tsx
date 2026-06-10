@@ -50,11 +50,11 @@ export function ManualEntries({
               className="flex items-center gap-3 rounded-xl border hairline bg-surface px-4 py-2.5"
             >
               <span
-                className={`h-2 w-2 rounded-full ${m.kind === "asset" ? "bg-emerald" : "bg-coral"}`}
+                className={`h-2 w-2 rounded-full ${m.kind === "asset" ? "bg-blue" : "bg-coral"}`}
               />
               <span className="text-sm text-cream">{m.name}</span>
               <span
-                className={`tnum ml-auto text-sm ${m.kind === "asset" ? "text-emerald" : "text-coral"}`}
+                className={`tnum ml-auto text-sm ${m.kind === "asset" ? "text-blue" : "text-coral"}`}
               >
                 {m.kind === "asset" ? "" : "−"}
                 {formatMoney(m.value, currency, { cents: false })}
@@ -77,19 +77,19 @@ export function ManualEntries({
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="e.g. Home, Car, Cash"
-          className="min-w-32 flex-1 rounded-xl border hairline bg-surface px-3 py-2.5 text-sm text-cream outline-none placeholder:text-faint focus:border-emerald"
+          className="min-w-32 flex-1 rounded-xl border hairline bg-surface px-3 py-2.5 text-sm text-cream outline-none placeholder:text-faint focus:border-blue"
         />
         <input
           value={value}
           onChange={(e) => setValue(e.target.value)}
           inputMode="decimal"
           placeholder="Value"
-          className="tnum w-28 rounded-xl border hairline bg-surface px-3 py-2.5 text-sm text-cream outline-none placeholder:text-faint focus:border-emerald"
+          className="tnum w-28 rounded-xl border hairline bg-surface px-3 py-2.5 text-sm text-cream outline-none placeholder:text-faint focus:border-blue"
         />
         <select
           value={kind}
           onChange={(e) => setKind(e.target.value as "asset" | "liability")}
-          className="rounded-xl border hairline bg-surface px-3 py-2.5 text-sm text-cream outline-none focus:border-emerald"
+          className="rounded-xl border hairline bg-surface px-3 py-2.5 text-sm text-cream outline-none focus:border-blue"
         >
           <option value="asset">Asset</option>
           <option value="liability">Liability</option>
@@ -97,7 +97,7 @@ export function ManualEntries({
         <button
           type="submit"
           disabled={busy || !name || !value}
-          className="rounded-xl bg-emerald px-4 py-2.5 text-sm font-semibold text-ink transition-opacity hover:opacity-90 disabled:opacity-40"
+          className="rounded-xl bg-blue px-4 py-2.5 text-sm font-semibold text-ink transition-opacity hover:opacity-90 disabled:opacity-40"
         >
           Add
         </button>

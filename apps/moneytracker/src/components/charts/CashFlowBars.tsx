@@ -20,7 +20,7 @@ export function CashFlowBars({
               style={{
                 height: `${(d.income / max) * 100}%`,
                 background:
-                  "linear-gradient(180deg, var(--color-emerald), var(--color-emerald-deep))",
+                  "linear-gradient(180deg, var(--color-blue), var(--color-blue-deep))",
               }}
               title={`${formatMonth(d.month)} income: ${formatMoney(d.income, currency)}`}
             />

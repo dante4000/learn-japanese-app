@@ -55,7 +55,7 @@ export default async function OverviewPage() {
               {formatMoney(s.netWorth.netWorth, cur, { cents: false })}
             </div>
             <div className="mt-3 flex flex-wrap gap-x-6 gap-y-1 text-sm">
-              <span className="text-emerald">
+              <span className="text-blue">
                 {formatMoney(s.netWorth.totalAssets, cur, { cents: false })}{" "}
                 <span className="text-muted">assets</span>
               </span>
@@ -80,7 +80,7 @@ export default async function OverviewPage() {
           delay={60}
           sub={
             s.spendingDeltaPct != null ? (
-              <span className={s.spendingDeltaPct <= 0 ? "text-emerald" : "text-coral"}>
+              <span className={s.spendingDeltaPct <= 0 ? "text-blue" : "text-coral"}>
                 {s.spendingDeltaPct <= 0 ? "▼" : "▲"}{" "}
                 {Math.abs(Math.round(s.spendingDeltaPct))}% vs last month
               </span>
@@ -92,13 +92,13 @@ export default async function OverviewPage() {
         <StatCard
           label="Income this month"
           value={formatMoney(s.monthIncome, cur, { cents: false })}
-          accent="emerald"
+          accent="blue"
           delay={120}
         />
         <StatCard
           label="Net cash flow"
           value={formatMoney(s.monthNet, cur, { sign: true, cents: false })}
-          accent={s.monthNet >= 0 ? "emerald" : "coral"}
+          accent={s.monthNet >= 0 ? "blue" : "coral"}
           delay={180}
           sub="Income minus spending"
         />
@@ -144,7 +144,7 @@ export default async function OverviewPage() {
           <CashFlowBars data={flows} currency={cur} />
           <div className="mt-4 flex items-center justify-center gap-5 text-xs text-muted">
             <span className="flex items-center gap-1.5">
-              <span className="h-2 w-2 rounded-full bg-emerald" /> Income
+              <span className="h-2 w-2 rounded-full bg-blue" /> Income
             </span>
             <span className="flex items-center gap-1.5">
               <span className="h-2 w-2 rounded-full bg-coral" /> Spending
@@ -160,7 +160,7 @@ export default async function OverviewPage() {
             <ul className="space-y-3">
               {merchants.map((m) => (
                 <li key={m.name} className="flex items-center gap-3">
-                  <span className="grid h-9 w-9 place-items-center rounded-lg border hairline bg-surface-2 text-sm text-gold-soft">
+                  <span className="grid h-9 w-9 place-items-center rounded-lg border hairline bg-surface-2 text-sm text-slate-soft">
                     {m.name.slice(0, 1).toUpperCase()}
                   </span>
                   <div className="min-w-0">
@@ -182,7 +182,7 @@ export default async function OverviewPage() {
           title="Recent activity"
           delay={340}
           action={
-            <Link href="/transactions" className="text-xs text-emerald hover:underline">
+            <Link href="/transactions" className="text-xs text-blue hover:underline">
               View all →
             </Link>
           }
@@ -202,7 +202,7 @@ export default async function OverviewPage() {
                     <div className="text-xs text-faint">{formatDate(t.date)}</div>
                   </div>
                   <span
-                    className={`tnum ml-auto text-sm ${t.amount < 0 ? "text-emerald" : "text-cream"}`}
+                    className={`tnum ml-auto text-sm ${t.amount < 0 ? "text-blue" : "text-cream"}`}
                   >
                     {formatMoney(-t.amount, cur, { sign: true })}
                   </span>

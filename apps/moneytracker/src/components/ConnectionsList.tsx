@@ -35,9 +35,9 @@ export function ConnectionsList({ items }: { items: Item[] }) {
           <span
             className={`h-2 w-2 rounded-full ${
               it.status === "healthy"
-                ? "bg-emerald"
+                ? "bg-blue"
                 : it.status === "needs_reauth"
-                  ? "bg-gold"
+                  ? "bg-slate"
                   : "bg-coral"
             }`}
           />

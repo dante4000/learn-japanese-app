@@ -70,7 +70,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <aside className="sticky top-0 hidden h-dvh w-60 shrink-0 flex-col justify-between border-r hairline px-5 py-7 md:flex">
         <div>
           <Link href="/" className="mb-10 flex items-center gap-2.5">
-            <span className="grid h-9 w-9 place-items-center rounded-xl bg-emerald text-ink">
+            <span className="grid h-9 w-9 place-items-center rounded-xl bg-blue text-ink">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 7h18v12H3zM3 7l3-4h12l3 4M16 13h.01"/></svg>
             </span>
             <span className="font-display text-xl tracking-tight text-cream">
@@ -91,7 +91,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 <Glyph d={item.icon} />
                 {item.label}
                 {isActive(item.href) && (
-                  <span className="ml-auto h-1.5 w-1.5 rounded-full bg-emerald" />
+                  <span className="ml-auto h-1.5 w-1.5 rounded-full bg-blue" />
                 )}
               </Link>
             ))}
@@ -117,7 +117,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             </button>
             <ThemeToggle />
           </div>
-          {msg && <span className="text-center text-xs text-emerald">{msg}</span>}
+          {msg && <span className="text-center text-xs text-blue">{msg}</span>}
         </div>
       </aside>
 
@@ -126,7 +126,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         {/* Mobile top bar */}
         <div className="mb-6 flex items-center justify-between md:hidden">
           <Link href="/" className="flex items-center gap-2">
-            <span className="grid h-8 w-8 place-items-center rounded-lg bg-emerald text-ink">
+            <span className="grid h-8 w-8 place-items-center rounded-lg bg-blue text-ink">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 7h18v12H3zM3 7l3-4h12l3 4"/></svg>
             </span>
             <span className="font-display text-lg text-cream">Vault</span>
@@ -152,7 +152,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             key={item.href}
             href={item.href}
             className={`flex flex-1 flex-col items-center gap-1 rounded-lg py-1.5 text-[0.6rem] ${
-              isActive(item.href) ? "text-emerald" : "text-muted"
+              isActive(item.href) ? "text-blue" : "text-muted"
             }`}
           >
             <Glyph d={item.icon} />

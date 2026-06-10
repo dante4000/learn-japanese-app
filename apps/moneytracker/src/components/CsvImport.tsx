@@ -64,7 +64,7 @@ export function CsvImport({ accounts }: { accounts: Account[] }) {
   }
 
   const field =
-    "w-full rounded-xl border hairline bg-surface px-3 py-2.5 text-sm text-cream outline-none placeholder:text-faint focus:border-emerald";
+    "w-full rounded-xl border hairline bg-surface px-3 py-2.5 text-sm text-cream outline-none placeholder:text-faint focus:border-blue";
 
   return (
     <form onSubmit={submit} className="space-y-3">
@@ -83,14 +83,14 @@ export function CsvImport({ accounts }: { accounts: Account[] }) {
           <button
             type="button"
             onClick={() => setMode("existing")}
-            className={`flex-1 rounded-xl border px-3 py-2 text-xs ${mode === "existing" ? "border-emerald text-cream" : "hairline text-muted"}`}
+            className={`flex-1 rounded-xl border px-3 py-2 text-xs ${mode === "existing" ? "border-blue text-cream" : "hairline text-muted"}`}
           >
             Add to existing account
           </button>
           <button
             type="button"
             onClick={() => setMode("new")}
-            className={`flex-1 rounded-xl border px-3 py-2 text-xs ${mode === "new" ? "border-emerald text-cream" : "hairline text-muted"}`}
+            className={`flex-1 rounded-xl border px-3 py-2 text-xs ${mode === "new" ? "border-blue text-cream" : "hairline text-muted"}`}
           >
             Create new account
           </button>
@@ -164,7 +164,7 @@ export function CsvImport({ accounts }: { accounts: Account[] }) {
       <button
         type="submit"
         disabled={busy || !csv}
-        className="w-full rounded-xl bg-gold py-2.5 text-sm font-semibold text-ink transition-opacity hover:opacity-90 disabled:opacity-40"
+        className="w-full rounded-xl bg-slate py-2.5 text-sm font-semibold text-ink transition-opacity hover:opacity-90 disabled:opacity-40"
       >
         {busy ? "Importing…" : "Import transactions"}
       </button>
