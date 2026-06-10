@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
+import { ThemeToggle } from "./ThemeToggle";
 
 const NAV = [
   { href: "/", label: "Overview", icon: "M3 12l9-8 9 8M5 10v10h14V10" },
@@ -107,12 +108,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             </span>
             {syncing ? "Syncing…" : "Sync now"}
           </button>
-          <button
-            onClick={logout}
-            className="rounded-xl px-3 py-2 text-xs text-faint transition-colors hover:text-coral"
-          >
-            Lock & sign out
-          </button>
+          <div className="flex items-center justify-between gap-2">
+            <button
+              onClick={logout}
+              className="rounded-xl px-3 py-2 text-xs text-faint transition-colors hover:text-coral"
+            >
+              Lock & sign out
+            </button>
+            <ThemeToggle />
+          </div>
           {msg && <span className="text-center text-xs text-emerald">{msg}</span>}
         </div>
       </aside>
@@ -127,13 +131,16 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             </span>
             <span className="font-display text-lg text-cream">Vault</span>
           </Link>
-          <button
-            onClick={refresh}
-            disabled={syncing}
-            className="rounded-lg border hairline bg-surface px-3 py-2 text-xs text-cream disabled:opacity-50"
-          >
-            {syncing ? "Syncing…" : "Sync"}
-          </button>
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <button
+              onClick={refresh}
+              disabled={syncing}
+              className="rounded-lg border hairline bg-surface px-3 py-2 text-xs text-cream disabled:opacity-50"
+            >
+              {syncing ? "Syncing…" : "Sync"}
+            </button>
+          </div>
         </div>
         {children}
       </main>

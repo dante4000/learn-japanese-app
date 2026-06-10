@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -35,6 +36,9 @@ export default function LoginPage() {
 
   return (
     <main className="grid min-h-dvh place-items-center px-5">
+      <div className="absolute right-5 top-5">
+        <ThemeToggle />
+      </div>
       <div className="w-full max-w-sm rise">
         <div className="mb-8 flex flex-col items-center text-center">
           <span className="mb-5 grid h-14 w-14 place-items-center rounded-2xl bg-emerald text-ink shadow-lg shadow-emerald/20">

@@ -37,6 +37,8 @@
   html {
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    color-scheme: dark;
+    background-color: var(--color-ink);
   }
   body {
     background-color: var(--color-ink);
@@ -116,4 +118,43 @@
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--color-line-2) transparent;
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+   Light mode — "private wealth on cream paper". Same semantic class names; we
+   just remap the CSS variables. html[data-theme="light"] (specificity 0,1,1)
+   beats the @theme :root defaults (0,1,0), so the whole UI re-skins live.
+   ─────────────────────────────────────────────────────────────────────────── */
+html[data-theme="light"] {
+  color-scheme: light;
+
+  --color-ink: #ece6d8; /* page background */
+  --color-ink-2: #f3eee2; /* nav / sticky translucent base */
+  --color-surface: #fdfbf6; /* card top */
+  --color-surface-2: #f4efe2; /* chips, icon tiles */
+  --color-line: #ded6c4;
+  --color-line-2: #cabfa8;
+
+  --color-cream: #1f2620; /* primary text — deep ink green */
+  --color-cream-dim: #43504a;
+  --color-muted: #6d776e;
+  --color-faint: #9aa298;
+
+  --color-emerald: #0e9a6b; /* darker for contrast on light */
+  --color-emerald-deep: #0a734f;
+  --color-gold: #9a7714;
+  --color-gold-soft: #7c631f;
+  --color-coral: #cf4e3b;
+  --color-coral-deep: #aa3b2b;
+}
+
+html[data-theme="light"] body {
+  background-image:
+    radial-gradient(900px 600px at 85% -10%, rgba(14, 154, 107, 0.06), transparent 60%),
+    radial-gradient(700px 500px at -10% 10%, rgba(154, 119, 20, 0.05), transparent 55%);
+}
+
+html[data-theme="light"] body::before {
+  opacity: 0.02;
+  mix-blend-mode: multiply;
 }
