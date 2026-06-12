@@ -61,11 +61,17 @@ export default async function RecurringPage() {
   const state = await loadState();
   const cur = state.accounts[0]?.currency ?? "USD";
 
+  // Internal transfers between your own accounts (e.g. checking → savings) get
+  // detected by Plaid as both a recurring outflow AND a recurring inflow, which
+  // double-counts as a fake subscription and fake income. Exclude them.
+  const isInternalTransfer = (s: RecurringStream) =>
+    s.categoryPrimary === "TRANSFER_IN" || s.categoryPrimary === "TRANSFER_OUT";
+
   const subs = state.recurring
-    .filter((s) => s.type === "outflow")
+    .filter((s) => s.type === "outflow" && !isInternalTransfer(s))
     .sort((a, b) => monthlyEquivalent(b) - monthlyEquivalent(a));
   const income = state.recurring
-    .filter((s) => s.type === "inflow")
+    .filter((s) => s.type === "inflow" && !isInternalTransfer(s))
     .sort((a, b) => monthlyEquivalent(b) - monthlyEquivalent(a));
 
   const monthlySubs = subs
@@ -78,7 +84,7 @@ export default async function RecurringPage() {
   if (state.accounts.length === 0) {
     return (
       <div>
-        <PageHeading title="Recurring" subtitle="Subscriptions, bills, and income that repeat." />
+        <PageHeading title="Recurring" subtitle="Subscriptions, bills, and income that repeat. Transfers between your own accounts are ignored." />
         <EmptyState />
       </div>
     );
@@ -86,7 +92,7 @@ export default async function RecurringPage() {
 
   return (
     <div>
-      <PageHeading title="Recurring" subtitle="Subscriptions, bills, and income that repeat." />
+      <PageHeading title="Recurring" subtitle="Subscriptions, bills, and income that repeat. Transfers between your own accounts are ignored." />
 
       {state.recurring.length === 0 ? (
         <SectionCard>
