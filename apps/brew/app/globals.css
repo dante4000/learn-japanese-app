@@ -1,0 +1,251 @@
+@import "tailwindcss";
+
+/* ============================================================
+   양조 — a hanji-paper brewing journal
+   Ink on rice-paper. Vermilion seal, indigo rule, ochre wash.
+   ============================================================ */
+
+:root {
+  --paper: #f4f0e7;
+  --paper-deep: #ece6d9;
+  --paper-edge: #ddd4c2;
+  --ink: #20180f;
+  --ink-soft: #4a3f30;
+  --ink-faint: #6f6249;
+  --vermilion: #b23a2b;
+  --vermilion-deep: #8f2c20;
+  --indigo: #2c3a57;
+  --ochre: #b27a23;
+  --jade: #4a6b4f;
+  --line: rgba(32, 24, 15, 0.18);
+  --line-soft: rgba(32, 24, 15, 0.1);
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-vermilion: var(--vermilion);
+  --color-indigo: var(--indigo);
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-korean: var(--font-korean);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body), Georgia, serif;
+    font-size: 1.05rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(
+        110% 80% at 12% -10%,
+        rgba(178, 122, 35, 0.06),
+        transparent 60%
+      ),
+      radial-gradient(
+        90% 70% at 100% 0%,
+        rgba(44, 58, 87, 0.1),
+        transparent 55%
+      ),
+      radial-gradient(
+        80% 90% at 50% 120%,
+        rgba(178, 58, 43, 0.08),
+        transparent 60%
+      ),
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    background-attachment: fixed, fixed, fixed, fixed;
+  }
+
+  ::selection {
+    background: var(--vermilion);
+    color: var(--paper);
+  }
+}
+
+.kr {
+  font-family: var(--font-korean), var(--font-body), serif;
+}
+
+.display {
+  font-family: var(--font-display), Georgia, serif;
+  font-optical-sizing: auto;
+  letter-spacing: -0.01em;
+}
+
+.eyebrow {
+  font-family: var(--font-body), serif;
+  font-style: italic;
+  letter-spacing: 0.02em;
+  color: var(--ink-soft);
+}
+
+.tracky {
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+}
+
+.seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--vermilion);
+  color: var(--paper);
+  font-family: var(--font-korean), serif;
+  font-weight: 600;
+  border-radius: 6px;
+  box-shadow:
+    inset 0 0 0 2px rgba(233, 222, 198, 0.32),
+    0 6px 18px -8px rgba(143, 44, 32, 0.7);
+  line-height: 1;
+}
+
+.rule {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--line) 12%,
+    var(--line) 88%,
+    transparent
+  );
+}
+
+.double-rule {
+  border-top: 2px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+  height: 5px;
+}
+
+.card {
+  background:
+    linear-gradient(180deg, rgba(255, 253, 248, 0.6), rgba(236, 230, 217, 0.15)),
+    var(--paper-deep);
+  border: 1px solid var(--line);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.4) inset,
+    0 18px 40px -28px rgba(32, 24, 15, 0.55);
+}
+
+.inklink {
+  color: var(--indigo);
+  text-decoration: none;
+  background-image: linear-gradient(var(--indigo), var(--indigo));
+  background-size: 100% 1px;
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  transition: background-size 0.25s ease;
+}
+.inklink:hover {
+  background-size: 100% 2px;
+}
+
+.stage-grid {
+  display: grid;
+  grid-template-columns: 2.7rem 1fr;
+  gap: 0;
+}
+
+.amt {
+  font-family: var(--font-display), Georgia, serif;
+  font-variant-numeric: tabular-nums lining-nums;
+  letter-spacing: -0.01em;
+}
+
+.dial {
+  background: rgba(255, 252, 244, 0.55);
+  border: 1.5px solid var(--ink);
+  color: var(--ink);
+  font-family: var(--font-display), serif;
+  font-variant-numeric: tabular-nums;
+  border-radius: 4px;
+  outline: none;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+.dial:focus {
+  border-color: var(--vermilion);
+  box-shadow: 0 0 0 3px rgba(178, 58, 43, 0.16);
+}
+
+.stepper {
+  border: 1.5px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+  border-radius: 4px;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s;
+  user-select: none;
+}
+.stepper:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+.stepper:active {
+  transform: translateY(1px);
+}
+
+.vertical {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  letter-spacing: 0.1em;
+}
+
+.pill {
+  border: 1.5px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+  transition:
+    background 0.18s,
+    color 0.18s;
+  cursor: pointer;
+}
+.pill[data-active="true"] {
+  background: var(--ink);
+  color: var(--paper);
+}
+.pill:not([data-active="true"]):hover {
+  background: rgba(32, 24, 15, 0.07);
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.rise {
+  animation: rise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rise {
+    animation: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
