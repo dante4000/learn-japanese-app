@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Account, Transaction } from "@/lib/types";
-import { CATEGORIES, categoryMeta } from "@/lib/categories";
+import { CATEGORIES, categoryMeta, resolveCategoryKey } from "@/lib/categories";
 import { formatMoney, formatDate, monthKey } from "@/lib/format";
 
 export function TransactionsView({
@@ -31,8 +31,7 @@ export function TransactionsView({
   const filtered = useMemo(() => {
     const needle = q.trim().toLowerCase();
     return transactions.filter((t) => {
-      if (cat !== "ALL" && (t.userCategory || t.categoryPrimary) !== cat)
-        return false;
+      if (cat !== "ALL" && resolveCategoryKey(t) !== cat) return false;
       if (acct !== "ALL" && t.accountId !== acct) return false;
       if (needle) {
         const hay = `${t.name} ${t.merchantName ?? ""}`.toLowerCase();
@@ -136,7 +135,7 @@ export function TransactionsView({
             </div>
             <ul className="divide-y divide-[var(--color-line)]">
               {items.map((t) => {
-                const meta = categoryMeta(t.userCategory || t.categoryPrimary);
+                const meta = categoryMeta(resolveCategoryKey(t));
                 const open = editing === t.id;
                 return (
                   <li key={t.id} className="px-4">
@@ -201,7 +200,7 @@ export function TransactionsView({
                                 className="rounded-lg border hairline px-2.5 py-1 text-xs text-cream-dim transition-colors hover:border-line-2"
                                 style={{
                                   borderColor:
-                                    (t.userCategory || t.categoryPrimary) === c.key
+                                    resolveCategoryKey(t) === c.key
                                       ? c.color
                                       : undefined,
                                 }}

@@ -1,5 +1,5 @@
 import { AppState, Account, Transaction, NetWorthSnapshot } from "./types";
-import { TRANSFER_CATEGORIES, categoryMeta } from "./categories";
+import { TRANSFER_CATEGORIES, categoryMeta, resolveCategoryKey } from "./categories";
 import { monthKey } from "./format";
 
 // Pure functions that derive every dashboard number from the two raw inputs:
@@ -10,9 +10,12 @@ import { monthKey } from "./format";
 // so the accounts page lists and these totals always agree.
 export const LIABILITY_TYPES = new Set(["credit", "loan"]);
 
-/** The category that actually applies — a user override wins over Plaid's. */
+/**
+ * The category that actually applies — a user override wins, then credit-card /
+ * autopay payments are reclassified as transfers, then Plaid's category.
+ */
 export function effectiveCategory(t: Transaction): string {
-  return t.userCategory || t.categoryPrimary || "OTHER";
+  return resolveCategoryKey(t);
 }
 
 /** A transaction that should count as discretionary/spending outflow. */

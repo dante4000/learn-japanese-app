@@ -1,13 +1,14 @@
 import Link from "next/link";
-import { loadState } from "@/lib/store";
+import { loadScopedState } from "@/lib/scoped-state";
 import {
   summarize,
   spendingByCategory,
   cashFlowByMonth,
   topMerchants,
   currentMonthKey,
+  LIABILITY_TYPES,
 } from "@/lib/analytics";
-import { categoryMeta } from "@/lib/categories";
+import { categoryMeta, resolveCategoryKey } from "@/lib/categories";
 import { formatMoney, formatMonth, formatDate } from "@/lib/format";
 import { Donut } from "@/components/charts/Donut";
 import { CashFlowBars } from "@/components/charts/CashFlowBars";
@@ -17,7 +18,7 @@ import { StatCard, SectionCard, EmptyState, PageHeading } from "@/components/ui"
 export const dynamic = "force-dynamic";
 
 export default async function OverviewPage() {
-  const state = await loadState();
+  const { state, focus } = await loadScopedState();
 
   if (state.accounts.length === 0) {
     return (
@@ -189,7 +190,7 @@ export default async function OverviewPage() {
         >
           <ul className="divide-y divide-[var(--color-line)]">
             {recent.map((t) => {
-              const meta = categoryMeta(t.userCategory || t.categoryPrimary);
+              const meta = categoryMeta(resolveCategoryKey(t));
               return (
                 <li key={t.id} className="flex items-center gap-3 py-2.5">
                   <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border hairline bg-surface-2">

@@ -39,6 +39,39 @@ export function categoryMeta(key: string | null | undefined): CategoryMeta {
   return CATEGORIES[key] ?? CATEGORIES.OTHER;
 }
 
+// Credit-card payments / autopay ACH transfers are money moving between your own
+// accounts (checking → card), NOT spending or income — but aggregators often
+// mislabel them (e.g. a Bilt rent autopay tagged "Rent", or a card payment
+// credit tagged "Income"). Detect them by description so we can treat them as
+// transfers and keep them out of spending/income totals. Anchored "Payment -"
+// only matches when the name *starts* with it (a card-payment credit), so a
+// real "Rent Payment - Landlord" outflow is left alone.
+export function isInternalPayment(
+  name: string,
+  merchant?: string | null,
+): boolean {
+  const n = name || "";
+  if (/^\s*payment\s*[-–]\s/i.test(n)) return true;
+  const hay = `${n} ${merchant ?? ""}`;
+  return /\bcard\b.{0,25}\bppd\b|\bcard\s*(pmt|payment|pymt)\b|\bcardmember\s+(pmt|payment)\b|\bautopay\b|payment\s+thank\s*you/i.test(
+    hay,
+  );
+}
+
+/** The effective category, accounting for user overrides and card-payment detection. */
+export function resolveCategoryKey(t: {
+  userCategory: string | null;
+  categoryPrimary: string;
+  name: string;
+  merchantName: string | null;
+  amount: number;
+}): string {
+  if (t.userCategory) return t.userCategory;
+  if (isInternalPayment(t.name, t.merchantName))
+    return t.amount >= 0 ? "TRANSFER_OUT" : "TRANSFER_IN";
+  return t.categoryPrimary || "OTHER";
+}
+
 /** Categories that represent moving money between your own accounts, not spend. */
 export const TRANSFER_CATEGORIES = new Set([
   "TRANSFER_IN",
