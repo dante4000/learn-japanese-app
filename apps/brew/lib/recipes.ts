@@ -195,7 +195,7 @@ export const recipes: Recipe[] = [
       },
     ],
     about: [
-      "삼해주 — “three-pig-day wine” — is the single most-recorded wine in the entire Korean classical canon, with 60-some 주방문 across the old texts. The 밑술 is laid down on the first 해일 (亥日, pig-day) of the lunar first month, and fed again on each successive pig-day, roughly twelve days apart. It ferments through the dead of winter.",
+      "삼해주 — “three-pig-day wine” — is the single most-frequently recorded wine in the entire Korean classical canon: of the 100-plus wines noted in 18th-century culinary texts, it appears more than any other, in well over a dozen distinct 주방문 (음식디미방 alone carries ~4). The 밑술 is laid down on the first 해일 (亥日, pig-day) of the lunar first month, and fed again on each successive pig-day, roughly twelve days apart. It ferments through the dead of winter.",
       "It was the signature 명주 of old 한양 (Seoul), brewed by the thousand-jar at 마포 독막, and prized enough that Joseon officials petitioned to ban it for draining the capital’s rice. It survives today as Seoul Intangible Cultural Heritage No. 8. Also called 유서주 (柳絮酒), willow-catkin wine, because it is ready as the willows bud in spring.",
     ],
     taste: [

@@ -402,8 +402,9 @@ export default function Home() {
 
           <p className="mt-10 max-w-3xl text-[0.86rem] leading-relaxed text-[var(--ink-faint)]">
             Honest caveats: no single canonical 오양주 survives in the old texts —
-            it is reconstructed from documented patents and 삼양주 craft. 삼해주 has
-            60+ recorded variants; old 말/되 don’t map cleanly to modern metric,
+            it is reconstructed from documented patents and 삼양주 craft. 삼해주 is
+            the most-recorded wine in the canon, with well over a dozen 주방문;
+            old 말/되 don’t map cleanly to modern metric,
             so the scaler holds within-recipe ratios rather than literal
             historical volumes. Brew to your own taste and local law.
           </p>
