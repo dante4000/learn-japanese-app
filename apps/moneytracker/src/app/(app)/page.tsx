@@ -3,7 +3,7 @@ import { loadScopedState } from "@/lib/scoped-state";
 import {
   summarize,
   spendingByCategory,
-  cashFlowByMonth,
+  cashFlowDetail,
   topMerchants,
   currentMonthKey,
   LIABILITY_TYPES,
@@ -11,7 +11,7 @@ import {
 import { categoryMeta, resolveCategoryKey } from "@/lib/categories";
 import { formatMoney, formatMonth, formatDate } from "@/lib/format";
 import { Donut } from "@/components/charts/Donut";
-import { CashFlowBars } from "@/components/charts/CashFlowBars";
+import { CashFlowDetail } from "@/components/CashFlowDetail";
 import { NetWorthArea } from "@/components/charts/NetWorthArea";
 import { StatCard, SectionCard, EmptyState, PageHeading } from "@/components/ui";
 
@@ -33,7 +33,7 @@ export default async function OverviewPage() {
   const month = currentMonthKey(state);
   const cur = s.netWorth.currency;
   const categories = spendingByCategory(state, month);
-  const flows = cashFlowByMonth(state, 6);
+  const cashflow = cashFlowDetail(state, 6);
   const merchants = topMerchants(state, month, 6);
   const recent = state.transactions.filter((t) => !t.pending).slice(0, 6);
 
@@ -146,54 +146,54 @@ export default async function OverviewPage() {
         />
       </div>
 
-      {/* Spending breakdown + cash flow */}
-      <div className="mt-5 grid gap-4 lg:grid-cols-2">
-        <SectionCard title="Where it went" delay={220}>
-          {categories.length ? (
-            <div className="flex flex-col items-center gap-6 sm:flex-row">
-              <Donut
-                slices={categories.map((c) => ({
-                  label: c.label,
-                  value: c.total,
-                  color: c.color,
-                }))}
-                total={s.monthSpending}
-                currency={cur}
-              />
-              <ul className="flex-1 space-y-2 self-stretch">
-                {categories.slice(0, 6).map((c) => (
-                  <li key={c.category} className="flex items-center gap-3 text-sm">
-                    <span
-                      className="h-2.5 w-2.5 shrink-0 rounded-full"
-                      style={{ background: c.color }}
-                    />
-                    <span className="text-cream-dim">{c.label}</span>
-                    <span className="tnum ml-auto text-cream">
-                      {formatMoney(c.total, cur, { cents: false })}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ) : (
-            <p className="py-10 text-center text-sm text-muted">
-              No spending recorded this month.
-            </p>
-          )}
-        </SectionCard>
-
-        <SectionCard title="Cash flow" delay={260}>
-          <CashFlowBars data={flows} currency={cur} />
-          <div className="mt-4 flex items-center justify-center gap-5 text-xs text-muted">
-            <span className="flex items-center gap-1.5">
-              <span className="h-2 w-2 rounded-full bg-blue" /> Income
-            </span>
-            <span className="flex items-center gap-1.5">
-              <span className="h-2 w-2 rounded-full bg-coral" /> Spending
-            </span>
+      {/* Spending breakdown */}
+      <SectionCard title="Where it went" delay={220} className="mt-5">
+        {categories.length ? (
+          <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
+            <Donut
+              slices={categories.map((c) => ({
+                label: c.label,
+                value: c.total,
+                color: c.color,
+              }))}
+              total={s.monthSpending}
+              currency={cur}
+            />
+            <ul className="grid flex-1 gap-x-8 gap-y-2 self-stretch sm:grid-cols-2">
+              {categories.slice(0, 8).map((c) => (
+                <li key={c.category} className="flex items-center gap-3 text-sm">
+                  <span
+                    className="h-2.5 w-2.5 shrink-0 rounded-full"
+                    style={{ background: c.color }}
+                  />
+                  <span className="text-cream-dim">{c.label}</span>
+                  <span className="tnum ml-auto text-cream">
+                    {formatMoney(c.total, cur, { cents: false })}
+                  </span>
+                </li>
+              ))}
+            </ul>
           </div>
-        </SectionCard>
-      </div>
+        ) : (
+          <p className="py-10 text-center text-sm text-muted">
+            No spending recorded this month.
+          </p>
+        )}
+      </SectionCard>
+
+      {/* Detailed cash flow */}
+      <SectionCard
+        title="Cash flow"
+        delay={260}
+        className="mt-5"
+        action={
+          <span className="text-xs text-muted">
+            income vs spending · last {cashflow.rows.length} months
+          </span>
+        }
+      >
+        <CashFlowDetail summary={cashflow} currency={cur} />
+      </SectionCard>
 
       {/* Merchants + recent */}
       <div className="mt-5 grid gap-4 lg:grid-cols-2">

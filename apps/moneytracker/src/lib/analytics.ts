@@ -86,6 +86,47 @@ export function cashFlowByMonth(
   return rows.slice(-months);
 }
 
+export interface CashFlowRow extends MonthCashFlow {
+  savingsRate: number | null; // net / income, null if no income
+}
+
+export interface CashFlowDetailSummary {
+  rows: CashFlowRow[];
+  avgIncome: number;
+  avgSpending: number;
+  avgNet: number;
+  totalNet: number;
+  savingsRate: number | null; // avg net / avg income
+  bestMonth: CashFlowRow | null; // highest net
+  worstMonth: CashFlowRow | null; // lowest net
+}
+
+/** Cash flow with per-month savings rate + period averages, for the detail view. */
+export function cashFlowDetail(
+  state: AppState,
+  months = 6,
+): CashFlowDetailSummary {
+  const rows: CashFlowRow[] = cashFlowByMonth(state, months).map((r) => ({
+    ...r,
+    savingsRate: r.income > 0 ? r.net / r.income : null,
+  }));
+  const n = rows.length || 1;
+  const sum = (f: (r: CashFlowRow) => number) => rows.reduce((a, r) => a + f(r), 0);
+  const avgIncome = sum((r) => r.income) / n;
+  const avgNet = sum((r) => r.net) / n;
+  const sorted = [...rows].sort((a, b) => b.net - a.net);
+  return {
+    rows,
+    avgIncome,
+    avgSpending: sum((r) => r.spending) / n,
+    avgNet,
+    totalNet: sum((r) => r.net),
+    savingsRate: avgIncome > 0 ? avgNet / avgIncome : null,
+    bestMonth: sorted[0] ?? null,
+    worstMonth: sorted[sorted.length - 1] ?? null,
+  };
+}
+
 /** All months (yyyy-mm) that have any spending or income, oldest → newest. */
 export function availableMonths(state: AppState): string[] {
   const set = new Set<string>();
