@@ -27,6 +27,7 @@ export interface Overview {
   months: number; // how many months the window actually covers
 }
 
+/** Window totals: income, spending, net, and savings rate (net / income). */
 export function overview(state: AppState, monthsBack = 12): Overview {
   const months = windowMonths(state, monthsBack);
   const within = inWindow(months);
@@ -118,6 +119,7 @@ export interface WeekdaySpend {
 
 const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
+/** Total spending per day of week (Mon-first) over the window. */
 export function spendByWeekday(
   state: AppState,
   monthsBack = 12,
@@ -133,6 +135,7 @@ export function spendByWeekday(
   return rows;
 }
 
+/** The biggest single spend transactions in the window. */
 export function largestPurchases(
   state: AppState,
   monthsBack = 12,
@@ -156,15 +159,19 @@ export interface CategoryTrend {
   deltaPct: number | null;
 }
 
+/** How many trailing months count as "recent" in trend comparisons. */
+const RECENT_MONTHS = 3;
+
+/** Per-category avg monthly spend, last RECENT_MONTHS vs the months before. */
 export function categoryTrends(
   state: AppState,
   monthsBack = 12,
 ): CategoryTrend[] {
   const months = windowMonths(state, monthsBack);
   // A 3-vs-prior split needs at least one prior month to compare against.
-  if (months.length < 4) return [];
-  const recent = new Set(months.slice(-3));
-  const prior = new Set(months.slice(0, -3));
+  if (months.length <= RECENT_MONTHS) return [];
+  const recent = new Set(months.slice(-RECENT_MONTHS));
+  const prior = new Set(months.slice(0, -RECENT_MONTHS));
   const acc = new Map<string, { recent: number; prior: number }>();
   for (const t of state.transactions) {
     if (!isSpend(t)) continue;
@@ -200,6 +207,7 @@ export function categoryTrends(
 
 export interface NewMerchant {
   name: string;
+  /** All-time spend at the merchant — equals window spend, since they're new. */
   total: number;
   count: number;
   firstDate: string;
@@ -212,7 +220,7 @@ export interface NewMerchant {
 export function newMerchants(
   state: AppState,
   monthsBack = 12,
-  recentMonths = 3,
+  recentMonths = RECENT_MONTHS,
 ): NewMerchant[] {
   const months = windowMonths(state, monthsBack);
   // With so little history every merchant would be "new" — meaningless.
