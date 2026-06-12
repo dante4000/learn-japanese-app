@@ -40,11 +40,18 @@ async function writeToFile(body: string): Promise<void> {
 }
 
 async function fetchFromBlob(): Promise<AppState | null> {
-  // list() finds the blob by prefix; we then fetch its contents over HTTPS.
+  // list() returns the authoritative latest metadata (incl. uploadedAt). We
+  // append that timestamp as a cache-buster on the content fetch so the Blob
+  // CDN can't serve a stale copy right after a write (read-after-write
+  // consistency). Without this, the dashboard can briefly show old/empty data
+  // for the ~minute the CDN caches the previous version.
   const { blobs } = await list({ prefix: BLOB_PATH, limit: 1 });
   const match = blobs.find((b) => b.pathname === BLOB_PATH);
   if (!match) return null;
-  const res = await fetch(match.url, { cache: "no-store" });
+  const version = match.uploadedAt
+    ? new Date(match.uploadedAt).getTime()
+    : Date.now();
+  const res = await fetch(`${match.url}?v=${version}`, { cache: "no-store" });
   if (!res.ok) return null;
   const raw = await res.text();
   const json = canEncrypt() ? decrypt(raw) : raw;
