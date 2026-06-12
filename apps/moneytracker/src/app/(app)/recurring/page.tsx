@@ -1,7 +1,9 @@
 import { loadScopedState } from "@/lib/scoped-state";
 import { RecurringStream } from "@/lib/types";
 import { categoryMeta } from "@/lib/categories";
+import { upcomingBills } from "@/lib/analytics";
 import { formatMoney, formatDate } from "@/lib/format";
+import { UpcomingBills } from "@/components/UpcomingBills";
 import { SectionCard, EmptyState, StatCard, PageHeading } from "@/components/ui";
 
 export const dynamic = "force-dynamic";
@@ -81,6 +83,9 @@ export default async function RecurringPage() {
     .filter((s) => s.isActive)
     .reduce((a, s) => a + monthlyEquivalent(s), 0);
 
+  const today = new Date().toISOString().slice(0, 10);
+  const upcoming = upcomingBills(state, today, 45);
+
   if (state.accounts.length === 0) {
     return (
       <div>
@@ -118,6 +123,22 @@ export default async function RecurringPage() {
               delay={60}
             />
           </div>
+
+          {/* Upcoming bills timeline */}
+          <SectionCard
+            title="Upcoming bills"
+            delay={90}
+            className="mb-5"
+            action={
+              <span className="text-xs text-muted">next predicted charges</span>
+            }
+          >
+            <UpcomingBills
+              bills={upcoming.bills}
+              dueSoonTotal={upcoming.dueSoonTotal}
+              currency={cur}
+            />
+          </SectionCard>
 
           <div className="grid gap-4 lg:grid-cols-2">
             <SectionCard title={`Subscriptions & bills (${subs.length})`} delay={120}>

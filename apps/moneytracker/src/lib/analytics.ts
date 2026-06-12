@@ -1,5 +1,16 @@
-import { AppState, Account, Transaction, NetWorthSnapshot } from "./types";
-import { TRANSFER_CATEGORIES, categoryMeta, resolveCategoryKey } from "./categories";
+import {
+  AppState,
+  Account,
+  Transaction,
+  NetWorthSnapshot,
+  RecurringStream,
+} from "./types";
+import {
+  TRANSFER_CATEGORIES,
+  categoryMeta,
+  resolveCategoryKey,
+  isInternalPayment,
+} from "./categories";
 import { monthKey } from "./format";
 
 // Pure functions that derive every dashboard number from the two raw inputs:
@@ -404,6 +415,88 @@ export function categoryMovers(
     .filter((m) => Math.abs(m.delta) > 0.5)
     .sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta))
     .slice(0, limit);
+}
+
+export interface UpcomingBill {
+  id: string;
+  name: string;
+  categoryPrimary: string;
+  amount: number; // positive
+  frequency: string;
+  nextDate: string; // yyyy-mm-dd
+  daysUntil: number;
+  predicted: boolean; // true if we estimated the date (Plaid didn't supply one)
+}
+
+/** A recurring outflow that's a real bill/subscription, not an internal payment. */
+function isBillStream(s: RecurringStream): boolean {
+  if (s.type !== "outflow" || !s.isActive) return false;
+  if (s.categoryPrimary === "TRANSFER_IN" || s.categoryPrimary === "TRANSFER_OUT")
+    return false;
+  return !isInternalPayment(s.description, s.merchantName);
+}
+
+function addInterval(date: string, freq: string): string {
+  const d = new Date(date + "T00:00:00Z");
+  if (freq === "WEEKLY") d.setUTCDate(d.getUTCDate() + 7);
+  else if (freq === "BIWEEKLY") d.setUTCDate(d.getUTCDate() + 14);
+  else if (freq === "SEMI_MONTHLY") d.setUTCDate(d.getUTCDate() + 15);
+  else if (freq === "ANNUALLY") d.setUTCFullYear(d.getUTCFullYear() + 1);
+  else d.setUTCMonth(d.getUTCMonth() + 1); // MONTHLY / UNKNOWN
+  return d.toISOString().slice(0, 10);
+}
+
+function dayDiff(from: string, to: string): number {
+  return Math.round(
+    (Date.parse(to + "T00:00:00Z") - Date.parse(from + "T00:00:00Z")) / 86400000,
+  );
+}
+
+/**
+ * Upcoming bills/subscriptions with their next predicted charge date. `today`
+ * is yyyy-mm-dd (passed in so this stays a pure function). Uses Plaid's
+ * predicted date when available and in the future, otherwise rolls the last
+ * charge forward by the stream's cadence.
+ */
+export function upcomingBills(
+  state: AppState,
+  today: string,
+  withinDays = 45,
+): { bills: UpcomingBill[]; dueSoonTotal: number; monthlyTotal: number } {
+  const bills: UpcomingBill[] = [];
+  for (const s of state.recurring) {
+    if (!isBillStream(s)) continue;
+    let date = s.predictedNextDate && s.predictedNextDate >= today
+      ? s.predictedNextDate
+      : s.lastDate;
+    let predicted = !(s.predictedNextDate && s.predictedNextDate >= today);
+    if (!date) continue;
+    let guard = 0;
+    while (date < today && guard < 60) {
+      date = addInterval(date, s.frequency);
+      predicted = true;
+      guard++;
+    }
+    bills.push({
+      id: s.id,
+      name: s.merchantName || s.description,
+      categoryPrimary: s.categoryPrimary,
+      amount: Math.abs(s.lastAmount || s.averageAmount),
+      frequency: s.frequency,
+      nextDate: date,
+      daysUntil: dayDiff(today, date),
+      predicted,
+    });
+  }
+  bills.sort((a, b) => a.nextDate.localeCompare(b.nextDate));
+  const within = bills.filter((b) => b.daysUntil <= withinDays);
+  return {
+    bills: within,
+    dueSoonTotal: within
+      .filter((b) => b.daysUntil <= 30)
+      .reduce((a, b) => a + b.amount, 0),
+    monthlyTotal: 0,
+  };
 }
 
 export interface PeriodSummary {
