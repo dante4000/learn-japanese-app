@@ -270,6 +270,142 @@ export function topMerchants(
   return [...map.values()].sort((a, b) => b.total - a.total).slice(0, limit);
 }
 
+export interface AccountSpend {
+  accountId: string;
+  name: string;
+  total: number;
+  count: number;
+}
+
+/** Spending grouped by account — where the money actually flows out. */
+export function spendingByAccount(
+  state: AppState,
+  month?: string,
+): AccountSpend[] {
+  const names = new Map(state.accounts.map((a) => [a.id, a.name]));
+  const map = new Map<string, AccountSpend>();
+  for (const t of state.transactions) {
+    if (!isSpend(t)) continue;
+    if (month && monthKey(t.date) !== month) continue;
+    if (!map.has(t.accountId))
+      map.set(t.accountId, {
+        accountId: t.accountId,
+        name: names.get(t.accountId) ?? "Account",
+        total: 0,
+        count: 0,
+      });
+    const r = map.get(t.accountId)!;
+    r.total += t.amount;
+    r.count += 1;
+  }
+  return [...map.values()].sort((a, b) => b.total - a.total);
+}
+
+export interface DaySpend {
+  day: number;
+  date: string;
+  total: number;
+}
+
+export interface DailySpending {
+  days: DaySpend[];
+  cumulative: number[];
+  total: number;
+  daysInMonth: number;
+  throughDay: number;
+  projected: number | null; // run-rate projection to month end
+  avgPerDay: number;
+}
+
+/** Per-day spending for a month, plus a run-rate month-end projection. */
+export function dailySpending(state: AppState, month: string): DailySpending {
+  const [y, mo] = month.split("-").map(Number);
+  const daysInMonth = new Date(y, mo, 0).getDate();
+  const days: DaySpend[] = Array.from({ length: daysInMonth }, (_, i) => ({
+    day: i + 1,
+    date: `${month}-${String(i + 1).padStart(2, "0")}`,
+    total: 0,
+  }));
+  let total = 0;
+  let throughDay = 0;
+  for (const t of state.transactions) {
+    if (!isSpend(t)) continue;
+    if (monthKey(t.date) !== month) continue;
+    const d = Number(t.date.slice(8, 10));
+    if (d >= 1 && d <= daysInMonth) {
+      days[d - 1].total += t.amount;
+      total += t.amount;
+      if (d > throughDay) throughDay = d;
+    }
+  }
+  let running = 0;
+  const cumulative = days.map((d) => (running += d.total));
+  return {
+    days,
+    cumulative,
+    total,
+    daysInMonth,
+    throughDay,
+    projected: throughDay > 0 ? (total / throughDay) * daysInMonth : null,
+    avgPerDay: throughDay > 0 ? total / throughDay : 0,
+  };
+}
+
+export interface CategoryMover extends CategorySpend {
+  current: number;
+  previous: number;
+  delta: number;
+  deltaPct: number | null;
+}
+
+/** Categories that changed most vs the previous month (biggest movers). */
+export function categoryMovers(
+  state: AppState,
+  month: string,
+  prevMonth: string | null,
+  limit = 5,
+): CategoryMover[] {
+  const cur = spendingByCategory(state, month);
+  const prev = new Map(
+    (prevMonth ? spendingByCategory(state, prevMonth) : []).map((c) => [
+      c.category,
+      c.total,
+    ]),
+  );
+  const movers: CategoryMover[] = cur.map((c) => {
+    const p = prev.get(c.category) ?? 0;
+    return {
+      ...c,
+      current: c.total,
+      previous: p,
+      delta: c.total - p,
+      deltaPct: p > 0 ? ((c.total - p) / p) * 100 : null,
+    };
+  });
+  // categories that vanished this month (dropped to 0)
+  for (const [cat, p] of prev) {
+    if (!cur.some((c) => c.category === cat)) {
+      const meta = categoryMeta(cat);
+      movers.push({
+        category: cat,
+        label: meta.label,
+        color: meta.color,
+        glyph: meta.glyph,
+        total: 0,
+        count: 0,
+        current: 0,
+        previous: p,
+        delta: -p,
+        deltaPct: -100,
+      });
+    }
+  }
+  return movers
+    .filter((m) => Math.abs(m.delta) > 0.5)
+    .sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta))
+    .slice(0, limit);
+}
+
 export interface PeriodSummary {
   netWorth: NetWorthBreakdown;
   monthSpending: number;

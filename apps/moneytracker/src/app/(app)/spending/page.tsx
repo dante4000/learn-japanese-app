@@ -49,7 +49,7 @@ export default async function SpendingPage({
   const total = cats.reduce((a, c) => a + c.total, 0);
   const comp = monthlyComposition(state, 12);
   const { habits, months: nMonths, avgMonthlyTotal } = categoryHabits(state, 12);
-  const merchants = topMerchants(state, selected, 6);
+  const merchants = topMerchants(state, selected, 20);
 
   // delta vs previous available month
   const idx = months.indexOf(selected);

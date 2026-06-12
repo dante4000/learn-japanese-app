@@ -34,7 +34,7 @@ export default async function OverviewPage() {
   const cur = s.netWorth.currency;
   const categories = spendingByCategory(state, month);
   const cashflow = cashFlowDetail(state, 6);
-  const merchants = topMerchants(state, month, 6);
+  const merchants = topMerchants(state, month, 20);
   const recent = state.transactions.filter((t) => !t.pending).slice(0, 6);
 
   return (
