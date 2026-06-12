@@ -1,13 +1,22 @@
-import { loadState } from "@/lib/store";
+import { loadStateCached } from "@/lib/store";
 import { computeNetWorth, groupAccounts } from "@/lib/analytics";
 import { formatMoney } from "@/lib/format";
 import { Account } from "@/lib/types";
 import { SectionCard, EmptyState, PageHeading } from "@/components/ui";
 import { ManualEntries } from "@/components/ManualEntries";
+import { ViewAccountButton } from "@/components/AccountPicker";
 
 export const dynamic = "force-dynamic";
 
-function AccountRow({ a, currency }: { a: Account; currency: string }) {
+function AccountRow({
+  a,
+  currency,
+  canFocus,
+}: {
+  a: Account;
+  currency: string;
+  canFocus: boolean;
+}) {
   const bal = a.balances.current ?? 0;
   return (
     <li className="flex items-center gap-3 py-3">
@@ -24,15 +33,18 @@ function AccountRow({ a, currency }: { a: Account; currency: string }) {
       <span className="tnum ml-auto text-sm text-cream">
         {formatMoney(bal, currency, { cents: false })}
       </span>
+      {canFocus && <ViewAccountButton id={a.id} />}
     </li>
   );
 }
 
 export default async function AccountsPage() {
-  const state = await loadState();
+  // Intentionally unscoped: this is the management view of every account.
+  const state = await loadStateCached();
   const nw = computeNetWorth(state);
   const { assets, liabilities } = groupAccounts(state);
   const cur = nw.currency;
+  const canFocus = state.accounts.length > 1;
 
   if (state.accounts.length === 0 && state.manualEntries.length === 0) {
     return (
@@ -73,7 +85,7 @@ export default async function AccountsPage() {
           {assets.length ? (
             <ul className="divide-y divide-[var(--color-line)]">
               {assets.map((a) => (
-                <AccountRow key={a.id} a={a} currency={cur} />
+                <AccountRow key={a.id} a={a} currency={cur} canFocus={canFocus} />
               ))}
             </ul>
           ) : (
@@ -85,7 +97,7 @@ export default async function AccountsPage() {
           {liabilities.length ? (
             <ul className="divide-y divide-[var(--color-line)]">
               {liabilities.map((a) => (
-                <AccountRow key={a.id} a={a} currency={cur} />
+                <AccountRow key={a.id} a={a} currency={cur} canFocus={canFocus} />
               ))}
             </ul>
           ) : (

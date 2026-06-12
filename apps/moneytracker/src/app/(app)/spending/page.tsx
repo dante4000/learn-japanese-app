@@ -1,4 +1,4 @@
-import { loadState } from "@/lib/store";
+import { loadScopedState } from "@/lib/scoped-state";
 import {
   availableMonths,
   spendingByCategory,
@@ -19,7 +19,7 @@ export default async function SpendingPage({
 }: {
   searchParams: Promise<{ month?: string }>;
 }) {
-  const state = await loadState();
+  const { state, focus } = await loadScopedState();
   const months = availableMonths(state);
   const cur = state.accounts[0]?.currency ?? "USD";
 
@@ -67,7 +67,11 @@ export default async function SpendingPage({
       <div className="mb-6 flex items-end justify-between gap-3">
         <PageHeading
           title="Spending"
-          subtitle="Your monthly habits and where the money goes."
+          subtitle={
+            focus
+              ? `${focus.name} · monthly habits and where the money goes.`
+              : "Your monthly habits and where the money goes."
+          }
         />
         <div className="mb-1 shrink-0">
           <MonthPicker months={months} selected={selected} />

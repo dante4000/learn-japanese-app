@@ -41,35 +41,76 @@ export default async function OverviewPage() {
     <div>
       <PageHeading
         title="Overview"
-        subtitle={`Figures for ${formatMonth(month)}.`}
+        subtitle={
+          focus
+            ? `${focus.name} · ${formatMonth(month)}.`
+            : `Figures for ${formatMonth(month)}.`
+        }
       />
 
-      {/* Hero: net worth */}
+      {/* Hero: net worth (all accounts) or account balance (focused) */}
       <section
         className="card rise relative overflow-hidden p-6 md:p-8"
         style={{ animationDelay: "0ms" }}
       >
-        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        {focus ? (
           <div>
-            <div className="label-eyebrow">Net worth</div>
+            <div className="label-eyebrow">
+              {state.items[0]?.institutionName ?? "Account"} ·{" "}
+              {focus.subtype || focus.type}
+              {focus.mask ? ` ···· ${focus.mask}` : ""}
+            </div>
             <div className="tnum mt-2 font-display text-5xl tracking-tight text-cream md:text-6xl">
-              {formatMoney(s.netWorth.netWorth, cur, { cents: false })}
+              {formatMoney(focus.balances.current ?? 0, cur, { cents: false })}
             </div>
             <div className="mt-3 flex flex-wrap gap-x-6 gap-y-1 text-sm">
-              <span className="text-blue">
-                {formatMoney(s.netWorth.totalAssets, cur, { cents: false })}{" "}
-                <span className="text-muted">assets</span>
-              </span>
-              <span className="text-coral">
-                {formatMoney(s.netWorth.totalLiabilities, cur, { cents: false })}{" "}
-                <span className="text-muted">owed</span>
-              </span>
+              {LIABILITY_TYPES.has(focus.type) && (
+                <span className="text-coral">
+                  balance <span className="text-muted">owed</span>
+                </span>
+              )}
+              {focus.balances.available != null && (
+                <span className="text-blue">
+                  {formatMoney(focus.balances.available, cur, { cents: false })}{" "}
+                  <span className="text-muted">available</span>
+                </span>
+              )}
+              {focus.balances.limit != null && (
+                <span className="text-cream-dim">
+                  {formatMoney(focus.balances.limit, cur, { cents: false })}{" "}
+                  <span className="text-muted">limit</span>
+                </span>
+              )}
             </div>
+            <p className="mt-4 text-xs text-muted">
+              Viewing one account — switch to “All accounts” for net worth.
+            </p>
           </div>
-        </div>
-        <div className="mt-6">
-          <NetWorthArea snapshots={state.snapshots} currency={cur} />
-        </div>
+        ) : (
+          <>
+            <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+              <div>
+                <div className="label-eyebrow">Net worth</div>
+                <div className="tnum mt-2 font-display text-5xl tracking-tight text-cream md:text-6xl">
+                  {formatMoney(s.netWorth.netWorth, cur, { cents: false })}
+                </div>
+                <div className="mt-3 flex flex-wrap gap-x-6 gap-y-1 text-sm">
+                  <span className="text-blue">
+                    {formatMoney(s.netWorth.totalAssets, cur, { cents: false })}{" "}
+                    <span className="text-muted">assets</span>
+                  </span>
+                  <span className="text-coral">
+                    {formatMoney(s.netWorth.totalLiabilities, cur, { cents: false })}{" "}
+                    <span className="text-muted">owed</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div className="mt-6">
+              <NetWorthArea snapshots={state.snapshots} currency={cur} />
+            </div>
+          </>
+        )}
       </section>
 
       {/* Stat row */}

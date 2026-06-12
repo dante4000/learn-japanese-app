@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { put, list, del } from "@vercel/blob";
 import { promises as fs } from "node:fs";
 import path from "node:path";
@@ -264,6 +265,14 @@ export async function loadState(): Promise<AppState> {
   state.snapshots = meta.snapshots;
   return state;
 }
+
+/**
+ * Request-deduped `loadState` for server components — the (app) layout and the
+ * page it wraps share a single blob read per request. Sync paths must keep
+ * using the uncached `loadState`: they read again after writing within one
+ * request, and a cached read would hand back the pre-write state.
+ */
+export const loadStateCached = cache(loadState);
 
 /** Find which item owns a given account id. */
 export async function bundleForAccount(

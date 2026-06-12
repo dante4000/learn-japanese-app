@@ -54,7 +54,11 @@ export function buildBundle(
       error: null,
       institutionName: result.institutionName || item.institutionName,
     },
-    accounts: result.accounts,
+    // A sync reporting zero accounts is a provider hiccup, not every account
+    // closing at once — keep the previous accounts rather than orphaning all
+    // of the item's transactions (no name, no balance, unreachable by the
+    // account filter).
+    accounts: result.accounts.length ? result.accounts : (prev?.accounts ?? []),
     transactions,
     recurring: result.recurring,
   };

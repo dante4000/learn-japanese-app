@@ -69,6 +69,10 @@ export async function createLinkToken(): Promise<string> {
     user: { client_user_id: "owner" }, // single user
     client_name: "Money Tracker",
     products: [Products.Transactions],
+    // Plaid defaults to 90 days of history; ask for the max (24 months).
+    // Fixed per Item at link time — already-linked banks must be re-linked
+    // to backfill older transactions.
+    transactions: { days_requested: 730 },
     country_codes: [CountryCode.Us],
     language: "en",
     ...(redirectUri ? { redirect_uri: redirectUri } : {}),
@@ -195,6 +199,17 @@ export async function plaidSync(item: Item): Promise<SyncResult> {
     accounts = data.accounts.map((a) => mapAccount(a, item.id));
     cursor = data.next_cursor;
     hasMore = data.has_more;
+  }
+
+  // /transactions/sync's accounts array is unreliable (observed empty on
+  // no-change syncs, which once wiped every persisted account and blanked the
+  // whole dashboard). /accounts/get is the authoritative source — use it, and
+  // only fall back to the sync payload if it errors.
+  try {
+    const acctRes = await client.accountsGet({ access_token: accessToken });
+    accounts = acctRes.data.accounts.map((a) => mapAccount(a, item.id));
+  } catch {
+    // keep whatever the sync pages reported
   }
 
   // Recurring streams (subscriptions/bills + income). Best-effort: skip on error

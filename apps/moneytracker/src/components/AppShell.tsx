@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { ThemeToggle } from "./ThemeToggle";
+import { AccountPicker, AccountOption } from "./AccountPicker";
 
 const NAV = [
   { href: "/", label: "Overview", icon: "M3 12l9-8 9 8M5 10v10h14V10" },
@@ -31,7 +32,16 @@ function Glyph({ d }: { d: string }) {
   );
 }
 
-export function AppShell({ children }: { children: React.ReactNode }) {
+export function AppShell({
+  children,
+  accountOptions,
+  selectedAccount,
+}: {
+  children: React.ReactNode;
+  accountOptions: AccountOption[];
+  selectedAccount: string | null;
+}) {
+  const showPicker = accountOptions.length > 1;
   const pathname = usePathname();
   const router = useRouter();
   const [pending, startTransition] = useTransition();
@@ -78,6 +88,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               Vault
             </span>
           </Link>
+          {showPicker && (
+            <div className="mb-6">
+              <AccountPicker options={accountOptions} selected={selectedAccount} />
+            </div>
+          )}
           <nav className="flex flex-col gap-1">
             {NAV.map((item) => (
               <Link
@@ -143,6 +158,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             </button>
           </div>
         </div>
+        {showPicker && (
+          <div className="mb-6 md:hidden">
+            <AccountPicker options={accountOptions} selected={selectedAccount} />
+          </div>
+        )}
         {children}
       </main>
 

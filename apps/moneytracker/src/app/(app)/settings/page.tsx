@@ -1,4 +1,4 @@
-import { loadState } from "@/lib/store";
+import { loadStateCached } from "@/lib/store";
 import { plaidConfigured } from "@/lib/providers/plaid";
 import { SectionCard, PageHeading } from "@/components/ui";
 import { ConnectionsList } from "@/components/ConnectionsList";
@@ -8,7 +8,7 @@ import { CsvImport } from "@/components/CsvImport";
 export const dynamic = "force-dynamic";
 
 export default async function SettingsPage() {
-  const state = await loadState();
+  const state = await loadStateCached();
   const plaidReady = plaidConfigured();
 
   return (

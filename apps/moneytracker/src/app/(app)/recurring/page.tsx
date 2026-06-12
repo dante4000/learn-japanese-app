@@ -1,4 +1,4 @@
-import { loadState } from "@/lib/store";
+import { loadScopedState } from "@/lib/scoped-state";
 import { RecurringStream } from "@/lib/types";
 import { categoryMeta } from "@/lib/categories";
 import { formatMoney, formatDate } from "@/lib/format";
@@ -58,7 +58,7 @@ function StreamRow({ s, currency }: { s: RecurringStream; currency: string }) {
 }
 
 export default async function RecurringPage() {
-  const state = await loadState();
+  const { state } = await loadScopedState();
   const cur = state.accounts[0]?.currency ?? "USD";
 
   // Internal transfers between your own accounts (e.g. checking → savings) get
