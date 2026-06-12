@@ -1,10 +1,13 @@
+import Link from "next/link";
 import { MonthComposition } from "@/lib/analytics";
 import { formatMonth, formatMoney } from "@/lib/format";
 
 /**
  * Stacked vertical bars — one per month, each split into category segments.
  * Shows how spending is distributed across categories and how that mix shifts
- * over time (your "habits"). Native tooltips per segment.
+ * over time (your "habits"). Native tooltips per segment. Each bar links to
+ * ?month=… so clicking it re-renders the page for that month (same mechanism
+ * as the MonthPicker).
  */
 export function CompositionBars({
   data,
@@ -22,11 +25,18 @@ export function CompositionBars({
       {data.map((d) => {
         const isHi = highlight === d.month;
         return (
-          <div key={d.month} className="flex flex-1 flex-col items-center gap-2">
+          <Link
+            key={d.month}
+            href={`?month=${d.month}`}
+            scroll={false}
+            aria-label={`Show ${formatMonth(d.month)}`}
+            aria-current={isHi ? "true" : undefined}
+            className="group flex flex-1 flex-col items-center gap-2"
+          >
             {/* Fixed-height track so the bar's percentage height resolves. */}
             <div className="flex h-44 w-full items-end justify-center">
               <div
-                className="flex w-full max-w-9 flex-col-reverse overflow-hidden rounded-md transition-opacity"
+                className="flex w-full max-w-9 flex-col-reverse overflow-hidden rounded-md transition-opacity group-hover:opacity-100"
                 style={{
                   height: `${(d.total / max) * 100}%`,
                   minHeight: d.total > 0 ? 6 : 0,
@@ -47,10 +57,14 @@ export function CompositionBars({
                 ))}
               </div>
             </div>
-            <span className="text-[0.6rem] uppercase tracking-wider text-faint">
+            <span
+              className={`text-[0.6rem] uppercase tracking-wider transition-colors group-hover:text-blue ${
+                isHi ? "text-blue" : "text-faint"
+              }`}
+            >
               {formatMonth(d.month)}
             </span>
-          </div>
+          </Link>
         );
       })}
     </div>
