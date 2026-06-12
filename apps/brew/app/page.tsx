@@ -108,7 +108,9 @@ export default function Home() {
                     className="h-px w-12"
                     style={{ background: "var(--line)" }}
                   />
-                  <span className="eyebrow">{r.roman}</span>
+                  <span className="eyebrow">
+                    {r.roman} <span className="kr">· {r.category}</span>
+                  </span>
                 </div>
                 <h2 className="display mt-3 flex items-baseline gap-4 text-[clamp(2.6rem,8vw,5.5rem)] font-black leading-none">
                   <span className="kr">{r.name}</span>
@@ -122,6 +124,17 @@ export default function Home() {
                 <p className="mt-4 max-w-xl text-lg italic text-[var(--ink-soft)]">
                   {r.tagline}
                 </p>
+                <div className="mt-3">
+                  <span
+                    className="inline-block rounded-full px-3 py-1 text-[0.66rem] tracky"
+                    style={{
+                      border: `1.5px solid ${accentHex(r.accent)}`,
+                      color: accentHex(r.accent),
+                    }}
+                  >
+                    {r.profile}
+                  </span>
+                </div>
               </div>
 
               <dl className="grid grid-cols-2 gap-x-8 gap-y-3 text-[0.9rem] lg:text-right">
@@ -178,6 +191,88 @@ export default function Home() {
           </div>
         </section>
       ))}
+
+      {/* ============ PRINCIPLES ============ */}
+      <section
+        id="principles"
+        className="scroll-mt-20 border-t border-[var(--line)]"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(178,122,35,0.06), transparent 28%)",
+        }}
+      >
+        <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
+          <SectionHead
+            n="原理"
+            ko="원리"
+            title="Principles of flavor"
+            sub="What moves the wine — strong, dry, clean"
+          />
+          <p className="mt-6 max-w-2xl text-[1.02rem] leading-relaxed text-[var(--ink-soft)]">
+            Every old recipe is the same handful of dials set differently.
+            Sweetness versus dryness is a race between{" "}
+            <span className="kr">당화</span> (starch → sugar) and{" "}
+            <span className="kr">발효</span> (sugar → alcohol); strength and
+            cleanliness both come down to keeping the yeast in charge. Here is
+            what each lever does, drawn from Korean sources.
+          </p>
+
+          <div className="mt-12 grid gap-x-10 gap-y-12 md:grid-cols-2">
+            {principles.map((lev) => (
+              <div key={lev.id} className="flex gap-5">
+                <div className="flex flex-col items-center">
+                  <span className="seal kr h-11 w-11 shrink-0 text-lg">
+                    {lev.ko}
+                  </span>
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-baseline gap-3">
+                    <h3 className="display text-2xl font-bold">{lev.name}</h3>
+                    <span className="kr text-sm text-[var(--ink-faint)]">
+                      {lev.korean}
+                    </span>
+                  </div>
+                  <p className="mt-1.5 text-[0.98rem] italic leading-snug text-[var(--ink-soft)]">
+                    {lev.effect}
+                  </p>
+                  <dl className="mt-4 space-y-2.5">
+                    {lev.points.map((p, i) => (
+                      <div
+                        key={i}
+                        className="border-l-2 pl-3.5"
+                        style={{ borderColor: "var(--line)" }}
+                      >
+                        <dt className="kr text-[0.86rem] font-semibold">
+                          {p.k}
+                        </dt>
+                        <dd className="text-[0.9rem] leading-relaxed text-[var(--ink-soft)]">
+                          {p.v}
+                        </dd>
+                      </div>
+                    ))}
+                  </dl>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-14 card rounded-lg p-6 sm:p-8">
+            <h3 className="kr text-sm tracky text-[var(--ink-faint)]">
+              한 줄 원칙 · the through-lines
+            </h3>
+            <ul className="mt-4 space-y-3">
+              {masterRules.map((m, i) => (
+                <li key={i} className="flex gap-3 text-[0.98rem] leading-relaxed">
+                  <span className="amt text-xl text-[var(--vermilion)]">
+                    {i + 1}
+                  </span>
+                  <span>{m}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
 
       {/* ============ RESCUE GUIDE ============ */}
       <section
