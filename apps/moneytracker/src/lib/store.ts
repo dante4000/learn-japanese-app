@@ -37,11 +37,23 @@ function blobPath(name: string): string {
 function localPath(name: string): string {
   return path.join(LOCAL_DIR, `${name}.enc`);
 }
+// Plaintext is only acceptable for the local .data/ dev backend. Blob documents
+// live at predictable public URLs, so refusing to operate without a key beats
+// silently writing readable financial data.
+function requireKeyForBlob(): void {
+  if (blobEnabled() && !canEncrypt()) {
+    throw new Error(
+      "ENCRYPTION_KEY must be set when storing data in Vercel Blob — refusing to read/write financial data unencrypted. Generate with: openssl rand -hex 32",
+    );
+  }
+}
 function encode(obj: unknown): string {
+  requireKeyForBlob();
   const json = JSON.stringify(obj);
   return canEncrypt() ? encrypt(json) : json;
 }
 function decode<T>(raw: string): T {
+  requireKeyForBlob();
   const json = canEncrypt() ? decrypt(raw) : raw;
   return JSON.parse(json) as T;
 }
@@ -109,6 +121,84 @@ async function listNames(keyPrefix: string): Promise<string[]> {
   }
 }
 
+// ── one-time v1 → v2 migration ──────────────────────────────────────────────
+// The previous release kept the entire AppState in a single document
+// ("moneytracker/state.enc" in Blob, ".data/state.enc" locally). When the v2
+// store is empty but a v1 document exists, split it into per-item bundles plus
+// meta so existing connections (and their encrypted Plaid access tokens),
+// manual entries, and the net-worth snapshot history all survive the upgrade.
+// The v1 document is left untouched as a backup. Writing meta marks the
+// migration done, and concurrent runs are harmless (same input, same writes).
+
+const V1_BLOB_PATH = "moneytracker/state.enc";
+const V1_LOCAL_PATH = path.join(process.cwd(), ".data", "state.enc");
+
+let migrationChecked = false;
+
+async function readLegacyState(): Promise<AppState | null> {
+  let raw: string | null = null;
+  if (blobEnabled()) {
+    const { blobs } = await list({ prefix: V1_BLOB_PATH, limit: 1 });
+    const match = blobs.find((b) => b.pathname === V1_BLOB_PATH);
+    if (!match) return null;
+    const res = await fetch(`${match.url}?v=${Date.now()}`, { cache: "no-store" });
+    if (!res.ok) return null;
+    raw = await res.text();
+  } else {
+    try {
+      raw = await fs.readFile(V1_LOCAL_PATH, "utf8");
+    } catch {
+      return null;
+    }
+  }
+  try {
+    return decode<AppState>(raw);
+  } catch {
+    return null;
+  }
+}
+
+async function ensureMigrated(): Promise<void> {
+  if (migrationChecked) return;
+  const existing = await listNames("");
+  if (existing.length > 0) {
+    migrationChecked = true;
+    return;
+  }
+  const legacy = await readLegacyState();
+  if (legacy) {
+    const byItem = new Map<string, ItemBundle>(
+      (legacy.items ?? []).map((item) => [
+        item.id,
+        { item, accounts: [], transactions: [], recurring: [] },
+      ]),
+    );
+    const acctToItem = new Map<string, string>();
+    for (const a of legacy.accounts ?? []) {
+      acctToItem.set(a.id, a.itemId);
+      byItem.get(a.itemId)?.accounts.push(a);
+    }
+    for (const t of legacy.transactions ?? []) {
+      const owner = acctToItem.get(t.accountId);
+      if (owner) byItem.get(owner)?.transactions.push(t);
+    }
+    for (const r of legacy.recurring ?? []) {
+      const owner = acctToItem.get(r.accountId);
+      if (owner) byItem.get(owner)?.recurring.push(r);
+    }
+    for (const bundle of byItem.values()) {
+      await writeDoc(itemKey(bundle.item.id), bundle);
+    }
+    const meta: MetaDoc = {
+      version: legacy.version ?? 1,
+      manualEntries: legacy.manualEntries ?? [],
+      snapshots: legacy.snapshots ?? [],
+    };
+    await writeDoc("meta", meta);
+  }
+  migrationChecked = true;
+}
+
 // ── item bundles ────────────────────────────────────────────────────────────
 
 function itemKey(itemId: string): string {
@@ -116,10 +206,15 @@ function itemKey(itemId: string): string {
 }
 
 export async function loadItemBundle(itemId: string): Promise<ItemBundle | null> {
+  await ensureMigrated();
   return readDoc<ItemBundle>(itemKey(itemId));
 }
 
 export async function saveItemBundle(bundle: ItemBundle): Promise<void> {
+  // Migrate before the first write too — a fresh v2 doc appearing first would
+  // otherwise make the migration check think there's nothing to do and orphan
+  // the legacy data.
+  await ensureMigrated();
   await writeDoc(itemKey(bundle.item.id), bundle);
 }
 
@@ -128,6 +223,7 @@ export async function deleteItemBundle(itemId: string): Promise<void> {
 }
 
 export async function listItemIds(): Promise<string[]> {
+  await ensureMigrated();
   const names = await listNames("item__");
   return names.map((n) => n.slice("item__".length));
 }
@@ -135,10 +231,12 @@ export async function listItemIds(): Promise<string[]> {
 // ── meta ────────────────────────────────────────────────────────────────────
 
 export async function loadMeta(): Promise<MetaDoc> {
+  await ensureMigrated();
   return (await readDoc<MetaDoc>("meta")) ?? emptyMeta();
 }
 
 export async function saveMeta(meta: MetaDoc): Promise<void> {
+  await ensureMigrated();
   await writeDoc("meta", meta);
 }
 

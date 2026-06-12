@@ -21,6 +21,7 @@ export function TransactionsView({
   const [acct, setAcct] = useState("ALL");
   const [editing, setEditing] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const acctName = useMemo(
     () => new Map(accounts.map((a) => [a.id, a.name])),
@@ -54,14 +55,25 @@ export function TransactionsView({
 
   async function update(id: string, patch: Record<string, unknown>) {
     setBusy(true);
-    await fetch("/api/transactions/update", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, ...patch }),
-    });
-    setBusy(false);
-    setEditing(null);
-    router.refresh();
+    setError(null);
+    try {
+      const res = await fetch("/api/transactions/update", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, ...patch }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        setError(data?.error || "Could not save change");
+        return;
+      }
+      setEditing(null);
+      router.refresh();
+    } catch {
+      setError("Could not save change");
+    } finally {
+      setBusy(false);
+    }
   }
 
   return (
@@ -101,6 +113,12 @@ export function TransactionsView({
           </select>
         )}
       </div>
+
+      {error && (
+        <p className="mb-3 text-sm text-coral" role="alert">
+          {error}
+        </p>
+      )}
 
       <div className="card overflow-hidden">
         {groups.length === 0 && (

@@ -79,11 +79,13 @@ export async function POST(req: NextRequest) {
         transactions: [],
         recurring: [],
       };
-      if (!bundle.accounts.some((a) => a.id === accountId)) {
-        const balance =
-          typeof body.currentBalance === "number"
-            ? body.currentBalance
-            : Number(body.currentBalance) || null;
+      const balance = parseBalance(body.currentBalance);
+      const existingAcct = bundle.accounts.find((a) => a.id === accountId);
+      if (existingAcct) {
+        // Re-import into the same CSV account: refresh the balance if provided
+        // so it doesn't go stale forever after the first import.
+        if (balance !== null) existingAcct.balances.current = balance;
+      } else {
         const acct: Account = {
           id: accountId,
           itemId,
@@ -127,6 +129,16 @@ export async function POST(req: NextRequest) {
       { status: 500 },
     );
   }
+}
+
+/** Number or numeric string → number; anything else → null. Preserves 0. */
+function parseBalance(raw: unknown): number | null {
+  if (typeof raw === "number") return Number.isFinite(raw) ? raw : null;
+  if (typeof raw === "string" && raw.trim() !== "") {
+    const n = Number(raw);
+    return Number.isFinite(n) ? n : null;
+  }
+  return null;
 }
 
 function hashStr(s: string): number {

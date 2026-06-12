@@ -6,7 +6,8 @@ import { monthKey } from "./format";
 // account balances (point-in-time) and transactions (flows). Sign convention
 // follows Plaid: transaction.amount POSITIVE = money out, NEGATIVE = money in.
 
-export const ASSET_TYPES = new Set(["depository", "investment"]);
+// Anything that isn't a liability counts as an asset (including type "other"),
+// so the accounts page lists and these totals always agree.
 export const LIABILITY_TYPES = new Set(["credit", "loan"]);
 
 /** The category that actually applies — a user override wins over Plaid's. */
@@ -42,8 +43,8 @@ export function computeNetWorth(state: AppState): NetWorthBreakdown {
 
   for (const acct of state.accounts) {
     const cur = acct.balances.current ?? 0;
-    if (ASSET_TYPES.has(acct.type)) totalAssets += cur;
-    else if (LIABILITY_TYPES.has(acct.type)) totalLiabilities += cur;
+    if (LIABILITY_TYPES.has(acct.type)) totalLiabilities += cur;
+    else totalAssets += cur;
   }
   for (const m of state.manualEntries) {
     if (m.kind === "asset") totalAssets += m.value;

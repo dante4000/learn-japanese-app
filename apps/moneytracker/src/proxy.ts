@@ -30,11 +30,11 @@ export function proxy(req: NextRequest) {
     url.pathname = "/login";
     return NextResponse.redirect(url);
   }
-  if (hasSession && isPublic) {
-    const url = req.nextUrl.clone();
-    url.pathname = "/";
-    return NextResponse.redirect(url);
-  }
+  // Note: a present cookie does NOT redirect /login → "/". Presence isn't
+  // validity — a stale or forged cookie bounced off /login by the proxy while
+  // the app layout bounces it back would loop forever (e.g. after rotating
+  // SESSION_SECRET). The login page itself redirects home only when the
+  // session cryptographically verifies.
   return NextResponse.next();
 }
 

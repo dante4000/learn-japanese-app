@@ -61,8 +61,17 @@ export function buildBundle(
 }
 
 export interface ItemSyncOutcome {
-  status: "healthy" | "error";
+  status: "healthy" | "needs_reauth" | "error";
   error: string | null;
+}
+
+/** Plaid error codes that mean the user must re-link, not that the sync broke. */
+const REAUTH_CODES = new Set(["ITEM_LOGIN_REQUIRED", "PENDING_EXPIRATION"]);
+
+function failureStatus(err: unknown): "needs_reauth" | "error" {
+  const code = (err as { response?: { data?: { error_code?: string } } })
+    ?.response?.data?.error_code;
+  return code && REAUTH_CODES.has(code) ? "needs_reauth" : "error";
 }
 
 /** Sync one Plaid item and persist just its bundle. */
@@ -75,19 +84,40 @@ export async function syncOneItem(item: Item): Promise<ItemSyncOutcome> {
     return { status: "healthy", error: null };
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
+    const status = failureStatus(err);
     if (prev) {
-      prev.item.status = "error";
+      prev.item.status = status;
       prev.item.error = message;
       await saveItemBundle(prev);
     }
-    return { status: "error", error: message };
+    return { status, error: message };
+  }
+}
+
+/**
+ * Today's date as yyyy-mm-dd, in APP_TIMEZONE if set (otherwise UTC). Without
+ * this, an evening sync in the US records the snapshot under tomorrow's date.
+ */
+function todayKey(): string {
+  const tz = process.env.APP_TIMEZONE;
+  if (!tz) return new Date().toISOString().slice(0, 10);
+  try {
+    // en-CA formats as yyyy-mm-dd.
+    return new Intl.DateTimeFormat("en-CA", {
+      timeZone: tz,
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    }).format(new Date());
+  } catch {
+    return new Date().toISOString().slice(0, 10);
   }
 }
 
 /** Recompute today's net-worth snapshot from the full (merged) state. */
 export async function updateSnapshot(): Promise<void> {
   const state = await loadState();
-  recordSnapshot(state, new Date().toISOString().slice(0, 10));
+  recordSnapshot(state, todayKey());
   const meta = await loadMeta();
   meta.snapshots = state.snapshots;
   await saveMeta(meta);
@@ -105,9 +135,9 @@ export async function syncAll(): Promise<SyncAllResult> {
   const errors: { institution: string; error: string | null }[] = [];
   for (const item of plaidItems) {
     const outcome = await syncOneItem(item);
-    if (outcome.status === "error")
+    if (outcome.status !== "healthy")
       errors.push({ institution: item.institutionName, error: outcome.error });
   }
   await updateSnapshot();
-  return { items: state.items.length, errors };
+  return { items: plaidItems.length, errors };
 }

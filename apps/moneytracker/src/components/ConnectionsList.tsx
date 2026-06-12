@@ -8,14 +8,26 @@ import { formatDate } from "@/lib/format";
 export function ConnectionsList({ items }: { items: Item[] }) {
   const router = useRouter();
   const [busy, setBusy] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   async function remove(id: string, name: string) {
     if (!confirm(`Remove ${name}? This deletes its accounts and transactions and revokes access.`))
       return;
     setBusy(id);
-    await fetch(`/api/items/${id}`, { method: "DELETE" });
-    setBusy(null);
-    router.refresh();
+    setError(null);
+    try {
+      const res = await fetch(`/api/items/${id}`, { method: "DELETE" });
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        setError(data?.error || `Could not remove ${name}`);
+        return;
+      }
+      router.refresh();
+    } catch {
+      setError(`Could not remove ${name}`);
+    } finally {
+      setBusy(null);
+    }
   }
 
   if (items.length === 0)
@@ -26,7 +38,13 @@ export function ConnectionsList({ items }: { items: Item[] }) {
     );
 
   return (
-    <ul className="space-y-2">
+    <div>
+      {error && (
+        <p className="mb-3 text-sm text-coral" role="alert">
+          {error}
+        </p>
+      )}
+      <ul className="space-y-2">
       {items.map((it) => (
         <li
           key={it.id}
@@ -46,6 +64,7 @@ export function ConnectionsList({ items }: { items: Item[] }) {
             <div className="text-xs text-faint">
               {it.provider === "plaid" ? "Plaid" : "CSV import"}
               {it.lastSyncedAt ? ` · synced ${formatDate(it.lastSyncedAt.slice(0, 10))}` : ""}
+              {it.status === "needs_reauth" ? " · needs reconnect — remove and re-link this bank" : ""}
               {it.status === "error" && it.error ? ` · ${it.error}` : ""}
             </div>
           </div>
@@ -58,6 +77,7 @@ export function ConnectionsList({ items }: { items: Item[] }) {
           </button>
         </li>
       ))}
-    </ul>
+      </ul>
+    </div>
   );
 }

@@ -17,27 +17,50 @@ export function ManualEntries({
   const [value, setValue] = useState("");
   const [kind, setKind] = useState<"asset" | "liability">("asset");
   const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   async function add(e: React.FormEvent) {
     e.preventDefault();
     if (!name || !value) return;
     setBusy(true);
-    await fetch("/api/manual", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, value: Number(value), kind }),
-    });
-    setName("");
-    setValue("");
-    setBusy(false);
-    router.refresh();
+    setError(null);
+    try {
+      const res = await fetch("/api/manual", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, value: Number(value), kind }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        setError(data?.error || "Could not add entry");
+        return;
+      }
+      setName("");
+      setValue("");
+      router.refresh();
+    } catch {
+      setError("Could not add entry");
+    } finally {
+      setBusy(false);
+    }
   }
 
   async function remove(id: string) {
     setBusy(true);
-    await fetch(`/api/manual?id=${id}`, { method: "DELETE" });
-    setBusy(false);
-    router.refresh();
+    setError(null);
+    try {
+      const res = await fetch(`/api/manual?id=${id}`, { method: "DELETE" });
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        setError(data?.error || "Could not remove entry");
+        return;
+      }
+      router.refresh();
+    } catch {
+      setError("Could not remove entry");
+    } finally {
+      setBusy(false);
+    }
   }
 
   return (
@@ -70,6 +93,12 @@ export function ManualEntries({
             </li>
           ))}
         </ul>
+      )}
+
+      {error && (
+        <p className="mb-3 text-sm text-coral" role="alert">
+          {error}
+        </p>
       )}
 
       <form onSubmit={add} className="flex flex-wrap gap-2">

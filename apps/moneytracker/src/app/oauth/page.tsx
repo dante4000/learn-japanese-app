@@ -39,13 +39,24 @@ export default function OAuthReturnPage() {
           receivedRedirectUri: window.location.href,
           onSuccess: async (publicToken: string) => {
             setMsg("Linking your accounts…");
-            await fetch("/api/plaid/exchange", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ public_token: publicToken }),
-            });
+            try {
+              const res = await fetch("/api/plaid/exchange", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ public_token: publicToken }),
+              });
+              if (!res.ok) {
+                const data = await res.json().catch(() => null);
+                setMsg(data?.error || "Could not link your bank. Please try again from Settings.");
+                return;
+              }
+            } catch {
+              setMsg("Could not link your bank. Please try again from Settings.");
+              return;
+            }
             localStorage.removeItem("plaid_link_token");
             router.replace("/");
+            router.refresh();
           },
           onExit: () => router.replace("/settings"),
         });
