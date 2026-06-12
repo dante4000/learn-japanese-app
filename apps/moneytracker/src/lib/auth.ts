@@ -13,7 +13,10 @@ export interface SessionData {
   loginAt?: number;
 }
 
-const SESSION_TTL_SECONDS = 60 * 60 * 24 * 7; // 7 days
+// 400 days — the maximum cookie lifetime browsers honor (Chrome caps Max-Age at
+// 400 days). For a single-user personal app this means you effectively never
+// have to log in again.
+const SESSION_TTL_SECONDS = 60 * 60 * 24 * 400;
 
 export function sessionOptions(): SessionOptions {
   const password = process.env.SESSION_SECRET;
@@ -29,7 +32,10 @@ export function sessionOptions(): SessionOptions {
     cookieOptions: {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      // "lax" (not "strict") so the cookie is still sent when you return to the
+      // site from an external page — e.g. coming back from your bank's OAuth
+      // flow — instead of being dropped and bouncing you to the login screen.
+      sameSite: "lax",
       path: "/",
       maxAge: SESSION_TTL_SECONDS,
     },
