@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isAuthenticated } from "@/lib/auth";
-import { mutateState } from "@/lib/store";
+import { listItemIds, loadItemBundle, saveItemBundle } from "@/lib/store";
 
 // Apply user overrides to a transaction (recategorize, hide from analytics, or
-// add a note). These survive re-syncs.
+// add a note). These survive re-syncs. Updates only the owning item's bundle.
 export async function POST(req: NextRequest) {
   if (!(await isAuthenticated()))
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -17,15 +17,19 @@ export async function POST(req: NextRequest) {
   const id = body.id as string;
   if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
 
-  await mutateState((state) => {
-    const t = state.transactions.find((x) => x.id === id);
-    if (!t) throw new Error("Transaction not found");
-    if (typeof body.userCategory === "string" || body.userCategory === null)
-      t.userCategory = (body.userCategory as string) || null;
-    if (typeof body.hidden === "boolean") t.hidden = body.hidden;
-    if (typeof body.note === "string" || body.note === null)
-      t.note = (body.note as string) || null;
-  });
-
-  return NextResponse.json({ ok: true });
+  const ids = await listItemIds();
+  for (const itemId of ids) {
+    const bundle = await loadItemBundle(itemId);
+    const t = bundle?.transactions.find((x) => x.id === id);
+    if (bundle && t) {
+      if (typeof body.userCategory === "string" || body.userCategory === null)
+        t.userCategory = (body.userCategory as string) || null;
+      if (typeof body.hidden === "boolean") t.hidden = body.hidden;
+      if (typeof body.note === "string" || body.note === null)
+        t.note = (body.note as string) || null;
+      await saveItemBundle(bundle);
+      return NextResponse.json({ ok: true });
+    }
+  }
+  return NextResponse.json({ error: "Transaction not found" }, { status: 404 });
 }

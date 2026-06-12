@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { mutateState } from "@/lib/store";
 import { syncAll } from "@/lib/sync";
 
 // Daily reconciliation sync, invoked by Vercel Cron (see vercel.json). Catches
@@ -12,8 +11,8 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   try {
-    const state = await mutateState((s) => syncAll(s));
-    return NextResponse.json({ ok: true, items: state.items.length });
+    const result = await syncAll();
+    return NextResponse.json({ ok: true, items: result.items });
   } catch (err) {
     return NextResponse.json(
       { error: err instanceof Error ? err.message : "Sync failed" },

@@ -1,13 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isAuthenticated } from "@/lib/auth";
-import { mutateState } from "@/lib/store";
+import {
+  loadItemBundle,
+  saveItemBundle,
+  bundleForAccount,
+} from "@/lib/store";
+import { updateSnapshot } from "@/lib/sync";
 import { csvToTransactions } from "@/lib/providers/csv";
-import { recordSnapshot } from "@/lib/analytics";
-import { Account, AccountType, Item } from "@/lib/types";
+import { Account, AccountType, Item, ItemBundle } from "@/lib/types";
 
 // Import a bank/card CSV export. Either attach to an existing account or create
 // a new CSV-backed account. Transactions are deduped by a content hash, so
-// re-importing an overlapping file is safe.
+// re-importing an overlapping file is safe. Writes only the owning item's
+// bundle.
 export async function POST(req: NextRequest) {
   if (!(await isAuthenticated()))
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -30,85 +35,92 @@ export async function POST(req: NextRequest) {
   const currency = (body.currency as string) || "USD";
 
   try {
+    let bundle: ItemBundle;
+    let accountId: string;
+    let accountLabel: string;
+
+    if (body.mode === "existing" && typeof body.accountId === "string") {
+      const found = await bundleForAccount(body.accountId);
+      if (!found)
+        return NextResponse.json({ error: "Account not found" }, { status: 400 });
+      bundle = found;
+      accountId = body.accountId;
+      accountLabel =
+        bundle.accounts.find((a) => a.id === accountId)?.name ?? "account";
+    } else {
+      const institutionName = (body.institutionName as string) || "Imported";
+      const accountName = (body.accountName as string) || "Imported Account";
+      const accountType = ([
+        "depository",
+        "credit",
+        "loan",
+        "investment",
+      ].includes(body.accountType as string)
+        ? body.accountType
+        : "depository") as AccountType;
+      const itemId = "csvitem_" + Math.abs(hashStr(institutionName + accountName));
+      accountId = "csvacct_" + Math.abs(hashStr(itemId + accountName));
+      accountLabel = accountName;
+
+      // Reuse an existing CSV item/account if re-importing into the same one.
+      bundle = (await loadItemBundle(itemId)) ?? {
+        item: {
+          id: itemId,
+          provider: "csv",
+          institutionName,
+          accessTokenEnc: "",
+          cursor: null,
+          status: "healthy",
+          error: null,
+          lastSyncedAt: new Date().toISOString(),
+          createdAt: new Date().toISOString(),
+        } as Item,
+        accounts: [],
+        transactions: [],
+        recurring: [],
+      };
+      if (!bundle.accounts.some((a) => a.id === accountId)) {
+        const balance =
+          typeof body.currentBalance === "number"
+            ? body.currentBalance
+            : Number(body.currentBalance) || null;
+        const acct: Account = {
+          id: accountId,
+          itemId,
+          name: accountName,
+          officialName: null,
+          mask: null,
+          type: accountType,
+          subtype: null,
+          currency,
+          balances: { current: balance, available: null, limit: null },
+          source: "csv",
+        };
+        bundle.accounts.push(acct);
+      }
+    }
+
+    const result = csvToTransactions(csv, { accountId, currency, outflowSign });
+    const existing = new Set(bundle.transactions.map((t) => t.id));
     let imported = 0;
-    let skipped = 0;
-    let accountLabel = "";
-
-    await mutateState((state) => {
-      let accountId: string;
-
-      if (body.mode === "existing" && typeof body.accountId === "string") {
-        accountId = body.accountId;
-        const acct = state.accounts.find((a) => a.id === accountId);
-        if (!acct) throw new Error("Account not found");
-        accountLabel = acct.name;
-      } else {
-        // Create a CSV pseudo-institution + account.
-        const institutionName = (body.institutionName as string) || "Imported";
-        const accountName = (body.accountName as string) || "Imported Account";
-        const accountType = ([
-          "depository",
-          "credit",
-          "loan",
-          "investment",
-        ].includes(body.accountType as string)
-          ? body.accountType
-          : "depository") as AccountType;
-        const itemId = "csvitem_" + Math.abs(hashStr(institutionName + accountName));
-        accountId = "csvacct_" + Math.abs(hashStr(itemId + accountName));
-
-        if (!state.items.some((i) => i.id === itemId)) {
-          const item: Item = {
-            id: itemId,
-            provider: "csv",
-            institutionName,
-            accessTokenEnc: "",
-            cursor: null,
-            status: "healthy",
-            error: null,
-            lastSyncedAt: new Date().toISOString(),
-            createdAt: new Date().toISOString(),
-          };
-          state.items.push(item);
-        }
-        if (!state.accounts.some((a) => a.id === accountId)) {
-          const balance =
-            typeof body.currentBalance === "number"
-              ? body.currentBalance
-              : Number(body.currentBalance) || null;
-          const acct: Account = {
-            id: accountId,
-            itemId,
-            name: accountName,
-            officialName: null,
-            mask: null,
-            type: accountType,
-            subtype: null,
-            currency,
-            balances: { current: balance, available: null, limit: null },
-            source: "csv",
-          };
-          state.accounts.push(acct);
-        }
-        accountLabel = accountName;
+    for (const t of result.transactions) {
+      if (!existing.has(t.id)) {
+        bundle.transactions.push(t);
+        existing.add(t.id);
+        imported++;
       }
+    }
+    bundle.transactions.sort((a, b) => b.date.localeCompare(a.date));
 
-      const result = csvToTransactions(csv, { accountId, currency, outflowSign });
-      skipped = result.skipped;
+    await saveItemBundle(bundle);
+    await updateSnapshot();
 
-      const existing = new Set(state.transactions.map((t) => t.id));
-      for (const t of result.transactions) {
-        if (!existing.has(t.id)) {
-          state.transactions.push(t);
-          existing.add(t.id);
-          imported++;
-        }
-      }
-      state.transactions.sort((a, b) => b.date.localeCompare(a.date));
-      recordSnapshot(state, new Date().toISOString().slice(0, 10));
+    return NextResponse.json({
+      ok: true,
+      imported,
+      skipped: result.skipped,
+      account: accountLabel,
     });
-
-    return NextResponse.json({ ok: true, imported, skipped, account: accountLabel });
   } catch (err) {
     return NextResponse.json(
       { error: err instanceof Error ? err.message : "Import failed" },

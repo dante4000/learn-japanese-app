@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isAuthenticated } from "@/lib/auth";
-import { mutateState } from "@/lib/store";
-import { recordSnapshot } from "@/lib/analytics";
+import { loadMeta, saveMeta } from "@/lib/store";
+import { updateSnapshot } from "@/lib/sync";
 import { ManualEntry } from "@/lib/types";
 
 // Manual assets/liabilities (home value, car, cash, etc.) so net worth is
-// complete even for things no bank reports.
+// complete even for things no bank reports. Stored in the global meta document.
 export async function POST(req: NextRequest) {
   if (!(await isAuthenticated()))
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -27,10 +27,10 @@ export async function POST(req: NextRequest) {
     asOf: new Date().toISOString().slice(0, 10),
   };
 
-  await mutateState((state) => {
-    state.manualEntries.push(entry);
-    recordSnapshot(state, new Date().toISOString().slice(0, 10));
-  });
+  const meta = await loadMeta();
+  meta.manualEntries.push(entry);
+  await saveMeta(meta);
+  await updateSnapshot();
   return NextResponse.json({ ok: true, entry });
 }
 
@@ -40,9 +40,9 @@ export async function DELETE(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const id = searchParams.get("id");
   if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
-  await mutateState((state) => {
-    state.manualEntries = state.manualEntries.filter((m) => m.id !== id);
-    recordSnapshot(state, new Date().toISOString().slice(0, 10));
-  });
+  const meta = await loadMeta();
+  meta.manualEntries = meta.manualEntries.filter((m) => m.id !== id);
+  await saveMeta(meta);
+  await updateSnapshot();
   return NextResponse.json({ ok: true });
 }

@@ -6,13 +6,13 @@ import {
   plaidErrorMessage,
 } from "@/lib/providers/plaid";
 import { encrypt } from "@/lib/crypto";
-import { mutateState } from "@/lib/store";
-import { syncItem } from "@/lib/sync";
-import { recordSnapshot } from "@/lib/analytics";
+import { saveItemBundle } from "@/lib/store";
+import { syncOneItem, updateSnapshot } from "@/lib/sync";
 import { Item } from "@/lib/types";
 
 // Completes the Plaid Link flow: exchange the public_token for a permanent
-// access_token, persist it (encrypted), and run an initial historical sync.
+// access_token, persist the connection immediately (so it can't be lost if the
+// first historical sync is slow), then pull its data.
 export async function POST(req: NextRequest) {
   if (!(await isAuthenticated()))
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -43,13 +43,12 @@ export async function POST(req: NextRequest) {
       createdAt: new Date().toISOString(),
     };
 
-    await mutateState(async (state) => {
-      const existing = state.items.findIndex((i) => i.id === item.id);
-      if (existing === -1) state.items.push(item);
-      else state.items[existing] = item;
-      await syncItem(state, item);
-      recordSnapshot(state, new Date().toISOString().slice(0, 10));
-    });
+    // Persist the connection right away in its own shard. Even if the first
+    // sync returns nothing yet (Plaid generates history asynchronously), the
+    // connection is saved and the webhook/cron will fill it in.
+    await saveItemBundle({ item, accounts: [], transactions: [], recurring: [] });
+    await syncOneItem(item);
+    await updateSnapshot();
 
     return NextResponse.json({ ok: true, institutionName });
   } catch (err) {

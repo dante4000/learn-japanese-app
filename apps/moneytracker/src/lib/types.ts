@@ -122,6 +122,29 @@ export interface AppState {
   updatedAt: string | null;
 }
 
+/**
+ * Per-connection bundle — the unit of persistence. Each Item (bank connection
+ * or CSV import) is stored in its own blob, so writing one connection can never
+ * clobber another (no lost-update race across banks).
+ */
+export interface ItemBundle {
+  item: Item;
+  accounts: Account[];
+  transactions: Transaction[];
+  recurring: RecurringStream[];
+}
+
+/** Global, non-connection data stored separately from item bundles. */
+export interface MetaDoc {
+  version: number;
+  manualEntries: ManualEntry[];
+  snapshots: NetWorthSnapshot[];
+}
+
+export function emptyMeta(): MetaDoc {
+  return { version: 1, manualEntries: [], snapshots: [] };
+}
+
 export function emptyState(): AppState {
   return {
     version: 1,
