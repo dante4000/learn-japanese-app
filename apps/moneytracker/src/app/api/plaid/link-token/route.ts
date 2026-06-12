@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import { isAuthenticated } from "@/lib/auth";
-import { createLinkToken, plaidConfigured } from "@/lib/providers/plaid";
+import {
+  createLinkToken,
+  plaidConfigured,
+  plaidErrorMessage,
+} from "@/lib/providers/plaid";
 
 export async function POST() {
   if (!(await isAuthenticated()))
@@ -14,9 +18,6 @@ export async function POST() {
     const link_token = await createLinkToken();
     return NextResponse.json({ link_token });
   } catch (err) {
-    return NextResponse.json(
-      { error: err instanceof Error ? err.message : "Failed to create link token" },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: plaidErrorMessage(err) }, { status: 500 });
   }
 }

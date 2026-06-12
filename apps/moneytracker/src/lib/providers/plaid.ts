@@ -43,20 +43,35 @@ export function plaidClient(): PlaidApi {
   return cached;
 }
 
+/** Extract Plaid's real error_code/error_message from a failed SDK call. */
+export function plaidErrorMessage(err: unknown): string {
+  const e = err as {
+    response?: { data?: { error_message?: string; error_code?: string } };
+    message?: string;
+  };
+  const d = e?.response?.data;
+  if (d?.error_message)
+    return d.error_code ? `${d.error_code}: ${d.error_message}` : d.error_message;
+  return e?.message || "Plaid request failed";
+}
+
 /** Create a Link token to open Plaid Link on the client. */
 export async function createLinkToken(): Promise<string> {
   const client = plaidClient();
   const base = process.env.APP_BASE_URL?.replace(/\/$/, "");
+  // Only send a redirect_uri once it's registered in the Plaid Dashboard
+  // (API → Allowed redirect URIs). It's required for OAuth banks like Chase in
+  // production, but sending an unregistered URI makes Plaid reject the request,
+  // so we gate it behind an explicit env var. Sandbox/non-OAuth links don't
+  // need it.
+  const redirectUri = process.env.PLAID_REDIRECT_URI;
   const res = await client.linkTokenCreate({
     user: { client_user_id: "owner" }, // single user
     client_name: "Money Tracker",
     products: [Products.Transactions],
     country_codes: [CountryCode.Us],
     language: "en",
-    // Required for OAuth institutions like Chase; safe to include generally.
-    // This URL must be registered in the Plaid Dashboard → API → Allowed
-    // redirect URIs. It lands on a client page that resumes Plaid Link.
-    ...(base ? { redirect_uri: `${base}/oauth` } : {}),
+    ...(redirectUri ? { redirect_uri: redirectUri } : {}),
     ...(base ? { webhook: `${base}/api/plaid/webhook` } : {}),
   });
   return res.data.link_token;

@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isAuthenticated } from "@/lib/auth";
-import { exchangePublicToken, getInstitutionName } from "@/lib/providers/plaid";
+import {
+  exchangePublicToken,
+  getInstitutionName,
+  plaidErrorMessage,
+} from "@/lib/providers/plaid";
 import { encrypt } from "@/lib/crypto";
 import { mutateState } from "@/lib/store";
 import { syncItem } from "@/lib/sync";
@@ -49,9 +53,6 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ ok: true, institutionName });
   } catch (err) {
-    return NextResponse.json(
-      { error: err instanceof Error ? err.message : "Exchange failed" },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: plaidErrorMessage(err) }, { status: 500 });
   }
 }
