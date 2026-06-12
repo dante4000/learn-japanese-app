@@ -1,4 +1,4 @@
-import { loadState } from "@/lib/store";
+import { loadScopedState } from "@/lib/scoped-state";
 import { cashFlowByMonth } from "@/lib/analytics";
 import {
   overview,
@@ -16,16 +16,17 @@ import { EmptyState, PageHeading, SectionCard, StatCard } from "@/components/ui"
 
 export const dynamic = "force-dynamic";
 
-const SUBTITLE = "Where the money comes from, where it goes, and what's changing.";
-
 export default async function AnalysisPage() {
-  const state = await loadState();
+  const { state, focus } = await loadScopedState();
   const cur = state.accounts[0]?.currency ?? "USD";
+  const subtitle = focus
+    ? `${focus.name} · where the money comes from, where it goes, and what's changing.`
+    : "Where the money comes from, where it goes, and what's changing.";
 
   if (state.accounts.length === 0) {
     return (
       <div>
-        <PageHeading title="Analysis" subtitle={SUBTITLE} />
+        <PageHeading title="Analysis" subtitle={subtitle} />
         <EmptyState />
       </div>
     );
@@ -35,7 +36,7 @@ export default async function AnalysisPage() {
   if (ov.months === 0) {
     return (
       <div>
-        <PageHeading title="Analysis" subtitle={SUBTITLE} />
+        <PageHeading title="Analysis" subtitle={subtitle} />
         <SectionCard>
           <p className="py-10 text-center text-sm text-muted">
             No activity recorded yet. Import a CSV or sync a bank to see your
@@ -60,7 +61,7 @@ export default async function AnalysisPage() {
 
   return (
     <div>
-      <PageHeading title="Analysis" subtitle={SUBTITLE} />
+      <PageHeading title="Analysis" subtitle={subtitle} />
 
       {/* 1 · Hero stats */}
       <div className="mb-5 grid grid-cols-2 gap-4 lg:grid-cols-4">
@@ -88,7 +89,7 @@ export default async function AnalysisPage() {
               ? "—"
               : `${Math.round(ov.savingsRate * 100)}%`
           }
-          accent={ov.savingsRate != null && ov.savingsRate >= 0 ? "blue" : "coral"}
+          accent={ov.savingsRate == null ? "cream" : ov.savingsRate >= 0 ? "blue" : "coral"}
           delay={180}
           sub="of income kept"
         />
@@ -111,22 +112,24 @@ export default async function AnalysisPage() {
         <p className="mt-1 text-center text-[0.62rem] uppercase tracking-wider text-faint">
           saved per month
         </p>
-        <div className="mt-5 grid gap-2 sm:grid-cols-2">
-          <div className="rounded-xl border hairline bg-surface px-3 py-2.5 text-sm">
-            <span className="text-muted">Best month · </span>
-            <span className="text-cream">{formatMonth(best.month)}</span>
-            <span className="tnum float-right text-blue">
-              {formatMoney(best.net, cur, { cents: false, sign: true })}
-            </span>
+        {flows.length > 0 && (
+          <div className="mt-5 grid gap-2 sm:grid-cols-2">
+            <div className="flex items-center rounded-xl border hairline bg-surface px-3 py-2.5 text-sm">
+              <span className="text-muted">Best month&nbsp;·&nbsp;</span>
+              <span className="text-cream">{formatMonth(best.month)}</span>
+              <span className="tnum ml-auto text-blue">
+                {formatMoney(best.net, cur, { cents: false, sign: true })}
+              </span>
+            </div>
+            <div className="flex items-center rounded-xl border hairline bg-surface px-3 py-2.5 text-sm">
+              <span className="text-muted">Toughest month&nbsp;·&nbsp;</span>
+              <span className="text-cream">{formatMonth(worst.month)}</span>
+              <span className="tnum ml-auto text-coral">
+                {formatMoney(worst.net, cur, { cents: false, sign: true })}
+              </span>
+            </div>
           </div>
-          <div className="rounded-xl border hairline bg-surface px-3 py-2.5 text-sm">
-            <span className="text-muted">Toughest month · </span>
-            <span className="text-cream">{formatMonth(worst.month)}</span>
-            <span className="tnum float-right text-coral">
-              {formatMoney(worst.net, cur, { cents: false, sign: true })}
-            </span>
-          </div>
-        </div>
+        )}
       </SectionCard>
 
       {/* 3 · Income sources */}
@@ -230,15 +233,15 @@ export default async function AnalysisPage() {
               return (
                 <div key={tr.category} className="flex items-center gap-2.5 text-sm">
                   <span>{tr.glyph}</span>
-                  <span className="text-cream-dim">{tr.label}</span>
+                  <span className="min-w-0 truncate text-cream-dim">{tr.label}</span>
                   <span
-                    className={`text-xs ${up ? "text-coral" : "text-blue"}`}
+                    className={`shrink-0 text-xs ${up ? "text-coral" : "text-blue"}`}
                   >
                     {tr.deltaPct == null
                       ? "new"
                       : `${up ? "▲" : "▼"} ${Math.abs(Math.round(tr.deltaPct))}%`}
                   </span>
-                  <span className="tnum ml-auto text-muted">
+                  <span className="tnum ml-auto shrink-0 text-muted">
                     {formatMoney(tr.priorAvg, cur, { cents: false })} →{" "}
                     <span className="text-cream">
                       {formatMoney(tr.recentAvg, cur, { cents: false })}
