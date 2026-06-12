@@ -10,6 +10,7 @@ import { formatMoney, formatMonth } from "@/lib/format";
 import { Donut } from "@/components/charts/Donut";
 import { CompositionBars } from "@/components/charts/CompositionBars";
 import { MonthPicker } from "@/components/MonthPicker";
+import { SpendingInsights } from "@/components/SpendingInsights";
 import { SectionCard, EmptyState, StatCard, PageHeading } from "@/components/ui";
 
 export const dynamic = "force-dynamic";
@@ -164,6 +165,16 @@ export default async function SpendingPage({
           </p>
         )}
       </SectionCard>
+
+      {/* By account · daily spending + pace · biggest movers */}
+      <SpendingInsights
+        state={state}
+        month={selected}
+        prevMonth={prevMonth}
+        currency={cur}
+        isLatestMonth={selected === months[months.length - 1]}
+        delay={180}
+      />
 
       {/* Habits over time */}
       <SectionCard
