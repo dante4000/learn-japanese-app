@@ -19,14 +19,14 @@ export function effectiveCategory(t: Transaction): string {
 }
 
 /** A transaction that should count as discretionary/spending outflow. */
-function isSpend(t: Transaction): boolean {
+export function isSpend(t: Transaction): boolean {
   if (t.hidden || t.pending) return false;
   if (t.amount <= 0) return false; // inflow
   return !TRANSFER_CATEGORIES.has(effectiveCategory(t));
 }
 
 /** A transaction that should count as income (real inflow, not a transfer). */
-function isIncome(t: Transaction): boolean {
+export function isIncome(t: Transaction): boolean {
   if (t.hidden || t.pending) return false;
   if (t.amount >= 0) return false; // outflow
   return !TRANSFER_CATEGORIES.has(effectiveCategory(t));
