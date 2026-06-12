@@ -125,7 +125,7 @@ export const recipes: Recipe[] = [
     ],
     about: [
       "오양주 — “five-brewed wine” — is the longest and most demanding of the 가양주, the home-brewed wines of Korea. One 밑술 (seed mash) is fed four separate times. Each feeding lays a near-finished wine on top of the last, so the yeast never drowns in sugar and the alcohol climbs higher and cleaner than any single- or double-brew can reach.",
-      "Korean brewers are candid that a single canonical 오양주 was never cleanly transmitted; the method here is reconstructed from the documented 오양주 patents and the craft logic of 삼양주 and 청주 brewing. The classical five-ferment cousins are 동파주 (東坡酒) and 무릉도원주 (武陵桃源酒), recorded in the 임원경제지.",
+      "Korean brewers are candid that a single canonical 오양주 was never cleanly transmitted; the method here is reconstructed from the craft logic of 삼양주 and 청주 brewing and from documented five-brew recipes — the 홍국 오양주 patent and, most tellingly, the commercial 천비향, a 밑술 + 네 번의 덧술 wine fermented over roughly nine months to about 19% (the practical ceiling for a fermented wine), confirmed by the 농촌진흥청. The classical five-ferment cousins are 동파주 (東坡酒) and 무릉도원주 (武陵桃源酒), recorded in the 임원경제지.",
     ],
     taste: [
       "Dry to off-dry, deep and rounded, with a clean grain sweetness rather than sugar. The long cold aging draws out a soft, almost nutty 청주 character once the clear wine is drawn off the top.",
@@ -195,7 +195,7 @@ export const recipes: Recipe[] = [
       },
     ],
     about: [
-      "삼해주 — “three-pig-day wine” — is the single most-frequently recorded wine in the entire Korean classical canon: of the 100-plus wines noted in 18th-century culinary texts, it appears more than any other, in well over a dozen distinct 주방문 (음식디미방 alone carries ~4). The 밑술 is laid down on the first 해일 (亥日, pig-day) of the lunar first month, and fed again on each successive pig-day, roughly twelve days apart. It ferments through the dead of winter.",
+      "삼해주 — “three-pig-day wine” — is among the most-documented wines in the entire Korean classical canon, its method set down across many of the old texts (동국이상국집, 산가요록, 음식디미방, 산림경제, 주방문, 양주방) and prized as a representative 약주 since the Goryeo era. The 밑술 is laid down on the first 해일 (亥日, pig-day) of the lunar first month, and fed again on each successive pig-day, roughly twelve days apart. It ferments through the dead of winter.",
       "It was the signature 명주 of old 한양 (Seoul), brewed by the thousand-jar at 마포 독막, and prized enough that Joseon officials petitioned to ban it for draining the capital’s rice. It survives today as Seoul Intangible Cultural Heritage No. 8. Also called 유서주 (柳絮酒), willow-catkin wine, because it is ready as the willows bud in spring.",
     ],
     taste: [

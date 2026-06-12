@@ -313,7 +313,7 @@ export default function Home() {
               {[
                 [
                   "Dose the enzyme",
-                  "Stir glucoamylase (당화효소) into the mash at ~0.3–0.5 g per kg of rice — about ½ tsp for a 3 kg batch. You can’t really under-shoot; if it hasn’t thinned in 24 h, add more. Your tangy mash is already at the enzyme’s ideal pH 4.0–4.5.",
+                  "Stir glucoamylase (당화효소) into the mash at ~1–2 g per kg of rice — roughly 1 tsp for a 3 kg batch, though retail powders vary by 역가 (activity), so follow the label. You can’t really under-shoot; if it hasn’t thinned in 24 h, add more. Your tangy mash is already at the enzyme’s ideal pH 4.0–4.5.",
                 ],
                 [
                   "Re-pitch + hold 28–32 °C",
@@ -343,7 +343,7 @@ export default function Home() {
             </h3>
             <dl className="mt-4 space-y-3.5 text-[0.95rem]">
               {[
-                ["Dose", "0.3–0.5 g / kg rice (½ tsp per ~5 kg)"],
+                ["Dose", "≈ 1–2 g / kg rice (product — varies by 역가)"],
                 ["Enzyme peak", "55–60 °C — but kills yeast"],
                 ["Rescue temp", "28–32 °C (enzyme + yeast both work)"],
                 ["Ideal pH", "4.0–4.5 — a tangy mash is already there"],
@@ -402,9 +402,10 @@ export default function Home() {
 
           <p className="mt-10 max-w-3xl text-[0.86rem] leading-relaxed text-[var(--ink-faint)]">
             Honest caveats: no single canonical 오양주 survives in the old texts —
-            it is reconstructed from documented patents and 삼양주 craft. 삼해주 is
-            the most-recorded wine in the canon, with well over a dozen 주방문;
-            old 말/되 don’t map cleanly to modern metric,
+            it is reconstructed from documented patents (홍국 오양주; the
+            commercial 천비향) and 삼양주 craft. 삼해주 is among the most-documented
+            wines in the canon, recorded across many of the old texts; old 말/되
+            don’t map cleanly to modern metric,
             so the scaler holds within-recipe ratios rather than literal
             historical volumes. Brew to your own taste and local law.
           </p>
