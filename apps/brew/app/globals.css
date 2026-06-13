@@ -146,6 +146,51 @@
   background-size: 100% 2px;
 }
 
+/* scroll-spy nav links — underline grows in on hover / active section */
+.navlink {
+  position: relative;
+  color: var(--ink-soft);
+  text-decoration: none;
+  padding-bottom: 3px;
+  transition: color 0.2s ease;
+}
+.navlink::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1.5px;
+  background: var(--vermilion);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.28s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.navlink:hover {
+  color: var(--ink);
+}
+.navlink:hover::after {
+  transform: scaleX(0.5);
+}
+.navlink[data-active="true"] {
+  color: var(--ink);
+}
+.navlink[data-active="true"]::after {
+  transform: scaleX(1);
+}
+
+/* hero recipe index rows */
+.recipe-row {
+  background: var(--paper);
+  transition:
+    background 0.16s ease,
+    padding-left 0.16s ease;
+}
+.recipe-row:hover {
+  background: var(--paper-deep);
+  padding-left: 1.15rem;
+}
+
 .stage-grid {
   display: grid;
   grid-template-columns: 2.7rem 1fr;

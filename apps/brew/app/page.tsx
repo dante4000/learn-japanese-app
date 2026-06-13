@@ -2,33 +2,14 @@ import { recipes } from "@/lib/recipes";
 import { principles, masterRules } from "@/lib/principles";
 import RecipeCalculator from "./components/RecipeCalculator";
 import { BrewProvider } from "./components/BrewProvider";
+import SiteNav from "./components/SiteNav";
 
 export default function Home() {
   return (
     <BrewProvider>
     <main className="relative">
       {/* ============ NAV ============ */}
-      <header className="sticky top-0 z-30 border-b border-[var(--line)] bg-[var(--paper)]/85 backdrop-blur-sm">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3 sm:px-8">
-          <a href="#top" className="flex items-baseline gap-2">
-            <span className="kr text-xl font-bold">양조</span>
-            <span className="hidden text-[0.7rem] tracky text-[var(--ink-faint)] sm:inline">
-              a brewing journal
-            </span>
-          </a>
-          <nav className="flex items-center gap-4 text-[0.72rem] tracky sm:gap-6">
-            <a href="#principles" className="inklink">
-              Principles
-            </a>
-            <a href="#oyangju" className="inklink">
-              Recipes
-            </a>
-            <a href="#rescue" className="inklink">
-              Rescue
-            </a>
-          </nav>
-        </div>
-      </header>
+      <SiteNav recipeIds={recipes.map((r) => r.id)} />
 
       {/* ============ HERO ============ */}
       <section
@@ -52,30 +33,60 @@ export default function Home() {
 
           <p className="max-w-2xl text-lg leading-relaxed text-[var(--ink-soft)] sm:text-xl">
             A working notebook for makgeolli and the wines beyond it. First, how
-            to thin and strengthen a brew that came out thick. Then three of the
-            great old recipes — <span className="kr">오양주</span>,{" "}
-            <span className="kr">삼해주</span>,{" "}
-            <span className="kr">석탄주</span> — drawn from the classical{" "}
+            to thin and strengthen a brew that came out thick. Then eight of the
+            great old recipes — from the strong, clean{" "}
+            <span className="kr">오양주</span> to the honeyed{" "}
+            <span className="kr">석탄주</span> — each drawn from the classical{" "}
             <span className="italic">고문헌</span> and built to scale.{" "}
             <strong className="font-semibold text-[var(--ink)]">
               Change the rice or the nuruk and every stage re-calculates.
             </strong>
           </p>
 
-          <div className="mt-2 flex flex-wrap gap-3 text-[0.72rem] tracky">
-            {recipes.map((r) => (
-              <a
-                key={r.id}
-                href={`#${r.id}`}
-                className="pill rounded-full px-4 py-2"
-              >
-                <span className="kr text-sm">{r.name}</span>
-                <span className="ml-2 text-[var(--ink-faint)]">
-                  {r.abv.replace("≈ ", "").split(" ·")[0]}
-                </span>
-              </a>
-            ))}
-          </div>
+          {/* recipe index */}
+          <nav aria-label="Recipes" className="mt-4">
+            <div className="mb-3 flex items-center gap-3">
+              <span className="kr text-[0.66rem] tracky text-[var(--ink-faint)]">
+                여덟 가지 술 · the eight wines
+              </span>
+              <span
+                className="h-px flex-1"
+                style={{ background: "var(--line)" }}
+              />
+            </div>
+            <ol
+              className="grid grid-cols-1 gap-px overflow-hidden rounded-lg sm:grid-cols-2"
+              style={{ background: "var(--line)" }}
+            >
+              {recipes.map((r, i) => (
+                <li key={r.id}>
+                  <a
+                    href={`#${r.id}`}
+                    className="recipe-row group flex items-baseline gap-3 px-4 py-3"
+                  >
+                    <span className="amt w-6 shrink-0 text-[0.78rem] text-[var(--ink-faint)]">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span
+                      className="kr w-6 shrink-0 text-[1.05rem] leading-none"
+                      style={{ color: accentHex(r.accent) }}
+                    >
+                      {r.hanja[0]}
+                    </span>
+                    <span className="kr text-[1.02rem] font-semibold">
+                      {r.name}
+                    </span>
+                    <span className="hidden text-[0.7rem] tracky text-[var(--ink-faint)] md:inline">
+                      {r.category.split(" · ")[1] ?? r.category}
+                    </span>
+                    <span className="amt ml-auto text-[0.82rem] text-[var(--ink-soft)]">
+                      {r.abv.replace("≈ ", "").split(" ·")[0]}
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </nav>
         </div>
       </section>
 
