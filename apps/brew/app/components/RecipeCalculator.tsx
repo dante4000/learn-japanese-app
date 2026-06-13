@@ -64,6 +64,12 @@ export default function RecipeCalculator({ recipe }: { recipe: Recipe }) {
   const nurukPct = rice > 0 ? (nuruk / (rice * 1000)) * 100 : 0;
   const accent = accentVar[recipe.accent];
 
+  // rough yield: the water added plus the liquid the rice itself becomes as it
+  // saccharifies (~0.9 L per kg); grain solids leave as lees. Clear 청주 drawn
+  // off the top is ~60% of the raw strained wine; the rest is 막걸리 with the lees.
+  const estRaw = totalWater + rice * 0.9;
+  const estClear = estRaw * 0.6;
+
   return (
     <div>
       {/* ---- control bar ---- */}
@@ -136,6 +142,31 @@ export default function RecipeCalculator({ recipe }: { recipe: Recipe }) {
             )}
           </div>
         </div>
+      </div>
+
+      {/* ---- yield estimate ---- */}
+      <div
+        className="mt-4 flex flex-wrap items-baseline gap-x-4 gap-y-1.5 rounded-lg px-5 py-4"
+        style={{
+          background: "var(--paper-deep)",
+          border: "1px solid var(--line-soft)",
+        }}
+      >
+        <span className="text-[0.66rem] tracky text-[var(--ink-faint)]">
+          Makes
+        </span>
+        <span className="amt text-2xl leading-none" style={{ color: accent }}>
+          ≈ {litres(estRaw)}
+        </span>
+        <span className="text-[0.9rem] text-[var(--ink-soft)]">
+          finished wine — about{" "}
+          <span className="amt text-[var(--ink)]">{litres(estClear)}</span> drawn
+          clear as <span className="kr">청주</span>, the rest{" "}
+          <span className="kr">막걸리</span> with the lees
+        </span>
+        <span className="ml-auto text-[0.7rem] italic text-[var(--ink-faint)]">
+          rough estimate · water + ~0.9 L per kg rice
+        </span>
       </div>
 
       {/* ---- stages ---- */}
