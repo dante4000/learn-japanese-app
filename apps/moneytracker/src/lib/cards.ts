@@ -12,7 +12,7 @@
 // each card's earn rates to categorized spend.
 
 import { AppState, Account } from "./types";
-import { effectiveCategory, isSpend } from "./analytics";
+import { effectiveCategory, isSpend, refundMatchedIds } from "./analytics";
 
 export type CreditFrequency =
   | "annual"
@@ -768,12 +768,13 @@ export function cardSpend(state: AppState, accountId: string): CardSpend {
   const cutoff = monthsBefore(anchor, 12);
   const yearStart = anchor.slice(0, 4) + "-01-01";
   const byCategory = new Map<string, number>();
+  const neutralized = refundMatchedIds(state);
   let total12mo = 0;
   let totalYtd = 0;
   let count = 0;
   for (const t of state.transactions) {
     if (t.accountId !== accountId) continue;
-    if (!isSpend(t)) continue;
+    if (!isSpend(t, neutralized)) continue;
     if (t.date >= yearStart) totalYtd += t.amount;
     if (t.date < cutoff) continue;
     const cat = effectiveCategory(t);

@@ -1,7 +1,13 @@
 import { AppState, Transaction } from "./types";
-import { availableMonths, effectiveCategory, isIncome, isSpend } from "./analytics";
+import {
+  availableMonths,
+  effectiveCategory,
+  isIncome,
+  isSpend,
+  refundMatchedIds,
+} from "./analytics";
 import { categoryMeta } from "./categories";
-import { displayPayee } from "./aliases";
+import { displayPayee, incomeSourceLabel } from "./aliases";
 import { monthKey } from "./format";
 
 // Big-picture derivations for the Analysis tab. Everything operates on the
@@ -32,12 +38,13 @@ export interface Overview {
 export function overview(state: AppState, monthsBack = 12): Overview {
   const months = windowMonths(state, monthsBack);
   const within = inWindow(months);
+  const neutralized = refundMatchedIds(state);
   let income = 0;
   let spending = 0;
   for (const t of state.transactions) {
     if (!within(t)) continue;
-    if (isSpend(t)) spending += t.amount;
-    else if (isIncome(t)) income += -t.amount;
+    if (isSpend(t, neutralized)) spending += t.amount;
+    else if (isIncome(t, neutralized)) income += -t.amount;
   }
   const net = income - spending;
   return {
@@ -90,10 +97,11 @@ export function incomeSources(
   const months = windowMonths(state, monthsBack);
   const within = inWindow(months);
   const nMonths = months.length || 1;
+  const neutralized = refundMatchedIds(state);
   const byName = new Map<string, { total: number; dates: string[] }>();
   for (const t of state.transactions) {
-    if (!isIncome(t) || !within(t)) continue;
-    const name = displayPayee(t.merchantName, t.name);
+    if (!isIncome(t, neutralized) || !within(t)) continue;
+    const name = incomeSourceLabel(t.merchantName, t.name);
     const row = byName.get(name) ?? { total: 0, dates: [] };
     row.total += -t.amount;
     row.dates.push(t.date);
@@ -158,8 +166,10 @@ export interface IncomeBreakdown {
 
 /** Months (yyyy-mm) that have any income, oldest → newest. */
 export function incomeMonths(state: AppState): string[] {
+  const neutralized = refundMatchedIds(state);
   const set = new Set<string>();
-  for (const t of state.transactions) if (isIncome(t)) set.add(monthKey(t.date));
+  for (const t of state.transactions)
+    if (isIncome(t, neutralized)) set.add(monthKey(t.date));
   return [...set].sort((a, b) => a.localeCompare(b));
 }
 
@@ -172,10 +182,11 @@ export function incomeBreakdown(state: AppState): IncomeBreakdown {
   const months = incomeMonths(state);
 
   // All-time total per source → ranking that drives stable color assignment.
+  const neutralized = refundMatchedIds(state);
   const totals = new Map<string, number>();
   for (const t of state.transactions) {
-    if (!isIncome(t)) continue;
-    const name = displayPayee(t.merchantName, t.name);
+    if (!isIncome(t, neutralized)) continue;
+    const name = incomeSourceLabel(t.merchantName, t.name);
     totals.set(name, (totals.get(name) ?? 0) + -t.amount);
   }
   const ranked = [...totals.entries()].sort((a, b) => b[1] - a[1]);
@@ -190,11 +201,11 @@ export function incomeBreakdown(state: AppState): IncomeBreakdown {
   const byMonthMap = new Map<string, Map<string, IncomeSegment>>();
   for (const m of months) byMonthMap.set(m, new Map());
   for (const t of state.transactions) {
-    if (!isIncome(t)) continue;
+    if (!isIncome(t, neutralized)) continue;
     const m = monthKey(t.date);
     const segs = byMonthMap.get(m);
     if (!segs) continue;
-    const raw = displayPayee(t.merchantName, t.name);
+    const raw = incomeSourceLabel(t.merchantName, t.name);
     const name = labelFor(raw);
     const row = segs.get(name) ?? { name, total: 0, color: colorFor(raw), count: 0 };
     row.total += -t.amount;
@@ -233,11 +244,43 @@ export function largestDeposits(
   monthsBack = 12,
   limit = 5,
 ): Transaction[] {
-  const within = inWindow(windowMonths(state, monthsBack));
+  return largestDepositsForMonths(state, windowMonths(state, monthsBack), limit);
+}
+
+/** The biggest single income deposits across an explicit set of months. */
+export function largestDepositsForMonths(
+  state: AppState,
+  months: string[],
+  limit = 5,
+): Transaction[] {
+  const set = new Set(months);
+  const neutralized = refundMatchedIds(state);
   return state.transactions
-    .filter((t) => isIncome(t) && within(t))
+    .filter((t) => isIncome(t, neutralized) && set.has(monthKey(t.date)))
     .sort((a, b) => a.amount - b.amount) // most negative = largest inflow
     .slice(0, limit);
+}
+
+/** Sum a set of monthly income breakdowns into one source-segment list. */
+export function mergeIncomeMonths(list: IncomeMonth[]): {
+  total: number;
+  segments: IncomeSegment[];
+} {
+  const map = new Map<string, IncomeSegment>();
+  for (const m of list) {
+    for (const s of m.segments) {
+      const e =
+        map.get(s.name) ?? { name: s.name, total: 0, color: s.color, count: 0 };
+      e.total += s.total;
+      e.count += s.count;
+      map.set(s.name, e);
+    }
+  }
+  // Keep a real "Other" bucket last; everything else by size.
+  const segments = [...map.values()].sort((a, b) =>
+    a.name === "Other" ? 1 : b.name === "Other" ? -1 : b.total - a.total,
+  );
+  return { total: segments.reduce((a, s) => a + s.total, 0), segments };
 }
 
 export interface WeekdaySpend {
@@ -254,9 +297,10 @@ export function spendByWeekday(
   monthsBack = 12,
 ): WeekdaySpend[] {
   const within = inWindow(windowMonths(state, monthsBack));
+  const neutralized = refundMatchedIds(state);
   const rows = WEEKDAYS.map((weekday) => ({ weekday, total: 0, count: 0 }));
   for (const t of state.transactions) {
-    if (!isSpend(t) || !within(t)) continue;
+    if (!isSpend(t, neutralized) || !within(t)) continue;
     const js = new Date(t.date + "T00:00:00").getDay(); // 0 = Sunday
     rows[(js + 6) % 7].total += t.amount; // re-index so 0 = Monday
     rows[(js + 6) % 7].count += 1;
@@ -271,8 +315,9 @@ export function largestPurchases(
   limit = 5,
 ): Transaction[] {
   const within = inWindow(windowMonths(state, monthsBack));
+  const neutralized = refundMatchedIds(state);
   return state.transactions
-    .filter((t) => isSpend(t) && within(t))
+    .filter((t) => isSpend(t, neutralized) && within(t))
     .sort((a, b) => b.amount - a.amount)
     .slice(0, limit);
 }
@@ -301,9 +346,10 @@ export function categorySpendTrends(
   if (months.length <= RECENT_MONTHS) return [];
   const recent = new Set(months.slice(-RECENT_MONTHS));
   const prior = new Set(months.slice(0, -RECENT_MONTHS));
+  const neutralized = refundMatchedIds(state);
   const acc = new Map<string, { recent: number; prior: number }>();
   for (const t of state.transactions) {
-    if (!isSpend(t)) continue;
+    if (!isSpend(t, neutralized)) continue;
     const m = monthKey(t.date);
     const bucket = recent.has(m) ? "recent" : prior.has(m) ? "prior" : null;
     if (!bucket) continue;
@@ -355,9 +401,10 @@ export function newMerchants(
   // With so little history every merchant would be "new" — meaningless.
   if (months.length <= recentMonths) return [];
   const recent = new Set(months.slice(-recentMonths));
+  const neutralized = refundMatchedIds(state);
   const byName = new Map<string, NewMerchant>();
   for (const t of state.transactions) {
-    if (!isSpend(t)) continue;
+    if (!isSpend(t, neutralized)) continue;
     const name = displayPayee(t.merchantName, t.name);
     const row =
       byName.get(name) ?? { name, total: 0, count: 0, firstDate: t.date };

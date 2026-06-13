@@ -36,3 +36,33 @@ export function displayPayee(
   }
   return merchant || name || "Unknown";
 }
+
+/**
+ * A normalized grouping label for an income payer. Bank inflow descriptors carry
+ * per-payment reference noise — Zelle confirmation numbers, ACH "PPD ID" trace
+ * tags, random alphanumeric tokens — so the same payer (a paycheck, a client)
+ * shows up under dozens of distinct strings and shatters the income breakdown
+ * (e.g. every "Zelle payment from RARELIQUID LLC <id>" counted as its own
+ * source, with the long tail dumped into a giant "Other"). Strip that noise so
+ * all payments from one payer collapse together. Explicit aliases still win.
+ */
+export function incomeSourceLabel(
+  merchant?: string | null,
+  name?: string | null,
+): string {
+  const aliased = displayPayee(merchant, name);
+  // An alias fired — trust it verbatim.
+  if (aliased !== (merchant || name || "Unknown")) return aliased;
+
+  let s = merchant?.trim() || name?.trim() || "";
+  s = s.replace(/^\s*zelle\s+(payment\s+)?from\s+/i, "");
+  s = s.replace(/^\s*(ach\s+credit|deposit|direct\s+dep(osit)?|dir\s+dep)\s+/i, "");
+  // Drop everything from a reference marker onward ("… PPD ID: 9138864001").
+  s = s.replace(/\b(ppd|web|co|conf|trace|ref)\s*id\b.*/i, "");
+  // Drop a trailing "PAY"/"PAYMENT" followed by reference numbers.
+  s = s.replace(/\bpay(ment)?\b\s*\d.*/i, "");
+  // Remove any leftover token containing a digit (confirmation #s, gibberish).
+  s = s.replace(/\b\S*\d\S*\b/g, " ");
+  s = s.replace(/\s+/g, " ").trim();
+  return s || aliased || "Unknown";
+}
