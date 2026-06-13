@@ -1,7 +1,7 @@
 import { loadScopedState } from "@/lib/scoped-state";
 import { RecurringStream } from "@/lib/types";
 import { categoryMeta } from "@/lib/categories";
-import { upcomingBills, reimbursedStreams } from "@/lib/analytics";
+import { upcomingBills, reimbursedStreams, isTransferStream } from "@/lib/analytics";
 import { formatMoney, formatDate } from "@/lib/format";
 import { UpcomingBills } from "@/components/UpcomingBills";
 import { PeriodToggle } from "@/components/PeriodToggle";
@@ -109,16 +109,15 @@ export default async function RecurringPage({
   const cardName = new Map(state.accounts.map((a) => [a.id, a.name]));
   const reimbursed = reimbursedStreams(state);
 
-  // Internal transfers between your own accounts get detected by Plaid as both a
-  // recurring outflow AND inflow — exclude so they aren't fake subs/income.
-  const isInternalTransfer = (s: RecurringStream) =>
-    s.categoryPrimary === "TRANSFER_IN" || s.categoryPrimary === "TRANSFER_OUT";
-
+  // Transfers and card payments get detected by Plaid as recurring streams
+  // (often as both an outflow AND inflow) — exclude so they aren't shown as
+  // fake subscriptions/income. isTransferStream is the same predicate the
+  // bills timeline and spending totals use.
   const subs = state.recurring
-    .filter((s) => s.type === "outflow" && !isInternalTransfer(s))
+    .filter((s) => s.type === "outflow" && !isTransferStream(s))
     .sort((a, b) => monthlyEquivalent(b) - monthlyEquivalent(a));
   const income = state.recurring
-    .filter((s) => s.type === "inflow" && !isInternalTransfer(s))
+    .filter((s) => s.type === "inflow" && !isTransferStream(s))
     .sort((a, b) => monthlyEquivalent(b) - monthlyEquivalent(a));
 
   const monthlySubs = subs

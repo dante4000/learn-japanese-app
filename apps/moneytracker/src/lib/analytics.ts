@@ -527,13 +527,23 @@ export interface UpcomingBill {
 }
 
 /** A recurring outflow that's a real bill/subscription, not an internal payment. */
+/**
+ * A recurring stream that's really money moving between your own accounts — a
+ * card payment or transfer — not a genuine subscription/bill or income. Uses
+ * the shared TRANSFER_CATEGORIES set (TRANSFER_IN/OUT *and* LOAN_PAYMENTS) plus
+ * the description heuristic, so card payments are excluded everywhere the same
+ * way spending/income already exclude them.
+ */
+export function isTransferStream(s: RecurringStream): boolean {
+  return (
+    TRANSFER_CATEGORIES.has(s.categoryPrimary) ||
+    isInternalPayment(s.description, s.merchantName)
+  );
+}
+
 function isBillStream(s: RecurringStream): boolean {
   if (s.type !== "outflow" || !s.isActive) return false;
-  // Use the shared transfer set (TRANSFER_IN/OUT *and* LOAN_PAYMENTS) so a
-  // credit-card payment — kept out of spending totals — is also kept off the
-  // bills list, instead of only excluding the two literal transfer categories.
-  if (TRANSFER_CATEGORIES.has(s.categoryPrimary)) return false;
-  return !isInternalPayment(s.description, s.merchantName);
+  return !isTransferStream(s);
 }
 
 function addInterval(date: string, freq: string): string {
