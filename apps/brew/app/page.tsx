@@ -198,7 +198,7 @@ export default function Home() {
         className="scroll-mt-20 border-t border-[var(--line)]"
         style={{
           background:
-            "linear-gradient(180deg, rgba(178,122,35,0.06), transparent 28%)",
+            "linear-gradient(180deg, rgba(44,58,87,0.05), transparent 28%)",
         }}
       >
         <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
