@@ -529,8 +529,10 @@ export interface UpcomingBill {
 /** A recurring outflow that's a real bill/subscription, not an internal payment. */
 function isBillStream(s: RecurringStream): boolean {
   if (s.type !== "outflow" || !s.isActive) return false;
-  if (s.categoryPrimary === "TRANSFER_IN" || s.categoryPrimary === "TRANSFER_OUT")
-    return false;
+  // Use the shared transfer set (TRANSFER_IN/OUT *and* LOAN_PAYMENTS) so a
+  // credit-card payment — kept out of spending totals — is also kept off the
+  // bills list, instead of only excluding the two literal transfer categories.
+  if (TRANSFER_CATEGORIES.has(s.categoryPrimary)) return false;
   return !isInternalPayment(s.description, s.merchantName);
 }
 

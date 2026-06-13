@@ -53,7 +53,7 @@ export function isInternalPayment(
   const n = name || "";
   if (/^\s*payment\s*[-–]\s/i.test(n)) return true;
   const hay = `${n} ${merchant ?? ""}`;
-  return /\bcard\b.{0,25}\bppd\b|\bcard\s*(pmt|payment|pymt)\b|\bcardmember\s+(pmt|payment)\b|\bautopay\b|payment\s+thank\s*you/i.test(
+  return /\bcard\b.{0,25}\bppd\b|\bcard\s*(pmt|payment|pymt)\b|\bcardmember\s+(pmt|payment)\b|\bautopay\b|payment\s+thank\s*you|\b(american\s+express|amex|chase|citi|discover|capital\s+one|bilt|barclay)\b.{0,15}\bach\s*(pmt|pymt|payment)\b/i.test(
     hay,
   );
 }
