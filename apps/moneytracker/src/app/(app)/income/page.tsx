@@ -4,6 +4,7 @@ import {
   incomeMonths,
   mergeIncomeMonths,
   largestDepositsForMonths,
+  filterBySource,
 } from "@/lib/insights";
 import { MonthComposition } from "@/lib/analytics";
 import { incomeSourceLabel } from "@/lib/aliases";
@@ -12,17 +13,29 @@ import { Donut } from "@/components/charts/Donut";
 import { CompositionBars } from "@/components/charts/CompositionBars";
 import { MonthPicker } from "@/components/MonthPicker";
 import { IncomeScope, Scope } from "@/components/IncomeScope";
+import { SourceToggle } from "@/components/SourceToggle";
 import { SectionCard, EmptyState, StatCard, PageHeading } from "@/components/ui";
 
 export const dynamic = "force-dynamic";
 
+const RARELIQUID = "rareliquid";
+
 export default async function IncomePage({
   searchParams,
 }: {
-  searchParams: Promise<{ month?: string; scope?: string }>;
+  searchParams: Promise<{ month?: string; scope?: string; src?: string }>;
 }) {
-  const { state, focus: acct } = await loadScopedState();
-  const cur = state.accounts[0]?.currency ?? "USD";
+  const { state: fullState, focus: acct } = await loadScopedState();
+  const cur = fullState.accounts[0]?.currency ?? "USD";
+  const sp = await searchParams;
+
+  // RareLiquid-only view: scope the whole tab to that single payer. Only offered
+  // when there's actually RareLiquid income to show.
+  const rareState = filterBySource(fullState, RARELIQUID);
+  const hasRare = incomeMonths(rareState).length > 0;
+  const onlyRare = hasRare && sp.src === RARELIQUID;
+  const state = onlyRare ? rareState : fullState;
+
   const months = incomeMonths(state);
 
   if (months.length === 0) {
@@ -46,7 +59,6 @@ export default async function IncomePage({
     );
   }
 
-  const sp = await searchParams;
   const scope: Scope =
     sp.scope === "ytd" ? "ytd" : sp.scope === "year" ? "year" : "month";
 
@@ -128,12 +140,21 @@ export default async function IncomePage({
         <PageHeading
           title="Income"
           subtitle={
-            acct
-              ? `${acct.name} · where your money comes from, month by month.`
-              : "Where all your money comes from, month by month."
+            onlyRare
+              ? "RareLiquid only · earnings from this source, month by month."
+              : acct
+                ? `${acct.name} · where your money comes from, month by month.`
+                : "Where all your money comes from, month by month."
           }
         />
         <div className="mb-1 flex shrink-0 items-center gap-2">
+          {hasRare && (
+            <SourceToggle
+              value={RARELIQUID}
+              label="RareLiquid only"
+              active={onlyRare}
+            />
+          )}
           <IncomeScope scope={scope} />
           {scope === "month" && (
             <MonthPicker months={months} selected={selected} />

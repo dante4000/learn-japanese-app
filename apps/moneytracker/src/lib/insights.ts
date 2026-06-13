@@ -164,6 +164,22 @@ export interface IncomeBreakdown {
   legend: { name: string; color: string; total: number }[];
 }
 
+/**
+ * A shallow state clone keeping only transactions from one payer — matched by a
+ * case-insensitive substring of the raw merchant, the raw name, or the
+ * normalized income-source label (so noise-stripped variants still match). Lets
+ * the Income tab scope itself to a single source (e.g. RareLiquid) by passing
+ * the result through the same breakdown functions.
+ */
+export function filterBySource(state: AppState, query: string): AppState {
+  const q = query.toLowerCase();
+  const hit = (t: Transaction) =>
+    (t.merchantName ?? "").toLowerCase().includes(q) ||
+    (t.name ?? "").toLowerCase().includes(q) ||
+    incomeSourceLabel(t.merchantName, t.name).toLowerCase().includes(q);
+  return { ...state, transactions: state.transactions.filter(hit) };
+}
+
 /** Months (yyyy-mm) that have any income, oldest → newest. */
 export function incomeMonths(state: AppState): string[] {
   const neutralized = refundMatchedIds(state);
