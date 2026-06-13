@@ -34,6 +34,28 @@ export default async function TransactionsPage({
   const dupes = findPossibleDuplicates(state);
   const acctName = new Map(state.accounts.map((a) => [a.id, a.name]));
 
+  const renderDupe = (d: (typeof dupes)[number], i: number) => (
+    <li
+      key={i}
+      className="flex items-center gap-3 rounded-xl border hairline bg-surface px-3 py-2.5 text-sm"
+    >
+      <span className="rounded bg-coral/15 px-1.5 py-0.5 text-[0.6rem] font-semibold text-coral">
+        {d.transactions.length}×
+      </span>
+      <div className="min-w-0">
+        <div className="truncate text-cream">{d.merchant}</div>
+        <div className="text-xs text-faint">
+          {formatDate(d.date)}
+          {acctName.get(d.accountId) ? ` · ${acctName.get(d.accountId)}` : ""}
+        </div>
+      </div>
+      <span className="tnum ml-auto text-cream">
+        {d.transactions.length} × {formatMoney(d.amount, currency)} ={" "}
+        {formatMoney(d.amount * d.transactions.length, currency)}
+      </span>
+    </li>
+  );
+
   return (
     <div>
       <PageHeading
@@ -55,35 +77,19 @@ export default async function TransactionsPage({
             the merchant below to review, then hide any extra.
           </p>
           <ul className="space-y-2">
-            {dupes.slice(0, 12).map((d, i) => (
-              <li
-                key={i}
-                className="flex items-center gap-3 rounded-xl border hairline bg-surface px-3 py-2.5 text-sm"
-              >
-                <span className="rounded bg-coral/15 px-1.5 py-0.5 text-[0.6rem] font-semibold text-coral">
-                  {d.transactions.length}×
-                </span>
-                <div className="min-w-0">
-                  <div className="truncate text-cream">{d.merchant}</div>
-                  <div className="text-xs text-faint">
-                    {formatDate(d.date)}
-                    {acctName.get(d.accountId)
-                      ? ` · ${acctName.get(d.accountId)}`
-                      : ""}
-                  </div>
-                </div>
-                <span className="tnum ml-auto text-cream">
-                  {d.transactions.length} ×{" "}
-                  {formatMoney(d.amount, currency)} ={" "}
-                  {formatMoney(d.amount * d.transactions.length, currency)}
-                </span>
-              </li>
-            ))}
+            {dupes.slice(0, 12).map((d, i) => renderDupe(d, i))}
           </ul>
           {dupes.length > 12 && (
-            <p className="mt-3 text-xs text-faint">
-              + {dupes.length - 12} more.
-            </p>
+            <details className="group mt-2">
+              <summary className="cursor-pointer list-none text-xs text-faint transition-colors hover:text-cream">
+                + {dupes.length - 12} more
+                <span className="group-open:hidden"> — show all</span>
+                <span className="hidden group-open:inline"> — show less</span>
+              </summary>
+              <ul className="mt-2 space-y-2">
+                {dupes.slice(12).map((d, i) => renderDupe(d, i + 12))}
+              </ul>
+            </details>
           )}
         </SectionCard>
       )}

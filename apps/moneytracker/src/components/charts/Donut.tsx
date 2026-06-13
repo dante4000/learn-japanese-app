@@ -22,12 +22,14 @@ export function Donut({
   currency = "USD",
   size = 200,
   hrefBase,
+  centerLabel = "Spent",
 }: {
   slices: Slice[];
   total: number;
   currency?: string;
   size?: number;
   hrefBase?: string; // e.g. "/transactions" → /transactions?category=KEY
+  centerLabel?: string; // center caption under the total (e.g. "Earned")
 }) {
   const router = useRouter();
   const [hover, setHover] = useState<number | null>(null);
@@ -104,7 +106,7 @@ export function Donut({
           </div>
         ) : (
           <div>
-            <div className="label-eyebrow">Spent</div>
+            <div className="label-eyebrow">{centerLabel}</div>
             <div className="tnum text-2xl text-cream">
               {formatMoney(total, currency, { cents: false })}
             </div>

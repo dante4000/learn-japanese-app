@@ -30,18 +30,95 @@ export function effectiveCategory(t: Transaction): string {
   return resolveCategoryKey(t);
 }
 
-/** A transaction that should count as discretionary/spending outflow. */
-export function isSpend(t: Transaction): boolean {
+/**
+ * A transaction that should count as discretionary/spending outflow.
+ * `neutralized` is the set of refund-matched ids (see `refundMatchedIds`); a
+ * purchase that was later refunded is in it and no longer counts as spend.
+ */
+export function isSpend(t: Transaction, neutralized?: Set<string>): boolean {
   if (t.hidden || t.pending) return false;
+  if (neutralized?.has(t.id)) return false;
   if (t.amount <= 0) return false; // inflow
   return !TRANSFER_CATEGORIES.has(effectiveCategory(t));
 }
 
-/** A transaction that should count as income (real inflow, not a transfer). */
-export function isIncome(t: Transaction): boolean {
+/**
+ * A transaction that should count as income (real inflow, not a transfer).
+ * A refund matched to its purchase is in `neutralized` and doesn't count —
+ * otherwise a buy-then-return would register as income.
+ */
+export function isIncome(t: Transaction, neutralized?: Set<string>): boolean {
   if (t.hidden || t.pending) return false;
+  if (neutralized?.has(t.id)) return false;
   if (t.amount >= 0) return false; // outflow
-  return !TRANSFER_CATEGORIES.has(effectiveCategory(t));
+  const cat = effectiveCategory(t);
+  if (TRANSFER_CATEGORIES.has(cat)) return false;
+  // An inflow on a *spending* category is a refund/return/statement credit, not
+  // earned income — you don't earn money in "Travel" or "Shopping". This catches
+  // refunds that `refundMatchedIds` can't pair (original charge on another card,
+  // partial refunds, charges older than our history). Real income lands on the
+  // INCOME category (the only non-spending, non-transfer bucket).
+  if (categoryMeta(cat).isSpending) return false;
+  return true;
+}
+
+// A refund posts as an inflow on a spending category, usually at the same
+// merchant and amount as the original charge. We pair each refund back to its
+// originating purchase — same account, normalized merchant, and amount, on or
+// before the refund's date — and neutralize BOTH: the purchase stops counting
+// as spend and the refund stops counting as income, so a buy-then-return nets
+// to zero in the purchase's month. Matching is greedy and one-to-one (the
+// oldest refund claims the most recent eligible charge); a refund with no prior
+// matching charge is left untouched. Memoized per transactions array, since
+// several aggregations ask for it.
+const refundMatchCache = new WeakMap<Transaction[], Set<string>>();
+
+export function refundMatchedIds(state: AppState): Set<string> {
+  const cached = refundMatchCache.get(state.transactions);
+  if (cached) return cached;
+
+  const matched = new Set<string>();
+  const purchases = new Map<string, Transaction[]>(); // account|merchant|amt → charges
+  const refunds: Transaction[] = [];
+  for (const t of state.transactions) {
+    if (t.hidden || t.pending) continue;
+    if (!categoryMeta(effectiveCategory(t)).isSpending) continue;
+    const norm = normalizeMerchant(t.merchantName || t.name);
+    if (!norm) continue;
+    if (t.amount > 0) {
+      const key = `${t.accountId}|${norm}|${t.amount.toFixed(2)}`;
+      const list = purchases.get(key);
+      if (list) list.push(t);
+      else purchases.set(key, [t]);
+    } else if (t.amount < 0) {
+      refunds.push(t);
+    }
+  }
+  for (const list of purchases.values())
+    list.sort((a, b) => a.date.localeCompare(b.date));
+  refunds.sort((a, b) => a.date.localeCompare(b.date));
+
+  for (const r of refunds) {
+    const norm = normalizeMerchant(r.merchantName || r.name);
+    const key = `${r.accountId}|${norm}|${Math.abs(r.amount).toFixed(2)}`;
+    const list = purchases.get(key);
+    if (!list || list.length === 0) continue;
+    // Claim the most recent charge on or before the refund's date.
+    let idx = -1;
+    for (let i = list.length - 1; i >= 0; i--) {
+      if (list[i].date <= r.date) {
+        idx = i;
+        break;
+      }
+    }
+    if (idx === -1) continue;
+    matched.add(list[idx].id);
+    matched.add(r.id);
+    list.splice(idx, 1);
+  }
+
+  refundMatchCache.set(state.transactions, matched);
+  return matched;
 }
 
 export interface NetWorthBreakdown {
@@ -84,14 +161,15 @@ export function cashFlowByMonth(
   state: AppState,
   months = 6,
 ): MonthCashFlow[] {
+  const neutralized = refundMatchedIds(state);
   const map = new Map<string, MonthCashFlow>();
   for (const t of state.transactions) {
     const key = monthKey(t.date);
     if (!map.has(key))
       map.set(key, { month: key, income: 0, spending: 0, net: 0 });
     const row = map.get(key)!;
-    if (isSpend(t)) row.spending += t.amount;
-    else if (isIncome(t)) row.income += -t.amount;
+    if (isSpend(t, neutralized)) row.spending += t.amount;
+    else if (isIncome(t, neutralized)) row.income += -t.amount;
   }
   const rows = [...map.values()].sort((a, b) => a.month.localeCompare(b.month));
   for (const r of rows) r.net = r.income - r.spending;
@@ -141,9 +219,11 @@ export function cashFlowDetail(
 
 /** All months (yyyy-mm) that have any spending or income, oldest → newest. */
 export function availableMonths(state: AppState): string[] {
+  const neutralized = refundMatchedIds(state);
   const set = new Set<string>();
   for (const t of state.transactions) {
-    if (isSpend(t) || isIncome(t)) set.add(monthKey(t.date));
+    if (isSpend(t, neutralized) || isIncome(t, neutralized))
+      set.add(monthKey(t.date));
   }
   return [...set].sort((a, b) => a.localeCompare(b));
 }
@@ -259,9 +339,10 @@ export function spendingByCategory(
   state: AppState,
   month?: string,
 ): CategorySpend[] {
+  const neutralized = refundMatchedIds(state);
   const map = new Map<string, CategorySpend>();
   for (const t of state.transactions) {
-    if (!isSpend(t)) continue;
+    if (!isSpend(t, neutralized)) continue;
     if (month && monthKey(t.date) !== month) continue;
     const key = effectiveCategory(t);
     const meta = categoryMeta(key);
@@ -367,9 +448,10 @@ export function topMerchants(
   month?: string,
   limit = 8,
 ): MerchantSpend[] {
+  const neutralized = refundMatchedIds(state);
   const map = new Map<string, MerchantSpend>();
   for (const t of state.transactions) {
-    if (!isSpend(t)) continue;
+    if (!isSpend(t, neutralized)) continue;
     if (month && monthKey(t.date) !== month) continue;
     const name = displayPayee(t.merchantName, t.name);
     if (!map.has(name)) map.set(name, { name, total: 0, count: 0 });
@@ -392,10 +474,11 @@ export function spendingByAccount(
   state: AppState,
   month?: string,
 ): AccountSpend[] {
+  const neutralized = refundMatchedIds(state);
   const names = new Map(state.accounts.map((a) => [a.id, a.name]));
   const map = new Map<string, AccountSpend>();
   for (const t of state.transactions) {
-    if (!isSpend(t)) continue;
+    if (!isSpend(t, neutralized)) continue;
     if (month && monthKey(t.date) !== month) continue;
     if (!map.has(t.accountId))
       map.set(t.accountId, {
@@ -436,10 +519,11 @@ export function dailySpending(state: AppState, month: string): DailySpending {
     date: `${month}-${String(i + 1).padStart(2, "0")}`,
     total: 0,
   }));
+  const neutralized = refundMatchedIds(state);
   let total = 0;
   let throughDay = 0;
   for (const t of state.transactions) {
-    if (!isSpend(t)) continue;
+    if (!isSpend(t, neutralized)) continue;
     if (monthKey(t.date) !== month) continue;
     const d = Number(t.date.slice(8, 10));
     if (d >= 1 && d <= daysInMonth) {

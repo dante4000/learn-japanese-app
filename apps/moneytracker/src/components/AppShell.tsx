@@ -9,9 +9,11 @@ import { AccountPicker, AccountOption } from "./AccountPicker";
 const NAV = [
   { href: "/", label: "Overview", icon: "M3 12l9-8 9 8M5 10v10h14V10" },
   { href: "/spending", label: "Spending", icon: "M21 12a9 9 0 11-9-9v9z M12 3a9 9 0 019 9" },
+  { href: "/income", label: "Income", icon: "M12 19V5M5 12l7-7 7 7" },
   { href: "/analysis", label: "Analysis", icon: "M3 21h18M7 21V9m5 12V3m5 18v-7" },
   { href: "/transactions", label: "Activity", icon: "M3 6h18M3 12h18M3 18h12" },
   { href: "/accounts", label: "Accounts", icon: "M3 7h18v12H3zM3 7l2-3h14l2 3M8 13h2" },
+  { href: "/cards", label: "Cards", icon: "M3 7h18v10H3zM3 10h18M7 14h3" },
   { href: "/recurring", label: "Recurring", icon: "M4 8a8 8 0 0114-5M20 16a8 8 0 01-14 5M17 3v5h-5M7 21v-5h5" },
   { href: "/settings", label: "Settings", icon: "M12 9a3 3 0 100 6 3 3 0 000-6zM3 12h2m14 0h2M12 3v2m0 14v2" },
 ];
