@@ -10,16 +10,20 @@ export function TransactionsView({
   transactions,
   accounts,
   currency,
+  initial,
 }: {
   transactions: Transaction[];
   accounts: Account[];
   currency: string;
+  /** Pre-applied filters from URL params, so links from charts/rows land filtered. */
+  initial?: { q?: string; category?: string; account?: string };
 }) {
   const router = useRouter();
-  const [q, setQ] = useState("");
-  const [cat, setCat] = useState("ALL");
-  const [acct, setAcct] = useState("ALL");
+  const [q, setQ] = useState(initial?.q ?? "");
+  const [cat, setCat] = useState(initial?.category ?? "ALL");
+  const [acct, setAcct] = useState(initial?.account ?? "ALL");
   const [editing, setEditing] = useState<string | null>(null);
+  const [noteDraft, setNoteDraft] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -34,12 +38,17 @@ export function TransactionsView({
       if (cat !== "ALL" && resolveCategoryKey(t) !== cat) return false;
       if (acct !== "ALL" && t.accountId !== acct) return false;
       if (needle) {
-        const hay = `${t.name} ${t.merchantName ?? ""}`.toLowerCase();
+        const hay = `${t.name} ${t.merchantName ?? ""} ${t.note ?? ""}`.toLowerCase();
         if (!hay.includes(needle)) return false;
       }
       return true;
     });
   }, [transactions, q, cat, acct]);
+
+  const filteredTotal = useMemo(
+    () => filtered.reduce((a, t) => (t.amount > 0 ? a + t.amount : a), 0),
+    [filtered],
+  );
 
   // group by month
   const groups = useMemo(() => {
@@ -51,6 +60,20 @@ export function TransactionsView({
     }
     return [...map.entries()];
   }, [filtered]);
+
+  const hasFilter = q.trim() !== "" || cat !== "ALL" || acct !== "ALL";
+
+  function openEditor(t: Transaction) {
+    const next = editing === t.id ? null : t.id;
+    setEditing(next);
+    setNoteDraft(next ? (t.note ?? "") : "");
+  }
+
+  function clearFilters() {
+    setQ("");
+    setCat("ALL");
+    setAcct("ALL");
+  }
 
   async function update(id: string, patch: Record<string, unknown>) {
     setBusy(true);
@@ -82,7 +105,7 @@ export function TransactionsView({
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder="Search merchants…"
+          placeholder="Search name, merchant, or note…"
           className="min-w-40 flex-1 rounded-xl border hairline bg-surface px-4 py-2.5 text-sm text-cream outline-none placeholder:text-faint focus:border-blue"
         />
         <select
@@ -112,6 +135,30 @@ export function TransactionsView({
           </select>
         )}
       </div>
+
+      {/* Active-filter summary */}
+      {hasFilter && (
+        <div className="mb-4 flex flex-wrap items-center gap-3 text-sm">
+          <span className="text-muted">
+            {filtered.length} match{filtered.length === 1 ? "" : "es"}
+            {filteredTotal > 0 && (
+              <>
+                {" · "}
+                <span className="tnum text-cream">
+                  {formatMoney(filteredTotal, currency, { cents: false })}
+                </span>{" "}
+                spent
+              </>
+            )}
+          </span>
+          <button
+            onClick={clearFilters}
+            className="rounded-lg border hairline px-2.5 py-1 text-xs text-cream-dim hover:border-line-2"
+          >
+            Clear filters
+          </button>
+        </div>
+      )}
 
       {error && (
         <p className="mb-3 text-sm text-coral" role="alert">
@@ -148,6 +195,14 @@ export function TransactionsView({
                           <span className="truncate text-sm text-cream">
                             {t.merchantName || t.name}
                           </span>
+                          {t.note && (
+                            <span
+                              title={t.note}
+                              className="rounded bg-blue/15 px-1.5 py-0.5 text-[0.6rem] text-blue"
+                            >
+                              ✎ note
+                            </span>
+                          )}
                           {t.hidden && (
                             <span className="rounded bg-surface-2 px-1.5 py-0.5 text-[0.6rem] text-faint">
                               hidden
@@ -163,7 +218,7 @@ export function TransactionsView({
                           <span>{formatDate(t.date)}</span>
                           <span>·</span>
                           <button
-                            onClick={() => setEditing(open ? null : t.id)}
+                            onClick={() => openEditor(t)}
                             className="hover:text-blue"
                             style={{ color: meta.color }}
                           >
@@ -209,7 +264,27 @@ export function TransactionsView({
                               </button>
                             ))}
                         </div>
-                        <div className="mt-3 flex gap-2">
+
+                        <div className="label-eyebrow mb-2 mt-4">Note</div>
+                        <div className="flex flex-wrap gap-2">
+                          <input
+                            value={noteDraft}
+                            onChange={(e) => setNoteDraft(e.target.value)}
+                            placeholder="Add a note — why, who, what for…"
+                            className="min-w-48 flex-1 rounded-lg border hairline bg-surface px-3 py-1.5 text-xs text-cream outline-none placeholder:text-faint focus:border-blue"
+                          />
+                          <button
+                            disabled={busy || noteDraft === (t.note ?? "")}
+                            onClick={() =>
+                              update(t.id, { note: noteDraft.trim() || null })
+                            }
+                            className="rounded-lg bg-blue px-3 py-1.5 text-xs font-semibold text-ink transition-opacity hover:opacity-90 disabled:opacity-40"
+                          >
+                            Save note
+                          </button>
+                        </div>
+
+                        <div className="mt-4 flex gap-2">
                           <button
                             disabled={busy}
                             onClick={() => update(t.id, { hidden: !t.hidden })}

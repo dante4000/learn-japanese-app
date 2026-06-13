@@ -1,12 +1,38 @@
 import { loadScopedState } from "@/lib/scoped-state";
+import { findPossibleDuplicates } from "@/lib/analytics";
 import { TransactionsView } from "@/components/TransactionsView";
 import { EmptyState, SectionCard, PageHeading } from "@/components/ui";
+import { formatMoney, formatDate } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
 
-export default async function TransactionsPage() {
+export default async function TransactionsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{
+    category?: string;
+    q?: string;
+    merchant?: string;
+    account?: string;
+  }>;
+}) {
   const { state, focus } = await loadScopedState();
   const currency = state.accounts[0]?.currency ?? "USD";
+  const sp = await searchParams;
+
+  // A ?merchant= link pre-fills the search box; ?account= picks the dropdown
+  // (validated against accounts actually present).
+  const initial = {
+    q: sp.q || sp.merchant || "",
+    category: sp.category || "ALL",
+    account:
+      sp.account && state.accounts.some((a) => a.id === sp.account)
+        ? sp.account
+        : "ALL",
+  };
+
+  const dupes = findPossibleDuplicates(state);
+  const acctName = new Map(state.accounts.map((a) => [a.id, a.name]));
 
   return (
     <div>
@@ -16,6 +42,49 @@ export default async function TransactionsPage() {
           focus ? `in ${focus.name}` : "across your accounts"
         }.`}
       />
+
+      {dupes.length > 0 && (
+        <SectionCard
+          title={`Possible duplicate charges · ${dupes.length}`}
+          delay={0}
+          className="mb-4"
+        >
+          <p className="mb-3 -mt-2 text-xs text-muted">
+            Same merchant and amount within two days. Often legitimate repeats —
+            review and hide any true double-charges.
+          </p>
+          <ul className="space-y-2">
+            {dupes.slice(0, 6).map((d, i) => (
+              <li
+                key={i}
+                className="flex items-center gap-3 rounded-xl border hairline bg-surface px-3 py-2.5 text-sm"
+              >
+                <span className="rounded bg-coral/15 px-1.5 py-0.5 text-[0.6rem] text-coral">
+                  {d.transactions.length}×
+                </span>
+                <div className="min-w-0">
+                  <div className="truncate text-cream">{d.merchant}</div>
+                  <div className="text-xs text-faint">
+                    {d.transactions.map((t) => formatDate(t.date)).join(" · ")}
+                    {acctName.get(d.accountId)
+                      ? ` · ${acctName.get(d.accountId)}`
+                      : ""}
+                  </div>
+                </div>
+                <span className="tnum ml-auto text-cream">
+                  {formatMoney(d.amount, currency)}
+                </span>
+              </li>
+            ))}
+          </ul>
+          {dupes.length > 6 && (
+            <p className="mt-3 text-xs text-faint">
+              + {dupes.length - 6} more pair{dupes.length - 6 === 1 ? "" : "s"}.
+            </p>
+          )}
+        </SectionCard>
+      )}
+
       {state.transactions.length === 0 ? (
         state.accounts.length === 0 ? (
           <EmptyState />
@@ -31,6 +100,7 @@ export default async function TransactionsPage() {
           transactions={state.transactions}
           accounts={state.accounts}
           currency={currency}
+          initial={initial}
         />
       )}
     </div>

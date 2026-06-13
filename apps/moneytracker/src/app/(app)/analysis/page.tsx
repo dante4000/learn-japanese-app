@@ -8,7 +8,7 @@ import {
   categoryTrends,
   newMerchants,
 } from "@/lib/insights";
-import { categoryMeta } from "@/lib/categories";
+import { categoryMeta, resolveCategoryKey } from "@/lib/categories";
 import { formatDate, formatMoney, formatMonth } from "@/lib/format";
 import { CashFlowBars } from "@/components/charts/CashFlowBars";
 import { WeekdayBars } from "@/components/charts/WeekdayBars";
@@ -196,9 +196,7 @@ export default async function AnalysisPage() {
             <h3 className="label-eyebrow mb-3">Biggest single purchases</h3>
             <ul className="space-y-2.5">
               {biggest.map((t) => {
-                const meta = categoryMeta(
-                  t.userCategory || t.categoryPrimary,
-                );
+                const meta = categoryMeta(resolveCategoryKey(t));
                 return (
                   <li key={t.id} className="flex items-center gap-3 text-sm">
                     <span>{meta.glyph}</span>

@@ -46,6 +46,22 @@ export default async function SettingsPage() {
         </SectionCard>
       </div>
 
+      <SectionCard title="Your data" delay={130} className="mt-4">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <p className="text-xs text-muted">
+            Download every transaction — with your categories, notes, and
+            account labels — as a CSV for backup or spreadsheet analysis.
+          </p>
+          <a
+            href="/api/export/csv"
+            download
+            className="shrink-0 rounded-xl border hairline bg-surface px-4 py-2.5 text-sm font-semibold text-cream transition-colors hover:border-line-2"
+          >
+            Export CSV
+          </a>
+        </div>
+      </SectionCard>
+
       <SectionCard title="Security" delay={140} className="mt-4">
         <ul className="space-y-2.5 text-sm text-cream-dim">
           <li className="flex gap-2.5">
