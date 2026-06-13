@@ -790,21 +790,25 @@ function normalizeMerchant(s: string): string {
 }
 
 /** A merchant+amount that recurs on more than this many distinct days is a
- *  pattern (ad spend, an undetected subscription, a daily same-price habit) —
- *  not an accidental double-charge. */
+ *  pattern (constant-price ad billing, an undetected subscription, a daily
+ *  same-price habit) — not an accidental double-charge. */
 const DUP_MAX_DISTINCT_DAYS = 2;
 
 /**
- * True double-charges: posted (non-pending), visible outflows that are the
- * EXACT same charge — same account, same merchant, same amount, AND the same
- * day, charged 2+ times. To stay clear of legitimate repeats, a combo is only
- * considered if it's essentially a one-off: it appears on at most two distinct
- * days across all history. That drops habitual spend (a daily coffee at the
- * same price), ad billing (identical Meta/Facebook charges many days), and
- * subscriptions Plaid didn't tag as recurring (newsletters, insurance) — all of
- * which repeat across many days. Detected recurring streams are excluded
- * outright. Two genuine same-day same-price buys can still match, hence
- * "possible" — this surfaces candidates, it doesn't judge.
+ * True double-charges: posted (non-pending), visible outflows charged 2+ times
+ * on the SAME day for the EXACT same account, merchant, and amount. Two guards
+ * keep legitimate repeats out, so what's left is genuinely suspect:
+ *
+ *  1. The merchant+amount combo must be near a one-off — it appears on ≤2
+ *     distinct days ever. Kills constant-price habits and undetected
+ *     subscriptions (a daily $5 coffee, a monthly newsletter at one price).
+ *  2. The merchant must not double-charge on more than one distinct day. A
+ *     merchant that posts multiple same-day charges repeatedly is a usage/ad
+ *     biller (Meta/Facebook charge varying amounts many times a day), not a
+ *     mistake — drop it even when each amount looks like a one-off.
+ *
+ * Detected recurring streams are excluded outright. Two genuine same-day
+ * same-price buys can still match, hence "possible" — candidates, not verdicts.
  */
 export function findPossibleDuplicates(state: AppState): DuplicateGroup[] {
   // Merchants we know recur — never flag these.
@@ -814,8 +818,7 @@ export function findPossibleDuplicates(state: AppState): DuplicateGroup[] {
     if (r.description) recurring.add(normalizeMerchant(r.description));
   }
 
-  // Bucket eligible spends by account|merchant|amount (date-independent), so we
-  // can judge how often each combo recurs before flagging same-day clusters.
+  // Bucket eligible spends by account|merchant|amount (date-independent).
   const buckets = new Map<string, Transaction[]>();
   for (const t of state.transactions) {
     if (t.pending || t.hidden || t.amount <= 0) continue;
@@ -827,12 +830,12 @@ export function findPossibleDuplicates(state: AppState): DuplicateGroup[] {
     else buckets.set(key, [t]);
   }
 
-  const groups: DuplicateGroup[] = [];
-  for (const list of buckets.values()) {
+  // Candidate same-day clusters, tagged with their merchant (account|merchant).
+  const candidates: { merchantKey: string; group: DuplicateGroup }[] = [];
+  for (const [key, list] of buckets) {
     if (list.length < 2) continue;
-    const distinctDays = new Set(list.map((t) => t.date));
-    if (distinctDays.size > DUP_MAX_DISTINCT_DAYS) continue; // a pattern, not a slip
-    // Emit one group per day that actually has 2+ charges.
+    if (new Set(list.map((t) => t.date)).size > DUP_MAX_DISTINCT_DAYS) continue; // guard 1
+    const merchantKey = key.slice(0, key.lastIndexOf("|")); // drop the amount
     const byDay = new Map<string, Transaction[]>();
     for (const t of list) {
       const d = byDay.get(t.date);
@@ -841,16 +844,31 @@ export function findPossibleDuplicates(state: AppState): DuplicateGroup[] {
     }
     for (const [date, day] of byDay) {
       if (day.length < 2) continue;
-      groups.push({
-        merchant: displayPayee(day[0].merchantName, day[0].name),
-        amount: day[0].amount,
-        accountId: day[0].accountId,
-        date,
-        transactions: day,
+      candidates.push({
+        merchantKey,
+        group: {
+          merchant: displayPayee(day[0].merchantName, day[0].name),
+          amount: day[0].amount,
+          accountId: day[0].accountId,
+          date,
+          transactions: day,
+        },
       });
     }
   }
-  // Most recent first.
-  groups.sort((a, b) => b.date.localeCompare(a.date));
+
+  // Guard 2: a merchant that double-charges on >1 distinct day is a serial
+  // multi-charger (ad/usage billing), not a one-time slip — drop all its groups.
+  const multiChargeDays = new Map<string, Set<string>>();
+  for (const c of candidates) {
+    const s = multiChargeDays.get(c.merchantKey) ?? new Set<string>();
+    s.add(c.group.date);
+    multiChargeDays.set(c.merchantKey, s);
+  }
+
+  const groups = candidates
+    .filter((c) => (multiChargeDays.get(c.merchantKey)?.size ?? 0) <= 1)
+    .map((c) => c.group)
+    .sort((a, b) => b.date.localeCompare(a.date));
   return groups;
 }
