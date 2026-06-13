@@ -127,10 +127,12 @@ export default async function SpendingPage({
                   label: c.label,
                   value: c.total,
                   color: c.color,
+                  key: c.category,
                 }))}
                 total={total}
                 currency={cur}
                 size={210}
+                hrefBase="/transactions"
               />
             </div>
             <div className="w-full flex-1 space-y-3.5">

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { AppState } from "@/lib/types";
 import {
   spendingByAccount,
@@ -150,27 +151,32 @@ export function SpendingInsights({
             </span>
           }
         >
-          <ul className="space-y-2.5">
+          <ul className="space-y-1">
             {movers.map((m) => {
               const up = m.delta > 0;
               return (
-                <li key={m.category} className="flex items-center gap-3">
-                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border hairline bg-surface-2">
-                    {m.glyph}
-                  </span>
-                  <div className="min-w-0">
-                    <div className="text-sm text-cream">{m.label}</div>
-                    <div className="tnum text-xs text-faint">
-                      {formatMoney(m.previous, currency, { cents: false })} →{" "}
-                      {formatMoney(m.current, currency, { cents: false })}
-                    </div>
-                  </div>
-                  <span
-                    className={`tnum ml-auto text-sm ${up ? "text-coral" : "text-blue"}`}
+                <li key={m.category}>
+                  <Link
+                    href={`/transactions?category=${encodeURIComponent(m.category)}`}
+                    className="-mx-2 flex items-center gap-3 rounded-lg px-2 py-1.5 transition-colors hover:bg-surface-2"
                   >
-                    {up ? "▲" : "▼"}{" "}
-                    {formatMoney(Math.abs(m.delta), currency, { cents: false })}
-                  </span>
+                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border hairline bg-surface-2">
+                      {m.glyph}
+                    </span>
+                    <div className="min-w-0">
+                      <div className="text-sm text-cream">{m.label}</div>
+                      <div className="tnum text-xs text-faint">
+                        {formatMoney(m.previous, currency, { cents: false })} →{" "}
+                        {formatMoney(m.current, currency, { cents: false })}
+                      </div>
+                    </div>
+                    <span
+                      className={`tnum ml-auto text-sm ${up ? "text-coral" : "text-blue"}`}
+                    >
+                      {up ? "▲" : "▼"}{" "}
+                      {formatMoney(Math.abs(m.delta), currency, { cents: false })}
+                    </span>
+                  </Link>
                 </li>
               );
             })}

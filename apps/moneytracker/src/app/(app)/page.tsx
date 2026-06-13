@@ -155,9 +155,11 @@ export default async function OverviewPage() {
                 label: c.label,
                 value: c.total,
                 color: c.color,
+                key: c.category,
               }))}
               total={s.monthSpending}
               currency={cur}
+              hrefBase="/transactions"
             />
             <ul className="grid flex-1 gap-x-8 gap-y-2 self-stretch sm:grid-cols-2">
               {categories.slice(0, 8).map((c) => (

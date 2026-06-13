@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { AppState } from "@/lib/types";
 import { spendingPace, categoryTrends } from "@/lib/analytics";
 import { formatMoney, formatMonth } from "@/lib/format";
@@ -103,26 +104,31 @@ export function SpendingTrends({
         >
           <ul className="divide-y divide-[var(--color-line)]">
             {trends.map((t) => (
-              <li key={t.category} className="flex items-center gap-3 py-2.5">
-                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg border hairline bg-surface-2 text-sm">
-                  {t.glyph}
-                </span>
-                <span className="w-28 shrink-0 truncate text-sm text-cream-dim">
-                  {t.label}
-                </span>
-                <Sparkline values={t.series} color={t.color} />
-                <div className="ml-auto text-right">
-                  <div className="tnum text-sm text-cream">
-                    {formatMoney(t.latest, currency, { cents: false })}
+              <li key={t.category}>
+                <Link
+                  href={`/transactions?category=${encodeURIComponent(t.category)}`}
+                  className="-mx-2 flex items-center gap-3 rounded-lg px-2 py-2.5 transition-colors hover:bg-surface-2"
+                >
+                  <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg border hairline bg-surface-2 text-sm">
+                    {t.glyph}
+                  </span>
+                  <span className="w-28 shrink-0 truncate text-sm text-cream-dim">
+                    {t.label}
+                  </span>
+                  <Sparkline values={t.series} color={t.color} />
+                  <div className="ml-auto text-right">
+                    <div className="tnum text-sm text-cream">
+                      {formatMoney(t.latest, currency, { cents: false })}
+                    </div>
+                    <div
+                      className={`tnum text-[0.65rem] ${t.delta > 0 ? "text-coral" : t.delta < 0 ? "text-blue" : "text-faint"}`}
+                    >
+                      {t.delta === 0
+                        ? "—"
+                        : `${t.delta > 0 ? "▲" : "▼"} ${formatMoney(Math.abs(t.delta), currency, { cents: false })}`}
+                    </div>
                   </div>
-                  <div
-                    className={`tnum text-[0.65rem] ${t.delta > 0 ? "text-coral" : t.delta < 0 ? "text-blue" : "text-faint"}`}
-                  >
-                    {t.delta === 0
-                      ? "—"
-                      : `${t.delta > 0 ? "▲" : "▼"} ${formatMoney(Math.abs(t.delta), currency, { cents: false })}`}
-                  </div>
-                </div>
+                </Link>
               </li>
             ))}
           </ul>
