@@ -1,6 +1,7 @@
 import { AppState, Transaction } from "./types";
 import { availableMonths, effectiveCategory, isIncome, isSpend } from "./analytics";
 import { categoryMeta } from "./categories";
+import { displayPayee } from "./aliases";
 import { monthKey } from "./format";
 
 // Big-picture derivations for the Analysis tab. Everything operates on the
@@ -92,7 +93,7 @@ export function incomeSources(
   const byName = new Map<string, { total: number; dates: string[] }>();
   for (const t of state.transactions) {
     if (!isIncome(t) || !within(t)) continue;
-    const name = t.merchantName || t.name || "Unknown";
+    const name = displayPayee(t.merchantName, t.name);
     const row = byName.get(name) ?? { total: 0, dates: [] };
     row.total += -t.amount;
     row.dates.push(t.date);
@@ -229,7 +230,7 @@ export function newMerchants(
   const byName = new Map<string, NewMerchant>();
   for (const t of state.transactions) {
     if (!isSpend(t)) continue;
-    const name = t.merchantName || t.name || "Unknown";
+    const name = displayPayee(t.merchantName, t.name);
     const row =
       byName.get(name) ?? { name, total: 0, count: 0, firstDate: t.date };
     if (t.date < row.firstDate) row.firstDate = t.date;

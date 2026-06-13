@@ -10,6 +10,7 @@ import {
   windowMonths,
 } from "@/lib/insights";
 import { categoryMeta, resolveCategoryKey } from "@/lib/categories";
+import { displayPayee } from "@/lib/aliases";
 import { formatDate, formatMoney, formatMonth } from "@/lib/format";
 import { CashFlowBars } from "@/components/charts/CashFlowBars";
 import { WeekdayBars } from "@/components/charts/WeekdayBars";
@@ -209,7 +210,7 @@ export default async function AnalysisPage() {
                     <span>{meta.glyph}</span>
                     <div className="min-w-0">
                       <div className="truncate text-cream">
-                        {t.merchantName || t.name}
+                        {displayPayee(t.merchantName, t.name)}
                       </div>
                       <div className="text-xs text-faint">
                         {formatDate(t.date)} · {meta.label}

@@ -9,6 +9,7 @@ import {
   LIABILITY_TYPES,
 } from "@/lib/analytics";
 import { categoryMeta, resolveCategoryKey } from "@/lib/categories";
+import { displayPayee } from "@/lib/aliases";
 import { formatMoney, formatMonth, formatDate } from "@/lib/format";
 import { Donut } from "@/components/charts/Donut";
 import { CashFlowDetail } from "@/components/CashFlowDetail";
@@ -241,7 +242,7 @@ export default async function OverviewPage() {
                   </span>
                   <div className="min-w-0">
                     <div className="truncate text-sm text-cream">
-                      {t.merchantName || t.name}
+                      {displayPayee(t.merchantName, t.name)}
                     </div>
                     <div className="text-xs text-faint">{formatDate(t.date)}</div>
                   </div>

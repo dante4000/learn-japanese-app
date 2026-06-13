@@ -39,7 +39,7 @@ export function TransactionsView({
       if (cat !== "ALL" && resolveCategoryKey(t) !== cat) return false;
       if (acct !== "ALL" && t.accountId !== acct) return false;
       if (needle) {
-        const hay = `${t.name} ${t.merchantName ?? ""} ${t.note ?? ""}`.toLowerCase();
+        const hay = `${t.name} ${t.merchantName ?? ""} ${displayPayee(t.merchantName, t.name)} ${t.note ?? ""}`.toLowerCase();
         if (!hay.includes(needle)) return false;
       }
       return true;
@@ -194,7 +194,7 @@ export function TransactionsView({
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-2">
                           <span className="truncate text-sm text-cream">
-                            {t.merchantName || t.name}
+                            {displayPayee(t.merchantName, t.name)}
                           </span>
                           {t.note && (
                             <span

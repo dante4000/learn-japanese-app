@@ -12,6 +12,7 @@ import {
   isInternalPayment,
 } from "./categories";
 import { monthKey } from "./format";
+import { displayPayee } from "./aliases";
 
 // Pure functions that derive every dashboard number from the two raw inputs:
 // account balances (point-in-time) and transactions (flows). Sign convention
@@ -370,7 +371,7 @@ export function topMerchants(
   for (const t of state.transactions) {
     if (!isSpend(t)) continue;
     if (month && monthKey(t.date) !== month) continue;
-    const name = t.merchantName || t.name || "Unknown";
+    const name = displayPayee(t.merchantName, t.name);
     if (!map.has(name)) map.set(name, { name, total: 0, count: 0 });
     const row = map.get(name)!;
     row.total += t.amount;
@@ -589,7 +590,7 @@ export function upcomingBills(
     }
     bills.push({
       id: s.id,
-      name: s.merchantName || s.description,
+      name: displayPayee(s.merchantName, s.description),
       categoryPrimary: s.categoryPrimary,
       amount: Math.abs(s.lastAmount || s.averageAmount),
       frequency: s.frequency,
@@ -821,7 +822,7 @@ export function findPossibleDuplicates(state: AppState): DuplicateGroup[] {
     if (list.length < 2) continue;
     const t = list[0];
     groups.push({
-      merchant: t.merchantName || t.name,
+      merchant: displayPayee(t.merchantName, t.name),
       amount: t.amount,
       accountId: t.accountId,
       date: t.date,
