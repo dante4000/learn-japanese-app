@@ -1,9 +1,11 @@
 import { loadScopedState } from "@/lib/scoped-state";
 import { RecurringStream } from "@/lib/types";
 import { categoryMeta } from "@/lib/categories";
-import { upcomingBills } from "@/lib/analytics";
+import { upcomingBills, reimbursedStreams } from "@/lib/analytics";
 import { formatMoney, formatDate } from "@/lib/format";
 import { UpcomingBills } from "@/components/UpcomingBills";
+import { PeriodToggle } from "@/components/PeriodToggle";
+import { BaselineManager } from "@/components/BaselineManager";
 import { SectionCard, EmptyState, StatCard, PageHeading } from "@/components/ui";
 
 export const dynamic = "force-dynamic";
@@ -21,7 +23,21 @@ function monthlyEquivalent(s: RecurringStream): number {
   return Math.abs(s.averageAmount) * (PER_MONTH[s.frequency] ?? 1);
 }
 
-function StreamRow({ s, currency }: { s: RecurringStream; currency: string }) {
+function StreamRow({
+  s,
+  currency,
+  card,
+  mult,
+  suffix,
+  reimbursed,
+}: {
+  s: RecurringStream;
+  currency: string;
+  card?: string;
+  mult: number;
+  suffix: string;
+  reimbursed?: number;
+}) {
   const meta = categoryMeta(s.categoryPrimary);
   return (
     <li className="flex items-center gap-3 py-3">
@@ -29,11 +45,29 @@ function StreamRow({ s, currency }: { s: RecurringStream; currency: string }) {
         {meta.glyph}
       </span>
       <div className="min-w-0 flex-1">
-        <div className="truncate text-sm text-cream">
-          {s.merchantName || s.description}
+        <div className="flex items-center gap-2">
+          <span className="truncate text-sm text-cream">
+            {s.merchantName || s.description}
+          </span>
+          {reimbursed != null && (
+            <span
+              title={`Offset by a ${formatMoney(reimbursed, currency)} card credit`}
+              className="shrink-0 rounded bg-blue/15 px-1.5 py-0.5 text-[0.6rem] text-blue"
+            >
+              ↩ reimbursed
+            </span>
+          )}
         </div>
-        <div className="flex items-center gap-2 text-xs text-faint">
-          <span className="capitalize">{s.frequency.toLowerCase().replace("_", " ")}</span>
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-faint">
+          <span className="capitalize">
+            {s.frequency.toLowerCase().replace("_", " ")}
+          </span>
+          {card && (
+            <>
+              <span>·</span>
+              <span className="text-slate">{card}</span>
+            </>
+          )}
           {s.predictedNextDate && (
             <>
               <span>·</span>
@@ -52,20 +86,31 @@ function StreamRow({ s, currency }: { s: RecurringStream; currency: string }) {
           {formatMoney(Math.abs(s.lastAmount), currency)}
         </div>
         <div className="tnum text-[0.65rem] text-faint">
-          ≈{formatMoney(monthlyEquivalent(s), currency, { cents: false })}/mo
+          ≈{formatMoney(monthlyEquivalent(s) * mult, currency, { cents: false })}
+          {suffix}
         </div>
       </div>
     </li>
   );
 }
 
-export default async function RecurringPage() {
+export default async function RecurringPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ period?: string }>;
+}) {
   const { state } = await loadScopedState();
   const cur = state.accounts[0]?.currency ?? "USD";
+  const sp = await searchParams;
+  const period = sp.period === "annual" ? "annual" : "monthly";
+  const mult = period === "annual" ? 12 : 1;
+  const suffix = period === "annual" ? "/yr" : "/mo";
 
-  // Internal transfers between your own accounts (e.g. checking → savings) get
-  // detected by Plaid as both a recurring outflow AND a recurring inflow, which
-  // double-counts as a fake subscription and fake income. Exclude them.
+  const cardName = new Map(state.accounts.map((a) => [a.id, a.name]));
+  const reimbursed = reimbursedStreams(state);
+
+  // Internal transfers between your own accounts get detected by Plaid as both a
+  // recurring outflow AND inflow — exclude so they aren't fake subs/income.
   const isInternalTransfer = (s: RecurringStream) =>
     s.categoryPrimary === "TRANSFER_IN" || s.categoryPrimary === "TRANSFER_OUT";
 
@@ -89,7 +134,7 @@ export default async function RecurringPage() {
   if (state.accounts.length === 0) {
     return (
       <div>
-        <PageHeading title="Recurring" subtitle="Subscriptions, bills, and income that repeat. Transfers between your own accounts are ignored." />
+        <PageHeading title="Recurring" subtitle="Subscriptions, bills, and income that repeat." />
         <EmptyState />
       </div>
     );
@@ -97,14 +142,21 @@ export default async function RecurringPage() {
 
   return (
     <div>
-      <PageHeading title="Recurring" subtitle="Subscriptions, bills, and income that repeat. Transfers between your own accounts are ignored." />
+      <div className="mb-6 flex items-start justify-between gap-3">
+        <PageHeading
+          title="Recurring"
+          subtitle="Subscriptions, bills, and income that repeat. Internal transfers are ignored."
+        />
+        <div className="mt-1 shrink-0">
+          <PeriodToggle period={period} />
+        </div>
+      </div>
 
-      {state.recurring.length === 0 ? (
+      {state.recurring.length === 0 && state.baselines.length === 0 ? (
         <SectionCard>
           <p className="py-10 text-center text-sm text-muted">
-            Recurring detection needs ~180 days of Plaid history. Sync a bank
-            with Plaid and it will populate here. (CSV imports don’t include
-            recurring detection yet.)
+            Recurring detection needs ~180 days of Plaid history. It populates as
+            more syncs in.
           </p>
         </SectionCard>
       ) : (
@@ -112,13 +164,13 @@ export default async function RecurringPage() {
           <div className="mb-5 grid grid-cols-2 gap-4">
             <StatCard
               label="Subscriptions & bills"
-              value={`${formatMoney(monthlySubs, cur, { cents: false })}/mo`}
+              value={`${formatMoney(monthlySubs * mult, cur, { cents: false })}${suffix}`}
               accent="coral"
-              sub={`${formatMoney(monthlySubs * 12, cur, { cents: false })} / year`}
+              sub={`${formatMoney(monthlySubs * (mult === 1 ? 12 : 1), cur, { cents: false })} ${mult === 1 ? "/ year" : "/ month"}`}
             />
             <StatCard
               label="Recurring income"
-              value={`${formatMoney(monthlyIncome, cur, { cents: false })}/mo`}
+              value={`${formatMoney(monthlyIncome * mult, cur, { cents: false })}${suffix}`}
               accent="blue"
               delay={60}
             />
@@ -129,9 +181,7 @@ export default async function RecurringPage() {
             title="Upcoming bills"
             delay={90}
             className="mb-5"
-            action={
-              <span className="text-xs text-muted">next predicted charges</span>
-            }
+            action={<span className="text-xs text-muted">next predicted charges</span>}
           >
             <UpcomingBills
               bills={upcoming.bills}
@@ -145,7 +195,15 @@ export default async function RecurringPage() {
               {subs.length ? (
                 <ul className="divide-y divide-[var(--color-line)]">
                   {subs.map((s) => (
-                    <StreamRow key={s.id} s={s} currency={cur} />
+                    <StreamRow
+                      key={s.id}
+                      s={s}
+                      currency={cur}
+                      card={cardName.get(s.accountId)}
+                      mult={mult}
+                      suffix={suffix}
+                      reimbursed={reimbursed.get(s.id)}
+                    />
                   ))}
                 </ul>
               ) : (
@@ -157,7 +215,14 @@ export default async function RecurringPage() {
               {income.length ? (
                 <ul className="divide-y divide-[var(--color-line)]">
                   {income.map((s) => (
-                    <StreamRow key={s.id} s={s} currency={cur} />
+                    <StreamRow
+                      key={s.id}
+                      s={s}
+                      currency={cur}
+                      card={cardName.get(s.accountId)}
+                      mult={mult}
+                      suffix={suffix}
+                    />
                   ))}
                 </ul>
               ) : (
@@ -165,6 +230,25 @@ export default async function RecurringPage() {
               )}
             </SectionCard>
           </div>
+
+          {/* Fixed monthly baselines (rent + parking, etc.) */}
+          <SectionCard
+            title="Fixed monthly baselines"
+            delay={200}
+            className="mt-4"
+            action={
+              <span className="text-xs text-muted">
+                fills months the bank feed misses
+              </span>
+            }
+          >
+            <p className="mb-4 -mt-2 text-xs text-muted">
+              For bills the bank feed doesn’t reliably capture (e.g. rent paid
+              through a card with short history). Months that already have a real
+              charge aren’t double-counted.
+            </p>
+            <BaselineManager baselines={state.baselines} currency={cur} />
+          </SectionCard>
         </>
       )}
     </div>

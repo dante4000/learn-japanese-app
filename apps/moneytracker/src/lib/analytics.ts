@@ -147,6 +147,104 @@ export function availableMonths(state: AppState): string[] {
   return [...set].sort((a, b) => a.localeCompare(b));
 }
 
+function nextMonth(m: string): string {
+  const [y, mo] = m.split("-").map(Number);
+  return new Date(Date.UTC(y, mo, 1)).toISOString().slice(0, 7);
+}
+
+/**
+ * Fill in recurring baselines: for each month (within the data range, from the
+ * baseline's startMonth) that lacks a real charge in the baseline's category,
+ * add a synthetic "(estimated)" transaction so totals/trends are honest. Months
+ * that already have a matching charge are left untouched (no double-counting).
+ */
+export function injectBaselines(state: AppState): AppState {
+  const baselines = state.baselines ?? [];
+  if (!baselines.length) return state;
+  const months = availableMonths(state);
+  if (!months.length) return state;
+  const earliest = months[0];
+  const latest = months[months.length - 1];
+  const currency = state.accounts[0]?.currency ?? "USD";
+  const synthetic: Transaction[] = [];
+
+  for (const b of baselines) {
+    let m = b.startMonth > earliest ? b.startMonth : earliest;
+    let guard = 0;
+    while (m <= latest && guard < 600) {
+      const hasReal = state.transactions.some(
+        (t) =>
+          !t.hidden &&
+          t.amount > 0 &&
+          monthKey(t.date) === m &&
+          effectiveCategory(t) === b.category &&
+          t.amount >= b.amount * 0.5,
+      );
+      if (!hasReal) {
+        synthetic.push({
+          id: `baseline_${b.id}_${m}`,
+          accountId: "__baseline__",
+          amount: b.amount,
+          currency,
+          date: `${m}-01`,
+          name: `${b.name} (estimated)`,
+          merchantName: b.name,
+          pending: false,
+          categoryPrimary: b.category,
+          categoryDetailed: null,
+          paymentChannel: null,
+          source: "manual",
+          userCategory: null,
+          note: "Estimated recurring baseline",
+          hidden: false,
+        });
+      }
+      m = nextMonth(m);
+      guard++;
+    }
+  }
+  if (!synthetic.length) return state;
+  return {
+    ...state,
+    transactions: [...state.transactions, ...synthetic].sort((a, b) =>
+      b.date.localeCompare(a.date),
+    ),
+  };
+}
+
+/**
+ * Subscriptions/bills that appear to be offset by a statement credit on the
+ * same card (e.g. an Amex/Bilt perk credit). Returns streamId → credit amount.
+ */
+export function reimbursedStreams(state: AppState): Map<string, number> {
+  const creditAccts = new Set(
+    state.accounts.filter((a) => a.type === "credit").map((a) => a.id),
+  );
+  const credits = state.transactions.filter(
+    (t) =>
+      t.amount < 0 &&
+      !t.pending &&
+      creditAccts.has(t.accountId) &&
+      /\b(credit|reward|reimburs\w*|adjustment|cash\s?back)\b/i.test(
+        `${t.name} ${t.merchantName ?? ""}`,
+      ) &&
+      !/payment/i.test(t.name || ""),
+  );
+  const result = new Map<string, number>();
+  for (const s of state.recurring) {
+    if (s.type !== "outflow" || !s.isActive) continue;
+    const amt = Math.abs(s.lastAmount || s.averageAmount);
+    if (amt <= 0) continue;
+    const match = credits.find(
+      (c) =>
+        c.accountId === s.accountId &&
+        Math.abs(Math.abs(c.amount) - amt) <= Math.max(3, amt * 0.2),
+    );
+    if (match) result.set(s.id, Math.abs(match.amount));
+  }
+  return result;
+}
+
 export interface CategorySpend {
   category: string;
   label: string;

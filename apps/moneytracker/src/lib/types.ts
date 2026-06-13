@@ -110,6 +110,20 @@ export interface NetWorthSnapshot {
   netWorth: number;
 }
 
+/**
+ * A fixed recurring expense the bank feed doesn't reliably capture (e.g. rent
+ * paid through a card whose history is short). The app fills this amount into
+ * any month from `startMonth` onward that lacks a real charge in `category`, so
+ * totals/trends stay honest without double-counting months that do have it.
+ */
+export interface RecurringBaseline {
+  id: string;
+  name: string;
+  amount: number; // positive, per month
+  category: string; // PFC key, e.g. RENT_AND_UTILITIES
+  startMonth: string; // yyyy-mm
+}
+
 /** The entire persisted state for the one user. Stored as a single JSON blob. */
 export interface AppState {
   version: number;
@@ -118,6 +132,7 @@ export interface AppState {
   transactions: Transaction[];
   recurring: RecurringStream[];
   manualEntries: ManualEntry[];
+  baselines: RecurringBaseline[];
   snapshots: NetWorthSnapshot[];
   updatedAt: string | null;
 }
@@ -138,11 +153,12 @@ export interface ItemBundle {
 export interface MetaDoc {
   version: number;
   manualEntries: ManualEntry[];
+  baselines?: RecurringBaseline[];
   snapshots: NetWorthSnapshot[];
 }
 
 export function emptyMeta(): MetaDoc {
-  return { version: 1, manualEntries: [], snapshots: [] };
+  return { version: 1, manualEntries: [], baselines: [], snapshots: [] };
 }
 
 export function emptyState(): AppState {
@@ -153,6 +169,7 @@ export function emptyState(): AppState {
     transactions: [],
     recurring: [],
     manualEntries: [],
+    baselines: [],
     snapshots: [],
     updatedAt: null,
   };

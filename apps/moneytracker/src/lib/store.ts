@@ -10,6 +10,7 @@ import {
   emptyState,
 } from "./types";
 import { encrypt, decrypt } from "./crypto";
+import { injectBaselines } from "./analytics";
 
 // Sharded datastore. Each connection (Item) lives in its own document and the
 // global meta (manual entries, net-worth snapshots) in another. This means a
@@ -262,8 +263,9 @@ export async function loadState(): Promise<AppState> {
   const meta = await loadMeta();
   state.version = meta.version;
   state.manualEntries = meta.manualEntries;
+  state.baselines = meta.baselines ?? [];
   state.snapshots = meta.snapshots;
-  return state;
+  return injectBaselines(state);
 }
 
 /**
