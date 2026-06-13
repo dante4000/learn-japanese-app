@@ -161,6 +161,7 @@ export default async function OverviewPage() {
               total={s.monthSpending}
               currency={cur}
               hrefBase="/transactions"
+              month={month}
             />
             <ul className="grid flex-1 gap-x-8 gap-y-2 self-stretch sm:grid-cols-2">
               {categories.slice(0, 8).map((c) => (
@@ -204,17 +205,22 @@ export default async function OverviewPage() {
           {merchants.length ? (
             <ul className="space-y-3">
               {merchants.map((m) => (
-                <li key={m.name} className="flex items-center gap-3">
-                  <span className="grid h-9 w-9 place-items-center rounded-lg border hairline bg-surface-2 text-sm text-slate-soft">
-                    {m.name.slice(0, 1).toUpperCase()}
-                  </span>
-                  <div className="min-w-0">
-                    <div className="truncate text-sm text-cream">{m.name}</div>
-                    <div className="text-xs text-faint">{m.count}×</div>
-                  </div>
-                  <span className="tnum ml-auto text-sm text-cream">
-                    {formatMoney(m.total, cur, { cents: false })}
-                  </span>
+                <li key={m.name}>
+                  <Link
+                    href={`/transactions?merchant=${encodeURIComponent(m.name)}`}
+                    className="-mx-2 flex items-center gap-3 rounded-lg px-2 py-1 transition-colors hover:bg-surface-2"
+                  >
+                    <span className="grid h-9 w-9 place-items-center rounded-lg border hairline bg-surface-2 text-sm text-slate-soft">
+                      {m.name.slice(0, 1).toUpperCase()}
+                    </span>
+                    <div className="min-w-0">
+                      <div className="truncate text-sm text-cream">{m.name}</div>
+                      <div className="text-xs text-faint">{m.count}×</div>
+                    </div>
+                    <span className="tnum ml-auto text-sm text-cream">
+                      {formatMoney(m.total, cur, { cents: false })}
+                    </span>
+                  </Link>
                 </li>
               ))}
             </ul>

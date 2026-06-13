@@ -22,6 +22,7 @@ export function Donut({
   currency = "USD",
   size = 200,
   hrefBase,
+  month,
   centerLabel = "Spent",
 }: {
   slices: Slice[];
@@ -29,6 +30,7 @@ export function Donut({
   currency?: string;
   size?: number;
   hrefBase?: string; // e.g. "/transactions" → /transactions?category=KEY
+  month?: string; // yyyy-mm — appended so the drill-through keeps month context
   centerLabel?: string; // center caption under the total (e.g. "Earned")
 }) {
   const router = useRouter();
@@ -49,8 +51,10 @@ export function Donut({
   const active = hover != null ? segments[hover] : null;
   const clickable = (s: Slice) => Boolean(hrefBase && s.key);
   const go = (s: Slice) => {
-    if (hrefBase && s.key)
-      router.push(`${hrefBase}?category=${encodeURIComponent(s.key)}`);
+    if (hrefBase && s.key) {
+      const monthParam = month ? `&month=${encodeURIComponent(month)}` : "";
+      router.push(`${hrefBase}?category=${encodeURIComponent(s.key)}${monthParam}`);
+    }
   };
 
   return (

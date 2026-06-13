@@ -22,6 +22,18 @@ import { displayPayee } from "./aliases";
 // so the accounts page lists and these totals always agree.
 export const LIABILITY_TYPES = new Set(["credit", "loan"]);
 
+// Account id carried by the synthetic "(estimated)" transactions that
+// injectBaselines fabricates to fill months the bank feed misses. They belong
+// in analytics totals but NOT in the raw ledger — the Activity feed and CSV
+// export filter them out by this id (they have no real account and can't be
+// edited or re-imported).
+export const BASELINE_ACCOUNT_ID = "__baseline__";
+
+/** True for the synthetic baseline rows injected by injectBaselines. */
+export function isSyntheticBaseline(t: Transaction): boolean {
+  return t.accountId === BASELINE_ACCOUNT_ID;
+}
+
 /**
  * The category that actually applies — a user override wins, then credit-card /
  * autopay payments are reclassified as transfers, then Plaid's category.
@@ -264,7 +276,7 @@ export function injectBaselines(state: AppState): AppState {
       if (!hasReal) {
         synthetic.push({
           id: `baseline_${b.id}_${m}`,
-          accountId: "__baseline__",
+          accountId: BASELINE_ACCOUNT_ID,
           amount: b.amount,
           currency,
           date: `${m}-01`,

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { loadScopedState } from "@/lib/scoped-state";
 import { cashFlowByMonth } from "@/lib/analytics";
 import {
@@ -263,19 +264,24 @@ export default async function AnalysisPage() {
               <h3 className="label-eyebrow mb-3">New merchants (last 3 months)</h3>
               <ul className="grid gap-3 sm:grid-cols-2">
                 {fresh.slice(0, 8).map((m) => (
-                  <li key={m.name} className="flex items-center gap-3">
-                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border hairline bg-surface-2 text-sm text-slate">
-                      {m.name.slice(0, 1).toUpperCase()}
-                    </span>
-                    <div className="min-w-0">
-                      <div className="truncate text-sm text-cream">{m.name}</div>
-                      <div className="text-xs text-faint">
-                        {m.count}× since {formatDate(m.firstDate)}
+                  <li key={m.name}>
+                    <Link
+                      href={`/transactions?merchant=${encodeURIComponent(m.name)}`}
+                      className="-mx-2 flex items-center gap-3 rounded-lg px-2 py-1 transition-colors hover:bg-surface-2"
+                    >
+                      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border hairline bg-surface-2 text-sm text-slate">
+                        {m.name.slice(0, 1).toUpperCase()}
+                      </span>
+                      <div className="min-w-0">
+                        <div className="truncate text-sm text-cream">{m.name}</div>
+                        <div className="text-xs text-faint">
+                          {m.count}× since {formatDate(m.firstDate)}
+                        </div>
                       </div>
-                    </div>
-                    <span className="tnum ml-auto text-sm text-cream">
-                      {formatMoney(m.total, cur, { cents: false })}
-                    </span>
+                      <span className="tnum ml-auto text-sm text-cream">
+                        {formatMoney(m.total, cur, { cents: false })}
+                      </span>
+                    </Link>
                   </li>
                 ))}
               </ul>

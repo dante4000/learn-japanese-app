@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Account, Transaction } from "@/lib/types";
 import { CATEGORIES, categoryMeta, resolveCategoryKey } from "@/lib/categories";
-import { formatMoney, formatDate, monthKey } from "@/lib/format";
+import { formatMoney, formatDate, formatMonth, monthKey } from "@/lib/format";
 import { displayPayee } from "@/lib/aliases";
 
 export function TransactionsView({
@@ -17,12 +17,13 @@ export function TransactionsView({
   accounts: Account[];
   currency: string;
   /** Pre-applied filters from URL params, so links from charts/rows land filtered. */
-  initial?: { q?: string; category?: string; account?: string };
+  initial?: { q?: string; category?: string; account?: string; month?: string };
 }) {
   const router = useRouter();
   const [q, setQ] = useState(initial?.q ?? "");
   const [cat, setCat] = useState(initial?.category ?? "ALL");
   const [acct, setAcct] = useState(initial?.account ?? "ALL");
+  const [month, setMonth] = useState(initial?.month ?? "ALL");
   const [editing, setEditing] = useState<string | null>(null);
   const [noteDraft, setNoteDraft] = useState("");
   const [busy, setBusy] = useState(false);
@@ -38,13 +39,14 @@ export function TransactionsView({
     return transactions.filter((t) => {
       if (cat !== "ALL" && resolveCategoryKey(t) !== cat) return false;
       if (acct !== "ALL" && t.accountId !== acct) return false;
+      if (month !== "ALL" && monthKey(t.date) !== month) return false;
       if (needle) {
         const hay = `${t.name} ${t.merchantName ?? ""} ${displayPayee(t.merchantName, t.name)} ${t.note ?? ""}`.toLowerCase();
         if (!hay.includes(needle)) return false;
       }
       return true;
     });
-  }, [transactions, q, cat, acct]);
+  }, [transactions, q, cat, acct, month]);
 
   const filteredTotal = useMemo(
     () => filtered.reduce((a, t) => (t.amount > 0 ? a + t.amount : a), 0),
@@ -62,7 +64,8 @@ export function TransactionsView({
     return [...map.entries()];
   }, [filtered]);
 
-  const hasFilter = q.trim() !== "" || cat !== "ALL" || acct !== "ALL";
+  const hasFilter =
+    q.trim() !== "" || cat !== "ALL" || acct !== "ALL" || month !== "ALL";
 
   function openEditor(t: Transaction) {
     const next = editing === t.id ? null : t.id;
@@ -74,6 +77,7 @@ export function TransactionsView({
     setQ("");
     setCat("ALL");
     setAcct("ALL");
+    setMonth("ALL");
   }
 
   async function update(id: string, patch: Record<string, unknown>) {
@@ -140,6 +144,15 @@ export function TransactionsView({
       {/* Active-filter summary */}
       {hasFilter && (
         <div className="mb-4 flex flex-wrap items-center gap-3 text-sm">
+          {month !== "ALL" && (
+            <button
+              onClick={() => setMonth("ALL")}
+              className="flex items-center gap-1.5 rounded-lg border border-blue/40 bg-blue/15 px-2.5 py-1 text-xs text-blue"
+            >
+              {formatMonth(month)}
+              <span aria-hidden>✕</span>
+            </button>
+          )}
           <span className="text-muted">
             {filtered.length} match{filtered.length === 1 ? "" : "es"}
             {filteredTotal > 0 && (

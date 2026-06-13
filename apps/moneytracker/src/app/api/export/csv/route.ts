@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { isAuthenticated } from "@/lib/auth";
 import { loadState } from "@/lib/store";
+import { isSyntheticBaseline } from "@/lib/analytics";
 import { resolveCategoryKey } from "@/lib/categories";
 
 // Download the full ledger as CSV — every transaction with its effective
@@ -38,7 +39,9 @@ export async function GET() {
     "id",
   ].join(",");
 
-  const rows = state.transactions.map((t) =>
+  const rows = state.transactions
+    .filter((t) => !isSyntheticBaseline(t))
+    .map((t) =>
     [
       t.date,
       csvField(t.name),

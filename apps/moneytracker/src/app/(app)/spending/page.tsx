@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { loadScopedState } from "@/lib/scoped-state";
 import {
   availableMonths,
@@ -5,11 +6,13 @@ import {
   monthlyComposition,
   categoryHabits,
   topMerchants,
+  effectiveCategory,
 } from "@/lib/analytics";
 import { formatMoney, formatMonth } from "@/lib/format";
 import { Donut } from "@/components/charts/Donut";
 import { CompositionBars } from "@/components/charts/CompositionBars";
 import { MonthPicker } from "@/components/MonthPicker";
+import { RentToggle } from "@/components/RentToggle";
 import { SpendingInsights } from "@/components/SpendingInsights";
 import { SpendingTrends } from "@/components/SpendingTrends";
 import { SectionCard, EmptyState, StatCard, PageHeading } from "@/components/ui";
@@ -19,7 +22,7 @@ export const dynamic = "force-dynamic";
 export default async function SpendingPage({
   searchParams,
 }: {
-  searchParams: Promise<{ month?: string }>;
+  searchParams: Promise<{ month?: string; rent?: string }>;
 }) {
   const { state, focus } = await loadScopedState();
   const months = availableMonths(state);
@@ -47,17 +50,30 @@ export default async function SpendingPage({
   const selected =
     sp.month && months.includes(sp.month) ? sp.month : months[months.length - 1];
 
-  const cats = spendingByCategory(state, selected);
+  // Rent toggle: drop the Rent & Utilities category from every total on the tab.
+  // Included by default; ?rent=exclude filters it out of the state the whole
+  // page derives from.
+  const rentExcluded = sp.rent === "exclude";
+  const view = rentExcluded
+    ? {
+        ...state,
+        transactions: state.transactions.filter(
+          (t) => effectiveCategory(t) !== "RENT_AND_UTILITIES",
+        ),
+      }
+    : state;
+
+  const cats = spendingByCategory(view, selected);
   const total = cats.reduce((a, c) => a + c.total, 0);
-  const comp = monthlyComposition(state, 12);
-  const { habits, months: nMonths, avgMonthlyTotal } = categoryHabits(state, 12);
-  const merchants = topMerchants(state, selected, 20);
+  const comp = monthlyComposition(view, 12);
+  const { habits, months: nMonths, avgMonthlyTotal } = categoryHabits(view, 12);
+  const merchants = topMerchants(view, selected, 20);
 
   // delta vs previous available month
   const idx = months.indexOf(selected);
   const prevMonth = idx > 0 ? months[idx - 1] : null;
   const prevTotal = prevMonth
-    ? spendingByCategory(state, prevMonth).reduce((a, c) => a + c.total, 0)
+    ? spendingByCategory(view, prevMonth).reduce((a, c) => a + c.total, 0)
     : null;
   const delta =
     prevTotal && prevTotal > 0 ? ((total - prevTotal) / prevTotal) * 100 : null;
@@ -75,7 +91,8 @@ export default async function SpendingPage({
               : "Your monthly habits and where the money goes."
           }
         />
-        <div className="mb-1 shrink-0">
+        <div className="mb-1 flex shrink-0 items-center gap-2">
+          <RentToggle excluded={rentExcluded} />
           <MonthPicker months={months} selected={selected} />
         </div>
       </div>
@@ -133,6 +150,7 @@ export default async function SpendingPage({
                 currency={cur}
                 size={210}
                 hrefBase="/transactions"
+                month={selected}
               />
             </div>
             <div className="w-full flex-1 space-y-3.5">
@@ -171,7 +189,7 @@ export default async function SpendingPage({
 
       {/* By account · daily spending + pace · biggest movers */}
       <SpendingInsights
-        state={state}
+        state={view}
         month={selected}
         prevMonth={prevMonth}
         currency={cur}
@@ -181,7 +199,7 @@ export default async function SpendingPage({
 
       {/* Spending pace + category trends */}
       <SpendingTrends
-        state={state}
+        state={view}
         month={selected}
         prevMonth={prevMonth}
         currency={cur}
@@ -224,17 +242,22 @@ export default async function SpendingPage({
         <SectionCard title={`Top merchants · ${formatMonth(selected)}`} delay={280} className="mt-4">
           <ul className="grid gap-3 sm:grid-cols-2">
             {merchants.map((m) => (
-              <li key={m.name} className="flex items-center gap-3">
-                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border hairline bg-surface-2 text-sm text-slate">
-                  {m.name.slice(0, 1).toUpperCase()}
-                </span>
-                <div className="min-w-0">
-                  <div className="truncate text-sm text-cream">{m.name}</div>
-                  <div className="text-xs text-faint">{m.count}×</div>
-                </div>
-                <span className="tnum ml-auto text-sm text-cream">
-                  {formatMoney(m.total, cur, { cents: false })}
-                </span>
+              <li key={m.name}>
+                <Link
+                  href={`/transactions?merchant=${encodeURIComponent(m.name)}&month=${selected}`}
+                  className="-mx-2 flex items-center gap-3 rounded-lg px-2 py-1 transition-colors hover:bg-surface-2"
+                >
+                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border hairline bg-surface-2 text-sm text-slate">
+                    {m.name.slice(0, 1).toUpperCase()}
+                  </span>
+                  <div className="min-w-0">
+                    <div className="truncate text-sm text-cream">{m.name}</div>
+                    <div className="text-xs text-faint">{m.count}×</div>
+                  </div>
+                  <span className="tnum ml-auto text-sm text-cream">
+                    {formatMoney(m.total, cur, { cents: false })}
+                  </span>
+                </Link>
               </li>
             ))}
           </ul>

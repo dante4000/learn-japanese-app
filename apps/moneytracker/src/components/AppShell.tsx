@@ -18,6 +18,13 @@ const NAV = [
   { href: "/settings", label: "Settings", icon: "M12 9a3 3 0 100 6 3 3 0 000-6zM3 12h2m14 0h2M12 3v2m0 14v2" },
 ];
 
+// On phones the bottom bar shows the five everyday tabs; the rest live behind a
+// "More" sheet so each target keeps a comfortable tap size instead of cramming
+// nine into one row.
+const PRIMARY_NAV = NAV.slice(0, 5);
+const MORE_NAV = NAV.slice(5);
+const MORE_ICON = "M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z";
+
 function Glyph({ d }: { d: string }) {
   return (
     <svg
@@ -50,9 +57,11 @@ export function AppShell({
   const [pending, startTransition] = useTransition();
   const [syncing, setSyncing] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
+  const [moreOpen, setMoreOpen] = useState(false);
 
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
+  const isMoreActive = MORE_NAV.some((item) => isActive(item.href));
 
   async function refresh() {
     setSyncing(true);
@@ -169,12 +178,46 @@ export function AppShell({
         {children}
       </main>
 
+      {/* Mobile "More" sheet — the overflow tabs */}
+      {moreOpen && (
+        <div
+          className="fixed inset-0 z-30 md:hidden"
+          onClick={() => setMoreOpen(false)}
+        >
+          <div className="absolute inset-0 bg-ink/60 backdrop-blur-sm" />
+          <div
+            className="absolute inset-x-0 bottom-0 rounded-t-2xl border-t hairline bg-ink-2 p-4 pb-[max(1rem,env(safe-area-inset-bottom))]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-line" />
+            <div className="grid grid-cols-2 gap-2">
+              {MORE_NAV.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMoreOpen(false)}
+                  className={`flex items-center gap-3 rounded-xl border hairline px-4 py-3 text-sm ${
+                    isActive(item.href)
+                      ? "bg-surface-2 text-cream"
+                      : "bg-surface text-cream-dim"
+                  }`}
+                >
+                  <Glyph d={item.icon} />
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Mobile bottom nav */}
       <nav className="fixed inset-x-0 bottom-0 z-20 flex items-center justify-around border-t hairline bg-ink-2/95 px-2 py-2 backdrop-blur md:hidden">
-        {NAV.map((item) => (
+        {PRIMARY_NAV.map((item) => (
           <Link
             key={item.href}
             href={item.href}
+            onClick={() => setMoreOpen(false)}
             className={`flex flex-1 flex-col items-center gap-1 rounded-lg py-1.5 text-[0.6rem] ${
               isActive(item.href) ? "text-blue" : "text-muted"
             }`}
@@ -183,6 +226,17 @@ export function AppShell({
             {item.label}
           </Link>
         ))}
+        <button
+          onClick={() => setMoreOpen((v) => !v)}
+          aria-expanded={moreOpen}
+          aria-label="More"
+          className={`flex flex-1 flex-col items-center gap-1 rounded-lg py-1.5 text-[0.6rem] ${
+            isMoreActive || moreOpen ? "text-blue" : "text-muted"
+          }`}
+        >
+          <Glyph d={MORE_ICON} />
+          More
+        </button>
       </nav>
     </div>
   );
