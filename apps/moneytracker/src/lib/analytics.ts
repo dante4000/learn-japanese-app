@@ -499,6 +499,97 @@ export function upcomingBills(
   };
 }
 
+export interface PacePoint {
+  day: number;
+  current: number | null; // cumulative spend this month (null after today)
+  previous: number | null; // cumulative spend last month, same day
+}
+
+export interface SpendPace {
+  points: PacePoint[];
+  daysInMonth: number;
+  throughDay: number;
+  currentToDate: number;
+  previousToDate: number | null; // last month's cumulative at the same day
+}
+
+/** Day-by-day cumulative spend for the month vs the previous month (pace). */
+export function spendingPace(
+  state: AppState,
+  month: string,
+  prevMonth: string | null,
+): SpendPace {
+  const cur = dailySpending(state, month);
+  const prev = prevMonth ? dailySpending(state, prevMonth) : null;
+  const daysInMonth = cur.daysInMonth;
+  const through = cur.throughDay || cur.daysInMonth;
+  const points: PacePoint[] = [];
+  for (let i = 0; i < daysInMonth; i++) {
+    points.push({
+      day: i + 1,
+      current: i < through ? cur.cumulative[i] : null,
+      previous: prev && i < prev.daysInMonth ? prev.cumulative[i] : null,
+    });
+  }
+  const prevIdx = Math.min(through, prev?.daysInMonth ?? 0) - 1;
+  return {
+    points,
+    daysInMonth,
+    throughDay: through,
+    currentToDate: cur.cumulative[through - 1] ?? cur.total,
+    previousToDate: prev && prevIdx >= 0 ? prev.cumulative[prevIdx] : null,
+  };
+}
+
+export interface CategoryTrend {
+  category: string;
+  label: string;
+  color: string;
+  glyph: string;
+  series: number[]; // spend per month, aligned to `months`
+  total: number;
+  latest: number;
+  delta: number; // latest vs prior month
+}
+
+/** Monthly spend series per top category — for trend sparklines. */
+export function categoryTrends(
+  state: AppState,
+  monthsBack = 6,
+  limit = 6,
+): { months: string[]; trends: CategoryTrend[] } {
+  const months = availableMonths(state).slice(-monthsBack);
+  const byCat = new Map<string, CategoryTrend>();
+  months.forEach((m, idx) => {
+    for (const c of spendingByCategory(state, m)) {
+      if (!byCat.has(c.category))
+        byCat.set(c.category, {
+          category: c.category,
+          label: c.label,
+          color: c.color,
+          glyph: c.glyph,
+          series: months.map(() => 0),
+          total: 0,
+          latest: 0,
+          delta: 0,
+        });
+      const t = byCat.get(c.category)!;
+      t.series[idx] = c.total;
+      t.total += c.total;
+    }
+  });
+  const trends = [...byCat.values()].map((t) => {
+    const n = t.series.length;
+    return {
+      ...t,
+      latest: t.series[n - 1] ?? 0,
+      delta: (t.series[n - 1] ?? 0) - (t.series[n - 2] ?? 0),
+    };
+  });
+  trends.sort((a, b) => b.total - a.total);
+  return { months, trends: trends.slice(0, limit) };
+}
+
 export interface PeriodSummary {
   netWorth: NetWorthBreakdown;
   monthSpending: number;
@@ -565,4 +656,65 @@ export function recordSnapshot(state: AppState, today: string): void {
   if (existing) Object.assign(existing, snap);
   else state.snapshots.push(snap);
   state.snapshots.sort((a, b) => a.date.localeCompare(b.date));
+}
+
+export interface DuplicateGroup {
+  merchant: string;
+  amount: number;
+  accountId: string;
+  /** 2+ identical-amount posted charges at the same merchant within 2 days. */
+  transactions: Transaction[];
+}
+
+/**
+ * Possible double-charges: posted (non-pending), visible spends on the same
+ * account with the same merchant and exact amount, dated ≤ 2 days apart.
+ * Legitimate repeats (two same-priced coffees on consecutive days) can match,
+ * hence "possible" — this surfaces candidates for review, it doesn't judge.
+ */
+export function findPossibleDuplicates(state: AppState): DuplicateGroup[] {
+  const dayMs = 86_400_000;
+  const byKey = new Map<string, Transaction[]>();
+  for (const t of state.transactions) {
+    if (t.pending || t.hidden || t.amount <= 0) continue;
+    const key = `${t.accountId}|${(t.merchantName || t.name).toLowerCase()}|${t.amount.toFixed(2)}`;
+    const list = byKey.get(key);
+    if (list) list.push(t);
+    else byKey.set(key, [t]);
+  }
+
+  const groups: DuplicateGroup[] = [];
+  for (const list of byKey.values()) {
+    if (list.length < 2) continue;
+    list.sort((a, b) => a.date.localeCompare(b.date));
+    let cluster: Transaction[] = [list[0]];
+    const flush = () => {
+      if (cluster.length >= 2) {
+        const t = cluster[0];
+        groups.push({
+          merchant: t.merchantName || t.name,
+          amount: t.amount,
+          accountId: t.accountId,
+          transactions: [...cluster],
+        });
+      }
+    };
+    for (let i = 1; i < list.length; i++) {
+      const gap =
+        (Date.parse(list[i].date) -
+          Date.parse(cluster[cluster.length - 1].date)) /
+        dayMs;
+      if (gap <= 2) cluster.push(list[i]);
+      else {
+        flush();
+        cluster = [list[i]];
+      }
+    }
+    flush();
+  }
+  // Most recent first; the old tail is mostly noise.
+  groups.sort((a, b) =>
+    b.transactions[0].date.localeCompare(a.transactions[0].date),
+  );
+  return groups;
 }

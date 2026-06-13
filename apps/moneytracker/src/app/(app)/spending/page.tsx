@@ -11,6 +11,7 @@ import { Donut } from "@/components/charts/Donut";
 import { CompositionBars } from "@/components/charts/CompositionBars";
 import { MonthPicker } from "@/components/MonthPicker";
 import { SpendingInsights } from "@/components/SpendingInsights";
+import { SpendingTrends } from "@/components/SpendingTrends";
 import { SectionCard, EmptyState, StatCard, PageHeading } from "@/components/ui";
 
 export const dynamic = "force-dynamic";
@@ -174,6 +175,15 @@ export default async function SpendingPage({
         currency={cur}
         isLatestMonth={selected === months[months.length - 1]}
         delay={180}
+      />
+
+      {/* Spending pace + category trends */}
+      <SpendingTrends
+        state={state}
+        month={selected}
+        prevMonth={prevMonth}
+        currency={cur}
+        delay={300}
       />
 
       {/* Habits over time */}
