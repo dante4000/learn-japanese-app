@@ -772,22 +772,45 @@ export interface DuplicateGroup {
   merchant: string;
   amount: number;
   accountId: string;
-  /** 2+ identical-amount posted charges at the same merchant within 2 days. */
+  date: string; // all charges in the group share this date
+  /** 2+ identical posted charges: same account, merchant, amount, and day. */
   transactions: Transaction[];
 }
 
+/** Normalize a merchant/description for matching: lowercase, strip punctuation
+ *  and store/location numbers so "STARBUCKS #1234" ≈ "Starbucks". */
+function normalizeMerchant(s: string): string {
+  return s
+    .toLowerCase()
+    .replace(/[^a-z0-9 ]+/g, " ")
+    .replace(/\b\d{2,}\b/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 /**
- * Possible double-charges: posted (non-pending), visible spends on the same
- * account with the same merchant and exact amount, dated ≤ 2 days apart.
- * Legitimate repeats (two same-priced coffees on consecutive days) can match,
- * hence "possible" — this surfaces candidates for review, it doesn't judge.
+ * True double-charges: posted (non-pending), visible outflows that are the
+ * EXACT same charge — same account, same merchant, same amount, AND the same
+ * day. Merchants that match a detected recurring stream (subscriptions, rent,
+ * utilities) are excluded, since a repeat there is the bill doing its job, not
+ * a mistaken double charge. Two genuine same-day same-price buys can still
+ * match, hence "possible" — this surfaces candidates, it doesn't judge.
  */
 export function findPossibleDuplicates(state: AppState): DuplicateGroup[] {
-  const dayMs = 86_400_000;
+  // Merchants we know recur — never flag these.
+  const recurring = new Set<string>();
+  for (const r of state.recurring) {
+    if (r.merchantName) recurring.add(normalizeMerchant(r.merchantName));
+    if (r.description) recurring.add(normalizeMerchant(r.description));
+  }
+
   const byKey = new Map<string, Transaction[]>();
   for (const t of state.transactions) {
     if (t.pending || t.hidden || t.amount <= 0) continue;
-    const key = `${t.accountId}|${(t.merchantName || t.name).toLowerCase()}|${t.amount.toFixed(2)}`;
+    const norm = normalizeMerchant(t.merchantName || t.name);
+    if (!norm || recurring.has(norm)) continue;
+    // Date in the key ⇒ a key with ≥2 hits is already a same-day cluster.
+    const key = `${t.accountId}|${norm}|${t.amount.toFixed(2)}|${t.date}`;
     const list = byKey.get(key);
     if (list) list.push(t);
     else byKey.set(key, [t]);
@@ -796,35 +819,16 @@ export function findPossibleDuplicates(state: AppState): DuplicateGroup[] {
   const groups: DuplicateGroup[] = [];
   for (const list of byKey.values()) {
     if (list.length < 2) continue;
-    list.sort((a, b) => a.date.localeCompare(b.date));
-    let cluster: Transaction[] = [list[0]];
-    const flush = () => {
-      if (cluster.length >= 2) {
-        const t = cluster[0];
-        groups.push({
-          merchant: t.merchantName || t.name,
-          amount: t.amount,
-          accountId: t.accountId,
-          transactions: [...cluster],
-        });
-      }
-    };
-    for (let i = 1; i < list.length; i++) {
-      const gap =
-        (Date.parse(list[i].date) -
-          Date.parse(cluster[cluster.length - 1].date)) /
-        dayMs;
-      if (gap <= 2) cluster.push(list[i]);
-      else {
-        flush();
-        cluster = [list[i]];
-      }
-    }
-    flush();
+    const t = list[0];
+    groups.push({
+      merchant: t.merchantName || t.name,
+      amount: t.amount,
+      accountId: t.accountId,
+      date: t.date,
+      transactions: list,
+    });
   }
-  // Most recent first; the old tail is mostly noise.
-  groups.sort((a, b) =>
-    b.transactions[0].date.localeCompare(a.transactions[0].date),
-  );
+  // Most recent first.
+  groups.sort((a, b) => b.date.localeCompare(a.date));
   return groups;
 }

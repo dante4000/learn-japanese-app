@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Account, Transaction } from "@/lib/types";
 import { CATEGORIES, categoryMeta, resolveCategoryKey } from "@/lib/categories";
 import { formatMoney, formatDate, monthKey } from "@/lib/format";
+import { displayPayee } from "@/lib/aliases";
 
 export function TransactionsView({
   transactions,

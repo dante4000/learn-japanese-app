@@ -1,6 +1,7 @@
 import { loadScopedState } from "@/lib/scoped-state";
 import { RecurringStream } from "@/lib/types";
 import { categoryMeta } from "@/lib/categories";
+import { displayPayee } from "@/lib/aliases";
 import { upcomingBills, reimbursedStreams, isTransferStream } from "@/lib/analytics";
 import { formatMoney, formatDate } from "@/lib/format";
 import { UpcomingBills } from "@/components/UpcomingBills";
@@ -47,7 +48,7 @@ function StreamRow({
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
           <span className="truncate text-sm text-cream">
-            {s.merchantName || s.description}
+            {displayPayee(s.merchantName, s.description)}
           </span>
           {reimbursed != null && (
             <span

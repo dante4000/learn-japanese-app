@@ -50,36 +50,39 @@ export default async function TransactionsPage({
           className="mb-4"
         >
           <p className="mb-3 -mt-2 text-xs text-muted">
-            Same merchant and amount within two days. Often legitimate repeats —
-            review and hide any true double-charges.
+            The same merchant and amount charged more than once on the same day,
+            excluding known recurring bills — likely a true double-charge. Search
+            the merchant below to review, then hide any extra.
           </p>
           <ul className="space-y-2">
-            {dupes.slice(0, 6).map((d, i) => (
+            {dupes.slice(0, 12).map((d, i) => (
               <li
                 key={i}
                 className="flex items-center gap-3 rounded-xl border hairline bg-surface px-3 py-2.5 text-sm"
               >
-                <span className="rounded bg-coral/15 px-1.5 py-0.5 text-[0.6rem] text-coral">
+                <span className="rounded bg-coral/15 px-1.5 py-0.5 text-[0.6rem] font-semibold text-coral">
                   {d.transactions.length}×
                 </span>
                 <div className="min-w-0">
                   <div className="truncate text-cream">{d.merchant}</div>
                   <div className="text-xs text-faint">
-                    {d.transactions.map((t) => formatDate(t.date)).join(" · ")}
+                    {formatDate(d.date)}
                     {acctName.get(d.accountId)
                       ? ` · ${acctName.get(d.accountId)}`
                       : ""}
                   </div>
                 </div>
                 <span className="tnum ml-auto text-cream">
-                  {formatMoney(d.amount, currency)}
+                  {d.transactions.length} ×{" "}
+                  {formatMoney(d.amount, currency)} ={" "}
+                  {formatMoney(d.amount * d.transactions.length, currency)}
                 </span>
               </li>
             ))}
           </ul>
-          {dupes.length > 6 && (
+          {dupes.length > 12 && (
             <p className="mt-3 text-xs text-faint">
-              + {dupes.length - 6} more pair{dupes.length - 6 === 1 ? "" : "s"}.
+              + {dupes.length - 12} more.
             </p>
           )}
         </SectionCard>
