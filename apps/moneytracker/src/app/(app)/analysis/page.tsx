@@ -5,8 +5,9 @@ import {
   incomeSources,
   spendByWeekday,
   largestPurchases,
-  categoryTrends,
+  categorySpendTrends,
   newMerchants,
+  windowMonths,
 } from "@/lib/insights";
 import { categoryMeta, resolveCategoryKey } from "@/lib/categories";
 import { formatDate, formatMoney, formatMonth } from "@/lib/format";
@@ -47,7 +48,13 @@ export default async function AnalysisPage() {
     );
   }
 
-  const flows = cashFlowByMonth(state, 12);
+  // Same available-months window as every other section, so the bar count and
+  // totals agree with the hero stats (cashFlowByMonth otherwise emits $0 rows
+  // for months that have only transfers/pending activity).
+  const windowSet = new Set(windowMonths(state, 12));
+  const flows = cashFlowByMonth(state, 1_000_000).filter((f) =>
+    windowSet.has(f.month),
+  );
   const best = flows.reduce((a, b) => (b.net > a.net ? b : a), flows[0]);
   const worst = flows.reduce((a, b) => (b.net < a.net ? b : a), flows[0]);
   const sources = incomeSources(state, 12);
@@ -55,7 +62,7 @@ export default async function AnalysisPage() {
   const spendCount = weekdays.reduce((a, d) => a + d.count, 0);
   const avgSize = spendCount ? ov.spending / spendCount : 0;
   const biggest = largestPurchases(state, 12, 5);
-  const trends = categoryTrends(state, 12);
+  const trends = categorySpendTrends(state, 12);
   const fresh = newMerchants(state, 12, 3);
   const monthsLabel = `last ${ov.months} month${ov.months === 1 ? "" : "s"}`;
 

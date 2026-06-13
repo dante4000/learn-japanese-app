@@ -148,7 +148,7 @@ export function largestPurchases(
     .slice(0, limit);
 }
 
-export interface CategoryTrend {
+export interface SpendTrend {
   category: string;
   label: string;
   color: string;
@@ -163,10 +163,10 @@ export interface CategoryTrend {
 const RECENT_MONTHS = 3;
 
 /** Per-category avg monthly spend, last RECENT_MONTHS vs the months before. */
-export function categoryTrends(
+export function categorySpendTrends(
   state: AppState,
   monthsBack = 12,
-): CategoryTrend[] {
+): SpendTrend[] {
   const months = windowMonths(state, monthsBack);
   // A 3-vs-prior split needs at least one prior month to compare against.
   if (months.length <= RECENT_MONTHS) return [];
