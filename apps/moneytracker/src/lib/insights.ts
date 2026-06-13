@@ -112,6 +112,134 @@ export function incomeSources(
     .sort((a, b) => b.total - a.total);
 }
 
+// ── Income, broken down by source and by month ──────────────────────────────
+//
+// Spending has Plaid categories; income realistically doesn't (almost everything
+// lands in INCOME), so the meaningful breakdown is by *source* — the payer name
+// (paycheck, a client, interest, refunds, Venmo from a friend). A cool-toned
+// palette keeps income visually distinct from the warm spending categories. The
+// top sources get a stable color so the same payer is the same color in every
+// month's bar; everything past the palette collapses into a single "Other".
+
+const INCOME_PALETTE = [
+  "#2563eb", // blue
+  "#0ea5e9", // sky
+  "#6366f1", // indigo
+  "#8b5cf6", // violet
+  "#06b6d4", // cyan
+  "#3b82f6", // blue-2
+  "#7c3aed", // purple
+  "#0284c7", // deep sky
+];
+const INCOME_OTHER_COLOR = "#64748b"; // slate
+const INCOME_OTHER_LABEL = "Other";
+
+export interface IncomeSegment {
+  name: string;
+  total: number; // positive
+  color: string;
+  count: number;
+}
+
+export interface IncomeMonth {
+  month: string; // yyyy-mm
+  total: number;
+  segments: IncomeSegment[]; // sorted desc, share computable from total
+}
+
+export interface IncomeBreakdown {
+  /** Every month with income, oldest → newest. */
+  months: string[];
+  /** Per-month source segments, aligned to `months`. */
+  byMonth: IncomeMonth[];
+  /** Top sources + "Other", by all-time total — the stable color legend. */
+  legend: { name: string; color: string; total: number }[];
+}
+
+/** Months (yyyy-mm) that have any income, oldest → newest. */
+export function incomeMonths(state: AppState): string[] {
+  const set = new Set<string>();
+  for (const t of state.transactions) if (isIncome(t)) set.add(monthKey(t.date));
+  return [...set].sort((a, b) => a.localeCompare(b));
+}
+
+/**
+ * Income across all history, grouped by source and split per month. Colors are
+ * assigned once from all-time totals so a source keeps the same color in every
+ * month's bar and in the legend; sources beyond the palette become "Other".
+ */
+export function incomeBreakdown(state: AppState): IncomeBreakdown {
+  const months = incomeMonths(state);
+
+  // All-time total per source → ranking that drives stable color assignment.
+  const totals = new Map<string, number>();
+  for (const t of state.transactions) {
+    if (!isIncome(t)) continue;
+    const name = displayPayee(t.merchantName, t.name);
+    totals.set(name, (totals.get(name) ?? 0) + -t.amount);
+  }
+  const ranked = [...totals.entries()].sort((a, b) => b[1] - a[1]);
+  const colorOf = new Map<string, string>();
+  ranked
+    .slice(0, INCOME_PALETTE.length)
+    .forEach(([name], i) => colorOf.set(name, INCOME_PALETTE[i]));
+  const labelFor = (raw: string) =>
+    colorOf.has(raw) ? raw : INCOME_OTHER_LABEL;
+  const colorFor = (raw: string) => colorOf.get(raw) ?? INCOME_OTHER_COLOR;
+
+  const byMonthMap = new Map<string, Map<string, IncomeSegment>>();
+  for (const m of months) byMonthMap.set(m, new Map());
+  for (const t of state.transactions) {
+    if (!isIncome(t)) continue;
+    const m = monthKey(t.date);
+    const segs = byMonthMap.get(m);
+    if (!segs) continue;
+    const raw = displayPayee(t.merchantName, t.name);
+    const name = labelFor(raw);
+    const row = segs.get(name) ?? { name, total: 0, color: colorFor(raw), count: 0 };
+    row.total += -t.amount;
+    row.count += 1;
+    segs.set(name, row);
+  }
+  const byMonth: IncomeMonth[] = months.map((month) => {
+    const segments = [...byMonthMap.get(month)!.values()].sort(
+      (a, b) => b.total - a.total,
+    );
+    return {
+      month,
+      total: segments.reduce((a, s) => a + s.total, 0),
+      segments,
+    };
+  });
+
+  const legend = ranked
+    .slice(0, INCOME_PALETTE.length)
+    .map(([name, total]) => ({ name, color: colorOf.get(name)!, total }));
+  if (ranked.length > INCOME_PALETTE.length) {
+    legend.push({
+      name: INCOME_OTHER_LABEL,
+      color: INCOME_OTHER_COLOR,
+      total: ranked
+        .slice(INCOME_PALETTE.length)
+        .reduce((a, [, v]) => a + v, 0),
+    });
+  }
+  return { months, byMonth, legend };
+}
+
+/** The biggest single income deposits in the window. */
+export function largestDeposits(
+  state: AppState,
+  monthsBack = 12,
+  limit = 5,
+): Transaction[] {
+  const within = inWindow(windowMonths(state, monthsBack));
+  return state.transactions
+    .filter((t) => isIncome(t) && within(t))
+    .sort((a, b) => a.amount - b.amount) // most negative = largest inflow
+    .slice(0, limit);
+}
+
 export interface WeekdaySpend {
   weekday: string; // "Mon" … "Sun"
   total: number;
