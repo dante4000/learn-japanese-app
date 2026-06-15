@@ -22,7 +22,25 @@ function loadScript(): Promise<void> {
     if (window.Plaid) return resolve();
     const existing = document.querySelector(`script[src="${SCRIPT_SRC}"]`);
     if (existing) {
-      existing.addEventListener("load", () => resolve());
+      // The tag is in the DOM but window.Plaid isn't ready yet. If its load
+      // event already fired we'd never hear it, so poll for the global as a
+      // fallback alongside the load/error listeners (with a timeout so connect()
+      // can't hang forever).
+      let settled = false;
+      const done = () => {
+        if (settled) return;
+        settled = true;
+        clearInterval(poll);
+        clearTimeout(timeout);
+        if (window.Plaid) resolve();
+        else reject(new Error("Failed to load Plaid"));
+      };
+      existing.addEventListener("load", done);
+      existing.addEventListener("error", done);
+      const poll = setInterval(() => {
+        if (window.Plaid) done();
+      }, 100);
+      const timeout = setTimeout(done, 10_000);
       return;
     }
     const s = document.createElement("script");
@@ -57,16 +75,28 @@ export function PlaidLinkButton({ disabled }: { disabled?: boolean }) {
       const handler = window.Plaid!.create({
         token: data.link_token,
         onSuccess: async (publicToken: string) => {
+          // Plaid invokes this later, outside connect()'s try/catch — guard it
+          // on its own so a failed exchange or non-JSON response can't leave the
+          // button stuck on "Working…".
           setMsg("Linking…");
-          const ex = await fetch("/api/plaid/exchange", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ public_token: publicToken }),
-          });
-          const exData = await ex.json();
-          setMsg(ex.ok ? `Connected ${exData.institutionName}` : exData.error);
-          setBusy(false);
-          router.refresh();
+          try {
+            const ex = await fetch("/api/plaid/exchange", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ public_token: publicToken }),
+            });
+            const exData = await ex.json().catch(() => null);
+            setMsg(
+              ex.ok
+                ? `Connected ${exData?.institutionName ?? "bank"}`
+                : exData?.error || "Could not link your bank.",
+            );
+            router.refresh();
+          } catch {
+            setMsg("Could not link your bank.");
+          } finally {
+            setBusy(false);
+          }
         },
         onExit: () => setBusy(false),
       });

@@ -6,6 +6,7 @@ import {
   cashFlowDetail,
   topMerchants,
   currentMonthKey,
+  isSyntheticBaseline,
   LIABILITY_TYPES,
 } from "@/lib/analytics";
 import { categoryMeta, resolveCategoryKey } from "@/lib/categories";
@@ -36,7 +37,9 @@ export default async function OverviewPage() {
   const categories = spendingByCategory(state, month);
   const cashflow = cashFlowDetail(state, 6);
   const merchants = topMerchants(state, month, 20);
-  const recent = state.transactions.filter((t) => !t.pending).slice(0, 6);
+  const recent = state.transactions
+    .filter((t) => !t.pending && !isSyntheticBaseline(t))
+    .slice(0, 6);
   const acctName = new Map(state.accounts.map((a) => [a.id, a.name]));
 
   return (

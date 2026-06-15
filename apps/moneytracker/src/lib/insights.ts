@@ -4,6 +4,7 @@ import {
   effectiveCategory,
   isIncome,
   isSpend,
+  isSyntheticBaseline,
   refundMatchedIds,
 } from "./analytics";
 import { categoryMeta } from "./categories";
@@ -333,7 +334,10 @@ export function largestPurchases(
   const within = inWindow(windowMonths(state, monthsBack));
   const neutralized = refundMatchedIds(state);
   return state.transactions
-    .filter((t) => isSpend(t, neutralized) && within(t))
+    .filter(
+      (t) =>
+        !isSyntheticBaseline(t) && isSpend(t, neutralized) && within(t),
+    )
     .sort((a, b) => b.amount - a.amount)
     .slice(0, limit);
 }

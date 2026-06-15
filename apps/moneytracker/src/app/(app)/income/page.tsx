@@ -89,9 +89,12 @@ export default async function IncomePage({
     priorLabel = `YTD ${prevYear}`;
   } else if (scope === "year") {
     scopeMonths = chartMonths;
+    // The 12 months immediately before the scope window — but only as many as we
+    // actually have, so the label never claims a full year of prior data we
+    // don't hold.
     priorMonths = months.slice(-24, -12);
     scopeLabel = `last ${chartMonths.length} mo`;
-    priorLabel = "prior 12 mo";
+    priorLabel = priorMonths.length ? `prior ${priorMonths.length} mo` : "prior period";
   } else {
     const idx = months.indexOf(selected);
     scopeMonths = [selected];

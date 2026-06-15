@@ -70,6 +70,7 @@ export function Donut({
         />
         {segments.map((s, i) => {
           const isHover = hover === i;
+          const canClick = clickable(s);
           return (
             <circle
               key={i}
@@ -84,12 +85,30 @@ export function Donut({
               strokeLinecap="butt"
               opacity={hover == null || isHover ? 1 : 0.35}
               style={{
-                cursor: clickable(s) ? "pointer" : "default",
+                cursor: canClick ? "pointer" : "default",
                 transition: "opacity .15s ease, stroke-width .15s ease",
               }}
+              // Keyboard-accessible drill-through: focusable slices behave like
+              // buttons (Enter/Space navigate), and focus mirrors hover so the
+              // center readout updates for keyboard users too.
+              tabIndex={canClick ? 0 : undefined}
+              role={canClick ? "button" : undefined}
+              aria-label={
+                canClick
+                  ? `${s.label}: ${formatMoney(s.value, currency, { cents: false })}, ${Math.round(s.frac * 100)}% — view transactions`
+                  : undefined
+              }
               onMouseEnter={() => setHover(i)}
               onMouseLeave={() => setHover(null)}
+              onFocus={() => setHover(i)}
+              onBlur={() => setHover(null)}
               onClick={() => go(s)}
+              onKeyDown={(e) => {
+                if (canClick && (e.key === "Enter" || e.key === " ")) {
+                  e.preventDefault();
+                  go(s);
+                }
+              }}
             />
           );
         })}

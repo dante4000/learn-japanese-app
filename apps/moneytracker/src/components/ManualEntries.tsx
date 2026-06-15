@@ -22,6 +22,10 @@ export function ManualEntries({
   async function add(e: React.FormEvent) {
     e.preventDefault();
     if (!name || !value) return;
+    if (!Number.isFinite(Number(value))) {
+      setError("Value must be a number.");
+      return;
+    }
     setBusy(true);
     setError(null);
     try {

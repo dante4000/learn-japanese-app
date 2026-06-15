@@ -189,7 +189,7 @@ export function TransactionsView({
         {groups.map(([m, items]) => (
           <div key={m}>
             <div className="sticky top-0 z-10 flex items-center justify-between bg-ink-2/95 px-5 py-2.5 backdrop-blur">
-              <span className="label-eyebrow">{m}</span>
+              <span className="label-eyebrow">{formatMonth(m)}</span>
               <span className="tnum text-xs text-faint">
                 {items.length} items
               </span>

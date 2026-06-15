@@ -173,6 +173,13 @@ export function csvToTransactions(
   const currency = opts.currency ?? "USD";
   const transactions: Transaction[] = [];
   let skipped = 0;
+  // How many identical (account|date|amount|description) rows we've already seen
+  // in this file. Two genuinely distinct same-day charges with the same amount
+  // and merchant (e.g. two $5 coffees) hash to the same content key; without an
+  // occurrence index they'd collapse to one id and the import route's id-dedupe
+  // would silently drop the second. The Nth occurrence gets a stable suffix, so
+  // re-importing an overlapping export still dedupes occurrence-for-occurrence.
+  const seen = new Map<string, number>();
 
   for (let i = 1; i < rows.length; i++) {
     const r = rows[i];
@@ -207,10 +214,16 @@ export function csvToTransactions(
     const amount =
       opts.outflowSign === "negative_is_outflow" ? -fileAmount : fileAmount;
 
+    const contentKey = `${opts.accountId}|${date}|${amount}|${description}`;
+    const occurrence = seen.get(contentKey) ?? 0;
+    seen.set(contentKey, occurrence + 1);
+    // The first occurrence keeps the legacy content-only hash so already-stored
+    // transactions still dedupe on re-import; only the 2nd+ identical row gets a
+    // distinguishing "#n" suffix.
     const id =
       "csv_" +
       createHash("sha1")
-        .update(`${opts.accountId}|${date}|${amount}|${description}`)
+        .update(occurrence === 0 ? contentKey : `${contentKey}#${occurrence}`)
         .digest("hex")
         .slice(0, 24);
 

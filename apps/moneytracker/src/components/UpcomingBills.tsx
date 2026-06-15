@@ -5,7 +5,6 @@ import { formatMoney } from "@/lib/format";
 function dayLabel(d: number): string {
   if (d <= 0) return "due today";
   if (d === 1) return "tomorrow";
-  if (d <= 7) return `in ${d} days`;
   return `in ${d} days`;
 }
 

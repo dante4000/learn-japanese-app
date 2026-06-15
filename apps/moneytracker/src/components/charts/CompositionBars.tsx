@@ -49,7 +49,9 @@ export function CompositionBars({
                   <div
                     key={s.category}
                     style={{
-                      height: `${(s.total / d.total) * 100}%`,
+                      // Guard the divisor: a zero-total month with segments would
+                      // otherwise compute 0/0 = NaN% (an invalid, dropped style).
+                      height: `${d.total > 0 ? (s.total / d.total) * 100 : 0}%`,
                       background: s.color,
                     }}
                     title={`${formatMonth(d.month)} · ${s.label}: ${formatMoney(s.total, currency)}`}

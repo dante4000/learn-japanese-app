@@ -34,8 +34,12 @@ function AccountRow({
       <span
         className={`tnum ml-auto text-sm ${isLiability ? "text-coral" : "text-cream"}`}
       >
-        {isLiability && bal > 0 ? "−" : ""}
-        {formatMoney(bal, currency, { cents: false })}
+        {/* For a liability the headline is what you owe (−balance): a positive
+            balance shows as −$X (debt), a negative balance as +$X (a credit in
+            your favor) rather than misreading as more debt. */}
+        {isLiability
+          ? formatMoney(-bal, currency, { cents: false, sign: true })
+          : formatMoney(bal, currency, { cents: false })}
       </span>
       {canFocus && <ViewAccountButton id={a.id} />}
     </li>

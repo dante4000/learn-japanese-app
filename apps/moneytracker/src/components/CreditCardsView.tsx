@@ -13,6 +13,15 @@ import {
 } from "@/lib/cards";
 import { formatMoney } from "@/lib/format";
 
+/** Hostname of a source URL for display, tolerant of a malformed entry. */
+function hostLabel(url: string): string {
+  try {
+    return new URL(url).hostname.replace("www.", "");
+  } catch {
+    return url;
+  }
+}
+
 // Live per-card data computed server-side from the user's real transactions.
 export interface CardLive {
   accountName: string;
@@ -178,10 +187,16 @@ export function CreditCardsView({
   // Click → set an explicit override to the opposite of what's shown now.
   function toggle(cardKey: string, creditName: string) {
     setOverrides((prev) => {
-      const nextVal = !isUsed(cardKey, creditName);
+      // Derive the currently-shown value from `prev` (not the outer `overrides`
+      // closure) so rapid successive toggles can't read a stale value.
+      const ov = prev[cardKey]?.[creditName];
+      const shown =
+        ov !== undefined
+          ? ov
+          : detected(cardKey, creditName)?.usedThisPeriod ?? false;
       const next: OverrideMap = {
         ...prev,
-        [cardKey]: { ...prev[cardKey], [creditName]: nextVal },
+        [cardKey]: { ...prev[cardKey], [creditName]: !shown },
       };
       persist(next);
       return next;
@@ -975,7 +990,7 @@ function CardDetail({
             <span className="text-slate">Sources:</span>
             {card.sources.map((s, idx) => (
               <a key={idx} href={s} target="_blank" rel="noreferrer" className="text-blue underline-offset-2 hover:underline">
-                {new URL(s).hostname.replace("www.", "")}
+                {hostLabel(s)}
               </a>
             ))}
           </p>

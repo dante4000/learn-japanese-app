@@ -46,21 +46,26 @@ export function CsvImport({ accounts }: { accounts: Account[] }) {
             outflowSign,
             csv,
           };
-    const res = await fetch("/api/import/csv", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
-    const data = await res.json();
-    setBusy(false);
-    if (!res.ok) {
-      setMsg(data.error || "Import failed");
-      return;
+    try {
+      const res = await fetch("/api/import/csv", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      const data = await res.json().catch(() => null);
+      if (!res.ok) {
+        setMsg(data?.error || "Import failed");
+        return;
+      }
+      setMsg(`Imported ${data.imported} transactions${data.skipped ? `, skipped ${data.skipped}` : ""}.`);
+      setCsv("");
+      setFileName("");
+      router.refresh();
+    } catch {
+      setMsg("Import failed — please try again.");
+    } finally {
+      setBusy(false);
     }
-    setMsg(`Imported ${data.imported} transactions${data.skipped ? `, skipped ${data.skipped}` : ""}.`);
-    setCsv("");
-    setFileName("");
-    router.refresh();
   }
 
   const field =

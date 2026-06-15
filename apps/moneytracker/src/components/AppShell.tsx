@@ -83,7 +83,14 @@ export function AppShell({
   }
 
   async function logout() {
-    await fetch("/api/auth/logout", { method: "POST" });
+    // Navigate to /login regardless: even if the request fails the layout's
+    // server-side auth check still gates the data, and the user shouldn't be
+    // stranded with no feedback.
+    try {
+      await fetch("/api/auth/logout", { method: "POST" });
+    } catch {
+      // ignore — redirect anyway
+    }
     router.replace("/login");
   }
 

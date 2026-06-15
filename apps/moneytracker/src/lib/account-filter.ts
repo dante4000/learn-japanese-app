@@ -10,10 +10,10 @@ export const ACCOUNT_COOKIE = "vault_account";
 
 /**
  * Narrow the app state to a single account so every analytics function
- * computes per-account figures unchanged. Manual entries and net-worth
- * snapshots are global (not attributable to one account), so they're emptied
- * while filtered. An unknown id (e.g. a since-deleted account) returns the
- * state untouched.
+ * computes per-account figures unchanged. Manual entries, net-worth snapshots,
+ * and recurring baselines are global (not attributable to one account), so
+ * they're emptied while filtered. An unknown id (e.g. a since-deleted account)
+ * returns the state untouched.
  */
 export function filterStateByAccount(
   state: AppState,
@@ -29,6 +29,7 @@ export function filterStateByAccount(
     transactions: state.transactions.filter((t) => t.accountId === accountId),
     recurring: state.recurring.filter((r) => r.accountId === accountId),
     manualEntries: [],
+    baselines: [],
     snapshots: [],
   };
 }

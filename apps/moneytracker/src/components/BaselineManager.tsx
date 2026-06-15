@@ -21,29 +21,59 @@ export function BaselineManager({
   const [category, setCategory] = useState("RENT_AND_UTILITIES");
   const [startMonth, setStartMonth] = useState("");
   const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   async function add(e: React.FormEvent) {
     e.preventDefault();
-    if (!name || !amount || !/^\d{4}-\d{2}$/.test(startMonth)) return;
+    if (!name || !Number.isFinite(Number(amount)) || Number(amount) <= 0) {
+      setError("Enter a name and a positive amount.");
+      return;
+    }
+    if (!/^\d{4}-\d{2}$/.test(startMonth)) {
+      setError("Start month must be yyyy-mm.");
+      return;
+    }
     setBusy(true);
-    await fetch("/api/baseline", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, amount: Number(amount), category, startMonth }),
-    });
-    setBusy(false);
-    setOpen(false);
-    setName("");
-    setAmount("");
-    setStartMonth("");
-    router.refresh();
+    setError(null);
+    try {
+      const res = await fetch("/api/baseline", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, amount: Number(amount), category, startMonth }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        setError(data?.error || "Could not save baseline.");
+        return;
+      }
+      setOpen(false);
+      setName("");
+      setAmount("");
+      setStartMonth("");
+      router.refresh();
+    } catch {
+      setError("Could not save baseline.");
+    } finally {
+      setBusy(false);
+    }
   }
 
   async function remove(id: string) {
     setBusy(true);
-    await fetch(`/api/baseline?id=${id}`, { method: "DELETE" });
-    setBusy(false);
-    router.refresh();
+    setError(null);
+    try {
+      const res = await fetch(`/api/baseline?id=${id}`, { method: "DELETE" });
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        setError(data?.error || "Could not remove baseline.");
+        return;
+      }
+      router.refresh();
+    } catch {
+      setError("Could not remove baseline.");
+    } finally {
+      setBusy(false);
+    }
   }
 
   const field =
@@ -138,6 +168,7 @@ export function BaselineManager({
           + Add a fixed monthly bill (fills months the bank feed misses)
         </button>
       )}
+      {error && <p className="mt-2 text-xs text-coral">{error}</p>}
     </div>
   );
 }
