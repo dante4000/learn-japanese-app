@@ -1,10 +1,14 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import {
   CardCatalogEntry,
   CardCredit,
+  CardRoi,
+  CardVerdict,
   CreditUsage,
+  PointsLine,
+  computeCardRoi,
   maxCreditsValue,
 } from "@/lib/cards";
 import { formatMoney } from "@/lib/format";
@@ -19,7 +23,12 @@ export interface CardLive {
   spendYtd: number;
   txnCount: number;
   estPoints: number;
-  estPointsValue: number;
+  /** Conservative (cash-out) value of the estimated points, in dollars. */
+  estPointsCashValue: number;
+  /** Aspirational (transfer-partner) value of the estimated points. */
+  estPointsTransferValue: number;
+  /** Where the points come from — spend → points by earn rule. */
+  pointsLines: PointsLine[];
   /** Auto-detected statement-credit usage, one entry per credit (catalog order). */
   creditUsage: CreditUsage[];
 }
@@ -42,6 +51,9 @@ const STORAGE_KEY = "mt.cardperks.v3";
 // false = "I didn't"). Absent → the credit follows detection automatically.
 type OverrideMap = Record<string, Record<string, boolean>>;
 
+type SortKey = "worth" | "attention" | "fee" | "credits" | "points";
+type FilterKey = "fee" | "linked" | "attention" | "unused";
+
 const accentText: Record<string, string> = {
   blue: "text-blue",
   coral: "text-coral",
@@ -52,6 +64,29 @@ const accentBg: Record<string, string> = {
   coral: "bg-coral",
   slate: "bg-slate",
 };
+
+// Verdict → label + pill colors. Drives the leaderboard badge and detail header.
+const VERDICT: Record<CardVerdict, { label: string; pill: string; text: string }> = {
+  free: { label: "Free — keep it", pill: "bg-blue/15", text: "text-blue" },
+  pays: { label: "Pays for itself", pill: "bg-blue/15", text: "text-blue" },
+  earns: { label: "Earns its keep", pill: "bg-slate/20", text: "text-slate" },
+  reconsider: { label: "Reconsider", pill: "bg-coral/15", text: "text-coral" },
+};
+
+const SORTS: { key: SortKey; label: string }[] = [
+  { key: "worth", label: "Worth it" },
+  { key: "attention", label: "Needs attention" },
+  { key: "fee", label: "Fee" },
+  { key: "credits", label: "Unused credits" },
+  { key: "points", label: "Points" },
+];
+
+const FILTERS: { key: FilterKey; label: string }[] = [
+  { key: "fee", label: "Fee cards" },
+  { key: "linked", label: "Linked" },
+  { key: "attention", label: "Needs attention" },
+  { key: "unused", label: "Forgotten credits" },
+];
 
 function freqLabel(f: CardCredit["frequency"]): string {
   switch (f) {
@@ -70,68 +105,15 @@ function freqLabel(f: CardCredit["frequency"]): string {
   }
 }
 
-/** Monthly/quarterly credits are the ones people forget — flag them. */
+/** Monthly/quarterly/semiannual credits are the ones people forget — flag them. */
 function isForgettable(f: CardCredit["frequency"]): boolean {
   return f === "monthly" || f === "quarterly" || f === "semiannual";
 }
 
-const MONTHS_SHORT = [
-  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
-];
-
-function shortDate(d: string | null): string {
-  if (!d) return "";
-  const m = Number(d.slice(5, 7));
-  const day = Number(d.slice(8, 10));
-  return `${MONTHS_SHORT[m - 1]} ${day}`;
-}
-
-/** Human-readable detection state for one credit, with a tint to match. */
-function creditStatus(
-  _credit: CardCredit,
-  u: CreditUsage | undefined,
-  used: boolean,
-  overridden: boolean,
-  hasLive: boolean,
-  currency: string,
-): { text: string; color: string } {
-  if (overridden) {
-    return {
-      text: used ? "You marked this used." : "You marked this not used.",
-      color: used ? "text-blue" : "text-faint",
-    };
-  }
-  if (!hasLive) {
-    return {
-      text: "Card not linked — can't auto-detect; click to mark manually.",
-      color: "text-faint",
-    };
-  }
-  if (!u || !u.detectable) {
-    return {
-      text: "No detection signal for this credit — click to mark manually.",
-      color: "text-faint",
-    };
-  }
-  if (u.usedThisPeriod) {
-    const where = u.matchedMerchant ? ` at ${u.matchedMerchant}` : "";
-    const when = u.lastDate ? ` on ${shortDate(u.lastDate)}` : "";
-    return {
-      text: `Detected ${formatMoney(u.periodSpend, currency)}${where}${when} this ${u.periodLabel}.`,
-      color: "text-blue",
-    };
-  }
-  if (u.count12mo > 0) {
-    return {
-      text: `Used ${u.count12mo}× in the last 12 mo — but nothing yet in ${u.periodLabel}.`,
-      color: "text-coral",
-    };
-  }
-  return {
-    text: `No matching spend detected in ${u.periodLabel}.`,
-    color: "text-faint",
-  };
+/** Net value formatted with an explicit + / − sign (higher = better). */
+function signedMoney(v: number, currency: string): string {
+  const m = formatMoney(Math.abs(v), currency, { cents: false });
+  return v >= 0 ? `+${m}` : `−${m}`;
 }
 
 export function CreditCardsView({
@@ -147,6 +129,9 @@ export function CreditCardsView({
   // follows detection); the user only ever adds an entry by correcting a box.
   const [overrides, setOverrides] = useState<OverrideMap>({});
   const [hydrated, setHydrated] = useState(false);
+  const [sortKey, setSortKey] = useState<SortKey>("worth");
+  const [filters, setFilters] = useState<Set<FilterKey>>(new Set());
+  const [expanded, setExpanded] = useState<string | null>(null);
 
   // Load saved overrides after mount. The server + first client paint render
   // pure detection (no overrides); we then sync in any saved corrections from
@@ -227,35 +212,80 @@ export function CreditCardsView({
     }, 0);
   }
 
+  // Each card scored against the worth-it model, then filtered + sorted. Depends
+  // on `overrides` (captured credits move with the user's corrections), so this
+  // lives client-side rather than in the server page.
+  const rows = useMemo(() => {
+    const scored = cards.map(({ card, live }) => {
+      const cap = captured(card);
+      const roi = computeCardRoi(card, {
+        capturedCredits: cap,
+        estPoints: live?.estPoints ?? 0,
+        hasLiveSpend: !!live,
+      });
+      const unusedForgettable = card.credits.filter(
+        (c) => isForgettable(c.frequency) && !isUsed(card.cardKey, c.name),
+      );
+      return { card, live, roi, cap, unusedForgettable };
+    });
+
+    let out = scored;
+    if (filters.has("fee")) out = out.filter((r) => r.card.annualFee > 0);
+    if (filters.has("linked")) out = out.filter((r) => r.live);
+    if (filters.has("attention"))
+      out = out.filter((r) => r.card.annualFee > 0 && r.roi.netValue < 0);
+    if (filters.has("unused"))
+      out = out.filter((r) => r.unusedForgettable.length > 0);
+
+    const sorters: Record<
+      SortKey,
+      (a: (typeof scored)[number], b: (typeof scored)[number]) => number
+    > = {
+      worth: (a, b) => b.roi.netValue - a.roi.netValue,
+      attention: (a, b) => a.roi.netValue - b.roi.netValue,
+      fee: (a, b) => b.card.annualFee - a.card.annualFee,
+      credits: (a, b) => a.roi.capturePct - b.roi.capturePct,
+      points: (a, b) =>
+        (b.live?.estPointsCashValue ?? 0) - (a.live?.estPointsCashValue ?? 0),
+    };
+    return [...out].sort(sorters[sortKey]);
+  }, [cards, overrides, sortKey, filters]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const totals = useMemo(() => {
     let fees = 0;
     let creditsAvailable = 0;
     let creditsCaptured = 0;
-    let spend12mo = 0;
+    let pointsCash = 0;
+    let pointsTransfer = 0;
     let points = 0;
-    let pointsValueSum = 0;
     for (const { card, live } of cards) {
       fees += card.annualFee;
       creditsAvailable += maxCreditsValue(card);
       creditsCaptured += captured(card);
       if (live) {
-        spend12mo += live.spend12mo;
         points += live.estPoints;
-        pointsValueSum += live.estPointsValue;
+        pointsCash += live.estPointsCashValue;
+        pointsTransfer += live.estPointsTransferValue;
       }
     }
     return {
       fees,
       creditsAvailable,
       creditsCaptured,
-      netCost: fees - creditsCaptured,
-      spend12mo,
       points,
-      pointsValueSum,
+      pointsCash,
+      pointsTransfer,
+      netValue: creditsCaptured + pointsCash - fees,
     };
   }, [cards, overrides]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const anyLive = cards.some((c) => c.live);
+  const maxBarScale = Math.max(
+    1,
+    ...rows.map((r) =>
+      Math.max(r.card.annualFee, r.cap + (r.live?.estPointsCashValue ?? 0)),
+    ),
+  );
 
   return (
     <div>
@@ -275,384 +305,135 @@ export function CreditCardsView({
           delay={60}
         />
         <Stat
-          label="Net annual cost"
-          value={`${totals.netCost < 0 ? "+" : ""}${formatMoney(-totals.netCost, currency, { cents: false })}`}
-          accent={totals.netCost <= 0 ? "blue" : "cream"}
-          sub={totals.netCost <= 0 ? "credits cover the fees" : "fees minus credits used"}
+          label="Net value / yr"
+          value={signedMoney(totals.netValue, currency)}
+          accent={totals.netValue >= 0 ? "blue" : "coral"}
+          sub="credits + points − fees"
           delay={120}
         />
         <Stat
-          label="Est. points / yr"
-          value={anyLive ? totals.points.toLocaleString() : "—"}
+          label="Points value / yr"
+          value={anyLive ? formatMoney(totals.pointsCash, currency, { cents: false }) : "—"}
           accent="slate"
-          sub={anyLive ? `≈ ${formatMoney(totals.pointsValueSum, currency, { cents: false })} value` : "no linked spend"}
+          sub={
+            anyLive
+              ? `up to ${formatMoney(totals.pointsTransfer, currency, { cents: false })} via transfers`
+              : "no linked spend"
+          }
           delay={180}
         />
       </div>
 
-      <p className="mb-6 text-xs text-faint">
-        Credits are <span className="text-blue">checked automatically</span> from
-        your real transactions — when matching spend lands on a card, its credit
-        ticks itself and the net cost updates. No manual upkeep; it re-derives on
-        every sync. You can still override any box (it&rsquo;ll say{" "}
-        <em>manual</em>, with a link back to auto). Points are <em>estimated</em>{" "}
-        by applying each card&rsquo;s earn rates to your categorized spend;
-        credit/point cash values are research estimates, not exact figures.
+      <p className="mb-5 text-xs text-faint">
+        Net value combines what&rsquo;s real or grounded in your spend:{" "}
+        <span className="text-blue">captured credits</span> +{" "}
+        <span className="text-slate">points (at cash value)</span> − the annual
+        fee. Credits tick themselves from your transactions and move the number;
+        points are <em>estimated</em> by applying each card&rsquo;s earn rates to
+        your categorized spend, shown as a range — conservative cash-out first,
+        transfer-partner upside second. Perks aren&rsquo;t in the number
+        (they&rsquo;re upside, listed per card). Tap any card for the breakdown.
         {!hydrated && " Loading your overrides…"}
       </p>
 
-      {/* ── Per-card detail ───────────────────────────────────────────── */}
-      <div className="flex flex-col gap-5">
-        {cards.map(({ card, live }, i) => {
-          const cap = captured(card);
-          const maxCred = maxCreditsValue(card);
-          const net = card.annualFee - cap;
-          return (
-            <section
-              key={card.cardKey}
-              className="card rise overflow-hidden p-0"
-              style={{ animationDelay: `${i * 60}ms` }}
-            >
-              {/* Header */}
-              <div className="flex flex-wrap items-start justify-between gap-3 border-b hairline p-5 md:p-6">
-                <div className="flex items-start gap-3">
-                  <span
-                    className={`mt-0.5 h-10 w-7 shrink-0 rounded-md ${accentBg[card.accent]} opacity-90`}
-                    aria-hidden
-                  />
-                  <div>
-                    <h2 className="font-display text-xl tracking-tight text-cream">
-                      {card.displayName}
-                    </h2>
-                    <div className="mt-0.5 text-xs text-faint">
-                      {card.issuer} · {card.network} · {card.pointProgram}
-                    </div>
-                    {live ? (
-                      <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted">
-                        <span className="rounded bg-surface-2 px-1.5 py-0.5 text-[0.65rem] text-slate-soft">
-                          linked{live.mask ? ` ···· ${live.mask}` : ""}
-                        </span>
-                        {live.balance != null && (
-                          <span>
-                            balance{" "}
-                            <span className="tnum text-coral">
-                              {formatMoney(live.balance, currency, { cents: false })}
-                            </span>
-                          </span>
-                        )}
-                        {live.limit != null && live.limit > 0 && (
-                          <span>
-                            limit{" "}
-                            <span className="tnum">
-                              {formatMoney(live.limit, currency, { cents: false })}
-                            </span>
-                          </span>
-                        )}
-                      </div>
-                    ) : (
-                      <div className="mt-1.5 text-xs text-faint">
-                        Not matched to a connected account — showing reference
-                        details only.
-                      </div>
-                    )}
-                  </div>
-                </div>
-                <div className="text-right">
-                  <div className="label-eyebrow">Annual fee</div>
-                  <div className="tnum text-2xl text-cream">
-                    {card.annualFee === 0
-                      ? "$0"
-                      : formatMoney(card.annualFee, currency, { cents: false })}
-                  </div>
-                  {card.legacyAnnualFee != null && (
-                    <div className="text-[0.65rem] text-faint">
-                      was {formatMoney(card.legacyAnnualFee, currency, { cents: false })}
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* ROI strip */}
-              <div className="grid grid-cols-2 gap-px bg-[var(--color-line)] md:grid-cols-4">
-                <Mini label="Annual fee" value={formatMoney(card.annualFee, currency, { cents: false })} />
-                <Mini
-                  label="Credits you capture"
-                  value={formatMoney(cap, currency, { cents: false })}
-                  hint={`of ${formatMoney(maxCred, currency, { cents: false })}`}
-                  accent="blue"
-                />
-                <Mini
-                  label="Net cost"
-                  value={`${net < 0 ? "+" : ""}${formatMoney(-net, currency, { cents: false })}`}
-                  accent={net <= 0 ? "blue" : "cream"}
-                />
-                <Mini
-                  label="Est. points / yr"
-                  value={live ? live.estPoints.toLocaleString() : "—"}
-                  hint={live ? `≈ ${formatMoney(live.estPointsValue, currency, { cents: false })}` : "no spend"}
-                  accent="slate"
-                />
-              </div>
-
-              <div className="p-5 md:p-6">
-                {/* Verdict */}
-                <div className="mb-5 rounded-xl border hairline bg-surface-2/40 px-4 py-3 text-sm">
-                  {card.annualFee === 0 ? (
-                    <span className="text-cream">
-                      <span className={accentText[card.accent]}>No annual fee</span> —
-                      pure upside.{" "}
-                      {live
-                        ? `You've put ${formatMoney(live.spend12mo, currency, { cents: false })} through it in the last 12 months, earning an estimated ${live.estPoints.toLocaleString()} points (≈${formatMoney(live.estPointsValue, currency)}).`
-                        : "Keep it open — there's no cost to holding it."}
-                    </span>
-                  ) : net <= 0 ? (
-                    <span className="text-cream">
-                      The credits you use{" "}
-                      <span className="text-blue">more than cover</span> the{" "}
-                      {formatMoney(card.annualFee, currency, { cents: false })} fee
-                      {net < 0
-                        ? ` — you're ahead ${formatMoney(-net, currency, { cents: false })} before counting points.`
-                        : "."}
-                      {live &&
-                        ` Points add ~${formatMoney(live.estPointsValue, currency, { cents: false })}/yr on top.`}
-                    </span>
-                  ) : (
-                    <span className="text-cream">
-                      After credits, this card costs{" "}
-                      <span className="text-coral">
-                        {formatMoney(net, currency, { cents: false })}
-                      </span>
-                      /yr.{" "}
-                      {live && live.estPointsValue >= net
-                        ? `Your ~${formatMoney(live.estPointsValue, currency, { cents: false })}/yr in estimated points covers the gap.`
-                        : "Use more of the credits below — or weigh the perks — to justify it."}
-                    </span>
-                  )}
-                </div>
-
-                {/* Highlights */}
-                {card.highlights.length > 0 && (
-                  <ul className="mb-5 space-y-1.5">
-                    {card.highlights.map((h, idx) => (
-                      <li key={idx} className="flex gap-2 text-sm text-cream-dim">
-                        <span className={`${accentText[card.accent]} shrink-0`}>›</span>
-                        <span>{h}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-
-                {/* Earn rates */}
-                <Block label="Earn rates">
-                  <div className="flex flex-wrap gap-2">
-                    {card.earnRates.map((r, idx) => (
-                      <span
-                        key={idx}
-                        className="rounded-lg border hairline bg-surface px-2.5 py-1.5 text-xs"
-                        title={r.note}
-                      >
-                        <span className={`tnum font-semibold ${accentText[card.accent]}`}>
-                          {r.multiplier}×
-                        </span>{" "}
-                        <span className="text-muted">{r.category}</span>
-                      </span>
-                    ))}
-                  </div>
-                  {live && (
-                    <p className="mt-2 text-xs text-faint">
-                      Spend (12 mo): {formatMoney(live.spend12mo, currency, { cents: false })}
-                      {" · "}YTD: {formatMoney(live.spendYtd, currency, { cents: false })}
-                      {" · "}
-                      {live.txnCount} purchases · est. {live.estPoints.toLocaleString()} pts at{" "}
-                      {card.pointValueCents}¢ = {formatMoney(live.estPointsValue, currency)}
-                    </p>
-                  )}
-                </Block>
-
-                {/* Credits checklist — auto-detected from transactions */}
-                {card.credits.length > 0 && (
-                  <Block
-                    label={`Statement credits — ${formatMoney(cap, currency, { cents: false })} of ${formatMoney(maxCred, currency, { cents: false })} captured`}
-                    action={<span className="text-[0.7rem] text-slate">auto-detected</span>}
-                  >
-                    <ul className="space-y-1">
-                      {card.credits.map((c) => {
-                        const u = detected(card.cardKey, c.name);
-                        const used = isUsed(card.cardKey, c.name);
-                        const overridden = isOverridden(card.cardKey, c.name);
-                        const status = creditStatus(c, u, used, overridden, !!live, currency);
-                        return (
-                          <li key={c.name}>
-                            <div
-                              className={`overflow-hidden rounded-lg border transition-colors ${
-                                used
-                                  ? "border-blue/40 bg-blue/10"
-                                  : "hairline bg-surface"
-                              }`}
-                            >
-                              <button
-                                onClick={() => toggle(card.cardKey, c.name)}
-                                className="flex w-full items-start gap-3 px-3 py-2.5 text-left hover:bg-blue/5"
-                                title="Click to override auto-detection"
-                              >
-                                <span
-                                  className={`mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-md border text-[0.7rem] ${
-                                    used
-                                      ? "border-blue bg-blue text-ink"
-                                      : "border-line-2 text-transparent"
-                                  }`}
-                                  aria-hidden
-                                >
-                                  ✓
-                                </span>
-                                <div className="min-w-0 flex-1">
-                                  <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                                    <span className="text-sm text-cream">{c.name}</span>
-                                    <span className="tnum text-xs text-blue">
-                                      {formatMoney(c.value, currency, { cents: false })}
-                                    </span>
-                                    <span className="rounded bg-surface-2 px-1.5 py-0.5 text-[0.6rem] text-faint">
-                                      {freqLabel(c.frequency)}
-                                    </span>
-                                    {overridden && (
-                                      <span className="rounded bg-slate/15 px-1.5 py-0.5 text-[0.6rem] text-slate">
-                                        manual
-                                      </span>
-                                    )}
-                                    {isForgettable(c.frequency) && !used && (
-                                      <span className="rounded bg-coral/15 px-1.5 py-0.5 text-[0.6rem] text-coral">
-                                        ↻ easy to forget
-                                      </span>
-                                    )}
-                                    {c.enrollmentRequired && (
-                                      <span className="rounded bg-surface-2 px-1.5 py-0.5 text-[0.6rem] text-slate">
-                                        enroll
-                                      </span>
-                                    )}
-                                  </div>
-                                  <p className="mt-0.5 text-xs text-faint">{c.howToUse}</p>
-                                  <p className={`mt-1 text-[0.7rem] ${status.color}`}>
-                                    {status.text}
-                                  </p>
-                                </div>
-                              </button>
-                              {overridden && (
-                                <div className="flex items-center justify-between gap-2 border-t hairline bg-surface-2/40 px-3 py-1.5 text-[0.65rem]">
-                                  <span className="text-slate">
-                                    overriding auto-detection
-                                  </span>
-                                  <button
-                                    onClick={() => clearOverride(card.cardKey, c.name)}
-                                    className="text-faint underline-offset-2 hover:text-blue hover:underline"
-                                  >
-                                    revert to auto
-                                  </button>
-                                </div>
-                              )}
-                            </div>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </Block>
-                )}
-
-                {/* Perks */}
-                {card.perks.length > 0 && (
-                  <Block label="Perks & benefits">
-                    <ul className="grid gap-2 sm:grid-cols-2">
-                      {card.perks.map((p, idx) => (
-                        <li
-                          key={idx}
-                          className="rounded-lg border hairline bg-surface px-3 py-2"
-                        >
-                          <div className="flex items-baseline justify-between gap-2">
-                            <span className="text-sm text-cream">{p.name}</span>
-                            {p.value > 0 && (
-                              <span className="tnum shrink-0 text-xs text-slate">
-                                ≈{formatMoney(p.value, currency, { cents: false })}
-                              </span>
-                            )}
-                          </div>
-                          {p.note && (
-                            <p className="mt-0.5 text-xs text-faint">{p.note}</p>
-                          )}
-                        </li>
-                      ))}
-                    </ul>
-                  </Block>
-                )}
-
-                {/* Protections + transfer partners side by side */}
-                <div className="grid gap-5 md:grid-cols-2">
-                  {card.protections.length > 0 && (
-                    <Block label="Protections & insurance">
-                      <ul className="space-y-1 text-xs text-cream-dim">
-                        {card.protections.map((p, idx) => (
-                          <li key={idx} className="flex gap-2">
-                            <span className="text-faint">•</span>
-                            <span>{p}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </Block>
-                  )}
-                  {card.transferPartners.length > 0 && (
-                    <Block label="Transfer partners">
-                      <div className="flex flex-wrap gap-1.5">
-                        {card.transferPartners.map((t, idx) => (
-                          <span
-                            key={idx}
-                            className="rounded border hairline bg-surface px-2 py-1 text-[0.7rem] text-muted"
-                          >
-                            {t}
-                          </span>
-                        ))}
-                      </div>
-                      <p className="mt-2 text-xs text-faint">
-                        Point value: {card.pointValueNote}
-                      </p>
-                    </Block>
-                  )}
-                </div>
-
-                {/* Fine print */}
-                <details className="mt-5 text-xs text-faint">
-                  <summary className="cursor-pointer text-muted hover:text-cream">
-                    Fee notes, recent changes & sources
-                  </summary>
-                  <div className="mt-2 space-y-2">
-                    {card.feeNote && (
-                      <p>
-                        <span className="text-slate">Fee: </span>
-                        {card.feeNote}
-                      </p>
-                    )}
-                    <p>
-                      <span className="text-slate">Recent changes: </span>
-                      {card.recentChanges}
-                    </p>
-                    <p className="flex flex-wrap gap-x-3 gap-y-1">
-                      <span className="text-slate">Sources:</span>
-                      {card.sources.map((s, idx) => (
-                        <a
-                          key={idx}
-                          href={s}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="text-blue underline-offset-2 hover:underline"
-                        >
-                          {new URL(s).hostname.replace("www.", "")}
-                        </a>
-                      ))}
-                    </p>
-                  </div>
-                </details>
-              </div>
-            </section>
-          );
-        })}
+      {/* ── Toolbar: sort + filter ─────────────────────────────────────── */}
+      <div className="sticky top-0 z-10 -mx-1 mb-4 flex flex-wrap items-center gap-x-4 gap-y-2 bg-ink/80 px-1 py-2 backdrop-blur">
+        <div className="flex items-center gap-2">
+          <span className="label-eyebrow shrink-0">Sort</span>
+          <div className="inline-flex max-w-full overflow-x-auto rounded-lg border hairline bg-surface p-0.5 text-xs">
+            {SORTS.map((s) => (
+              <button
+                key={s.key}
+                onClick={() => setSortKey(s.key)}
+                className={`shrink-0 whitespace-nowrap rounded-md px-2.5 py-1 transition-colors ${
+                  sortKey === s.key ? "bg-surface-2 text-cream" : "text-muted hover:text-cream"
+                }`}
+              >
+                {s.label}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="flex flex-wrap items-center gap-1.5">
+          {FILTERS.map((f) => {
+            const active = filters.has(f.key);
+            return (
+              <button
+                key={f.key}
+                aria-pressed={active}
+                onClick={() =>
+                  setFilters((prev) => {
+                    const next = new Set(prev);
+                    if (next.has(f.key)) next.delete(f.key);
+                    else next.add(f.key);
+                    return next;
+                  })
+                }
+                className={`rounded-lg border px-2.5 py-1 text-xs transition-colors ${
+                  active
+                    ? "border-blue/40 bg-blue/15 text-blue"
+                    : "hairline bg-surface text-muted hover:text-cream"
+                }`}
+              >
+                {f.label}
+              </button>
+            );
+          })}
+        </div>
       </div>
+
+      {/* ── Leaderboard + single-expand detail ─────────────────────────── */}
+      {rows.length === 0 ? (
+        <p className="card rise p-6 text-sm text-muted">
+          No cards match the current filters.
+        </p>
+      ) : (
+        <div className="card rise overflow-hidden p-0">
+          {/* desktop column header */}
+          <div className="hidden grid-cols-[1.6fr_0.7fr_1.3fr_0.9fr_1.1fr_auto] gap-3 border-b hairline px-5 py-2.5 text-[0.6rem] uppercase tracking-wider text-faint md:grid">
+            <span>Card</span>
+            <span className="text-right">Fee</span>
+            <span>Credits captured</span>
+            <span className="text-right">Net value</span>
+            <span>Verdict</span>
+            <span className="w-4" />
+          </div>
+          {rows.map(({ card, live, roi, cap, unusedForgettable }, i) => {
+            const open = expanded === card.cardKey;
+            return (
+              <Fragment key={card.cardKey}>
+                <LeaderboardRow
+                  card={card}
+                  live={live}
+                  roi={roi}
+                  cap={cap}
+                  currency={currency}
+                  barScale={maxBarScale}
+                  unusedCount={unusedForgettable.length}
+                  open={open}
+                  delay={i * 40}
+                  onClick={() => setExpanded(open ? null : card.cardKey)}
+                />
+                {open && (
+                  <CardDetail
+                    card={card}
+                    live={live}
+                    roi={roi}
+                    cap={cap}
+                    currency={currency}
+                    unusedForgettable={unusedForgettable}
+                    used={(name) => isUsed(card.cardKey, name)}
+                    overridden={(name) => isOverridden(card.cardKey, name)}
+                    onToggle={(name) => toggle(card.cardKey, name)}
+                    onClearOverride={(name) => clearOverride(card.cardKey, name)}
+                    detect={(name) => detected(card.cardKey, name)}
+                  />
+                )}
+              </Fragment>
+            );
+          })}
+        </div>
+      )}
 
       {/* Unmatched credit accounts */}
       {unmatched.length > 0 && (
@@ -682,6 +463,524 @@ export function CreditCardsView({
           </ul>
         </section>
       )}
+    </div>
+  );
+}
+
+// ── leaderboard row ───────────────────────────────────────────────────────────
+
+function LeaderboardRow({
+  card,
+  live,
+  roi,
+  cap,
+  currency,
+  barScale,
+  unusedCount,
+  open,
+  delay,
+  onClick,
+}: {
+  card: CardCatalogEntry;
+  live: CardLive | null;
+  roi: CardRoi;
+  cap: number;
+  currency: string;
+  barScale: number;
+  unusedCount: number;
+  open: boolean;
+  delay: number;
+  onClick: () => void;
+}) {
+  const v = VERDICT[roi.verdict];
+  const pointsCash = live?.estPointsCashValue ?? 0;
+  return (
+    <button
+      onClick={onClick}
+      aria-expanded={open}
+      style={{ animationDelay: `${delay}ms` }}
+      className={`block w-full border-b hairline px-5 py-3.5 text-left transition-colors last:border-b-0 ${
+        open ? "bg-surface-2/60" : "hover:bg-surface-2/30"
+      }`}
+    >
+      {/* desktop grid / mobile stacked */}
+      <div className="grid grid-cols-[1fr_auto] items-center gap-3 md:grid-cols-[1.6fr_0.7fr_1.3fr_0.9fr_1.1fr_auto]">
+        {/* name */}
+        <div className="flex min-w-0 items-center gap-3">
+          <span
+            className={`h-9 w-6 shrink-0 rounded-md ${accentBg[card.accent]} opacity-90`}
+            aria-hidden
+          />
+          <div className="min-w-0">
+            <div className="truncate font-display text-base tracking-tight text-cream">
+              {card.displayName}
+            </div>
+            <div className="truncate text-[0.7rem] text-faint">
+              {card.issuer} · {card.pointProgram}
+              {!live && " · not linked"}
+            </div>
+          </div>
+        </div>
+
+        {/* fee (desktop) */}
+        <div className="hidden text-right md:block">
+          <div className="tnum text-sm text-cream">
+            {card.annualFee === 0
+              ? "$0"
+              : formatMoney(card.annualFee, currency, { cents: false })}
+          </div>
+        </div>
+
+        {/* captured bar (desktop) */}
+        <div className="hidden md:block">
+          <WorthItBar fee={card.annualFee} credits={cap} points={pointsCash} scale={barScale} />
+          <div className="mt-1 text-[0.65rem] text-faint">
+            {formatMoney(cap, currency, { cents: false })}
+            {card.credits.length > 0 && (
+              <> of {formatMoney(roi.maxCredits, currency, { cents: false })}</>
+            )}
+            {live && pointsCash > 0 && (
+              <> · +{formatMoney(pointsCash, currency, { cents: false })} pts</>
+            )}
+          </div>
+        </div>
+
+        {/* net value (desktop) */}
+        <div className="hidden text-right md:block">
+          <div className={`tnum text-sm ${roi.netValue >= 0 ? "text-blue" : "text-coral"}`}>
+            {signedMoney(roi.netValue, currency)}
+          </div>
+          {unusedCount > 0 && (
+            <div className="text-[0.6rem] text-coral">{unusedCount} unused</div>
+          )}
+        </div>
+
+        {/* verdict */}
+        <div className="flex items-center justify-end gap-2 md:justify-start">
+          <span className={`rounded-full px-2 py-0.5 text-[0.65rem] ${v.pill} ${v.text}`}>
+            {v.label}
+          </span>
+        </div>
+        <span
+          className={`hidden justify-self-end text-faint transition-transform md:block ${open ? "rotate-90" : ""}`}
+          aria-hidden
+        >
+          ›
+        </span>
+      </div>
+
+      {/* mobile second line */}
+      <div className="mt-2 flex items-center gap-3 md:hidden">
+        <div className="flex-1">
+          <WorthItBar fee={card.annualFee} credits={cap} points={pointsCash} scale={barScale} />
+        </div>
+        <span className="tnum shrink-0 text-xs text-faint">
+          {card.annualFee === 0 ? "$0 fee" : formatMoney(card.annualFee, currency, { cents: false })}
+        </span>
+        <span className={`tnum shrink-0 text-sm ${roi.netValue >= 0 ? "text-blue" : "text-coral"}`}>
+          {signedMoney(roi.netValue, currency)}
+        </span>
+      </div>
+    </button>
+  );
+}
+
+/** Stacked worth-it bar: credits (blue) + points (slate) filled against a shared
+ *  scale, with a coral tick at the annual fee. Fill past the tick = net positive. */
+function WorthItBar({
+  fee,
+  credits,
+  points,
+  scale,
+}: {
+  fee: number;
+  credits: number;
+  points: number;
+  scale: number;
+}) {
+  const pct = (v: number) => `${Math.min(100, (v / scale) * 100)}%`;
+  return (
+    <div
+      className="relative h-2 w-full overflow-hidden rounded-full bg-surface-2"
+      title="Value returned vs. annual fee"
+    >
+      <div className="absolute inset-y-0 left-0 flex">
+        <div className="bg-blue" style={{ width: pct(credits) }} />
+        <div className="bg-slate" style={{ width: pct(points) }} />
+      </div>
+      {fee > 0 && (
+        <div
+          className="absolute inset-y-0 w-0.5 bg-coral"
+          style={{ left: pct(fee) }}
+          title="break-even (annual fee)"
+        />
+      )}
+    </div>
+  );
+}
+
+// ── card detail (expanded) ────────────────────────────────────────────────────
+
+type DetailTab = "credits" | "earn" | "perks" | "protections" | "partners";
+
+function CardDetail({
+  card,
+  live,
+  roi,
+  cap,
+  currency,
+  unusedForgettable,
+  used,
+  overridden,
+  onToggle,
+  onClearOverride,
+  detect,
+}: {
+  card: CardCatalogEntry;
+  live: CardLive | null;
+  roi: CardRoi;
+  cap: number;
+  currency: string;
+  unusedForgettable: CardCredit[];
+  used: (creditName: string) => boolean;
+  overridden: (creditName: string) => boolean;
+  onToggle: (creditName: string) => void;
+  onClearOverride: (creditName: string) => void;
+  detect: (creditName: string) => CreditUsage | undefined;
+}) {
+  const allTabs: { key: DetailTab; label: string; show: boolean }[] = [
+    { key: "credits", label: `Credits (${card.credits.length})`, show: card.credits.length > 0 },
+    { key: "earn", label: "Earn rates", show: true },
+    { key: "perks", label: `Perks (${card.perks.length})`, show: card.perks.length > 0 },
+    { key: "protections", label: "Protections", show: card.protections.length > 0 },
+    { key: "partners", label: "Transfer partners", show: card.transferPartners.length > 0 },
+  ];
+  const tabs = allTabs.filter((t) => t.show);
+  const [tab, setTab] = useState<DetailTab>(tabs[0]?.key ?? "earn");
+  const v = VERDICT[roi.verdict];
+
+  return (
+    <div className="border-b hairline bg-ink/40 px-5 py-5 md:px-6">
+      {/* verdict line */}
+      <div className="mb-4 flex flex-wrap items-center gap-2 rounded-xl border hairline bg-surface-2/40 px-4 py-3 text-sm">
+        <span className={`rounded-full px-2 py-0.5 text-[0.7rem] ${v.pill} ${v.text}`}>{v.label}</span>
+        <span className="text-cream-dim">
+          {card.annualFee === 0 ? (
+            <>
+              No annual fee — pure upside.
+              {live && roi.pointsCashValue > 0
+                ? ` You've earned an estimated ${formatMoney(roi.pointsCashValue, currency)} in points (12 mo).`
+                : " Nothing to justify — keep it open."}
+            </>
+          ) : roi.netValue >= 0 ? (
+            <>
+              Captured credits{live && roi.pointsCashValue > 0 ? " + points" : ""} cover the{" "}
+              {formatMoney(card.annualFee, currency, { cents: false })} fee — you&rsquo;re ahead{" "}
+              <span className="text-blue">{signedMoney(roi.netValue, currency)}</span> a year.
+            </>
+          ) : roi.verdict === "earns" ? (
+            <>
+              On cash value it&rsquo;s {signedMoney(roi.netValue, currency)}/yr, but transfer your
+              points and it swings to{" "}
+              <span className="text-slate">{signedMoney(roi.netValueAspirational, currency)}</span>.
+              Worth it only if you actually transfer.
+            </>
+          ) : (
+            <>
+              After credits and points this card costs{" "}
+              <span className="text-coral">{signedMoney(roi.netValue, currency)}</span>/yr — even at
+              full transfer value it&rsquo;s {signedMoney(roi.netValueAspirational, currency)}. Use more
+              credits below or reconsider it.
+            </>
+          )}
+        </span>
+      </div>
+
+      {/* live snapshot */}
+      {live ? (
+        <div className="mb-4 grid grid-cols-2 gap-px overflow-hidden rounded-xl border hairline bg-[var(--color-line)] sm:grid-cols-4">
+          <Mini
+            label="Spend (12 mo)"
+            value={formatMoney(live.spend12mo, currency, { cents: false })}
+            hint={`${live.txnCount} purchases`}
+          />
+          <Mini
+            label="Credits captured"
+            value={formatMoney(cap, currency, { cents: false })}
+            hint={card.credits.length ? `of ${formatMoney(roi.maxCredits, currency, { cents: false })}` : "no credits"}
+            accent="blue"
+          />
+          <Mini
+            label="Est. points / yr"
+            value={live.estPoints.toLocaleString()}
+            hint={
+              card.cashValueCents === card.transferValueCents
+                ? `≈ ${formatMoney(live.estPointsCashValue, currency, { cents: false })}`
+                : `${formatMoney(live.estPointsCashValue, currency, { cents: false })}–${formatMoney(live.estPointsTransferValue, currency, { cents: false })}`
+            }
+            accent="slate"
+          />
+          <Mini
+            label="Net value / yr"
+            value={signedMoney(roi.netValue, currency)}
+            hint={`balance ${live.balance != null ? formatMoney(live.balance, currency, { cents: false }) : "—"}`}
+            accent={roi.netValue >= 0 ? "blue" : "coral"}
+          />
+        </div>
+      ) : (
+        <p className="mb-4 rounded-xl border hairline bg-surface px-4 py-3 text-xs text-faint">
+          Not matched to a connected account — reference details only. Net value
+          assumes typical credit capture and no points.
+        </p>
+      )}
+
+      {/* forgotten-money callout */}
+      {unusedForgettable.length > 0 && (
+        <div className="mb-4 rounded-xl border border-coral/30 bg-coral/5 px-4 py-3">
+          <div className="mb-1 text-xs text-coral">
+            ↻ {unusedForgettable.length} easy-to-forget{" "}
+            {unusedForgettable.length === 1 ? "credit" : "credits"} you haven&rsquo;t tapped this
+            period — worth up to{" "}
+            {formatMoney(
+              unusedForgettable.reduce((a, c) => a + c.value, 0),
+              currency,
+              { cents: false },
+            )}
+            /yr
+          </div>
+          <div className="flex flex-wrap gap-1.5">
+            {unusedForgettable.map((c) => (
+              <span key={c.name} className="rounded bg-surface-2 px-1.5 py-0.5 text-[0.65rem] text-cream-dim">
+                {c.name} · {formatMoney(c.value, currency, { cents: false })} {freqLabel(c.frequency)}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* highlights */}
+      {card.highlights.length > 0 && (
+        <ul className="mb-4 space-y-1.5">
+          {card.highlights.map((h, idx) => (
+            <li key={idx} className="flex gap-2 text-sm text-cream-dim">
+              <span className={`${accentText[card.accent]} shrink-0`}>›</span>
+              <span>{h}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {/* tab strip */}
+      <div className="mb-3 flex gap-1 overflow-x-auto">
+        {tabs.map((t) => (
+          <button
+            key={t.key}
+            onClick={() => setTab(t.key)}
+            className={`shrink-0 whitespace-nowrap rounded-lg px-2.5 py-1 text-xs transition-colors ${
+              tab === t.key ? "bg-surface-2 text-cream" : "text-muted hover:text-cream"
+            }`}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      {/* tab body */}
+      {tab === "credits" && card.credits.length > 0 && (
+        <ul className="space-y-1">
+          {card.credits.map((c) => {
+            const on = used(c.name);
+            const ov = overridden(c.name);
+            const d = detect(c.name);
+            return (
+              <li key={c.name}>
+                <div
+                  className={`flex w-full items-start gap-3 rounded-lg border px-3 py-2.5 transition-colors ${
+                    on ? "border-blue/40 bg-blue/10" : "hairline bg-surface"
+                  }`}
+                >
+                  <button
+                    onClick={() => onToggle(c.name)}
+                    aria-pressed={on}
+                    className={`mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-md border text-[0.7rem] ${
+                      on ? "border-blue bg-blue text-ink" : "border-line-2 text-transparent hover:border-blue/60"
+                    }`}
+                  >
+                    ✓
+                  </button>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                      <span className="text-sm text-cream">{c.name}</span>
+                      <span className="tnum text-xs text-blue">
+                        {formatMoney(c.value, currency, { cents: false })}
+                      </span>
+                      <span className="rounded bg-surface-2 px-1.5 py-0.5 text-[0.6rem] text-faint">
+                        {freqLabel(c.frequency)}
+                      </span>
+                      {isForgettable(c.frequency) && (
+                        <span className="rounded bg-coral/15 px-1.5 py-0.5 text-[0.6rem] text-coral">
+                          ↻ easy to forget
+                        </span>
+                      )}
+                      {c.enrollmentRequired && (
+                        <span className="rounded bg-surface-2 px-1.5 py-0.5 text-[0.6rem] text-slate">
+                          enroll
+                        </span>
+                      )}
+                      {ov ? (
+                        <button
+                          onClick={() => onClearOverride(c.name)}
+                          className="rounded bg-surface-2 px-1.5 py-0.5 text-[0.6rem] text-faint hover:text-blue"
+                          title="Revert to auto-detection"
+                        >
+                          manual · auto
+                        </button>
+                      ) : d?.detectable && d.usedThisPeriod ? (
+                        <span className="rounded bg-blue/10 px-1.5 py-0.5 text-[0.6rem] text-blue">
+                          detected{d.matchedMerchant ? ` · ${d.matchedMerchant}` : ""}
+                        </span>
+                      ) : null}
+                    </div>
+                    <p className="mt-0.5 text-xs text-faint">{c.howToUse}</p>
+                  </div>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+
+      {tab === "earn" && (
+        <div>
+          <div className="mb-3 flex flex-wrap gap-2">
+            {card.earnRates.map((r, idx) => (
+              <span
+                key={idx}
+                className="rounded-lg border hairline bg-surface px-2.5 py-1.5 text-xs"
+                title={r.note}
+              >
+                <span className={`tnum font-semibold ${accentText[card.accent]}`}>{r.multiplier}×</span>{" "}
+                <span className="text-muted">{r.category}</span>
+              </span>
+            ))}
+          </div>
+          {live && live.pointsLines.length > 0 ? (
+            <>
+              <div className="overflow-hidden rounded-lg border hairline">
+                <div className="grid grid-cols-[1fr_auto_auto] gap-3 bg-surface-2/50 px-3 py-1.5 text-[0.6rem] uppercase tracking-wider text-faint">
+                  <span>From your spend</span>
+                  <span className="text-right">Spend</span>
+                  <span className="text-right">Points</span>
+                </div>
+                {live.pointsLines.map((l, idx) => (
+                  <div key={idx} className="grid grid-cols-[1fr_auto_auto] gap-3 border-t hairline px-3 py-1.5 text-xs">
+                    <span className="text-cream-dim">
+                      {l.label}{" "}
+                      <span className="text-faint">
+                        {l.multiplier}×{l.capped ? " (capped)" : ""}
+                      </span>
+                    </span>
+                    <span className="tnum text-right text-muted">
+                      {formatMoney(l.spend, currency, { cents: false })}
+                    </span>
+                    <span className="tnum text-right text-slate">
+                      {Math.round(l.points).toLocaleString()}
+                    </span>
+                  </div>
+                ))}
+                <div className="grid grid-cols-[1fr_auto_auto] gap-3 border-t hairline bg-surface-2/30 px-3 py-1.5 text-xs">
+                  <span className="text-cream">
+                    ≈ {formatMoney(live.estPointsCashValue, currency)}
+                    {card.cashValueCents !== card.transferValueCents && (
+                      <> → {formatMoney(live.estPointsTransferValue, currency)} via transfers</>
+                    )}
+                  </span>
+                  <span />
+                  <span className="tnum text-right text-slate">{live.estPoints.toLocaleString()}</span>
+                </div>
+              </div>
+              <p className="mt-2 text-xs text-faint">
+                Valued at {card.cashValueCents}¢ (cash)
+                {card.cashValueCents !== card.transferValueCents && (
+                  <> – {card.transferValueCents}¢ (transfer)</>
+                )}{" "}
+                per point. {card.pointValueNote}
+              </p>
+            </>
+          ) : (
+            <p className="text-xs text-faint">{card.pointValueNote}</p>
+          )}
+        </div>
+      )}
+
+      {tab === "perks" && card.perks.length > 0 && (
+        <ul className="grid gap-2 sm:grid-cols-2">
+          {card.perks.map((p, idx) => (
+            <li key={idx} className="rounded-lg border hairline bg-surface px-3 py-2">
+              <div className="flex items-baseline justify-between gap-2">
+                <span className="text-sm text-cream">{p.name}</span>
+                {p.value > 0 && (
+                  <span className="tnum shrink-0 text-xs text-slate">
+                    ≈{formatMoney(p.value, currency, { cents: false })}
+                  </span>
+                )}
+              </div>
+              {p.note && <p className="mt-0.5 text-xs text-faint">{p.note}</p>}
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {tab === "protections" && card.protections.length > 0 && (
+        <ul className="space-y-1 text-xs text-cream-dim">
+          {card.protections.map((p, idx) => (
+            <li key={idx} className="flex gap-2">
+              <span className="text-faint">•</span>
+              <span>{p}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {tab === "partners" && card.transferPartners.length > 0 && (
+        <div>
+          <div className="flex flex-wrap gap-1.5">
+            {card.transferPartners.map((t, idx) => (
+              <span key={idx} className="rounded border hairline bg-surface px-2 py-1 text-[0.7rem] text-muted">
+                {t}
+              </span>
+            ))}
+          </div>
+          <p className="mt-2 text-xs text-faint">Point value: {card.pointValueNote}</p>
+        </div>
+      )}
+
+      {/* fine print */}
+      <details className="mt-4 text-xs text-faint">
+        <summary className="cursor-pointer text-muted hover:text-cream">
+          Fee notes, recent changes &amp; sources
+        </summary>
+        <div className="mt-2 space-y-2">
+          {card.feeNote && (
+            <p>
+              <span className="text-slate">Fee: </span>
+              {card.feeNote}
+            </p>
+          )}
+          <p>
+            <span className="text-slate">Recent changes: </span>
+            {card.recentChanges}
+          </p>
+          <p className="flex flex-wrap gap-x-3 gap-y-1">
+            <span className="text-slate">Sources:</span>
+            {card.sources.map((s, idx) => (
+              <a key={idx} href={s} target="_blank" rel="noreferrer" className="text-blue underline-offset-2 hover:underline">
+                {new URL(s).hostname.replace("www.", "")}
+              </a>
+            ))}
+          </p>
+        </div>
+      </details>
     </div>
   );
 }
@@ -742,26 +1041,6 @@ function Mini({
       <div className="text-[0.6rem] uppercase tracking-wider text-faint">{label}</div>
       <div className={`tnum mt-1 text-base ${color}`}>{value}</div>
       {hint && <div className="text-[0.65rem] text-faint">{hint}</div>}
-    </div>
-  );
-}
-
-function Block({
-  label,
-  action,
-  children,
-}: {
-  label: string;
-  action?: React.ReactNode;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="mb-5">
-      <div className="mb-2 flex items-center justify-between">
-        <div className="label-eyebrow">{label}</div>
-        {action}
-      </div>
-      {children}
     </div>
   );
 }

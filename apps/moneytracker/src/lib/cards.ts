@@ -11,7 +11,7 @@
 // and balances are live from Plaid; points earned are *estimated* by applying
 // each card's earn rates to categorized spend.
 
-import { AppState, Account } from "./types";
+import { AppState, Account, Transaction } from "./types";
 import { effectiveCategory, isSpend, refundMatchedIds } from "./analytics";
 
 export type CreditFrequency =
@@ -22,9 +22,32 @@ export type CreditFrequency =
   | "one-time"
   | "every-4-years";
 
+/** A human-readable earn rate, shown as a chip in the UI. */
 export interface CardEarnRate {
   category: string;
   multiplier: number;
+  note?: string;
+}
+
+/**
+ * One earn-multiplier rule, used to *estimate* points from real transactions.
+ * Rules are evaluated in array order and the FIRST match wins, so each card
+ * lists them most-specific → least-specific. A transaction matches a rule when
+ * any of its three matchers hit:
+ *   - `detailed`     — Plaid detailed PFC (e.g. FOOD_AND_DRINK_GROCERIES)
+ *   - `merchantHints`— lowercased substrings of the merchant/description
+ *   - `primary`      — Plaid primary PFC (e.g. FOOD_AND_DRINK)
+ * Anything that matches no rule earns the card's `baseEarn`. `annualCap` caps
+ * the *spend* that earns the bonus rate over the trailing year; spend beyond it
+ * falls back to `baseEarn` (e.g. Blue Cash's $6k/yr supermarket cap).
+ */
+export interface EarnRule {
+  label: string;
+  multiplier: number;
+  detailed?: string[];
+  merchantHints?: string[];
+  primary?: string[];
+  annualCap?: number;
   note?: string;
 }
 
@@ -65,15 +88,19 @@ export interface CardCatalogEntry {
   legacyAnnualFee?: number;
   authorizedUserFee: number;
   pointProgram: string;
-  /** Realistic blended cash value per point, in cents. */
-  pointValueCents: number;
+  /** Conservative cents/point — the cash-out / statement-credit floor. */
+  cashValueCents: number;
+  /** Aspirational cents/point — realistic value via transfer partners. */
+  transferValueCents: number;
   pointValueNote: string;
   /** Lowercased substrings matched against an account's name/officialName/mask. */
   matchHints: string[];
+  /** Human-readable earn rates (display only). */
   earnRates: CardEarnRate[];
+  /** Multiplier for spend that matches no `earnModel` rule. */
   baseEarn: number;
-  /** Plaid PFC primary → earn multiplier, for *estimating* points from spend. */
-  pfcEarn: Record<string, number>;
+  /** Ordered, most-specific-first rules for *estimating* points from real txns. */
+  earnModel: EarnRule[];
   credits: CardCredit[];
   perks: CardPerk[];
   protections: string[];
@@ -96,9 +123,10 @@ export const CARD_CATALOG: CardCatalogEntry[] = [
     legacyAnnualFee: 550,
     authorizedUserFee: 195,
     pointProgram: "Chase Ultimate Rewards",
-    pointValueCents: 2.0,
+    cashValueCents: 1.0,
+    transferValueCents: 2.0,
     pointValueNote:
-      "TPG values UR at ~2.05¢/pt. Conservative cash-out floor is ~1.0–1.5¢; transfers to Hyatt/United and Points Boost get you ~2¢+.",
+      "TPG values UR at ~2.05¢/pt. Conservative cash-out floor is ~1.0¢; transfers to Hyatt/United and Points Boost get you ~2¢+.",
     matchHints: [
       "2487",
       "sapphire reserve",
@@ -114,7 +142,13 @@ export const CARD_CATALOG: CardCatalogEntry[] = [
       { category: "Everything else", multiplier: 1 },
     ],
     baseEarn: 1,
-    pfcEarn: { TRAVEL: 4, FOOD_AND_DRINK: 3 },
+    earnModel: [
+      { label: "Chase Travel portal", multiplier: 8, merchantHints: ["chase travel", "chasetravel", "ultimate rewards"] },
+      { label: "Lyft", multiplier: 5, merchantHints: ["lyft"] },
+      { label: "Groceries (no bonus)", multiplier: 1, detailed: ["FOOD_AND_DRINK_GROCERIES"] },
+      { label: "Dining", multiplier: 3, primary: ["FOOD_AND_DRINK"] },
+      { label: "Flights & hotels", multiplier: 4, detailed: ["TRAVEL_FLIGHTS", "TRAVEL_LODGING"] },
+    ],
     credits: [
       {
         name: "Annual travel credit",
@@ -279,9 +313,10 @@ export const CARD_CATALOG: CardCatalogEntry[] = [
     legacyAnnualFee: 695,
     authorizedUserFee: 195,
     pointProgram: "Membership Rewards",
-    pointValueCents: 2.0,
+    cashValueCents: 0.6,
+    transferValueCents: 2.0,
     pointValueNote:
-      "TPG values MR at ~2.0¢/pt via transfer partners (sweet spots higher). If you mostly book paid travel through the portal, assume ~1.0–1.1¢.",
+      "MR cashes out at only ~0.6¢/pt, but transfers to partners hit ~2.0¢ (sweet spots higher). The card only makes sense if you transfer — not cash out.",
     matchHints: ["platinum", "amex platinum", "american express", "amex plat"],
     earnRates: [
       { category: "Flights direct / Amex Travel", multiplier: 5, note: "Up to $500k/yr" },
@@ -289,7 +324,12 @@ export const CARD_CATALOG: CardCatalogEntry[] = [
       { category: "Everything else", multiplier: 1 },
     ],
     baseEarn: 1,
-    pfcEarn: { TRAVEL: 5 },
+    earnModel: [
+      // 5x is flights + hotels booked *through Amex Travel* only; hotels booked
+      // direct (most TRAVEL_LODGING) earn 1x, so only flights get a blanket 5x.
+      { label: "Amex Travel (prepaid hotels)", multiplier: 5, merchantHints: ["amex travel", "amextravel", "fine hotels", "fhr", "hotel collection"] },
+      { label: "Flights", multiplier: 5, detailed: ["TRAVEL_FLIGHTS"] },
+    ],
     credits: [
       {
         name: "Hotel credit (FHR / Hotel Collection)",
@@ -458,9 +498,10 @@ export const CARD_CATALOG: CardCatalogEntry[] = [
     annualFee: 95,
     authorizedUserFee: 0,
     pointProgram: "Bilt Rewards",
-    pointValueCents: 2.0,
+    cashValueCents: 1.0,
+    transferValueCents: 2.0,
     pointValueNote:
-      "TPG values Bilt at ~2.2¢; ~2.0¢ realistic via Hyatt/airline transfers. Points have no cash floor — best used via 1:1 transfer partners.",
+      "TPG values Bilt at ~2.2¢; ~2.0¢ realistic via Hyatt/airline transfers. Cash floor is ~1.0¢ (Bilt Cash) — best used via 1:1 transfer partners.",
     matchHints: ["bilt"],
     earnRates: [
       { category: "Dining or grocery (your choice)", multiplier: 3, note: "Pick one as your 3x category; grocery capped $25k/yr" },
@@ -469,7 +510,13 @@ export const CARD_CATALOG: CardCatalogEntry[] = [
       { category: "Everything else", multiplier: 1 },
     ],
     baseEarn: 1,
-    pfcEarn: { FOOD_AND_DRINK: 3, TRAVEL: 2 },
+    earnModel: [
+      // 3x is dining OR grocery (your pick) — assume dining, the common choice,
+      // so groceries fall to 1x. Rent earns ~1x (the base), no surcharge.
+      { label: "Groceries (no bonus)", multiplier: 1, detailed: ["FOOD_AND_DRINK_GROCERIES"] },
+      { label: "Dining", multiplier: 3, primary: ["FOOD_AND_DRINK"] },
+      { label: "Travel", multiplier: 2, primary: ["TRAVEL"] },
+    ],
     credits: [
       {
         name: "Bilt Travel hotel credit",
@@ -522,9 +569,10 @@ export const CARD_CATALOG: CardCatalogEntry[] = [
     annualFee: 95,
     authorizedUserFee: 0,
     pointProgram: "World of Hyatt",
-    pointValueCents: 1.7,
+    cashValueCents: 1.5,
+    transferValueCents: 1.7,
     pointValueNote:
-      "TPG values Hyatt at ~1.7¢; aspirational redemptions hit 2–2.5¢+. Widely considered the most valuable hotel currency, and a 1:1 Chase UR transfer partner.",
+      "TPG values Hyatt at ~1.7¢; aspirational redemptions hit 2–2.5¢+. Hyatt points can't be cashed out — value is realized on free nights, so the 'floor' here is a conservative ~1.5¢ redemption.",
     matchHints: ["hyatt", "world of hyatt", "woh"],
     earnRates: [
       { category: "Hyatt hotels", multiplier: 4, note: "Plus base earning → ~9x effective" },
@@ -534,7 +582,13 @@ export const CARD_CATALOG: CardCatalogEntry[] = [
       { category: "Everything else", multiplier: 1 },
     ],
     baseEarn: 1,
-    pfcEarn: { TRAVEL: 2, FOOD_AND_DRINK: 2, TRANSPORTATION: 2 },
+    earnModel: [
+      { label: "Hyatt hotels", multiplier: 4, merchantHints: ["hyatt"] },
+      { label: "Groceries (no bonus)", multiplier: 1, detailed: ["FOOD_AND_DRINK_GROCERIES"] },
+      { label: "Dining", multiplier: 2, primary: ["FOOD_AND_DRINK"] },
+      { label: "Airfare", multiplier: 2, detailed: ["TRAVEL_FLIGHTS"] },
+      { label: "Transit & gyms", multiplier: 2, detailed: ["TRANSPORTATION_PUBLIC_TRANSIT"], merchantHints: ["gym", "fitness", "equinox"] },
+    ],
     credits: [],
     perks: [
       { name: "Automatic Discoverist status", value: 0, note: "Late checkout, preferred rooms, bonus points — as long as you hold the card." },
@@ -570,9 +624,10 @@ export const CARD_CATALOG: CardCatalogEntry[] = [
     annualFee: 0,
     authorizedUserFee: 0,
     pointProgram: "Chase Ultimate Rewards",
-    pointValueCents: 1.5,
+    cashValueCents: 1.0,
+    transferValueCents: 2.0,
     pointValueNote:
-      "1¢ each as cash back, but ~2¢+ when pooled into your Sapphire Reserve and transferred to partners. Use ~1.5¢ as a blended value.",
+      "1¢ each as cash back, but ~2¢+ when pooled into your Sapphire Reserve and transferred to partners.",
     matchHints: ["freedom unlimited", "freedom unltd", "cfu"],
     earnRates: [
       { category: "Chase Travel portal", multiplier: 5 },
@@ -581,7 +636,12 @@ export const CARD_CATALOG: CardCatalogEntry[] = [
       { category: "Everything else", multiplier: 1.5 },
     ],
     baseEarn: 1.5,
-    pfcEarn: { FOOD_AND_DRINK: 3 },
+    earnModel: [
+      { label: "Chase Travel portal", multiplier: 5, merchantHints: ["chase travel", "chasetravel"] },
+      { label: "Groceries (base)", multiplier: 1.5, detailed: ["FOOD_AND_DRINK_GROCERIES"] },
+      { label: "Dining", multiplier: 3, primary: ["FOOD_AND_DRINK"] },
+      { label: "Drugstores", multiplier: 3, merchantHints: ["walgreens", "cvs", "rite aid", "pharmacy", "duane reade"] },
+    ],
     credits: [],
     perks: [
       { name: "Point pooling with Sapphire Reserve", value: 0, note: "Combining points into the Reserve makes these transferable to airline/hotel partners." },
@@ -614,9 +674,10 @@ export const CARD_CATALOG: CardCatalogEntry[] = [
     annualFee: 0,
     authorizedUserFee: 0,
     pointProgram: "Chase Ultimate Rewards",
-    pointValueCents: 1.5,
+    cashValueCents: 1.0,
+    transferValueCents: 2.0,
     pointValueNote:
-      "1¢ each as cash back, ~2¢+ when pooled into your Sapphire Reserve and transferred. Use ~1.5¢ blended.",
+      "1¢ each as cash back, ~2¢+ when pooled into your Sapphire Reserve and transferred.",
     matchHints: ["freedom flex", "cff"],
     earnRates: [
       { category: "Rotating 5% categories (activate quarterly)", multiplier: 5, note: "Up to $1,500/quarter" },
@@ -626,7 +687,15 @@ export const CARD_CATALOG: CardCatalogEntry[] = [
       { category: "Everything else", multiplier: 1 },
     ],
     baseEarn: 1,
-    pfcEarn: { FOOD_AND_DRINK: 3 },
+    // The rotating 5% category ($1,500/qtr, must activate) can't be reliably
+    // estimated from transactions — categories change each quarter — so it's
+    // left out of the points estimate and called out in the UI instead.
+    earnModel: [
+      { label: "Chase Travel portal", multiplier: 5, merchantHints: ["chase travel", "chasetravel"] },
+      { label: "Groceries (no bonus)", multiplier: 1, detailed: ["FOOD_AND_DRINK_GROCERIES"] },
+      { label: "Dining", multiplier: 3, primary: ["FOOD_AND_DRINK"] },
+      { label: "Drugstores", multiplier: 3, merchantHints: ["walgreens", "cvs", "rite aid", "pharmacy", "duane reade"] },
+    ],
     credits: [],
     perks: [
       { name: "Cell phone protection", value: 800, note: "Up to $800/claim ($50 deductible) when you pay your phone bill with the card — rare on a $0-fee card." },
@@ -662,9 +731,10 @@ export const CARD_CATALOG: CardCatalogEntry[] = [
     annualFee: 95,
     authorizedUserFee: 0,
     pointProgram: "Cash back (Reward Dollars)",
-    pointValueCents: 1.0,
+    cashValueCents: 1.0,
+    transferValueCents: 1.0,
     pointValueNote:
-      "Earns cash back as Reward Dollars (statement credits / Amazon checkout), 1¢ each. NOT transferable Membership Rewards — a straight cash-back card.",
+      "Earns cash back as Reward Dollars (statement credits / Amazon checkout), 1¢ each. NOT transferable Membership Rewards — a straight cash-back card with no transfer upside.",
     matchHints: ["blue cash preferred", "blue cash", "bcp"],
     earnRates: [
       { category: "U.S. supermarkets", multiplier: 6, note: "Up to $6,000/yr, then 1%" },
@@ -673,9 +743,13 @@ export const CARD_CATALOG: CardCatalogEntry[] = [
       { category: "Everything else", multiplier: 1 },
     ],
     baseEarn: 1,
-    // Plaid PFC can't split 6% groceries from 1% restaurants (both FOOD_AND_DRINK),
-    // so 3 is a blended estimate; streaming→6, gas/transit→3.
-    pfcEarn: { FOOD_AND_DRINK: 3, ENTERTAINMENT: 6, TRANSPORTATION: 3 },
+    earnModel: [
+      // 6x U.S. supermarkets capped at $6k/yr (then 1x); restaurants are 1x
+      // (NOT supermarkets), so dining stays at base. Select streaming only.
+      { label: "U.S. supermarkets", multiplier: 6, detailed: ["FOOD_AND_DRINK_GROCERIES"], annualCap: 6000 },
+      { label: "Select streaming", multiplier: 6, detailed: ["ENTERTAINMENT_TV_AND_MOVIES", "ENTERTAINMENT_MUSIC_AND_AUDIO"], merchantHints: ["netflix", "disney", "hulu", "spotify", "youtube", "hbo", "max", "peacock", "paramount", "apple music", "espn", "sirius", "audible", "pandora"] },
+      { label: "U.S. gas & transit", multiplier: 3, detailed: ["TRANSPORTATION_GAS", "TRANSPORTATION_PUBLIC_TRANSIT"] },
+    ],
     credits: [
       {
         name: "Disney streaming credit",
@@ -725,7 +799,8 @@ export const CARD_CATALOG: CardCatalogEntry[] = [
     annualFee: 0,
     authorizedUserFee: 0,
     pointProgram: "Amazon Rewards",
-    pointValueCents: 1.0,
+    cashValueCents: 1.0,
+    transferValueCents: 1.0,
     pointValueNote:
       "Rewards post as Amazon points worth 1¢ each at Amazon checkout (or as cash back/travel/gift cards at 1¢). Not transferable to airline/hotel partners — a straight cash-back card tied to Amazon.",
     matchHints: ["amazon", "prime visa", "amazon prime", "amzn"],
@@ -735,7 +810,15 @@ export const CARD_CATALOG: CardCatalogEntry[] = [
       { category: "Everything else", multiplier: 1 },
     ],
     baseEarn: 1,
-    pfcEarn: { FOOD_AND_DRINK: 2, TRANSPORTATION: 2 },
+    earnModel: [
+      // 5x is Amazon/Whole Foods/Amazon Fresh (with Prime). Match by merchant —
+      // other online marketplaces and regular groceries earn only 1x.
+      { label: "Amazon & Whole Foods", multiplier: 5, merchantHints: ["amazon", "amzn", "whole foods", "amazon fresh"] },
+      { label: "Chase Travel portal", multiplier: 5, merchantHints: ["chase travel", "chasetravel"] },
+      { label: "Groceries (no bonus)", multiplier: 1, detailed: ["FOOD_AND_DRINK_GROCERIES"] },
+      { label: "Restaurants", multiplier: 2, primary: ["FOOD_AND_DRINK"] },
+      { label: "Gas & transit", multiplier: 2, detailed: ["TRANSPORTATION_GAS", "TRANSPORTATION_PUBLIC_TRANSIT", "TRANSPORTATION_TAXIS_AND_RIDE_SHARES"] },
+    ],
     credits: [],
     perks: [
       { name: "5% back at Amazon & Whole Foods", value: 0, note: "With Prime — one of the highest everyday rates for Amazon/grocery spend." },
@@ -835,22 +918,175 @@ export function cardSpend(state: AppState, accountId: string): CardSpend {
   return { byCategory, total12mo, totalYtd, count };
 }
 
-/** Estimate points earned from categorized spend by applying the card's rates. */
-export function estimatePoints(
-  card: CardCatalogEntry,
-  byCategory: Map<string, number>,
-): number {
-  let pts = 0;
-  for (const [cat, amt] of byCategory) {
-    const mult = card.pfcEarn[cat] ?? card.baseEarn;
-    pts += amt * mult;
-  }
-  return Math.round(pts);
+/** The trailing-12-month posted spend transactions on one account, oldest first
+ *  (date-ascending so per-rule spend caps fill from the earliest spend). */
+export function cardSpendTxns(state: AppState, accountId: string): Transaction[] {
+  const anchor = latestDate(state);
+  const cutoff = monthsBefore(anchor, 12);
+  const neutralized = refundMatchedIds(state);
+  return state.transactions
+    .filter(
+      (t) =>
+        t.accountId === accountId && t.date >= cutoff && isSpend(t, neutralized),
+    )
+    .sort((a, b) => a.date.localeCompare(b.date));
 }
 
-/** Cash value (dollars) of an estimated point balance at the card's valuation. */
-export function pointsValue(card: CardCatalogEntry, points: number): number {
-  return (points * card.pointValueCents) / 100;
+/** True when a transaction matches an earn rule (detailed PFC, merchant, or primary). */
+function ruleMatches(rule: EarnRule, t: Transaction): boolean {
+  if (rule.detailed && t.categoryDetailed && rule.detailed.includes(t.categoryDetailed))
+    return true;
+  if (rule.merchantHints) {
+    const hay = `${t.merchantName ?? ""} ${t.name}`.toLowerCase();
+    if (rule.merchantHints.some((h) => hay.includes(h))) return true;
+  }
+  if (rule.primary && rule.primary.includes(effectiveCategory(t))) return true;
+  return false;
+}
+
+/** A single line of the per-card points breakdown. */
+export interface PointsLine {
+  label: string;
+  spend: number;
+  points: number;
+  multiplier: number;
+  /** True when some of this rule's spend hit its annual cap and dropped to base. */
+  capped: boolean;
+}
+
+export interface PointEstimate {
+  points: number;
+  /** Spend → points by earn rule (plus a base bucket), biggest contributor first. */
+  lines: PointsLine[];
+  /** Conservative cash value of the points, in dollars. */
+  cashValue: number;
+  /** Aspirational transfer value of the points, in dollars. */
+  transferValue: number;
+}
+
+const BASE_LABEL = "Everything else";
+
+/**
+ * Estimate points from real transactions using the card's ordered earn model.
+ * For each txn the first matching rule wins; unmatched spend earns `baseEarn`.
+ * Per-rule `annualCap`s are honored (spend beyond the cap drops to base), and
+ * the result carries a labeled breakdown so the UI can show exactly where the
+ * points come from. Far more accurate than a primary-category multiplier map:
+ * it separates groceries from dining, Amazon from other shopping, flights from
+ * direct-booked hotels, and respects the BCP $6k supermarket cap.
+ */
+export function estimatePointsDetailed(
+  card: CardCatalogEntry,
+  txns: Transaction[],
+): PointEstimate {
+  const lines = new Map<string, PointsLine>();
+  const ruleSpend = new Map<string, number>(); // accumulated matched spend, for caps
+
+  const add = (label: string, spend: number, points: number, mult: number, capped: boolean) => {
+    const line = lines.get(label) ?? { label, spend: 0, points: 0, multiplier: mult, capped: false };
+    line.spend += spend;
+    line.points += points;
+    line.capped = line.capped || capped;
+    lines.set(label, line);
+  };
+
+  for (const t of txns) {
+    const amt = t.amount;
+    if (amt <= 0) continue;
+    const rule = card.earnModel.find((r) => ruleMatches(r, t));
+    if (!rule) {
+      add(BASE_LABEL, amt, amt * card.baseEarn, card.baseEarn, false);
+      continue;
+    }
+    if (rule.annualCap != null) {
+      const used = ruleSpend.get(rule.label) ?? 0;
+      const remaining = Math.max(0, rule.annualCap - used);
+      const atBonus = Math.min(amt, remaining);
+      const atBase = amt - atBonus;
+      ruleSpend.set(rule.label, used + amt);
+      if (atBonus > 0) add(rule.label, atBonus, atBonus * rule.multiplier, rule.multiplier, atBase > 0);
+      if (atBase > 0) add(BASE_LABEL, atBase, atBase * card.baseEarn, card.baseEarn, false);
+    } else {
+      add(rule.label, amt, amt * rule.multiplier, rule.multiplier, false);
+    }
+  }
+
+  const points = Math.round([...lines.values()].reduce((a, l) => a + l.points, 0));
+  return {
+    points,
+    lines: [...lines.values()].sort((a, b) => b.points - a.points),
+    cashValue: (points * card.cashValueCents) / 100,
+    transferValue: (points * card.transferValueCents) / 100,
+  };
+}
+
+// ── Worth-it ROI model ───────────────────────────────────────────────────────
+//
+// One coherent answer to "is this card worth keeping?" Net value combines the
+// three things that are either facts or grounded in real spend:
+//   net value = captured statement credits + points (cash value) − annual fee
+// Perks are deliberately EXCLUDED (they're upside, hard to value, and easy to
+// over-count) — surfaced separately, never in the keep/drop number. The
+// aspirational figure swaps in transfer-partner point value as the ceiling.
+
+export type CardVerdict = "free" | "pays" | "earns" | "reconsider";
+
+export interface CardRoi {
+  annualFee: number;
+  capturedCredits: number;
+  maxCredits: number;
+  /** captured / max (1 when the card has no statement credits). */
+  capturePct: number;
+  estPoints: number;
+  pointsCashValue: number;
+  pointsTransferValue: number;
+  /** Headline: credits + cash-value points − fee. */
+  netValue: number;
+  /** Ceiling: credits + transfer-value points − fee. */
+  netValueAspirational: number;
+  /** (credits + cash points) / fee — ≥1 means it funds itself. */
+  worthItScore: number;
+  verdict: CardVerdict;
+  hasLiveSpend: boolean;
+}
+
+/**
+ * Compute the worth-it ROI for a card. `capturedCredits` and `estPoints` are
+ * passed in because they depend on user overrides + live spend computed
+ * upstream; this keeps the function pure and usable on both server and client.
+ */
+export function computeCardRoi(
+  card: CardCatalogEntry,
+  opts: { capturedCredits: number; estPoints: number; hasLiveSpend: boolean },
+): CardRoi {
+  const maxCredits = maxCreditsValue(card);
+  const pointsCashValue = (opts.estPoints * card.cashValueCents) / 100;
+  const pointsTransferValue = (opts.estPoints * card.transferValueCents) / 100;
+  const netValue = opts.capturedCredits + pointsCashValue - card.annualFee;
+  const netValueAspirational =
+    opts.capturedCredits + pointsTransferValue - card.annualFee;
+
+  let verdict: CardVerdict;
+  if (card.annualFee === 0) verdict = "free";
+  else if (netValue >= 0) verdict = "pays";
+  else if (netValueAspirational >= 0) verdict = "earns";
+  else verdict = "reconsider";
+
+  return {
+    annualFee: card.annualFee,
+    capturedCredits: opts.capturedCredits,
+    maxCredits,
+    capturePct: maxCredits > 0 ? opts.capturedCredits / maxCredits : 1,
+    estPoints: opts.estPoints,
+    pointsCashValue,
+    pointsTransferValue,
+    netValue,
+    netValueAspirational,
+    worthItScore:
+      (opts.capturedCredits + pointsCashValue) / Math.max(card.annualFee, 1),
+    verdict,
+    hasLiveSpend: opts.hasLiveSpend,
+  };
 }
 
 /** Max value of every credit on a card if fully captured (the sticker promise). */

@@ -3,8 +3,8 @@ import {
   CARD_CATALOG,
   matchAccountToCard,
   cardSpend,
-  estimatePoints,
-  pointsValue,
+  cardSpendTxns,
+  estimatePointsDetailed,
   detectCreditUsage,
 } from "@/lib/cards";
 import { Account } from "@/lib/types";
@@ -35,7 +35,7 @@ export default async function CardsPage() {
     const acct = matchByCard.get(card.cardKey) ?? null;
     if (!acct) return { card, live: null };
     const spend = cardSpend(state, acct.id);
-    const pts = estimatePoints(card, spend.byCategory);
+    const est = estimatePointsDetailed(card, cardSpendTxns(state, acct.id));
     return {
       card,
       live: {
@@ -46,8 +46,10 @@ export default async function CardsPage() {
         spend12mo: spend.total12mo,
         spendYtd: spend.totalYtd,
         txnCount: spend.count,
-        estPoints: pts,
-        estPointsValue: pointsValue(card, pts),
+        estPoints: est.points,
+        estPointsCashValue: est.cashValue,
+        estPointsTransferValue: est.transferValue,
+        pointsLines: est.lines,
         creditUsage: detectCreditUsage(state, acct.id, card),
       },
     };
