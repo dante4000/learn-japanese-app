@@ -10,10 +10,19 @@ interface PayeeAlias {
   match: string;
   /** What to show instead. */
   label: string;
+  /** Optional: only fire when the charge's ACCOUNT name contains this lowercased
+   *  substring. Disambiguates descriptors that are identical across cards — every
+   *  Chase card posts its fee as the same "ANNUAL MEMBERSHIP FEE", so the account
+   *  it lands on is the only thing that tells them apart. */
+  account?: string;
 }
 
 const ALIASES: PayeeAlias[] = [
-  // Chase Sapphire Reserve $550 annual membership fee.
+  // Chase posts every card's annual fee under the identical "ANNUAL MEMBERSHIP
+  // FEE" descriptor, so the account is the only disambiguator. The World of
+  // Hyatt fee ($95) must not be mistaken for the Sapphire Reserve fee ($550+);
+  // the Hyatt-scoped alias is listed first so it wins for that account.
+  { match: "annual membership fee", account: "hyatt", label: "World of Hyatt" },
   { match: "annual membership fee", label: "Sapphire Reserve" },
 ];
 
@@ -24,15 +33,21 @@ function norm(s: string | null | undefined): string {
 /**
  * The display name for a payee. Checks the merchant and the raw name/description
  * against the alias table; falls back to merchant, then raw name, then "Unknown".
+ * Pass the charge's account name so account-scoped aliases (e.g. distinguishing
+ * the Hyatt vs Sapphire Reserve "ANNUAL MEMBERSHIP FEE") can resolve correctly.
  */
 export function displayPayee(
   merchant?: string | null,
   name?: string | null,
+  account?: string | null,
 ): string {
   const m = norm(merchant);
   const n = norm(name);
+  const acct = norm(account);
   for (const a of ALIASES) {
-    if (a.match === m || a.match === n) return a.label;
+    if (a.match !== m && a.match !== n) continue;
+    if (a.account && !acct.includes(a.account)) continue;
+    return a.label;
   }
   return merchant || name || "Unknown";
 }

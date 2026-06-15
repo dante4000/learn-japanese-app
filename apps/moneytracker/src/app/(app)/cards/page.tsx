@@ -5,6 +5,7 @@ import {
   cardSpend,
   estimatePoints,
   pointsValue,
+  detectCreditUsage,
 } from "@/lib/cards";
 import { Account } from "@/lib/types";
 import { PageHeading } from "@/components/ui";
@@ -47,6 +48,7 @@ export default async function CardsPage() {
         txnCount: spend.count,
         estPoints: pts,
         estPointsValue: pointsValue(card, pts),
+        creditUsage: detectCreditUsage(state, acct.id, card),
       },
     };
   });

@@ -48,7 +48,7 @@ function StreamRow({
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
           <span className="truncate text-sm text-cream">
-            {displayPayee(s.merchantName, s.description)}
+            {displayPayee(s.merchantName, s.description, card)}
           </span>
           {reimbursed != null && (
             <span

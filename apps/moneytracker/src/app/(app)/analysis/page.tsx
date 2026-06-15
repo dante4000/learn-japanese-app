@@ -64,6 +64,7 @@ export default async function AnalysisPage() {
   const spendCount = weekdays.reduce((a, d) => a + d.count, 0);
   const avgSize = spendCount ? ov.spending / spendCount : 0;
   const biggest = largestPurchases(state, 12, 5);
+  const acctName = new Map(state.accounts.map((a) => [a.id, a.name]));
   const trends = categorySpendTrends(state, 12);
   const fresh = newMerchants(state, 12, 3);
   const monthsLabel = `last ${ov.months} month${ov.months === 1 ? "" : "s"}`;
@@ -211,7 +212,7 @@ export default async function AnalysisPage() {
                     <span>{meta.glyph}</span>
                     <div className="min-w-0">
                       <div className="truncate text-cream">
-                        {displayPayee(t.merchantName, t.name)}
+                        {displayPayee(t.merchantName, t.name, acctName.get(t.accountId))}
                       </div>
                       <div className="text-xs text-faint">
                         {formatDate(t.date)} · {meta.label}

@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import {
   CardCatalogEntry,
   CardCredit,
+  CreditUsage,
   maxCreditsValue,
 } from "@/lib/cards";
 import { formatMoney } from "@/lib/format";
@@ -19,6 +20,8 @@ export interface CardLive {
   txnCount: number;
   estPoints: number;
   estPointsValue: number;
+  /** Auto-detected statement-credit usage, one entry per credit (catalog order). */
+  creditUsage: CreditUsage[];
 }
 
 export interface CardViewData {
@@ -32,21 +35,12 @@ interface UnmatchedAccount {
   balance: number | null;
 }
 
-const STORAGE_KEY = "mt.cardperks.v2";
+const STORAGE_KEY = "mt.cardperks.v3";
 
-type UsageMap = Record<string, Record<string, boolean>>;
-
-/** Default "do you use this credit" state: on if the realistic capture rate ≥ 0.5. */
-function defaultUsage(cards: CardViewData[]): UsageMap {
-  const map: UsageMap = {};
-  for (const { card } of cards) {
-    map[card.cardKey] = {};
-    for (const c of card.credits) {
-      map[card.cardKey][c.name] = c.realisticCaptureRate >= 0.5;
-    }
-  }
-  return map;
-}
+// Sparse per-card manual overrides, keyed by credit name. A credit appears here
+// ONLY when the user explicitly overrode auto-detection (true = "I used it",
+// false = "I didn't"). Absent → the credit follows detection automatically.
+type OverrideMap = Record<string, Record<string, boolean>>;
 
 const accentText: Record<string, string> = {
   blue: "text-blue",
@@ -81,6 +75,65 @@ function isForgettable(f: CardCredit["frequency"]): boolean {
   return f === "monthly" || f === "quarterly" || f === "semiannual";
 }
 
+const MONTHS_SHORT = [
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+];
+
+function shortDate(d: string | null): string {
+  if (!d) return "";
+  const m = Number(d.slice(5, 7));
+  const day = Number(d.slice(8, 10));
+  return `${MONTHS_SHORT[m - 1]} ${day}`;
+}
+
+/** Human-readable detection state for one credit, with a tint to match. */
+function creditStatus(
+  _credit: CardCredit,
+  u: CreditUsage | undefined,
+  used: boolean,
+  overridden: boolean,
+  hasLive: boolean,
+  currency: string,
+): { text: string; color: string } {
+  if (overridden) {
+    return {
+      text: used ? "You marked this used." : "You marked this not used.",
+      color: used ? "text-blue" : "text-faint",
+    };
+  }
+  if (!hasLive) {
+    return {
+      text: "Card not linked — can't auto-detect; click to mark manually.",
+      color: "text-faint",
+    };
+  }
+  if (!u || !u.detectable) {
+    return {
+      text: "No detection signal for this credit — click to mark manually.",
+      color: "text-faint",
+    };
+  }
+  if (u.usedThisPeriod) {
+    const where = u.matchedMerchant ? ` at ${u.matchedMerchant}` : "";
+    const when = u.lastDate ? ` on ${shortDate(u.lastDate)}` : "";
+    return {
+      text: `Detected ${formatMoney(u.periodSpend, currency)}${where}${when} this ${u.periodLabel}.`,
+      color: "text-blue",
+    };
+  }
+  if (u.count12mo > 0) {
+    return {
+      text: `Used ${u.count12mo}× in the last 12 mo — but nothing yet in ${u.periodLabel}.`,
+      color: "text-coral",
+    };
+  }
+  return {
+    text: `No matching spend detected in ${u.periodLabel}.`,
+    color: "text-faint",
+  };
+}
+
 export function CreditCardsView({
   cards,
   unmatched,
@@ -90,69 +143,88 @@ export function CreditCardsView({
   unmatched: UnmatchedAccount[];
   currency: string;
 }) {
-  const [usage, setUsage] = useState<UsageMap>(() => defaultUsage(cards));
+  // Manual overrides layered on top of auto-detection. Starts empty (everything
+  // follows detection); the user only ever adds an entry by correcting a box.
+  const [overrides, setOverrides] = useState<OverrideMap>({});
   const [hydrated, setHydrated] = useState(false);
 
-  // Load saved toggles after mount. We intentionally render the catalog
-  // defaults on the server + first client paint, then sync in the user's saved
-  // selections from localStorage (a browser-only source) — the sanctioned
-  // pattern for hydrating from external storage without a mismatch.
+  // Load saved overrides after mount. The server + first client paint render
+  // pure detection (no overrides); we then sync in any saved corrections from
+  // localStorage — the sanctioned pattern for hydrating browser-only state
+  // without a mismatch.
   useEffect(() => {
-    let saved: UsageMap | null = null;
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) saved = JSON.parse(raw) as UsageMap;
+      if (raw) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setOverrides(JSON.parse(raw) as OverrideMap);
+      }
     } catch {
       /* ignore corrupt storage */
     }
-    if (saved) {
-      const merged: UsageMap = {};
-      for (const k of Object.keys(usage)) {
-        merged[k] = { ...usage[k], ...(saved[k] ?? {}) };
-      }
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setUsage(merged);
-    }
     setHydrated(true);
-    // run once on mount; `usage` here is the freshly-built default map
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  function persist(next: OverrideMap) {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+    } catch {
+      /* ignore */
+    }
+  }
+
+  // Detection result for one credit on a card, if any.
+  function detected(cardKey: string, creditName: string): CreditUsage | undefined {
+    const live = cards.find((c) => c.card.cardKey === cardKey)?.live;
+    return live?.creditUsage.find((u) => u.creditName === creditName);
+  }
+
+  // The box state: an explicit override wins; otherwise follow detection.
+  function isUsed(cardKey: string, creditName: string): boolean {
+    const ov = overrides[cardKey]?.[creditName];
+    if (ov !== undefined) return ov;
+    return detected(cardKey, creditName)?.usedThisPeriod ?? false;
+  }
+
+  function isOverridden(cardKey: string, creditName: string): boolean {
+    return overrides[cardKey]?.[creditName] !== undefined;
+  }
+
+  // Click → set an explicit override to the opposite of what's shown now.
   function toggle(cardKey: string, creditName: string) {
-    setUsage((prev) => {
-      const next: UsageMap = {
+    setOverrides((prev) => {
+      const nextVal = !isUsed(cardKey, creditName);
+      const next: OverrideMap = {
         ...prev,
-        [cardKey]: { ...prev[cardKey], [creditName]: !prev[cardKey]?.[creditName] },
+        [cardKey]: { ...prev[cardKey], [creditName]: nextVal },
       };
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-      } catch {
-        /* ignore */
-      }
+      persist(next);
       return next;
     });
   }
 
-  function resetCard(cardKey: string) {
-    setUsage((prev) => {
-      const card = cards.find((c) => c.card.cardKey === cardKey)?.card;
-      if (!card) return prev;
-      const reset: Record<string, boolean> = {};
-      for (const c of card.credits) reset[c.name] = c.realisticCaptureRate >= 0.5;
-      const next = { ...prev, [cardKey]: reset };
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-      } catch {
-        /* ignore */
-      }
+  // Drop a single override → that credit reverts to auto-detection.
+  function clearOverride(cardKey: string, creditName: string) {
+    setOverrides((prev) => {
+      const card = { ...(prev[cardKey] ?? {}) };
+      delete card[creditName];
+      const next = { ...prev, [cardKey]: card };
+      persist(next);
       return next;
     });
   }
 
-  // Per-card captured-credit value from the current toggles.
+  // Per-card captured-credit value. Prefers detection's trailing-12-month
+  // matched spend (capped at the credit value); an override forces all/nothing;
+  // undetectable credits fall back to their realistic capture rate.
   function captured(card: CardCatalogEntry): number {
-    const u = usage[card.cardKey] ?? {};
-    return card.credits.reduce((a, c) => a + (u[c.name] ? c.value : 0), 0);
+    return card.credits.reduce((a, c) => {
+      const ov = overrides[card.cardKey]?.[c.name];
+      if (ov !== undefined) return a + (ov ? c.value : 0);
+      const u = detected(card.cardKey, c.name);
+      if (u?.detectable) return a + u.captured;
+      return a + (c.realisticCaptureRate >= 0.5 ? c.value : 0);
+    }, 0);
   }
 
   const totals = useMemo(() => {
@@ -181,7 +253,7 @@ export function CreditCardsView({
       points,
       pointsValueSum,
     };
-  }, [cards, usage]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [cards, overrides]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const anyLive = cards.some((c) => c.live);
 
@@ -219,11 +291,14 @@ export function CreditCardsView({
       </div>
 
       <p className="mb-6 text-xs text-faint">
-        Toggle the credits you actually use below — the net cost updates live and
-        saves to this browser. Points are <em>estimated</em> by applying each
-        card&rsquo;s earn rates to your categorized spend; credit/point cash
-        values are research estimates, not exact figures.
-        {!hydrated && " Loading your saved selections…"}
+        Credits are <span className="text-blue">checked automatically</span> from
+        your real transactions — when matching spend lands on a card, its credit
+        ticks itself and the net cost updates. No manual upkeep; it re-derives on
+        every sync. You can still override any box (it&rsquo;ll say{" "}
+        <em>manual</em>, with a link back to auto). Points are <em>estimated</em>{" "}
+        by applying each card&rsquo;s earn rates to your categorized spend;
+        credit/point cash values are research estimates, not exact figures.
+        {!hydrated && " Loading your overrides…"}
       </p>
 
       {/* ── Per-card detail ───────────────────────────────────────────── */}
@@ -232,7 +307,6 @@ export function CreditCardsView({
           const cap = captured(card);
           const maxCred = maxCreditsValue(card);
           const net = card.annualFee - cap;
-          const u = usage[card.cardKey] ?? {};
           return (
             <section
               key={card.cardKey}
@@ -395,65 +469,87 @@ export function CreditCardsView({
                   )}
                 </Block>
 
-                {/* Credits checklist */}
+                {/* Credits checklist — auto-detected from transactions */}
                 {card.credits.length > 0 && (
                   <Block
                     label={`Statement credits — ${formatMoney(cap, currency, { cents: false })} of ${formatMoney(maxCred, currency, { cents: false })} captured`}
-                    action={
-                      <button
-                        onClick={() => resetCard(card.cardKey)}
-                        className="text-[0.7rem] text-faint underline-offset-2 hover:text-blue hover:underline"
-                      >
-                        reset to typical
-                      </button>
-                    }
+                    action={<span className="text-[0.7rem] text-slate">auto-detected</span>}
                   >
                     <ul className="space-y-1">
                       {card.credits.map((c) => {
-                        const used = !!u[c.name];
+                        const u = detected(card.cardKey, c.name);
+                        const used = isUsed(card.cardKey, c.name);
+                        const overridden = isOverridden(card.cardKey, c.name);
+                        const status = creditStatus(c, u, used, overridden, !!live, currency);
                         return (
                           <li key={c.name}>
-                            <button
-                              onClick={() => toggle(card.cardKey, c.name)}
-                              className={`flex w-full items-start gap-3 rounded-lg border px-3 py-2.5 text-left transition-colors ${
+                            <div
+                              className={`overflow-hidden rounded-lg border transition-colors ${
                                 used
                                   ? "border-blue/40 bg-blue/10"
-                                  : "hairline bg-surface hover:border-line-2"
+                                  : "hairline bg-surface"
                               }`}
                             >
-                              <span
-                                className={`mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-md border text-[0.7rem] ${
-                                  used
-                                    ? "border-blue bg-blue text-ink"
-                                    : "border-line-2 text-transparent"
-                                }`}
-                                aria-hidden
+                              <button
+                                onClick={() => toggle(card.cardKey, c.name)}
+                                className="flex w-full items-start gap-3 px-3 py-2.5 text-left hover:bg-blue/5"
+                                title="Click to override auto-detection"
                               >
-                                ✓
-                              </span>
-                              <div className="min-w-0 flex-1">
-                                <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                                  <span className="text-sm text-cream">{c.name}</span>
-                                  <span className="tnum text-xs text-blue">
-                                    {formatMoney(c.value, currency, { cents: false })}
-                                  </span>
-                                  <span className="rounded bg-surface-2 px-1.5 py-0.5 text-[0.6rem] text-faint">
-                                    {freqLabel(c.frequency)}
-                                  </span>
-                                  {isForgettable(c.frequency) && (
-                                    <span className="rounded bg-coral/15 px-1.5 py-0.5 text-[0.6rem] text-coral">
-                                      ↻ easy to forget
+                                <span
+                                  className={`mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-md border text-[0.7rem] ${
+                                    used
+                                      ? "border-blue bg-blue text-ink"
+                                      : "border-line-2 text-transparent"
+                                  }`}
+                                  aria-hidden
+                                >
+                                  ✓
+                                </span>
+                                <div className="min-w-0 flex-1">
+                                  <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                                    <span className="text-sm text-cream">{c.name}</span>
+                                    <span className="tnum text-xs text-blue">
+                                      {formatMoney(c.value, currency, { cents: false })}
                                     </span>
-                                  )}
-                                  {c.enrollmentRequired && (
-                                    <span className="rounded bg-surface-2 px-1.5 py-0.5 text-[0.6rem] text-slate">
-                                      enroll
+                                    <span className="rounded bg-surface-2 px-1.5 py-0.5 text-[0.6rem] text-faint">
+                                      {freqLabel(c.frequency)}
                                     </span>
-                                  )}
+                                    {overridden && (
+                                      <span className="rounded bg-slate/15 px-1.5 py-0.5 text-[0.6rem] text-slate">
+                                        manual
+                                      </span>
+                                    )}
+                                    {isForgettable(c.frequency) && !used && (
+                                      <span className="rounded bg-coral/15 px-1.5 py-0.5 text-[0.6rem] text-coral">
+                                        ↻ easy to forget
+                                      </span>
+                                    )}
+                                    {c.enrollmentRequired && (
+                                      <span className="rounded bg-surface-2 px-1.5 py-0.5 text-[0.6rem] text-slate">
+                                        enroll
+                                      </span>
+                                    )}
+                                  </div>
+                                  <p className="mt-0.5 text-xs text-faint">{c.howToUse}</p>
+                                  <p className={`mt-1 text-[0.7rem] ${status.color}`}>
+                                    {status.text}
+                                  </p>
                                 </div>
-                                <p className="mt-0.5 text-xs text-faint">{c.howToUse}</p>
-                              </div>
-                            </button>
+                              </button>
+                              {overridden && (
+                                <div className="flex items-center justify-between gap-2 border-t hairline bg-surface-2/40 px-3 py-1.5 text-[0.65rem]">
+                                  <span className="text-slate">
+                                    overriding auto-detection
+                                  </span>
+                                  <button
+                                    onClick={() => clearOverride(card.cardKey, c.name)}
+                                    className="text-faint underline-offset-2 hover:text-blue hover:underline"
+                                  >
+                                    revert to auto
+                                  </button>
+                                </div>
+                              )}
+                            </div>
                           </li>
                         );
                       })}

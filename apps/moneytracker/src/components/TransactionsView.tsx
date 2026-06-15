@@ -41,12 +41,12 @@ export function TransactionsView({
       if (acct !== "ALL" && t.accountId !== acct) return false;
       if (month !== "ALL" && monthKey(t.date) !== month) return false;
       if (needle) {
-        const hay = `${t.name} ${t.merchantName ?? ""} ${displayPayee(t.merchantName, t.name)} ${t.note ?? ""}`.toLowerCase();
+        const hay = `${t.name} ${t.merchantName ?? ""} ${displayPayee(t.merchantName, t.name, acctName.get(t.accountId))} ${t.note ?? ""}`.toLowerCase();
         if (!hay.includes(needle)) return false;
       }
       return true;
     });
-  }, [transactions, q, cat, acct, month]);
+  }, [transactions, q, cat, acct, month, acctName]);
 
   const filteredTotal = useMemo(
     () => filtered.reduce((a, t) => (t.amount > 0 ? a + t.amount : a), 0),
@@ -207,7 +207,7 @@ export function TransactionsView({
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-2">
                           <span className="truncate text-sm text-cream">
-                            {displayPayee(t.merchantName, t.name)}
+                            {displayPayee(t.merchantName, t.name, acctName.get(t.accountId))}
                           </span>
                           {t.note && (
                             <span

@@ -37,6 +37,7 @@ export default async function OverviewPage() {
   const cashflow = cashFlowDetail(state, 6);
   const merchants = topMerchants(state, month, 20);
   const recent = state.transactions.filter((t) => !t.pending).slice(0, 6);
+  const acctName = new Map(state.accounts.map((a) => [a.id, a.name]));
 
   return (
     <div>
@@ -248,7 +249,7 @@ export default async function OverviewPage() {
                   </span>
                   <div className="min-w-0">
                     <div className="truncate text-sm text-cream">
-                      {displayPayee(t.merchantName, t.name)}
+                      {displayPayee(t.merchantName, t.name, acctName.get(t.accountId))}
                     </div>
                     <div className="text-xs text-faint">{formatDate(t.date)}</div>
                   </div>

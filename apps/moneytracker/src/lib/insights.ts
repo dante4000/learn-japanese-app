@@ -418,10 +418,11 @@ export function newMerchants(
   if (months.length <= recentMonths) return [];
   const recent = new Set(months.slice(-recentMonths));
   const neutralized = refundMatchedIds(state);
+  const acctName = new Map(state.accounts.map((a) => [a.id, a.name]));
   const byName = new Map<string, NewMerchant>();
   for (const t of state.transactions) {
     if (!isSpend(t, neutralized)) continue;
-    const name = displayPayee(t.merchantName, t.name);
+    const name = displayPayee(t.merchantName, t.name, acctName.get(t.accountId));
     const row =
       byName.get(name) ?? { name, total: 0, count: 0, firstDate: t.date };
     if (t.date < row.firstDate) row.firstDate = t.date;

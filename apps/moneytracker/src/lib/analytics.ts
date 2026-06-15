@@ -461,11 +461,12 @@ export function topMerchants(
   limit = 8,
 ): MerchantSpend[] {
   const neutralized = refundMatchedIds(state);
+  const acctName = new Map(state.accounts.map((a) => [a.id, a.name]));
   const map = new Map<string, MerchantSpend>();
   for (const t of state.transactions) {
     if (!isSpend(t, neutralized)) continue;
     if (month && monthKey(t.date) !== month) continue;
-    const name = displayPayee(t.merchantName, t.name);
+    const name = displayPayee(t.merchantName, t.name, acctName.get(t.accountId));
     if (!map.has(name)) map.set(name, { name, total: 0, count: 0 });
     const row = map.get(name)!;
     row.total += t.amount;
@@ -671,6 +672,7 @@ export function upcomingBills(
   withinDays = 45,
 ): { bills: UpcomingBill[]; dueSoonTotal: number; monthlyTotal: number } {
   const bills: UpcomingBill[] = [];
+  const acctName = new Map(state.accounts.map((a) => [a.id, a.name]));
   for (const s of state.recurring) {
     if (!isBillStream(s)) continue;
     let date = s.predictedNextDate && s.predictedNextDate >= today
@@ -686,7 +688,7 @@ export function upcomingBills(
     }
     bills.push({
       id: s.id,
-      name: displayPayee(s.merchantName, s.description),
+      name: displayPayee(s.merchantName, s.description, acctName.get(s.accountId)),
       categoryPrimary: s.categoryPrimary,
       amount: Math.abs(s.lastAmount || s.averageAmount),
       frequency: s.frequency,
@@ -915,6 +917,7 @@ export function findPossibleDuplicates(state: AppState): DuplicateGroup[] {
   }
 
   // Bucket eligible spends by account|merchant|amount (date-independent).
+  const acctName = new Map(state.accounts.map((a) => [a.id, a.name]));
   const buckets = new Map<string, Transaction[]>();
   for (const t of state.transactions) {
     if (t.pending || t.hidden || t.amount <= 0) continue;
@@ -943,7 +946,7 @@ export function findPossibleDuplicates(state: AppState): DuplicateGroup[] {
       candidates.push({
         merchantKey,
         group: {
-          merchant: displayPayee(day[0].merchantName, day[0].name),
+          merchant: displayPayee(day[0].merchantName, day[0].name, acctName.get(day[0].accountId)),
           amount: day[0].amount,
           accountId: day[0].accountId,
           date,

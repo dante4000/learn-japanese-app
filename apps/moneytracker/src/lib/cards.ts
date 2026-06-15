@@ -100,6 +100,7 @@ export const CARD_CATALOG: CardCatalogEntry[] = [
     pointValueNote:
       "TPG values UR at ~2.05¢/pt. Conservative cash-out floor is ~1.0–1.5¢; transfers to Hyatt/United and Points Boost get you ~2¢+.",
     matchHints: [
+      "2487",
       "sapphire reserve",
       "annual membership fee",
       "csr",
@@ -716,6 +717,55 @@ export const CARD_CATALOG: CardCatalogEntry[] = [
     ],
     accent: "coral",
   },
+  {
+    cardKey: "amazon-prime-visa",
+    displayName: "Amazon Prime Visa",
+    issuer: "Chase",
+    network: "Visa Signature",
+    annualFee: 0,
+    authorizedUserFee: 0,
+    pointProgram: "Amazon Rewards",
+    pointValueCents: 1.0,
+    pointValueNote:
+      "Rewards post as Amazon points worth 1¢ each at Amazon checkout (or as cash back/travel/gift cards at 1¢). Not transferable to airline/hotel partners — a straight cash-back card tied to Amazon.",
+    matchHints: ["amazon", "prime visa", "amazon prime", "amzn"],
+    earnRates: [
+      { category: "Amazon, Amazon Fresh, Whole Foods, Chase Travel", multiplier: 5, note: "Requires an eligible Prime membership" },
+      { category: "Restaurants, gas, local transit & commuting", multiplier: 2 },
+      { category: "Everything else", multiplier: 1 },
+    ],
+    baseEarn: 1,
+    pfcEarn: { FOOD_AND_DRINK: 2, TRANSPORTATION: 2 },
+    credits: [],
+    perks: [
+      { name: "5% back at Amazon & Whole Foods", value: 0, note: "With Prime — one of the highest everyday rates for Amazon/grocery spend." },
+      { name: "No annual fee (card itself)", value: 0, note: "The 5% rate requires an active Amazon Prime membership (~$139/yr), which is the real cost." },
+      { name: "No foreign transaction fees", value: 0 },
+      { name: "Flexible redemption", value: 0, note: "Redeem points instantly at Amazon checkout, or as cash back, travel, or gift cards at 1¢ each." },
+    ],
+    protections: [
+      "Purchase protection (120 days, $500/claim)",
+      "Extended warranty (+1 year on warranties ≤3 years)",
+      "Baggage delay + lost luggage coverage",
+      "Travel & emergency assistance services",
+      "Secondary auto rental CDW",
+    ],
+    transferPartners: [],
+    highlights: [
+      "5% back on Amazon.com, Amazon Fresh, and Whole Foods (with Prime) makes this the default card for anyone who shops Amazon heavily.",
+      "Points are easiest to use as instant statement-style credit at Amazon checkout — no transfer partners or award charts to manage.",
+      "Without an active Prime membership the Amazon rate drops to 3%; the card's value is contingent on Prime you'd pay for anyway.",
+    ],
+    recentChanges:
+      "Stable through 2026: 5% Amazon/Whole Foods/Amazon Fresh/Chase Travel (with Prime), 2% restaurants/gas/transit, 1% base, $0 annual fee, no FX fees. The non-Prime 'Amazon Visa' earns 3% at Amazon instead of 5%.",
+    feeNote: "$0 annual fee on the card. The headline 5% Amazon rate requires an eligible Amazon Prime membership (~$139/yr); without Prime the card earns 3% at Amazon.",
+    sources: [
+      "https://www.chase.com/personal/credit-cards/amazon",
+      "https://www.nerdwallet.com/credit-cards/reviews/prime-visa",
+      "https://thepointsguy.com/credit-cards/reviews/prime-visa-review/",
+    ],
+    accent: "coral",
+  },
 ];
 
 // ── matching & spend ─────────────────────────────────────────────────────────
@@ -816,4 +866,142 @@ export function realisticCreditsValue(card: CardCatalogEntry): number {
 /** Annual value of perks that carry an explicit dollar estimate. */
 export function pricedPerksValue(card: CardCatalogEntry): number {
   return card.perks.reduce((a, p) => a + (p.value ?? 0), 0);
+}
+
+// ── Automatic credit-usage detection ────────────────────────────────────────
+//
+// Instead of asking the user to tick off which statement credits they've used,
+// we infer it from their real transactions. Each credit's `detectHints` are
+// matched against the merchant/name/category of spend on the card's *linked*
+// account, scoped to the credit's current reset window. This re-derives on every
+// data sync, so the checklist always reflects reality with zero manual upkeep.
+
+export interface CreditUsage {
+  creditName: string;
+  /** Matching spend landed in the credit's *current* reset period → check the box. */
+  usedThisPeriod: boolean;
+  /** Human label for that current period, e.g. "Jun 2026", "Q2 2026", "H1 2026", "2026". */
+  periodLabel: string;
+  /** Trailing-12-month matched spend, capped at the credit's annual value (captured $). */
+  captured: number;
+  /** Raw matched spend within the current period (uncapped). */
+  periodSpend: number;
+  /** Most recent matching transaction date (yyyy-mm-dd), or null. */
+  lastDate: string | null;
+  /** Merchant shown for the most recent match. */
+  matchedMerchant: string | null;
+  /** Number of matching transactions in the trailing 12 months. */
+  count12mo: number;
+  /** False when the credit carries no detectHints — it can't be auto-detected. */
+  detectable: boolean;
+}
+
+const MONTH_ABBR = [
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+];
+
+/** Start date + display label for a credit's current reset window, anchored to `anchor`. */
+function creditPeriod(
+  freq: CreditFrequency,
+  anchor: string,
+): { start: string; label: string } {
+  const year = anchor.slice(0, 4);
+  const mm = anchor.slice(5, 7);
+  const month = Number(mm); // 1–12
+  switch (freq) {
+    case "monthly":
+      return { start: `${year}-${mm}-01`, label: `${MONTH_ABBR[month - 1]} ${year}` };
+    case "quarterly": {
+      const q = Math.floor((month - 1) / 3); // 0–3
+      const sm = String(q * 3 + 1).padStart(2, "0");
+      return { start: `${year}-${sm}-01`, label: `Q${q + 1} ${year}` };
+    }
+    case "semiannual": {
+      const firstHalf = month <= 6;
+      const sm = firstHalf ? "01" : "07";
+      return { start: `${year}-${sm}-01`, label: `${firstHalf ? "H1" : "H2"} ${year}` };
+    }
+    case "every-4-years":
+      return { start: monthsBefore(anchor, 48), label: "last 4 yrs" };
+    case "one-time":
+      return { start: "0000-01-01", label: "ever" };
+    case "annual":
+    default:
+      return { start: `${year}-01-01`, label: year };
+  }
+}
+
+/**
+ * Detect, per credit on a card, whether the user has actually tapped it — by
+ * matching the credit's detectHints against spend on its linked account. Returns
+ * one CreditUsage per credit, in catalog order. Pure: derived entirely from the
+ * synced transaction set, so it stays current automatically.
+ */
+export function detectCreditUsage(
+  state: AppState,
+  accountId: string,
+  card: CardCatalogEntry,
+): CreditUsage[] {
+  const anchor = latestDate(state);
+  const window12 = monthsBefore(anchor, 12);
+  const neutralized = refundMatchedIds(state);
+
+  // This account's posted spend, with a precomputed lowercased haystack.
+  const accountTxns = state.transactions
+    .filter((t) => t.accountId === accountId && isSpend(t, neutralized))
+    .map((t) => ({
+      t,
+      hay: `${t.merchantName ?? ""} ${t.name} ${t.categoryPrimary} ${t.categoryDetailed ?? ""}`.toLowerCase(),
+    }));
+
+  return card.credits.map((credit) => {
+    const hints = credit.detectHints ?? [];
+    const { start: periodStart, label: periodLabel } = creditPeriod(credit.frequency, anchor);
+
+    if (hints.length === 0) {
+      return {
+        creditName: credit.name,
+        usedThisPeriod: false,
+        periodLabel,
+        captured: 0,
+        periodSpend: 0,
+        lastDate: null,
+        matchedMerchant: null,
+        count12mo: 0,
+        detectable: false,
+      };
+    }
+
+    let captured12 = 0;
+    let periodSpend = 0;
+    let count12mo = 0;
+    let lastDate: string | null = null;
+    let matchedMerchant: string | null = null;
+
+    for (const { t, hay } of accountTxns) {
+      if (!hints.some((h) => hay.includes(h))) continue;
+      if (t.date >= window12) {
+        captured12 += t.amount;
+        count12mo += 1;
+      }
+      if (t.date >= periodStart) periodSpend += t.amount;
+      if (!lastDate || t.date > lastDate) {
+        lastDate = t.date;
+        matchedMerchant = t.merchantName ?? t.name;
+      }
+    }
+
+    return {
+      creditName: credit.name,
+      usedThisPeriod: periodSpend > 0,
+      periodLabel,
+      captured: Math.min(captured12, credit.value),
+      periodSpend,
+      lastDate,
+      matchedMerchant,
+      count12mo,
+      detectable: true,
+    };
+  });
 }
