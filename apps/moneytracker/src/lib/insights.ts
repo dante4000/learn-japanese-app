@@ -278,6 +278,62 @@ export function largestDepositsForMonths(
     .slice(0, limit);
 }
 
+/**
+ * Synthetic income sources: rent that's covered on your behalf and so never
+ * lands in the bank feed. Each is independently toggled on from the Income tab
+ * (via its own URL key) to sanity-check that total compensation lines up.
+ */
+export interface PhantomIncome {
+  key: string; // URL param that switches it on (?<key>=on)
+  label: string; // source name shown in the chart, donut, and legend
+  short: string; // toggle-button label
+  monthly: number;
+  color: string;
+}
+
+export const PHANTOM_INCOME: PhantomIncome[] = [
+  {
+    key: "rent",
+    label: "Rent · RareLiquid",
+    short: "Rent (RareLiquid)",
+    monthly: 1600,
+    color: "#d4a574", // warm tan — set apart from the blue salary palette
+  },
+  {
+    key: "studio",
+    label: "Studio rent",
+    short: "Studio rent",
+    monthly: 1600,
+    color: "#5e9c8a", // muted teal — distinct from the RareLiquid tan
+  },
+];
+
+/**
+ * Add each active phantom source as its own segment to every month so it flows
+ * through the chart, donut, stat row, and legend exactly like a real payer.
+ * Leaves real transactions (and therefore the largest-deposits list) untouched.
+ */
+export function withPhantomIncome(
+  byMonth: IncomeMonth[],
+  active: PhantomIncome[],
+): IncomeMonth[] {
+  if (active.length === 0) return byMonth;
+  const extra = active.reduce((a, p) => a + p.monthly, 0);
+  return byMonth.map((m) => ({
+    ...m,
+    total: m.total + extra,
+    segments: [
+      ...m.segments,
+      ...active.map((p) => ({
+        name: p.label,
+        total: p.monthly,
+        color: p.color,
+        count: 1,
+      })),
+    ].sort((a, b) => b.total - a.total),
+  }));
+}
+
 /** Sum a set of monthly income breakdowns into one source-segment list. */
 export function mergeIncomeMonths(list: IncomeMonth[]): {
   total: number;

@@ -5,6 +5,8 @@ import {
   mergeIncomeMonths,
   largestDepositsForMonths,
   filterBySource,
+  withPhantomIncome,
+  PHANTOM_INCOME,
 } from "@/lib/insights";
 import { MonthComposition } from "@/lib/analytics";
 import { incomeSourceLabel } from "@/lib/aliases";
@@ -14,6 +16,7 @@ import { CompositionBars } from "@/components/charts/CompositionBars";
 import { MonthPicker } from "@/components/MonthPicker";
 import { IncomeScope, Scope } from "@/components/IncomeScope";
 import { SourceToggle } from "@/components/SourceToggle";
+import { PhantomIncomeToggle } from "@/components/PhantomIncomeToggle";
 import { SectionCard, EmptyState, StatCard, PageHeading } from "@/components/ui";
 
 export const dynamic = "force-dynamic";
@@ -23,7 +26,12 @@ const RARELIQUID = "rareliquid";
 export default async function IncomePage({
   searchParams,
 }: {
-  searchParams: Promise<{ month?: string; scope?: string; src?: string }>;
+  searchParams: Promise<{
+    month?: string;
+    scope?: string;
+    src?: string;
+    [key: string]: string | undefined;
+  }>;
 }) {
   const { state: fullState, focus: acct } = await loadScopedState();
   const cur = fullState.accounts[0]?.currency ?? "USD";
@@ -62,7 +70,12 @@ export default async function IncomePage({
   const scope: Scope =
     sp.scope === "ytd" ? "ytd" : sp.scope === "year" ? "year" : "month";
 
-  const { byMonth } = incomeBreakdown(state);
+  // Phantom income sources (rent covered on your behalf, never in the feed),
+  // each switched on by its own ?<key>=on param. Layered onto every month so the
+  // chart, donut, stat row, and legend reflect true total compensation.
+  const activePhantom = PHANTOM_INCOME.filter((p) => sp[p.key] === "on");
+  const { byMonth: byMonthRaw } = incomeBreakdown(state);
+  const byMonth = withPhantomIncome(byMonthRaw, activePhantom);
   const byMonthMap = new Map(byMonth.map((m) => [m.month, m]));
   const latest = months[months.length - 1];
   const selected =
@@ -150,7 +163,16 @@ export default async function IncomePage({
                 : "Where all your money comes from, month by month."
           }
         />
-        <div className="mb-1 flex shrink-0 items-center gap-2">
+        <div className="mb-1 flex shrink-0 flex-wrap items-center gap-2">
+          {PHANTOM_INCOME.map((p) => (
+            <PhantomIncomeToggle
+              key={p.key}
+              paramKey={p.key}
+              label={p.short}
+              monthly={p.monthly}
+              active={sp[p.key] === "on"}
+            />
+          ))}
           {hasRare && (
             <SourceToggle
               value={RARELIQUID}
