@@ -301,10 +301,10 @@ export const PHANTOM_INCOME: PhantomIncome[] = [
   },
   {
     key: "studio",
-    label: "Studio rent",
-    short: "Studio rent",
+    label: "Studio rent · RareLiquid",
+    short: "Studio rent (RareLiquid)",
     monthly: 1600,
-    color: "#5e9c8a", // muted teal — distinct from the RareLiquid tan
+    color: "#5e9c8a", // muted teal — distinct from the home-rent tan
   },
 ];
 

@@ -241,6 +241,7 @@ export default async function IncomePage({
           data={comp}
           currency={cur}
           highlight={scope === "month" ? selected : undefined}
+          showTotals
         />
         {legend.length > 0 && (
           <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2">

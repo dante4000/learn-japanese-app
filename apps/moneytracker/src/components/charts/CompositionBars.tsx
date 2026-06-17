@@ -13,10 +13,12 @@ export function CompositionBars({
   data,
   currency = "USD",
   highlight,
+  showTotals = false,
 }: {
   data: MonthComposition[];
   currency?: string;
   highlight?: string; // month to emphasize
+  showTotals?: boolean; // render each month's total above its bar
 }) {
   const max = Math.max(1, ...data.map((d) => d.total));
 
@@ -29,10 +31,19 @@ export function CompositionBars({
             key={d.month}
             href={`?month=${d.month}`}
             scroll={false}
-            aria-label={`Show ${formatMonth(d.month)}`}
+            aria-label={`Show ${formatMonth(d.month)}${showTotals ? `: ${formatMoney(d.total, currency, { cents: false })}` : ""}`}
             aria-current={isHi ? "true" : undefined}
             className="group flex flex-1 flex-col items-center gap-2"
           >
+            {showTotals && (
+              <span
+                className={`tnum text-[0.6rem] font-medium tabular-nums transition-colors group-hover:text-blue ${
+                  isHi ? "text-blue" : "text-cream-dim"
+                }`}
+              >
+                {formatMoney(d.total, currency, { cents: false })}
+              </span>
+            )}
             {/* Fixed-height track so the bar's percentage height resolves. */}
             <div className="flex h-44 w-full items-end justify-center">
               <div
