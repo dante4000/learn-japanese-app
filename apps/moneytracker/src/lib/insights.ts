@@ -299,13 +299,6 @@ export const PHANTOM_INCOME: PhantomIncome[] = [
     monthly: 1600,
     color: "#d4a574", // warm tan — set apart from the blue salary palette
   },
-  {
-    key: "studio",
-    label: "Studio rent · RareLiquid",
-    short: "Studio rent (RareLiquid)",
-    monthly: 1600,
-    color: "#5e9c8a", // muted teal — distinct from the home-rent tan
-  },
 ];
 
 /**
