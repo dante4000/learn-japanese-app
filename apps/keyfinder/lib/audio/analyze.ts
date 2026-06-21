@@ -2,7 +2,7 @@
 // reports progress. Pure (no DOM / Web Audio) so it runs in a Web Worker or,
 // as a fallback, on the main thread.
 
-import { computeChromagram, averageChroma } from "./chroma";
+import { computeChromagram, songChroma } from "./chroma";
 import { detectKeyFromChroma, type DetectedKey } from "./key";
 import { detectTempo } from "./tempo";
 import { detectChords, type ChordSegment } from "./chords";
@@ -28,7 +28,7 @@ export function analyzePcm(
   const cg = computeChromagram(samples, sampleRate);
 
   onProgress?.(0.5, "Finding the key");
-  const key = detectKeyFromChroma(averageChroma(cg.frames));
+  const key = detectKeyFromChroma(songChroma(cg));
 
   onProgress?.(0.6, "Tracking the beat");
   const tempo = detectTempo(samples, sampleRate);
