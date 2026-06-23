@@ -475,6 +475,140 @@ export function topMerchants(
   return [...map.values()].sort((a, b) => b.total - a.total).slice(0, limit);
 }
 
+/** One merchant's spend within a category for the focused detail view. */
+export interface CategoryMerchant {
+  name: string;
+  total: number;
+  count: number;
+  prevTotal: number; // same merchant, previous available month
+  deltaPct: number | null; // vs prev month (null when no prior spend)
+  transactions: Transaction[]; // this month's charges, newest first
+}
+
+/** Everything the category drill-down screen renders, derived server-side. */
+export interface CategoryDetailData {
+  category: string;
+  label: string;
+  glyph: string;
+  color: string;
+  month: string;
+  prevMonth: string | null;
+  total: number;
+  count: number;
+  prevTotal: number | null; // category total in prev month
+  deltaPct: number | null; // category vs prev month
+  avgMonthly: number; // category average per active month (window)
+  vsAvgPct: number | null; // this month vs that average
+  shareOfMonth: number; // fraction of the month's total spend (0..1)
+  merchants: CategoryMerchant[]; // biggest-spend first
+  biggest: Transaction[]; // largest single charges, up to 5
+  recurring: RecurringStream[]; // active subscriptions/bills in this category
+}
+
+/**
+ * Deep-dive on one spending category for one month — the "where is this going
+ * and what can I cut?" view. Groups the category's charges by merchant (with a
+ * vs-last-month delta each), surfaces the biggest single charges, the recurring
+ * bills that live here, and how the month compares to the running average.
+ */
+export function categoryDetail(
+  state: AppState,
+  category: string,
+  month: string,
+): CategoryDetailData {
+  const neutralized = refundMatchedIds(state);
+  const acctName = new Map(state.accounts.map((a) => [a.id, a.name]));
+  const meta = categoryMeta(category);
+
+  const months = availableMonths(state);
+  const idx = months.indexOf(month);
+  const prevMonth = idx > 0 ? months[idx - 1] : null;
+
+  const inCategory = (t: Transaction) =>
+    isSpend(t, neutralized) && effectiveCategory(t) === category;
+  const payee = (t: Transaction) =>
+    displayPayee(t.merchantName, t.name, acctName.get(t.accountId));
+
+  // This month's charges, grouped by merchant.
+  const groups = new Map<string, Transaction[]>();
+  let total = 0;
+  let count = 0;
+  for (const t of state.transactions) {
+    if (!inCategory(t) || monthKey(t.date) !== month) continue;
+    total += t.amount;
+    count += 1;
+    const name = payee(t);
+    (groups.get(name) ?? groups.set(name, []).get(name)!).push(t);
+  }
+
+  // Previous month's per-merchant totals, for the delta arrows.
+  const prevByMerchant = new Map<string, number>();
+  let prevTotal = 0;
+  for (const t of state.transactions) {
+    if (!prevMonth || !inCategory(t) || monthKey(t.date) !== prevMonth) continue;
+    prevTotal += t.amount;
+    const name = payee(t);
+    prevByMerchant.set(name, (prevByMerchant.get(name) ?? 0) + t.amount);
+  }
+
+  const merchants: CategoryMerchant[] = [...groups.entries()]
+    .map(([name, txns]) => {
+      const mTotal = txns.reduce((a, t) => a + t.amount, 0);
+      const mPrev = prevByMerchant.get(name) ?? 0;
+      return {
+        name,
+        total: mTotal,
+        count: txns.length,
+        prevTotal: mPrev,
+        deltaPct: mPrev > 0 ? ((mTotal - mPrev) / mPrev) * 100 : null,
+        transactions: txns.sort((a, b) => b.date.localeCompare(a.date)),
+      };
+    })
+    .sort((a, b) => b.total - a.total);
+
+  const biggest = merchants
+    .flatMap((m) => m.transactions)
+    .sort((a, b) => b.amount - a.amount)
+    .slice(0, 5);
+
+  // Month's grand spend (for share) and the category's running average.
+  const monthTotal = spendingByCategory(state, month).reduce(
+    (a, c) => a + c.total,
+    0,
+  );
+  const habit = categoryHabits(state, 12).habits.find(
+    (h) => h.category === category,
+  );
+  const avgMonthly = habit?.monthlyAvg ?? 0;
+
+  const recurring = state.recurring.filter(
+    (s) =>
+      s.isActive &&
+      s.type === "outflow" &&
+      !isTransferStream(s) &&
+      categoryMeta(s.categoryPrimary).key === category,
+  );
+
+  return {
+    category,
+    label: meta.label,
+    glyph: meta.glyph,
+    color: meta.color,
+    month,
+    prevMonth,
+    total,
+    count,
+    prevTotal: prevMonth ? prevTotal : null,
+    deltaPct: prevTotal > 0 ? ((total - prevTotal) / prevTotal) * 100 : null,
+    avgMonthly,
+    vsAvgPct: avgMonthly > 0 ? ((total - avgMonthly) / avgMonthly) * 100 : null,
+    shareOfMonth: monthTotal > 0 ? total / monthTotal : 0,
+    merchants,
+    biggest,
+    recurring,
+  };
+}
+
 export interface AccountSpend {
   accountId: string;
   name: string;

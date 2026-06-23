@@ -39,7 +39,11 @@ export default async function TransactionsPage({
     month: /^\d{4}-\d{2}$/.test(sp.month ?? "") ? sp.month! : "ALL",
   };
 
-  const dupes = findPossibleDuplicates(state);
+  // The duplicate-charges banner is an inbox for the whole ledger, so it only
+  // belongs on the unfiltered Activity view. When you arrive via a drill-through
+  // (category / merchant / account filter active), it's just noise — hide it.
+  const isFiltered = Boolean(sp.category || sp.merchant || sp.account);
+  const dupes = isFiltered ? [] : findPossibleDuplicates(state);
   const acctName = new Map(state.accounts.map((a) => [a.id, a.name]));
 
   const renderDupe = (d: (typeof dupes)[number], i: number) => (
@@ -74,12 +78,26 @@ export default async function TransactionsPage({
       />
 
       {dupes.length > 0 && (
-        <SectionCard
-          title={`Possible duplicate charges · ${dupes.length}`}
-          delay={0}
-          className="mb-4"
-        >
-          <p className="mb-3 -mt-2 text-xs text-muted">
+        <details className="card rise group/dupes mb-4 p-5 md:p-6">
+          <summary className="flex cursor-pointer list-none items-center justify-between">
+            <h2 className="font-display text-lg tracking-tight text-cream">
+              Possible duplicate charges · {dupes.length}
+            </h2>
+            <svg
+              className="text-faint transition-transform group-open/dupes:rotate-180"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M6 9l6 6 6-6" />
+            </svg>
+          </summary>
+          <p className="mb-3 mt-4 text-xs text-muted">
             The same merchant and amount charged more than once on the same day,
             excluding known recurring bills — likely a true double-charge. Search
             the merchant below to review, then hide any extra.
@@ -99,7 +117,7 @@ export default async function TransactionsPage({
               </ul>
             </details>
           )}
-        </SectionCard>
+        </details>
       )}
 
       {ledger.length === 0 ? (

@@ -164,7 +164,7 @@ export default async function OverviewPage() {
               }))}
               total={s.monthSpending}
               currency={cur}
-              hrefBase="/transactions"
+              hrefBase="/spending/category"
               month={month}
             />
             <ul className="grid flex-1 gap-x-8 gap-y-2 self-stretch sm:grid-cols-2">

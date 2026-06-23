@@ -149,7 +149,7 @@ export default async function SpendingPage({
                 total={total}
                 currency={cur}
                 size={210}
-                hrefBase="/transactions"
+                hrefBase="/spending/category"
                 month={selected}
               />
             </div>

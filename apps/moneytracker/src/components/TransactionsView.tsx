@@ -1,11 +1,11 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
 import { Account, Transaction } from "@/lib/types";
-import { CATEGORIES, categoryMeta, resolveCategoryKey } from "@/lib/categories";
-import { formatMoney, formatDate, formatMonth, monthKey } from "@/lib/format";
+import { CATEGORIES, resolveCategoryKey } from "@/lib/categories";
+import { formatMoney, formatMonth, monthKey } from "@/lib/format";
 import { displayPayee } from "@/lib/aliases";
+import { TransactionRow, useTransactionEditor } from "@/components/TransactionRow";
 
 export function TransactionsView({
   transactions,
@@ -19,15 +19,11 @@ export function TransactionsView({
   /** Pre-applied filters from URL params, so links from charts/rows land filtered. */
   initial?: { q?: string; category?: string; account?: string; month?: string };
 }) {
-  const router = useRouter();
   const [q, setQ] = useState(initial?.q ?? "");
   const [cat, setCat] = useState(initial?.category ?? "ALL");
   const [acct, setAcct] = useState(initial?.account ?? "ALL");
   const [month, setMonth] = useState(initial?.month ?? "ALL");
-  const [editing, setEditing] = useState<string | null>(null);
-  const [noteDraft, setNoteDraft] = useState("");
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const editor = useTransactionEditor();
 
   const acctName = useMemo(
     () => new Map(accounts.map((a) => [a.id, a.name])),
@@ -67,40 +63,11 @@ export function TransactionsView({
   const hasFilter =
     q.trim() !== "" || cat !== "ALL" || acct !== "ALL" || month !== "ALL";
 
-  function openEditor(t: Transaction) {
-    const next = editing === t.id ? null : t.id;
-    setEditing(next);
-    setNoteDraft(next ? (t.note ?? "") : "");
-  }
-
   function clearFilters() {
     setQ("");
     setCat("ALL");
     setAcct("ALL");
     setMonth("ALL");
-  }
-
-  async function update(id: string, patch: Record<string, unknown>) {
-    setBusy(true);
-    setError(null);
-    try {
-      const res = await fetch("/api/transactions/update", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id, ...patch }),
-      });
-      if (!res.ok) {
-        const data = await res.json().catch(() => null);
-        setError(data?.error || "Could not save change");
-        return;
-      }
-      setEditing(null);
-      router.refresh();
-    } catch {
-      setError("Could not save change");
-    } finally {
-      setBusy(false);
-    }
   }
 
   return (
@@ -174,9 +141,9 @@ export function TransactionsView({
         </div>
       )}
 
-      {error && (
+      {editor.error && (
         <p className="mb-3 text-sm text-coral" role="alert">
-          {error}
+          {editor.error}
         </p>
       )}
 
@@ -195,132 +162,15 @@ export function TransactionsView({
               </span>
             </div>
             <ul className="divide-y divide-[var(--color-line)]">
-              {items.map((t) => {
-                const meta = categoryMeta(resolveCategoryKey(t));
-                const open = editing === t.id;
-                return (
-                  <li key={t.id} className="px-4">
-                    <div className="flex items-center gap-3 py-3">
-                      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border hairline bg-surface-2">
-                        {meta.glyph}
-                      </span>
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center gap-2">
-                          <span className="truncate text-sm text-cream">
-                            {displayPayee(t.merchantName, t.name, acctName.get(t.accountId))}
-                          </span>
-                          {t.note && (
-                            <span
-                              title={t.note}
-                              className="rounded bg-blue/15 px-1.5 py-0.5 text-[0.6rem] text-blue"
-                            >
-                              ✎ note
-                            </span>
-                          )}
-                          {t.hidden && (
-                            <span className="rounded bg-surface-2 px-1.5 py-0.5 text-[0.6rem] text-faint">
-                              hidden
-                            </span>
-                          )}
-                          {t.pending && (
-                            <span className="rounded bg-surface-2 px-1.5 py-0.5 text-[0.6rem] text-slate-soft">
-                              pending
-                            </span>
-                          )}
-                        </div>
-                        <div className="flex items-center gap-2 text-xs text-faint">
-                          <span>{formatDate(t.date)}</span>
-                          <span>·</span>
-                          <button
-                            onClick={() => openEditor(t)}
-                            className="hover:text-blue"
-                            style={{ color: meta.color }}
-                          >
-                            {meta.label}
-                          </button>
-                          {acctName.get(t.accountId) && (
-                            <>
-                              <span>·</span>
-                              <span className="truncate">
-                                {acctName.get(t.accountId)}
-                              </span>
-                            </>
-                          )}
-                        </div>
-                      </div>
-                      <span
-                        className={`tnum text-sm ${t.amount < 0 ? "text-blue" : "text-cream"}`}
-                      >
-                        {formatMoney(-t.amount, currency, { sign: true })}
-                      </span>
-                    </div>
-
-                    {open && (
-                      <div className="mb-3 rounded-xl border hairline bg-ink p-3">
-                        <div className="label-eyebrow mb-2">Recategorize</div>
-                        <div className="flex flex-wrap gap-1.5">
-                          {Object.values(CATEGORIES)
-                            .filter((c) => c.key !== "OTHER")
-                            .map((c) => (
-                              <button
-                                key={c.key}
-                                disabled={busy}
-                                onClick={() => update(t.id, { userCategory: c.key })}
-                                className="rounded-lg border hairline px-2.5 py-1 text-xs text-cream-dim transition-colors hover:border-line-2"
-                                style={{
-                                  borderColor:
-                                    resolveCategoryKey(t) === c.key
-                                      ? c.color
-                                      : undefined,
-                                }}
-                              >
-                                {c.glyph} {c.label}
-                              </button>
-                            ))}
-                        </div>
-
-                        <div className="label-eyebrow mb-2 mt-4">Note</div>
-                        <div className="flex flex-wrap gap-2">
-                          <input
-                            value={noteDraft}
-                            onChange={(e) => setNoteDraft(e.target.value)}
-                            placeholder="Add a note — why, who, what for…"
-                            className="min-w-48 flex-1 rounded-lg border hairline bg-surface px-3 py-1.5 text-xs text-cream outline-none placeholder:text-faint focus:border-blue"
-                          />
-                          <button
-                            disabled={busy || noteDraft === (t.note ?? "")}
-                            onClick={() =>
-                              update(t.id, { note: noteDraft.trim() || null })
-                            }
-                            className="rounded-lg bg-blue px-3 py-1.5 text-xs font-semibold text-ink transition-opacity hover:opacity-90 disabled:opacity-40"
-                          >
-                            Save note
-                          </button>
-                        </div>
-
-                        <div className="mt-4 flex gap-2">
-                          <button
-                            disabled={busy}
-                            onClick={() => update(t.id, { hidden: !t.hidden })}
-                            className="rounded-lg border hairline px-3 py-1.5 text-xs text-cream-dim hover:border-line-2"
-                          >
-                            {t.hidden ? "Unhide" : "Hide from analytics"}
-                          </button>
-                          {t.userCategory && (
-                            <button
-                              disabled={busy}
-                              onClick={() => update(t.id, { userCategory: null })}
-                              className="rounded-lg px-3 py-1.5 text-xs text-faint hover:text-coral"
-                            >
-                              Reset category
-                            </button>
-                          )}
-                        </div>
-                      </div>
-                    )}
-                  </li>
-                );
-              })}
+              {items.map((t) => (
+                <TransactionRow
+                  key={t.id}
+                  t={t}
+                  accountName={acctName.get(t.accountId)}
+                  currency={currency}
+                  editor={editor}
+                />
+              ))}
             </ul>
           </div>
         ))}
