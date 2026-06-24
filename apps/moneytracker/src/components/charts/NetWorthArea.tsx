@@ -211,6 +211,28 @@ export function NetWorthArea({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, plotW]);
 
+  // Which month marks actually get a *label*. Greedily drop labels that would
+  // collide with the previously drawn one (the gridline still shows), and pin
+  // the rightmost label inside the plot so it never clips at the scroll edge.
+  const monthLabels = useMemo(() => {
+    const out: { x: number; anchor: "start" | "end"; label: string }[] = [];
+    let lastRight = -Infinity;
+    for (const mk of monthMarks) {
+      const w = mk.label.length * 6.2 + 4; // ~px at fontSize 11
+      if (mk.x < lastRight + 6) continue; // too close → keep gridline, drop text
+      let lx = mk.x + 4;
+      let anchor: "start" | "end" = "start";
+      if (lx + w > plotW - 1) {
+        lx = plotW - 2;
+        anchor = "end";
+        if (lx - w < lastRight + 6) continue; // would still overlap → skip
+      }
+      out.push({ x: lx, anchor, label: mk.label });
+      lastRight = anchor === "end" ? plotW : lx + w;
+    }
+    return out;
+  }, [monthMarks, plotW]);
+
   if (snapshots.length < 2) {
     return (
       <div className="grid h-40 place-items-center text-sm text-muted">
@@ -392,28 +414,33 @@ export function NetWorthArea({
                 );
               })}
 
-              {/* Month gridlines + labels */}
+              {/* Month gridlines (every boundary) */}
               {monthMarks.map((mk, i) => (
-                <g key={`m${i}`}>
-                  <line
-                    x1={mk.x}
-                    x2={mk.x}
-                    y1={M_TOP}
-                    y2={baseY}
-                    stroke="var(--color-line)"
-                    strokeWidth={1}
-                    strokeDasharray="2 6"
-                    opacity={0.6}
-                  />
-                  <text
-                    x={mk.x + 4}
-                    y={H - 9}
-                    fill="var(--color-faint)"
-                    fontSize={11}
-                  >
-                    {mk.label}
-                  </text>
-                </g>
+                <line
+                  key={`m${i}`}
+                  x1={mk.x}
+                  x2={mk.x}
+                  y1={M_TOP}
+                  y2={baseY}
+                  stroke="var(--color-line)"
+                  strokeWidth={1}
+                  strokeDasharray="2 6"
+                  opacity={0.6}
+                />
+              ))}
+
+              {/* Month labels (collision-filtered, clamped to the plot) */}
+              {monthLabels.map((mk, i) => (
+                <text
+                  key={`ml${i}`}
+                  x={mk.x}
+                  y={H - 9}
+                  textAnchor={mk.anchor}
+                  fill="var(--color-faint)"
+                  fontSize={11}
+                >
+                  {mk.label}
+                </text>
               ))}
 
               <path key={`a-${revealKey}`} d={area} fill="url(#nwfill)" opacity={0}>
