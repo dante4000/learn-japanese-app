@@ -1020,13 +1020,22 @@ export function netWorthHistory(state: AppState, today: string): NetWorthSnapsho
     state.accounts.filter((a) => LIABILITY_TYPES.has(a.type)).map((a) => a.id),
   );
 
-  // Net per-day flow, split by asset vs liability side.
+  // Net per-day flow, split by asset vs liability side. Also tally real income
+  // and discretionary spending per day (same rules as the cash-flow views) so
+  // the chart can show what drove each move.
+  const neutralized = refundMatchedIds(state);
   const dayAsset = new Map<string, number>();
   const dayLiab = new Map<string, number>();
+  const dayIncome = new Map<string, number>();
+  const daySpend = new Map<string, number>();
   for (const t of state.transactions) {
     if (t.pending || isSyntheticBaseline(t)) continue;
     const bucket = liabAccts.has(t.accountId) ? dayLiab : dayAsset;
     bucket.set(t.date, (bucket.get(t.date) ?? 0) + t.amount);
+    if (isIncome(t, neutralized))
+      dayIncome.set(t.date, (dayIncome.get(t.date) ?? 0) + -t.amount);
+    else if (isSpend(t, neutralized))
+      daySpend.set(t.date, (daySpend.get(t.date) ?? 0) + t.amount);
   }
 
   const dates = [...new Set([...dayAsset.keys(), ...dayLiab.keys()])].sort();
@@ -1060,7 +1069,13 @@ export function netWorthHistory(state: AppState, today: string): NetWorthSnapsho
   });
 
   // Real snapshots win on the dates they cover (exact balances, manual entries).
-  for (const s of state.snapshots) byDate.set(s.date, s);
+  for (const s of state.snapshots) byDate.set(s.date, { ...s });
+
+  // Attach each day's income/spending flow to its point.
+  for (const [d, snap] of byDate) {
+    snap.income = dayIncome.get(d) ?? 0;
+    snap.spending = daySpend.get(d) ?? 0;
+  }
 
   return [...byDate.values()].sort((a, b) => a.date.localeCompare(b.date));
 }

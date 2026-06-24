@@ -71,21 +71,32 @@ function monotonePath(pts: readonly (readonly [number, number])[]): string {
   return d;
 }
 
-/** Keep the last snapshot of each bucket (week or month) so long spans stay legible. */
+/**
+ * Collapse to one point per bucket (week or month): keep the bucket's last
+ * *balance* (net worth is a stock, not a flow) but SUM income/spending across
+ * the bucket (those are flows), so long spans stay legible without losing the
+ * period's cash-flow totals.
+ */
 function downsample(
   snaps: NetWorthSnapshot[],
   cadence: "day" | "week" | "month",
 ): NetWorthSnapshot[] {
   if (cadence === "day") return snaps;
-  const last = new Map<string, NetWorthSnapshot>();
+  const buckets = new Map<string, NetWorthSnapshot>();
   for (const s of snaps) {
     const key =
       cadence === "month"
         ? monthOf(s.date)
         : String(Math.floor(parseTime(s.date) / (7 * 86_400_000)));
-    last.set(key, s); // snaps are sorted, so the last write per bucket wins
+    const prev = buckets.get(key);
+    // snaps are sorted, so `s` carries the latest balance for the bucket.
+    buckets.set(key, {
+      ...s,
+      income: (prev?.income ?? 0) + (s.income ?? 0),
+      spending: (prev?.spending ?? 0) + (s.spending ?? 0),
+    });
   }
-  return [...last.values()];
+  return [...buckets.values()];
 }
 
 const RANGES = [
@@ -105,11 +116,15 @@ const STEP: Record<"day" | "week" | "month", number> = {
   month: 46,
 };
 
-const H = 280;
 const PAD_X = 12;
 const AXIS_W = 56;
 const M_TOP = 16;
-const M_BOTTOM = 30;
+const FLOW_GAP = 12; // gap between net-worth plot and the cash-flow strip
+const FLOW_H = 34; // height of the income/spending bar strip
+const LABEL_H = 22; // room for month labels under the strip
+const M_BOTTOM = FLOW_GAP + FLOW_H + LABEL_H;
+const NW_H = 216; // net-worth plot height
+const H = M_TOP + NW_H + M_BOTTOM;
 
 /** Scrollable net-worth timeline — range tabs, fixed Y axis, month markers, hover tooltip. */
 export function NetWorthArea({
@@ -177,7 +192,7 @@ export function NetWorthArea({
 
   const n = data.length;
   const plotW = Math.max(vw, (n - 1) * STEP[cadence] + 2 * PAD_X);
-  const plotH = H - M_TOP - M_BOTTOM;
+  const plotH = NW_H;
 
   const values = data.map((s) => s.netWorth);
   const { ticks, niceMin, niceMax } = niceTicks(
@@ -245,6 +260,17 @@ export function NetWorthArea({
   const line = monotonePath(pts);
   const baseY = M_TOP + plotH;
   const area = `${line} L${pts[n - 1][0]},${baseY} L${pts[0][0]},${baseY} Z`;
+
+  // Cash-flow strip: income bars grow up from the centerline, spending down.
+  const flowTop = baseY + FLOW_GAP;
+  const flowCenter = flowTop + FLOW_H / 2;
+  const flowMax = Math.max(
+    1,
+    ...data.map((s) => Math.max(s.income ?? 0, s.spending ?? 0)),
+  );
+  const flowHalf = FLOW_H / 2 - 2;
+  const barW = Math.max(2, Math.min(16, STEP[cadence] * 0.5));
+  const flowH = (v: number) => (Math.max(0, v) / flowMax) * flowHalf;
 
   const startV = data[0].netWorth;
   const endV = data[n - 1].netWorth;
@@ -334,6 +360,18 @@ export function NetWorthArea({
             })}
           </div>
         )}
+      </div>
+
+      {/* Legend for the cash-flow strip */}
+      <div className="mb-2 flex items-center gap-3 pl-[56px] text-[11px] text-muted">
+        <span className="inline-flex items-center gap-1.5">
+          <span className="inline-block h-2 w-2 rounded-sm bg-blue" />
+          income
+        </span>
+        <span className="inline-flex items-center gap-1.5">
+          <span className="inline-block h-2 w-2 rounded-sm bg-coral" />
+          spending
+        </span>
       </div>
 
       <div className="flex">
@@ -478,6 +516,48 @@ export function NetWorthArea({
                 />
               </path>
 
+              {/* Cash-flow strip: income up (blue), spending down (coral) */}
+              <line
+                x1={0}
+                x2={plotW}
+                y1={flowCenter}
+                y2={flowCenter}
+                stroke="var(--color-line)"
+                strokeWidth={1}
+              />
+              {data.map((s, i) => {
+                const cx = x(i);
+                const inc = s.income ?? 0;
+                const spd = s.spending ?? 0;
+                const dim = hi != null && i !== active ? 0.45 : 1;
+                return (
+                  <g key={`f${i}`} opacity={dim}>
+                    {inc > 0 && (
+                      <rect
+                        x={cx - barW / 2}
+                        y={flowCenter - flowH(inc)}
+                        width={barW}
+                        height={flowH(inc)}
+                        rx={Math.min(1.5, barW / 2)}
+                        fill="var(--color-blue)"
+                        opacity={0.85}
+                      />
+                    )}
+                    {spd > 0 && (
+                      <rect
+                        x={cx - barW / 2}
+                        y={flowCenter}
+                        width={barW}
+                        height={flowH(spd)}
+                        rx={Math.min(1.5, barW / 2)}
+                        fill="var(--color-coral)"
+                        opacity={0.85}
+                      />
+                    )}
+                  </g>
+                );
+              })}
+
               {showDots &&
                 pts.map((p, i) => (
                   <circle
@@ -527,7 +607,7 @@ export function NetWorthArea({
                   x1={x(hi)}
                   x2={x(hi)}
                   y1={M_TOP}
-                  y2={baseY}
+                  y2={flowCenter + FLOW_H / 2}
                   stroke="var(--color-line-2)"
                   strokeWidth={1}
                   strokeDasharray="3 4"
@@ -595,6 +675,21 @@ export function NetWorthArea({
                       <span className="ml-1 text-muted">owed</span>
                     </span>
                   </div>
+                  {((tip.income ?? 0) > 0 || (tip.spending ?? 0) > 0) && (
+                    <div className="mt-1.5 flex items-center gap-3 border-t hairline pt-1.5 text-[11px]">
+                      <span className="tnum text-blue">
+                        +{formatMoney(tip.income ?? 0, currency, { cents: false })}
+                        <span className="ml-1 text-muted">in</span>
+                      </span>
+                      <span className="tnum text-coral">
+                        −{formatMoney(tip.spending ?? 0, currency, { cents: false })}
+                        <span className="ml-1 text-muted">out</span>
+                      </span>
+                      {cadence !== "day" && (
+                        <span className="ml-auto text-muted">{cadence}</span>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             )}

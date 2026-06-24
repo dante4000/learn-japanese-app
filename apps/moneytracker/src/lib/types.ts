@@ -108,6 +108,10 @@ export interface NetWorthSnapshot {
   totalAssets: number;
   totalLiabilities: number;
   netWorth: number;
+  /** Real income that landed in this point's period (chart only, optional). */
+  income?: number;
+  /** Discretionary spending in this point's period (chart only, optional). */
+  spending?: number;
 }
 
 /**
