@@ -109,6 +109,11 @@ export interface CardCatalogEntry {
   highlights: string[];
   recentChanges: string;
   feeNote?: string;
+  /** A real no-annual-fee product-change target, where one exists. Surfaced as
+   *  renewal nears so you can downgrade before the fee posts. */
+  downgradeTo?: { displayName: string; annualFee: number };
+  /** Override the default annual-fee-charge phrases used to auto-detect renewal. */
+  feeChargeHints?: string[];
   sources: string[];
   accent: "blue" | "coral" | "slate";
 }
@@ -297,6 +302,7 @@ export const CARD_CATALOG: CardCatalogEntry[] = [
       "Mid-2025 refresh: annual fee $550 → $795, authorized user $75 → $195. Earn restructured (8x Chase Travel, 4x direct travel, 3x dining). Added The Edit ($500), Exclusive Tables ($300), StubHub ($300), DoorDash (up to $420), Lyft ($120), Apple ($288) credits. Flat 1.5¢ portal redemption replaced by variable Points Boost.",
     feeNote:
       "Chase raised the fee from $550 to $795 in the 2025 refresh (hits existing cardholders at renewal). If you haven't renewed yet you may still be on the old $550 card with the simpler $300-travel-credit / 3x-3x structure and none of the new coupon-book credits.",
+    downgradeTo: { displayName: "Chase Freedom Unlimited", annualFee: 0 },
     sources: [
       "https://www.chase.com/sapphire-cards/personal/reserve",
       "https://www.nerdwallet.com/credit-cards/news/chase-sapphire-reserve-overhaul-june-2025",
@@ -554,6 +560,7 @@ export const CARD_CATALOG: CardCatalogEntry[] = [
     recentChanges:
       "Major 2025–2026 overhaul. The original Wells Fargo Bilt Mastercard was deactivated Feb 6 2026. 'Bilt 2.0' launched Feb 7 2026 (issuer Column N.A., serviced by Cardless) as three tiers: Blue ($0), Obsidian ($95), Palladium ($495). Rent rewards mechanics changed; mortgage earning added (any lender). A second currency, Bilt Cash, was introduced.",
     feeNote: "Obsidian is the $95 tier of the 2026 Bilt 2.0 lineup (Blue $0 / Obsidian $95 / Palladium $495). It adds a $100/yr hotel credit, a 3x dining-or-grocery category, and FX-fee waiver over the free Blue tier.",
+    downgradeTo: { displayName: "Bilt Blue", annualFee: 0 },
     sources: [
       "https://newsroom.biltrewards.com/meetbiltcard2.0",
       "https://www.nerdwallet.com/credit-cards/news/bilt-launches-blue-obsidian-palladium",
@@ -784,6 +791,7 @@ export const CARD_CATALOG: CardCatalogEntry[] = [
     recentChanges:
       "Aug 1 2025: the Disney benefit became the 'Disney streaming credit', rose from $84/yr to $120/yr ($10/mo), dropped the $9.99 minimum, and broadened eligible services. Amex also removed the Reward Dollars minimum-redemption threshold. $95 fee unchanged.",
     feeNote: "$0 intro annual fee the first year, then $95. The $120 Disney credit offsets the fee for streamers; a grocery-heavy household ($4–6k/yr) earns ~$240–360 on groceries alone.",
+    downgradeTo: { displayName: "Amex Blue Cash Everyday", annualFee: 0 },
     sources: [
       "https://www.americanexpress.com/us/credit-cards/card/blue-cash-preferred/",
       "https://thepointsguy.com/credit-cards/blue-cash-preferred-increases-disney-bundle-credit/",
@@ -1240,4 +1248,100 @@ export function detectCreditUsage(
       detectable: true,
     };
   });
+}
+
+// ── Renewal countdown ────────────────────────────────────────────────────────
+//
+// The annual fee posts once a cardmember year on the card's anniversary. We
+// auto-detect that date from the most recent annual-fee charge on the linked
+// account — matched by a fee phrase and confirmed by the fee amount (current or
+// legacy) — then project the next anniversary forward from today. This is the
+// moment to decide: keep paying, or product-change/downgrade to a no-fee card.
+
+export interface RenewalInfo {
+  /** False when annualFee === 0, account not linked, or no fee charge found. */
+  detected: boolean;
+  /** Date of the most recent matched fee charge (yyyy-mm-dd), or null. */
+  lastChargeDate: string | null;
+  /** Next renewal: the charge's month/day rolled forward to the next date ≥ today. */
+  nextRenewal: string | null;
+  /** Whole days from today until nextRenewal (≥ 0 when detected), or null. */
+  daysUntil: number | null;
+  /** The matched charge amount — lets the UI show the real (possibly legacy) fee. */
+  feeAmount: number | null;
+}
+
+const DEFAULT_FEE_HINTS = ["annual membership fee", "annual fee", "membership fee"];
+
+/** Whole days between two yyyy-mm-dd dates, computed in UTC to avoid DST drift. */
+function daysBetween(fromISO: string, toISO: string): number {
+  const ms = (s: string) =>
+    Date.UTC(+s.slice(0, 4), +s.slice(5, 7) - 1, +s.slice(8, 10));
+  return Math.round((ms(toISO) - ms(fromISO)) / 86_400_000);
+}
+
+/** The charge's month/day in the earliest year that is ≥ today (yyyy-mm-dd). */
+function nextAnniversary(chargeDate: string, todayISO: string): string {
+  const monthDay = chargeDate.slice(5); // "mm-dd"
+  const todayYear = Number(todayISO.slice(0, 4));
+  for (let y = todayYear; ; y++) {
+    const candidate = `${y}-${monthDay}`;
+    if (candidate >= todayISO) return candidate; // fixed-width → lexical = chrono
+  }
+}
+
+/**
+ * Detect a card's renewal date + countdown from real transactions. Scans the
+ * linked account for annual-fee charges (fee-phrase match, preferring those whose
+ * amount confirms the current or legacy fee), takes the most recent, and projects
+ * its anniversary forward to the next occurrence ≥ today. Pure: derived from the
+ * synced transactions, so it recomputes on every sync. `todayISO` is injectable
+ * for testing; it defaults to the real current date.
+ */
+export function detectRenewal(
+  state: AppState,
+  accountId: string,
+  card: CardCatalogEntry,
+  todayISO: string = new Date().toISOString().slice(0, 10),
+): RenewalInfo {
+  const empty: RenewalInfo = {
+    detected: false,
+    lastChargeDate: null,
+    nextRenewal: null,
+    daysUntil: null,
+    feeAmount: null,
+  };
+  if (card.annualFee === 0) return empty;
+
+  const hints = (card.feeChargeHints ?? DEFAULT_FEE_HINTS).map((h) =>
+    h.toLowerCase(),
+  );
+  const fees = [card.annualFee, card.legacyAnnualFee].filter(
+    (a): a is number => typeof a === "number" && a > 0,
+  );
+  const amountConfirms = (amt: number) =>
+    fees.some((fee) => Math.abs(amt - fee) <= 1);
+
+  // Fee-phrase-matched outflows on this account (a fee is always a positive charge).
+  const phraseMatches = state.transactions.filter((t) => {
+    if (t.accountId !== accountId) return false;
+    if (t.hidden || t.pending || t.amount <= 0) return false;
+    const hay = `${t.merchantName ?? ""} ${t.name}`.toLowerCase();
+    return hints.some((h) => hay.includes(h));
+  });
+  if (phraseMatches.length === 0) return empty;
+
+  // Prefer amount-confirmed charges; otherwise fall back to all phrase matches.
+  const confirmed = phraseMatches.filter((t) => amountConfirms(t.amount));
+  const pool = confirmed.length > 0 ? confirmed : phraseMatches;
+  const chosen = pool.reduce((a, b) => (b.date > a.date ? b : a));
+
+  const nextRenewal = nextAnniversary(chosen.date, todayISO);
+  return {
+    detected: true,
+    lastChargeDate: chosen.date,
+    nextRenewal,
+    daysUntil: daysBetween(todayISO, nextRenewal),
+    feeAmount: chosen.amount,
+  };
 }

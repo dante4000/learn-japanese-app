@@ -6,6 +6,7 @@ import {
   cardSpendTxns,
   estimatePointsDetailed,
   detectCreditUsage,
+  detectRenewal,
 } from "@/lib/cards";
 import { Account } from "@/lib/types";
 import { PageHeading } from "@/components/ui";
@@ -33,11 +34,12 @@ export default async function CardsPage() {
 
   const cards: CardViewData[] = CARD_CATALOG.map((card) => {
     const acct = matchByCard.get(card.cardKey) ?? null;
-    if (!acct) return { card, live: null };
+    if (!acct) return { card, live: null, renewal: null };
     const spend = cardSpend(state, acct.id);
     const est = estimatePointsDetailed(card, cardSpendTxns(state, acct.id));
     return {
       card,
+      renewal: detectRenewal(state, acct.id, card),
       live: {
         accountName: acct.name,
         mask: acct.mask,

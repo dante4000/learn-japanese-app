@@ -8,6 +8,7 @@ import {
   CardVerdict,
   CreditUsage,
   PointsLine,
+  RenewalInfo,
   computeCardRoi,
   maxCreditsValue,
 } from "@/lib/cards";
@@ -45,6 +46,8 @@ export interface CardLive {
 export interface CardViewData {
   card: CardCatalogEntry;
   live: CardLive | null;
+  /** Auto-detected renewal date + countdown, or null when undetectable. */
+  renewal: RenewalInfo | null;
 }
 
 interface UnmatchedAccount {
@@ -123,6 +126,46 @@ function isForgettable(f: CardCredit["frequency"]): boolean {
 function signedMoney(v: number, currency: string): string {
   const m = formatMoney(Math.abs(v), currency, { cents: false });
   return v >= 0 ? `+${m}` : `−${m}`;
+}
+
+const RENEW_MONTHS = [
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+];
+
+/** "2027-04-12" → "Apr 12, 2027". */
+function formatRenewalDate(iso: string): string {
+  const y = iso.slice(0, 4);
+  const m = Number(iso.slice(5, 7));
+  const d = Number(iso.slice(8, 10));
+  return `${RENEW_MONTHS[m - 1]} ${d}, ${y}`;
+}
+
+/**
+ * Renewal urgency → tone classes. ≤30 days is pressing (coral); ≤60 days is the
+ * product-change window (amber); beyond that it's just informational. `window`
+ * marks the ≤60-day span where the downgrade prompt should appear.
+ */
+function renewalTone(daysUntil: number): {
+  text: string;
+  chip: string;
+  window: boolean;
+} {
+  if (daysUntil <= 30)
+    return { text: "text-coral", chip: "bg-coral/15 text-coral", window: true };
+  if (daysUntil <= 60)
+    return {
+      text: "text-amber-400",
+      chip: "bg-amber-400/15 text-amber-400",
+      window: true,
+    };
+  return { text: "text-muted", chip: "bg-surface-2 text-faint", window: false };
+}
+
+/** Short countdown for the leaderboard row, e.g. "Renews 47d" / "Renews today". */
+function renewalShort(daysUntil: number): string {
+  if (daysUntil <= 0) return "Renews today";
+  return `Renews ${daysUntil}d`;
 }
 
 export function CreditCardsView({
@@ -231,7 +274,7 @@ export function CreditCardsView({
   // on `overrides` (captured credits move with the user's corrections), so this
   // lives client-side rather than in the server page.
   const rows = useMemo(() => {
-    const scored = cards.map(({ card, live }) => {
+    const scored = cards.map(({ card, live, renewal }) => {
       const cap = captured(card);
       const roi = computeCardRoi(card, {
         capturedCredits: cap,
@@ -241,7 +284,7 @@ export function CreditCardsView({
       const unusedForgettable = card.credits.filter(
         (c) => isForgettable(c.frequency) && !isUsed(card.cardKey, c.name),
       );
-      return { card, live, roi, cap, unusedForgettable };
+      return { card, live, renewal, roi, cap, unusedForgettable };
     });
 
     let out = scored;
@@ -413,13 +456,14 @@ export function CreditCardsView({
             <span>Verdict</span>
             <span className="w-4" />
           </div>
-          {rows.map(({ card, live, roi, cap, unusedForgettable }, i) => {
+          {rows.map(({ card, live, renewal, roi, cap, unusedForgettable }, i) => {
             const open = expanded === card.cardKey;
             return (
               <Fragment key={card.cardKey}>
                 <LeaderboardRow
                   card={card}
                   live={live}
+                  renewal={renewal}
                   roi={roi}
                   cap={cap}
                   currency={currency}
@@ -433,6 +477,7 @@ export function CreditCardsView({
                   <CardDetail
                     card={card}
                     live={live}
+                    renewal={renewal}
                     roi={roi}
                     cap={cap}
                     currency={currency}
@@ -487,6 +532,7 @@ export function CreditCardsView({
 function LeaderboardRow({
   card,
   live,
+  renewal,
   roi,
   cap,
   currency,
@@ -498,6 +544,7 @@ function LeaderboardRow({
 }: {
   card: CardCatalogEntry;
   live: CardLive | null;
+  renewal: RenewalInfo | null;
   roi: CardRoi;
   cap: number;
   currency: string;
@@ -509,6 +556,9 @@ function LeaderboardRow({
 }) {
   const v = VERDICT[roi.verdict];
   const pointsCash = live?.estPointsCashValue ?? 0;
+  // Renewal chip only for fee cards with a detected anniversary.
+  const showRenewal =
+    card.annualFee > 0 && renewal?.detected && renewal.daysUntil != null;
   return (
     <button
       onClick={onClick}
@@ -571,10 +621,18 @@ function LeaderboardRow({
         </div>
 
         {/* verdict */}
-        <div className="flex items-center justify-end gap-2 md:justify-start">
+        <div className="flex flex-wrap items-center justify-end gap-1.5 md:justify-start">
           <span className={`rounded-full px-2 py-0.5 text-[0.65rem] ${v.pill} ${v.text}`}>
             {v.label}
           </span>
+          {showRenewal && (
+            <span
+              className={`rounded-full px-2 py-0.5 text-[0.6rem] ${renewalTone(renewal!.daysUntil!).chip}`}
+              title={`Annual fee renews ${formatRenewalDate(renewal!.nextRenewal!)}`}
+            >
+              {renewalShort(renewal!.daysUntil!)}
+            </span>
+          )}
         </div>
         <span
           className={`hidden justify-self-end text-faint transition-transform md:block ${open ? "rotate-90" : ""}`}
@@ -641,6 +699,7 @@ type DetailTab = "credits" | "earn" | "perks" | "protections" | "partners";
 function CardDetail({
   card,
   live,
+  renewal,
   roi,
   cap,
   currency,
@@ -653,6 +712,7 @@ function CardDetail({
 }: {
   card: CardCatalogEntry;
   live: CardLive | null;
+  renewal: RenewalInfo | null;
   roi: CardRoi;
   cap: number;
   currency: string;
@@ -747,6 +807,16 @@ function CardDetail({
           Not matched to a connected account — reference details only. Net value
           assumes typical credit capture and no points.
         </p>
+      )}
+
+      {/* renewal countdown + product-change window */}
+      {card.annualFee > 0 && (
+        <RenewalBlock
+          card={card}
+          renewal={renewal}
+          roi={roi}
+          currency={currency}
+        />
       )}
 
       {/* forgotten-money callout */}
@@ -996,6 +1066,74 @@ function CardDetail({
           </p>
         </div>
       </details>
+    </div>
+  );
+}
+
+/**
+ * Renewal countdown for a fee card, plus — inside the ≤60-day product-change
+ * window — a prompt to downgrade to a no-fee card before the fee posts. Rendered
+ * only for fee cards (the caller guards `annualFee > 0`).
+ */
+function RenewalBlock({
+  card,
+  renewal,
+  roi,
+  currency,
+}: {
+  card: CardCatalogEntry;
+  renewal: RenewalInfo | null;
+  roi: CardRoi;
+  currency: string;
+}) {
+  if (!renewal?.detected || renewal.daysUntil == null || !renewal.nextRenewal) {
+    return (
+      <p className="mb-4 rounded-xl border hairline bg-surface px-4 py-2.5 text-xs text-faint">
+        Renewal date not detected yet — once an annual-fee charge posts on the
+        linked account, the countdown to your next renewal shows here.
+      </p>
+    );
+  }
+
+  const days = renewal.daysUntil;
+  const tone = renewalTone(days);
+  const fee = renewal.feeAmount ?? card.annualFee;
+  const feeStr = formatMoney(fee, currency, { cents: false });
+  const reconsider = roi.verdict === "reconsider";
+  const boxTone = tone.window
+    ? days <= 30
+      ? "border-coral/30 bg-coral/5"
+      : "border-amber-400/30 bg-amber-400/5"
+    : "hairline bg-surface";
+
+  return (
+    <div className={`mb-4 rounded-xl border px-4 py-3 ${boxTone}`}>
+      <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+        <span className={`text-sm ${tone.text}`}>
+          {days <= 0 ? "Renews today" : `Renews in ${days} ${days === 1 ? "day" : "days"}`}
+          <span className="text-faint"> · {formatRenewalDate(renewal.nextRenewal)}</span>
+        </span>
+        <span className="text-[0.65rem] text-faint">{feeStr} annual fee</span>
+      </div>
+      {tone.window && (
+        <p
+          className={`mt-1.5 text-xs ${reconsider ? `${tone.text} font-medium` : "text-cream-dim"}`}
+        >
+          {card.downgradeTo ? (
+            <>
+              Window to act: product-change/downgrade to{" "}
+              <span className="text-cream">{card.downgradeTo.displayName}</span> before
+              then to avoid the {feeStr} fee
+              {reconsider ? " — this card isn't paying for itself." : "."}
+            </>
+          ) : (
+            <>
+              Window to act: cancel or product-change before the {feeStr} fee posts
+              {reconsider ? " — this card isn't paying for itself." : "."}
+            </>
+          )}
+        </p>
+      )}
     </div>
   );
 }
