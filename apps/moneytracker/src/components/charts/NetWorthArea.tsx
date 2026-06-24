@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { NetWorthSnapshot } from "@/lib/types";
 import { formatMoney, formatCompact, formatDate } from "@/lib/format";
 
@@ -18,24 +18,28 @@ function niceTicks(min: number, max: number, count = 4) {
   return { ticks, niceMin, niceMax };
 }
 
-const shortDate = (iso: string) =>
-  new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" }).format(
-    new Date(iso + (iso.length === 10 ? "T00:00:00" : "")),
-  );
-
 const parseTime = (iso: string) =>
   new Date(iso + (iso.length === 10 ? "T00:00:00" : "")).getTime();
 
+const monthOf = (iso: string) => iso.slice(0, 7); // yyyy-mm
+
+/** Short month tick, with a year suffix in January or at the very first label. */
+function monthTick(iso: string, withYear: boolean): string {
+  const d = new Date(iso + (iso.length === 10 ? "T00:00:00" : ""));
+  const mon = new Intl.DateTimeFormat("en-US", { month: "short" }).format(d);
+  if (d.getMonth() === 0 || withYear)
+    return `${mon} ’${String(d.getFullYear()).slice(2)}`;
+  return mon;
+}
+
 /**
- * Smooth monotone-cubic path through `pts` (Fritsch–Carlson tangents). Unlike a
- * plain Catmull-Rom spline it never overshoots, so a sharp net-worth jump stays
- * truthful instead of dipping below the data.
+ * Smooth monotone-cubic path through `pts` (Fritsch–Carlson tangents) — never
+ * overshoots, so a sharp net-worth jump stays truthful.
  */
 function monotonePath(pts: readonly (readonly [number, number])[]): string {
   const n = pts.length;
   if (n < 2) return n ? `M${pts[0][0]},${pts[0][1]}` : "";
-  if (n === 2)
-    return `M${pts[0][0]},${pts[0][1]} L${pts[1][0]},${pts[1][1]}`;
+  if (n === 2) return `M${pts[0][0]},${pts[0][1]} L${pts[1][0]},${pts[1][1]}`;
 
   const xs = pts.map((p) => p[0]);
   const ys = pts.map((p) => p[1]);
@@ -47,9 +51,8 @@ function monotonePath(pts: readonly (readonly [number, number])[]): string {
   }
   const t: number[] = [slope[0]];
   for (let i = 1; i < n - 1; i++) {
-    if (slope[i - 1] * slope[i] <= 0) {
-      t[i] = 0;
-    } else {
+    if (slope[i - 1] * slope[i] <= 0) t[i] = 0;
+    else {
       const w1 = 2 * dx[i] + dx[i - 1];
       const w2 = dx[i] + 2 * dx[i - 1];
       t[i] = (w1 + w2) / (w1 / slope[i - 1] + w2 / slope[i]);
@@ -68,6 +71,23 @@ function monotonePath(pts: readonly (readonly [number, number])[]): string {
   return d;
 }
 
+/** Keep the last snapshot of each bucket (week or month) so long spans stay legible. */
+function downsample(
+  snaps: NetWorthSnapshot[],
+  cadence: "day" | "week" | "month",
+): NetWorthSnapshot[] {
+  if (cadence === "day") return snaps;
+  const last = new Map<string, NetWorthSnapshot>();
+  for (const s of snaps) {
+    const key =
+      cadence === "month"
+        ? monthOf(s.date)
+        : String(Math.floor(parseTime(s.date) / (7 * 86_400_000)));
+    last.set(key, s); // snaps are sorted, so the last write per bucket wins
+  }
+  return [...last.values()];
+}
+
 const RANGES = [
   { key: "1M", days: 30, label: "1M", phrase: "past month" },
   { key: "3M", days: 90, label: "3M", phrase: "past 3 months" },
@@ -78,44 +98,118 @@ const RANGES = [
 
 type RangeKey = (typeof RANGES)[number]["key"];
 
-/** Area line of net worth over time — interactive, with range tabs + tooltip. */
+// Per-point horizontal spacing (px) by cadence — wide enough that months read.
+const STEP: Record<"day" | "week" | "month", number> = {
+  day: 11,
+  week: 24,
+  month: 46,
+};
+
+const H = 280;
+const PAD_X = 12;
+const AXIS_W = 56;
+const M_TOP = 16;
+const M_BOTTOM = 30;
+
+/** Scrollable net-worth timeline — range tabs, fixed Y axis, month markers, hover tooltip. */
 export function NetWorthArea({
   snapshots,
   currency = "USD",
-  width = 720,
-  height = 260,
 }: {
   snapshots: NetWorthSnapshot[];
   currency?: string;
-  width?: number;
-  height?: number;
 }) {
   const svgRef = useRef<SVGSVGElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const [rangeKey, setRangeKey] = useState<RangeKey>("ALL");
   const [hover, setHover] = useState<number | null>(null);
+  const [vw, setVw] = useState(640); // measured scroll-viewport width
 
   // Which range tabs actually trim something (always offer "All").
   const ranges = useMemo(() => {
     if (snapshots.length < 2) return [];
-    const first = parseTime(snapshots[0].date);
-    const last = parseTime(snapshots[snapshots.length - 1].date);
-    const spanDays = (last - first) / 86_400_000;
-    return RANGES.filter(
-      (r) => r.key === "ALL" || (r.days < spanDays && spanDays > 0),
-    );
+    const spanDays =
+      (parseTime(snapshots[snapshots.length - 1].date) -
+        parseTime(snapshots[0].date)) /
+      86_400_000;
+    return RANGES.filter((r) => r.key === "ALL" || r.days < spanDays);
   }, [snapshots]);
 
-  const range =
-    RANGES.find((r) => r.key === rangeKey) ?? RANGES[RANGES.length - 1];
+  const range = RANGES.find((r) => r.key === rangeKey) ?? RANGES[RANGES.length - 1];
 
-  // Snapshots inside the selected window.
+  // Snapshots inside the window, then downsampled by span so the line stays clean.
   const data = useMemo(() => {
-    if (range.days === Infinity) return snapshots;
-    const last = parseTime(snapshots[snapshots.length - 1]?.date ?? "");
-    const cutoff = last - range.days * 86_400_000;
-    const win = snapshots.filter((s) => parseTime(s.date) >= cutoff);
-    return win.length >= 2 ? win : snapshots;
+    if (snapshots.length < 2) return snapshots;
+    const last = parseTime(snapshots[snapshots.length - 1].date);
+    const win =
+      range.days === Infinity
+        ? snapshots
+        : snapshots.filter(
+            (s) => parseTime(s.date) >= last - range.days * 86_400_000,
+          );
+    const scoped = win.length >= 2 ? win : snapshots;
+    const spanDays =
+      (parseTime(scoped[scoped.length - 1].date) - parseTime(scoped[0].date)) /
+      86_400_000;
+    const cadence: "day" | "week" | "month" =
+      spanDays <= 95 ? "day" : spanDays <= 740 ? "week" : "month";
+    return downsample(scoped, cadence);
   }, [snapshots, range.days]);
+
+  const cadence: "day" | "week" | "month" = useMemo(() => {
+    if (data.length < 2) return "day";
+    const spanDays =
+      (parseTime(data[data.length - 1].date) - parseTime(data[0].date)) /
+      86_400_000;
+    return spanDays <= 95 ? "day" : spanDays <= 740 ? "week" : "month";
+  }, [data]);
+
+  // Measure the scroll viewport so the plot can fill it (few points) or overflow
+  // it (many points → horizontal scroll).
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(() => setVw(el.clientWidth));
+    ro.observe(el);
+    setVw(el.clientWidth);
+    return () => ro.disconnect();
+  }, []);
+
+  const n = data.length;
+  const plotW = Math.max(vw, (n - 1) * STEP[cadence] + 2 * PAD_X);
+  const plotH = H - M_TOP - M_BOTTOM;
+
+  const values = data.map((s) => s.netWorth);
+  const { ticks, niceMin, niceMax } = niceTicks(
+    n ? Math.min(...values) : 0,
+    n ? Math.max(...values) : 1,
+  );
+  const span = niceMax - niceMin || 1;
+
+  const x = (i: number) =>
+    n <= 1 ? plotW / 2 : PAD_X + (i / (n - 1)) * (plotW - 2 * PAD_X);
+  const y = (v: number) => M_TOP + (1 - (v - niceMin) / span) * plotH;
+
+  // Auto-scroll to the most recent point whenever the range/width changes.
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (el) el.scrollLeft = el.scrollWidth;
+  }, [rangeKey, n, plotW]);
+
+  // Month boundaries → vertical gridline + label.
+  const monthMarks = useMemo(() => {
+    const marks: { x: number; label: string }[] = [];
+    let prev = "";
+    data.forEach((s, i) => {
+      const m = monthOf(s.date);
+      if (m !== prev) {
+        marks.push({ x: x(i), label: monthTick(s.date, marks.length === 0) });
+        prev = m;
+      }
+    });
+    return marks;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, plotW]);
 
   if (snapshots.length < 2) {
     return (
@@ -125,64 +219,42 @@ export function NetWorthArea({
     );
   }
 
-  const m = { top: 14, right: 18, bottom: 28, left: 60 };
-  const plotW = width - m.left - m.right;
-  const plotH = height - m.top - m.bottom;
-
-  const values = data.map((s) => s.netWorth);
-  const { ticks, niceMin, niceMax } = niceTicks(
-    Math.min(...values),
-    Math.max(...values),
-  );
-  const span = niceMax - niceMin || 1;
-
-  const x = (i: number) =>
-    m.left + (data.length === 1 ? plotW / 2 : (i / (data.length - 1)) * plotW);
-  const y = (v: number) => m.top + (1 - (v - niceMin) / span) * plotH;
-
   const pts = data.map((s, i) => [x(i), y(s.netWorth)] as const);
   const line = monotonePath(pts);
-  const baseY = m.top + plotH;
-  const area = `${line} L${pts[pts.length - 1][0]},${baseY} L${pts[0][0]},${baseY} Z`;
+  const baseY = M_TOP + plotH;
+  const area = `${line} L${pts[n - 1][0]},${baseY} L${pts[0][0]},${baseY} Z`;
 
-  // Period change across the visible window.
   const startV = data[0].netWorth;
-  const endV = data[data.length - 1].netWorth;
+  const endV = data[n - 1].netWorth;
   const delta = endV - startV;
   const pct = startV > 0 ? (delta / startV) * 100 : null;
   const up = delta >= 0;
 
-  // X labels: first, last, and evenly spaced in between (~5 max).
-  const maxLabels = 5;
-  const stride = Math.max(1, Math.ceil((data.length - 1) / (maxLabels - 1)));
-  const xLabelIdx = new Set<number>([data.length - 1]);
-  for (let i = 0; i < data.length; i += stride) xLabelIdx.add(i);
-
-  const hi = hover == null ? null : Math.min(hover, data.length - 1);
-  const active = hi ?? data.length - 1; // emphasized point (hover, else latest)
+  const hi = hover == null ? null : Math.min(hover, n - 1);
+  const active = hi ?? n - 1;
+  const showDots = n <= 60;
 
   function moveTo(clientX: number) {
     const svg = svgRef.current;
     if (!svg) return;
     const rect = svg.getBoundingClientRect();
-    const px = ((clientX - rect.left) / rect.width) * width;
-    let i = Math.round(((px - m.left) / plotW) * (data.length - 1));
-    i = Math.max(0, Math.min(data.length - 1, i));
+    const px = clientX - rect.left;
+    let i = Math.round(((px - PAD_X) / (plotW - 2 * PAD_X)) * (n - 1));
+    i = Math.max(0, Math.min(n - 1, i));
     setHover(i);
   }
 
-  const tipPct = Math.min(88, Math.max(12, (x(active) / width) * 100));
   const tip = data[active];
+  const tipLeft = Math.min(plotW - 90, Math.max(90, x(active)));
 
   return (
     <div>
       {/* Controls: period change · range tabs */}
       <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-baseline gap-2 text-sm">
-          <span
-            className={`tnum font-medium ${up ? "text-blue" : "text-coral"}`}
-          >
-            {up ? "▲" : "▼"} {formatMoney(delta, currency, { sign: true, cents: false })}
+          <span className={`tnum font-medium ${up ? "text-blue" : "text-coral"}`}>
+            {up ? "▲" : "▼"}{" "}
+            {formatMoney(delta, currency, { sign: true, cents: false })}
           </span>
           {pct != null && (
             <span className={`tnum text-xs ${up ? "text-blue" : "text-coral"}`}>
@@ -190,7 +262,10 @@ export function NetWorthArea({
               {Math.abs(pct).toFixed(1)}%
             </span>
           )}
-          <span className="text-xs text-muted">· {range.phrase}</span>
+          <span className="text-xs text-muted">
+            · {range.phrase}
+            {cadence !== "day" ? ` · ${cadence}ly` : ""}
+          </span>
         </div>
 
         {ranges.length > 1 && (
@@ -220,173 +295,196 @@ export function NetWorthArea({
         )}
       </div>
 
-      <div
-        className="relative"
-        onMouseMove={(e) => moveTo(e.clientX)}
-        onMouseLeave={() => setHover(null)}
-        onTouchStart={(e) => moveTo(e.touches[0].clientX)}
-        onTouchMove={(e) => moveTo(e.touches[0].clientX)}
-        onTouchEnd={() => setHover(null)}
-      >
+      <div className="flex">
+        {/* Fixed Y axis — stays put while the plot scrolls */}
         <svg
-          ref={svgRef}
-          viewBox={`0 0 ${width} ${height}`}
-          className="w-full touch-none select-none"
-          role="img"
-          aria-label={`Net worth over time. ${formatMoney(endV, currency, {
-            cents: false,
-          })} now, ${up ? "up" : "down"} ${formatMoney(delta, currency, {
-            cents: false,
-          })} ${range.phrase}.`}
+          width={AXIS_W}
+          height={H}
+          className="shrink-0"
+          aria-hidden
+          style={{ overflow: "visible" }}
         >
-          <defs>
-            <linearGradient id="nwfill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="var(--color-blue)" stopOpacity="0.26" />
-              <stop offset="55%" stopColor="var(--color-blue)" stopOpacity="0.08" />
-              <stop offset="100%" stopColor="var(--color-blue)" stopOpacity="0" />
-            </linearGradient>
-            <linearGradient id="nwline" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor="var(--color-blue-deep)" />
-              <stop offset="100%" stopColor="var(--color-blue)" />
-            </linearGradient>
-          </defs>
-
-          {/* Y gridlines + labels */}
-          {ticks.map((v, i) => {
-            const gy = y(v);
-            const zero = Math.abs(v) < 1e-6;
-            return (
-              <g key={`y${i}`}>
-                <line
-                  x1={m.left}
-                  x2={width - m.right}
-                  y1={gy}
-                  y2={gy}
-                  stroke={zero ? "var(--color-line-2)" : "var(--color-line)"}
-                  strokeWidth={1}
-                  strokeDasharray={zero ? undefined : "2 5"}
-                />
-                <text
-                  x={m.left - 10}
-                  y={gy}
-                  textAnchor="end"
-                  dominantBaseline="central"
-                  fill="var(--color-faint)"
-                  className="tnum"
-                  fontSize={11}
-                >
-                  {formatCompact(v, currency)}
-                </text>
-              </g>
-            );
-          })}
-
-          <path d={area} fill="url(#nwfill)" />
-          <path
-            d={line}
-            fill="none"
-            stroke="url(#nwline)"
-            strokeWidth={2.25}
-            strokeLinejoin="round"
-            strokeLinecap="round"
-          />
-
-          {/* X labels */}
-          {[...xLabelIdx]
-            .sort((a, b) => a - b)
-            .map((i) => {
-              const isFirst = i === 0;
-              const isLast = i === data.length - 1;
-              return (
-                <text
-                  key={`x${i}`}
-                  x={x(i)}
-                  y={height - 8}
-                  textAnchor={isFirst ? "start" : isLast ? "end" : "middle"}
-                  fill="var(--color-faint)"
-                  fontSize={11}
-                >
-                  {shortDate(data[i].date)}
-                </text>
-              );
-            })}
-
-          {/* Quiet dot per snapshot */}
-          {pts.map((p, i) => (
-            <circle
+          {ticks.map((v, i) => (
+            <text
               key={i}
-              cx={p[0]}
-              cy={p[1]}
-              r={i === active ? 0 : 2}
-              fill="var(--color-blue)"
-              opacity={0.45}
-            />
+              x={AXIS_W - 8}
+              y={y(v)}
+              textAnchor="end"
+              dominantBaseline="central"
+              fill="var(--color-faint)"
+              className="tnum"
+              fontSize={11}
+            >
+              {formatCompact(v, currency)}
+            </text>
           ))}
-
-          {/* Crosshair + emphasized point */}
-          {hi != null && (
-            <line
-              x1={x(hi)}
-              x2={x(hi)}
-              y1={m.top}
-              y2={baseY}
-              stroke="var(--color-line-2)"
-              strokeWidth={1}
-              strokeDasharray="3 4"
-            />
-          )}
-          <circle
-            cx={x(active)}
-            cy={y(data[active].netWorth)}
-            r={7}
-            fill="var(--color-blue)"
-            opacity={0.16}
-          >
-            {hi == null && (
-              <animate
-                attributeName="r"
-                values="6;10;6"
-                dur="2.4s"
-                repeatCount="indefinite"
-              />
-            )}
-          </circle>
-          <circle
-            cx={x(active)}
-            cy={y(data[active].netWorth)}
-            r={4}
-            fill="var(--color-blue)"
-            stroke="var(--color-surface)"
-            strokeWidth={2}
-          />
         </svg>
 
-        {/* Tooltip rides horizontally above the hovered point */}
-        {hi != null && (
+        {/* Scrollable plot */}
         <div
-          className="pointer-events-none absolute top-0 z-10 -translate-x-1/2"
-          style={{ left: `${tipPct}%` }}
+          ref={scrollRef}
+          className="relative flex-1 overflow-x-auto overflow-y-hidden"
+          style={{ scrollbarWidth: "thin" }}
         >
-          <div className="rounded-xl border hairline bg-[var(--color-surface)] px-3 py-2 shadow-lg shadow-black/5">
-            <div className="text-[11px] font-medium text-muted">
-              {formatDate(tip.date)}
-            </div>
-            <div className="tnum mt-0.5 text-base font-medium text-cream">
-              {formatMoney(tip.netWorth, currency, { cents: false })}
-            </div>
-            <div className="mt-1 flex gap-3 text-[11px]">
-              <span className="tnum text-blue">
-                {formatMoney(tip.totalAssets, currency, { cents: false })}
-                <span className="ml-1 text-muted">assets</span>
-              </span>
-              <span className="tnum text-coral">
-                {formatMoney(tip.totalLiabilities, currency, { cents: false })}
-                <span className="ml-1 text-muted">owed</span>
-              </span>
-            </div>
+          <div className="relative" style={{ width: plotW, height: H }}>
+            <svg
+              ref={svgRef}
+              width={plotW}
+              height={H}
+              className="block select-none"
+              role="img"
+              aria-label={`Net worth over time. ${formatMoney(endV, currency, {
+                cents: false,
+              })} now, ${up ? "up" : "down"} ${formatMoney(delta, currency, {
+                cents: false,
+              })} ${range.phrase}.`}
+              onMouseMove={(e) => moveTo(e.clientX)}
+              onMouseLeave={() => setHover(null)}
+              onTouchStart={(e) => moveTo(e.touches[0].clientX)}
+              onTouchEnd={() => setHover(null)}
+            >
+              <defs>
+                <linearGradient id="nwfill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="var(--color-blue)" stopOpacity="0.26" />
+                  <stop offset="55%" stopColor="var(--color-blue)" stopOpacity="0.08" />
+                  <stop offset="100%" stopColor="var(--color-blue)" stopOpacity="0" />
+                </linearGradient>
+                <linearGradient id="nwline" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stopColor="var(--color-blue-deep)" />
+                  <stop offset="100%" stopColor="var(--color-blue)" />
+                </linearGradient>
+              </defs>
+
+              {/* Horizontal gridlines */}
+              {ticks.map((v, i) => {
+                const gy = y(v);
+                const zero = Math.abs(v) < 1e-6;
+                return (
+                  <line
+                    key={`g${i}`}
+                    x1={0}
+                    x2={plotW}
+                    y1={gy}
+                    y2={gy}
+                    stroke={zero ? "var(--color-line-2)" : "var(--color-line)"}
+                    strokeWidth={1}
+                    strokeDasharray={zero ? undefined : "2 5"}
+                  />
+                );
+              })}
+
+              {/* Month gridlines + labels */}
+              {monthMarks.map((mk, i) => (
+                <g key={`m${i}`}>
+                  <line
+                    x1={mk.x}
+                    x2={mk.x}
+                    y1={M_TOP}
+                    y2={baseY}
+                    stroke="var(--color-line)"
+                    strokeWidth={1}
+                    strokeDasharray="2 6"
+                    opacity={0.6}
+                  />
+                  <text
+                    x={mk.x + 4}
+                    y={H - 9}
+                    fill="var(--color-faint)"
+                    fontSize={11}
+                  >
+                    {mk.label}
+                  </text>
+                </g>
+              ))}
+
+              <path d={area} fill="url(#nwfill)" />
+              <path
+                d={line}
+                fill="none"
+                stroke="url(#nwline)"
+                strokeWidth={2.25}
+                strokeLinejoin="round"
+                strokeLinecap="round"
+              />
+
+              {showDots &&
+                pts.map((p, i) => (
+                  <circle
+                    key={i}
+                    cx={p[0]}
+                    cy={p[1]}
+                    r={i === active ? 0 : 2}
+                    fill="var(--color-blue)"
+                    opacity={0.4}
+                  />
+                ))}
+
+              {/* Crosshair + emphasized point */}
+              {hi != null && (
+                <line
+                  x1={x(hi)}
+                  x2={x(hi)}
+                  y1={M_TOP}
+                  y2={baseY}
+                  stroke="var(--color-line-2)"
+                  strokeWidth={1}
+                  strokeDasharray="3 4"
+                />
+              )}
+              <circle
+                cx={x(active)}
+                cy={y(data[active].netWorth)}
+                r={7}
+                fill="var(--color-blue)"
+                opacity={0.16}
+              >
+                {hi == null && (
+                  <animate
+                    attributeName="r"
+                    values="6;10;6"
+                    dur="2.4s"
+                    repeatCount="indefinite"
+                  />
+                )}
+              </circle>
+              <circle
+                cx={x(active)}
+                cy={y(data[active].netWorth)}
+                r={4}
+                fill="var(--color-blue)"
+                stroke="var(--color-surface)"
+                strokeWidth={2}
+              />
+            </svg>
+
+            {/* Tooltip rides with the plot (scrolls together) */}
+            {hi != null && (
+              <div
+                className="pointer-events-none absolute top-0 z-10 -translate-x-1/2"
+                style={{ left: tipLeft }}
+              >
+                <div className="rounded-xl border hairline bg-[var(--color-surface)] px-3 py-2 shadow-lg shadow-black/5">
+                  <div className="text-[11px] font-medium text-muted">
+                    {formatDate(tip.date)}
+                  </div>
+                  <div className="tnum mt-0.5 text-base font-medium text-cream">
+                    {formatMoney(tip.netWorth, currency, { cents: false })}
+                  </div>
+                  <div className="mt-1 flex gap-3 text-[11px]">
+                    <span className="tnum text-blue">
+                      {formatMoney(tip.totalAssets, currency, { cents: false })}
+                      <span className="ml-1 text-muted">assets</span>
+                    </span>
+                    <span className="tnum text-coral">
+                      {formatMoney(tip.totalLiabilities, currency, { cents: false })}
+                      <span className="ml-1 text-muted">owed</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
-        )}
       </div>
     </div>
   );
