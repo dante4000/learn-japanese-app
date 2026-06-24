@@ -986,6 +986,85 @@ export function groupAccounts(state: AppState): {
   return { assets, liabilities };
 }
 
+/** Today as yyyy-mm-dd in the app's configured timezone (UTC fallback). */
+export function todayKey(): string {
+  const tz = process.env.APP_TIMEZONE;
+  if (!tz) return new Date().toISOString().slice(0, 10);
+  try {
+    // en-CA formats as yyyy-mm-dd.
+    return new Intl.DateTimeFormat("en-CA", {
+      timeZone: tz,
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    }).format(new Date());
+  } catch {
+    return new Date().toISOString().slice(0, 10);
+  }
+}
+
+/**
+ * Reconstruct a daily net-worth history from transaction flow, anchored to the
+ * current balances. Plaid only records a point-in-time balance, so we walk the
+ * posted transactions backward from "now": each transaction moved net worth by
+ * `−amount` (positive amount = outflow), independent of account type. Asset and
+ * liability sides are tracked separately so the tooltip's assets/owed stay real.
+ *
+ * Real recorded snapshots (which capture exact balances + manual-entry timing)
+ * take precedence on any date they exist; the reconstruction fills everything
+ * before them, giving the chart months — often a year+ — of history immediately.
+ */
+export function netWorthHistory(state: AppState, today: string): NetWorthSnapshot[] {
+  const nw = computeNetWorth(state);
+  const liabAccts = new Set(
+    state.accounts.filter((a) => LIABILITY_TYPES.has(a.type)).map((a) => a.id),
+  );
+
+  // Net per-day flow, split by asset vs liability side.
+  const dayAsset = new Map<string, number>();
+  const dayLiab = new Map<string, number>();
+  for (const t of state.transactions) {
+    if (t.pending || isSyntheticBaseline(t)) continue;
+    const bucket = liabAccts.has(t.accountId) ? dayLiab : dayAsset;
+    bucket.set(t.date, (bucket.get(t.date) ?? 0) + t.amount);
+  }
+
+  const dates = [...new Set([...dayAsset.keys(), ...dayLiab.keys()])].sort();
+  if (dates.length === 0) return state.snapshots;
+
+  // Walk backward accumulating the flow that happened *after* each date, so each
+  // point reflects end-of-day balances on that date.
+  const byDate = new Map<string, NetWorthSnapshot>();
+  let aFut = 0;
+  let lFut = 0;
+  for (let i = dates.length - 1; i >= 0; i--) {
+    const d = dates[i];
+    const totalAssets = nw.totalAssets + aFut;
+    const totalLiabilities = nw.totalLiabilities - lFut;
+    byDate.set(d, {
+      date: d,
+      totalAssets,
+      totalLiabilities,
+      netWorth: totalAssets - totalLiabilities,
+    });
+    aFut += dayAsset.get(d) ?? 0;
+    lFut += dayLiab.get(d) ?? 0;
+  }
+
+  // Pin the latest point to today's actual figures.
+  byDate.set(today, {
+    date: today,
+    totalAssets: nw.totalAssets,
+    totalLiabilities: nw.totalLiabilities,
+    netWorth: nw.netWorth,
+  });
+
+  // Real snapshots win on the dates they cover (exact balances, manual entries).
+  for (const s of state.snapshots) byDate.set(s.date, s);
+
+  return [...byDate.values()].sort((a, b) => a.date.localeCompare(b.date));
+}
+
 /** Append today's net-worth point to the snapshot series (idempotent per day). */
 export function recordSnapshot(state: AppState, today: string): void {
   const nw = computeNetWorth(state);

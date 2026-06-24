@@ -7,6 +7,8 @@ import {
   topMerchants,
   currentMonthKey,
   isSyntheticBaseline,
+  netWorthHistory,
+  todayKey,
   LIABILITY_TYPES,
 } from "@/lib/analytics";
 import { categoryMeta, resolveCategoryKey } from "@/lib/categories";
@@ -33,6 +35,7 @@ export default async function OverviewPage() {
 
   const s = summarize(state);
   const month = currentMonthKey(state);
+  const history = netWorthHistory(state, todayKey());
   const cur = s.netWorth.currency;
   const categories = spendingByCategory(state, month);
   const cashflow = cashFlowDetail(state, 6);
@@ -112,7 +115,7 @@ export default async function OverviewPage() {
               </div>
             </div>
             <div className="mt-6">
-              <NetWorthArea snapshots={state.snapshots} currency={cur} />
+              <NetWorthArea snapshots={history} currency={cur} />
             </div>
           </>
         )}

@@ -1,7 +1,7 @@
 import { Item, ItemBundle, Transaction } from "./types";
 import { SyncResult } from "./providers/types";
 import { plaidSync } from "./providers/plaid";
-import { recordSnapshot } from "./analytics";
+import { recordSnapshot, todayKey } from "./analytics";
 import {
   loadItemBundle,
   saveItemBundle,
@@ -102,22 +102,6 @@ export async function syncOneItem(item: Item): Promise<ItemSyncOutcome> {
  * Today's date as yyyy-mm-dd, in APP_TIMEZONE if set (otherwise UTC). Without
  * this, an evening sync in the US records the snapshot under tomorrow's date.
  */
-function todayKey(): string {
-  const tz = process.env.APP_TIMEZONE;
-  if (!tz) return new Date().toISOString().slice(0, 10);
-  try {
-    // en-CA formats as yyyy-mm-dd.
-    return new Intl.DateTimeFormat("en-CA", {
-      timeZone: tz,
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-    }).format(new Date());
-  } catch {
-    return new Date().toISOString().slice(0, 10);
-  }
-}
-
 /** Recompute today's net-worth snapshot from the full (merged) state. */
 export async function updateSnapshot(): Promise<void> {
   const state = await loadState();
