@@ -234,6 +234,25 @@ export function NetWorthArea({
   const active = hi ?? n - 1;
   const showDots = n <= 60;
 
+  // Peak / trough within the visible window (skip if they land on the endpoint,
+  // which already carries the live marker).
+  let lo = 0;
+  let peak = 0;
+  data.forEach((s, i) => {
+    if (s.netWorth < data[lo].netWorth) lo = i;
+    if (s.netWorth > data[peak].netWorth) peak = i;
+  });
+  const extremes =
+    n >= 4
+      ? [
+          { i: peak, kind: "peak" as const },
+          { i: lo, kind: "low" as const },
+        ].filter((e) => e.i !== n - 1 && e.i !== active)
+      : [];
+
+  // Remount the line/area when the window changes so the reveal animation replays.
+  const revealKey = `${rangeKey}-${n}`;
+
   function moveTo(clientX: number) {
     const svg = svgRef.current;
     if (!svg) return;
@@ -397,15 +416,40 @@ export function NetWorthArea({
                 </g>
               ))}
 
-              <path d={area} fill="url(#nwfill)" />
+              <path key={`a-${revealKey}`} d={area} fill="url(#nwfill)" opacity={0}>
+                <animate
+                  attributeName="opacity"
+                  from="0"
+                  to="1"
+                  dur="0.5s"
+                  begin="0.35s"
+                  fill="freeze"
+                />
+              </path>
               <path
+                key={`l-${revealKey}`}
                 d={line}
                 fill="none"
                 stroke="url(#nwline)"
                 strokeWidth={2.25}
                 strokeLinejoin="round"
                 strokeLinecap="round"
-              />
+                pathLength={1}
+                strokeDasharray={1}
+                strokeDashoffset={1}
+              >
+                <animate
+                  attributeName="stroke-dashoffset"
+                  from="1"
+                  to="0"
+                  dur="0.85s"
+                  begin="0s"
+                  calcMode="spline"
+                  keySplines="0.4 0 0.2 1"
+                  keyTimes="0;1"
+                  fill="freeze"
+                />
+              </path>
 
               {showDots &&
                 pts.map((p, i) => (
@@ -418,6 +462,37 @@ export function NetWorthArea({
                     opacity={0.4}
                   />
                 ))}
+
+              {/* Peak / trough markers for the visible window */}
+              {hi == null &&
+                extremes.map((e) => {
+                  const px = x(e.i);
+                  const py = y(data[e.i].netWorth);
+                  const above = e.kind === "peak";
+                  return (
+                    <g key={e.kind} opacity={0.85}>
+                      <circle
+                        cx={px}
+                        cy={py}
+                        r={2.5}
+                        fill="var(--color-surface)"
+                        stroke={above ? "var(--color-blue)" : "var(--color-faint)"}
+                        strokeWidth={1.5}
+                      />
+                      <text
+                        x={px}
+                        y={above ? py - 9 : py + 15}
+                        textAnchor="middle"
+                        fill={above ? "var(--color-blue)" : "var(--color-faint)"}
+                        className="tnum"
+                        fontSize={10}
+                        fontWeight={600}
+                      >
+                        {formatCompact(data[e.i].netWorth, currency)}
+                      </text>
+                    </g>
+                  );
+                })}
 
               {/* Crosshair + emphasized point */}
               {hi != null && (
@@ -467,8 +542,21 @@ export function NetWorthArea({
                   <div className="text-[11px] font-medium text-muted">
                     {formatDate(tip.date)}
                   </div>
-                  <div className="tnum mt-0.5 text-base font-medium text-cream">
-                    {formatMoney(tip.netWorth, currency, { cents: false })}
+                  <div className="tnum mt-0.5 flex items-baseline gap-2">
+                    <span className="text-base font-medium text-cream">
+                      {formatMoney(tip.netWorth, currency, { cents: false })}
+                    </span>
+                    {(() => {
+                      const d = tip.netWorth - startV;
+                      if (active === 0 || Math.abs(d) < 1) return null;
+                      const u = d >= 0;
+                      return (
+                        <span className={`text-[11px] ${u ? "text-blue" : "text-coral"}`}>
+                          {u ? "▲" : "▼"}{" "}
+                          {formatMoney(d, currency, { sign: true, cents: false })}
+                        </span>
+                      );
+                    })()}
                   </div>
                   <div className="mt-1 flex gap-3 text-[11px]">
                     <span className="tnum text-blue">
