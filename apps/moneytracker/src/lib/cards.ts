@@ -66,8 +66,14 @@ export interface CardCredit {
   /** Fraction a typical engaged user realistically captures (0–1). Also the
    *  default for the "I use this" toggle (≥0.5 → on by default). */
   realisticCaptureRate: number;
-  /** Lowercased merchant/category hints — for future auto-detection from txns. */
+  /** Lowercased merchant/category hints matched against the triggering *charge*
+   *  (an outflow), for credits whose purchase names the credit (DoorDash, Lyft…). */
   detectHints?: string[];
+  /** Lowercased hints matched against the Chase statement-credit *posting* (an
+   *  inflow). Use for credits whose triggering charge is unrecognizable — e.g.
+   *  Exclusive Tables, where the bill posts as the restaurant but Chase's credit
+   *  line names the benefit. A matched inflow counts as the credit captured. */
+  creditPostHints?: string[];
 }
 
 export interface CardPerk {
@@ -197,7 +203,10 @@ export const CARD_CATALOG: CardCatalogEntry[] = [
         howToUse:
           "$150 per half-year on the full bill when you book a reservation via Sapphire Reserve Exclusive Tables on OpenTable.",
         realisticCaptureRate: 0.45,
+        // The dining charge posts as the restaurant — only Chase's credit line
+        // names the benefit, so detect it from the statement-credit inflow.
         detectHints: ["opentable", "exclusive tables"],
+        creditPostHints: ["exclusive tables"],
       },
       {
         name: "StubHub / viagogo credit",
@@ -1178,9 +1187,10 @@ function creditPeriod(
 
 /**
  * Detect, per credit on a card, whether the user has actually tapped it — by
- * matching the credit's detectHints against spend on its linked account. Returns
- * one CreditUsage per credit, in catalog order. Pure: derived entirely from the
- * synced transaction set, so it stays current automatically.
+ * matching the credit's detectHints against spend (the triggering charge) and
+ * its creditPostHints against inflows (Chase's statement-credit posting) on the
+ * linked account. Returns one CreditUsage per credit, in catalog order. Pure:
+ * derived entirely from the synced transaction set, so it stays current.
  */
 export function detectCreditUsage(
   state: AppState,
@@ -1191,19 +1201,25 @@ export function detectCreditUsage(
   const window12 = monthsBefore(anchor, 12);
   const neutralized = refundMatchedIds(state);
 
-  // This account's posted spend, with a precomputed lowercased haystack.
-  const accountTxns = state.transactions
-    .filter((t) => t.accountId === accountId && isSpend(t, neutralized))
-    .map((t) => ({
-      t,
-      hay: `${t.merchantName ?? ""} ${t.name} ${t.categoryPrimary} ${t.categoryDetailed ?? ""}`.toLowerCase(),
-    }));
+  const hay = (t: Transaction) =>
+    `${t.merchantName ?? ""} ${t.name} ${t.categoryPrimary} ${t.categoryDetailed ?? ""}`.toLowerCase();
+
+  // Posted activity on this account, never-pending/never-hidden, refunds aside.
+  const live = state.transactions.filter(
+    (t) => t.accountId === accountId && !t.hidden && !t.pending && !neutralized.has(t.id),
+  );
+  // Triggering charges (outflows) matched by detectHints.
+  const spend = live.filter((t) => isSpend(t, neutralized)).map((t) => ({ t, hay: hay(t) }));
+  // Statement-credit postings (inflows) matched by creditPostHints — Chase's
+  // credit line, the only place some credits (Exclusive Tables) are nameable.
+  const inflows = live.filter((t) => t.amount < 0).map((t) => ({ t, hay: hay(t) }));
 
   return card.credits.map((credit) => {
-    const hints = credit.detectHints ?? [];
+    const spendHints = credit.detectHints ?? [];
+    const postHints = credit.creditPostHints ?? [];
     const { start: periodStart, label: periodLabel } = creditPeriod(credit.frequency, anchor);
 
-    if (hints.length === 0) {
+    if (spendHints.length === 0 && postHints.length === 0) {
       return {
         creditName: credit.name,
         usedThisPeriod: false,
@@ -1223,18 +1239,23 @@ export function detectCreditUsage(
     let lastDate: string | null = null;
     let matchedMerchant: string | null = null;
 
-    for (const { t, hay } of accountTxns) {
-      if (!hints.some((h) => hay.includes(h))) continue;
+    // `magnitude` is the positive dollar amount this match contributes: the
+    // charge amount for spend, the credited amount for an inflow posting.
+    const tally = (t: Transaction, h: string, hints: string[], magnitude: number) => {
+      if (hints.length === 0 || !hints.some((hint) => h.includes(hint))) return;
       if (t.date >= window12) {
-        captured12 += t.amount;
+        captured12 += magnitude;
         count12mo += 1;
       }
-      if (t.date >= periodStart) periodSpend += t.amount;
+      if (t.date >= periodStart) periodSpend += magnitude;
       if (!lastDate || t.date > lastDate) {
         lastDate = t.date;
         matchedMerchant = t.merchantName ?? t.name;
       }
-    }
+    };
+
+    for (const { t, hay } of spend) tally(t, hay, spendHints, t.amount);
+    for (const { t, hay } of inflows) tally(t, hay, postHints, -t.amount);
 
     return {
       creditName: credit.name,
