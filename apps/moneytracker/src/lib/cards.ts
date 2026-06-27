@@ -1269,6 +1269,12 @@ export interface RenewalInfo {
   daysUntil: number | null;
   /** The matched charge amount — lets the UI show the real (possibly legacy) fee. */
   feeAmount: number | null;
+  /**
+   * Card expiry as "MM/YY", inferred from the annual-fee cadence: the fee posts
+   * on the account anniversary, so the card's current term runs out then. Month
+   * comes from the fee charge, year from the next renewal. Null when undetected.
+   */
+  expiry: string | null;
 }
 
 const DEFAULT_FEE_HINTS = ["annual membership fee", "annual fee", "membership fee"];
@@ -1310,6 +1316,7 @@ export function detectRenewal(
     nextRenewal: null,
     daysUntil: null,
     feeAmount: null,
+    expiry: null,
   };
   if (card.annualFee === 0) return empty;
 
@@ -1337,11 +1344,15 @@ export function detectRenewal(
   const chosen = pool.reduce((a, b) => (b.date > a.date ? b : a));
 
   const nextRenewal = nextAnniversary(chosen.date, todayISO);
+  // Expiry MM/YY: month from the fee charge (the anniversary), year from the
+  // upcoming renewal — the term the current card is paid through.
+  const expiry = `${chosen.date.slice(5, 7)}/${nextRenewal.slice(2, 4)}`;
   return {
     detected: true,
     lastChargeDate: chosen.date,
     nextRenewal,
     daysUntil: daysBetween(todayISO, nextRenewal),
     feeAmount: chosen.amount,
+    expiry,
   };
 }

@@ -633,6 +633,14 @@ function LeaderboardRow({
               {renewalShort(renewal!.daysUntil!)}
             </span>
           )}
+          {showRenewal && renewal!.expiry && (
+            <span
+              className="rounded-full bg-surface-2 px-2 py-0.5 text-[0.6rem] text-faint"
+              title={`Card term runs through ${formatRenewalDate(renewal!.nextRenewal!)}`}
+            >
+              Exp {renewal!.expiry}
+            </span>
+          )}
         </div>
         <span
           className={`hidden justify-self-end text-faint transition-transform md:block ${open ? "rotate-90" : ""}`}
@@ -1115,6 +1123,16 @@ function RenewalBlock({
         </span>
         <span className="text-[0.65rem] text-faint">{feeStr} annual fee</span>
       </div>
+      {renewal.expiry && (
+        <div className="mt-1.5 flex items-center gap-2 border-t hairline pt-1.5 text-xs">
+          <span className="tnum rounded-md bg-surface-2 px-2 py-0.5 font-medium text-cream-dim">
+            Expires {renewal.expiry}
+          </span>
+          <span className="text-[0.65rem] text-faint">
+            card term, from the annual-fee anniversary
+          </span>
+        </div>
+      )}
       {tone.window && (
         <p
           className={`mt-1.5 text-xs ${reconsider ? `${tone.text} font-medium` : "text-cream-dim"}`}
