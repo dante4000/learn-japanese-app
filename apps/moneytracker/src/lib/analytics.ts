@@ -830,9 +830,16 @@ export function detectRecurringStreams(state: AppState): RecurringStream[] {
   const today = todayKey();
   const neutralized = refundMatchedIds(state);
 
-  // account + normalized-merchant keys Plaid already covers — never duplicate.
+  // account + normalized-merchant keys Plaid already covers with a *shown*
+  // stream — never duplicate those. We deliberately ignore Plaid streams that
+  // get filtered out as transfers: Plaid sometimes mislabels a real
+  // subscription's stream category as TRANSFER_OUT (e.g. "MASSIVE.COM DATA API"
+  // whose transactions are GENERAL_SERVICES), which hides it everywhere. Letting
+  // those through here means our detector — which reads the category from the
+  // actual transactions — can recover them.
   const plaidKeys = new Set<string>();
   for (const r of state.recurring) {
+    if (isTransferStream(r)) continue;
     const m = normalizeMerchant(r.merchantName || r.description || "");
     if (m) plaidKeys.add(`${r.accountId}:${m}`);
   }
