@@ -2,7 +2,12 @@ import { loadScopedState } from "@/lib/scoped-state";
 import { RecurringStream } from "@/lib/types";
 import { categoryMeta } from "@/lib/categories";
 import { displayPayee } from "@/lib/aliases";
-import { upcomingBills, reimbursedStreams, isTransferStream } from "@/lib/analytics";
+import {
+  upcomingBills,
+  reimbursedStreams,
+  isTransferStream,
+  allRecurringStreams,
+} from "@/lib/analytics";
 import { formatMoney, formatDate } from "@/lib/format";
 import { UpcomingBills } from "@/components/UpcomingBills";
 import { PeriodToggle } from "@/components/PeriodToggle";
@@ -56,6 +61,14 @@ function StreamRow({
               className="shrink-0 rounded bg-blue/15 px-1.5 py-0.5 text-[0.6rem] text-blue"
             >
               ↩ reimbursed
+            </span>
+          )}
+          {s.inferred && (
+            <span
+              title="Detected by our own pattern analysis — Plaid didn't flag this one"
+              className="shrink-0 rounded bg-slate/15 px-1.5 py-0.5 text-[0.6rem] text-slate"
+            >
+              detected
             </span>
           )}
         </div>
@@ -114,10 +127,12 @@ export default async function RecurringPage({
   // (often as both an outflow AND inflow) — exclude so they aren't shown as
   // fake subscriptions/income. isTransferStream is the same predicate the
   // bills timeline and spending totals use.
-  const subs = state.recurring
+  // Plaid's streams plus everything our own detector recovered that Plaid missed.
+  const streams = allRecurringStreams(state);
+  const subs = streams
     .filter((s) => s.type === "outflow" && !isTransferStream(s))
     .sort((a, b) => monthlyEquivalent(b) - monthlyEquivalent(a));
-  const income = state.recurring
+  const income = streams
     .filter((s) => s.type === "inflow" && !isTransferStream(s))
     .sort((a, b) => monthlyEquivalent(b) - monthlyEquivalent(a));
 
@@ -152,7 +167,7 @@ export default async function RecurringPage({
         </div>
       </div>
 
-      {state.recurring.length === 0 && state.baselines.length === 0 ? (
+      {streams.length === 0 && state.baselines.length === 0 ? (
         <SectionCard>
           <p className="py-10 text-center text-sm text-muted">
             Recurring detection needs ~180 days of Plaid history. It populates as

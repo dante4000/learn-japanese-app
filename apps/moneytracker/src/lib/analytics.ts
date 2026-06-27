@@ -4,6 +4,7 @@ import {
   Transaction,
   NetWorthSnapshot,
   RecurringStream,
+  RecurringFrequency,
 } from "./types";
 import {
   TRANSFER_CATEGORIES,
@@ -794,6 +795,137 @@ function dayDiff(from: string, to: string): number {
   );
 }
 
+function median(nums: number[]): number {
+  if (nums.length === 0) return 0;
+  const s = [...nums].sort((a, b) => a - b);
+  const mid = Math.floor(s.length / 2);
+  return s.length % 2 ? s[mid] : (s[mid - 1] + s[mid]) / 2;
+}
+
+/** Map a typical day-gap to a Plaid-style cadence, or null if it's not a clean one. */
+function cadenceFromGap(
+  days: number,
+): { freq: RecurringFrequency; interval: number } | null {
+  if (days >= 6 && days <= 8) return { freq: "WEEKLY", interval: 7 };
+  if (days >= 12 && days <= 16) return { freq: "BIWEEKLY", interval: 14 };
+  if (days >= 26 && days <= 35) return { freq: "MONTHLY", interval: 30 };
+  if (days >= 350 && days <= 385) return { freq: "ANNUALLY", interval: 365 };
+  return null; // bimonthly/quarterly have no enum — skip rather than mislabel
+}
+
+const recurDetectCache = new WeakMap<Transaction[], RecurringStream[]>();
+
+/**
+ * Our own recurring detector — a fallback for everything Plaid's recurring
+ * product misses (short history, too few occurrences, slightly inconsistent
+ * naming). Groups posted, non-transfer transactions by account + normalized
+ * merchant, then promotes a group to a stream when it shows a regular cadence
+ * and steady amount. Streams Plaid already supplies are skipped, so this only
+ * ADDS what's missing. Pure + memoized per transactions array.
+ */
+export function detectRecurringStreams(state: AppState): RecurringStream[] {
+  const cached = recurDetectCache.get(state.transactions);
+  if (cached) return cached;
+
+  const today = todayKey();
+  const neutralized = refundMatchedIds(state);
+
+  // account + normalized-merchant keys Plaid already covers — never duplicate.
+  const plaidKeys = new Set<string>();
+  for (const r of state.recurring) {
+    const m = normalizeMerchant(r.merchantName || r.description || "");
+    if (m) plaidKeys.add(`${r.accountId}:${m}`);
+  }
+
+  // Group eligible transactions by account + normalized merchant.
+  const groups = new Map<string, Transaction[]>();
+  for (const t of state.transactions) {
+    if (t.pending || t.hidden || isSyntheticBaseline(t)) continue;
+    if (t.amount === 0 || neutralized.has(t.id)) continue;
+    if (TRANSFER_CATEGORIES.has(effectiveCategory(t))) continue;
+    if (isInternalPayment(t.name, t.merchantName)) continue;
+    const m = normalizeMerchant(t.merchantName || t.name);
+    if (!m) continue;
+    const key = `${t.accountId}:${m}`;
+    const g = groups.get(key);
+    if (g) g.push(t);
+    else groups.set(key, [t]);
+  }
+
+  const out: RecurringStream[] = [];
+  for (const [key, all] of groups) {
+    if (plaidKeys.has(key)) continue;
+    // A single merchant can carry both charges and refunds; take the dominant sign.
+    const outflow = all.filter((t) => t.amount > 0);
+    const inflow = all.filter((t) => t.amount < 0);
+    const type: "inflow" | "outflow" =
+      outflow.length >= inflow.length ? "outflow" : "inflow";
+    const txns = (type === "outflow" ? outflow : inflow).sort((a, b) =>
+      a.date.localeCompare(b.date),
+    );
+    if (txns.length < 3) continue; // need ≥3 to infer a cadence
+
+    // Gaps between consecutive charges → cadence from their median.
+    const gaps: number[] = [];
+    for (let i = 1; i < txns.length; i++)
+      gaps.push(dayDiff(txns[i - 1].date, txns[i].date));
+    const cad = cadenceFromGap(median(gaps));
+    if (!cad) continue;
+
+    // Regularity: most gaps near the cadence (±35%, min ±4 days).
+    const tol = Math.max(cad.interval * 0.35, 4);
+    const regular = gaps.filter((d) => Math.abs(d - cad.interval) <= tol).length;
+    if (regular < Math.ceil(gaps.length * 0.6)) continue;
+
+    // Steady amount: low spread (a fixed sub) or near-identical dollars.
+    const amts = txns.map((t) => Math.abs(t.amount));
+    const avg = amts.reduce((a, b) => a + b, 0) / amts.length;
+    const sd = Math.sqrt(
+      amts.reduce((a, b) => a + (b - avg) ** 2, 0) / amts.length,
+    );
+    const spread = Math.max(...amts) - Math.min(...amts);
+    if (!(avg > 0 && (sd / avg <= 0.25 || spread <= 2))) continue;
+
+    const last = txns[txns.length - 1];
+    const first = txns[0];
+    const catCount = new Map<string, number>();
+    for (const t of txns) {
+      const c = effectiveCategory(t);
+      catCount.set(c, (catCount.get(c) ?? 0) + 1);
+    }
+    const categoryPrimary = [...catCount.entries()].sort(
+      (a, b) => b[1] - a[1],
+    )[0][0];
+    const sign = type === "outflow" ? 1 : -1;
+
+    out.push({
+      id: `local:${key}`,
+      accountId: last.accountId,
+      description: last.name,
+      merchantName: last.merchantName ?? last.name,
+      categoryPrimary,
+      frequency: cad.freq,
+      averageAmount: sign * avg,
+      lastAmount: sign * Math.abs(last.amount),
+      firstDate: first.date,
+      lastDate: last.date,
+      predictedNextDate: addInterval(last.date, cad.freq),
+      isActive: dayDiff(last.date, today) <= cad.interval * 2 + 7,
+      type,
+      source: last.source,
+      inferred: true,
+    });
+  }
+
+  recurDetectCache.set(state.transactions, out);
+  return out;
+}
+
+/** Plaid's streams plus everything our own detector recovered that Plaid missed. */
+export function allRecurringStreams(state: AppState): RecurringStream[] {
+  return [...state.recurring, ...detectRecurringStreams(state)];
+}
+
 /**
  * Upcoming bills/subscriptions with their next predicted charge date. `today`
  * is yyyy-mm-dd (passed in so this stays a pure function). Uses Plaid's
@@ -807,7 +939,7 @@ export function upcomingBills(
 ): { bills: UpcomingBill[]; dueSoonTotal: number; monthlyTotal: number } {
   const bills: UpcomingBill[] = [];
   const acctName = new Map(state.accounts.map((a) => [a.id, a.name]));
-  for (const s of state.recurring) {
+  for (const s of allRecurringStreams(state)) {
     if (!isBillStream(s)) continue;
     let date = s.predictedNextDate && s.predictedNextDate >= today
       ? s.predictedNextDate

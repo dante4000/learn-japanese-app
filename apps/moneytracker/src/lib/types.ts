@@ -92,6 +92,8 @@ export interface RecurringStream {
   /** outflow = subscription/bill, inflow = income */
   type: "inflow" | "outflow";
   source: DataSource;
+  /** True when our own detector inferred this stream (Plaid didn't supply it). */
+  inferred?: boolean;
 }
 
 /** Manually-entered assets/liabilities (home value, car, etc.) for net worth. */
