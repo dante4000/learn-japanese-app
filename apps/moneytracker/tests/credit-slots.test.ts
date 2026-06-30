@@ -120,12 +120,14 @@ test("a statement-credit posting confirms the slot (Amex Resy)", () => {
   assert.equal(u.slots[1].captured, 100);
 });
 
-test("enrollment-required spend with no posting is FLAGGED, not captured", () => {
+test("spend with no posting is INFERRED used and captured (assume-used-from-spend)", () => {
+  // The reimbursement for many credits posts as "nothing" (wallet/in-app/
+  // membership), so qualifying spend in the period infers the credit was used.
   const s = state([tx({ amount: 80, date: "2026-05-02", name: "Resy *Some Restaurant" })]);
   const u = platUsage(s, "Resy dining credit");
-  assert.equal(u.slots[1].confidence, "flagged");
-  assert.equal(u.slots[1].used, false);
-  assert.equal(u.slots[1].captured, 0);
+  assert.equal(u.slots[1].confidence, "inferred"); // Q2
+  assert.equal(u.slots[1].used, true);
+  assert.equal(u.slots[1].captured, 80); // capped at the $100 quarterly value
 });
 
 test("auto-applies spend is INFERRED and captured, capped at the slot value (CSR Lyft $10/mo)", () => {

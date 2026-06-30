@@ -206,7 +206,10 @@ export const CARD_CATALOG: CardCatalogEntry[] = [
         // The dining charge posts as the restaurant — only Chase's credit line
         // names the benefit, so detect it from the statement-credit inflow.
         detectHints: ["opentable", "exclusive tables"],
-        creditPostHints: ["exclusive tables"],
+        // The dining charge posts as the restaurant, so the statement-credit
+        // line is the signal. Chase labels it "dining credit" (per the account
+        // UI showing "$300/yr − $150"); keep the benefit name as a fallback.
+        creditPostHints: ["dining credit", "exclusive tables", "sapphire reserve dining"],
       },
       {
         name: "StubHub / viagogo credit",
@@ -1228,9 +1231,8 @@ const MONTH_ABBR = [
 
 export type SlotStatus = "past" | "current" | "future";
 export type SlotConfidence =
-  | "confirmed"
-  | "inferred"
-  | "flagged"
+  | "confirmed" // a statement-credit posting proves it
+  | "inferred" // assumed used from qualifying spend (no posting to confirm)
   | "open"
   | "future";
 
@@ -1356,9 +1358,9 @@ export function creditSlots(
  * Detect, per credit on a card, which reset slots have been tapped — using a
  * layered, evidence-based model:
  *   1. statement-credit POSTING (inflow) matched by creditPostHints → confirmed
- *   2. qualifying SPEND (outflow) matched by detectHints:
- *        - autoApplies credit  → inferred (counts)
- *        - enrollmentRequired  → flagged (does NOT count until confirmed)
+ *   2. qualifying SPEND (outflow) matched by detectHints → inferred (assumed
+ *      used; many reimbursements post as "nothing", so spend is the only signal)
+ * Both count toward captured; the UI distinguishes confirmed from inferred.
  * Matching is token-boundary (no substring false positives) and each transaction
  * is attributed to at most ONE credit per card (longest matched hint wins), so an
  * Uber ride never ticks Uber One. Anchored to real today; pure. A posting wins
@@ -1455,16 +1457,15 @@ export function detectCreditUsage(
         pc.lastDate = t.date;
         pc.matchedMerchant = merch;
       }
-      if (pc.credit.autoApplies) {
-        slot.confidence = "inferred";
-        slot.used = true;
-        slot.captured = Math.min(slot.value, slot.captured + t.amount);
-        slot.evidence = `inferred · ${merch}`;
-      } else {
-        // enrollment-required, spend only → flag, do NOT mark used/captured.
-        if (slot.confidence === "open") slot.confidence = "flagged";
-        slot.evidence = `you spent at ${merch} — did the credit post?`;
-      }
+      // Spend is the only signal when no statement-credit posting is detectable
+      // — wallet top-ups (Uber Cash), in-app discounts (DoorDash) and reimbursed
+      // memberships (Uber One, Walmart+) all post as "nothing" — so qualifying
+      // spend in the period infers the credit was used (shown as assumed, not
+      // confirmed). The user can untick if they didn't actually capture it.
+      slot.confidence = "inferred";
+      slot.used = true;
+      slot.captured = Math.min(slot.value, slot.captured + t.amount);
+      slot.evidence = `assumed from spend · ${merch}`;
       if (!slot.lastDate || t.date > slot.lastDate) {
         slot.lastDate = t.date;
         slot.matchedMerchant = merch;
@@ -1508,8 +1509,11 @@ export function detectCreditUsage(
 // moment to decide: keep paying, or product-change/downgrade to a no-fee card.
 
 export interface RenewalInfo {
-  /** False when annualFee === 0, account not linked, or no fee charge found. */
+  /** False only when annualFee === 0, account not linked, or no history at all. */
   detected: boolean;
+  /** True when the date is ESTIMATED from account history (no fee charge found —
+   *  e.g. a first-year-free card, or the fee predates the synced window). */
+  estimated: boolean;
   /** Date of the most recent matched fee charge (yyyy-mm-dd), or null. */
   lastChargeDate: string | null;
   /** Next renewal: the charge's month/day rolled forward to the next date ≥ today. */
@@ -1561,6 +1565,7 @@ export function detectRenewal(
 ): RenewalInfo {
   const empty: RenewalInfo = {
     detected: false,
+    estimated: false,
     lastChargeDate: null,
     nextRenewal: null,
     daysUntil: null,
@@ -1585,7 +1590,28 @@ export function detectRenewal(
     const hay = `${t.merchantName ?? ""} ${t.name}`.toLowerCase();
     return hints.some((h) => hay.includes(h));
   });
-  if (phraseMatches.length === 0) return empty;
+  // No fee charge found — e.g. a first-year-free card whose $95 fee hasn't posted
+  // yet, or the fee predates the synced history. Fall back to ESTIMATING the
+  // anniversary from the account's earliest transaction (≈ when the card opened),
+  // so the UI shows an approximate renewal instead of "not detected".
+  if (phraseMatches.length === 0) {
+    let earliest: string | null = null;
+    for (const t of state.transactions) {
+      if (t.accountId !== accountId || t.hidden || t.pending) continue;
+      if (!earliest || t.date < earliest) earliest = t.date;
+    }
+    if (!earliest) return empty;
+    const nextRenewal = nextAnniversary(earliest, todayISO);
+    return {
+      detected: true,
+      estimated: true,
+      lastChargeDate: null,
+      nextRenewal,
+      daysUntil: daysBetween(todayISO, nextRenewal),
+      feeAmount: card.annualFee,
+      expiry: `${earliest.slice(5, 7)}/${nextRenewal.slice(2, 4)}`,
+    };
+  }
 
   // Prefer amount-confirmed charges; otherwise fall back to all phrase matches.
   const confirmed = phraseMatches.filter((t) => amountConfirms(t.amount));
@@ -1598,6 +1624,7 @@ export function detectRenewal(
   const expiry = `${chosen.date.slice(5, 7)}/${nextRenewal.slice(2, 4)}`;
   return {
     detected: true,
+    estimated: false,
     lastChargeDate: chosen.date,
     nextRenewal,
     daysUntil: daysBetween(todayISO, nextRenewal),

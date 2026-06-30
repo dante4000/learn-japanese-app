@@ -99,14 +99,26 @@ test("renewal that lands exactly on today reads as 0 days", () => {
   assert.equal(r.daysUntil, 0);
 });
 
-test("no fee charge → detected:false", () => {
+test("no fee charge but history present → ESTIMATES the anniversary from earliest txn", () => {
   const s = state([
     tx({ name: "GROCERY STORE", amount: 95, date: "2026-03-01", categoryPrimary: "FOOD_AND_DRINK" }),
+    tx({ name: "GAS", amount: 40, date: "2026-05-10", categoryPrimary: "TRANSPORTATION" }),
+  ]);
+  const r = detectRenewal(s, "acct_1", card({ annualFee: 95 }), TODAY);
+  assert.equal(r.detected, true);
+  assert.equal(r.estimated, true);
+  assert.equal(r.lastChargeDate, null);
+  assert.equal(r.nextRenewal, "2027-03-01"); // earliest txn month/day, next future
+  assert.equal(r.feeAmount, 95); // falls back to the sticker fee
+});
+
+test("no fee charge AND no account history → detected:false", () => {
+  const s = state([
+    tx({ name: "ANNUAL MEMBERSHIP FEE", amount: 95, date: "2026-03-01", accountId: "acct_other" }),
   ]);
   const r = detectRenewal(s, "acct_1", card({ annualFee: 95 }), TODAY);
   assert.equal(r.detected, false);
-  assert.equal(r.nextRenewal, null);
-  assert.equal(r.daysUntil, null);
+  assert.equal(r.estimated, false);
 });
 
 test("$0-fee card → detected:false without matching anything", () => {

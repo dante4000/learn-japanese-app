@@ -368,7 +368,6 @@ export function CreditCardsView({
       value: number;
       label: string;
       daysLeft: number | null;
-      flagged: boolean;
     };
     const items: Item[] = [];
     for (const { card, live } of cards) {
@@ -385,7 +384,6 @@ export function CreditCardsView({
           value: cur.value,
           label: cur.label,
           daysLeft: cur.daysLeft,
-          flagged: cur.confidence === "flagged",
         });
       }
     }
@@ -689,9 +687,9 @@ function LeaderboardRow({
           {showRenewal && (
             <span
               className={`rounded-full px-2 py-0.5 text-[0.6rem] ${renewalTone(renewal!.daysUntil!).chip}`}
-              title={`Annual fee renews ${formatRenewalDate(renewal!.nextRenewal!)}`}
+              title={`Annual fee renews ${formatRenewalDate(renewal!.nextRenewal!)}${renewal!.estimated ? " (estimated from account history)" : ""}`}
             >
-              {renewalShort(renewal!.daysUntil!)}
+              {renewal!.estimated ? "~" : ""}{renewalShort(renewal!.daysUntil!)}
             </span>
           )}
           {showRenewal && renewal!.expiry && (
@@ -987,9 +985,7 @@ function CardDetail({
                           {" · "}
                           {curUsed
                             ? cur.evidence ?? `${cur.label} used`
-                            : c.enrollmentRequired && cur.confidence === "flagged"
-                              ? cur.evidence ?? `${cur.label} — did the credit post?`
-                              : `${cur.label} unused — ${formatMoney(cur.value, currency, { cents: false })} waiting${cur.daysLeft != null ? ` · ${cur.daysLeft}d left` : ""}`}
+                            : `${cur.label} unused — ${formatMoney(cur.value, currency, { cents: false })} waiting${cur.daysLeft != null ? ` · ${cur.daysLeft}d left` : ""}`}
                         </>
                       )}
                     </div>
@@ -1181,11 +1177,19 @@ function RenewalBlock({
     <div className={`mb-4 rounded-xl border px-4 py-3 ${boxTone}`}>
       <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
         <span className={`text-sm ${tone.text}`}>
-          {days <= 0 ? "Renews today" : `Renews in ${days} ${days === 1 ? "day" : "days"}`}
+          {renewal.estimated ? "Est. renews ~" : days <= 0 ? "Renews today" : `Renews in ${days} ${days === 1 ? "day" : "days"}`}
+          {renewal.estimated && `${days} ${days === 1 ? "day" : "days"}`}
           <span className="text-faint"> · {formatRenewalDate(renewal.nextRenewal)}</span>
         </span>
         <span className="text-[0.65rem] text-faint">{feeStr} annual fee</span>
       </div>
+      {renewal.estimated && (
+        <p className="mt-1 text-[0.65rem] text-faint">
+          Estimated from your earliest transaction on this card — no annual-fee
+          charge has posted yet (first year free, or it predates your synced
+          history). It&rsquo;ll lock to the real date once the fee posts.
+        </p>
+      )}
       {renewal.expiry && (
         <div className="mt-1.5 flex items-center gap-2 border-t hairline pt-1.5 text-xs">
           <span className="tnum rounded-md bg-surface-2 px-2 py-0.5 font-medium text-cream-dim">
@@ -1239,7 +1243,6 @@ function capturedThisYear(
 const SLOT_TONE: Record<string, string> = {
   confirmed: "border-blue bg-blue text-ink",
   inferred: "border-blue/60 bg-blue/15 text-blue",
-  flagged: "border-amber-400/50 bg-amber-400/10 text-amber-400",
   open: "border-line-2 text-faint",
   future: "border-transparent bg-surface-2 text-faint/50",
 };
@@ -1269,7 +1272,7 @@ function SlotGrid({
       {slots.map((s) => {
         const on = used(s);
         const ov = overridden(s);
-        const isPastOpen = !on && s.status === "past" && s.confidence !== "flagged";
+        const isPastOpen = !on && s.status === "past";
         const tone = on
           ? ov
             ? "border-blue bg-blue/80 text-ink"
@@ -1277,8 +1280,8 @@ function SlotGrid({
           : isPastOpen
             ? "border-coral/40 text-coral"
             : SLOT_TONE[s.confidence] ?? SLOT_TONE.open;
-        const mark = on ? (s.confidence === "inferred" && !ov ? "◔" : "✓") : s.confidence === "flagged" ? "?" : "○";
-        const glyph = on ? (s.confidence === "inferred" && !ov ? "◔" : "✓") : s.confidence === "flagged" ? "?" : s.label[0];
+        const mark = on ? (s.confidence === "inferred" && !ov ? "◔" : "✓") : "○";
+        const glyph = on ? (s.confidence === "inferred" && !ov ? "◔" : "✓") : s.label[0];
         return (
           <button
             key={s.key}
@@ -1310,7 +1313,6 @@ function ActionBanner({
     value: number;
     label: string;
     daysLeft: number | null;
-    flagged: boolean;
   }[];
   currency: string;
   onJump: (cardKey: string) => void;
@@ -1349,13 +1351,11 @@ function ActionBanner({
                   </span>
                 </span>
                 <span className={`shrink-0 text-[0.7rem] ${tone}`}>
-                  {i.flagged
-                    ? "did it post?"
-                    : i.daysLeft == null
-                      ? "open"
-                      : i.daysLeft <= 0
-                        ? "ends today!"
-                        : `${i.daysLeft}d left${urgent ? " !" : ""}`}
+                  {i.daysLeft == null
+                    ? "open"
+                    : i.daysLeft <= 0
+                      ? "ends today!"
+                      : `${i.daysLeft}d left${urgent ? " !" : ""}`}
                 </span>
               </button>
             </li>
