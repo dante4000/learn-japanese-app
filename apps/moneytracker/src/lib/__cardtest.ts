@@ -72,5 +72,142 @@ import { creditSlots } from "./cards";
   eq("one-time label", creditSlots("one-time", 100, "2026-06-29")[0].label, "ever");
 }
 
+// ── Task 3: detectCreditUsage ────────────────────────────────────────────────
+import { detectCreditUsage } from "./cards";
+import type { AppState, Transaction } from "./types";
+import type { CardCatalogEntry } from "./cards";
+
+function txn(p: Partial<Transaction>): Transaction {
+  const base = {
+    id: Math.random().toString(36).slice(2),
+    accountId: "acct1",
+    date: "2026-06-10",
+    name: "",
+    merchantName: null,
+    amount: 0,
+    categoryPrimary: "GENERAL_MERCHANDISE",
+    categoryDetailed: null,
+    pending: false,
+    hidden: false,
+  };
+  return { ...base, ...p } as Transaction;
+}
+
+function stateOf(txns: Transaction[]): AppState {
+  return { accounts: [], transactions: txns } as unknown as AppState;
+}
+
+const testCard: CardCatalogEntry = {
+  cardKey: "test",
+  displayName: "Test",
+  issuer: "X",
+  network: "X",
+  annualFee: 100,
+  authorizedUserFee: 0,
+  pointProgram: "X",
+  cashValueCents: 1,
+  transferValueCents: 1,
+  pointValueNote: "",
+  matchHints: [],
+  earnRates: [],
+  baseEarn: 1,
+  earnModel: [],
+  credits: [
+    {
+      name: "Resy (enroll)",
+      value: 400,
+      frequency: "quarterly",
+      autoApplies: false,
+      enrollmentRequired: true,
+      howToUse: "",
+      realisticCaptureRate: 0.5,
+      detectHints: ["resy"],
+      creditPostHints: ["resy credit"],
+    },
+    {
+      name: "Lyft (auto)",
+      value: 120,
+      frequency: "monthly",
+      autoApplies: true,
+      enrollmentRequired: false,
+      howToUse: "",
+      realisticCaptureRate: 0.5,
+      detectHints: ["lyft"],
+    },
+    {
+      name: "Uber One",
+      value: 120,
+      frequency: "monthly",
+      autoApplies: false,
+      enrollmentRequired: true,
+      howToUse: "",
+      realisticCaptureRate: 0.5,
+      detectHints: ["uber one"],
+    },
+  ],
+  perks: [],
+  protections: [],
+  transferPartners: [],
+  highlights: [],
+  recentChanges: "",
+  sources: [],
+  accent: "blue",
+};
+
+const today = "2026-06-29";
+
+// 1. Posting → confirmed (Resy credit inflow in Q2)
+{
+  const st = stateOf([txn({ name: "AMEX RESY CREDIT", amount: -100, date: "2026-05-02" })]);
+  const u = detectCreditUsage(st, "acct1", testCard, today).find((x) => x.creditName === "Resy (enroll)")!;
+  const q2 = u.slots[1];
+  eq("Resy Q2 confirmed", q2.confidence, "confirmed");
+  eq("Resy Q2 used", q2.used, true);
+  eq("Resy Q2 captured", q2.captured, 100);
+}
+
+// 2. Enrollment spend only → flagged, NOT used, NOT captured
+{
+  const st = stateOf([txn({ name: "Resy *Some Restaurant", amount: 80, date: "2026-05-02" })]);
+  const u = detectCreditUsage(st, "acct1", testCard, today).find((x) => x.creditName === "Resy (enroll)")!;
+  const q2 = u.slots[1];
+  eq("Resy Q2 flagged", q2.confidence, "flagged");
+  eq("Resy Q2 not used", q2.used, false);
+  eq("Resy Q2 captured 0", q2.captured, 0);
+}
+
+// 3. Auto-applies spend → inferred, used, captured (capped at per-slot value 10)
+{
+  const st = stateOf([txn({ name: "LYFT *RIDE", amount: 23, date: "2026-06-03" })]);
+  const u = detectCreditUsage(st, "acct1", testCard, today).find((x) => x.creditName === "Lyft (auto)")!;
+  const jun = u.slots[5];
+  eq("Lyft Jun inferred", jun.confidence, "inferred");
+  eq("Lyft Jun used", jun.used, true);
+  eq("Lyft Jun captured capped at 10", jun.captured, 10);
+}
+
+// 4. Single attribution: a plain Uber ride must NOT tick Uber One
+{
+  const st = stateOf([txn({ name: "UBER TRIP", amount: 30, date: "2026-06-03" })]);
+  const u = detectCreditUsage(st, "acct1", testCard, today).find((x) => x.creditName === "Uber One")!;
+  eq("Uber ride does not tick Uber One", u.slots[5].used, false);
+}
+
+// 5. Token false-positive: unrelated merchant must not match
+{
+  const st = stateOf([txn({ name: "Nursery Supply", amount: 50, date: "2026-06-03" })]);
+  const u = detectCreditUsage(st, "acct1", testCard, today).find((x) => x.creditName === "Resy (enroll)")!;
+  eq("nursery does not match resy", u.slots[1].confidence, "open");
+}
+
+// 6. capturedYtd / availableToDate aggregate started slots only
+{
+  const st = stateOf([txn({ name: "LYFT *RIDE", amount: 23, date: "2026-06-03" })]);
+  const u = detectCreditUsage(st, "acct1", testCard, today).find((x) => x.creditName === "Lyft (auto)")!;
+  eq("Lyft availableToDate = 6 months * $10", u.availableToDate, 60);
+  eq("Lyft capturedYtd = $10", u.capturedYtd, 10);
+  eq("back-compat usedThisPeriod true (June used)", u.usedThisPeriod, true);
+}
+
 console.log(failed === 0 ? "\nALL PASS" : `\n${failed} FAILED`);
 process.exit(failed === 0 ? 0 : 1);

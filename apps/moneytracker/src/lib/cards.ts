@@ -1174,22 +1174,33 @@ export function pricedPerksValue(card: CardCatalogEntry): number {
 
 export interface CreditUsage {
   creditName: string;
-  /** Matching spend landed in the credit's *current* reset period → check the box. */
-  usedThisPeriod: boolean;
-  /** Human label for that current period, e.g. "Jun 2026", "Q2 2026", "H1 2026", "2026". */
-  periodLabel: string;
-  /** Trailing-12-month matched spend, capped at the credit's annual value (captured $). */
-  captured: number;
-  /** Raw matched spend within the current period (uncapped). */
-  periodSpend: number;
-  /** Most recent matching transaction date (yyyy-mm-dd), or null. */
-  lastDate: string | null;
-  /** Merchant shown for the most recent match. */
-  matchedMerchant: string | null;
-  /** Number of matching transactions in the trailing 12 months. */
-  count12mo: number;
-  /** False when the credit carries no detectHints — it can't be auto-detected. */
+  /** False when the credit carries no detectHints and no creditPostHints. */
   detectable: boolean;
+  frequency: CreditFrequency;
+  /** Per-slot dollar value. */
+  perSlotValue: number;
+  /** One slot per reset period of the current calendar year, in order. */
+  slots: CreditSlot[];
+  /** The slot whose window contains today, or null. */
+  currentSlot: CreditSlot | null;
+  /** Σ captured (detection-only) over slots whose window has started. */
+  capturedYtd: number;
+  /** Σ value over slots whose window has started. */
+  availableToDate: number;
+
+  // ── back-compat fields consumed by existing UI code ──
+  /** currentSlot?.used ?? false */
+  usedThisPeriod: boolean;
+  /** currentSlot?.label ?? year */
+  periodLabel: string;
+  /** = capturedYtd (existing callers read `captured`). */
+  captured: number;
+  /** currentSlot?.captured ?? 0 */
+  periodSpend: number;
+  /** Matching transactions across all slots. */
+  count12mo: number;
+  lastDate: string | null;
+  matchedMerchant: string | null;
 }
 
 const MONTH_ABBR = [
@@ -1197,36 +1208,6 @@ const MONTH_ABBR = [
   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
 ];
 
-/** Start date + display label for a credit's current reset window, anchored to `anchor`. */
-function creditPeriod(
-  freq: CreditFrequency,
-  anchor: string,
-): { start: string; label: string } {
-  const year = anchor.slice(0, 4);
-  const mm = anchor.slice(5, 7);
-  const month = Number(mm); // 1–12
-  switch (freq) {
-    case "monthly":
-      return { start: `${year}-${mm}-01`, label: `${MONTH_ABBR[month - 1]} ${year}` };
-    case "quarterly": {
-      const q = Math.floor((month - 1) / 3); // 0–3
-      const sm = String(q * 3 + 1).padStart(2, "0");
-      return { start: `${year}-${sm}-01`, label: `Q${q + 1} ${year}` };
-    }
-    case "semiannual": {
-      const firstHalf = month <= 6;
-      const sm = firstHalf ? "01" : "07";
-      return { start: `${year}-${sm}-01`, label: `${firstHalf ? "H1" : "H2"} ${year}` };
-    }
-    case "every-4-years":
-      return { start: monthsBefore(anchor, 48), label: "last 4 yrs" };
-    case "one-time":
-      return { start: "0000-01-01", label: "ever" };
-    case "annual":
-    default:
-      return { start: `${year}-01-01`, label: year };
-  }
-}
 
 export type SlotStatus = "past" | "current" | "future";
 export type SlotConfidence =
@@ -1355,87 +1336,149 @@ export function creditSlots(
 }
 
 /**
- * Detect, per credit on a card, whether the user has actually tapped it — by
- * matching the credit's detectHints against spend (the triggering charge) and
- * its creditPostHints against inflows (Chase's statement-credit posting) on the
- * linked account. Returns one CreditUsage per credit, in catalog order. Pure:
- * derived entirely from the synced transaction set, so it stays current.
+ * Detect, per credit on a card, which reset slots have been tapped — using a
+ * layered, evidence-based model:
+ *   1. statement-credit POSTING (inflow) matched by creditPostHints → confirmed
+ *   2. qualifying SPEND (outflow) matched by detectHints:
+ *        - autoApplies credit  → inferred (counts)
+ *        - enrollmentRequired  → flagged (does NOT count until confirmed)
+ * Matching is token-boundary (no substring false positives) and each transaction
+ * is attributed to at most ONE credit per card (longest matched hint wins), so an
+ * Uber ride never ticks Uber One. Anchored to real today; pure. A posting wins
+ * within a slot (no double-count of the charge and its credit).
  */
 export function detectCreditUsage(
   state: AppState,
   accountId: string,
   card: CardCatalogEntry,
+  todayISO: string = new Date().toISOString().slice(0, 10),
 ): CreditUsage[] {
-  const anchor = latestDate(state);
-  const window12 = monthsBefore(anchor, 12);
   const neutralized = refundMatchedIds(state);
-
-  const hay = (t: Transaction) =>
-    `${t.merchantName ?? ""} ${t.name} ${t.categoryPrimary} ${t.categoryDetailed ?? ""}`.toLowerCase();
-
-  // Posted activity on this account, never-pending/never-hidden, refunds aside.
   const live = state.transactions.filter(
     (t) => t.accountId === accountId && !t.hidden && !t.pending && !neutralized.has(t.id),
   );
-  // Triggering charges (outflows) matched by detectHints.
-  const spend = live.filter((t) => isSpend(t, neutralized)).map((t) => ({ t, hay: hay(t) }));
-  // Statement-credit postings (inflows) matched by creditPostHints — Chase's
-  // credit line, the only place some credits (Exclusive Tables) are nameable.
-  const inflows = live.filter((t) => t.amount < 0).map((t) => ({ t, hay: hay(t) }));
+  const hay = (t: Transaction) =>
+    tokenize(`${t.merchantName ?? ""} ${t.name} ${t.categoryPrimary} ${t.categoryDetailed ?? ""}`);
 
-  return card.credits.map((credit) => {
-    const spendHints = credit.detectHints ?? [];
-    const postHints = credit.creditPostHints ?? [];
-    const { start: periodStart, label: periodLabel } = creditPeriod(credit.frequency, anchor);
+  // Pre-tokenize and split into spend (outflow) and posting (inflow) pools.
+  const spendPool = live
+    .filter((t) => isSpend(t, neutralized))
+    .map((t) => ({ t, toks: hay(t) }));
+  const postPool = live
+    .filter((t) => t.amount < 0)
+    .map((t) => ({ t, toks: hay(t) }));
 
-    if (spendHints.length === 0 && postHints.length === 0) {
-      return {
-        creditName: credit.name,
-        usedThisPeriod: false,
-        periodLabel,
-        captured: 0,
-        periodSpend: 0,
-        lastDate: null,
-        matchedMerchant: null,
-        count12mo: 0,
-        detectable: false,
-      };
+  // Single attribution: for a transaction, the index of the credit whose hint
+  // matched longest, or -1. `pick` is the per-credit hint accessor.
+  const attribute = (
+    toks: string[],
+    pick: (c: CardCredit) => string[] | undefined,
+  ): number => {
+    let bestIdx = -1;
+    let bestLen = 0;
+    card.credits.forEach((c, i) => {
+      const len = bestHintMatchLen(toks, pick(c) ?? []);
+      if (len > bestLen) {
+        bestLen = len;
+        bestIdx = i;
+      }
+    });
+    return bestIdx;
+  };
+
+  // Build slots per credit, then fold transactions in.
+  const perCredit = card.credits.map((credit) => ({
+    credit,
+    slots: creditSlots(credit.frequency, credit.value, todayISO),
+    count: 0,
+    lastDate: null as string | null,
+    matchedMerchant: null as string | null,
+    hasPostingInSlot: new Set<string>(),
+  }));
+
+  const slotFor = (slots: CreditSlot[], date: string): CreditSlot | undefined =>
+    slots.find((s) => date >= s.start && date <= s.end);
+
+  // Pass 1 — postings (authoritative). amount is negative; magnitude = -amount.
+  for (const { t, toks } of postPool) {
+    const idx = attribute(toks, (c) => c.creditPostHints);
+    if (idx < 0) continue;
+    const pc = perCredit[idx];
+    const slot = slotFor(pc.slots, t.date);
+    if (!slot) continue;
+    const mag = -t.amount;
+    slot.confidence = "confirmed";
+    slot.used = true;
+    slot.captured = Math.min(slot.value, slot.captured + mag);
+    slot.evidence = "confirmed · statement credit";
+    pc.hasPostingInSlot.add(slot.key);
+    pc.count++;
+    if (!pc.lastDate || t.date > pc.lastDate) {
+      pc.lastDate = t.date;
+      pc.matchedMerchant = t.merchantName ?? t.name;
     }
+    if (!slot.lastDate || t.date > slot.lastDate) {
+      slot.lastDate = t.date;
+      slot.matchedMerchant = t.merchantName ?? t.name;
+    }
+  }
 
-    let captured12 = 0;
-    let periodSpend = 0;
-    let count12mo = 0;
-    let lastDate: string | null = null;
-    let matchedMerchant: string | null = null;
-
-    // `magnitude` is the positive dollar amount this match contributes: the
-    // charge amount for spend, the credited amount for an inflow posting.
-    const tally = (t: Transaction, h: string, hints: string[], magnitude: number) => {
-      if (hints.length === 0 || !hints.some((hint) => h.includes(hint))) return;
-      if (t.date >= window12) {
-        captured12 += magnitude;
-        count12mo += 1;
+  // Pass 2 — spend (inferred / flagged), skipping slots already confirmed.
+  for (const { t, toks } of spendPool) {
+    const idx = attribute(toks, (c) => c.detectHints);
+    if (idx < 0) continue;
+    const pc = perCredit[idx];
+    const slot = slotFor(pc.slots, t.date);
+    if (!slot || pc.hasPostingInSlot.has(slot.key)) continue;
+    pc.count++;
+    if (!pc.lastDate || t.date > pc.lastDate) {
+      pc.lastDate = t.date;
+      pc.matchedMerchant = t.merchantName ?? t.name;
+    }
+    const merch = t.merchantName ?? t.name;
+    if (pc.credit.autoApplies) {
+      slot.confidence = "inferred";
+      slot.used = true;
+      slot.captured = Math.min(slot.value, slot.captured + t.amount);
+      slot.evidence = `inferred · ${merch}`;
+      if (!slot.lastDate || t.date > slot.lastDate) {
+        slot.lastDate = t.date;
+        slot.matchedMerchant = merch;
       }
-      if (t.date >= periodStart) periodSpend += magnitude;
-      if (!lastDate || t.date > lastDate) {
-        lastDate = t.date;
-        matchedMerchant = t.merchantName ?? t.name;
+    } else {
+      // enrollment-required, spend only → flag, do NOT mark used/captured.
+      if (slot.confidence === "open") slot.confidence = "flagged";
+      slot.evidence = `you spent at ${merch} — did the credit post?`;
+      if (!slot.lastDate || t.date > slot.lastDate) {
+        slot.lastDate = t.date;
+        slot.matchedMerchant = merch;
       }
-    };
+    }
+  }
 
-    for (const { t, hay } of spend) tally(t, hay, spendHints, t.amount);
-    for (const { t, hay } of inflows) tally(t, hay, postHints, -t.amount);
-
+  return perCredit.map(({ credit, slots, count, lastDate, matchedMerchant }) => {
+    const detectable =
+      (credit.detectHints?.length ?? 0) > 0 || (credit.creditPostHints?.length ?? 0) > 0;
+    const started = slots.filter((s) => s.status !== "future");
+    const capturedYtd = started.reduce((a, s) => a + s.captured, 0);
+    const availableToDate = started.reduce((a, s) => a + s.value, 0);
+    const currentSlot = slots.find((s) => s.status === "current") ?? null;
     return {
       creditName: credit.name,
-      usedThisPeriod: periodSpend > 0,
-      periodLabel,
-      captured: Math.min(captured12, credit.value),
-      periodSpend,
+      detectable,
+      frequency: credit.frequency,
+      perSlotValue: slots[0]?.value ?? credit.value,
+      slots,
+      currentSlot,
+      capturedYtd,
+      availableToDate,
+      usedThisPeriod: currentSlot?.used ?? false,
+      periodLabel: currentSlot?.label ?? todayISO.slice(0, 4),
+      captured: capturedYtd,
+      periodSpend: currentSlot?.captured ?? 0,
+      count12mo: count,
       lastDate,
       matchedMerchant,
-      count12mo,
-      detectable: true,
     };
   });
 }
