@@ -218,6 +218,7 @@ export const CARD_CATALOG: CardCatalogEntry[] = [
           "$150 per half-year on event/concert tickets (through 2027). One-time activation required.",
         realisticCaptureRate: 0.35,
         detectHints: ["stubhub", "viagogo"],
+        creditPostHints: ["stubhub credit", "viagogo credit"],
       },
       {
         name: "DoorDash promo credits",
@@ -356,6 +357,9 @@ export const CARD_CATALOG: CardCatalogEntry[] = [
           "Two $300 buckets (Jan–Jun, Jul–Dec) on prepaid Amex Travel stays at Fine Hotels + Resorts or The Hotel Collection. Doesn't roll over.",
         realisticCaptureRate: 0.6,
         detectHints: ["amex travel", "fine hotels", "hotel collection"],
+        // High-confidence: Amex posts this as "AMEX FINE HOTELS RES" /
+        // "AMEX HOTEL COLLECTN" / "Platinum Hotel Credit" (Amex Travel FAQ).
+        creditPostHints: ["fine hotels", "hotel collectn", "hotel collection", "hotelcredit", "hotel credit"],
       },
       {
         name: "Resy dining credit",
@@ -366,6 +370,7 @@ export const CARD_CATALOG: CardCatalogEntry[] = [
         howToUse: "$100/quarter at eligible U.S. Resy restaurants. Enroll first; doesn't roll over.",
         realisticCaptureRate: 0.65,
         detectHints: ["resy"],
+        creditPostHints: ["resy credit", "resy"],
       },
       {
         name: "Uber Cash",
@@ -386,6 +391,7 @@ export const CARD_CATALOG: CardCatalogEntry[] = [
         howToUse: "$10/month toward an auto-renewing Uber One membership.",
         realisticCaptureRate: 0.6,
         detectHints: ["uber one"],
+        creditPostHints: ["uber one credit", "uber one"],
       },
       {
         name: "Digital entertainment credit",
@@ -396,6 +402,7 @@ export const CARD_CATALOG: CardCatalogEntry[] = [
         howToUse: "$25/month on Disney+, Hulu, ESPN+, Peacock, Paramount+, NYT, WSJ, YouTube Premium/TV. Enroll; doesn't roll over.",
         realisticCaptureRate: 0.75,
         detectHints: ["disney", "hulu", "espn", "peacock", "paramount", "new york times", "wall street journal", "youtube"],
+        creditPostHints: ["digital entertainment credit", "digital entertainment"],
       },
       {
         name: "lululemon credit",
@@ -406,6 +413,7 @@ export const CARD_CATALOG: CardCatalogEntry[] = [
         howToUse: "$75/quarter at U.S. lululemon (excludes outlets). Enroll; doesn't roll over.",
         realisticCaptureRate: 0.55,
         detectHints: ["lululemon"],
+        creditPostHints: ["lululemon credit", "lululemon"],
       },
       {
         name: "Oura Ring credit",
@@ -416,6 +424,7 @@ export const CARD_CATALOG: CardCatalogEntry[] = [
         howToUse: "$200 toward Oura Ring hardware. Only useful if you're buying a ring.",
         realisticCaptureRate: 0.2,
         detectHints: ["oura"],
+        creditPostHints: ["oura ring credit", "ouraring credit"],
       },
       {
         name: "Airline incidental fee credit",
@@ -426,6 +435,7 @@ export const CARD_CATALOG: CardCatalogEntry[] = [
         howToUse: "Pick one airline; reimburses bags/seats/lounge passes up to $200/yr. Doesn't cover airfare; coding is finicky.",
         realisticCaptureRate: 0.5,
         detectHints: ["airline", "baggage"],
+        creditPostHints: ["airline fee credit", "amex airline fee"],
       },
       {
         name: "Equinox credit",
@@ -436,6 +446,7 @@ export const CARD_CATALOG: CardCatalogEntry[] = [
         howToUse: "$300/yr on Equinox membership or Equinox+. Only useful if you're a member.",
         realisticCaptureRate: 0.25,
         detectHints: ["equinox"],
+        creditPostHints: ["equinox credit", "equinox"],
       },
       {
         name: "Walmart+ membership",
@@ -446,6 +457,8 @@ export const CARD_CATALOG: CardCatalogEntry[] = [
         howToUse: "Reimburses a monthly Walmart+ membership ($12.95/mo incl. tax). Not the annual plan.",
         realisticCaptureRate: 0.6,
         detectHints: ["walmart"],
+        // Specific forms only — a bare "walmart" inflow is more likely a refund.
+        creditPostHints: ["walmart plus credit", "walmart+ credit"],
       },
       {
         name: "CLEAR Plus credit",
@@ -456,6 +469,8 @@ export const CARD_CATALOG: CardCatalogEntry[] = [
         howToUse: "Reimburses a full CLEAR Plus membership. Only useful if CLEAR is at airports you use.",
         realisticCaptureRate: 0.55,
         detectHints: ["clear"],
+        // "clear" alone is too generic for an inflow — require the credit phrasing.
+        creditPostHints: ["clear plus credit", "clear credit", "clearme"],
       },
       {
         name: "Saks credit (ends Jun 30 2026)",
@@ -466,6 +481,7 @@ export const CARD_CATALOG: CardCatalogEntry[] = [
         howToUse: "$50 per half-year at Saks. Amex is killing this July 1 2026 after Saks's bankruptcy — use it before then.",
         realisticCaptureRate: 0.4,
         detectHints: ["saks"],
+        creditPostHints: ["saks fifth avenue credit", "saks credit"],
       },
     ],
     perks: [
@@ -777,6 +793,7 @@ export const CARD_CATALOG: CardCatalogEntry[] = [
           "$10/month back on an eligible Disney+/Hulu/ESPN subscription or bundle. No minimum spend (since Aug 2025). Enroll first.",
         realisticCaptureRate: 0.6,
         detectHints: ["disney", "hulu", "espn"],
+        creditPostHints: ["disney bundle credit", "disney streaming credit", "disney bundle"],
       },
     ],
     perks: [
