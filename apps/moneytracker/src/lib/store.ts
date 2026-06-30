@@ -265,6 +265,7 @@ export async function loadState(): Promise<AppState> {
   state.manualEntries = meta.manualEntries;
   state.baselines = meta.baselines ?? [];
   state.snapshots = meta.snapshots;
+  state.biltConfig = meta.biltConfig;
   return injectBaselines(state);
 }
 

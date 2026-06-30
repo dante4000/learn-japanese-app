@@ -5,9 +5,16 @@
 // past 100% does not raise the rate (it dilutes it), so the sweet spot is
 // everyday spend ≈ housing payment. See docs/superpowers/specs.
 
-import type { Transaction } from "./types";
+import type { Account, AppState, Transaction } from "./types";
+import { matchAccountToCard } from "./cards";
 
 const RENT_CATEGORY = "RENT_AND_UTILITIES";
+
+/** Catalog key for the Bilt card (see CARD_CATALOG in cards.ts). */
+export const BILT_CARD_KEY = "bilt-mastercard";
+
+/** Default statement cycle start day when the user hasn't set one. */
+export const DEFAULT_STATEMENT_DAY = 23;
 
 /** Ratio thresholds → rent multiplier, ascending. */
 const TIERS: { at: number; multiplier: number }[] = [
@@ -113,4 +120,48 @@ export function biltEverydaySpend(
     sum += t.amount;
   }
   return sum;
+}
+
+/** The connected account matched to the Bilt card, or null. */
+export function findBiltAccount(state: AppState): Account | null {
+  return state.accounts.find((a) => matchAccountToCard(a) === BILT_CARD_KEY) ?? null;
+}
+
+/** The user's monthly rent/housing amount from the RENT_AND_UTILITIES baseline. */
+export function housingBaseline(state: AppState): number | null {
+  const b = state.baselines.find((x) => x.category === RENT_CATEGORY);
+  return b ? b.amount : null;
+}
+
+export interface BiltMeter {
+  account: Account;
+  housingPayment: number;
+  everydaySpend: number;
+  cycle: StatementCycle;
+  rewards: HousingRewards;
+  statementDay: number;
+  /** True when housingPayment came from the user's override (not the baseline). */
+  housingFromOverride: boolean;
+}
+
+/** Everything the Overview tile needs, or null when no Bilt card is connected. */
+export function resolveBiltMeter(state: AppState, today: string): BiltMeter | null {
+  const account = findBiltAccount(state);
+  if (!account) return null;
+
+  const config = state.biltConfig;
+  const statementDay = config?.statementDay ?? DEFAULT_STATEMENT_DAY;
+  const housingPayment = config?.housingOverride ?? housingBaseline(state) ?? 0;
+  const cycle = statementCycle(today, statementDay);
+  const everydaySpend = biltEverydaySpend(state.transactions, account.id, cycle);
+
+  return {
+    account,
+    housingPayment,
+    everydaySpend,
+    cycle,
+    rewards: biltHousingRewards(everydaySpend, housingPayment),
+    statementDay,
+    housingFromOverride: config?.housingOverride != null,
+  };
 }

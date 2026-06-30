@@ -130,6 +130,16 @@ export interface RecurringBaseline {
   startMonth: string; // yyyy-mm
 }
 
+/**
+ * Bilt Card 2.0 rent-meter settings. `housingOverride` falls back to the
+ * RENT_AND_UTILITIES baseline when unset; `statementDay` is the cycle START
+ * day-of-month (1–28), defaulting to 23.
+ */
+export interface BiltConfig {
+  housingOverride?: number;
+  statementDay: number;
+}
+
 /** The entire persisted state for the one user. Stored as a single JSON blob. */
 export interface AppState {
   version: number;
@@ -140,6 +150,7 @@ export interface AppState {
   manualEntries: ManualEntry[];
   baselines: RecurringBaseline[];
   snapshots: NetWorthSnapshot[];
+  biltConfig?: BiltConfig;
   updatedAt: string | null;
 }
 
@@ -161,6 +172,7 @@ export interface MetaDoc {
   manualEntries: ManualEntry[];
   baselines?: RecurringBaseline[];
   snapshots: NetWorthSnapshot[];
+  biltConfig?: BiltConfig;
 }
 
 export function emptyMeta(): MetaDoc {

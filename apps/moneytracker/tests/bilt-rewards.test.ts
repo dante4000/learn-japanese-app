@@ -4,8 +4,11 @@ import {
   biltHousingRewards,
   statementCycle,
   biltEverydaySpend,
+  findBiltAccount,
+  resolveBiltMeter,
 } from "../src/lib/bilt";
-import type { Transaction } from "../src/lib/types";
+import { emptyState } from "../src/lib/types";
+import type { Account, AppState, RecurringBaseline, Transaction } from "../src/lib/types";
 
 let seq = 0;
 function tx(
@@ -130,4 +133,67 @@ test("rent excluded via userCategory override too", () => {
     tx({ amount: 25, date: "2026-06-24" }),
   ];
   assert.equal(biltEverydaySpend(txns, "bilt_1", cycle), 25);
+});
+
+// ── resolveBiltMeter: end-to-end glue over AppState ──
+
+function acct(partial: Partial<Account> & { id: string; name: string }): Account {
+  return {
+    itemId: "item_1",
+    officialName: null,
+    mask: null,
+    type: "credit",
+    subtype: "credit card",
+    currency: "USD",
+    balances: { current: 0, available: null, limit: null },
+    source: "plaid",
+    ...partial,
+  } as Account;
+}
+
+function baseRent(amount: number): RecurringBaseline {
+  return { id: "b1", name: "Rent", amount, category: "RENT_AND_UTILITIES", startMonth: "2026-01" };
+}
+
+function stateWith(over: Partial<AppState>): AppState {
+  return { ...emptyState(), ...over };
+}
+
+test("findBiltAccount matches the Bilt card by name", () => {
+  const state = stateWith({
+    accounts: [acct({ id: "a1", name: "Chase Checking" }), acct({ id: "a2", name: "Bilt Obsidian" })],
+  });
+  assert.equal(findBiltAccount(state)?.id, "a2");
+});
+
+test("resolveBiltMeter returns null when no Bilt account is connected", () => {
+  const state = stateWith({ accounts: [acct({ id: "a1", name: "Amex Platinum" })] });
+  assert.equal(resolveBiltMeter(state, "2026-06-30"), null);
+});
+
+test("resolveBiltMeter uses the rent baseline for housing and sums everyday spend", () => {
+  const state = stateWith({
+    accounts: [acct({ id: "bilt_1", name: "Bilt Card" })],
+    baselines: [baseRent(4100)],
+    transactions: [tx({ amount: 663.47, date: "2026-06-24", accountId: "bilt_1" })],
+  });
+  const m = resolveBiltMeter(state, "2026-06-30")!;
+  assert.equal(m.housingPayment, 4100);
+  assert.equal(m.everydaySpend, 663.47);
+  assert.equal(m.statementDay, 23);
+  assert.equal(m.rewards.multiplier, 0);
+  assert.equal(m.housingFromOverride, false);
+});
+
+test("resolveBiltMeter prefers the housing override and configured statement day", () => {
+  const state = stateWith({
+    accounts: [acct({ id: "bilt_1", name: "Bilt Card" })],
+    baselines: [baseRent(4100)],
+    biltConfig: { housingOverride: 3000, statementDay: 1 },
+  });
+  const m = resolveBiltMeter(state, "2026-06-30")!;
+  assert.equal(m.housingPayment, 3000);
+  assert.equal(m.statementDay, 1);
+  assert.equal(m.housingFromOverride, true);
+  assert.equal(m.cycle.start, "2026-06-01");
 });
