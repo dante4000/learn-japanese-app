@@ -1,7 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { detectCreditUsage, CARD_CATALOG } from "../src/lib/cards";
-import type { CardCatalogEntry } from "../src/lib/cards";
 import type { AppState, Transaction } from "../src/lib/types";
 
 let seq = 0;

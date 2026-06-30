@@ -1385,22 +1385,24 @@ export function detectCreditUsage(
     .filter((t) => t.amount < 0)
     .map((t) => ({ t, toks: hay(t) }));
 
-  // Single attribution: for a transaction, the index of the credit whose hint
-  // matched longest, or -1. `pick` is the per-credit hint accessor.
+  // Attribution: the LONGEST (most-specific) matched hint wins, so an Uber ride
+  // ("uber") never ticks Uber One ("uber one"). Credits that TIE for the longest
+  // match are genuinely co-applicable (a Lyft ride feeds both the travel credit
+  // and the Lyft credit), so the transaction counts for all of them. Returns the
+  // indices of the winning credits (empty when nothing matched). `pick` is the
+  // per-credit hint accessor.
   const attribute = (
     toks: string[],
     pick: (c: CardCredit) => string[] | undefined,
-  ): number => {
-    let bestIdx = -1;
-    let bestLen = 0;
-    card.credits.forEach((c, i) => {
-      const len = bestHintMatchLen(toks, pick(c) ?? []);
-      if (len > bestLen) {
-        bestLen = len;
-        bestIdx = i;
-      }
+  ): number[] => {
+    const lens = card.credits.map((c) => bestHintMatchLen(toks, pick(c) ?? []));
+    const best = lens.reduce((m, l) => (l > m ? l : m), 0);
+    if (best === 0) return [];
+    const idxs: number[] = [];
+    lens.forEach((l, i) => {
+      if (l === best) idxs.push(i);
     });
-    return bestIdx;
+    return idxs;
   };
 
   // Build slots per credit, then fold transactions in.
@@ -1418,54 +1420,51 @@ export function detectCreditUsage(
 
   // Pass 1 — postings (authoritative). amount is negative; magnitude = -amount.
   for (const { t, toks } of postPool) {
-    const idx = attribute(toks, (c) => c.creditPostHints);
-    if (idx < 0) continue;
-    const pc = perCredit[idx];
-    const slot = slotFor(pc.slots, t.date);
-    if (!slot) continue;
     const mag = -t.amount;
-    slot.confidence = "confirmed";
-    slot.used = true;
-    slot.captured = Math.min(slot.value, slot.captured + mag);
-    slot.evidence = "confirmed · statement credit";
-    pc.hasPostingInSlot.add(slot.key);
-    pc.count++;
-    if (!pc.lastDate || t.date > pc.lastDate) {
-      pc.lastDate = t.date;
-      pc.matchedMerchant = t.merchantName ?? t.name;
-    }
-    if (!slot.lastDate || t.date > slot.lastDate) {
-      slot.lastDate = t.date;
-      slot.matchedMerchant = t.merchantName ?? t.name;
+    const merch = t.merchantName ?? t.name;
+    for (const idx of attribute(toks, (c) => c.creditPostHints)) {
+      const pc = perCredit[idx];
+      const slot = slotFor(pc.slots, t.date);
+      if (!slot) continue;
+      slot.confidence = "confirmed";
+      slot.used = true;
+      slot.captured = Math.min(slot.value, slot.captured + mag);
+      slot.evidence = "confirmed · statement credit";
+      pc.hasPostingInSlot.add(slot.key);
+      pc.count++;
+      if (!pc.lastDate || t.date > pc.lastDate) {
+        pc.lastDate = t.date;
+        pc.matchedMerchant = merch;
+      }
+      if (!slot.lastDate || t.date > slot.lastDate) {
+        slot.lastDate = t.date;
+        slot.matchedMerchant = merch;
+      }
     }
   }
 
   // Pass 2 — spend (inferred / flagged), skipping slots already confirmed.
   for (const { t, toks } of spendPool) {
-    const idx = attribute(toks, (c) => c.detectHints);
-    if (idx < 0) continue;
-    const pc = perCredit[idx];
-    const slot = slotFor(pc.slots, t.date);
-    if (!slot || pc.hasPostingInSlot.has(slot.key)) continue;
-    pc.count++;
-    if (!pc.lastDate || t.date > pc.lastDate) {
-      pc.lastDate = t.date;
-      pc.matchedMerchant = t.merchantName ?? t.name;
-    }
     const merch = t.merchantName ?? t.name;
-    if (pc.credit.autoApplies) {
-      slot.confidence = "inferred";
-      slot.used = true;
-      slot.captured = Math.min(slot.value, slot.captured + t.amount);
-      slot.evidence = `inferred · ${merch}`;
-      if (!slot.lastDate || t.date > slot.lastDate) {
-        slot.lastDate = t.date;
-        slot.matchedMerchant = merch;
+    for (const idx of attribute(toks, (c) => c.detectHints)) {
+      const pc = perCredit[idx];
+      const slot = slotFor(pc.slots, t.date);
+      if (!slot || pc.hasPostingInSlot.has(slot.key)) continue;
+      pc.count++;
+      if (!pc.lastDate || t.date > pc.lastDate) {
+        pc.lastDate = t.date;
+        pc.matchedMerchant = merch;
       }
-    } else {
-      // enrollment-required, spend only → flag, do NOT mark used/captured.
-      if (slot.confidence === "open") slot.confidence = "flagged";
-      slot.evidence = `you spent at ${merch} — did the credit post?`;
+      if (pc.credit.autoApplies) {
+        slot.confidence = "inferred";
+        slot.used = true;
+        slot.captured = Math.min(slot.value, slot.captured + t.amount);
+        slot.evidence = `inferred · ${merch}`;
+      } else {
+        // enrollment-required, spend only → flag, do NOT mark used/captured.
+        if (slot.confidence === "open") slot.confidence = "flagged";
+        slot.evidence = `you spent at ${merch} — did the credit post?`;
+      }
       if (!slot.lastDate || t.date > slot.lastDate) {
         slot.lastDate = t.date;
         slot.matchedMerchant = merch;
