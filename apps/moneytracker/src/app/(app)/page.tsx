@@ -14,6 +14,8 @@ import {
 import { categoryMeta, resolveCategoryKey } from "@/lib/categories";
 import { displayPayee } from "@/lib/aliases";
 import { formatMoney, formatMonth, formatDate } from "@/lib/format";
+import { resolveBiltMeter } from "@/lib/bilt";
+import { BiltRentMeter } from "@/components/BiltRentMeter";
 import { Donut } from "@/components/charts/Donut";
 import { CashFlowDetail } from "@/components/CashFlowDetail";
 import { NetWorthArea } from "@/components/charts/NetWorthArea";
@@ -44,6 +46,8 @@ export default async function OverviewPage() {
     .filter((t) => !t.pending && !isSyntheticBaseline(t))
     .slice(0, 6);
   const acctName = new Map(state.accounts.map((a) => [a.id, a.name]));
+
+  const bilt = resolveBiltMeter(state, todayKey());
 
   return (
     <div>
@@ -153,6 +157,22 @@ export default async function OverviewPage() {
           sub="Income minus spending"
         />
       </div>
+
+      {/* Bilt rent multiplier meter */}
+      {bilt && (
+        <BiltRentMeter
+          delay={200}
+          meter={{
+            housingPayment: bilt.housingPayment,
+            everydaySpend: bilt.everydaySpend,
+            statementDay: bilt.statementDay,
+            housingFromOverride: bilt.housingFromOverride,
+            cycleLabel: bilt.cycle.label,
+            currency: cur,
+            rewards: bilt.rewards,
+          }}
+        />
+      )}
 
       {/* Spending breakdown */}
       <SectionCard title="Where it went" delay={220} className="mt-5">
