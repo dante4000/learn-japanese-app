@@ -949,6 +949,49 @@ export function cardSpendTxns(state: AppState, accountId: string): Transaction[]
     .sort((a, b) => a.date.localeCompare(b.date));
 }
 
+// ── token-boundary matching ──────────────────────────────────────────────────
+// Naive substring matching causes false positives ("apple" → "Applebee's",
+// "max" → "CarMax", "clear" → "Clearwater"). We tokenize into alphanumeric runs
+// and match hints as consecutive whole-token sequences instead.
+
+/** Lowercased alphanumeric tokens of a string. */
+export function tokenize(s: string): string[] {
+  return s.toLowerCase().match(/[a-z0-9]+/g) ?? [];
+}
+
+/** True when `hintToks` appears as a consecutive run inside `toks`. */
+function tokensContain(toks: string[], hintToks: string[]): boolean {
+  if (hintToks.length === 0) return false;
+  for (let i = 0; i + hintToks.length <= toks.length; i++) {
+    let ok = true;
+    for (let j = 0; j < hintToks.length; j++) {
+      if (toks[i + j] !== hintToks[j]) {
+        ok = false;
+        break;
+      }
+    }
+    if (ok) return true;
+  }
+  return false;
+}
+
+/**
+ * Length (in joined characters) of the LONGEST hint that matches `tokens` as a
+ * whole-token sequence, else 0. Used both as a yes/no match (>0) and to pick the
+ * most-specific credit when several could claim one transaction.
+ */
+export function bestHintMatchLen(tokens: string[], hints: string[]): number {
+  let best = 0;
+  for (const h of hints) {
+    const ht = tokenize(h);
+    if (tokensContain(tokens, ht)) {
+      const len = ht.join("").length;
+      if (len > best) best = len;
+    }
+  }
+  return best;
+}
+
 /** True when a transaction matches an earn rule (detailed PFC, merchant, or primary). */
 function ruleMatches(rule: EarnRule, t: Transaction): boolean {
   if (rule.detailed && t.categoryDetailed && rule.detailed.includes(t.categoryDetailed))
