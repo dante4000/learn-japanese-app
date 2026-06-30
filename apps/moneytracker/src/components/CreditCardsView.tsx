@@ -6,6 +6,7 @@ import {
   CardCredit,
   CardRoi,
   CardVerdict,
+  CreditSlot,
   CreditUsage,
   PointsLine,
   RenewalInfo,
@@ -56,12 +57,11 @@ interface UnmatchedAccount {
   balance: number | null;
 }
 
-const STORAGE_KEY = "mt.cardperks.v3";
+const STORAGE_KEY = "mt.cardperks.v4";
 
-// Sparse per-card manual overrides, keyed by credit name. A credit appears here
-// ONLY when the user explicitly overrode auto-detection (true = "I used it",
-// false = "I didn't"). Absent → the credit follows detection automatically.
-type OverrideMap = Record<string, Record<string, boolean>>;
+// card → credit → slotKey → explicit user override (true = used, false = not).
+// Absent slot → follows detection. Old v3 (credit-level booleans) is not migrated.
+type OverrideMap = Record<string, Record<string, Record<string, boolean>>>;
 
 type SortKey = "worth" | "attention" | "fee" | "credits" | "points";
 type FilterKey = "fee" | "linked" | "attention" | "unused";
@@ -210,64 +210,81 @@ export function CreditCardsView({
     }
   }
 
-  // Detection result for one credit on a card, if any.
-  function detected(cardKey: string, creditName: string): CreditUsage | undefined {
+  // The full usage record for one credit on a card, if linked.
+  function usageFor(cardKey: string, creditName: string): CreditUsage | undefined {
     const live = cards.find((c) => c.card.cardKey === cardKey)?.live;
     return live?.creditUsage.find((u) => u.creditName === creditName);
   }
 
-  // The box state: an explicit override wins; otherwise follow detection.
-  function isUsed(cardKey: string, creditName: string): boolean {
-    const ov = overrides[cardKey]?.[creditName];
+  // A slot's shown state: explicit per-slot override wins; else detection.
+  function slotUsed(cardKey: string, creditName: string, slot: CreditSlot): boolean {
+    const ov = overrides[cardKey]?.[creditName]?.[slot.key];
     if (ov !== undefined) return ov;
-    return detected(cardKey, creditName)?.usedThisPeriod ?? false;
+    return slot.used;
   }
 
-  function isOverridden(cardKey: string, creditName: string): boolean {
-    return overrides[cardKey]?.[creditName] !== undefined;
+  function slotOverridden(cardKey: string, creditName: string, slotKey: string): boolean {
+    return overrides[cardKey]?.[creditName]?.[slotKey] !== undefined;
   }
 
-  // Click → set an explicit override to the opposite of what's shown now.
-  function toggle(cardKey: string, creditName: string) {
+  // Toggle one slot to the opposite of what's shown now (derive from `prev`).
+  function toggleSlot(cardKey: string, creditName: string, slot: CreditSlot) {
     setOverrides((prev) => {
-      // Derive the currently-shown value from `prev` (not the outer `overrides`
-      // closure) so rapid successive toggles can't read a stale value.
-      const ov = prev[cardKey]?.[creditName];
-      const shown =
-        ov !== undefined
-          ? ov
-          : detected(cardKey, creditName)?.usedThisPeriod ?? false;
+      const cur = prev[cardKey]?.[creditName]?.[slot.key];
+      const shown = cur !== undefined ? cur : slot.used;
       const next: OverrideMap = {
         ...prev,
-        [cardKey]: { ...prev[cardKey], [creditName]: !shown },
+        [cardKey]: {
+          ...prev[cardKey],
+          [creditName]: { ...prev[cardKey]?.[creditName], [slot.key]: !shown },
+        },
       };
       persist(next);
       return next;
     });
   }
 
-  // Drop a single override → that credit reverts to auto-detection.
-  function clearOverride(cardKey: string, creditName: string) {
+  // Revert one slot to auto-detection.
+  function clearSlotOverride(cardKey: string, creditName: string, slotKey: string) {
     setOverrides((prev) => {
-      const card = { ...(prev[cardKey] ?? {}) };
-      delete card[creditName];
-      const next = { ...prev, [cardKey]: card };
+      const credit = { ...(prev[cardKey]?.[creditName] ?? {}) };
+      delete credit[slotKey];
+      const next: OverrideMap = {
+        ...prev,
+        [cardKey]: { ...prev[cardKey], [creditName]: credit },
+      };
       persist(next);
       return next;
     });
   }
 
-  // Per-card captured-credit value. Prefers detection's trailing-12-month
-  // matched spend (capped at the credit value); an override forces all/nothing;
-  // undetectable credits fall back to their realistic capture rate.
-  function captured(card: CardCatalogEntry): number {
-    return card.credits.reduce((a, c) => {
-      const ov = overrides[card.cardKey]?.[c.name];
-      if (ov !== undefined) return a + (ov ? c.value : 0);
-      const u = detected(card.cardKey, c.name);
-      if (u?.detectable) return a + u.captured;
-      return a + (c.realisticCaptureRate >= 0.5 ? c.value : 0);
+  // Captured-so-far this year (exact), override-aware. For credits with no live
+  // slots (unlinked), fall back to the realistic-capture heuristic.
+  function capturedForCard(card: CardCatalogEntry): number {
+    return card.credits.reduce((sum, c) => {
+      const u = usageFor(card.cardKey, c.name);
+      if (!u) return sum + (c.realisticCaptureRate >= 0.5 ? c.value : 0);
+      const started = u.slots.filter((s) => s.status !== "future");
+      const got = started.reduce((a, s) => {
+        const used = slotUsed(card.cardKey, c.name, s);
+        // A manual tick captures the full slot value; detection already capped.
+        if (slotOverridden(card.cardKey, c.name, s.key)) return a + (used ? s.value : 0);
+        return a + s.captured;
+      }, 0);
+      return sum + got;
     }, 0);
+  }
+
+  // Full-year projection for the stable ROI verdict: captured-so-far plus a
+  // realistic estimate of slots that haven't started yet.
+  function projectedCapturedForCard(card: CardCatalogEntry): number {
+    return card.credits.reduce((sum, c) => {
+      const u = usageFor(card.cardKey, c.name);
+      if (!u) return sum + c.value * c.realisticCaptureRate;
+      const future = u.slots.filter((s) => s.status === "future");
+      const remaining = future.reduce((a, s) => a + s.value * c.realisticCaptureRate, 0);
+      return sum + remaining;
+    }, capturedForCard(card));
   }
 
   // Each card scored against the worth-it model, then filtered + sorted. Depends
@@ -275,15 +292,20 @@ export function CreditCardsView({
   // lives client-side rather than in the server page.
   const rows = useMemo(() => {
     const scored = cards.map(({ card, live, renewal }) => {
-      const cap = captured(card);
+      const cap = capturedForCard(card);
       const roi = computeCardRoi(card, {
-        capturedCredits: cap,
+        capturedCredits: projectedCapturedForCard(card),
         estPoints: live?.estPoints ?? 0,
         hasLiveSpend: !!live,
       });
-      const unusedForgettable = card.credits.filter(
-        (c) => isForgettable(c.frequency) && !isUsed(card.cardKey, c.name),
-      );
+      // Forgettable credits whose CURRENT slot is still open (open or flagged).
+      const unusedForgettable = card.credits.filter((c) => {
+        if (!isForgettable(c.frequency)) return false;
+        const u = usageFor(card.cardKey, c.name);
+        const cur = u?.currentSlot;
+        if (!cur) return false;
+        return !slotUsed(card.cardKey, c.name, cur);
+      });
       return { card, live, renewal, roi, cap, unusedForgettable };
     });
 
@@ -319,7 +341,7 @@ export function CreditCardsView({
     for (const { card, live } of cards) {
       fees += card.annualFee;
       creditsAvailable += maxCreditsValue(card);
-      creditsCaptured += captured(card);
+      creditsCaptured += capturedForCard(card);
       if (live) {
         points += live.estPoints;
         pointsCash += live.estPointsCashValue;
@@ -482,11 +504,11 @@ export function CreditCardsView({
                     cap={cap}
                     currency={currency}
                     unusedForgettable={unusedForgettable}
-                    used={(name) => isUsed(card.cardKey, name)}
-                    overridden={(name) => isOverridden(card.cardKey, name)}
-                    onToggle={(name) => toggle(card.cardKey, name)}
-                    onClearOverride={(name) => clearOverride(card.cardKey, name)}
-                    detect={(name) => detected(card.cardKey, name)}
+                    usage={(name) => usageFor(card.cardKey, name)}
+                    slotUsed={(name, slot) => slotUsed(card.cardKey, name, slot)}
+                    slotOverridden={(name, key) => slotOverridden(card.cardKey, name, key)}
+                    onToggleSlot={(name, slot) => toggleSlot(card.cardKey, name, slot)}
+                    onClearSlot={(name, key) => clearSlotOverride(card.cardKey, name, key)}
                   />
                 )}
               </Fragment>
@@ -712,11 +734,11 @@ function CardDetail({
   cap,
   currency,
   unusedForgettable,
-  used,
-  overridden,
-  onToggle,
-  onClearOverride,
-  detect,
+  usage,
+  slotUsed,
+  slotOverridden,
+  onToggleSlot,
+  onClearSlot,
 }: {
   card: CardCatalogEntry;
   live: CardLive | null;
@@ -725,11 +747,11 @@ function CardDetail({
   cap: number;
   currency: string;
   unusedForgettable: CardCredit[];
-  used: (creditName: string) => boolean;
-  overridden: (creditName: string) => boolean;
-  onToggle: (creditName: string) => void;
-  onClearOverride: (creditName: string) => void;
-  detect: (creditName: string) => CreditUsage | undefined;
+  usage: (creditName: string) => CreditUsage | undefined;
+  slotUsed: (creditName: string, slot: CreditSlot) => boolean;
+  slotOverridden: (creditName: string, slotKey: string) => boolean;
+  onToggleSlot: (creditName: string, slot: CreditSlot) => void;
+  onClearSlot: (creditName: string, slotKey: string) => void;
 }) {
   const allTabs: { key: DetailTab; label: string; show: boolean }[] = [
     { key: "credits", label: `Credits (${card.credits.length})`, show: card.credits.length > 0 },
@@ -880,63 +902,65 @@ function CardDetail({
 
       {/* tab body */}
       {tab === "credits" && card.credits.length > 0 && (
-        <ul className="space-y-1">
+        <ul className="space-y-2">
           {card.credits.map((c) => {
-            const on = used(c.name);
-            const ov = overridden(c.name);
-            const d = detect(c.name);
+            const u = usage(c.name);
+            const cur = u?.currentSlot ?? null;
+            const curUsed = u && cur ? slotUsed(c.name, cur) : false;
             return (
-              <li key={c.name}>
-                <div
-                  className={`flex w-full items-start gap-3 rounded-lg border px-3 py-2.5 transition-colors ${
-                    on ? "border-blue/40 bg-blue/10" : "hairline bg-surface"
-                  }`}
-                >
-                  <button
-                    onClick={() => onToggle(c.name)}
-                    aria-pressed={on}
-                    className={`mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-md border text-[0.7rem] ${
-                      on ? "border-blue bg-blue text-ink" : "border-line-2 text-transparent hover:border-blue/60"
-                    }`}
-                  >
-                    ✓
-                  </button>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                      <span className="text-sm text-cream">{c.name}</span>
-                      <span className="tnum text-xs text-blue">
-                        {formatMoney(c.value, currency, { cents: false })}
-                      </span>
-                      <span className="rounded bg-surface-2 px-1.5 py-0.5 text-[0.6rem] text-faint">
-                        {freqLabel(c.frequency)}
-                      </span>
-                      {isForgettable(c.frequency) && (
-                        <span className="rounded bg-coral/15 px-1.5 py-0.5 text-[0.6rem] text-coral">
-                          ↻ easy to forget
-                        </span>
-                      )}
-                      {c.enrollmentRequired && (
-                        <span className="rounded bg-surface-2 px-1.5 py-0.5 text-[0.6rem] text-slate">
-                          enroll
-                        </span>
-                      )}
-                      {ov ? (
-                        <button
-                          onClick={() => onClearOverride(c.name)}
-                          className="rounded bg-surface-2 px-1.5 py-0.5 text-[0.6rem] text-faint hover:text-blue"
-                          title="Revert to auto-detection"
-                        >
-                          manual · auto
-                        </button>
-                      ) : d?.detectable && d.usedThisPeriod ? (
-                        <span className="rounded bg-blue/10 px-1.5 py-0.5 text-[0.6rem] text-blue">
-                          detected{d.matchedMerchant ? ` · ${d.matchedMerchant}` : ""}
-                        </span>
-                      ) : null}
-                    </div>
-                    <p className="mt-0.5 text-xs text-faint">{c.howToUse}</p>
-                  </div>
+              <li key={c.name} className="rounded-lg border hairline bg-surface px-3 py-2.5">
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                  <span className="text-sm text-cream">{c.name}</span>
+                  <span className="tnum text-xs text-blue">
+                    {formatMoney(c.value, currency, { cents: false })}
+                  </span>
+                  <span className="rounded bg-surface-2 px-1.5 py-0.5 text-[0.6rem] text-faint">
+                    {freqLabel(c.frequency)}
+                  </span>
+                  {isForgettable(c.frequency) && (
+                    <span className="rounded bg-coral/15 px-1.5 py-0.5 text-[0.6rem] text-coral">
+                      ↻ easy to forget
+                    </span>
+                  )}
+                  {c.enrollmentRequired && (
+                    <span className="rounded bg-surface-2 px-1.5 py-0.5 text-[0.6rem] text-slate">
+                      enroll
+                    </span>
+                  )}
                 </div>
+
+                {u ? (
+                  <>
+                    <SlotGrid
+                      slots={u.slots}
+                      used={(s) => slotUsed(c.name, s)}
+                      overridden={(s) => slotOverridden(c.name, s.key)}
+                      onToggle={(s) => onToggleSlot(c.name, s)}
+                      onClear={(s) => onClearSlot(c.name, s.key)}
+                    />
+                    <div className="mt-1.5 text-[0.7rem] text-faint">
+                      <span className="text-cream-dim">
+                        {formatMoney(capturedThisYear(u, c, slotUsed, slotOverridden), currency, { cents: false })}
+                      </span>{" "}
+                      captured of {formatMoney(u.availableToDate, currency, { cents: false })} so far
+                      {cur && (
+                        <>
+                          {" · "}
+                          {curUsed
+                            ? cur.evidence ?? `${cur.label} used`
+                            : c.enrollmentRequired && cur.confidence === "flagged"
+                              ? cur.evidence ?? `${cur.label} — did the credit post?`
+                              : `${cur.label} unused — ${formatMoney(cur.value, currency, { cents: false })} waiting${cur.daysLeft != null ? ` · ${cur.daysLeft}d left` : ""}`}
+                        </>
+                      )}
+                    </div>
+                    <p className="mt-1 text-xs text-faint">{c.howToUse}</p>
+                  </>
+                ) : (
+                  <p className="mt-1 text-xs text-faint">
+                    Not linked — reference only. {c.howToUse}
+                  </p>
+                )}
               </li>
             );
           })}
@@ -1157,6 +1181,82 @@ function RenewalBlock({
 }
 
 // ── small presentational helpers ──────────────────────────────────────────────
+
+/** Per-slot value captured this year, override-aware (mirrors capturedForCard). */
+function capturedThisYear(
+  u: CreditUsage,
+  c: CardCredit,
+  used: (name: string, slot: CreditSlot) => boolean,
+  overridden: (name: string, key: string) => boolean,
+): number {
+  return u.slots
+    .filter((s) => s.status !== "future")
+    .reduce((a, s) => {
+      if (overridden(c.name, s.key)) return a + (used(c.name, s) ? s.value : 0);
+      return a + s.captured;
+    }, 0);
+}
+
+const SLOT_TONE: Record<string, string> = {
+  confirmed: "border-blue bg-blue text-ink",
+  inferred: "border-blue/60 bg-blue/15 text-blue",
+  flagged: "border-amber-400/50 bg-amber-400/10 text-amber-400",
+  open: "border-line-2 text-faint",
+  future: "border-transparent bg-surface-2 text-faint/50",
+};
+
+/**
+ * A tappable strip of period slots for one credit. Each slot is a button that
+ * toggles a manual override (tap again, then "auto" to revert). Confirmed = solid
+ * check, inferred = hollow check, flagged = "?", open current = ring, past open =
+ * coral (missed), future = dim.
+ */
+function SlotGrid({
+  slots,
+  used,
+  overridden,
+  onToggle,
+  onClear,
+}: {
+  slots: CreditSlot[];
+  used: (slot: CreditSlot) => boolean;
+  overridden: (slot: CreditSlot) => boolean;
+  onToggle: (slot: CreditSlot) => void;
+  onClear: (slot: CreditSlot) => void;
+}) {
+  const many = slots.length > 6; // monthly → compact cells
+  return (
+    <div className="mt-2 flex flex-wrap items-center gap-1">
+      {slots.map((s) => {
+        const on = used(s);
+        const ov = overridden(s);
+        const isPastOpen = !on && s.status === "past" && s.confidence !== "flagged";
+        const tone = on
+          ? ov
+            ? "border-blue bg-blue/80 text-ink"
+            : SLOT_TONE[s.confidence] ?? SLOT_TONE.open
+          : isPastOpen
+            ? "border-coral/40 text-coral"
+            : SLOT_TONE[s.confidence] ?? SLOT_TONE.open;
+        const mark = on ? (s.confidence === "inferred" && !ov ? "◔" : "✓") : s.confidence === "flagged" ? "?" : "○";
+        const glyph = on ? (s.confidence === "inferred" && !ov ? "◔" : "✓") : s.confidence === "flagged" ? "?" : s.label[0];
+        return (
+          <button
+            key={s.key}
+            onClick={() => (ov ? onClear(s) : onToggle(s))}
+            title={`${s.label}: ${s.evidence ?? (on ? "used" : s.status === "future" ? "upcoming" : "open")}${ov ? " (manual — tap to revert)" : ""}`}
+            aria-pressed={on}
+            className={`grid place-items-center rounded-md border text-[0.65rem] transition-colors ${
+              s.status === "current" ? "ring-1 ring-blue/50" : ""
+            } ${tone} ${many ? "h-6 w-6" : "h-7 min-w-[2.4rem] px-2"}`}
+          >
+            {many ? glyph : `${s.label} ${mark}`}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
 
 function Stat({
   label,
