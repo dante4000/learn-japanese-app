@@ -359,6 +359,41 @@ export function CreditCardsView({
     };
   }, [cards, overrides]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Open current-period slots across linked cards, soonest deadline first.
+  const actionItems = useMemo(() => {
+    type Item = {
+      cardKey: string;
+      cardName: string;
+      creditName: string;
+      value: number;
+      label: string;
+      daysLeft: number | null;
+      flagged: boolean;
+    };
+    const items: Item[] = [];
+    for (const { card, live } of cards) {
+      if (!live) continue;
+      for (const c of card.credits) {
+        const u = usageFor(card.cardKey, c.name);
+        const cur = u?.currentSlot;
+        if (!u || !cur) continue;
+        if (slotUsed(card.cardKey, c.name, cur)) continue;
+        items.push({
+          cardKey: card.cardKey,
+          cardName: card.displayName,
+          creditName: c.name,
+          value: cur.value,
+          label: cur.label,
+          daysLeft: cur.daysLeft,
+          flagged: cur.confidence === "flagged",
+        });
+      }
+    }
+    return items.sort(
+      (a, b) => (a.daysLeft ?? 9999) - (b.daysLeft ?? 9999) || b.value - a.value,
+    );
+  }, [cards, overrides]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const anyLive = cards.some((c) => c.live);
   const maxBarScale = Math.max(
     1,
@@ -415,6 +450,10 @@ export function CreditCardsView({
         (they&rsquo;re upside, listed per card). Tap any card for the breakdown.
         {!hydrated && " Loading your overrides…"}
       </p>
+
+      {actionItems.length > 0 && (
+        <ActionBanner items={actionItems} currency={currency} onJump={setExpanded} />
+      )}
 
       {/* ── Toolbar: sort + filter ─────────────────────────────────────── */}
       <div className="sticky top-0 z-10 -mx-1 mb-4 flex flex-wrap items-center gap-x-4 gap-y-2 bg-ink/80 px-1 py-2 backdrop-blur">
@@ -1254,6 +1293,75 @@ function SlotGrid({
           </button>
         );
       })}
+    </div>
+  );
+}
+
+/** Top-of-page "use it or lose it" list of open current-period credits. */
+function ActionBanner({
+  items,
+  currency,
+  onJump,
+}: {
+  items: {
+    cardKey: string;
+    cardName: string;
+    creditName: string;
+    value: number;
+    label: string;
+    daysLeft: number | null;
+    flagged: boolean;
+  }[];
+  currency: string;
+  onJump: (cardKey: string) => void;
+}) {
+  const total = items.reduce((a, i) => a + i.value, 0);
+  return (
+    <div className="rise mb-5 rounded-2xl border border-coral/25 bg-coral/5 p-4 md:p-5">
+      <div className="mb-2 flex items-baseline justify-between gap-2">
+        <h2 className="font-display text-base tracking-tight text-cream">
+          Use it or lose it
+        </h2>
+        <span className="text-xs text-faint">
+          {items.length} open · up to{" "}
+          <span className="text-coral">{formatMoney(total, currency, { cents: false })}</span>{" "}
+          this period
+        </span>
+      </div>
+      <ul className="grid gap-1.5 sm:grid-cols-2">
+        {items.map((i, idx) => {
+          const urgent = i.daysLeft != null && i.daysLeft <= 3;
+          const soon = i.daysLeft != null && i.daysLeft <= 7;
+          const tone = urgent ? "text-coral" : soon ? "text-amber-400" : "text-faint";
+          return (
+            <li key={`${i.cardKey}-${i.creditName}-${idx}`}>
+              <button
+                onClick={() => onJump(i.cardKey)}
+                className="flex w-full items-center justify-between gap-2 rounded-lg border hairline bg-surface px-3 py-2 text-left transition-colors hover:bg-surface-2/40"
+              >
+                <span className="min-w-0">
+                  <span className="tnum text-sm text-blue">
+                    {formatMoney(i.value, currency, { cents: false })}
+                  </span>{" "}
+                  <span className="text-sm text-cream">{i.creditName}</span>
+                  <span className="block truncate text-[0.65rem] text-faint">
+                    {i.cardName} · {i.label}
+                  </span>
+                </span>
+                <span className={`shrink-0 text-[0.7rem] ${tone}`}>
+                  {i.flagged
+                    ? "did it post?"
+                    : i.daysLeft == null
+                      ? "open"
+                      : i.daysLeft <= 0
+                        ? "ends today!"
+                        : `${i.daysLeft}d left${urgent ? " !" : ""}`}
+                </span>
+              </button>
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 }
