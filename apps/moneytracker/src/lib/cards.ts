@@ -1228,6 +1228,132 @@ function creditPeriod(
   }
 }
 
+export type SlotStatus = "past" | "current" | "future";
+export type SlotConfidence =
+  | "confirmed"
+  | "inferred"
+  | "flagged"
+  | "open"
+  | "future";
+
+export interface CreditSlot {
+  /** Stable id: "2026-06" | "2026-Q2" | "2026-H1" | "2026" | "every4" | "ever". */
+  key: string;
+  /** Short display label: "Jun" | "Q2" | "H1" | "2026" | "4 yrs" | "ever". */
+  label: string;
+  start: string; // yyyy-mm-dd inclusive
+  end: string; // yyyy-mm-dd inclusive
+  /** Per-slot dollar value (annual value split across the period count). */
+  value: number;
+  status: SlotStatus;
+  /** confirmed || inferred. flagged/open/future are NOT used. */
+  used: boolean;
+  confidence: SlotConfidence;
+  /** Dollars captured in this slot, capped at `value`. */
+  captured: number;
+  /** Whole days from today to `end`, current slot only (else null). */
+  daysLeft: number | null;
+  lastDate: string | null;
+  matchedMerchant: string | null;
+  /** Why it's marked, e.g. "confirmed · statement credit". */
+  evidence: string | null;
+}
+
+/** Last calendar day of `month1` (1–12) in `year`, as a number. */
+function lastDayOfMonth(year: number, month1: number): number {
+  return new Date(Date.UTC(year, month1, 0)).getUTCDate();
+}
+
+/** Build a zeroed slot (no detection applied yet). */
+function blankSlot(
+  key: string,
+  label: string,
+  start: string,
+  end: string,
+  value: number,
+  todayISO: string,
+  hasDeadline: boolean,
+): CreditSlot {
+  const status: SlotStatus =
+    todayISO < start ? "future" : todayISO > end ? "past" : "current";
+  return {
+    key,
+    label,
+    start,
+    end,
+    value,
+    status,
+    used: false,
+    confidence: status === "future" ? "future" : "open",
+    captured: 0,
+    daysLeft:
+      status === "current" && hasDeadline ? daysBetween(todayISO, end) : null,
+    lastDate: null,
+    matchedMerchant: null,
+    evidence: null,
+  };
+}
+
+/**
+ * Enumerate the reset slots for one credit across the CURRENT calendar year,
+ * anchored to `todayISO`. Detection fields are zeroed; `detectCreditUsage`
+ * fills them in. monthly→12, quarterly→4, semiannual→2, annual/one-time/
+ * every-4-years→1.
+ */
+export function creditSlots(
+  freq: CreditFrequency,
+  value: number,
+  todayISO: string,
+): CreditSlot[] {
+  const year = Number(todayISO.slice(0, 4));
+  const y = String(year);
+  const pad = (n: number) => String(n).padStart(2, "0");
+
+  switch (freq) {
+    case "monthly":
+      return Array.from({ length: 12 }, (_, i) => {
+        const m = i + 1;
+        return blankSlot(
+          `${y}-${pad(m)}`,
+          MONTH_ABBR[i],
+          `${y}-${pad(m)}-01`,
+          `${y}-${pad(m)}-${pad(lastDayOfMonth(year, m))}`,
+          value / 12,
+          todayISO,
+          true,
+        );
+      });
+    case "quarterly":
+      return Array.from({ length: 4 }, (_, q) => {
+        const sm = q * 3 + 1;
+        const em = q * 3 + 3;
+        return blankSlot(
+          `${y}-Q${q + 1}`,
+          `Q${q + 1}`,
+          `${y}-${pad(sm)}-01`,
+          `${y}-${pad(em)}-${pad(lastDayOfMonth(year, em))}`,
+          value / 4,
+          todayISO,
+          true,
+        );
+      });
+    case "semiannual":
+      return [
+        blankSlot(`${y}-H1`, "H1", `${y}-01-01`, `${y}-06-30`, value / 2, todayISO, true),
+        blankSlot(`${y}-H2`, "H2", `${y}-07-01`, `${y}-12-31`, value / 2, todayISO, true),
+      ];
+    case "every-4-years":
+      return [
+        blankSlot("every4", "4 yrs", monthsBefore(todayISO, 48), todayISO, value, todayISO, false),
+      ];
+    case "one-time":
+      return [blankSlot("ever", "ever", "0000-01-01", "9999-12-31", value, todayISO, false)];
+    case "annual":
+    default:
+      return [blankSlot(y, y, `${y}-01-01`, `${y}-12-31`, value, todayISO, true)];
+  }
+}
+
 /**
  * Detect, per credit on a card, whether the user has actually tapped it — by
  * matching the credit's detectHints against spend (the triggering charge) and
