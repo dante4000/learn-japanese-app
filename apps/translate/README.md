@@ -1,4 +1,4 @@
-# Lyrics Translator
+# Translate
 
 Paste a big chunk of text and it translates into **English one line at a time**,
 streaming each finished line into the UI live. The backend uses your local

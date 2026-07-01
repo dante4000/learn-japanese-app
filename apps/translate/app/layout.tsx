@@ -15,7 +15,7 @@ const sans = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Lyrics Translator — line by line into English",
+  title: "Translate — line by line into English",
   description:
     "Paste any text and watch it translate into English one line at a time, streaming live, powered by Claude.",
 };
