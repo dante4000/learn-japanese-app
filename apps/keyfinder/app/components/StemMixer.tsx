@@ -142,8 +142,7 @@ export default function StemMixer({
       const label = tracks.find((t) => t.id === l.spec.id)?.label ?? l.spec.label;
       setTimeout(() => {
         const a = document.createElement("a");
-        a.href = downloadUrl(l.spec.url, `${label}.wav`);
-        a.download = `${label}.wav`;
+        a.href = downloadUrl(l.spec.url, label);
         document.body.appendChild(a);
         a.click();
         a.remove();
@@ -281,8 +280,7 @@ export default function StemMixer({
                   />
                   <a
                     className="lane-dl"
-                    href={downloadUrl(proxy, `${t.label}.wav`)}
-                    download={`${t.label}.wav`}
+                    href={downloadUrl(proxy, t.label)}
                     title={`Download ${t.label}`}
                   >
                     <span aria-hidden>↓</span> save
