@@ -44,10 +44,23 @@ Optional: set `CLAUDE_BIN` to point at a specific `claude` binary.
 
 ## Run
 
+On demand (recommended) — starts it at **http://translate**, opens your browser,
+and stops the instant you close the window or press Ctrl-C. Nothing runs while
+you're not using it:
+
+```bash
+translate       # symlinked to translate.sh in ~/.local/bin
+```
+
+It asks for your password once per start (only to bind the clean port 80); the
+`claude` translator itself runs as you, not root.
+
+Dev / test:
+
 ```bash
 npm install
 npm run dev     # http://localhost:3000  (requires Claude Code installed + logged in)
-npm test        # unit tests (11, no tokens/CLI — the runner is mocked)
+npm test        # unit tests (13, no tokens/CLI — the runner is mocked)
 npm run build   # production build
 ```
 
