@@ -11,6 +11,7 @@ import {
   type Mode,
 } from "@/lib/theory";
 import SongAnalyzer from "@/app/components/SongAnalyzer";
+import StemSplitter from "@/app/components/StemSplitter";
 
 // ---- keyboard geometry: 2 octaves + final C = 15 white keys ----
 const WHITE_PCS = [0, 2, 4, 5, 7, 9, 11];
@@ -432,6 +433,8 @@ export default function Home() {
             window.scrollTo({ top: 0, behavior: "smooth" });
         }}
       />
+
+      <StemSplitter />
     </main>
   );
 }
