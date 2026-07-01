@@ -4,15 +4,9 @@ import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useStemMixer, type StemSpec } from "@/lib/audio/useStemMixer";
 import { computePeaks, drawWaveform } from "@/lib/audio/waveform";
 import { downloadUrl } from "@/lib/stems/client";
+import { fmtTime } from "@/lib/format";
 import type { AnalysisResult } from "@/lib/audio/analyze";
 import type { Mode } from "@/lib/theory";
-
-function fmt(s: number): string {
-  if (!isFinite(s) || s < 0) return "0:00";
-  const m = Math.floor(s / 60);
-  const sec = Math.floor(s % 60);
-  return `${m}:${sec.toString().padStart(2, "0")}`;
-}
 
 // Per-stem accent colors (waveform tint).
 const COLORS: Record<string, string> = {
@@ -55,7 +49,9 @@ function WaveLane({
   const peaksRef = useRef<Float32Array | null>(null);
   const widthRef = useRef(0);
 
-  const render = useCallback(() => {
+  // Draw the waveform ONCE (no `progress` dep) — the playhead/played tint are
+  // cheap CSS overlays below, so playback doesn't repaint the canvas.
+  const draw = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const w = canvas.clientWidth;
@@ -66,31 +62,35 @@ function WaveLane({
       peaksRef.current = computePeaks(buf, w);
       widthRef.current = w;
     }
-    drawWaveform(canvas, peaksRef.current, `${color}55`, progress, color);
-  }, [id, color, progress, getBuffer]);
+    drawWaveform(canvas, peaksRef.current, color);
+  }, [id, color, getBuffer]);
 
   useEffect(() => {
-    render();
-  }, [render]);
-
-  useEffect(() => {
-    const onResize = () => {
+    draw();
+    const canvas = canvasRef.current;
+    if (!canvas || typeof ResizeObserver === "undefined") return;
+    // Redraw once layout settles / on resize (handles width-0-at-mount).
+    const ro = new ResizeObserver(() => {
       peaksRef.current = null;
-      render();
-    };
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, [render]);
+      draw();
+    });
+    ro.observe(canvas);
+    return () => ro.disconnect();
+  }, [draw]);
 
+  const pct = `${Math.max(0, Math.min(1, progress)) * 100}%`;
   return (
-    <canvas
-      ref={canvasRef}
-      className="wave"
+    <div
+      className="wave-wrap"
       onClick={(e) => {
         const rect = e.currentTarget.getBoundingClientRect();
         onSeek((e.clientX - rect.left) / rect.width);
       }}
-    />
+    >
+      <canvas ref={canvasRef} className="wave" />
+      <span className="wave-dim" style={{ left: pct, right: 0 }} aria-hidden />
+      <span className="wave-head" style={{ left: pct }} aria-hidden />
+    </div>
   );
 }
 
@@ -130,7 +130,12 @@ export default function StemMixer({
 
   const progress = duration > 0 ? position / duration : 0;
 
-  const chords = analysis?.chords ?? [];
+  // Chords come from a full-file analysis (capped at 3 min); only show the ones
+  // that fall within the audio actually loaded (the 20s preview or the song).
+  const chords = useMemo(
+    () => (analysis?.chords ?? []).filter((c) => duration === 0 || c.startTime < duration),
+    [analysis, duration],
+  );
   const activeChord = useMemo(() => {
     if (chords.length === 0) return -1;
     return chords.findIndex((c) => position >= c.startTime && position < c.endTime);
@@ -192,7 +197,7 @@ export default function StemMixer({
           {isPlaying ? "❚❚ pause" : "▶ play"}
         </button>
         <span className="tp-time mono">
-          {fmt(position)} / {fmt(duration)}
+          {fmtTime(position)} / {fmtTime(duration)}
         </span>
         <label className="master-vol mono">
           master
@@ -222,13 +227,13 @@ export default function StemMixer({
                 className={`tl-chord ${i === activeChord ? "on" : ""}`}
                 style={{
                   left: `${(c.startTime / duration) * 100}%`,
-                  width: `${((c.endTime - c.startTime) / duration) * 100}%`,
+                  width: `${((Math.min(c.endTime, duration) - c.startTime) / duration) * 100}%`,
                 }}
                 onClick={(e) => {
                   e.stopPropagation();
                   seek(c.startTime);
                 }}
-                title={`${c.label} · ${fmt(c.startTime)}`}
+                title={`${c.label} · ${fmtTime(c.startTime)}`}
               >
                 <span>{c.label}</span>
               </button>

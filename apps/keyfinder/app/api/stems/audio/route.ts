@@ -38,7 +38,24 @@ export async function GET(request: Request): Promise<Response> {
     return new Response("Forbidden host", { status: 400 });
   }
 
-  const upstream = await fetch(parsed.toString());
+  let upstream: Response;
+  try {
+    upstream = await fetch(parsed.toString(), {
+      redirect: "follow",
+      signal: AbortSignal.timeout(30000),
+    });
+  } catch {
+    return new Response("Upstream fetch failed", { status: 502 });
+  }
+  // Re-validate the FINAL url after any redirects — the allowlist must hold for
+  // the host we actually stream from, not just the first hop.
+  try {
+    if (new URL(upstream.url).hostname !== ALLOWED_HOST) {
+      return new Response("Forbidden host", { status: 400 });
+    }
+  } catch {
+    /* some runtimes leave upstream.url empty on a non-redirected response */
+  }
   if (!upstream.ok || !upstream.body) {
     return new Response("Upstream error", { status: 502 });
   }
@@ -52,7 +69,7 @@ export async function GET(request: Request): Promise<Response> {
   headers.set("Cache-Control", "private, max-age=3600");
   if (download) {
     const base = (name || "stem").replace(/[^\w.-]+/g, "_").replace(/\.[^.]+$/, "");
-    const ext = EXT_BY_TYPE[contentType.split(";")[0].trim().toLowerCase()] || "audio";
+    const ext = EXT_BY_TYPE[contentType.split(";")[0].trim().toLowerCase()] || "mp3";
     headers.set("Content-Disposition", `attachment; filename="${base}.${ext}"`);
   }
 

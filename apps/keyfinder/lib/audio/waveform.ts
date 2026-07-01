@@ -8,13 +8,15 @@ export function computePeaks(buffer: AudioBuffer, width: number): Float32Array {
   const w = Math.max(1, Math.floor(width));
   const data = buffer.getChannelData(0);
   const peaks = new Float32Array(w * 2);
-  const step = Math.max(1, Math.floor(data.length / w));
+  const len = data.length;
   for (let x = 0; x < w; x++) {
     let min = 1.0;
     let max = -1.0;
-    const start = x * step;
-    const end = Math.min(start + step, data.length);
-    for (let i = start; i < end; i++) {
+    // Span the whole buffer with no gaps, including the tail (len not divisible
+    // by w): column x covers [floor(x·len/w), floor((x+1)·len/w)).
+    const start = Math.floor((x * len) / w);
+    const end = Math.max(start + 1, Math.floor(((x + 1) * len) / w));
+    for (let i = start; i < end && i < len; i++) {
       const v = data[i];
       if (v < min) min = v;
       if (v > max) max = v;

@@ -1128,13 +1128,40 @@ kbd {
   color: var(--ink);
 }
 
-.wave {
+.wave-wrap {
+  position: relative;
   width: 100%;
   height: 48px;
-  display: block;
   cursor: pointer;
   border-radius: 6px;
+  overflow: hidden;
   background: var(--paper);
+}
+
+.wave {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Dims the not-yet-played region — a cheap CSS overlay (no per-frame repaint). */
+.wave-dim {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: var(--paper);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.wave-head {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1.5px;
+  margin-left: -0.75px;
+  background: var(--ink);
+  pointer-events: none;
 }
 
 @media (max-width: 440px) {

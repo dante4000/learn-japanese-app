@@ -2,6 +2,8 @@
 // The license key is read from process.env.LALAL_LICENSE and never leaves the server.
 // Docs: https://www.lalal.ai/api/v1/openapi.json  (auth header: X-License-Key)
 
+import type { CheckResult, StemTrack } from "./types";
+
 export const LALAL_BASE = "https://www.lalal.ai/api/v1";
 
 // All stems LALAL can isolate via /split/stem_separator/ (splitter "auto" picks
@@ -85,24 +87,6 @@ export function trackName(label: string): string {
   return STEM_NAMES[label] ?? label;
 }
 
-export function isBackingLabel(label: string): boolean {
-  return label.startsWith("no_");
-}
-
-export interface NormalizedTrack {
-  label: string; // raw LALAL label, e.g. "vocals", "no_vocals"
-  name: string; // human label
-  type: "stem" | "back";
-  url: string; // rewritten to our audio proxy
-}
-
-export type NormalizedCheck =
-  | { status: "progress"; progress: number }
-  | { status: "success"; duration: number; tracks: NormalizedTrack[] }
-  | { status: "error"; error: string }
-  | { status: "cancelled" }
-  | { status: "unknown" };
-
 type Entry = {
   status?: string;
   progress?: number;
@@ -120,13 +104,15 @@ export function aggregateCheck(
   taskIds: string[],
   rewriteUrl: (url: string) => string,
   keepBacking: boolean,
-): NormalizedCheck {
+): CheckResult {
   const result = (json as { result?: Record<string, Entry> })?.result ?? {};
   const entries = taskIds.map((id) => result[id]);
 
-  if (entries.some((e) => !e || typeof e.status !== "string")) {
-    // A task fell out of the response (expired / bad id).
-    if (entries.every((e) => !e)) return { status: "unknown" };
+  // All tasks absent → terminal unknown (expired / bad ids). If only SOME are
+  // absent it may be a transient first-poll race, so we keep polling; the
+  // caller's poll deadline is the backstop against a persistent stall.
+  if (entries.every((e) => !e || typeof e.status !== "string")) {
+    return { status: "unknown" };
   }
 
   for (const e of entries) {
@@ -141,7 +127,7 @@ export function aggregateCheck(
 
   const allSuccess = entries.every((e) => e?.status === "success");
   if (allSuccess) {
-    const tracks: NormalizedTrack[] = [];
+    const tracks: StemTrack[] = [];
     let duration = 0;
     for (const e of entries) {
       const r = e!.result;
@@ -188,14 +174,29 @@ function license(): string {
   return key;
 }
 
-export async function lalalMinutesLeft(): Promise<number> {
-  const res = await fetch(`${LALAL_BASE}/limits/minutes_left/`, {
+// Returns the balance, or null if the balance couldn't be read (so callers can
+// distinguish an API error from a genuine zero).
+export async function lalalMinutesLeft(): Promise<number | null> {
+  try {
+    const res = await fetch(`${LALAL_BASE}/limits/minutes_left/`, {
+      method: "POST",
+      headers: { "X-License-Key": license() },
+    });
+    if (!res.ok) return null;
+    const json = (await res.json()) as { minutes_left?: number };
+    return typeof json.minutes_left === "number" ? json.minutes_left : null;
+  } catch {
+    return null;
+  }
+}
+
+export async function lalalCancel(taskIds: string[]): Promise<void> {
+  if (taskIds.length === 0) return;
+  await fetch(`${LALAL_BASE}/cancel/`, {
     method: "POST",
-    headers: { "X-License-Key": license() },
+    headers: { "X-License-Key": license(), "Content-Type": "application/json" },
+    body: JSON.stringify({ task_ids: taskIds }),
   });
-  if (!res.ok) return 0;
-  const json = (await res.json()) as { minutes_left?: number };
-  return json.minutes_left ?? 0;
 }
 
 export async function lalalUpload(
@@ -219,26 +220,45 @@ export async function lalalUpload(
   return { id: j.id, name: j.name, duration: j.duration };
 }
 
-/** Start one stem_separator task per requested stem. Returns the task ids in order. */
+async function startOneStem(sourceId: string, stem: string): Promise<string> {
+  const res = await fetch(`${LALAL_BASE}/split/stem_separator/`, {
+    method: "POST",
+    headers: { "X-License-Key": license(), "Content-Type": "application/json" },
+    body: JSON.stringify(buildStemBody(sourceId, stem)),
+  });
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error((json as { detail?: string }).detail || "Could not start the split.");
+  }
+  return (json as { task_id: string }).task_id;
+}
+
+/**
+ * Start one stem_separator task per requested stem, concurrently. If any task
+ * fails to start, cancel the ones that did (so we don't leak minutes on
+ * orphaned tasks) and throw.
+ */
 export async function lalalSplitStems(
   sourceId: string,
   uiStems: string[],
 ): Promise<string[]> {
   const lalalStems = toLalalStems(uiStems);
-  const ids: string[] = [];
-  for (const stem of lalalStems) {
-    const res = await fetch(`${LALAL_BASE}/split/stem_separator/`, {
-      method: "POST",
-      headers: { "X-License-Key": license(), "Content-Type": "application/json" },
-      body: JSON.stringify(buildStemBody(sourceId, stem)),
-    });
-    const json = await res.json().catch(() => ({}));
-    if (!res.ok) {
-      throw new Error((json as { detail?: string }).detail || "Could not start the split.");
-    }
-    ids.push((json as { task_id: string }).task_id);
+  const settled = await Promise.allSettled(
+    lalalStems.map((stem) => startOneStem(sourceId, stem)),
+  );
+  const started = settled
+    .filter((r): r is PromiseFulfilledResult<string> => r.status === "fulfilled")
+    .map((r) => r.value);
+  const failed = settled.find((r) => r.status === "rejected") as
+    | PromiseRejectedResult
+    | undefined;
+  if (failed) {
+    if (started.length) await lalalCancel(started).catch(() => {});
+    throw failed.reason instanceof Error
+      ? failed.reason
+      : new Error("Could not start the split.");
   }
-  return ids;
+  return started;
 }
 
 export async function lalalCheckRaw(taskIds: string[]): Promise<unknown> {

@@ -2,27 +2,16 @@
 
 import { upload } from "@vercel/blob/client";
 import { fileToPreviewWav } from "@/lib/audio/trim";
+import type { CheckResult, StemTrack } from "./types";
+
+export type { CheckResult, StemTrack };
 
 export interface UploadResult {
   id: string;
   name: string;
   duration: number;
-  minutesLeft: number;
+  minutesLeft: number | null;
 }
-
-export interface StemTrack {
-  label: string;
-  name: string;
-  type: "stem" | "back";
-  url: string; // same-origin audio-proxy url
-}
-
-export type CheckResult =
-  | { status: "progress"; progress: number }
-  | { status: "success"; duration: number; tracks: StemTrack[] }
-  | { status: "error"; error: string }
-  | { status: "cancelled" }
-  | { status: "unknown" };
 
 async function jsonOrThrow(res: Response) {
   const json = await res.json().catch(() => ({}));

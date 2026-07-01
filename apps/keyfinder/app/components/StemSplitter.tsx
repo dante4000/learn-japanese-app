@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   checkTasks,
   startSplit,
@@ -60,7 +60,9 @@ export default function StemSplitter({ onUseKey }: Props) {
   const [tracks, setTracks] = useState<StemTrack[]>([]);
   const [analysis, setAnalysis] = useState<AnalysisResult | null>(null);
   const [minutesLeft, setMinutesLeft] = useState<number | null>(null);
+  const [fileDuration, setFileDuration] = useState<number | null>(null);
   const runId = useRef(0);
+  const fileToken = useRef(0);
 
   const togglePick = useCallback((id: string) => {
     setPicked((prev) => {
@@ -72,9 +74,30 @@ export default function StemSplitter({ onUseKey }: Props) {
   }, []);
 
   const pickFile = useCallback((f: File) => {
+    const tok = ++fileToken.current;
     setFile(f);
     setFileName(f.name);
     setError(null);
+    setAnalysis(null);
+    setFileDuration(null);
+
+    // Probe the true duration (cheap, metadata-only) for an accurate cost estimate.
+    const url = URL.createObjectURL(f);
+    const audio = new Audio();
+    audio.preload = "metadata";
+    audio.onloadedmetadata = () => {
+      if (fileToken.current === tok && isFinite(audio.duration)) {
+        setFileDuration(audio.duration);
+      }
+      URL.revokeObjectURL(url);
+    };
+    audio.onerror = () => URL.revokeObjectURL(url);
+    audio.src = url;
+
+    // Kick off the free client-side key/BPM/chord analysis once per file.
+    void analyzeFile(f).then((a) => {
+      if (fileToken.current === tok && a) setAnalysis(a);
+    });
   }, []);
 
   // mode: "preview" splits a cheap ~20s clip; "full" splits the whole song.
@@ -88,13 +111,6 @@ export default function StemSplitter({ onUseKey }: Props) {
       setStage(mode === "preview" ? "Trimming preview" : "Uploading");
       setProgress(0.05);
 
-      // Analyze the full mix locally (free) — kick off once, in parallel.
-      if (!analysis) {
-        void analyzeFile(file).then((a) => {
-          if (runId.current === id && a) setAnalysis(a);
-        });
-      }
-
       try {
         const up = await uploadFile(
           file,
@@ -103,8 +119,10 @@ export default function StemSplitter({ onUseKey }: Props) {
         if (runId.current !== id) return;
         setMinutesLeft(up.minutesLeft);
 
+        // Only enforce the balance when we could actually read it; otherwise
+        // let LALAL reject the split itself. (minutesLeft is null on API error.)
         const needed = (up.duration / 60) * stemList.length;
-        if (up.minutesLeft < needed) {
+        if (up.minutesLeft != null && up.minutesLeft < needed) {
           throw new Error(
             `Not enough LALAL minutes (${up.minutesLeft.toFixed(1)} left, ~${needed.toFixed(1)} needed).`,
           );
@@ -114,9 +132,15 @@ export default function StemSplitter({ onUseKey }: Props) {
         setProgress(0.15);
         const taskIds = await startSplit(up.id, stemList);
 
+        // Bound the poll so a dropped/expired task can't spin forever.
+        const deadline = Date.now() + 6 * 60 * 1000;
         for (;;) {
           if (runId.current !== id) return;
           await sleep(2500);
+          if (runId.current !== id) return;
+          if (Date.now() > deadline) {
+            throw new Error("Timed out waiting for the split. Please try again.");
+          }
           const res = await checkTasks(taskIds);
           if (runId.current !== id) return;
           if (res.status === "progress") {
@@ -131,6 +155,9 @@ export default function StemSplitter({ onUseKey }: Props) {
             throw new Error(res.error);
           } else if (res.status === "cancelled") {
             throw new Error("The split was cancelled.");
+          } else {
+            // "unknown" — tasks fell out of LALAL's response; don't loop forever.
+            throw new Error("Lost track of the split — please try again.");
           }
         }
       } catch (e) {
@@ -139,22 +166,34 @@ export default function StemSplitter({ onUseKey }: Props) {
         setPhase("error");
       }
     },
-    [file, analysis],
+    [file],
   );
 
   const reset = useCallback(() => {
     runId.current++;
+    fileToken.current++;
     setPhase("idle");
     setFile(null);
     setFileName("");
     setTracks([]);
     setAnalysis(null);
+    setFileDuration(null);
     setError(null);
     setProgress(0);
   }, []);
 
+  // Cancel any in-flight run/analysis if the component unmounts.
+  useEffect(() => {
+    return () => {
+      runId.current++;
+      fileToken.current++;
+    };
+  }, []);
+
+  // Prefer the true file duration; fall back to the (3-min-capped) analysis.
+  const estDuration = fileDuration ?? analysis?.duration ?? null;
   const fullCost =
-    analysis && picked.size ? (analysis.duration / 60) * picked.size : null;
+    estDuration && picked.size ? (estDuration / 60) * picked.size : null;
 
   const lanes = tracks.map((t) => ({
     spec: { id: t.label, label: t.name, url: t.url },

@@ -1,7 +1,8 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   aggregateCheck,
   buildStemBody,
+  lalalSplitStems,
   toLalalStems,
   trackName,
 } from "./lalal";
@@ -147,5 +148,49 @@ describe("aggregateCheck", () => {
     expect(aggregateCheck({ result: {} }, ["t1"], proxy, false)).toEqual({
       status: "unknown",
     });
+  });
+
+  it("keeps polling (progress) when only some tasks are momentarily absent", () => {
+    const r = aggregateCheck(
+      { result: { t1: { status: "progress", progress: 40 } } },
+      ["t1", "t2"],
+      proxy,
+      false,
+    );
+    // t2 absent (transient) → treated as 0%, average = 20, not terminal.
+    expect(r).toEqual({ status: "progress", progress: 20 });
+  });
+});
+
+describe("lalalSplitStems rollback", () => {
+  afterEach(() => vi.unstubAllGlobals());
+
+  it("cancels already-started tasks when one stem fails to start", async () => {
+    process.env.LALAL_LICENSE = "test-key";
+    const cancelBodies: string[] = [];
+    let started = 0;
+    const fetchMock = vi.fn(async (url: string, init?: RequestInit) => {
+      if (url.endsWith("/split/stem_separator/")) {
+        started++;
+        if (started === 2) {
+          return new Response(JSON.stringify({ detail: "boom" }), { status: 400 });
+        }
+        return new Response(JSON.stringify({ task_id: `task-${started}` }), { status: 200 });
+      }
+      if (url.endsWith("/cancel/")) {
+        cancelBodies.push(String(init?.body));
+        return new Response("{}", { status: 200 });
+      }
+      throw new Error(`unexpected ${url}`);
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    await expect(lalalSplitStems("src", ["vocals", "drums", "bass"])).rejects.toThrow(
+      /boom/,
+    );
+    // The two tasks that started must be cancelled (rollback).
+    expect(cancelBodies).toHaveLength(1);
+    const cancelled = JSON.parse(cancelBodies[0]).task_ids as string[];
+    expect(cancelled.sort()).toEqual(["task-1", "task-3"]);
   });
 });

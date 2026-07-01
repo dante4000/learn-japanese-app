@@ -185,7 +185,8 @@ export function useStemMixer(stems: StemSpec[]) {
       stopSources();
       playingRef.current = false;
       setIsPlaying(false);
-      startOffsetRef.current = 0;
+      // Park at the end; play() resets to 0 when offset >= duration.
+      startOffsetRef.current = duration;
       setPosition(duration);
       return;
     }
@@ -194,14 +195,21 @@ export function useStemMixer(stems: StemSpec[]) {
   }, [currentPosition, duration, stopSources]);
 
   const play = useCallback(async () => {
-    const ctx = ensureContext();
-    if (ctx.state === "suspended") await ctx.resume(); // iOS unlock
     if (playingRef.current) return;
+    playingRef.current = true; // claim synchronously — guards re-entrant calls
+    const ctx = ensureContext();
+    if (ctx.state === "suspended") {
+      try {
+        await ctx.resume(); // iOS unlock
+      } catch {
+        /* ignore */
+      }
+    }
+    if (!playingRef.current) return; // paused during the resume await
     let offset = startOffsetRef.current;
     if (offset >= duration) offset = 0;
     applyGains();
     startSources(offset);
-    playingRef.current = true;
     setIsPlaying(true);
     rafRef.current = requestAnimationFrame(tick);
   }, [ensureContext, duration, applyGains, startSources, tick]);

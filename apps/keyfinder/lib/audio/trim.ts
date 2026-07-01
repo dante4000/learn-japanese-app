@@ -14,7 +14,12 @@ export async function fileToPreviewWav(
       .webkitAudioContext;
   const ctx = new Ctor();
   try {
-    const buf = await ctx.decodeAudioData(await file.arrayBuffer());
+    let buf: AudioBuffer;
+    try {
+      buf = await ctx.decodeAudioData(await file.arrayBuffer());
+    } catch {
+      throw new Error("Couldn't read that audio file — try a different format.");
+    }
     const channels: Float32Array[] = [];
     for (let c = 0; c < buf.numberOfChannels; c++) {
       channels.push(buf.getChannelData(c));

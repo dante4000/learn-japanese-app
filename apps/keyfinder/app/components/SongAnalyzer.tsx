@@ -12,6 +12,7 @@ import { decodeFileToMono } from "@/lib/audio/decode";
 import { runAnalysis } from "@/lib/audio/run";
 import type { AnalysisResult } from "@/lib/audio/analyze";
 import { type ChordSegment } from "@/lib/audio/chords";
+import { fmtTime } from "@/lib/format";
 
 // ---- mini one-octave keyboard geometry (for chord diagrams) ----
 const WHITE_PCS = [0, 2, 4, 5, 7, 9, 11];
@@ -37,12 +38,7 @@ const DEGREE: Record<number, string> = {
 
 type Status = "idle" | "decoding" | "analyzing" | "done" | "error";
 
-function fmt(s: number): string {
-  if (!isFinite(s)) return "0:00";
-  const m = Math.floor(s / 60);
-  const sec = Math.floor(s % 60);
-  return `${m}:${sec.toString().padStart(2, "0")}`;
-}
+const fmt = fmtTime;
 
 interface Props {
   onUseKey: (rootPc: number, mode: Mode) => void;

@@ -21,6 +21,13 @@ describe("computePeaks", () => {
     expect(peaks[3]).toBeCloseTo(0.25); // max col1
   });
 
+  it("covers the whole buffer including the tail (len not divisible by width)", () => {
+    // 10 samples, width 3: the extreme final sample must land in the last column.
+    const data = [0, 0, 0, 0, 0, 0, 0, 0, 0, -0.9];
+    const peaks = computePeaks(fakeBuffer(data), 3);
+    expect(peaks[3 * 2 - 2]).toBeCloseTo(-0.9); // min of the last column
+  });
+
   it("always returns width*2 entries and never leaves min>max", () => {
     const peaks = computePeaks(fakeBuffer([0.2]), 4);
     expect(peaks.length).toBe(8);
