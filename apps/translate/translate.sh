@@ -1,19 +1,24 @@
 #!/usr/bin/env bash
-# `translate` — start the translator on demand, open it at http://translate, and
-# stop it the moment you close this window (or hit Ctrl-C). Nothing runs when
-# you're not using it.
+# `translate`          — on-demand translator at http://translate (Claude Max).
+# `translate --local`  — same, but fully offline via a local model (Ollama).
+# Stops the moment you close the window/tab or hit Ctrl-C. Nothing runs when idle.
 #
-# Binding the clean port 80 needs root, so this re-launches itself with sudo
-# (you'll be asked for your password once per start). The translator itself runs
-# `claude` as you, not root.
+# Binding the clean port 80 needs root, so this re-launches itself with sudo.
+# The translator's `claude` child runs as you, not root.
 set -euo pipefail
 
 DIR="/Users/danielko/dev/sites/apps/translate"
+OLLAMA="/opt/homebrew/bin/ollama"
+LOCAL_MODEL="${TRANSLATE_LOCAL_MODEL:-gemma3:12b}"
+
+# --local → offline mode.
+LOCAL=0
+for a in "$@"; do [ "$a" = "--local" ] && LOCAL=1; done
 
 # Re-exec under sudo if not already root (needed only to bind port 80). Use a GUI
 # askpass helper so it works with or without a terminal.
 if [ "$(id -u)" != "0" ]; then
-  echo "Starting translate…"
+  echo "Starting translate${LOCAL:+ (local)}…"
   export SUDO_ASKPASS="$DIR/askpass.sh"
   exec sudo -A "$DIR/translate.sh" "$@"
 fi
@@ -37,6 +42,22 @@ export TRANSLATE_UID=501 TRANSLATE_GID=20 TRANSLATE_HOME=/Users/danielko TRANSLA
 export PATH="/Users/danielko/.local/bin:/opt/homebrew/bin:$PATH"
 export NODE_ENV=production
 export TRANSLATE_AUTOEXIT=1   # exit when the browser tab closes
+
+# Offline mode: point the app at Ollama and make sure the server + model are ready
+# (Ollama stores models per-user, so run it as the user, not root).
+if [ "$LOCAL" = 1 ]; then
+  export TRANSLATE_BACKEND=local
+  export TRANSLATE_LOCAL_MODEL="$LOCAL_MODEL"
+  if ! sudo -u danielko pgrep -f "ollama serve" >/dev/null 2>&1; then
+    echo "Starting Ollama…"
+    sudo -u danielko bash -c "OLLAMA_FLASH_ATTENTION=1 nohup $OLLAMA serve >/tmp/ollama.log 2>&1 & disown"
+    sleep 3
+  fi
+  if ! sudo -u danielko "$OLLAMA" show "$LOCAL_MODEL" >/dev/null 2>&1; then
+    echo "Pulling local model $LOCAL_MODEL (first run only, a few GB)…"
+    sudo -u danielko "$OLLAMA" pull "$LOCAL_MODEL"
+  fi
+fi
 
 cd "$DIR"
 node node_modules/next/dist/bin/next start -p 80 -H 127.0.0.1 &

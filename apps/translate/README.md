@@ -49,18 +49,36 @@ and stops the instant you close the window or press Ctrl-C. Nothing runs while
 you're not using it:
 
 ```bash
-translate       # symlinked to translate.sh in ~/.local/bin
+translate           # Claude Max backend (via the local `claude` CLI)
+translate --local   # fully offline — a local model via Ollama, no Claude at all
 ```
 
 It asks for your password once per start (only to bind the clean port 80); the
 `claude` translator itself runs as you, not root.
+
+### Backends
+
+- **Default (Claude):** batches lines through the local `claude` CLI (your Max plan).
+- **`--local` (offline):** translates line-by-line through **Ollama** — no network,
+  no Claude, no account. First run auto-pulls the model. Because Ollama keeps the
+  model resident, per-line calls are cheap (no spawn tax), so batching isn't needed.
+
+Local config (env):
+
+- `TRANSLATE_LOCAL_MODEL` — Ollama model tag (default `gemma3:12b`; try `:27b` for
+  best quality on 64GB, or a `:4b` for speed).
+- `TRANSLATE_LOCAL_CONCURRENCY` — parallel line requests to Ollama (default 4).
+- `OLLAMA_URL` — Ollama endpoint (default `http://127.0.0.1:11434`).
+
+The backend is chosen in `lib/translate.ts` via `TRANSLATE_BACKEND` (`claude` |
+`local`); `streamTranslations` dispatches and streams each line as it lands.
 
 Dev / test:
 
 ```bash
 npm install
 npm run dev     # http://localhost:3000  (requires Claude Code installed + logged in)
-npm test        # unit tests (13, no tokens/CLI — the runner is mocked)
+npm test        # unit tests (21, no tokens/CLI/network — runners are mocked)
 npm run build   # production build
 ```
 

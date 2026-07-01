@@ -1,10 +1,15 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   buildBatchPrompt,
+  buildLocalPrompt,
   chunk,
+  extractTranslation,
   parseBatch,
   splitLines,
+  streamTranslations,
   translateBatch,
+  translateLineLocal,
+  type ResultSink,
   type SourceLine,
 } from "./translate";
 
@@ -96,5 +101,81 @@ describe("translateBatch", () => {
     const run = vi.fn();
     expect((await translateBatch([], { run })).size).toBe(0);
     expect(run).not.toHaveBeenCalled();
+  });
+});
+
+describe("extractTranslation", () => {
+  it("pulls the <t> contents out of chatty output", () => {
+    expect(extractTranslation("sure:\n<t>the river</t>\nok")).toBe("the river");
+  });
+
+  it("strips a <think> block before extracting", () => {
+    expect(extractTranslation("<think>hmm, spanish</think><t>hello</t>")).toBe("hello");
+  });
+
+  it("falls back to trimmed raw when no tags are present", () => {
+    expect(extractTranslation("  hello  ")).toBe("hello");
+  });
+});
+
+describe("buildLocalPrompt", () => {
+  it("includes the line and asks for <t></t> only", () => {
+    const p = buildLocalPrompt("hola mundo");
+    expect(p).toContain("hola mundo");
+    expect(p).toContain("<t></t>");
+  });
+});
+
+describe("translateLineLocal", () => {
+  it("sends the line and extracts the tagged translation", async () => {
+    const run = vi.fn().mockResolvedValue("<t>hello world</t>");
+    expect(await translateLineLocal("hola mundo", { run })).toBe("hello world");
+    expect(run.mock.calls[0][0]).toContain("hola mundo");
+  });
+});
+
+describe("streamTranslations", () => {
+  const content: SourceLine[] = [
+    { index: 0, text: "hola", kind: "content" },
+    { index: 2, text: "mundo", kind: "content" },
+  ];
+
+  afterEach(() => {
+    delete process.env.TRANSLATE_BACKEND;
+  });
+
+  function collect(): { results: Record<number, string | null>; sink: ResultSink } {
+    const results: Record<number, string | null> = {};
+    return { results, sink: (i, t) => { results[i] = t; } };
+  }
+
+  it("claude backend: batches lines and reports each by index", async () => {
+    delete process.env.TRANSLATE_BACKEND;
+    const run = vi.fn().mockResolvedValue("<t 0>hi</t>\n<t 2>world</t>");
+    const { results, sink } = collect();
+    await streamTranslations(content, sink, { run });
+    expect(results).toEqual({ 0: "hi", 2: "world" });
+    // Batched: a single runner call for both lines.
+    expect(run).toHaveBeenCalledTimes(1);
+  });
+
+  it("local backend: translates each line individually", async () => {
+    process.env.TRANSLATE_BACKEND = "local";
+    const run = vi.fn().mockResolvedValue("<t>x</t>");
+    const { results, sink } = collect();
+    await streamTranslations(content, sink, { run });
+    expect(results).toEqual({ 0: "x", 2: "x" });
+    // Per-line: one call per content line.
+    expect(run).toHaveBeenCalledTimes(2);
+  });
+
+  it("reports an error for a line whose runner throws", async () => {
+    process.env.TRANSLATE_BACKEND = "local";
+    const run = vi.fn().mockRejectedValue(new Error("boom"));
+    const errors: string[] = [];
+    await streamTranslations([content[0]], (_i, t, msg) => {
+      if (t === null && msg) errors.push(msg);
+    }, { run });
+    expect(errors).toEqual(["boom"]);
   });
 });

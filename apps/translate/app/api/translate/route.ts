@@ -1,9 +1,7 @@
-import { CHUNK_SIZE, chunk, splitLines, translateBatch } from "@/lib/translate";
+import { splitLines, streamTranslations } from "@/lib/translate";
 
 export const runtime = "nodejs";
 export const maxDuration = 300;
-
-const CONCURRENCY = 4; // chunks translated in parallel
 
 interface TranslateBody {
   text?: unknown;
@@ -24,7 +22,6 @@ export async function POST(req: Request) {
 
   const lines = splitLines(text);
   const content = lines.filter((l) => l.kind === "content");
-  const chunks = chunk(content, CHUNK_SIZE);
   const encoder = new TextEncoder();
 
   const stream = new ReadableStream<Uint8Array>({
@@ -43,33 +40,11 @@ export async function POST(req: Request) {
         })),
       });
 
-      // 2) Translate chunks with bounded concurrency; stream each line as its
-      //    chunk returns. Ordering is handled client-side by index.
-      let cursor = 0;
-      async function worker() {
-        for (;;) {
-          const myChunk = chunks[cursor++];
-          if (!myChunk) return;
-          try {
-            const map = await translateBatch(myChunk);
-            for (const line of myChunk) {
-              const translation = map.get(line.index);
-              if (translation !== undefined) {
-                send({ type: "translated", index: line.index, translation });
-              } else {
-                send({ type: "error", index: line.index, message: "No translation returned." });
-              }
-            }
-          } catch (err) {
-            const message = err instanceof Error ? err.message : "Translation failed.";
-            for (const line of myChunk) send({ type: "error", index: line.index, message });
-          }
-        }
-      }
-
-      await Promise.all(
-        Array.from({ length: Math.min(CONCURRENCY, chunks.length) }, worker),
-      );
+      // 2) Translate via the active backend, streaming each line as it lands.
+      await streamTranslations(content, (index, translation, message) => {
+        if (translation !== null) send({ type: "translated", index, translation });
+        else send({ type: "error", index, message: message ?? "Translation failed." });
+      });
 
       send({ type: "done", count: lines.length });
       controller.close();
