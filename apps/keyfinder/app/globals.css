@@ -1143,3 +1143,59 @@ kbd {
     width: 64px;
   }
 }
+
+.lane-dl {
+  gap: 4px;
+  padding: 0 10px;
+  width: auto;
+  height: 26px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.dl-all {
+  justify-self: start;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 9px 16px;
+  border-radius: 999px;
+  border: 1.5px solid var(--ink);
+  background: var(--paper);
+  color: var(--ink);
+  transition: background 0.12s ease, color 0.12s ease;
+}
+
+.dl-all:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.stem-chip.preset {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+.split-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.split-go.preview {
+  background: var(--card);
+  color: var(--ink);
+  border: 1.5px solid var(--ink);
+}
+
+.split-go.preview:hover:not(:disabled) {
+  background: #eaf0ff;
+}
+
+.preview-banner {
+  font-size: 11px;
+  color: var(--accent);
+  font-weight: 700;
+}

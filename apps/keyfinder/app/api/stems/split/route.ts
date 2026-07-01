@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-import { LalalConfigError, lalalSplit, toLalalStems } from "@/lib/stems/lalal";
+import { LalalConfigError, lalalSplitStems, toLalalStems } from "@/lib/stems/lalal";
 
 export const runtime = "nodejs";
 
-// Starts a multistem split. Returns the task id to poll.
+// Starts one stem_separator task per requested stem. Returns the task ids.
 export async function POST(request: Request): Promise<NextResponse> {
   try {
     const { source_id, stems } = (await request.json()) as {
@@ -19,8 +19,8 @@ export async function POST(request: Request): Promise<NextResponse> {
         { status: 400 },
       );
     }
-    const taskId = await lalalSplit(source_id, stems);
-    return NextResponse.json({ task_id: taskId });
+    const taskIds = await lalalSplitStems(source_id, stems);
+    return NextResponse.json({ task_ids: taskIds });
   } catch (e) {
     const status = e instanceof LalalConfigError ? 500 : 400;
     return NextResponse.json(

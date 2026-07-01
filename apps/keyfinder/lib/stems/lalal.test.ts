@@ -1,163 +1,150 @@
 import { describe, expect, it } from "vitest";
 import {
-  buildSplitBody,
-  normalizeCheck,
+  aggregateCheck,
+  buildStemBody,
   toLalalStems,
-  type NormalizedCheck,
+  trackName,
 } from "./lalal";
 
 const proxy = (u: string) => `/api/stems/audio?url=${encodeURIComponent(u)}`;
 
 describe("toLalalStems", () => {
-  it("maps drums to the singular LALAL enum and drops unknowns", () => {
-    expect(toLalalStems(["vocals", "drums", "bogus"])).toEqual([
+  it("maps drums→drum, keeps phoenix stems, drops unknowns, dedupes", () => {
+    expect(toLalalStems(["vocals", "drums", "synthesizer", "drums", "bogus"])).toEqual([
       "vocals",
       "drum",
+      "synthesizer",
     ]);
-  });
-
-  it("dedupes repeated stems", () => {
-    expect(toLalalStems(["bass", "bass", "piano"])).toEqual(["bass", "piano"]);
   });
 });
 
-describe("buildSplitBody", () => {
-  it("shapes the multistem request with auto splitter", () => {
-    expect(buildSplitBody("src-1", ["vocals", "drums"])).toEqual({
+describe("buildStemBody", () => {
+  it("shapes a stem_separator request with auto splitter", () => {
+    expect(buildStemBody("src-1", "wind")).toEqual({
       source_id: "src-1",
-      presets: {
-        stem_list: ["vocals", "drum"],
-        splitter: "auto",
-        extraction_level: "deep_extraction",
-      },
+      presets: { stem: "wind", splitter: "auto", extraction_level: "deep_extraction" },
       idempotency_key: null,
     });
   });
 });
 
-describe("normalizeCheck", () => {
-  const id = "task-1";
+describe("trackName", () => {
+  it("names no_vocals as Instrumental and other no_* as Backing", () => {
+    expect(trackName("no_vocals")).toBe("Instrumental");
+    expect(trackName("no_bass")).toBe("Backing");
+    expect(trackName("synthesizer")).toBe("Synth");
+  });
+});
 
-  it("returns progress and clamps negatives", () => {
-    const r = normalizeCheck(
-      { result: { [id]: { status: "progress", progress: 42 } } },
-      id,
-      proxy,
-    );
-    expect(r).toEqual<NormalizedCheck>({ status: "progress", progress: 42 });
+describe("aggregateCheck", () => {
+  const success = (dur: number, tracks: object[]) => ({
+    status: "success",
+    result: { duration: dur, tracks },
   });
 
-  it("normalizes success and rewrites urls + human names", () => {
-    const r = normalizeCheck(
+  it("keeps the backing track for a single-stem split (vox/inst)", () => {
+    const r = aggregateCheck(
       {
         result: {
-          [id]: {
-            status: "success",
-            result: {
-              duration: 180,
-              tracks: [
-                { type: "stem", label: "vocals", url: "http://d.lalal.ai/a/vocals" },
-                {
-                  type: "back",
-                  label: "no_multistem",
-                  url: "http://d.lalal.ai/a/no_multistem",
-                },
-              ],
-            },
-          },
+          t1: success(30, [
+            { type: "stem", label: "vocals", url: "http://d.lalal.ai/a/vocals" },
+            { type: "back", label: "no_vocals", url: "http://d.lalal.ai/a/no_vocals" },
+          ]),
         },
       },
-      id,
+      ["t1"],
       proxy,
+      true,
     );
     expect(r.status).toBe("success");
     if (r.status !== "success") return;
-    expect(r.duration).toBe(180);
-    expect(r.tracks).toEqual([
+    expect(r.tracks.map((t) => t.name)).toEqual(["Vocals", "Instrumental"]);
+  });
+
+  it("drops backing tracks for a multi-stem split, in task order", () => {
+    const r = aggregateCheck(
       {
-        label: "vocals",
-        name: "Vocals",
-        type: "stem",
-        url: proxy("http://d.lalal.ai/a/vocals"),
+        result: {
+          t1: success(60, [
+            { type: "stem", label: "drum", url: "http://d.lalal.ai/a/drum" },
+            { type: "back", label: "no_drum", url: "http://d.lalal.ai/a/no_drum" },
+          ]),
+          t2: success(60, [
+            { type: "stem", label: "bass", url: "http://d.lalal.ai/a/bass" },
+            { type: "back", label: "no_bass", url: "http://d.lalal.ai/a/no_bass" },
+          ]),
+        },
       },
-      {
-        label: "no_multistem",
-        name: "Backing",
-        type: "back",
-        url: proxy("http://d.lalal.ai/a/no_multistem"),
-      },
+      ["t1", "t2"],
+      proxy,
+      false,
+    );
+    expect(r.status === "success" && r.tracks.map((t) => t.name)).toEqual([
+      "Drums",
+      "Bass",
     ]);
+    expect(r.status === "success" && r.tracks.every((t) => t.type === "stem")).toBe(
+      true,
+    );
   });
 
-  it("labels a single-stem backing track (no_bass) as Backing", () => {
-    const r = normalizeCheck(
+  it("reports averaged progress while tasks are mixed", () => {
+    const r = aggregateCheck(
       {
         result: {
-          [id]: {
-            status: "success",
-            result: {
-              duration: 8,
-              tracks: [
-                { type: "stem", label: "bass", url: "http://d.lalal.ai/a/bass" },
-                { type: "back", label: "no_bass", url: "http://d.lalal.ai/a/no_bass" },
-              ],
-            },
-          },
+          t1: { status: "success", result: { duration: 1, tracks: [] } },
+          t2: { status: "progress", progress: 50 },
         },
       },
-      id,
+      ["t1", "t2"],
       proxy,
+      false,
     );
-    expect(r.status === "success" && r.tracks[1].name).toBe("Backing");
+    expect(r).toEqual({ status: "progress", progress: 75 });
   });
 
-  it("drops tracks without a url", () => {
-    const r = normalizeCheck(
+  it("treats a queued task (progress 0 / absent) as 0%", () => {
+    const r = aggregateCheck(
       {
         result: {
-          [id]: {
-            status: "success",
-            result: { duration: 1, tracks: [{ type: "stem", label: "bass" }] },
-          },
+          t1: { status: "success", result: { duration: 1, tracks: [] } },
         },
       },
-      id,
+      ["t1", "t2"],
       proxy,
+      false,
     );
-    expect(r.status === "success" && r.tracks).toEqual([]);
+    // t2 absent → 0; (100 + 0)/2 = 50
+    expect(r).toEqual({ status: "progress", progress: 50 });
   });
 
-  it("surfaces task error detail", () => {
-    const r = normalizeCheck(
+  it("surfaces the first task error", () => {
+    const r = aggregateCheck(
       {
         result: {
-          [id]: {
-            status: "error",
-            error: { detail: "Unable to detect vocals", code: "inference_error" },
-          },
+          t1: { status: "progress", progress: 10 },
+          t2: { status: "error", error: { detail: "Unable to detect wind" } },
         },
       },
-      id,
+      ["t1", "t2"],
       proxy,
+      false,
     );
-    expect(r).toEqual<NormalizedCheck>({
-      status: "error",
-      error: "Unable to detect vocals",
-    });
+    expect(r).toEqual({ status: "error", error: "Unable to detect wind" });
   });
 
   it("maps server_error to a friendly retry message", () => {
-    const r = normalizeCheck(
-      { result: { [id]: { status: "server_error", error: "gone" } } },
-      id,
+    const r = aggregateCheck(
+      { result: { t1: { status: "server_error", error: "gone" } } },
+      ["t1"],
       proxy,
+      true,
     );
-    expect(r.status).toBe("error");
-    if (r.status === "error") expect(r.error).toMatch(/expired/i);
+    expect(r.status === "error" && /expired/i.test(r.error)).toBe(true);
   });
 
-  it("returns unknown when the task id is absent", () => {
-    expect(normalizeCheck({ result: {} }, id, proxy)).toEqual({
+  it("returns unknown when all tasks are absent", () => {
+    expect(aggregateCheck({ result: {} }, ["t1"], proxy, false)).toEqual({
       status: "unknown",
     });
   });

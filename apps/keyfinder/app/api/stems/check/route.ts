@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import {
   LalalConfigError,
+  aggregateCheck,
   lalalCheckRaw,
-  normalizeCheck,
 } from "@/lib/stems/lalal";
 
 export const runtime = "nodejs";
@@ -21,7 +21,9 @@ export async function POST(request: Request): Promise<NextResponse> {
       return NextResponse.json({ error: "Missing task." }, { status: 400 });
     }
     const raw = await lalalCheckRaw(task_ids);
-    const normalized = normalizeCheck(raw, task_ids[0], proxyUrl);
+    // A single-stem split keeps its complement (e.g. vocals -> Vocals +
+    // Instrumental); multi-stem splits show only the isolated instruments.
+    const normalized = aggregateCheck(raw, task_ids, proxyUrl, task_ids.length === 1);
     return NextResponse.json(normalized);
   } catch (e) {
     const status = e instanceof LalalConfigError ? 500 : 400;

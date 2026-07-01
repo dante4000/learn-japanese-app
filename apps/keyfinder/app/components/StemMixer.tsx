@@ -4,6 +4,8 @@ import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useStemMixer, type StemSpec } from "@/lib/audio/useStemMixer";
 import { computePeaks, drawWaveform } from "@/lib/audio/waveform";
 import { downloadUrl } from "@/lib/stems/client";
+import type { AnalysisResult } from "@/lib/audio/analyze";
+import type { Mode } from "@/lib/theory";
 
 function fmt(s: number): string {
   if (!isFinite(s) || s < 0) return "0:00";
@@ -20,6 +22,9 @@ const COLORS: Record<string, string> = {
   piano: "#1f8a5b",
   electric_guitar: "#c23b6a",
   acoustic_guitar: "#a67c1f",
+  synthesizer: "#0f9aa8",
+  strings: "#b0431f",
+  wind: "#5c7a1f",
 };
 const BACKING_COLOR = "#6a665b";
 
@@ -89,7 +94,15 @@ function WaveLane({
   );
 }
 
-export default function StemMixer({ stems }: { stems: Lane[] }) {
+export default function StemMixer({
+  stems,
+  analysis,
+  onUseKey,
+}: {
+  stems: Lane[];
+  analysis?: AnalysisResult | null;
+  onUseKey?: (rootPc: number, mode: Mode) => void;
+}) {
   const specs = useMemo(() => stems.map((l) => l.spec), [stems]);
   const rawLabels = useMemo(() => {
     const m = new Map<string, string>();
@@ -117,6 +130,27 @@ export default function StemMixer({ stems }: { stems: Lane[] }) {
 
   const progress = duration > 0 ? position / duration : 0;
 
+  const chords = analysis?.chords ?? [];
+  const activeChord = useMemo(() => {
+    if (chords.length === 0) return -1;
+    return chords.findIndex((c) => position >= c.startTime && position < c.endTime);
+  }, [chords, position]);
+
+  // Download every stem — stagger the clicks so the browser doesn't drop them.
+  const downloadAll = useCallback(() => {
+    stems.forEach((l, i) => {
+      const label = tracks.find((t) => t.id === l.spec.id)?.label ?? l.spec.label;
+      setTimeout(() => {
+        const a = document.createElement("a");
+        a.href = downloadUrl(l.spec.url, `${label}.wav`);
+        a.download = `${label}.wav`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      }, i * 350);
+    });
+  }, [stems, tracks]);
+
   if (status === "loading") {
     return <p className="an-stage mono">loading stems…</p>;
   }
@@ -126,6 +160,34 @@ export default function StemMixer({ stems }: { stems: Lane[] }) {
 
   return (
     <div className="mixer">
+      {analysis && (
+        <div className="readout">
+          <button
+            className="ro-key"
+            onClick={() => onUseKey?.(analysis.key.rootPc, analysis.key.mode)}
+            disabled={!onUseKey}
+            title={onUseKey ? "Load this key in the explorer above" : undefined}
+          >
+            <span className="ro-label mono">key</span>
+            <span className="ro-value">
+              {analysis.key.label.replace(/ Major| Minor/, "")}
+              <span className="ro-qual">
+                {analysis.key.mode === "major" ? "major" : "minor"}
+              </span>
+            </span>
+            <span className="ro-conf mono">{analysis.key.confidence}% sure</span>
+          </button>
+          <div className="ro-bpm">
+            <span className="ro-label mono">tempo</span>
+            <span className="ro-value">
+              {analysis.bpm || "—"}
+              <span className="ro-qual">bpm</span>
+            </span>
+            <span className="ro-conf mono">{chords.length} chords</span>
+          </div>
+        </div>
+      )}
+
       <div className="transport">
         <button className="tp-btn" onClick={() => (isPlaying ? pause() : play())}>
           {isPlaying ? "❚❚ pause" : "▶ play"}
@@ -145,6 +207,41 @@ export default function StemMixer({ stems }: { stems: Lane[] }) {
           />
         </label>
       </div>
+
+      {chords.length > 0 && (
+        <div className="timeline-wrap">
+          <div
+            className="timeline"
+            onClick={(e) => {
+              const rect = e.currentTarget.getBoundingClientRect();
+              seek(((e.clientX - rect.left) / rect.width) * duration);
+            }}
+          >
+            {chords.map((c, i) => (
+              <button
+                key={i}
+                className={`tl-chord ${i === activeChord ? "on" : ""}`}
+                style={{
+                  left: `${(c.startTime / duration) * 100}%`,
+                  width: `${((c.endTime - c.startTime) / duration) * 100}%`,
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  seek(c.startTime);
+                }}
+                title={`${c.label} · ${fmt(c.startTime)}`}
+              >
+                <span>{c.label}</span>
+              </button>
+            ))}
+            <span
+              className="playhead"
+              style={{ left: `${progress * 100}%` }}
+              aria-hidden
+            />
+          </div>
+        </div>
+      )}
 
       <div className="lanes">
         {tracks.map((t) => {
@@ -185,9 +282,10 @@ export default function StemMixer({ stems }: { stems: Lane[] }) {
                   <a
                     className="lane-dl"
                     href={downloadUrl(proxy, `${t.label}.wav`)}
-                    title="Download stem"
+                    download={`${t.label}.wav`}
+                    title={`Download ${t.label}`}
                   >
-                    ↓
+                    <span aria-hidden>↓</span> save
                   </a>
                 </div>
               </div>
@@ -206,6 +304,10 @@ export default function StemMixer({ stems }: { stems: Lane[] }) {
           );
         })}
       </div>
+
+      <button className="dl-all" onClick={downloadAll}>
+        ↓ download all stems
+      </button>
     </div>
   );
 }

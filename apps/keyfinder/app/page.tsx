@@ -434,7 +434,13 @@ export default function Home() {
         }}
       />
 
-      <StemSplitter />
+      <StemSplitter
+        onUseKey={(pc, m) => {
+          useMatch(pc, m);
+          if (typeof window !== "undefined")
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }}
+      />
     </main>
   );
 }

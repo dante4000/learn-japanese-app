@@ -4,9 +4,8 @@
 
 export const LALAL_BASE = "https://www.lalal.ai/api/v1";
 
-// The six stems multistem supports. Multistem returns a true partition:
-// the chosen stems + one "no_multistem" backing track that sums to the original.
-// (drum is singular in the API; UI uses "drums".)
+// All stems LALAL can isolate via /split/stem_separator/ (splitter "auto" picks
+// the best model per stem — phoenix for synth/strings/wind). "drums" -> "drum".
 export const UI_STEMS = [
   "vocals",
   "drums",
@@ -14,6 +13,9 @@ export const UI_STEMS = [
   "piano",
   "electric_guitar",
   "acoustic_guitar",
+  "synthesizer",
+  "strings",
+  "wind",
 ] as const;
 export type UiStem = (typeof UI_STEMS)[number];
 
@@ -24,42 +26,38 @@ const UI_TO_LALAL: Record<UiStem, string> = {
   piano: "piano",
   electric_guitar: "electric_guitar",
   acoustic_guitar: "acoustic_guitar",
+  synthesizer: "synthesizer",
+  strings: "strings",
+  wind: "wind",
 };
 
-// Human labels per LALAL stem label. Backing tracks are labeled `no_<stem>`
-// (single stem) or `no_multistem` (several) — both handled by trackName().
-export const TRACK_LABELS: Record<string, string> = {
+const STEM_NAMES: Record<string, string> = {
   vocals: "Vocals",
   drum: "Drums",
   bass: "Bass",
   piano: "Piano",
   electric_guitar: "Electric guitar",
   acoustic_guitar: "Acoustic guitar",
+  synthesizer: "Synth",
+  strings: "Strings",
+  wind: "Wind",
 };
-
-/** Human-friendly name for a LALAL track label. Any `no_*` label is "Backing". */
-export function trackName(label: string): string {
-  if (label.startsWith("no_")) return "Backing";
-  return TRACK_LABELS[label] ?? label;
-}
-
-/** True when a track label denotes the backing/instrumental remainder. */
-export function isBackingLabel(label: string): boolean {
-  return label.startsWith("no_");
-}
 
 export function isUiStem(s: string): s is UiStem {
   return (UI_STEMS as readonly string[]).includes(s);
 }
 
-/** Map UI stem ids to LALAL enum values, dropping anything unsupported. */
+export function toLalalStem(uiStem: string): string | null {
+  return isUiStem(uiStem) ? UI_TO_LALAL[uiStem] : null;
+}
+
+/** Map + validate a list of UI stem ids to LALAL enum values (deduped). */
 export function toLalalStems(uiStems: string[]): string[] {
   const seen = new Set<string>();
   const out: string[] = [];
   for (const s of uiStems) {
-    if (!isUiStem(s)) continue;
-    const mapped = UI_TO_LALAL[s];
-    if (!seen.has(mapped)) {
+    const mapped = toLalalStem(s);
+    if (mapped && !seen.has(mapped)) {
       seen.add(mapped);
       out.push(mapped);
     }
@@ -67,12 +65,12 @@ export function toLalalStems(uiStems: string[]): string[] {
   return out;
 }
 
-/** Body for POST /split/multistem/. */
-export function buildSplitBody(sourceId: string, uiStems: string[]) {
+/** Body for POST /split/stem_separator/ (one stem per task). */
+export function buildStemBody(sourceId: string, lalalStem: string) {
   return {
     source_id: sourceId,
     presets: {
-      stem_list: toLalalStems(uiStems),
+      stem: lalalStem,
       splitter: "auto",
       extraction_level: "deep_extraction",
     },
@@ -80,8 +78,19 @@ export function buildSplitBody(sourceId: string, uiStems: string[]) {
   };
 }
 
+/** Human name for a LALAL track label. `no_vocals` = Instrumental; other `no_*` = Backing. */
+export function trackName(label: string): string {
+  if (label === "no_vocals") return "Instrumental";
+  if (label.startsWith("no_")) return "Backing";
+  return STEM_NAMES[label] ?? label;
+}
+
+export function isBackingLabel(label: string): boolean {
+  return label.startsWith("no_");
+}
+
 export interface NormalizedTrack {
-  label: string; // raw LALAL label, e.g. "vocals", "no_multistem"
+  label: string; // raw LALAL label, e.g. "vocals", "no_vocals"
   name: string; // human label
   type: "stem" | "back";
   url: string; // rewritten to our audio proxy
@@ -94,68 +103,89 @@ export type NormalizedCheck =
   | { status: "cancelled" }
   | { status: "unknown" };
 
-/**
- * Normalize a /check/ response entry for a single task id into a flat shape,
- * rewriting each download URL through `rewriteUrl` (our same-origin audio proxy).
- */
-export function normalizeCheck(
-  json: unknown,
-  taskId: string,
-  rewriteUrl: (url: string) => string,
-): NormalizedCheck {
-  const result = (json as { result?: Record<string, unknown> })?.result;
-  const entry = result?.[taskId] as
-    | { status?: string; progress?: number; result?: unknown; error?: unknown }
-    | undefined;
-  if (!entry || typeof entry.status !== "string") return { status: "unknown" };
+type Entry = {
+  status?: string;
+  progress?: number;
+  result?: { duration?: number; tracks?: Array<Record<string, unknown>> };
+  error?: { detail?: string; code?: string };
+};
 
-  switch (entry.status) {
-    case "progress":
-      return { status: "progress", progress: Math.max(0, entry.progress ?? 0) };
-    case "success": {
-      const r = entry.result as
-        | { duration?: number; tracks?: Array<Record<string, unknown>> }
-        | undefined;
-      const rawTracks = Array.isArray(r?.tracks) ? r!.tracks : [];
-      const tracks: NormalizedTrack[] = rawTracks
-        .filter((t) => typeof t.url === "string")
-        .map((t) => {
-          const label = String(t.label ?? "");
-          return {
-            label,
-            name: trackName(label),
-            type: t.type === "stem" ? "stem" : "back",
-            url: rewriteUrl(String(t.url)),
-          };
-        });
-      return { status: "success", duration: r?.duration ?? 0, tracks };
-    }
-    case "error": {
-      const e = entry.error as { detail?: string; code?: string } | undefined;
-      return { status: "error", error: e?.detail || e?.code || "Split failed." };
-    }
-    case "cancelled":
-      return { status: "cancelled" };
-    case "server_error":
-      return { status: "error", error: "This upload expired — please try again." };
-    default:
-      return { status: "unknown" };
+/**
+ * Aggregate a /check/ response across N stem tasks into one status.
+ * `keepBacking` keeps the `no_*` complement tracks (used for a single-stem
+ * split, e.g. vocals -> Vocals + Instrumental); otherwise only isolated stems.
+ */
+export function aggregateCheck(
+  json: unknown,
+  taskIds: string[],
+  rewriteUrl: (url: string) => string,
+  keepBacking: boolean,
+): NormalizedCheck {
+  const result = (json as { result?: Record<string, Entry> })?.result ?? {};
+  const entries = taskIds.map((id) => result[id]);
+
+  if (entries.some((e) => !e || typeof e.status !== "string")) {
+    // A task fell out of the response (expired / bad id).
+    if (entries.every((e) => !e)) return { status: "unknown" };
   }
+
+  for (const e of entries) {
+    if (e?.status === "error") {
+      return { status: "error", error: e.error?.detail || e.error?.code || "Split failed." };
+    }
+    if (e?.status === "server_error") {
+      return { status: "error", error: "This upload expired — please try again." };
+    }
+    if (e?.status === "cancelled") return { status: "cancelled" };
+  }
+
+  const allSuccess = entries.every((e) => e?.status === "success");
+  if (allSuccess) {
+    const tracks: NormalizedTrack[] = [];
+    let duration = 0;
+    for (const e of entries) {
+      const r = e!.result;
+      duration = Math.max(duration, r?.duration ?? 0);
+      const raw = Array.isArray(r?.tracks) ? r!.tracks! : [];
+      for (const t of raw) {
+        if (typeof t.url !== "string") continue;
+        const label = String(t.label ?? "");
+        const type = t.type === "stem" ? "stem" : "back";
+        if (type === "back" && !keepBacking) continue;
+        tracks.push({
+          label,
+          name: trackName(label),
+          type,
+          url: rewriteUrl(String(t.url)),
+        });
+      }
+    }
+    return { status: "success", duration, tracks };
+  }
+
+  // Still running — average per-task percent (success=100, queued/absent=0).
+  const pct =
+    entries.reduce((sum, e) => {
+      if (e?.status === "success") return sum + 100;
+      if (e?.status === "progress") return sum + Math.max(0, e.progress ?? 0);
+      return sum;
+    }, 0) / Math.max(1, entries.length);
+  return { status: "progress", progress: pct };
 }
 
 // ---- network calls (require the license key) ----
-
-function license(): string {
-  const key = process.env.LALAL_LICENSE;
-  if (!key) throw new LalalConfigError();
-  return key;
-}
 
 export class LalalConfigError extends Error {
   constructor() {
     super("Stem splitting isn't configured on this server.");
     this.name = "LalalConfigError";
   }
+}
+
+function license(): string {
+  const key = process.env.LALAL_LICENSE;
+  if (!key) throw new LalalConfigError();
+  return key;
 }
 
 export async function lalalMinutesLeft(): Promise<number> {
@@ -183,42 +213,38 @@ export async function lalalUpload(
   });
   const json = await res.json().catch(() => ({}));
   if (!res.ok) {
-    throw new Error(
-      (json as { detail?: string }).detail || "Upload to LALAL failed.",
-    );
+    throw new Error((json as { detail?: string }).detail || "Upload to LALAL failed.");
   }
   const j = json as { id: string; name: string; duration: number };
   return { id: j.id, name: j.name, duration: j.duration };
 }
 
-export async function lalalSplit(
+/** Start one stem_separator task per requested stem. Returns the task ids in order. */
+export async function lalalSplitStems(
   sourceId: string,
   uiStems: string[],
-): Promise<string> {
-  const res = await fetch(`${LALAL_BASE}/split/multistem/`, {
-    method: "POST",
-    headers: {
-      "X-License-Key": license(),
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(buildSplitBody(sourceId, uiStems)),
-  });
-  const json = await res.json().catch(() => ({}));
-  if (!res.ok) {
-    throw new Error(
-      (json as { detail?: string }).detail || "Could not start the split.",
-    );
+): Promise<string[]> {
+  const lalalStems = toLalalStems(uiStems);
+  const ids: string[] = [];
+  for (const stem of lalalStems) {
+    const res = await fetch(`${LALAL_BASE}/split/stem_separator/`, {
+      method: "POST",
+      headers: { "X-License-Key": license(), "Content-Type": "application/json" },
+      body: JSON.stringify(buildStemBody(sourceId, stem)),
+    });
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      throw new Error((json as { detail?: string }).detail || "Could not start the split.");
+    }
+    ids.push((json as { task_id: string }).task_id);
   }
-  return (json as { task_id: string }).task_id;
+  return ids;
 }
 
 export async function lalalCheckRaw(taskIds: string[]): Promise<unknown> {
   const res = await fetch(`${LALAL_BASE}/check/`, {
     method: "POST",
-    headers: {
-      "X-License-Key": license(),
-      "Content-Type": "application/json",
-    },
+    headers: { "X-License-Key": license(), "Content-Type": "application/json" },
     body: JSON.stringify({ task_ids: taskIds }),
   });
   if (!res.ok) throw new Error("Could not check split status.");
