@@ -10,10 +10,12 @@ set -euo pipefail
 
 DIR="/Users/danielko/dev/sites/apps/translate"
 
-# Re-exec under sudo if not already root (needed only to bind port 80).
+# Re-exec under sudo if not already root (needed only to bind port 80). Use a GUI
+# askpass helper so it works with or without a terminal.
 if [ "$(id -u)" != "0" ]; then
   echo "Starting translate…"
-  exec sudo "$DIR/translate.sh" "$@"
+  export SUDO_ASKPASS="$DIR/askpass.sh"
+  exec sudo -A "$DIR/translate.sh" "$@"
 fi
 
 # One-time: make the name `translate` resolve to this machine.
