@@ -221,6 +221,11 @@ button.translate:disabled {
   font-size: 14px;
 }
 
+.row .trans.pending {
+  color: var(--text-faint);
+  animation: pulse 1.1s ease-in-out infinite;
+}
+
 @keyframes fadein {
   from { opacity: 0; transform: translateY(4px); }
   to { opacity: 1; transform: translateY(0); }

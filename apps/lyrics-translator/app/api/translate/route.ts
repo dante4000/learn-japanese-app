@@ -1,7 +1,9 @@
-import { splitLines, translateLine } from "@/lib/translate";
+import { CHUNK_SIZE, chunk, splitLines, translateBatch } from "@/lib/translate";
 
 export const runtime = "nodejs";
 export const maxDuration = 300;
+
+const CONCURRENCY = 4; // chunks translated in parallel
 
 interface TranslateBody {
   text?: unknown;
@@ -21,6 +23,8 @@ export async function POST(req: Request) {
   }
 
   const lines = splitLines(text);
+  const content = lines.filter((l) => l.kind === "content");
+  const chunks = chunk(content, CHUNK_SIZE);
   const encoder = new TextEncoder();
 
   const stream = new ReadableStream<Uint8Array>({
@@ -29,26 +33,43 @@ export async function POST(req: Request) {
         controller.enqueue(encoder.encode(JSON.stringify(event) + "\n"));
       };
 
-      for (const line of lines) {
-        // Blank lines pass straight through to preserve stanza breaks.
-        if (line.kind === "blank") {
-          send({ type: "line", index: line.index, original: "", translation: "" });
-          continue;
-        }
+      // 1) Instant skeleton: every line's original + shape, rendered immediately.
+      send({
+        type: "init",
+        lines: lines.map((l) => ({
+          index: l.index,
+          original: l.text,
+          blank: l.kind === "blank",
+        })),
+      });
 
-        try {
-          const translation = await translateLine(line.text);
-          send({
-            type: "line",
-            index: line.index,
-            original: line.text,
-            translation,
-          });
-        } catch (err) {
-          const message = err instanceof Error ? err.message : "Translation failed.";
-          send({ type: "error", index: line.index, original: line.text, message });
+      // 2) Translate chunks with bounded concurrency; stream each line as its
+      //    chunk returns. Ordering is handled client-side by index.
+      let cursor = 0;
+      async function worker() {
+        for (;;) {
+          const myChunk = chunks[cursor++];
+          if (!myChunk) return;
+          try {
+            const map = await translateBatch(myChunk);
+            for (const line of myChunk) {
+              const translation = map.get(line.index);
+              if (translation !== undefined) {
+                send({ type: "translated", index: line.index, translation });
+              } else {
+                send({ type: "error", index: line.index, message: "No translation returned." });
+              }
+            }
+          } catch (err) {
+            const message = err instanceof Error ? err.message : "Translation failed.";
+            for (const line of myChunk) send({ type: "error", index: line.index, message });
+          }
         }
       }
+
+      await Promise.all(
+        Array.from({ length: Math.min(CONCURRENCY, chunks.length) }, worker),
+      );
 
       send({ type: "done", count: lines.length });
       controller.close();

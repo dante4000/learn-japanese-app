@@ -6,12 +6,24 @@ streaming each finished line into the UI live. The backend uses your local
 
 ## How it works
 
-- `app/page.tsx` — client UI: textarea + live streaming results (original ‖ English).
-- `app/api/translate/route.ts` — streaming NDJSON endpoint. Splits input into lines
-  and translates **sequentially, one line at a time**; blank lines pass through to
-  preserve stanza breaks; a failed line is marked and the job continues.
-- `lib/translate.ts` — `splitLines()`, `buildPrompt()`, `runClaude()` (spawns the
-  local `claude -p` CLI), and `extractTranslation()`.
+- `app/page.tsx` — client UI: renders a skeleton of every line instantly, then
+  fills each in with its English translation by index as results stream.
+- `app/api/translate/route.ts` — streaming NDJSON endpoint. Emits an `init` event
+  (all originals) immediately, then translates content lines in **batches** with
+  bounded concurrency, streaming a `translated` event per line. Blank lines are
+  preserved for stanza breaks; a dropped/failed line is marked.
+- `lib/translate.ts` — `splitLines()`, `chunk()`, `buildBatchPrompt()`,
+  `parseBatch()`, `runClaude()` (spawns the local `claude -p` CLI), `translateBatch()`.
+
+### Speed
+
+Each `claude -p` spawn costs ~3s of fixed startup, so the original per-line approach
+paid that tax on every line. **Batching** many lines into one call amortizes it —
+~15–20× faster on real input (a 10-line, 9-language test runs in ~9s). Knobs:
+
+- `TRANSLATOR_MODEL=haiku` — use Haiku 4.5 for the fastest per-call latency.
+- `TRANSLATOR_CHUNK_SIZE` — lines per call (default 20).
+- `CONCURRENCY` in the route — chunks translated in parallel (default 4).
 
 ### Why the local `claude` CLI
 

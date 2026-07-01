@@ -5,18 +5,20 @@ import { useMemo, useRef, useState } from "react";
 interface Line {
   index: number;
   original: string;
-  translation: string;
   blank: boolean;
+  translation: string | null; // null = still pending
   failed: boolean;
 }
 
 type StreamEvent =
-  | { type: "line"; index: number; original: string; translation: string }
-  | { type: "error"; index: number; original: string; message: string }
+  | { type: "init"; lines: { index: number; original: string; blank: boolean }[] }
+  | { type: "translated"; index: number; translation: string }
+  | { type: "error"; index: number; message: string }
   | { type: "done"; count: number };
 
 const SAMPLE = `Bajo la luna llena
 canto tu nombre otra vez
+
 el río lleva mis palabras
 hacia el mar que no te ve`;
 
@@ -30,10 +32,15 @@ export default function Home() {
 
   const canTranslate = input.trim().length > 0 && !busy;
 
+  const pending = useMemo(
+    () => lines.filter((l) => !l.blank && l.translation === null).length,
+    [lines],
+  );
+
   const fullText = useMemo(
     () =>
       lines
-        .map((l) => (l.blank ? "" : l.translation))
+        .map((l) => (l.blank ? "" : l.translation ?? ""))
         .join("\n")
         .replace(/\n{3,}/g, "\n\n"),
     [lines],
@@ -73,15 +80,13 @@ export default function Home() {
 
         let nl: number;
         while ((nl = buffer.indexOf("\n")) !== -1) {
-          const chunk = buffer.slice(0, nl).trim();
+          const raw = buffer.slice(0, nl).trim();
           buffer = buffer.slice(nl + 1);
-          if (chunk) handleEvent(JSON.parse(chunk) as StreamEvent);
+          if (raw) handleEvent(JSON.parse(raw) as StreamEvent);
         }
       }
     } catch (err) {
-      if ((err as Error).name !== "AbortError") {
-        setError((err as Error).message);
-      }
+      if ((err as Error).name !== "AbortError") setError((err as Error).message);
     } finally {
       setBusy(false);
       abortRef.current = null;
@@ -89,25 +94,31 @@ export default function Home() {
   }
 
   function handleEvent(event: StreamEvent) {
-    if (event.type === "done") return;
-    setLines((prev) => [
-      ...prev,
-      event.type === "line"
-        ? {
-            index: event.index,
-            original: event.original,
-            translation: event.translation,
-            blank: event.original === "" && event.translation === "",
-            failed: false,
-          }
-        : {
-            index: event.index,
-            original: event.original,
-            translation: `⚠ untranslated — ${event.message}`,
-            blank: false,
-            failed: true,
-          },
-    ]);
+    if (event.type === "init") {
+      setLines(
+        event.lines.map((l) => ({
+          index: l.index,
+          original: l.original,
+          blank: l.blank,
+          translation: l.blank ? "" : null,
+          failed: false,
+        })),
+      );
+    } else if (event.type === "translated") {
+      setLines((prev) =>
+        prev.map((l) =>
+          l.index === event.index ? { ...l, translation: event.translation } : l,
+        ),
+      );
+    } else if (event.type === "error") {
+      setLines((prev) =>
+        prev.map((l) =>
+          l.index === event.index
+            ? { ...l, translation: `⚠ ${event.message}`, failed: true }
+            : l,
+        ),
+      );
+    }
   }
 
   function stop() {
@@ -130,8 +141,8 @@ export default function Home() {
           <em>line by line.</em>
         </h1>
         <p>
-          Paste a chunk of text — lyrics, a poem, a paragraph. It translates into
-          English one line at a time and streams each line in as it finishes.
+          Paste a chunk of text — lyrics, a poem, a paragraph. Every line lights up
+          instantly, then fills in with its English translation.
         </p>
       </header>
 
@@ -168,7 +179,7 @@ export default function Home() {
           {busy && (
             <span className="status">
               <span className="dot" />
-              translating line {lines.length + 1}…
+              {pending > 0 ? `translating ${pending} line${pending === 1 ? "" : "s"}…` : "finishing…"}
             </span>
           )}
         </div>
@@ -185,7 +196,9 @@ export default function Home() {
             ) : (
               <div key={l.index} className={`row${l.failed ? " failed" : ""}`}>
                 <div className="orig">{l.original}</div>
-                <div className="trans">{l.translation}</div>
+                <div className={`trans${l.translation === null ? " pending" : ""}`}>
+                  {l.translation === null ? "…" : l.translation}
+                </div>
               </div>
             ),
           )}
