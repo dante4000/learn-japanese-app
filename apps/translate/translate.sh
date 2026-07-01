@@ -57,6 +57,10 @@ if [ "$LOCAL" = 1 ]; then
     echo "Pulling local model $LOCAL_MODEL (first run only, a few GB)…"
     sudo -u danielko "$OLLAMA" pull "$LOCAL_MODEL"
   fi
+  # Warm the model into memory so the first translation isn't slow.
+  curl -s "http://127.0.0.1:11434/api/generate" \
+    -d "{\"model\":\"$LOCAL_MODEL\",\"prompt\":\"hi\",\"stream\":false,\"keep_alive\":\"30m\"}" \
+    >/dev/null 2>&1 &
 fi
 
 cd "$DIR"

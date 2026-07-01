@@ -178,4 +178,21 @@ describe("streamTranslations", () => {
     }, { run });
     expect(errors).toEqual(["boom"]);
   });
+
+  it("passes punctuation-only lines through without calling the model", async () => {
+    process.env.TRANSLATE_BACKEND = "local";
+    const run = vi.fn().mockResolvedValue("<t>x</t>");
+    const { results, sink } = collect();
+    await streamTranslations(
+      [
+        { index: 0, text: "...", kind: "content" },
+        { index: 1, text: "hola", kind: "content" },
+      ],
+      sink,
+      { run },
+    );
+    expect(results[0]).toBe("...");
+    expect(results[1]).toBe("x");
+    expect(run).toHaveBeenCalledTimes(1); // only the real line
+  });
 });

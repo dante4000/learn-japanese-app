@@ -246,11 +246,25 @@ async function pool<T>(items: T[], limit: number, worker: (item: T) => Promise<v
  * per CLI call; the local model translates line-by-line (cheap — the Ollama
  * server keeps the model resident, so there's no per-call spawn cost).
  */
+/** A line with no letters (e.g. "...", "—", "♪") has nothing to translate. */
+export function isUntranslatable(text: string): boolean {
+  return !/\p{L}/u.test(text);
+}
+
 export async function streamTranslations(
   content: SourceLine[],
   onResult: ResultSink,
   deps: TranslateDeps = {},
 ): Promise<void> {
+  // Pass through lines with nothing to translate (punctuation/symbols only) so no
+  // model ever sees them — some ramble when asked to translate "…".
+  const work: SourceLine[] = [];
+  for (const line of content) {
+    if (isUntranslatable(line.text)) onResult(line.index, line.text.trim());
+    else work.push(line);
+  }
+  content = work;
+
   if (backend() === "local") {
     await pool(content, LOCAL_CONCURRENCY, async (line) => {
       try {
