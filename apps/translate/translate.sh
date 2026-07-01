@@ -9,7 +9,7 @@ set -euo pipefail
 
 DIR="/Users/danielko/dev/sites/apps/translate"
 OLLAMA="/opt/homebrew/bin/ollama"
-LOCAL_MODEL="${TRANSLATE_LOCAL_MODEL:-gemma3:12b}"
+LOCAL_MODEL="${TRANSLATE_LOCAL_MODEL:-gemma3:27b}"
 
 # --local → offline mode.
 LOCAL=0

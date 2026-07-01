@@ -65,8 +65,8 @@ It asks for your password once per start (only to bind the clean port 80); the
 
 Local config (env):
 
-- `TRANSLATE_LOCAL_MODEL` — Ollama model tag (default `gemma3:12b`; try `:27b` for
-  best quality on 64GB, or a `:4b` for speed).
+- `TRANSLATE_LOCAL_MODEL` — Ollama model tag (default `gemma3:27b` for best quality
+  on 64GB; drop to `:12b` or `:4b` for more speed).
 - `TRANSLATE_LOCAL_CONCURRENCY` — parallel line requests to Ollama (default 4).
 - `OLLAMA_URL` — Ollama endpoint (default `http://127.0.0.1:11434`).
 
