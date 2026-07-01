@@ -10,8 +10,10 @@ set -euo pipefail
 DIR="/Users/danielko/dev/sites/apps/translate"
 OLLAMA="/opt/homebrew/bin/ollama"
 LOCAL_MODEL="${TRANSLATE_LOCAL_MODEL:-qwen2.5:72b}"
-# Models live on the LaCie external drive (the internal disk is nearly full).
+# Big models live on the LaCie external drive (the internal disk is nearly full).
+# If the LaCie isn't plugged in, fall back to the internal store + a small model.
 MODELS_DIR="/Volumes/dante lacie/ollama-models"
+FALLBACK_MODEL="${TRANSLATE_FALLBACK_MODEL:-gemma3:12b}"
 
 # --local → offline mode.
 LOCAL=0
@@ -46,29 +48,43 @@ export NODE_ENV=production
 export TRANSLATE_AUTOEXIT=1   # exit when the browser tab closes
 
 # Offline mode: point the app at Ollama and make sure the server + model are ready
-# (Ollama runs as the user, with its model store on the LaCie).
+# (Ollama runs as the user; store is the LaCie when mounted, else internal).
 if [ "$LOCAL" = 1 ]; then
   export TRANSLATE_BACKEND=local
+
+  # Pick the store + model: LaCie (big Qwen) when mounted, internal (small gemma)
+  # when not. STORE="" means Ollama's default internal ~/.ollama/models.
+  if [ -d "$MODELS_DIR" ]; then
+    STORE="$MODELS_DIR"
+  else
+    echo "LaCie not mounted — using the internal fallback model ($FALLBACK_MODEL)."
+    STORE=""
+    LOCAL_MODEL="$FALLBACK_MODEL"
+  fi
   export TRANSLATE_LOCAL_MODEL="$LOCAL_MODEL"
 
-  if [ ! -d "$MODELS_DIR" ]; then
-    echo "✗ Local models live on the LaCie drive, which isn't mounted."
-    echo "  Plug in 'dante lacie' and run  translate --local  again."
-    exit 1
-  fi
-
   # The RUNNING server's env decides where models live, so ask the server for the
-  # model; if it can't serve it, (re)start Ollama with the store on the LaCie.
-  # This also guarantees a pull can never land on the (nearly full) internal disk.
+  # model; if it can't serve it, (re)start Ollama pointed at the chosen store.
   if ! sudo -u danielko "$OLLAMA" show "$LOCAL_MODEL" >/dev/null 2>&1; then
-    echo "Starting Ollama (models on LaCie)…"
+    echo "Starting Ollama (${STORE:+models on LaCie}${STORE:-internal models})…"
     sudo -u danielko pkill -f "ollama serve" 2>/dev/null || true
     sleep 1
-    sudo -u danielko bash -c "OLLAMA_MODELS=\"$MODELS_DIR\" OLLAMA_FLASH_ATTENTION=1 nohup $OLLAMA serve >/tmp/ollama.log 2>&1 & disown"
+    sudo -u danielko bash -c "${STORE:+OLLAMA_MODELS=\"$STORE\"} OLLAMA_FLASH_ATTENTION=1 nohup $OLLAMA serve >/tmp/ollama.log 2>&1 & disown"
     sleep 3
+    # Pull if still missing — with retries, because the registry sometimes EOFs
+    # mid-pull; ollama resumes from partial data so retrying is cheap.
     if ! sudo -u danielko "$OLLAMA" show "$LOCAL_MODEL" >/dev/null 2>&1; then
-      echo "Pulling local model $LOCAL_MODEL (first run only — large download)…"
-      sudo -u danielko "$OLLAMA" pull "$LOCAL_MODEL"
+      echo "Downloading $LOCAL_MODEL (first run only — resumes if interrupted)…"
+      ok=0
+      for attempt in 1 2 3 4 5; do
+        sudo -u danielko "$OLLAMA" pull "$LOCAL_MODEL" && { ok=1; break; }
+        echo "…download hiccup (attempt $attempt/5), retrying in 5s"
+        sleep 5
+      done
+      if [ "$ok" != 1 ]; then
+        echo "✗ Couldn't finish downloading $LOCAL_MODEL. Check the connection and rerun."
+        exit 1
+      fi
     fi
   fi
   # Warm the model into memory so the first translation isn't slow.
