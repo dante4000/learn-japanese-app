@@ -65,8 +65,11 @@ It asks for your password once per start (only to bind the clean port 80); the
 
 Local config (env):
 
-- `TRANSLATE_LOCAL_MODEL` — Ollama model tag (default `gemma3:27b` for best quality
-  on 64GB; drop to `:12b` or `:4b` for more speed).
+- `TRANSLATE_LOCAL_MODEL` — Ollama model tag (default `qwen2.5:72b`, the strongest
+  open-weight translator that fits 64GB; use `gemma3:27b` or `:12b` for more speed).
+- Models are stored on the LaCie external drive (`/Volumes/dante lacie/ollama-models`)
+  because the internal disk is nearly full — `--local` requires the LaCie mounted,
+  and the launcher starts Ollama with `OLLAMA_MODELS` pointing there.
 - `TRANSLATE_LOCAL_CONCURRENCY` — parallel line requests to Ollama (default 4).
 - `OLLAMA_URL` — Ollama endpoint (default `http://127.0.0.1:11434`).
 

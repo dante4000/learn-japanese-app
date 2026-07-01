@@ -14,7 +14,7 @@ export function backend(): Backend {
 
 // Local (Ollama) config.
 export const OLLAMA_URL = process.env.OLLAMA_URL ?? "http://127.0.0.1:11434";
-export const LOCAL_MODEL = process.env.TRANSLATE_LOCAL_MODEL ?? "gemma3:27b";
+export const LOCAL_MODEL = process.env.TRANSLATE_LOCAL_MODEL ?? "qwen2.5:72b";
 
 const CLAUDE_CONCURRENCY = 4; // batched chunks in flight at once
 const LOCAL_CONCURRENCY = Number(process.env.TRANSLATE_LOCAL_CONCURRENCY ?? 4);

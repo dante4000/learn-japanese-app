@@ -9,7 +9,9 @@ set -euo pipefail
 
 DIR="/Users/danielko/dev/sites/apps/translate"
 OLLAMA="/opt/homebrew/bin/ollama"
-LOCAL_MODEL="${TRANSLATE_LOCAL_MODEL:-gemma3:27b}"
+LOCAL_MODEL="${TRANSLATE_LOCAL_MODEL:-qwen2.5:72b}"
+# Models live on the LaCie external drive (the internal disk is nearly full).
+MODELS_DIR="/Volumes/dante lacie/ollama-models"
 
 # --local → offline mode.
 LOCAL=0
@@ -44,18 +46,30 @@ export NODE_ENV=production
 export TRANSLATE_AUTOEXIT=1   # exit when the browser tab closes
 
 # Offline mode: point the app at Ollama and make sure the server + model are ready
-# (Ollama stores models per-user, so run it as the user, not root).
+# (Ollama runs as the user, with its model store on the LaCie).
 if [ "$LOCAL" = 1 ]; then
   export TRANSLATE_BACKEND=local
   export TRANSLATE_LOCAL_MODEL="$LOCAL_MODEL"
-  if ! sudo -u danielko pgrep -f "ollama serve" >/dev/null 2>&1; then
-    echo "Starting Ollama…"
-    sudo -u danielko bash -c "OLLAMA_FLASH_ATTENTION=1 nohup $OLLAMA serve >/tmp/ollama.log 2>&1 & disown"
-    sleep 3
+
+  if [ ! -d "$MODELS_DIR" ]; then
+    echo "✗ Local models live on the LaCie drive, which isn't mounted."
+    echo "  Plug in 'dante lacie' and run  translate --local  again."
+    exit 1
   fi
+
+  # The RUNNING server's env decides where models live, so ask the server for the
+  # model; if it can't serve it, (re)start Ollama with the store on the LaCie.
+  # This also guarantees a pull can never land on the (nearly full) internal disk.
   if ! sudo -u danielko "$OLLAMA" show "$LOCAL_MODEL" >/dev/null 2>&1; then
-    echo "Pulling local model $LOCAL_MODEL (first run only, a few GB)…"
-    sudo -u danielko "$OLLAMA" pull "$LOCAL_MODEL"
+    echo "Starting Ollama (models on LaCie)…"
+    sudo -u danielko pkill -f "ollama serve" 2>/dev/null || true
+    sleep 1
+    sudo -u danielko bash -c "OLLAMA_MODELS=\"$MODELS_DIR\" OLLAMA_FLASH_ATTENTION=1 nohup $OLLAMA serve >/tmp/ollama.log 2>&1 & disown"
+    sleep 3
+    if ! sudo -u danielko "$OLLAMA" show "$LOCAL_MODEL" >/dev/null 2>&1; then
+      echo "Pulling local model $LOCAL_MODEL (first run only — large download)…"
+      sudo -u danielko "$OLLAMA" pull "$LOCAL_MODEL"
+    fi
   fi
   # Warm the model into memory so the first translation isn't slow.
   curl -s "http://127.0.0.1:11434/api/generate" \
