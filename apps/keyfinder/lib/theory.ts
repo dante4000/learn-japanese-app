@@ -20,13 +20,14 @@ export interface ModeDef {
   degree: number; // which degree of the parent major scale (0–6)
 }
 
-// The seven diatonic modes, ordered brightest → darkest.
+// Major and minor first (the everyday keys), then the remaining modes
+// ordered brightest → darkest.
 export const MODES: ModeDef[] = [
-  { id: "lydian", name: "Lydian", short: "Lyd", intervals: [0, 2, 4, 6, 7, 9, 11], degree: 3 },
   { id: "major", name: "Major", short: "Maj", intervals: [0, 2, 4, 5, 7, 9, 11], degree: 0 },
+  { id: "minor", name: "Minor", short: "Min", intervals: [0, 2, 3, 5, 7, 8, 10], degree: 5 },
+  { id: "lydian", name: "Lydian", short: "Lyd", intervals: [0, 2, 4, 6, 7, 9, 11], degree: 3 },
   { id: "mixolydian", name: "Mixolydian", short: "Mix", intervals: [0, 2, 4, 5, 7, 9, 10], degree: 4 },
   { id: "dorian", name: "Dorian", short: "Dor", intervals: [0, 2, 3, 5, 7, 9, 10], degree: 1 },
-  { id: "minor", name: "Minor", short: "Min", intervals: [0, 2, 3, 5, 7, 8, 10], degree: 5 },
   { id: "phrygian", name: "Phrygian", short: "Phr", intervals: [0, 1, 3, 5, 7, 8, 10], degree: 2 },
   { id: "locrian", name: "Locrian", short: "Loc", intervals: [0, 1, 3, 5, 6, 8, 10], degree: 6 },
 ];
