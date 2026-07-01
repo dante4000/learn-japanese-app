@@ -9,7 +9,7 @@ set -euo pipefail
 
 DIR="/Users/danielko/dev/sites/apps/translate"
 OLLAMA="/opt/homebrew/bin/ollama"
-LOCAL_MODEL="${TRANSLATE_LOCAL_MODEL:-qwen2.5:72b}"
+LOCAL_MODEL="${TRANSLATE_LOCAL_MODEL:-gemma3:27b}"
 # Big models live on the LaCie external drive (the internal disk is nearly full).
 # If the LaCie isn't plugged in, fall back to the internal store + a small model.
 MODELS_DIR="/Volumes/dante lacie/ollama-models"

@@ -65,8 +65,10 @@ It asks for your password once per start (only to bind the clean port 80); the
 
 Local config (env):
 
-- `TRANSLATE_LOCAL_MODEL` — Ollama model tag (default `qwen2.5:72b`, the strongest
-  open-weight translator that fits 64GB; use `gemma3:27b` or `:12b` for more speed).
+- `TRANSLATE_LOCAL_MODEL` — Ollama model tag (default `gemma3:27b`: ~2s/line and, in
+  measured tests, output identical to `qwen2.5:72b` on lyric-length lines. Qwen-72B
+  is downloaded on the LaCie for max-accuracy long-prose runs, but is memory-bound
+  at ~40-60s/line on 64GB).
 - Big models live on the LaCie external drive (`/Volumes/dante lacie/ollama-models`,
   via `OLLAMA_MODELS`) because the internal disk is nearly full. If the LaCie isn't
   mounted, the launcher falls back to the internal store with `gemma3:12b`
