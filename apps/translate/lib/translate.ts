@@ -85,12 +85,30 @@ export function runClaude(prompt: string, bin: string = CLAUDE_BIN): Promise<str
     const args = ["-p"];
     if (TRANSLATOR_MODEL) args.push("--model", TRANSLATOR_MODEL);
 
-    const child = spawn(bin, args, { stdio: ["pipe", "pipe", "pipe"], env });
+    const opts: Parameters<typeof spawn>[2] = { stdio: ["pipe", "pipe", "pipe"], env };
+
+    // When the server runs as root (the always-on port-80 service), drop the
+    // `claude` child to the real user so it uses their file-based login and never
+    // writes root-owned files into their ~/.claude. No-op for `npm run dev`.
+    const asRoot = typeof process.getuid === "function" && process.getuid() === 0;
+    const runAsUid = Number(process.env.TRANSLATE_UID);
+    if (asRoot && runAsUid) {
+      opts.uid = runAsUid;
+      const gid = Number(process.env.TRANSLATE_GID);
+      if (gid) opts.gid = gid;
+      if (process.env.TRANSLATE_HOME) env.HOME = process.env.TRANSLATE_HOME;
+      if (process.env.TRANSLATE_USER) {
+        env.USER = process.env.TRANSLATE_USER;
+        env.LOGNAME = process.env.TRANSLATE_USER;
+      }
+    }
+
+    const child = spawn(bin, args, opts);
 
     let out = "";
     let err = "";
-    child.stdout.on("data", (d) => (out += d.toString()));
-    child.stderr.on("data", (d) => (err += d.toString()));
+    child.stdout!.on("data", (d) => (out += d.toString()));
+    child.stderr!.on("data", (d) => (err += d.toString()));
 
     child.on("error", (e) => {
       reject(
@@ -105,8 +123,8 @@ export function runClaude(prompt: string, bin: string = CLAUDE_BIN): Promise<str
       else reject(new Error(err.trim() || `claude exited with code ${code}`));
     });
 
-    child.stdin.write(prompt);
-    child.stdin.end();
+    child.stdin!.write(prompt);
+    child.stdin!.end();
   });
 }
 
