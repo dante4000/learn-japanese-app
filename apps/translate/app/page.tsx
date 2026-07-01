@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 interface Line {
   index: number;
@@ -29,6 +29,13 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
+
+  // Hold a heartbeat open so the on-demand server knows this tab is alive. When
+  // the tab closes, this connection drops and the server shuts itself down.
+  useEffect(() => {
+    const es = new EventSource("/api/alive");
+    return () => es.close();
+  }, []);
 
   const canTranslate = input.trim().length > 0 && !busy;
 

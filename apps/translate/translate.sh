@@ -28,10 +28,15 @@ fi
 # Ensure a production build exists (built as the user, never root).
 [ -d "$DIR/.next" ] || sudo -u danielko npm --prefix "$DIR" run build
 
+# Clear any previous instance so port 80 is free (we're already root here).
+pkill -f "next/dist/bin/next start" 2>/dev/null || true
+sleep 1
+
 # Run `claude` as the real user so it uses your login (see lib/translate.ts).
 export TRANSLATE_UID=501 TRANSLATE_GID=20 TRANSLATE_HOME=/Users/danielko TRANSLATE_USER=danielko
 export PATH="/Users/danielko/.local/bin:/opt/homebrew/bin:$PATH"
 export NODE_ENV=production
+export TRANSLATE_AUTOEXIT=1   # exit when the browser tab closes
 
 cd "$DIR"
 node node_modules/next/dist/bin/next start -p 80 -H 127.0.0.1 &
