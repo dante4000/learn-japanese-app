@@ -63,6 +63,14 @@ if [ "$LOCAL" = 1 ]; then
   fi
   export TRANSLATE_LOCAL_MODEL="$LOCAL_MODEL"
 
+  # Never restart the server while a model download is in flight — killing it
+  # mid-write corrupts the partial blob and every resume then fails with EOF.
+  if pgrep -f "$OLLAMA pull|ollama pull" >/dev/null 2>&1; then
+    echo "✗ A model download is in progress — let it finish, then rerun."
+    echo "  Watch it with:  ollama list   (the model appears when done)"
+    exit 1
+  fi
+
   # The RUNNING server's env decides where models live, so ask the server for the
   # model; if it can't serve it, (re)start Ollama pointed at the chosen store.
   if ! sudo -u danielko "$OLLAMA" show "$LOCAL_MODEL" >/dev/null 2>&1; then
