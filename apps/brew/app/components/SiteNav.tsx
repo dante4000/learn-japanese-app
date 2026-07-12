@@ -10,7 +10,7 @@ export default function SiteNav({ recipeIds }: { recipeIds: string[] }) {
   const [active, setActive] = useState<string>("");
 
   useEffect(() => {
-    const ids = ["principles", ...recipeIds, "rescue"];
+    const ids = ["ranking", "principles", ...recipeIds, "rescue"];
     const els = ids
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => el !== null);
@@ -35,6 +35,7 @@ export default function SiteNav({ recipeIds }: { recipeIds: string[] }) {
   }, [recipeIds]);
 
   const links = [
+    { key: "ranking", href: "#ranking", label: "Ranking" },
     { key: "principles", href: "#principles", label: "Principles" },
     { key: "recipes", href: `#${recipeIds[0] ?? "top"}`, label: "Recipes" },
     { key: "rescue", href: "#rescue", label: "Rescue" },

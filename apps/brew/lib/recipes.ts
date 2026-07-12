@@ -38,7 +38,33 @@ export type Recipe = {
   taste: string[]; // tasting notes
   method: string[]; // technique bullets
   accent: "vermilion" | "indigo" | "ochre";
+  // 1–10 scores for the thin · strong · dry index. Sourced from a per-recipe
+  // audit against Korean brewing sources (encykorea, 술독, 나무위키, koreansool,
+  // lampcook, soollife, 한국세시풍속사전); see /sources. Clarity is the score of
+  // the wine DRAWN clear off the top with a 용수 — a 죽-based mash pressed whole
+  // will always run thick, so clarity is method-dependent for the 죽 builds.
+  ratings: { dryness: number; clarity: number; strength: number };
+  // Risk of straining out a thick, non-separating porridge like a failed brew.
+  // For the 죽-based wines this is "low … if drawn, not pressed."
+  gunkRisk: "low" | "medium" | "high";
+  // One line on body/sweetness intent — so an intentionally rich/sweet wine
+  // (석탄주, 교동법주) reads as a style choice, not a failure.
+  bodyNote: string;
 };
+
+// Composite for the thin · strong · dry ranking. Equal weight, out of 30.
+export function tsdScore(r: Recipe): number {
+  return r.ratings.dryness + r.ratings.clarity + r.ratings.strength;
+}
+
+// Recipes ranked best → worst for a thin, strong, dry result.
+// Ties broken by strength (the user's stated priority alongside dry).
+export function rankedByTSD(list: Recipe[] = recipes): Recipe[] {
+  return [...list].sort(
+    (a, b) =>
+      tsdScore(b) - tsdScore(a) || b.ratings.strength - a.ratings.strength,
+  );
+}
 
 export const recipes: Recipe[] = [
   {
@@ -56,6 +82,10 @@ export const recipes: Recipe[] = [
     nurukPct: "≈ 10% of grain, front-loaded",
     waterNote: "Total rice : water ≈ 1 : 1 (저가수 — low water, strong & clean)",
     accent: "vermilion",
+    ratings: { dryness: 7, clarity: 7, strength: 8 },
+    gunkRisk: "medium",
+    bodyNote:
+      "Strong and clean, but the 찹쌀 고두밥 close leaves a deliberate rounded finish — dry-leaning, not bone-dry. The low total water makes a dense mash: clear only when drawn off the top, never pressed.",
     stages: [
       {
         name: "밑술",
@@ -153,6 +183,10 @@ export const recipes: Recipe[] = [
     nurukPct: "≈ 4–5% (low — for a clear, sake-pale wine)",
     waterNote: "Total rice : water ≈ 1 : 1; nuruk only in the 밑술",
     accent: "indigo",
+    ratings: { dryness: 8, clarity: 9, strength: 8 },
+    gunkRisk: "low",
+    bodyNote:
+      "The cleanest cold archetype — no 죽 anywhere, all-멥쌀, 분곡, finishing on 고두밥 that separates bright. The only hazard is a cold stall on very low nuruk, which reads as sweetness, not thickness.",
     stages: [
       {
         name: "밑술",
@@ -224,6 +258,10 @@ export const recipes: Recipe[] = [
     nurukPct: "≈ 6–7%",
     waterNote: "Water-poor: no water added at the 덧술 → concentrated sweetness",
     accent: "ochre",
+    ratings: { dryness: 2, clarity: 4, strength: 4 },
+    gunkRisk: "medium",
+    bodyNote:
+      "The intentional outlier — sweet, soft and viscous BY DESIGN (≈2× the sugar of ordinary wine). Its thick body is the prized style (“a pity to swallow”), not the accidental gunk of a failed dry brew.",
     stages: [
       {
         name: "밑술",
@@ -282,6 +320,10 @@ export const recipes: Recipe[] = [
     nurukPct: "≈ 4% (low), best as 수곡 / water-nuruk",
     waterNote: "All water in the 밑술, dry 고두밥 덧술; rice : water ≈ 1 : 1.3 — dryness from full attenuation, not low water",
     accent: "indigo",
+    ratings: { dryness: 9, clarity: 9, strength: 8 },
+    gunkRisk: "low",
+    bodyNote:
+      "A model thin-strong-dry build: 백설기 (steamed cake, not a wet 죽) + strained 수곡 + all-멥쌀 + dry 고두밥 finish. The watch-item is a cold under-attenuation stall (sweetness), never thickness.",
     stages: [
       {
         name: "밑술",
@@ -334,12 +376,16 @@ export const recipes: Recipe[] = [
     profile: "Dry · Clean · Pale",
     tagline: "“White glow” — the classic clear, dry 약주.",
     stagesLabel: "Two mashings · 밑술 + 한 번의 덧술",
-    abv: "≈ 13–16%",
+    abv: "≈ 13–15%",
     ferment: "Moderate (neither cold nor hot), short — ~7–8 days after the 덧술",
     baseRice: 6,
     nurukPct: "≈ 8%",
     waterNote: "High-water — rice : water ≈ 1 : 2 (a pale, light wine)",
     accent: "vermilion",
+    ratings: { dryness: 9, clarity: 9, strength: 6 },
+    gunkRisk: "low",
+    bodyNote:
+      "Genuinely thin and dry — but intentionally light, not strong. The 1:2 water buys clarity by sacrificing ABV, and sits above 허시명’s 150% rule, so hold it cool and finish fully or it leans tart.",
     stages: [
       {
         name: "밑술",
@@ -393,11 +439,15 @@ export const recipes: Recipe[] = [
     tagline: "The Pyongyang clear wine — “less sweet than the rest.”",
     stagesLabel: "Two mashings · 밑술 + 한 번의 덧술",
     abv: "≈ 13–15%",
-    ferment: "Cool–moderate; ~5–7 days to the 덧술, then ~3 weeks",
+    ferment: "Cool–moderate; ~5–7 days to the 덧술, then a ~2-month rest",
     baseRice: 6,
     nurukPct: "≈ 8%",
     waterNote: "rice : water ≈ 1 : 1.1",
     accent: "indigo",
+    ratings: { dryness: 9, clarity: 8, strength: 8 },
+    gunkRisk: "low",
+    bodyNote:
+      "The designated driest of the clear wines — all-멥쌀, balanced water, a long ~2-month settle. It opens on a 죽 base like a failed brew, but the 고두밥 feed + cold settle + 용수 draw clear it; press instead and it clouds.",
     stages: [
       {
         name: "밑술",
@@ -456,6 +506,10 @@ export const recipes: Recipe[] = [
     nurukPct: "≈ 7%",
     waterNote: "rice : water ≈ 1 : 1 (강주 — strong)",
     accent: "ochre",
+    ratings: { dryness: 9, clarity: 8, strength: 9 },
+    gunkRisk: "low",
+    bodyNote:
+      "The flagship and strongest of the set: all-멥쌀 three-brew, ~1:1 강주 water, 고두밥 finish, 2–3 months aging. Opens on a flour 죽 but the staged wet→dry progression and long age clear it for a 용수 draw.",
     stages: [
       {
         name: "밑술",
@@ -527,6 +581,10 @@ export const recipes: Recipe[] = [
     nurukPct: "≈ 10% (estimated — undisclosed)",
     waterNote: "Glutinous & water-lean (exact ratio undisclosed by the family)",
     accent: "vermilion",
+    ratings: { dryness: 5, clarity: 7, strength: 9 },
+    gunkRisk: "medium",
+    bodyNote:
+      "Strong and clean, but grain-sweet and rich BY DESIGN — all-찹쌀 both stages. Clarity comes entirely from sinking a 용수 and drawing the bright 미황색 top over 100 days; press this glutinous mash and it runs thick.",
     stages: [
       {
         name: "밑술",

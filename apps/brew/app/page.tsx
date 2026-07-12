@@ -1,4 +1,4 @@
-import { recipes } from "@/lib/recipes";
+import { recipes, rankedByTSD, tsdScore } from "@/lib/recipes";
 import { principles, masterRules } from "@/lib/principles";
 import RecipeCalculator from "./components/RecipeCalculator";
 import { BrewProvider } from "./components/BrewProvider";
@@ -94,6 +94,96 @@ export default function Home() {
         <div className="double-rule" />
       </div>
 
+      {/* ============ RANKING ============ */}
+      <section
+        id="ranking"
+        className="scroll-mt-20 border-t border-[var(--line)]"
+      >
+        <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
+          <SectionHead
+            n="序"
+            ko="순위"
+            title="Thin · strong · dry"
+            sub="The eight wines, ranked for a clear, strong, dry result"
+          />
+          <p className="mt-6 max-w-2xl text-[1.02rem] leading-relaxed text-[var(--ink-soft)]">
+            Each wine scored 1–10 on <strong>dryness</strong>,{" "}
+            <strong>clarity</strong> and <strong>strength</strong> from a
+            per-recipe audit against Korean sources. One catch worth saying
+            plainly: <em>clarity is the wine drawn clear off the top with a</em>{" "}
+            <span className="kr">용수</span> — every <span className="kr">죽</span>
+            -based mash runs thick if you press it whole, which is exactly how a
+            brew comes out porridgy. Sorted for what you want: thin, strong, dry.
+          </p>
+
+          <ol
+            className="mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-lg"
+            style={{ background: "var(--line)" }}
+          >
+            {rankedByTSD(recipes).map((r, i) => (
+              <li key={r.id}>
+                <a
+                  href={`#${r.id}`}
+                  className="recipe-row group flex flex-col gap-4 px-4 py-4 sm:flex-row sm:items-center sm:gap-6 sm:px-5"
+                >
+                  <div className="flex items-center gap-3 sm:w-64 sm:shrink-0">
+                    <span className="amt w-6 shrink-0 text-[0.9rem] text-[var(--ink-faint)]">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span
+                      className="kr w-6 shrink-0 text-[1.15rem] leading-none"
+                      style={{ color: accentHex(r.accent) }}
+                    >
+                      {r.hanja[0]}
+                    </span>
+                    <span className="kr text-[1.05rem] font-semibold">
+                      {r.name}
+                    </span>
+                    <GunkDot risk={r.gunkRisk} />
+                  </div>
+
+                  <div className="flex flex-1 items-end gap-5">
+                    <ScoreBar
+                      label="dry"
+                      value={r.ratings.dryness}
+                      accent={r.accent}
+                    />
+                    <ScoreBar
+                      label="clear"
+                      value={r.ratings.clarity}
+                      accent={r.accent}
+                    />
+                    <ScoreBar
+                      label="strong"
+                      value={r.ratings.strength}
+                      accent={r.accent}
+                    />
+                    <div className="ml-auto text-right">
+                      <div className="amt text-lg font-semibold leading-none">
+                        {tsdScore(r)}
+                      </div>
+                      <div className="text-[0.58rem] tracky text-[var(--ink-faint)]">
+                        / 30
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </li>
+            ))}
+          </ol>
+
+          <p className="mt-6 max-w-2xl text-[0.9rem] italic leading-relaxed text-[var(--ink-faint)]">
+            <span className="kr">석탄주</span> sits last on purpose — it is the
+            one sweet, soft wine, ~2× the sugar of the rest.{" "}
+            <span className="kr">교동법주</span>’s grain-sweet richness is
+            heritage style. A <GunkDot risk="medium" inline /> mark means the
+            mash is dense and <em>must</em> be drawn with a{" "}
+            <span className="kr">용수</span>, never pressed — neither is a
+            failure.
+          </p>
+        </div>
+      </section>
+
       {/* ============ RECIPES ============ */}
       {recipes.map((r, idx) => (
         <section
@@ -135,7 +225,7 @@ export default function Home() {
                 <p className="mt-4 max-w-xl text-lg italic text-[var(--ink-soft)]">
                   {r.tagline}
                 </p>
-                <div className="mt-3">
+                <div className="mt-3 flex flex-wrap items-center gap-3">
                   <span
                     className="inline-block rounded-full px-3 py-1 text-[0.66rem] tracky"
                     style={{
@@ -145,7 +235,20 @@ export default function Home() {
                   >
                     {r.profile}
                   </span>
+                  <a
+                    href="#ranking"
+                    className="amt text-[0.7rem] tracky text-[var(--ink-faint)] hover:text-[var(--ink)]"
+                    title="dryness + clarity + strength · see the ranking"
+                  >
+                    thin·strong·dry {tsdScore(r)}/30
+                  </a>
                 </div>
+                <p className="mt-4 max-w-xl text-[0.92rem] leading-relaxed text-[var(--ink-soft)]">
+                  <span className="kr text-[0.7rem] tracky text-[var(--ink-faint)]">
+                    몸피 · body —{" "}
+                  </span>
+                  {r.bodyNote}
+                </p>
               </div>
 
               <dl className="grid grid-cols-2 gap-x-8 gap-y-3 text-[0.9rem] lg:text-right">
@@ -391,8 +494,12 @@ export default function Home() {
           <div className="mt-8 grid gap-x-10 gap-y-3 text-[0.9rem] text-[var(--ink-soft)] sm:grid-cols-2">
             {[
               ["한국전통주연구소 · 박록담 고조리서 DB", "koreansool.kr"],
-              ["한국민족문화대백과 — 삼해주 · 석탄주", "encykorea.aks.ac.kr"],
+              ["한국민족문화대백과 — 삼해주 · 석탄주 · 약산춘 · 벽향주", "encykorea.aks.ac.kr"],
               ["술독 — 양조 원리 · 오양주", "suldoc.com"],
+              ["램프쿡 — 고조리서 제조법 DB", "lampcook.com"],
+              ["삶과술 — 춘주 · 백하주 빚는 법", "soollife.com"],
+              ["한국세시풍속사전 — 약산춘빚기", "folkency.nfm.go.kr"],
+              ["나무위키 — 청주(술)/주방문 · 경주교동법주", "namu.wiki"],
               ["임원경제지 · 산가요록 · 음식디미방 · 양주방", "고문헌"],
               ["농민신문 — 석탄주 · 누룩 법제", "nongmin.com"],
               ["오양주 복원 특허 KR2014/2015", "patents.google.com"],
@@ -470,6 +577,69 @@ function SectionHead({
         </h2>
       </div>
     </div>
+  );
+}
+
+function ScoreBar({
+  label,
+  value,
+  accent,
+}: {
+  label: string;
+  value: number;
+  accent: "vermilion" | "indigo" | "ochre";
+}) {
+  return (
+    <div className="flex-1">
+      <div className="mb-1 flex items-baseline justify-between gap-2">
+        <span className="text-[0.58rem] tracky text-[var(--ink-faint)]">
+          {label}
+        </span>
+        <span className="amt text-[0.7rem] text-[var(--ink-soft)]">{value}</span>
+      </div>
+      <div
+        className="h-1.5 overflow-hidden rounded-full"
+        style={{ background: "var(--line)" }}
+      >
+        <div
+          className="h-full rounded-full"
+          style={{
+            width: `${value * 10}%`,
+            background: accentHex(accent),
+          }}
+        />
+      </div>
+    </div>
+  );
+}
+
+function GunkDot({
+  risk,
+  inline,
+}: {
+  risk: "low" | "medium" | "high";
+  inline?: boolean;
+}) {
+  if (risk === "low" && !inline) return null;
+  const color =
+    risk === "high"
+      ? "var(--vermilion)"
+      : risk === "medium"
+        ? "var(--ochre)"
+        : "var(--line)";
+  return (
+    <span
+      className={inline ? "inline-block" : "shrink-0"}
+      title={`${risk} gunk risk — dense mash, draw with a 용수`}
+      aria-label={`${risk} gunk risk`}
+      style={{
+        width: "0.5rem",
+        height: "0.5rem",
+        borderRadius: "9999px",
+        background: color,
+        verticalAlign: inline ? "middle" : undefined,
+      }}
+    />
   );
 }
 
