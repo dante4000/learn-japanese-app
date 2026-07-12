@@ -6,5 +6,16 @@ docs
 data/gen
 .DS_Store
 *.log
-apps/grifterai
+# Standalone projects with their own Vercel deployments. The sites build serves
+# the repo root as static output, so keep their source out of this upload.
+apps/better
+apps/bondid
+apps/dante-cafe
+apps/dantymn
 apps/GrifterFlow
+apps/grifterai
+apps/lightkeeper
+apps/period-tracker
+apps/programming-guide
+apps/supersexyboystracker
+apps/trader

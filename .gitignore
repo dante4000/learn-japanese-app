@@ -8,6 +8,18 @@ tests/shots
 .superpowers/
 
 # Nested repos with their own remotes; they live here for convenience only.
+# Tracking them here would record bare gitlinks with no .gitmodules.
 # grifterai carries ~10GB of vendored video/font assets.
-apps/grifterai/
+apps/better/
+apps/bondid/
+apps/dante-cafe/
+apps/dantymn/
 apps/GrifterFlow/
+apps/grifterai/
+apps/lightkeeper/
+apps/period-tracker/
+apps/programming-guide/
+apps/supersexyboystracker/
+apps/trader/
+
+.DS_Store
