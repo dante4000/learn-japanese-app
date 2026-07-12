@@ -6,16 +6,8 @@ docs
 data/gen
 .DS_Store
 *.log
-# Standalone projects with their own Vercel deployments. The sites build serves
-# the repo root as static output, so keep their source out of this upload.
-apps/better
-apps/bondid
-apps/dante-cafe
-apps/dantymn
-apps/GrifterFlow
-apps/grifterai
-apps/lightkeeper
-apps/period-tracker
-apps/programming-guide
-apps/supersexyboystracker
-apps/trader
+# This project deploys only the kana trainer at the repo root, and its output
+# directory is that root, so anything uploaded is served publicly. Every app in
+# apps/ has its own Vercel project, nothing here links to /apps/, and the Next
+# apps can't run from raw source anyway. Shipping them cost 640MB per deploy.
+apps/
