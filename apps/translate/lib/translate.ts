@@ -20,7 +20,6 @@ export const OLLAMA_URL = process.env.OLLAMA_URL ?? "http://127.0.0.1:11434";
 export const LOCAL_MODEL = process.env.TRANSLATE_LOCAL_MODEL ?? "gemma3:27b";
 
 const CLAUDE_CONCURRENCY = 4; // batched chunks in flight at once
-const LOCAL_CONCURRENCY = Number(process.env.TRANSLATE_LOCAL_CONCURRENCY ?? 4);
 
 export type LineKind = "content" | "blank";
 
@@ -158,6 +157,7 @@ export function runClaude(prompt: string, bin: string = CLAUDE_BIN): Promise<str
 
 export interface TranslateDeps {
   run?: (prompt: string) => Promise<string>;
+  runStream?: (prompt: string) => AsyncIterable<string>;
 }
 
 /**
@@ -222,6 +222,119 @@ export async function translateLineLocal(
   return extractTranslation(await run(buildLocalPrompt(line)));
 }
 
+/**
+ * Stream a local-model generation, yielding response text as it arrives.
+ * Ollama returns newline-delimited JSON; we surface each `response` fragment so
+ * callers can parse finished `<t N>` tags incrementally instead of waiting for
+ * the whole pass to complete.
+ */
+export async function* streamOllama(prompt: string): AsyncGenerator<string> {
+  let res: Response;
+  try {
+    res = await fetch(`${OLLAMA_URL}/api/generate`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: LOCAL_MODEL,
+        prompt,
+        stream: true,
+        think: false, // suppress reasoning models' <think> output
+        keep_alive: "30m",
+        options: { temperature: 0.2 },
+      }),
+    });
+  } catch {
+    throw new Error(`Can't reach the local model at ${OLLAMA_URL}. Is Ollama running?`);
+  }
+  if (!res.ok) {
+    if (res.status === 404) {
+      throw new Error(`Local model "${LOCAL_MODEL}" not installed. Run: ollama pull ${LOCAL_MODEL}`);
+    }
+    throw new Error(`Ollama returned HTTP ${res.status}`);
+  }
+  if (!res.body) throw new Error(`Ollama at ${OLLAMA_URL} returned an empty response stream.`);
+
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let buf = "";
+  const drain = function* (flush: boolean): Generator<string> {
+    for (;;) {
+      const nl = buf.indexOf("\n");
+      if (nl === -1) break;
+      const line = buf.slice(0, nl).trim();
+      buf = buf.slice(nl + 1);
+      const piece = parseOllamaLine(line);
+      if (piece) yield piece;
+    }
+    if (flush) {
+      const tail = buf.trim();
+      buf = "";
+      const piece = parseOllamaLine(tail);
+      if (piece) yield piece;
+    }
+  };
+  for (;;) {
+    const { value, done } = await reader.read();
+    if (done) break;
+    buf += decoder.decode(value, { stream: true });
+    yield* drain(false);
+  }
+  yield* drain(true);
+}
+
+/** Parse one NDJSON line from Ollama's stream into its response text (if any). */
+function parseOllamaLine(line: string): string {
+  if (!line) return "";
+  let obj: { response?: string; error?: string };
+  try {
+    obj = JSON.parse(line);
+  } catch {
+    return "";
+  }
+  if (obj.error) throw new Error(`Ollama error: ${obj.error}`);
+  return obj.response ?? "";
+}
+
+/**
+ * Translate every content line in a SINGLE local-model pass, so the model sees
+ * the whole text and can carry context across lines that flow into each other
+ * (a sentence split over two lines, etc.) instead of translating each in
+ * isolation. Output stays numbered per line index (the UI aligns by index), and
+ * each `<t N>` is reported the moment its closing tag streams in.
+ */
+export async function translateAllLocal(
+  lines: SourceLine[],
+  onResult: ResultSink,
+  deps: TranslateDeps = {},
+): Promise<void> {
+  if (lines.length === 0) return;
+  const runStream = deps.runStream ?? streamOllama;
+  const wanted = new Set(lines.map((l) => l.index));
+  const seen = new Set<number>();
+  let buf = "";
+  let failure: string | null = null;
+  try {
+    for await (const piece of runStream(buildBatchPrompt(lines))) {
+      buf += piece;
+      // Re-scan the accumulated buffer; only fully-closed tags match, and lines
+      // arrive in order, so each surfaces exactly once as its </t> lands.
+      for (const [index, translation] of parseBatch(buf)) {
+        if (wanted.has(index) && !seen.has(index)) {
+          seen.add(index);
+          onResult(index, translation);
+        }
+      }
+    }
+  } catch (e) {
+    failure = e instanceof Error ? e.message : "Translation failed.";
+  }
+  // Report anything the model dropped (or everything, if the stream failed).
+  const message = failure ?? "No translation returned.";
+  for (const line of lines) {
+    if (!seen.has(line.index)) onResult(line.index, null, message);
+  }
+}
+
 // --- Unified streaming dispatch -----------------------------------------
 
 export type ResultSink = (
@@ -246,8 +359,9 @@ async function pool<T>(items: T[], limit: number, worker: (item: T) => Promise<v
 /**
  * Translate `content` lines, invoking `onResult(index, translation | null, err?)`
  * as each finishes. Dispatches on the active backend: Claude batches many lines
- * per CLI call; the local model translates line-by-line (cheap — the Ollama
- * server keeps the model resident, so there's no per-call spawn cost).
+ * per CLI call (several chunks in flight); the local model translates the whole
+ * text in one sequential pass so it keeps context across lines that flow into
+ * each other, streaming each line out as its tag lands.
  */
 /** A line with no letters (e.g. "...", "—", "♪") has nothing to translate. */
 export function isUntranslatable(text: string): boolean {
@@ -269,13 +383,7 @@ export async function streamTranslations(
   content = work;
 
   if (backend() === "local") {
-    await pool(content, LOCAL_CONCURRENCY, async (line) => {
-      try {
-        onResult(line.index, await translateLineLocal(line.text, deps));
-      } catch (e) {
-        onResult(line.index, null, e instanceof Error ? e.message : "Translation failed.");
-      }
-    });
+    await translateAllLocal(content, onResult, deps);
     return;
   }
 
