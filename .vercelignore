@@ -6,3 +6,5 @@ docs
 data/gen
 .DS_Store
 *.log
+apps/grifterai
+apps/GrifterFlow

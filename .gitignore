@@ -6,3 +6,8 @@ data/gen
 test-results
 tests/shots
 .superpowers/
+
+# Nested repos with their own remotes; they live here for convenience only.
+# grifterai carries ~10GB of vendored video/font assets.
+apps/grifterai/
+apps/GrifterFlow/
