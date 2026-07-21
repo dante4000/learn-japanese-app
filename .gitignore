@@ -12,7 +12,9 @@ tests/shots
 # grifterai carries ~10GB of vendored video/font assets.
 apps/better/
 apps/bondid/
+apps/brew/
 apps/dante-cafe/
+apps/dante4000/
 apps/dantymn/
 apps/GrifterFlow/
 apps/grifterai/
