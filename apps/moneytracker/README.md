@@ -99,9 +99,14 @@ lives in) deploys production. The Vercel project's Root Directory is
 `git diff --quiet HEAD^ HEAD -- .`, so pushes that don't touch this app are
 skipped — the repo hosts several projects.
 
-`vercel --prod` still works, but must run from the **repo root**, not this
-folder: with a Root Directory set, the CLI resolves `apps/moneytracker`
-beneath whatever it uploads.
+`vercel --prod` no longer works for this project, from either directory.
+From here the CLI looks for `apps/moneytracker/apps/moneytracker` (it resolves
+the Root Directory beneath whatever it uploads); from the repo root it would
+deploy the **`sites`** project, which is what that directory is linked to.
+To ship without a commit, use
+`vercel redeploy <deployment-url> --target production --scope dante4000`
+(the scope flag is required — resolving a deployment by URL doesn't pick up
+the linked team), or the Redeploy button in the dashboard.
 
 ### Plaid setup
 
