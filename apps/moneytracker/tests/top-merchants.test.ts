@@ -108,6 +108,47 @@ test("the baseline still counts toward the category total", () => {
   assert.equal(cats.find((c) => c.category === "RENT_AND_UTILITIES")?.total, 3200);
 });
 
+test("a baseline saved twice injects one estimated row, not two", () => {
+  const state = stateWith([rentBaseline, { ...rentBaseline, id: "base_b" }]);
+  const june = state.transactions.filter(
+    (t) => isSyntheticBaseline(t) && t.date.startsWith("2026-06"),
+  );
+  assert.equal(june.length, 1);
+  assert.equal(june[0].amount, 3200);
+  const cats = spendingByCategory(state, "2026-06");
+  assert.equal(cats.find((c) => c.category === "RENT_AND_UTILITIES")?.total, 3200);
+});
+
+test("re-saving a baseline supersedes the old amount from its start month on", () => {
+  // Rent went 3200 -> 3600 in June; May must still bill at the old rate.
+  const raised: RecurringBaseline = {
+    ...rentBaseline,
+    id: "base_b",
+    amount: 3600,
+    startMonth: "2026-06",
+  };
+  const state = stateWith([rentBaseline, raised]);
+  const byMonth = (m: string) =>
+    state.transactions.filter((t) => isSyntheticBaseline(t) && t.date.startsWith(m));
+  assert.deepEqual(byMonth("2026-05").map((t) => t.amount), [3200]);
+  assert.deepEqual(byMonth("2026-06").map((t) => t.amount), [3600]);
+});
+
+test("different bills in one category both still inject", () => {
+  const storage: RecurringBaseline = {
+    ...rentBaseline,
+    id: "base_c",
+    name: "Storage Unit",
+    amount: 180,
+  };
+  const state = stateWith([rentBaseline, storage]);
+  const june = state.transactions
+    .filter((t) => isSyntheticBaseline(t) && t.date.startsWith("2026-06"))
+    .map((t) => t.amount)
+    .sort((a, b) => a - b);
+  assert.deepEqual(june, [180, 3200]);
+});
+
 test("a recently added baseline isn't reported as a new merchant", () => {
   // Six months of history so newMerchants computes, with the baseline starting
   // inside the recent window — otherwise its first row falls outside and the
