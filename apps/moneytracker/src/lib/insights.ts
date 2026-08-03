@@ -474,6 +474,9 @@ export function newMerchants(
   const acctName = new Map(state.accounts.map((a) => [a.id, a.name]));
   const byName = new Map<string, NewMerchant>();
   for (const t of state.transactions) {
+    // Synthetic baseline rows aren't merchants — and a baseline added recently
+    // would otherwise surface here as a brand-new one. See topMerchants.
+    if (isSyntheticBaseline(t)) continue;
     if (!isSpend(t, neutralized)) continue;
     const name = displayPayee(t.merchantName, t.name, acctName.get(t.accountId));
     const row =

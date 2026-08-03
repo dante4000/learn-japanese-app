@@ -31,6 +31,21 @@ export async function POST(req: NextRequest) {
   };
 
   const meta = await loadMeta();
+  // A double-submit used to append a second identical baseline, and each one
+  // injects its own synthetic "(estimated)" row every month — silently counting
+  // the expense twice in every total. Same name + category + start = duplicate.
+  const existing = (meta.baselines ?? []).find(
+    (b) =>
+      b.name.trim().toLowerCase() === name.toLowerCase() &&
+      b.category === category &&
+      b.startMonth === startMonth,
+  );
+  if (existing)
+    return NextResponse.json(
+      { error: `A "${existing.name}" baseline already exists from that month.` },
+      { status: 409 },
+    );
+
   meta.baselines = [...(meta.baselines ?? []), entry];
   await saveMeta(meta);
   return NextResponse.json({ ok: true, entry });
