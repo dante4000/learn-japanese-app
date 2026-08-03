@@ -456,6 +456,12 @@ export interface MerchantSpend {
   count: number;
 }
 
+/**
+ * Real payees only. The synthetic "(estimated)" baseline rows are not merchants
+ * you ever transacted with, and the Activity feed filters them out of the raw
+ * ledger — leaving them in here produced tiles that drilled through to an empty
+ * list. They still count in category totals, the donut, and habits.
+ */
 export function topMerchants(
   state: AppState,
   month?: string,
@@ -465,6 +471,7 @@ export function topMerchants(
   const acctName = new Map(state.accounts.map((a) => [a.id, a.name]));
   const map = new Map<string, MerchantSpend>();
   for (const t of state.transactions) {
+    if (isSyntheticBaseline(t)) continue;
     if (!isSpend(t, neutralized)) continue;
     if (month && monthKey(t.date) !== month) continue;
     const name = displayPayee(t.merchantName, t.name, acctName.get(t.accountId));
