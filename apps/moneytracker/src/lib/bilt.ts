@@ -127,10 +127,23 @@ export function findBiltAccount(state: AppState): Account | null {
   return state.accounts.find((a) => matchAccountToCard(a) === BILT_CARD_KEY) ?? null;
 }
 
-/** The user's monthly rent/housing amount from the RENT_AND_UTILITIES baseline. */
-export function housingBaseline(state: AppState): number | null {
-  const b = state.baselines.find((x) => x.category === RENT_CATEGORY);
-  return b ? b.amount : null;
+/**
+ * The user's monthly rent/housing amount from the RENT_AND_UTILITIES baseline,
+ * as of `month` (yyyy-mm). Re-saving a baseline supersedes the earlier entry
+ * rather than replacing it in place (see injectBaselines), so the meter has to
+ * read the one in force now — taking the first would quote last year's rent.
+ * Falls back to the earliest entry when none has started yet.
+ */
+export function housingBaseline(state: AppState, month?: string): number | null {
+  const rents = state.baselines.filter((x) => x.category === RENT_CATEGORY);
+  if (!rents.length) return null;
+  const ordered = [...rents].sort((a, b) => a.startMonth.localeCompare(b.startMonth));
+  let current = ordered[0];
+  for (const b of ordered) {
+    if (month && b.startMonth > month) break;
+    current = b;
+  }
+  return current.amount;
 }
 
 export interface BiltMeter {
@@ -151,7 +164,8 @@ export function resolveBiltMeter(state: AppState, today: string): BiltMeter | nu
 
   const config = state.biltConfig;
   const statementDay = config?.statementDay ?? DEFAULT_STATEMENT_DAY;
-  const housingPayment = config?.housingOverride ?? housingBaseline(state) ?? 0;
+  const housingPayment =
+    config?.housingOverride ?? housingBaseline(state, today.slice(0, 7)) ?? 0;
   const cycle = statementCycle(today, statementDay);
   const everydaySpend = biltEverydaySpend(state.transactions, account.id, cycle);
 

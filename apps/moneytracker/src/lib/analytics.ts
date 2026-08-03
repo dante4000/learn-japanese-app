@@ -3,6 +3,7 @@ import {
   Account,
   Transaction,
   NetWorthSnapshot,
+  RecurringBaseline,
   RecurringStream,
   RecurringFrequency,
 } from "./types";
@@ -247,10 +248,45 @@ function nextMonth(m: string): string {
 }
 
 /**
+ * Same name + category = one recurring bill over time, not several. Saving
+ * "Rent & Parking" again — a raise, or an accidental double-submit — supersedes
+ * the earlier entry from its start month on, instead of stacking beside it.
+ * Every entry used to inject its own estimated row, so a bill saved twice was
+ * counted twice in every total, forever.
+ *
+ * Returns one timeline per bill, oldest start first.
+ */
+function baselineTimelines(baselines: RecurringBaseline[]): RecurringBaseline[][] {
+  const groups = new Map<string, RecurringBaseline[]>();
+  for (const b of baselines) {
+    const key = `${b.name.trim().toLowerCase()}|${b.category}`;
+    const group = groups.get(key);
+    if (group) group.push(b);
+    else groups.set(key, [b]);
+  }
+  // Stable sort keeps insertion order within one start month, so the most
+  // recently saved of two identical entries is the one that wins.
+  return [...groups.values()].map((g) =>
+    [...g].sort((a, b) => a.startMonth.localeCompare(b.startMonth)),
+  );
+}
+
+/** The entry of a timeline in force during month `m`, or null before it starts. */
+function baselineAt(timeline: RecurringBaseline[], m: string): RecurringBaseline | null {
+  let current: RecurringBaseline | null = null;
+  for (const b of timeline) {
+    if (b.startMonth > m) break;
+    current = b;
+  }
+  return current;
+}
+
+/**
  * Fill in recurring baselines: for each month (within the data range, from the
  * baseline's startMonth) that lacks a real charge in the baseline's category,
  * add a synthetic "(estimated)" transaction so totals/trends are honest. Months
- * that already have a matching charge are left untouched (no double-counting).
+ * that already have a matching charge are left untouched (no double-counting),
+ * and each bill contributes at most one row per month (see baselineTimelines).
  */
 export function injectBaselines(state: AppState): AppState {
   const baselines = state.baselines ?? [];
@@ -262,10 +298,17 @@ export function injectBaselines(state: AppState): AppState {
   const currency = state.accounts[0]?.currency ?? "USD";
   const synthetic: Transaction[] = [];
 
-  for (const b of baselines) {
-    let m = b.startMonth > earliest ? b.startMonth : earliest;
+  for (const timeline of baselineTimelines(baselines)) {
+    const start = timeline[0].startMonth;
+    let m = start > earliest ? start : earliest;
     let guard = 0;
     while (m <= latest && guard < 600) {
+      const b = baselineAt(timeline, m);
+      if (!b) {
+        m = nextMonth(m);
+        guard++;
+        continue;
+      }
       const hasReal = state.transactions.some(
         (t) =>
           !t.hidden &&

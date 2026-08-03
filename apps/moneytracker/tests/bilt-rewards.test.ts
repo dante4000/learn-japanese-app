@@ -185,6 +185,20 @@ test("resolveBiltMeter uses the rent baseline for housing and sums everyday spen
   assert.equal(m.housingFromOverride, false);
 });
 
+test("resolveBiltMeter reads the rent baseline in force now, not the oldest", () => {
+  // Re-saving a baseline supersedes the earlier entry rather than editing it,
+  // so the meter must quote this month's rent — not the original amount.
+  const state = stateWith({
+    accounts: [acct({ id: "bilt_1", name: "Bilt Card" })],
+    baselines: [
+      baseRent(4100),
+      { ...baseRent(4500), id: "b2", startMonth: "2026-06" },
+    ],
+  });
+  assert.equal(resolveBiltMeter(state, "2026-06-30")!.housingPayment, 4500);
+  assert.equal(resolveBiltMeter(state, "2026-05-30")!.housingPayment, 4100);
+});
+
 test("resolveBiltMeter prefers the housing override and configured statement day", () => {
   const state = stateWith({
     accounts: [acct({ id: "bilt_1", name: "Bilt Card" })],
