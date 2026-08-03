@@ -91,6 +91,18 @@ develop and test offline. CSV import works immediately; Plaid needs keys.
    Environment Variables (Production). Set `APP_BASE_URL` to your deployment URL.
 4. **Deploy.** The `vercel.json` cron runs `/api/cron/sync` daily.
 
+### How this project deploys
+
+Pushing to `main` on `dante4000/learn-japanese-app` (the monorepo this app
+lives in) deploys production. The Vercel project's Root Directory is
+`apps/moneytracker`, and its Ignored Build Step is
+`git diff --quiet HEAD^ HEAD -- .`, so pushes that don't touch this app are
+skipped — the repo hosts several projects.
+
+`vercel --prod` still works, but must run from the **repo root**, not this
+folder: with a Root Directory set, the CLI resolves `apps/moneytracker`
+beneath whatever it uploads.
+
 ### Plaid setup
 
 1. Create a Plaid account → Team Settings → Keys for `PLAID_CLIENT_ID` /
