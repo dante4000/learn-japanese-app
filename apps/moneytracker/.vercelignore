@@ -1,0 +1,11 @@
+# The repository root has its own .vercelignore that drops all of apps/ — the
+# kana-trainer project deploys the repo root and serves whatever it uploads
+# publicly. This app builds with Root Directory = apps/moneytracker, so it needs
+# its own list; without one, the root's `apps/` rule removes package.json before
+# the build runs and Vercel reports "No Next.js version detected".
+node_modules
+.next
+.vercel
+.data
+.DS_Store
+*.log
