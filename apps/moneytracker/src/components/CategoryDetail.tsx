@@ -255,6 +255,7 @@ export function CategoryDetail({
           })}
         </ul>
 
+        {editor.savedMessage && <p role="status" className="mt-3 text-sm text-muted">{editor.savedMessage}</p>}
         {editor.error && (
           <p className="mt-3 text-sm text-coral" role="alert">
             {editor.error}

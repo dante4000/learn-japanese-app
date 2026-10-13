@@ -166,6 +166,7 @@ export function TransactionsView({
         </div>
       )}
 
+      {editor.savedMessage && <p role="status" className="mb-3 text-sm text-muted">{editor.savedMessage}</p>}
       {editor.error && (
         <p className="mb-3 text-sm text-coral" role="alert">
           {editor.error}

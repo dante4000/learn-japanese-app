@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useSavedRefresh } from "@/components/useSavedRefresh";
 import { RecurringBaseline } from "@/lib/types";
 import { CATEGORIES } from "@/lib/categories";
 import { formatMoney, formatMonth } from "@/lib/format";
@@ -14,7 +14,7 @@ export function BaselineManager({
   baselines: RecurringBaseline[];
   currency?: string;
 }) {
-  const router = useRouter();
+  const { savedMessage, clearSavedFeedback, refreshAfterSave } = useSavedRefresh();
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [amount, setAmount] = useState("");
@@ -39,6 +39,7 @@ export function BaselineManager({
       setError("End month must be on or after start month.");
       return;
     }
+    clearSavedFeedback();
     setBusy(true);
     setError(null);
     try {
@@ -58,7 +59,7 @@ export function BaselineManager({
       setStartMonth("");
       setEndMonth("");
       setEditingId(null);
-      router.refresh();
+      refreshAfterSave();
     } catch {
       setError("Could not save baseline.");
     } finally {
@@ -67,6 +68,7 @@ export function BaselineManager({
   }
 
   async function remove(id: string) {
+    clearSavedFeedback();
     setBusy(true);
     setError(null);
     try {
@@ -77,7 +79,7 @@ export function BaselineManager({
         return;
       }
       if (editingId === id) { setOpen(false); setEditingId(null); }
-      router.refresh();
+      refreshAfterSave();
     } catch {
       setError("Could not remove baseline.");
     } finally {
@@ -170,6 +172,7 @@ export function BaselineManager({
           + Add a fixed monthly bill (fills months the bank feed misses)
         </button>
       )}
+      {savedMessage && <p role="status" className="mt-2 text-xs text-muted">{savedMessage}</p>}
       {error && <p role="alert" className="mt-2 text-xs text-coral">{error}</p>}
     </div>
   );

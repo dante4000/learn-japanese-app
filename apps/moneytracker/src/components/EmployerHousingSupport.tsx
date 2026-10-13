@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useSavedRefresh } from "@/components/useSavedRefresh";
 import { EmployerHousingSupport } from "@/lib/types";
 
 /** Edit the confirmed studio contribution without creating deposit records. */
 export function EmployerHousingSupportEditor({ support, sources }: { support?: EmployerHousingSupport | null; sources: string[] }) {
-  const router = useRouter();
+  const { savedMessage, clearSavedFeedback, refreshAfterSave } = useSavedRefresh();
   const [open, setOpen] = useState(false);
   const [source, setSource] = useState(support?.source ?? sources[0] ?? "");
   const [amount, setAmount] = useState(support ? String(support.amount) : "");
@@ -17,22 +17,22 @@ export function EmployerHousingSupportEditor({ support, sources }: { support?: E
   const options = [...new Set([...sources, source])];
   const field = "mt-1 min-h-11 min-w-0 w-full rounded-xl border hairline bg-surface px-3 py-2 text-base text-cream sm:text-sm";
   async function save(event: React.FormEvent) {
-    event.preventDefault(); setBusy(true); setError("");
+    event.preventDefault(); clearSavedFeedback(); setBusy(true); setError("");
     try {
       const response = await fetch("/api/income-support", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ source, amount: Number(amount), startMonth, endMonth: endMonth || null }) });
       const data = await response.json().catch(() => null);
       if (!response.ok) { setError(data?.error ?? "Could not save employer support."); return; }
-      setOpen(false); router.refresh();
+      setOpen(false); refreshAfterSave();
     } catch { setError("Could not save employer support."); }
     finally { setBusy(false); }
   }
   async function remove() {
-    setBusy(true); setError("");
+    clearSavedFeedback(); setBusy(true); setError("");
     try {
       const response = await fetch("/api/income-support", { method: "DELETE" });
       const data = await response.json().catch(() => null);
       if (!response.ok) { setError(data?.error ?? "Could not remove employer support."); return; }
-      setOpen(false); router.refresh();
+      setOpen(false); refreshAfterSave();
     } catch { setError("Could not remove employer support."); }
     finally { setBusy(false); }
   }
@@ -50,6 +50,7 @@ export function EmployerHousingSupportEditor({ support, sources }: { support?: E
           <div className="flex flex-wrap gap-2 sm:col-span-2"><button type="submit" className="min-h-11 rounded-xl bg-blue px-4 py-2 text-sm text-ink">{busy ? "Saving…" : "Save support"}</button><button type="button" onClick={() => setOpen(false)} className="min-h-11 rounded-xl px-3 py-2 text-sm text-muted">Cancel</button>{support && <button type="button" onClick={remove} className="min-h-11 rounded-xl px-3 py-2 text-sm text-coral">Remove support</button>}</div>
         </fieldset>
       </form>}
+      {savedMessage && <p role="status" className="mt-2 text-sm text-muted">{savedMessage}</p>}
       {error && <p role="alert" className="mt-2 text-sm text-coral">{error}</p>}
     </div>
   );

@@ -44,6 +44,13 @@ stop local app processes before removing the remaining `.enc.lock` or
 Updates to separate documents are not one transaction. CSV import works with **zero** external services beyond hosting + storage,
 so you have a fully working app even before Plaid Production is approved.
 
+Public Blob changes can take up to 60 seconds to appear after a successful save.
+The app uses the minimum supported cache duration. Query parameters bypass
+browser caches but do not remove the Blob cache delay. Wait one minute, then
+refresh before submitting the same change again. Conditional writes still reject
+stale updates because each read retains the ETag from its own document response.
+See [Vercel Blob caching](https://vercel.com/docs/vercel-blob#caching).
+
 Institution claims prevent concurrent connections to the same bank. A request
 that stops before saving its connection can leave a claim. Claims do not expire:
 an expired claim could let a delayed request create a duplicate connection.

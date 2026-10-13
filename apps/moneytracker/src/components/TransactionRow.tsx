@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { isSyntheticBaseline } from "@/lib/analytics";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useSavedRefresh } from "@/components/useSavedRefresh";
 import { Transaction } from "@/lib/types";
 import { CATEGORIES, categoryMeta, resolveCategoryKey } from "@/lib/categories";
 import { formatMoney, formatDate } from "@/lib/format";
@@ -16,7 +16,7 @@ import { displayPayee } from "@/lib/aliases";
  * drill-down edit transactions exactly the same way.
  */
 export function useTransactionEditor() {
-  const router = useRouter();
+  const { savedMessage, clearSavedFeedback, refreshAfterSave } = useSavedRefresh();
   const [editingId, setEditingId] = useState<string | null>(null);
   const [noteDraft, setNoteDraft] = useState("");
   const [busy, setBusy] = useState(false);
@@ -29,6 +29,7 @@ export function useTransactionEditor() {
   }
 
   async function update(id: string, patch: Record<string, unknown>) {
+    clearSavedFeedback();
     setBusy(true);
     setError(null);
     try {
@@ -43,7 +44,7 @@ export function useTransactionEditor() {
         return;
       }
       setEditingId(null);
-      router.refresh();
+      refreshAfterSave();
     } catch {
       setError("Could not save change");
     } finally {
@@ -57,6 +58,7 @@ export function useTransactionEditor() {
     setNoteDraft,
     busy,
     error,
+    savedMessage,
     openEditor,
     update,
   };
