@@ -112,6 +112,8 @@ export function TransactionRow({
             <span>{formatDate(t.date)}</span>
             <span>·</span>
             <button
+              disabled={busy}
+              aria-expanded={open}
               onClick={() => openEditor(t)}
               className="hover:text-blue"
               style={{ color: meta.color }}
@@ -142,6 +144,7 @@ export function TransactionRow({
               .map((c) => (
                 <button
                   key={c.key}
+                  aria-pressed={resolveCategoryKey(t) === c.key}
                   disabled={busy}
                   onClick={() => update(t.id, { userCategory: c.key })}
                   className="rounded-lg border hairline px-2.5 py-1 text-xs text-cream-dim transition-colors hover:border-line-2"
@@ -158,7 +161,8 @@ export function TransactionRow({
           <div className="label-eyebrow mb-2 mt-4">Note</div>
           <div className="flex flex-wrap gap-2">
             <input
-              value={noteDraft}
+              aria-label="Transaction note"
+          value={noteDraft}
               onChange={(e) => setNoteDraft(e.target.value)}
               placeholder="Add a note — why, who, what for…"
               className="min-w-48 flex-1 rounded-lg border hairline bg-surface px-3 py-1.5 text-xs text-cream outline-none placeholder:text-faint focus:border-blue"

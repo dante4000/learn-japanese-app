@@ -90,7 +90,7 @@ export function ManualEntries({
                 onClick={() => remove(m.id)}
                 disabled={busy}
                 className="text-faint hover:text-coral"
-                aria-label="Remove"
+                aria-label={`Remove ${m.name}`}
               >
                 ✕
               </button>
@@ -107,12 +107,14 @@ export function ManualEntries({
 
       <form onSubmit={add} className="flex flex-wrap gap-2">
         <input
+          aria-label="Entry name"
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="e.g. Home, Car, Cash"
           className="min-w-32 flex-1 rounded-xl border hairline bg-surface px-3 py-2.5 text-sm text-cream outline-none placeholder:text-faint focus:border-blue"
         />
         <input
+          aria-label="Entry value"
           value={value}
           onChange={(e) => setValue(e.target.value)}
           inputMode="decimal"
@@ -120,6 +122,7 @@ export function ManualEntries({
           className="tnum w-28 rounded-xl border hairline bg-surface px-3 py-2.5 text-sm text-cream outline-none placeholder:text-faint focus:border-blue"
         />
         <select
+          aria-label="Entry type"
           value={kind}
           onChange={(e) => setKind(e.target.value as "asset" | "liability")}
           className="rounded-xl border hairline bg-surface px-3 py-2.5 text-sm text-cream outline-none focus:border-blue"

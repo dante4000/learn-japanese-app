@@ -60,7 +60,7 @@ export function buildBundle(
     // account filter).
     accounts: result.accounts.length ? result.accounts : (prev?.accounts ?? []),
     transactions,
-    recurring: result.recurring,
+    recurring: result.recurring ?? prev?.recurring ?? [],
   };
 }
 
@@ -81,18 +81,20 @@ function failureStatus(err: unknown): "needs_reauth" | "error" {
 /** Sync one Plaid item and persist just its bundle. */
 export async function syncOneItem(item: Item): Promise<ItemSyncOutcome> {
   if (item.provider !== "plaid") return { status: "healthy", error: null };
-  const prev = await loadItemBundle(item.id);
   try {
     const result = await plaidSync(item);
-    await saveItemBundle(buildBundle(item, prev, result));
+    const latest = await loadItemBundle(item.id);
+    if (!latest) return { status: "error", error: "Connection was removed during sync" };
+    await saveItemBundle(buildBundle(latest.item, latest, result));
     return { status: "healthy", error: null };
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     const status = failureStatus(err);
-    if (prev) {
-      prev.item.status = status;
-      prev.item.error = message;
-      await saveItemBundle(prev);
+    const latest = await loadItemBundle(item.id);
+    if (latest) {
+      latest.item.status = status;
+      latest.item.error = message;
+      await saveItemBundle(latest);
     }
     return { status, error: message };
   }

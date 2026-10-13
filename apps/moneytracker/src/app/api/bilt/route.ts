@@ -10,10 +10,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const body = await req.json().catch(() => null);
-  if (!body) return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+  if (!body || typeof body !== "object" || Array.isArray(body)) return NextResponse.json({ error: "Invalid request" }, { status: 400 });
 
   const statementDay = Number(body.statementDay);
-  if (!Number.isInteger(statementDay) || statementDay < 1 || statementDay > 28)
+  if (!["number", "string"].includes(typeof body.statementDay) || !Number.isInteger(statementDay) || statementDay < 1 || statementDay > 28)
     return NextResponse.json(
       { error: "statementDay must be an integer 1–28" },
       { status: 400 },
@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
 
   if (body.housingOverride != null && body.housingOverride !== "") {
     const amount = Number(body.housingOverride);
-    if (!isFinite(amount) || amount <= 0)
+    if (!["number", "string"].includes(typeof body.housingOverride) || !Number.isFinite(amount) || amount <= 0)
       return NextResponse.json(
         { error: "housingOverride must be a positive number" },
         { status: 400 },

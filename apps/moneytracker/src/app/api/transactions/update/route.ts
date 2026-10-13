@@ -14,7 +14,9 @@ export async function POST(req: NextRequest) {
   } catch {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
-  const id = body.id as string;
+  if (!body || typeof body !== "object" || Array.isArray(body))
+    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+  const id = typeof body.id === "string" ? body.id : "";
   if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
 
   const ids = await listItemIds();

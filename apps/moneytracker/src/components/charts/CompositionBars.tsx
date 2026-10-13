@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { MonthComposition } from "@/lib/analytics";
 import { formatMonth, formatMoney } from "@/lib/format";
 
@@ -20,18 +23,24 @@ export function CompositionBars({
   highlight?: string; // month to emphasize
   showTotals?: boolean; // render each month's total above its bar
 }) {
+  const params = useSearchParams();
   const max = Math.max(1, ...data.map((d) => d.total));
 
   return (
-    <div className="flex justify-between gap-2">
+    <div className="overflow-x-auto pb-1">
+    <div className="flex justify-between gap-2" style={{ minWidth: data.length * 52 }}>
       {data.map((d) => {
         const isHi = highlight === d.month;
+        const next = new URLSearchParams(params.toString());
+        next.set("month", d.month);
+        // Selecting a month leaves the Income page's aggregate period.
+        next.delete("scope");
         return (
           <Link
             key={d.month}
-            href={`?month=${d.month}`}
+            href={`?${next.toString()}`}
             scroll={false}
-            aria-label={`Show ${formatMonth(d.month)}${showTotals ? `: ${formatMoney(d.total, currency, { cents: false })}` : ""}`}
+            aria-label={`Show ${formatMonth(d.month)}: ${formatMoney(d.total, currency, { cents: false })}. ${d.segments.map((s) => `${s.label}: ${formatMoney(s.total, currency)}`).join("; ")}`}
             aria-current={isHi ? "true" : undefined}
             className="group flex flex-1 flex-col items-center gap-2"
           >
@@ -80,6 +89,7 @@ export function CompositionBars({
           </Link>
         );
       })}
+    </div>
     </div>
   );
 }

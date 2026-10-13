@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { ThemeToggle } from "./ThemeToggle";
 import { AccountPicker, AccountOption } from "./AccountPicker";
 
@@ -28,6 +28,7 @@ const MORE_ICON = "M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z";
 function Glyph({ d }: { d: string }) {
   return (
     <svg
+      aria-hidden="true"
       width="20"
       height="20"
       viewBox="0 0 24 24"
@@ -59,6 +60,13 @@ export function AppShell({
   const [msg, setMsg] = useState<string | null>(null);
   const [moreOpen, setMoreOpen] = useState(false);
 
+  const moreDialog = useRef<HTMLDialogElement>(null);
+  useEffect(() => {
+    const dialog = moreDialog.current;
+    if (moreOpen && dialog && !dialog.open) dialog.showModal();
+    if (!moreOpen && dialog?.open) dialog.close();
+  }, [moreOpen]);
+
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
   const isMoreActive = MORE_NAV.some((item) => isActive(item.href));
@@ -71,7 +79,7 @@ export function AppShell({
       const data = await res.json();
       if (!res.ok) setMsg(data.error || "Sync failed");
       else {
-        setMsg("Synced");
+        setMsg(data.errors?.length ? "Some banks could not sync. Check Settings." : "Synced");
         startTransition(() => router.refresh());
       }
     } catch {
@@ -83,19 +91,20 @@ export function AppShell({
   }
 
   async function logout() {
-    // Navigate to /login regardless: even if the request fails the layout's
-    // server-side auth check still gates the data, and the user shouldn't be
-    // stranded with no feedback.
+    setMsg(null);
     try {
-      await fetch("/api/auth/logout", { method: "POST" });
+      const response = await fetch("/api/auth/logout", { method: "POST" });
+      if (!response.ok) throw new Error("Sign out failed");
+      router.replace("/login");
+      router.refresh();
     } catch {
-      // ignore — redirect anyway
+      setMsg("Could not sign out. Try again.");
     }
-    router.replace("/login");
   }
 
   return (
     <div className="mx-auto flex min-h-dvh max-w-7xl">
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-surface focus:p-3">Skip to content</a>
       {/* Desktop sidebar */}
       <aside className="sticky top-0 hidden h-dvh w-60 shrink-0 flex-col justify-between border-r hairline px-5 py-7 md:flex">
         <div>
@@ -117,6 +126,7 @@ export function AppShell({
               <Link
                 key={item.href}
                 href={item.href}
+                aria-current={isActive(item.href) ? "page" : undefined}
                 className={`flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm transition-colors ${
                   isActive(item.href)
                     ? "bg-surface-2 text-cream"
@@ -152,12 +162,12 @@ export function AppShell({
             </button>
             <ThemeToggle />
           </div>
-          {msg && <span className="text-center text-xs text-blue">{msg}</span>}
+          <span role="status" aria-live="polite" className="text-center text-xs text-blue">{msg}</span>
         </div>
       </aside>
 
       {/* Main */}
-      <main className="min-w-0 flex-1 px-4 pb-28 pt-6 md:px-8 md:pb-10 md:pt-9">
+      <main id="main-content" className="min-w-0 flex-1 px-4 pb-28 pt-6 md:px-8 md:pb-10 md:pt-9">
         {/* Mobile top bar */}
         <div className="mb-6 flex items-center justify-between md:hidden">
           <Link href="/" className="flex items-center gap-2">
@@ -182,48 +192,44 @@ export function AppShell({
             <AccountPicker options={accountOptions} selected={selectedAccount} />
           </div>
         )}
+        <p role="status" aria-live="polite" className="mb-2 text-xs text-blue md:hidden">{msg}</p>
         {children}
       </main>
 
       {/* Mobile "More" sheet — the overflow tabs */}
-      {moreOpen && (
-        <div
-          className="fixed inset-0 z-30 md:hidden"
-          onClick={() => setMoreOpen(false)}
-        >
-          <div className="absolute inset-0 bg-ink/60 backdrop-blur-sm" />
-          <div
-            className="absolute inset-x-0 bottom-0 rounded-t-2xl border-t hairline bg-ink-2 p-4 pb-[max(1rem,env(safe-area-inset-bottom))]"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-line" />
-            <div className="grid grid-cols-2 gap-2">
-              {MORE_NAV.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setMoreOpen(false)}
-                  className={`flex items-center gap-3 rounded-xl border hairline px-4 py-3 text-sm ${
-                    isActive(item.href)
-                      ? "bg-surface-2 text-cream"
-                      : "bg-surface text-cream-dim"
-                  }`}
-                >
-                  <Glyph d={item.icon} />
-                  {item.label}
-                </Link>
-              ))}
-            </div>
-          </div>
+      <dialog
+        ref={moreDialog}
+        aria-label="More navigation"
+        onCancel={() => setMoreOpen(false)}
+        onClose={() => setMoreOpen(false)}
+        onClick={(event) => { if (event.target === event.currentTarget) setMoreOpen(false); }}
+        className="fixed inset-x-0 top-auto bottom-0 m-0 max-h-[85dvh] w-full max-w-none overflow-y-auto rounded-t-2xl border hairline bg-ink-2 p-4 pb-[max(1rem,env(safe-area-inset-bottom))] text-cream backdrop:bg-black/60"
+      >
+        <div className="mb-3 flex items-center justify-between">
+          <h2 className="font-display text-lg">More</h2>
+          <button onClick={() => setMoreOpen(false)} className="rounded-lg border hairline px-3 py-2">Close</button>
         </div>
-      )}
+        <nav aria-label="More navigation" className="grid grid-cols-2 gap-2">
+          {MORE_NAV.map((item) => (
+            <Link key={item.href} href={item.href}
+              aria-current={isActive(item.href) ? "page" : undefined}
+              onClick={() => setMoreOpen(false)}
+              className={`flex items-center gap-3 rounded-xl border hairline px-4 py-3 text-sm ${isActive(item.href) ? "bg-surface-2 text-cream" : "bg-surface text-cream-dim"}`}>
+              <Glyph d={item.icon} />{item.label}
+            </Link>
+          ))}
+        </nav>
+        <p role="status" className="mt-3 text-sm text-coral">{msg}</p>
+        <button onClick={logout} className="mt-3 w-full rounded-xl border hairline px-4 py-3 text-sm">Lock &amp; sign out</button>
+      </dialog>
 
       {/* Mobile bottom nav */}
-      <nav className="fixed inset-x-0 bottom-0 z-20 flex items-center justify-around border-t hairline bg-ink-2/95 px-2 py-2 backdrop-blur md:hidden">
+      <nav className="fixed inset-x-0 bottom-0 z-20 flex items-center justify-around border-t hairline bg-ink-2/95 px-2 pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] backdrop-blur md:hidden">
         {PRIMARY_NAV.map((item) => (
           <Link
             key={item.href}
             href={item.href}
+            aria-current={isActive(item.href) ? "page" : undefined}
             onClick={() => setMoreOpen(false)}
             className={`flex flex-1 flex-col items-center gap-1 rounded-lg py-1.5 text-[0.6rem] ${
               isActive(item.href) ? "text-blue" : "text-muted"

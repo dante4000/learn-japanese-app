@@ -12,7 +12,7 @@ import { formatMoney, formatDate } from "@/lib/format";
 import { UpcomingBills } from "@/components/UpcomingBills";
 import { PeriodToggle } from "@/components/PeriodToggle";
 import { BaselineManager } from "@/components/BaselineManager";
-import { SectionCard, EmptyState, StatCard, PageHeading } from "@/components/ui";
+import { SectionCard, StatCard, PageHeading } from "@/components/ui";
 
 export const dynamic = "force-dynamic";
 
@@ -113,7 +113,7 @@ export default async function RecurringPage({
 }: {
   searchParams: Promise<{ period?: string }>;
 }) {
-  const { state } = await loadScopedState();
+  const { state, focus } = await loadScopedState();
   const cur = state.accounts[0]?.currency ?? "USD";
   const sp = await searchParams;
   const period = sp.period === "annual" ? "annual" : "monthly";
@@ -146,14 +146,6 @@ export default async function RecurringPage({
   const today = new Date().toISOString().slice(0, 10);
   const upcoming = upcomingBills(state, today, 45);
 
-  if (state.accounts.length === 0) {
-    return (
-      <div>
-        <PageHeading title="Recurring" subtitle="Subscriptions, bills, and income that repeat." />
-        <EmptyState />
-      </div>
-    );
-  }
 
   return (
     <div>
@@ -246,6 +238,9 @@ export default async function RecurringPage({
             </SectionCard>
           </div>
 
+
+        </>
+      )}
           {/* Fixed monthly baselines (rent + parking, etc.) */}
           <SectionCard
             title="Fixed monthly baselines"
@@ -262,10 +257,10 @@ export default async function RecurringPage({
               through a card with short history). Months that already have a real
               charge aren’t double-counted.
             </p>
-            <BaselineManager baselines={state.baselines} currency={cur} />
+            {focus ? (
+              <p className="text-sm text-muted">Select All accounts to manage fixed monthly bills.</p>
+            ) : <BaselineManager baselines={state.baselines} currency={cur} />}
           </SectionCard>
-        </>
-      )}
     </div>
   );
 }

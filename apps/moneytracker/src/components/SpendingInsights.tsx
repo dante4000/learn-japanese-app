@@ -45,12 +45,12 @@ export function SpendingInsights({
               const pct = acctTotal ? (a.total / acctTotal) * 100 : 0;
               return (
                 <li key={a.accountId}>
-                  <div className="flex items-center gap-2 text-sm">
+                  <div className="flex flex-wrap items-center gap-2 text-sm">
                     <span
                       className="h-2.5 w-2.5 shrink-0 rounded-full"
                       style={{ background: ACCT_COLORS[i % ACCT_COLORS.length] }}
                     />
-                    <span className="text-cream-dim">{a.name}</span>
+                    <span className="min-w-0 break-words text-cream-dim">{a.name}</span>
                     <span className="text-xs text-faint">· {a.count}×</span>
                     <span className="tnum ml-auto text-cream">
                       {formatMoney(a.total, currency, { cents: false })}
@@ -93,7 +93,7 @@ export function SpendingInsights({
           ) : null
         }
       >
-        <div className="mb-4 grid grid-cols-3 gap-3">
+        <div className="mb-4 grid grid-cols-1 gap-3 min-[420px]:grid-cols-3">
           <div>
             <div className="label-eyebrow">Spent so far</div>
             <div className="tnum mt-1 text-lg text-coral">
@@ -117,11 +117,11 @@ export function SpendingInsights({
             </div>
           </div>
         </div>
-        <div className="flex h-28 items-end gap-px">
+        <div className="flex h-28 items-end gap-px" aria-hidden="true">
           {daily.days.map((d) => (
             <div
               key={d.day}
-              className="flex-1 rounded-t-sm transition-all"
+              className="flex-1 rounded-t-sm transition-[height] motion-reduce:transition-none"
               style={{
                 height: `${(d.total / maxDay) * 100}%`,
                 minHeight: d.total > 0 ? 2 : 0,
@@ -132,6 +132,13 @@ export function SpendingInsights({
             />
           ))}
         </div>
+        <details className="mt-3 text-xs text-muted">
+          <summary className="cursor-pointer">View daily spending data</summary>
+          <div className="mt-2 overflow-x-auto"><table className="w-full text-left">
+            <thead><tr><th scope="col" className="px-2 py-1">Day</th><th scope="col" className="px-2 py-1">Spending</th></tr></thead>
+            <tbody>{daily.days.map((d) => <tr key={d.day}><th scope="row" className="px-2 py-1 font-normal">{formatMonth(month)} {d.day}</th><td className="tnum px-2 py-1">{formatMoney(d.total, currency)}</td></tr>)}</tbody>
+          </table></div>
+        </details>
         <div className="mt-1.5 flex justify-between text-[0.6rem] text-faint">
           <span>1</span>
           <span>{Math.ceil(daily.daysInMonth / 2)}</span>
@@ -171,7 +178,7 @@ export function SpendingInsights({
                       </div>
                     </div>
                     <span
-                      className={`tnum ml-auto text-sm ${up ? "text-coral" : "text-blue"}`}
+                      className={`tnum ml-auto shrink-0 text-sm ${up ? "text-coral" : "text-blue"}`}
                     >
                       {up ? "▲" : "▼"}{" "}
                       {formatMoney(Math.abs(m.delta), currency, { cents: false })}

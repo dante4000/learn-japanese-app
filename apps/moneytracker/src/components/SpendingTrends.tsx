@@ -59,7 +59,7 @@ export function SpendingTrends({
           ) : null
         }
       >
-        <svg viewBox={`0 0 ${W} ${H}`} className="w-full" style={{ height: H }}>
+        <svg aria-hidden="true" viewBox={`0 0 ${W} ${H}`} className="w-full" style={{ height: H }}>
           {prevMonth && (
             <path
               d={pathFor("previous")}
@@ -79,6 +79,13 @@ export function SpendingTrends({
             strokeLinecap="round"
           />
         </svg>
+        <details className="mt-3 text-xs text-muted">
+          <summary className="cursor-pointer">View spending pace data</summary>
+          <div className="mt-2 overflow-x-auto"><table className="w-full text-left">
+            <thead><tr><th scope="col" className="px-2 py-1">Day</th><th scope="col" className="px-2 py-1">{formatMonth(month)}</th>{prevMonth && <th scope="col" className="px-2 py-1">{formatMonth(prevMonth)}</th>}</tr></thead>
+            <tbody>{pace.points.map((p) => <tr key={p.day}><th scope="row" className="px-2 py-1 font-normal">{p.day}</th><td className="tnum px-2 py-1">{p.current == null ? "—" : formatMoney(p.current, currency)}</td>{prevMonth && <td className="tnum px-2 py-1">{p.previous == null ? "—" : formatMoney(p.previous, currency)}</td>}</tr>)}</tbody>
+          </table></div>
+        </details>
         <div className="mt-2 flex flex-wrap items-center justify-center gap-x-5 gap-y-1 text-xs text-muted">
           <span className="flex items-center gap-1.5">
             <span className="h-0.5 w-4 rounded bg-coral" /> {formatMonth(month)} (
@@ -112,11 +119,14 @@ export function SpendingTrends({
                   <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg border hairline bg-surface-2 text-sm">
                     {t.glyph}
                   </span>
-                  <span className="w-28 shrink-0 truncate text-sm text-cream-dim">
+                  <span className="min-w-0 flex-1 break-words text-sm text-cream-dim">
                     {t.label}
                   </span>
-                  <Sparkline values={t.series} color={t.color} />
-                  <div className="ml-auto text-right">
+                  <span aria-hidden="true" className="hidden sm:block"><Sparkline values={t.series} color={t.color} /></span>
+                  <span className="sr-only">
+                    {months.map((m, i) => `${formatMonth(m)}: ${formatMoney(t.series[i], currency)}`).join("; ")}
+                  </span>
+                  <div className="ml-auto shrink-0 text-right">
                     <div className="tnum text-sm text-cream">
                       {formatMoney(t.latest, currency, { cents: false })}
                     </div>

@@ -42,3 +42,19 @@ test("CSV duplicate occurrence ids stay stable across overlapping imports", () =
   assert.equal(second.transactions[0].id, first.transactions[0].id);
   assert.notEqual(second.transactions[1].id, first.transactions[0].id);
 });
+
+
+test("CSV import skips impossible dates and non-finite or malformed amounts", () => {
+  const csv = [
+    "Date,Description,Amount",
+    "02/30/2026,Invalid day,-5",
+    "2026-13-01,Invalid month,-5",
+    "2026-06-01,Infinite,Infinity",
+    "2026-06-01,Malformed,5oops",
+    "02/29/2024,Leap day,-5",
+  ].join("\n");
+  const result = csvToTransactions(csv, { accountId: "acct_1", outflowSign: "negative_is_outflow" });
+  assert.equal(result.skipped, 4);
+  assert.equal(result.transactions.length, 1);
+  assert.equal(result.transactions[0].date, "2024-02-29");
+});

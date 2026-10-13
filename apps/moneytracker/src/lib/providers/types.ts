@@ -7,7 +7,7 @@ export interface SyncResult {
   added: Transaction[];
   modified: Transaction[];
   removed: string[]; // transaction ids that no longer exist
-  recurring: RecurringStream[];
+  recurring: RecurringStream[] | null;
   cursor: string | null;
 }
 

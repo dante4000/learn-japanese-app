@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { NetWorthSnapshot } from "@/lib/types";
 import { formatMoney, formatCompact, formatDate } from "@/lib/format";
 
@@ -134,6 +134,7 @@ export function NetWorthArea({
   snapshots: NetWorthSnapshot[];
   currency?: string;
 }) {
+  const chartId = useId();
   const svgRef = useRef<SVGSVGElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [rangeKey, setRangeKey] = useState<RangeKey>("ALL");
@@ -298,9 +299,6 @@ export function NetWorthArea({
         ].filter((e) => e.i !== n - 1 && e.i !== active)
       : [];
 
-  // Remount the line/area when the window changes so the reveal animation replays.
-  const revealKey = `${rangeKey}-${n}`;
-
   function moveTo(clientX: number) {
     const svg = svgRef.current;
     if (!svg) return;
@@ -318,7 +316,7 @@ export function NetWorthArea({
     <div>
       {/* Controls: period change · range tabs */}
       <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-baseline gap-2 text-sm">
+        <div className="flex flex-wrap items-baseline gap-2 text-sm">
           <span className={`tnum font-medium ${up ? "text-blue" : "text-coral"}`}>
             {up ? "▲" : "▼"}{" "}
             {formatMoney(delta, currency, { sign: true, cents: false })}
@@ -402,7 +400,7 @@ export function NetWorthArea({
         {/* Scrollable plot */}
         <div
           ref={scrollRef}
-          className="relative flex-1 overflow-x-auto overflow-y-hidden"
+          className="relative min-w-0 flex-1 overflow-x-auto overflow-y-hidden"
           style={{ scrollbarWidth: "thin" }}
         >
           <div className="relative" style={{ width: plotW, height: H }}>
@@ -423,12 +421,12 @@ export function NetWorthArea({
               onTouchEnd={() => setHover(null)}
             >
               <defs>
-                <linearGradient id="nwfill" x1="0" y1="0" x2="0" y2="1">
+                <linearGradient id={`${chartId}-fill`} x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stopColor="var(--color-blue)" stopOpacity="0.26" />
                   <stop offset="55%" stopColor="var(--color-blue)" stopOpacity="0.08" />
                   <stop offset="100%" stopColor="var(--color-blue)" stopOpacity="0" />
                 </linearGradient>
-                <linearGradient id="nwline" x1="0" y1="0" x2="1" y2="0">
+                <linearGradient id={`${chartId}-line`} x1="0" y1="0" x2="1" y2="0">
                   <stop offset="0%" stopColor="var(--color-blue-deep)" />
                   <stop offset="100%" stopColor="var(--color-blue)" />
                 </linearGradient>
@@ -481,40 +479,15 @@ export function NetWorthArea({
                 </text>
               ))}
 
-              <path key={`a-${revealKey}`} d={area} fill="url(#nwfill)" opacity={0}>
-                <animate
-                  attributeName="opacity"
-                  from="0"
-                  to="1"
-                  dur="0.5s"
-                  begin="0.35s"
-                  fill="freeze"
-                />
-              </path>
+              <path d={area} fill={`url(#${chartId}-fill)`} />
               <path
-                key={`l-${revealKey}`}
                 d={line}
                 fill="none"
-                stroke="url(#nwline)"
+                stroke={`url(#${chartId}-line)`}
                 strokeWidth={2.25}
                 strokeLinejoin="round"
                 strokeLinecap="round"
-                pathLength={1}
-                strokeDasharray={1}
-                strokeDashoffset={1}
-              >
-                <animate
-                  attributeName="stroke-dashoffset"
-                  from="1"
-                  to="0"
-                  dur="0.85s"
-                  begin="0s"
-                  calcMode="spline"
-                  keySplines="0.4 0 0.2 1"
-                  keyTimes="0;1"
-                  fill="freeze"
-                />
-              </path>
+              />
 
               {/* Cash-flow strip: income up (blue), spending down (coral) */}
               <line
@@ -620,14 +593,6 @@ export function NetWorthArea({
                 fill="var(--color-blue)"
                 opacity={0.16}
               >
-                {hi == null && (
-                  <animate
-                    attributeName="r"
-                    values="6;10;6"
-                    dur="2.4s"
-                    repeatCount="indefinite"
-                  />
-                )}
               </circle>
               <circle
                 cx={x(active)}
@@ -696,6 +661,19 @@ export function NetWorthArea({
           </div>
         </div>
       </div>
+      <details className="mt-3 text-xs text-muted">
+        <summary className="cursor-pointer">View net worth data</summary>
+        <div className="mt-2 overflow-x-auto">
+          <table className="w-full text-left">
+            <caption className="sr-only">Net worth and cash flow for {range.phrase}</caption>
+            <thead><tr>{["Date", "Net worth", "Assets", "Owed", "Income", "Spending"].map((label) => <th key={label} scope="col" className="whitespace-nowrap px-2 py-1">{label}</th>)}</tr></thead>
+            <tbody>{data.map((s) => <tr key={s.date}>
+              <th scope="row" className="whitespace-nowrap px-2 py-1 font-normal">{formatDate(s.date)}</th>
+              {[s.netWorth, s.totalAssets, s.totalLiabilities, s.income ?? 0, s.spending ?? 0].map((value, i) => <td key={i} className="tnum whitespace-nowrap px-2 py-1">{formatMoney(value, currency)}</td>)}
+            </tr>)}</tbody>
+          </table>
+        </div>
+      </details>
     </div>
   );
 }

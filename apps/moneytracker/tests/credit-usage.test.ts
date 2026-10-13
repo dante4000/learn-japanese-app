@@ -41,7 +41,7 @@ function state(transactions: Transaction[]): AppState {
 
 const csr = CARD_CATALOG.find((c) => c.cardKey === "sapphire-reserve")!;
 function usage(s: AppState, creditName: string) {
-  return detectCreditUsage(s, "acct_1", csr).find((u) => u.creditName === creditName)!;
+  return detectCreditUsage(s, "acct_1", csr, "2026-05-20").find((u) => u.creditName === creditName)!;
 }
 
 test("Exclusive Tables credit is detected from the Chase statement-credit posting", () => {

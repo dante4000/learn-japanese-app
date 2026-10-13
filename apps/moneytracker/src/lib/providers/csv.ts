@@ -122,7 +122,12 @@ function parseAmount(raw: string): number {
   const cleaned = raw.replace(/[$,\s]/g, "").replace(/[()]/g, (m) =>
     m === "(" ? "-" : "",
   );
-  return parseFloat(cleaned);
+  return cleaned ? Number(cleaned) : NaN;
+}
+
+function validDate(iso: string): string | null {
+  const date = new Date(iso + "T00:00:00Z");
+  return Number.isFinite(date.getTime()) && date.toISOString().slice(0, 10) === iso ? iso : null;
 }
 
 function parseDate(raw: string): string | null {
@@ -132,11 +137,11 @@ function parseDate(raw: string): string | null {
   if (slash) {
     const [, mm, dd, yyRaw] = slash;
     const yy = yyRaw.length === 2 ? "20" + yyRaw : yyRaw;
-    return `${yy}-${mm.padStart(2, "0")}-${dd.padStart(2, "0")}`;
+    return validDate(`${yy}-${mm.padStart(2, "0")}-${dd.padStart(2, "0")}`);
   }
   // yyyy-mm-dd
   const iso = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
-  if (iso) return `${iso[1]}-${iso[2]}-${iso[3]}`;
+  if (iso) return validDate(`${iso[1]}-${iso[2]}-${iso[3]}`);
   const d = new Date(s);
   if (!isNaN(d.getTime())) return d.toISOString().slice(0, 10);
   return null;
@@ -205,7 +210,7 @@ export function csvToTransactions(
       fileAmount = NaN;
     }
 
-    if (!date || isNaN(fileAmount)) {
+    if (!date || !Number.isFinite(fileAmount)) {
       skipped++;
       continue;
     }

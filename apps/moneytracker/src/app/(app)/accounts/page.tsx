@@ -85,20 +85,13 @@ export default async function AccountsPage() {
   const canFocus = state.accounts.length > 1;
   const institutions = groupByInstitution(state.items, state.accounts);
 
-  if (state.accounts.length === 0 && state.manualEntries.length === 0) {
-    return (
-      <div>
-        <PageHeading title="Accounts" subtitle="Balances across everything you own and owe." />
-        <EmptyState />
-      </div>
-    );
-  }
 
   return (
     <div>
       <PageHeading title="Accounts" subtitle="Balances across everything you own and owe." />
 
-      <div className="mb-5 grid grid-cols-3 gap-4">
+      {state.accounts.length === 0 && <EmptyState />}
+      <div className="mb-5 mt-4 grid gap-4 sm:grid-cols-3">
         <div className="card rise p-5">
           <div className="label-eyebrow">Assets</div>
           <div className="tnum mt-2 text-xl text-blue">

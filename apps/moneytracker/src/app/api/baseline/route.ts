@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isAuthenticated } from "@/lib/auth";
 import { loadMeta, saveMeta } from "@/lib/store";
+import { CATEGORIES } from "@/lib/categories";
 import { RecurringBaseline } from "@/lib/types";
 
 // Recurring baselines — fixed monthly expenses (e.g. rent + parking) the bank
@@ -10,13 +11,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const body = await req.json().catch(() => null);
-  if (!body) return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+  if (!body || typeof body !== "object" || Array.isArray(body)) return NextResponse.json({ error: "Invalid request" }, { status: 400 });
 
-  const name = (body.name as string)?.trim();
+  const name = typeof body.name === "string" ? body.name.trim() : "";
   const amount = Number(body.amount);
   const category = (body.category as string) || "RENT_AND_UTILITIES";
   const startMonth = (body.startMonth as string) || "";
-  if (!name || !isFinite(amount) || amount <= 0 || !/^\d{4}-\d{2}$/.test(startMonth))
+  if (!name || !isFinite(amount) || amount <= 0 || !/^\d{4}-(0[1-9]|1[0-2])$/.test(startMonth) || !CATEGORIES[category]?.isSpending)
     return NextResponse.json(
       { error: "Name, positive amount, and startMonth (yyyy-mm) required" },
       { status: 400 },

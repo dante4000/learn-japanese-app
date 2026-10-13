@@ -214,7 +214,7 @@ export async function plaidSync(item: Item): Promise<SyncResult> {
 
   // Recurring streams (subscriptions/bills + income). Best-effort: skip on error
   // (e.g. product not enabled) so a sync still delivers transactions.
-  let recurring: RecurringStream[] = [];
+  let recurring: RecurringStream[] | null = null;
   try {
     const rec = await client.transactionsRecurringGet({
       access_token: accessToken,
@@ -224,7 +224,7 @@ export async function plaidSync(item: Item): Promise<SyncResult> {
       ...rec.data.outflow_streams.map((s) => mapStream(s, "outflow")),
     ];
   } catch {
-    recurring = [];
+    recurring = null;
   }
 
   return {

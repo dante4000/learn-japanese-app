@@ -132,6 +132,7 @@ export default async function TransactionsPage({
         )
       ) : (
         <TransactionsView
+          key={JSON.stringify([focus?.id, initial])}
           transactions={ledger}
           accounts={state.accounts}
           currency={currency}

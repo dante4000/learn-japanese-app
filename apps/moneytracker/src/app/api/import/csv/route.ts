@@ -24,6 +24,16 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
 
+  if (!body || typeof body !== "object" || Array.isArray(body))
+    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+
+  for (const key of ["currency", "institutionName", "accountName", "accountId"]) {
+    if (body[key] != null && typeof body[key] !== "string")
+      return NextResponse.json({ error: `Invalid ${key}` }, { status: 400 });
+  }
+  if (body.currency != null && !/^[A-Z]{3}$/.test(body.currency as string))
+    return NextResponse.json({ error: "Currency must be a three-letter code" }, { status: 400 });
+
   const csv = typeof body.csv === "string" ? body.csv : "";
   if (!csv.trim())
     return NextResponse.json({ error: "Empty CSV" }, { status: 400 });

@@ -11,12 +11,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const body = await req.json().catch(() => null);
-  if (!body) return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+  if (!body || typeof body !== "object" || Array.isArray(body)) return NextResponse.json({ error: "Invalid request" }, { status: 400 });
 
-  const name = (body.name as string)?.trim();
+  const name = typeof body.name === "string" ? body.name.trim() : "";
   const value = Number(body.value);
   const kind = body.kind === "liability" ? "liability" : "asset";
-  if (!name || isNaN(value))
+  if (!name || body.value == null || (typeof body.value === "string" && !body.value.trim()) || !["string", "number"].includes(typeof body.value) || !Number.isFinite(value) || !["asset", "liability"].includes(body.kind))
     return NextResponse.json({ error: "Name and numeric value required" }, { status: 400 });
 
   const entry: ManualEntry = {

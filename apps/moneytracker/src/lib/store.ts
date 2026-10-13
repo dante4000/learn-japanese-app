@@ -86,13 +86,14 @@ async function readDoc<T>(name: string): Promise<T | null> {
     // Cache-bust with uploadedAt so the CDN can't serve a stale copy after a write.
     const v = match.uploadedAt ? new Date(match.uploadedAt).getTime() : Date.now();
     const res = await fetch(`${match.url}?v=${v}`, { cache: "no-store" });
-    if (!res.ok) return null;
+    if (!res.ok) throw new Error(`Storage read failed (${res.status})`);
     return decode<T>(await res.text());
   }
   try {
     return decode<T>(await fs.readFile(localPath(name), "utf8"));
-  } catch {
-    return null;
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") return null;
+    throw error;
   }
 }
 
@@ -118,8 +119,9 @@ async function listNames(keyPrefix: string): Promise<string[]> {
     return files
       .filter((f) => f.startsWith(keyPrefix) && f.endsWith(".enc"))
       .map((f) => f.slice(0, -".enc".length));
-  } catch {
-    return [];
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") return [];
+    throw error;
   }
 }
 
@@ -144,20 +146,17 @@ async function readLegacyState(): Promise<AppState | null> {
     const match = blobs.find((b) => b.pathname === V1_BLOB_PATH);
     if (!match) return null;
     const res = await fetch(`${match.url}?v=${Date.now()}`, { cache: "no-store" });
-    if (!res.ok) return null;
+    if (!res.ok) throw new Error(`Storage read failed (${res.status})`);
     raw = await res.text();
   } else {
     try {
       raw = await fs.readFile(V1_LOCAL_PATH, "utf8");
-    } catch {
-      return null;
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code === "ENOENT") return null;
+      throw error;
     }
   }
-  try {
-    return decode<AppState>(raw);
-  } catch {
-    return null;
-  }
+  return decode<AppState>(raw);
 }
 
 async function ensureMigrated(): Promise<void> {

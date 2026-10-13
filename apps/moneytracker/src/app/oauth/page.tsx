@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const SCRIPT_SRC = "https://cdn.plaid.com/link/v2/stable/link-initialize.js";
 
@@ -10,8 +11,16 @@ function loadScript(): Promise<void> {
     if (window.Plaid) return resolve();
     const s = document.createElement("script");
     s.src = SCRIPT_SRC;
-    s.onload = () => resolve();
-    s.onerror = () => reject(new Error("Failed to load Plaid"));
+    const timeout = setTimeout(() => reject(new Error("Plaid did not load. Try again.")), 10_000);
+    s.onload = () => {
+      clearTimeout(timeout);
+      if (window.Plaid) resolve();
+      else reject(new Error("Failed to load Plaid"));
+    };
+    s.onerror = () => {
+      clearTimeout(timeout);
+      reject(new Error("Failed to load Plaid"));
+    };
     document.body.appendChild(s);
   });
 }
@@ -21,16 +30,18 @@ function loadScript(): Promise<void> {
 export default function OAuthReturnPage() {
   const router = useRouter();
   const [msg, setMsg] = useState("Resuming your bank connection…");
+  const [failed, setFailed] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      const token = localStorage.getItem("plaid_link_token");
-      if (!token) {
-        setMsg("This link expired. Please start again from Settings.");
-        return;
-      }
       try {
+        const token = localStorage.getItem("plaid_link_token");
+        if (!token) {
+          setMsg("This link expired. Please start again from Settings.");
+          setFailed(true);
+          return;
+        }
         await loadScript();
         if (cancelled) return;
         const handler = window.Plaid!.create({
@@ -48,13 +59,19 @@ export default function OAuthReturnPage() {
               if (!res.ok) {
                 const data = await res.json().catch(() => null);
                 setMsg(data?.error || "Could not link your bank. Please try again from Settings.");
+                setFailed(true);
                 return;
               }
             } catch {
               setMsg("Could not link your bank. Please try again from Settings.");
+              setFailed(true);
               return;
             }
-            localStorage.removeItem("plaid_link_token");
+            try {
+              localStorage.removeItem("plaid_link_token");
+            } catch {
+              // The bank is linked even if browser storage is unavailable.
+            }
             router.replace("/");
             router.refresh();
           },
@@ -63,6 +80,7 @@ export default function OAuthReturnPage() {
         handler.open();
       } catch {
         setMsg("Could not resume. Please try again from Settings.");
+        setFailed(true);
       }
     })();
     return () => {
@@ -73,8 +91,11 @@ export default function OAuthReturnPage() {
   return (
     <main className="grid min-h-dvh place-items-center px-5 text-center">
       <div>
-        <div className="mx-auto mb-5 h-10 w-10 animate-spin rounded-full border-2 border-line border-t-blue" />
-        <p className="text-sm text-cream-dim">{msg}</p>
+        {!failed && <div aria-hidden="true" className="mx-auto mb-5 h-10 w-10 animate-spin rounded-full border-2 border-line border-t-blue motion-reduce:animate-none" />}
+        <p role={failed ? "alert" : "status"} className="text-sm text-cream-dim">{msg}</p>
+        <Link href="/settings" className="mt-5 inline-block rounded-xl border hairline px-4 py-2 text-sm text-blue">
+          Back to Settings
+        </Link>
       </div>
     </main>
   );

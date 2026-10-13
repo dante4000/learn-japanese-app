@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useTransition } from "react";
+import { useId, useTransition } from "react";
 import { ACCOUNT_COOKIE } from "@/lib/account-filter";
 
 // Global account filter control. Writing the cookie + router.refresh() makes
@@ -27,6 +27,7 @@ export function AccountPicker({
   options: AccountOption[];
   selected: string | null;
 }) {
+  const pickerId = useId();
   const router = useRouter();
   const [pending, startTransition] = useTransition();
 
@@ -39,11 +40,11 @@ export function AccountPicker({
 
   return (
     <div>
-      <label htmlFor="account-picker" className="label-eyebrow mb-1.5 block">
+      <label htmlFor={pickerId} className="label-eyebrow mb-1.5 block">
         Viewing
       </label>
       <select
-        id="account-picker"
+        id={pickerId}
         value={selected ?? ""}
         onChange={(e) => {
           setAccountCookie(e.target.value);

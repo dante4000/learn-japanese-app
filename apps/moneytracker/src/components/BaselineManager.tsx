@@ -99,7 +99,7 @@ export function BaselineManager({
                 onClick={() => remove(b.id)}
                 disabled={busy}
                 className="text-faint hover:text-coral"
-                aria-label="Remove"
+                aria-label={`Remove ${b.name}`}
               >
                 ✕
               </button>
@@ -111,20 +111,23 @@ export function BaselineManager({
       {open ? (
         <form onSubmit={add} className="grid grid-cols-2 gap-2 sm:grid-cols-4">
           <input
-            value={name}
+            aria-label="Bill name"
+          value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Rent & Parking"
             className={`${field} col-span-2 sm:col-span-1`}
           />
           <input
-            value={amount}
+            aria-label="Monthly amount"
+          value={amount}
             onChange={(e) => setAmount(e.target.value)}
             inputMode="decimal"
             placeholder="Amount/mo"
             className={`${field} tnum`}
           />
           <select
-            value={category}
+            aria-label="Bill category"
+          value={category}
             onChange={(e) => setCategory(e.target.value)}
             className={field}
           >
@@ -137,7 +140,8 @@ export function BaselineManager({
               ))}
           </select>
           <input
-            value={startMonth}
+            aria-label="Start month"
+          value={startMonth}
             onChange={(e) => setStartMonth(e.target.value)}
             placeholder="2024-06"
             pattern="\d{4}-\d{2}"
@@ -168,7 +172,7 @@ export function BaselineManager({
           + Add a fixed monthly bill (fills months the bank feed misses)
         </button>
       )}
-      {error && <p className="mt-2 text-xs text-coral">{error}</p>}
+      {error && <p role="alert" className="mt-2 text-xs text-coral">{error}</p>}
     </div>
   );
 }

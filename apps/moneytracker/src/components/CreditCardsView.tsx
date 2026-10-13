@@ -258,12 +258,11 @@ export function CreditCardsView({
     });
   }
 
-  // Captured-so-far this year (exact), override-aware. For credits with no live
-  // slots (unlinked), fall back to the realistic-capture heuristic.
+  // Count captured credits only when a linked account supplies usage.
   function capturedForCard(card: CardCatalogEntry): number {
     return card.credits.reduce((sum, c) => {
       const u = usageFor(card.cardKey, c.name);
-      if (!u) return sum + (c.realisticCaptureRate >= 0.5 ? c.value : 0);
+      if (!u) return sum;
       const started = u.slots.filter((s) => s.status !== "future");
       const got = started.reduce((a, s) => {
         const used = slotUsed(card.cardKey, c.name, s);
@@ -335,6 +334,7 @@ export function CreditCardsView({
     let fees = 0;
     let creditsAvailable = 0;
     let creditsCaptured = 0;
+    let creditsProjected = 0;
     let pointsCash = 0;
     let pointsTransfer = 0;
     let points = 0;
@@ -342,6 +342,7 @@ export function CreditCardsView({
       fees += card.annualFee;
       creditsAvailable += maxCreditsValue(card);
       creditsCaptured += capturedForCard(card);
+      creditsProjected += projectedCapturedForCard(card);
       if (live) {
         points += live.estPoints;
         pointsCash += live.estPointsCashValue;
@@ -355,7 +356,7 @@ export function CreditCardsView({
       points,
       pointsCash,
       pointsTransfer,
-      netValue: creditsCaptured + pointsCash - fees,
+      netValue: creditsProjected + pointsCash - fees,
     };
   }, [cards, overrides]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -418,10 +419,10 @@ export function CreditCardsView({
           delay={60}
         />
         <Stat
-          label="Net value / yr"
+          label="Est. net value / yr"
           value={signedMoney(totals.netValue, currency)}
           accent={totals.netValue >= 0 ? "blue" : "coral"}
-          sub="credits + points − fees"
+          sub="projected credits + points − fees"
           delay={120}
         />
         <Stat
@@ -439,9 +440,10 @@ export function CreditCardsView({
 
       <p className="mb-5 text-xs text-faint">
         Net value combines what&rsquo;s real or grounded in your spend:{" "}
-        <span className="text-blue">captured credits</span> +{" "}
+        <span className="text-blue">projected annual credits</span> +{" "}
         <span className="text-slate">points (at cash value)</span> − the annual
-        fee. Credits tick themselves from your transactions and move the number;
+        fee. The projection includes captured credits and estimated future periods.
+        Unlinked cards use typical capture estimates. Credits tick themselves from your transactions;
         points are <em>estimated</em> by applying each card&rsquo;s earn rates to
         your categorized spend, shown as a range — conservative cash-out first,
         transfer-partner upside second. Perks aren&rsquo;t in the number
@@ -450,17 +452,26 @@ export function CreditCardsView({
       </p>
 
       {actionItems.length > 0 && (
-        <ActionBanner items={actionItems} currency={currency} onJump={setExpanded} />
+        <ActionBanner items={actionItems} currency={currency} onJump={(key) => {
+          setFilters(new Set());
+          setExpanded(key);
+          requestAnimationFrame(() => {
+            const row = document.getElementById(`card-${key}`);
+            row?.scrollIntoView({ block: "start" });
+            row?.focus({ preventScroll: true });
+          });
+        }} />
       )}
 
       {/* ── Toolbar: sort + filter ─────────────────────────────────────── */}
       <div className="sticky top-0 z-10 -mx-1 mb-4 flex flex-wrap items-center gap-x-4 gap-y-2 bg-ink/80 px-1 py-2 backdrop-blur">
-        <div className="flex items-center gap-2">
+        <div className="flex min-w-0 max-w-full items-center gap-2">
           <span className="label-eyebrow shrink-0">Sort</span>
           <div className="inline-flex max-w-full overflow-x-auto rounded-lg border hairline bg-surface p-0.5 text-xs">
             {SORTS.map((s) => (
               <button
                 key={s.key}
+                aria-pressed={sortKey === s.key}
                 onClick={() => setSortKey(s.key)}
                 className={`shrink-0 whitespace-nowrap rounded-md px-2.5 py-1 transition-colors ${
                   sortKey === s.key ? "bg-surface-2 text-cream" : "text-muted hover:text-cream"
@@ -620,10 +631,11 @@ function LeaderboardRow({
     card.annualFee > 0 && renewal?.detected && renewal.daysUntil != null;
   return (
     <button
+      id={`card-${card.cardKey}`}
       onClick={onClick}
       aria-expanded={open}
       style={{ animationDelay: `${delay}ms` }}
-      className={`block w-full border-b hairline px-5 py-3.5 text-left transition-colors last:border-b-0 ${
+      className={`block w-full scroll-mt-28 border-b hairline px-5 py-3.5 text-left transition-colors last:border-b-0 ${
         open ? "bg-surface-2/60" : "hover:bg-surface-2/30"
       }`}
     >
@@ -744,14 +756,14 @@ function WorthItBar({
       className="relative h-2 w-full overflow-hidden rounded-full bg-surface-2"
       title="Value returned vs. annual fee"
     >
-      <div className="absolute inset-y-0 left-0 flex">
-        <div className="bg-blue" style={{ width: pct(credits) }} />
-        <div className="bg-slate" style={{ width: pct(points) }} />
+      <div className="absolute inset-0 flex">
+        <div className="shrink-0 bg-blue" style={{ width: pct(credits) }} />
+        <div className="shrink-0 bg-slate" style={{ width: pct(points) }} />
       </div>
       {fee > 0 && (
         <div
           className="absolute inset-y-0 w-0.5 bg-coral"
-          style={{ left: pct(fee) }}
+          style={{ left: `min(${pct(fee)}, calc(100% - 2px))` }}
           title="break-even (annual fee)"
         />
       )}
@@ -816,7 +828,7 @@ function CardDetail({
             </>
           ) : roi.netValue >= 0 ? (
             <>
-              Captured credits{live && roi.pointsCashValue > 0 ? " + points" : ""} cover the{" "}
+              Projected credits{live && roi.pointsCashValue > 0 ? " + points" : ""} cover the{" "}
               {formatMoney(card.annualFee, currency, { cents: false })} fee — you&rsquo;re ahead{" "}
               <span className="text-blue">{signedMoney(roi.netValue, currency)}</span> a year.
             </>
@@ -863,7 +875,7 @@ function CardDetail({
             accent="slate"
           />
           <Mini
-            label="Net value / yr"
+            label="Est. net value / yr"
             value={signedMoney(roi.netValue, currency)}
             hint={`balance ${live.balance != null ? formatMoney(live.balance, currency, { cents: false }) : "—"}`}
             accent={roi.netValue >= 0 ? "blue" : "coral"}
@@ -903,7 +915,7 @@ function CardDetail({
           <div className="flex flex-wrap gap-1.5">
             {unusedForgettable.map((c) => (
               <span key={c.name} className="rounded bg-surface-2 px-1.5 py-0.5 text-[0.65rem] text-cream-dim">
-                {c.name} · {formatMoney(c.value, currency, { cents: false })} {freqLabel(c.frequency)}
+                {c.name} · {formatMoney(c.value, currency, { cents: false })}/yr · {freqLabel(c.frequency)}
               </span>
             ))}
           </div>
@@ -923,10 +935,11 @@ function CardDetail({
       )}
 
       {/* tab strip */}
-      <div className="mb-3 flex gap-1 overflow-x-auto">
+      <div className="mb-3 flex gap-1 overflow-x-auto" role="group" aria-label="Card details">
         {tabs.map((t) => (
           <button
             key={t.key}
+            aria-pressed={tab === t.key}
             onClick={() => setTab(t.key)}
             className={`shrink-0 whitespace-nowrap rounded-lg px-2.5 py-1 text-xs transition-colors ${
               tab === t.key ? "bg-surface-2 text-cream" : "text-muted hover:text-cream"
@@ -949,7 +962,7 @@ function CardDetail({
                 <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
                   <span className="text-sm text-cream">{c.name}</span>
                   <span className="tnum text-xs text-blue">
-                    {formatMoney(c.value, currency, { cents: false })}
+                    {formatMoney(c.value, currency, { cents: false })}/yr
                   </span>
                   <span className="rounded bg-surface-2 px-1.5 py-0.5 text-[0.6rem] text-faint">
                     {freqLabel(c.frequency)}
@@ -1285,9 +1298,11 @@ function SlotGrid({
         return (
           <button
             key={s.key}
+            disabled={s.status === "future"}
             onClick={() => (ov ? onClear(s) : onToggle(s))}
             title={`${s.label}: ${s.evidence ?? (on ? "used" : s.status === "future" ? "upcoming" : "open")}${ov ? " (manual — tap to revert)" : ""}`}
             aria-pressed={on}
+            aria-label={`${s.label}: ${on ? "used" : s.status === "future" ? "upcoming" : "unused"}${ov ? ", manual override; activate to restore detection" : ""}`}
             className={`grid place-items-center rounded-md border text-[0.65rem] transition-colors ${
               s.status === "current" ? "ring-1 ring-blue/50" : ""
             } ${tone} ${many ? "h-6 w-6" : "h-7 min-w-[2.4rem] px-2"}`}

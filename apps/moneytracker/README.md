@@ -30,12 +30,13 @@ Built with Next.js 16 (App Router) + React 19 + Tailwind 4, deployed on Vercel.
 | Need | Service | Why | Cost |
 |---|---|---|---|
 | **Bank data** | **Plaid** | Pulls balances + transactions from Chase, Amex, etc. (read-only) | Free trial (10 items); pay-as-you-go after. Production needs an application. |
-| **Storage** | **Vercel Blob** | Holds the one encrypted state document | Free tier is ample for one user |
+| **Storage** | **Vercel Blob** | Holds encrypted connection documents and global metadata | Free tier is ample for one user |
 | **Hosting** | **Vercel** | Next.js host + daily cron sync | Hobby plan works |
 
-No separate database is required — a single AES-256-GCM–encrypted Blob document
-holds everything (swap to Postgres later via `src/lib/store.ts` if you outgrow
-it). CSV import works with **zero** external services beyond hosting + storage,
+No separate database is required. Each connection has an AES-256-GCM encrypted
+Blob document. A separate metadata document holds manual entries, baselines,
+and snapshots. Updates are not atomic across server instances; a database with
+transactions is needed for strict concurrent-write guarantees. CSV import works with **zero** external services beyond hosting + storage,
 so you have a fully working app even before Plaid Production is approved.
 
 ---
@@ -76,8 +77,9 @@ npm install
 npm run dev
 ```
 
-Without a Blob token, state persists to an encrypted file in `.data/` so you can
-develop and test offline. CSV import works immediately; Plaid needs keys.
+Without a Blob token, state persists to local documents in `.data/v2/` so you can
+develop and test offline. Local documents are encrypted when `ENCRYPTION_KEY` is set.
+Without this key, local development stores plaintext. Blob storage requires the key. CSV import works immediately; Plaid needs keys.
 
 ---
 
@@ -124,7 +126,7 @@ the linked team), or the Redeploy button in the dashboard.
 
 - Single-user; login is a hashed password compared in constant time, with
   per-IP login rate-limiting.
-- Session cookie is HTTP-only, signed/encrypted (iron-session), SameSite-strict,
+- Session cookie is HTTP-only, signed/encrypted (iron-session), SameSite-lax,
   Secure in production.
 - **All persisted data is AES-256-GCM encrypted** — storage holds only
   ciphertext. Plaid access tokens are additionally encrypted and never sent to
@@ -156,3 +158,7 @@ src/
     login/ oauth/   public auth + Plaid OAuth return
   components/       UI + hand-rolled SVG charts
 ```
+
+## Validation
+
+Use Node.js 22. Run `npm test`, `npm run lint`, `npm run typecheck`, and `npm run build` before release. Tests use fixed dates for credit-period checks.

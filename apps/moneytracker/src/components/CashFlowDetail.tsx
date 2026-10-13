@@ -40,9 +40,9 @@ export function CashFlowDetail({
       </div>
 
       {/* Diverging chart: income above the line, spending below, net under. */}
-      <div className="flex items-stretch justify-between gap-1.5">
+      <div className="flex items-stretch justify-between gap-1.5 overflow-x-auto" aria-hidden="true">
         {rows.map((r) => (
-          <div key={r.month} className="flex flex-1 flex-col items-center">
+          <div key={r.month} className="flex min-w-16 flex-1 flex-col items-center">
             <div className="flex h-20 w-full items-end justify-center">
               <div
                 className="w-3/5 max-w-6 rounded-t"
@@ -91,40 +91,22 @@ export function CashFlowDetail({
       </div>
 
       {/* Month-by-month table */}
-      <div className="mt-6 overflow-hidden rounded-xl border hairline">
-        <div className="grid grid-cols-[1.2fr_1fr_1fr_1fr_0.7fr] gap-2 bg-surface-2 px-4 py-2 text-[0.6rem] uppercase tracking-wider text-muted">
-          <span>Month</span>
-          <span className="text-right">Income</span>
-          <span className="text-right">Spending</span>
-          <span className="text-right">Net</span>
-          <span className="text-right">Saved</span>
-        </div>
-        <div className="divide-y divide-[var(--color-line)]">
-          {[...rows].reverse().map((r) => (
-            <div
-              key={r.month}
-              className="grid grid-cols-[1.2fr_1fr_1fr_1fr_0.7fr] gap-2 px-4 py-2.5 text-sm"
-            >
-              <span className="text-cream-dim">{formatMonth(r.month)}</span>
-              <span className="tnum text-right text-blue">
-                {formatMoney(r.income, currency, { cents: false })}
-              </span>
-              <span className="tnum text-right text-coral">
-                {formatMoney(r.spending, currency, { cents: false })}
-              </span>
-              <span
-                className={`tnum text-right ${r.net >= 0 ? "text-cream" : "text-coral"}`}
-              >
-                {formatMoney(r.net, currency, { sign: true, cents: false })}
-              </span>
-              <span
-                className={`tnum text-right text-xs ${(r.savingsRate ?? 0) >= 0 ? "text-muted" : "text-coral"}`}
-              >
-                {pct(r.savingsRate)}
-              </span>
-            </div>
-          ))}
-        </div>
+      <div className="mt-6 overflow-x-auto rounded-xl border hairline">
+        <table className="w-full min-w-[540px] text-sm">
+          <caption className="sr-only">Monthly income, spending, net cash flow, and savings rate</caption>
+          <thead className="bg-surface-2 text-[0.6rem] uppercase tracking-wider text-muted">
+            <tr>{["Month", "Income", "Spending", "Net", "Saved"].map((label, i) => <th key={label} scope="col" className={`px-4 py-2 ${i ? "text-right" : "text-left"}`}>{label}</th>)}</tr>
+          </thead>
+          <tbody className="divide-y divide-[var(--color-line)]">
+            {[...rows].reverse().map((r) => <tr key={r.month}>
+              <th scope="row" className="whitespace-nowrap px-4 py-2.5 text-left font-normal text-cream-dim">{formatMonth(r.month)}</th>
+              <td className="tnum whitespace-nowrap px-4 py-2.5 text-right text-blue">{formatMoney(r.income, currency, { cents: false })}</td>
+              <td className="tnum whitespace-nowrap px-4 py-2.5 text-right text-coral">{formatMoney(r.spending, currency, { cents: false })}</td>
+              <td className={`tnum whitespace-nowrap px-4 py-2.5 text-right ${r.net >= 0 ? "text-cream" : "text-coral"}`}>{formatMoney(r.net, currency, { sign: true, cents: false })}</td>
+              <td className={`tnum whitespace-nowrap px-4 py-2.5 text-right text-xs ${(r.savingsRate ?? 0) >= 0 ? "text-muted" : "text-coral"}`}>{pct(r.savingsRate)}</td>
+            </tr>)}
+          </tbody>
+        </table>
       </div>
     </div>
   );

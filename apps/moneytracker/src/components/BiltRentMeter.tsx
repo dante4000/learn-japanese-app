@@ -61,6 +61,8 @@ export function BiltRentMeter({ meter, delay = 0 }: { meter: BiltMeterView; dela
       }
       setEditing(false);
       router.refresh();
+    } catch {
+      setError("Could not save. Check your connection and try again.");
     } finally {
       setBusy(false);
     }
@@ -89,6 +91,7 @@ export function BiltRentMeter({ meter, delay = 0 }: { meter: BiltMeterView; dela
         </div>
         <button
           onClick={() => setEditing((v) => !v)}
+          aria-expanded={editing}
           aria-label="Edit housing payment and statement cycle"
           className="hairline rounded-lg bg-surface px-2.5 py-1 text-xs text-muted hover:text-cream"
         >
@@ -183,7 +186,7 @@ export function BiltRentMeter({ meter, delay = 0 }: { meter: BiltMeterView; dela
               className="hairline mt-1 w-full rounded-lg bg-surface px-2.5 py-1.5 text-sm text-cream"
             />
           </label>
-          {error && <p className="col-span-2 text-xs text-coral">{error}</p>}
+          {error && <p role="alert" className="col-span-2 text-xs text-coral">{error}</p>}
           <div className="col-span-2 flex justify-end">
             <button
               type="submit"

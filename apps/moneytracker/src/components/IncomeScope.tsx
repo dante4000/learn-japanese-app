@@ -29,6 +29,7 @@ export function IncomeScope({ scope }: { scope: Scope }) {
       {OPTIONS.map(([v, label]) => (
         <button
           key={v}
+          aria-pressed={scope === v}
           onClick={() => set(v)}
           className={`rounded-md px-2.5 py-1 transition-colors ${
             scope === v ? "bg-surface-2 text-cream" : "text-muted hover:text-cream"

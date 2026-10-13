@@ -53,9 +53,12 @@ export function LoginForm() {
         </div>
 
         <form onSubmit={submit} className="card p-6">
-          <label className="label-eyebrow mb-2 block">Passphrase</label>
+          <label htmlFor="login-password" className="label-eyebrow mb-2 block">Passphrase</label>
           <input
+            id="login-password"
+            name="password"
             type="password"
+            autoComplete="current-password"
             autoFocus
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -77,7 +80,7 @@ export function LoginForm() {
         </form>
 
         <p className="mt-6 text-center text-xs text-faint">
-          Encrypted at rest · Single user · No data leaves your accounts
+          Encrypted at rest · Single user · Bank data imported through Plaid or CSV
         </p>
       </div>
     </main>

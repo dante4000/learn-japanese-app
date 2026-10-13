@@ -75,12 +75,14 @@ export function TransactionsView({
       {/* Controls */}
       <div className="mb-5 flex flex-wrap gap-2">
         <input
+          aria-label="Search transactions"
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="Search name, merchant, or note…"
           className="min-w-40 flex-1 rounded-xl border hairline bg-surface px-4 py-2.5 text-sm text-cream outline-none placeholder:text-faint focus:border-blue"
         />
         <select
+          aria-label="Category"
           value={cat}
           onChange={(e) => setCat(e.target.value)}
           className="rounded-xl border hairline bg-surface px-3 py-2.5 text-sm text-cream outline-none focus:border-blue"
@@ -94,6 +96,7 @@ export function TransactionsView({
         </select>
         {accounts.length > 1 && (
           <select
+            aria-label="Account"
             value={acct}
             onChange={(e) => setAcct(e.target.value)}
             className="rounded-xl border hairline bg-surface px-3 py-2.5 text-sm text-cream outline-none focus:border-blue"
