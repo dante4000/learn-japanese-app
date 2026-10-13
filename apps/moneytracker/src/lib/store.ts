@@ -208,7 +208,11 @@ async function readDoc<T extends object>(name: string): Promise<T | null> {
     const match = blobs.find((b) => b.pathname === blobPath(name));
     if (!match) return null;
     const v = randomUUID();
-    const res = await fetch(`${match.url}?v=${v}`, { cache: "no-store" });
+    const res = await fetch(`${match.url}?v=${v}`, {
+      cache: "no-store",
+      // Compressed responses use weak ETags, which conditional writes reject.
+      headers: { "Accept-Encoding": "identity" },
+    });
     if (!res.ok) throw new Error(`Storage read failed (${res.status})`);
     // The revision must come from the same response as the document body.
     const etag = res.headers.get("etag");

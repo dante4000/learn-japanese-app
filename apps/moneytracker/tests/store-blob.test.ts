@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createServer } from "node:http";
+import { brotliCompressSync } from "node:zlib";
 import type { AddressInfo } from "node:net";
 import { emptyMeta, type ItemBundle } from "../src/lib/types";
 import { encrypt, decrypt } from "../src/lib/crypto";
@@ -12,6 +13,7 @@ test("Blob rejects stale writes and deletes with the body ETag", async () => {
   process.env.ENCRYPTION_KEY = "12".repeat(32);
   const documents = new Map<string, { body: string; etag: string }>();
   const writes: { expected: string | undefined; overwrite: string | undefined }[] = [];
+  const representations: string[] = [];
   let version = 1;
   let origin = "";
   const server = createServer(async (req, res) => {
@@ -28,8 +30,15 @@ test("Blob rejects stale writes and deletes with the body ETag", async () => {
     if (url.pathname.startsWith("/objects/")) {
       const document = documents.get(url.pathname.slice("/objects/".length));
       if (!document) { res.writeHead(404).end(); return; }
-      res.writeHead(200, { etag: document.etag });
-      res.end(document.body);
+      const encoding = req.headers["accept-encoding"];
+      representations.push(String(encoding));
+      if (encoding === "identity") {
+        res.writeHead(200, { etag: document.etag });
+        res.end(document.body);
+      } else {
+        res.writeHead(200, { etag: `W/${document.etag}`, "content-encoding": "br" });
+        res.end(brotliCompressSync(document.body));
+      }
       return;
     }
     if (req.method === "GET") {
@@ -82,11 +91,17 @@ test("Blob rejects stale writes and deletes with the body ETag", async () => {
   try {
     const { loadMeta, saveMeta, loadItemBundle, saveItemBundle,
       deleteItemBundle, StorageConflictError } = await import("../src/lib/store");
+    const compressed = await fetch(`${origin}/objects/moneytracker/v2/meta.enc`);
+    assert.equal(compressed.headers.get("etag"), 'W/"version-1"');
+    assert.equal(compressed.headers.get("content-encoding"), "br");
+    assert.equal(await compressed.text(), documents.get("moneytracker/v2/meta.enc")!.body);
+    representations.length = 0;
     const first = await loadMeta();
     const stale = await loadMeta();
     first.biltConfig = { statementDay: 12 };
     await saveMeta(first);
     assert.deepEqual(writes[0], { expected: '"version-1"', overwrite: "1" });
+    assert.ok(representations.length > 0 && representations.every((encoding) => encoding === "identity"));
     stale.biltConfig = { statementDay: 24 };
     await assert.rejects(saveMeta(stale), StorageConflictError);
     assert.equal((await loadMeta()).biltConfig?.statementDay, 12);

@@ -17,6 +17,7 @@ body{max-width:960px;margin:40px auto;padding:0 20px;font:16px/1.55 system-ui;co
 <li>Income can be split by exact normalized source. Employer-paid studio support is separate from bank deposits. Removed the old phantom-income implementation.</li>
 <li>Possible duplicate charges have exact-row review, dismissal, and restore actions. Dismissal does not alter spending.</li>
 <li>Storage uses conditional Blob writes and deletes, atomic local writes, and local process locks. Migration preserves existing metadata. Institution claims prevent concurrent duplicate bank connections.</li>
+<li>Live verification found that compressed Blob responses supplied weak ETags and caused false write conflicts. Reads now request identity encoding. A Brotli regression fixture and a large disposable live probe verify the strong-ETag path.</li>
 <li>CSV overlap checks prevent double imports. Pending-to-posted transaction updates retain user edits. A failed secondary refresh returns a visible warning after a successful save.</li>
 <li>Shared owners now handle rent timelines, recurring monthly amounts, CSV overlap checks, API conflict responses, and Plaid Link loading.</li>
 <li>Phone layouts use larger targets and inputs, wrapping controls, scrollable tables, and safer chart dimensions. Accounts display exact cents.</li>
@@ -30,6 +31,7 @@ body{max-width:960px;margin:40px auto;padding:0 20px;font:16px/1.55 system-ui;co
 <li>Thirteen authenticated local page routes returned HTTP 200.</li>
 <li>Reviewed responsive layouts at phone widths of 320 and 390 pixels. Checked duplicate review/dismiss/restore, the rent editor, and income-source and employer-support controls. Checked tablet navigation at 768 pixels.</li>
 <li>Reconciled 4,784 exported transactions across 8 transaction-bearing accounts and 29 months. Per-account, category, and monthly cash-flow totals matched the classified transactions. Production has 11 linked accounts; 3 have no exported transactions.</li>
+<li>All 11 live account balances sum exactly, to the cent, to the displayed assets, liabilities, and net worth.</li>
 <li>Verified conditional write, stale-write rejection, and conditional deletion against a disposable Blob probe. Removed the probe.</li>
 <li>Astra reviewed rent rules again after the last refund fix. Three independent Claude Opus passes used model claude-opus-5-5. The final reported rent/refund defect was fixed and covered by tests.</li>
 <li>Production dependency audit reported zero advisories.</li>
