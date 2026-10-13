@@ -35,7 +35,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
       onClick={toggle}
       aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
       title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-      className={`grid h-9 w-9 place-items-center rounded-xl border hairline bg-surface text-cream-dim transition-colors hover:border-line-2 hover:text-cream ${className}`}
+      className={`min-h-11 lg:min-h-0 grid h-11 w-11 place-items-center rounded-xl border hairline bg-surface text-cream-dim transition-colors hover:border-line-2 hover:text-cream ${className}`}
     >
       {theme === "dark" ? (
         // sun → click for light

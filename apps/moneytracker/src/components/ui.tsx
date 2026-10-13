@@ -41,11 +41,11 @@ export function StatCard({
           : "text-cream";
   return (
     <div
-      className="card card-hover rise p-5"
+      className="card card-hover rise min-w-0 p-4 sm:p-5"
       style={{ animationDelay: `${delay}ms` }}
     >
       <div className="label-eyebrow">{label}</div>
-      <div className={`tnum mt-2 text-2xl ${color}`}>{value}</div>
+      <div className={`tnum mt-2 break-words text-xl sm:text-2xl ${color}`}>{value}</div>
       {sub && <div className="mt-1 text-xs text-muted">{sub}</div>}
     </div>
   );
@@ -66,11 +66,11 @@ export function SectionCard({
 }) {
   return (
     <section
-      className={`card rise p-5 md:p-6 ${className}`}
+      className={`card rise min-w-0 p-4 sm:p-5 md:p-6 ${className}`}
       style={{ animationDelay: `${delay}ms` }}
     >
       {(title || action) && (
-        <header className="mb-5 flex items-center justify-between">
+        <header className="mb-5 flex flex-wrap items-center justify-between gap-3">
           {title && (
             <h2 className="font-display text-lg tracking-tight text-cream">
               {title}

@@ -35,9 +35,19 @@ Built with Next.js 16 (App Router) + React 19 + Tailwind 4, deployed on Vercel.
 
 No separate database is required. Each connection has an AES-256-GCM encrypted
 Blob document. A separate metadata document holds manual entries, baselines,
-and snapshots. Updates are not atomic across server instances; a database with
-transactions is needed for strict concurrent-write guarantees. CSV import works with **zero** external services beyond hosting + storage,
+and snapshots. Conditional writes reject stale updates across server instances.
+Reload and retry when another request changed the same document. Local storage
+uses a file lock and atomic replacement. It recovers locks owned by a dead
+process on the same host. For an unreadable lock or interrupted lock recovery,
+stop local app processes before removing the remaining `.enc.lock` or
+`.enc.lock.recover` file.
+Updates to separate documents are not one transaction. CSV import works with **zero** external services beyond hosting + storage,
 so you have a fully working app even before Plaid Production is approved.
+
+Institution claims prevent concurrent connections to the same bank. A request
+that stops before saving its connection can leave a claim. Claims do not expire:
+an expired claim could let a delayed request create a duplicate connection.
+Confirm that the request has stopped before removing an orphan claim.
 
 ---
 

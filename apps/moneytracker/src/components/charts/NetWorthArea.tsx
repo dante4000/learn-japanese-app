@@ -310,7 +310,8 @@ export function NetWorthArea({
   }
 
   const tip = data[active];
-  const tipLeft = Math.min(plotW - 90, Math.max(90, x(active)));
+  const tipWidth = Math.min(280, vw);
+  const tipLeft = Math.min(plotW - tipWidth / 2, Math.max(tipWidth / 2, x(active)));
 
   return (
     <div>
@@ -346,7 +347,7 @@ export function NetWorthArea({
                     setHover(null);
                   }}
                   aria-pressed={on}
-                  className={`rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
+                  className={`min-h-11 lg:min-h-0 rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
                     on
                       ? "bg-[var(--color-surface)] text-cream shadow-sm"
                       : "text-muted hover:text-cream-dim"
@@ -608,7 +609,7 @@ export function NetWorthArea({
             {hi != null && (
               <div
                 className="pointer-events-none absolute top-0 z-10 -translate-x-1/2"
-                style={{ left: tipLeft }}
+                style={{ left: tipLeft, width: tipWidth }}
               >
                 <div className="rounded-xl border hairline bg-[var(--color-surface)] px-3 py-2 shadow-lg shadow-black/5">
                   <div className="text-[11px] font-medium text-muted">
@@ -630,7 +631,7 @@ export function NetWorthArea({
                       );
                     })()}
                   </div>
-                  <div className="mt-1 flex gap-3 text-[11px]">
+                  <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-[11px]">
                     <span className="tnum text-blue">
                       {formatMoney(tip.totalAssets, currency, { cents: false })}
                       <span className="ml-1 text-muted">assets</span>
@@ -641,7 +642,7 @@ export function NetWorthArea({
                     </span>
                   </div>
                   {((tip.income ?? 0) > 0 || (tip.spending ?? 0) > 0) && (
-                    <div className="mt-1.5 flex items-center gap-3 border-t hairline pt-1.5 text-[11px]">
+                    <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 border-t hairline pt-1.5 text-[11px]">
                       <span className="tnum text-blue">
                         +{formatMoney(tip.income ?? 0, currency, { cents: false })}
                         <span className="ml-1 text-muted">in</span>

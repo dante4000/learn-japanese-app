@@ -50,7 +50,7 @@ export function AccountPicker({
           setAccountCookie(e.target.value);
           startTransition(() => router.refresh());
         }}
-        className={`w-full rounded-xl border hairline bg-surface px-3 py-2.5 text-sm outline-none transition-opacity focus:border-blue ${
+        className={`min-w-0 min-h-11 w-full rounded-xl border hairline bg-surface px-3 py-2.5 text-base sm:text-sm outline-none transition-opacity focus:border-blue ${
           selected ? "border-blue text-blue" : "text-cream"
         } ${pending ? "opacity-60" : ""}`}
       >
@@ -80,7 +80,7 @@ export function ViewAccountButton({ id }: { id: string }) {
         router.push("/");
         router.refresh();
       }}
-      className="shrink-0 rounded-lg border hairline px-2.5 py-1 text-xs text-cream-dim transition-colors hover:border-blue hover:text-blue"
+      className="min-h-11 lg:min-h-0 shrink-0 rounded-lg border hairline px-2.5 py-1 text-xs text-cream-dim transition-colors hover:border-blue hover:text-blue"
     >
       View →
     </button>

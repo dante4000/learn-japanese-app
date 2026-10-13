@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isAuthenticated } from "@/lib/auth";
+import { storageConflictResponse } from "@/lib/api-response";
 import { loadMeta, saveMeta } from "@/lib/store";
 import { BiltConfig } from "@/lib/types";
 
@@ -33,6 +34,10 @@ export async function POST(req: NextRequest) {
 
   const meta = await loadMeta();
   meta.biltConfig = config;
-  await saveMeta(meta);
+  try {
+    await saveMeta(meta);
+  } catch (error) {
+    return storageConflictResponse(error);
+  }
   return NextResponse.json({ ok: true, config });
 }

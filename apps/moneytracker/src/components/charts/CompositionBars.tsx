@@ -24,13 +24,14 @@ export function CompositionBars({
   showTotals?: boolean; // render each month's total above its bar
 }) {
   const params = useSearchParams();
-  const max = Math.max(1, ...data.map((d) => d.total));
+  const max = Math.max(1, ...data.map((d) => d.segments.reduce((sum, s) => sum + Math.max(0, s.total), 0)));
 
   return (
     <div className="overflow-x-auto pb-1">
     <div className="flex justify-between gap-2" style={{ minWidth: data.length * 52 }}>
       {data.map((d) => {
         const isHi = highlight === d.month;
+        const positiveTotal = d.segments.reduce((sum, s) => sum + Math.max(0, s.total), 0);
         const next = new URLSearchParams(params.toString());
         next.set("month", d.month);
         // Selecting a month leaves the Income page's aggregate period.
@@ -58,7 +59,7 @@ export function CompositionBars({
               <div
                 className="flex w-full max-w-9 flex-col-reverse overflow-hidden rounded-md transition-opacity group-hover:opacity-100"
                 style={{
-                  height: `${(d.total / max) * 100}%`,
+                  height: `${(positiveTotal / max) * 100}%`,
                   minHeight: d.total > 0 ? 6 : 0,
                   opacity: highlight && !isHi ? 0.55 : 1,
                   outline: isHi ? "2px solid var(--color-blue)" : "none",
@@ -71,7 +72,7 @@ export function CompositionBars({
                     style={{
                       // Guard the divisor: a zero-total month with segments would
                       // otherwise compute 0/0 = NaN% (an invalid, dropped style).
-                      height: `${d.total > 0 ? (s.total / d.total) * 100 : 0}%`,
+                      height: `${positiveTotal > 0 ? (Math.max(0, s.total) / positiveTotal) * 100 : 0}%`,
                       background: s.color,
                     }}
                     title={`${formatMonth(d.month)} · ${s.label}: ${formatMoney(s.total, currency)}`}

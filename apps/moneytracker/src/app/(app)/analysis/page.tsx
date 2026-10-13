@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { EstimatedBillsNotice } from "@/components/EstimatedBillsNotice";
 import { loadScopedState } from "@/lib/scoped-state";
 import { cashFlowByMonth } from "@/lib/analytics";
 import {
@@ -73,8 +74,10 @@ export default async function AnalysisPage() {
     <div>
       <PageHeading title="Analysis" subtitle={subtitle} />
 
+      <EstimatedBillsNotice state={state} months={[...windowSet]} currency={cur} />
+
       {/* 1 · Hero stats */}
-      <div className="mb-5 grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <div className="mb-5 grid grid-cols-1 gap-3 min-[420px]:grid-cols-2 sm:gap-4 lg:grid-cols-4">
         <StatCard
           label={`Income · ${monthsLabel}`}
           value={formatMoney(ov.income, cur, { cents: false })}
@@ -124,17 +127,17 @@ export default async function AnalysisPage() {
         </p>
         {flows.length > 0 && (
           <div className="mt-5 grid gap-2 sm:grid-cols-2">
-            <div className="flex items-center rounded-xl border hairline bg-surface px-3 py-2.5 text-sm">
+            <div className="flex flex-wrap items-center gap-y-1 rounded-xl border hairline bg-surface px-3 py-2.5 text-sm">
               <span className="text-muted">Best month&nbsp;·&nbsp;</span>
               <span className="text-cream">{formatMonth(best.month)}</span>
-              <span className="tnum ml-auto text-blue">
+              <span className="tnum ml-auto shrink-0 text-blue">
                 {formatMoney(best.net, cur, { cents: false, sign: true })}
               </span>
             </div>
-            <div className="flex items-center rounded-xl border hairline bg-surface px-3 py-2.5 text-sm">
+            <div className="flex flex-wrap items-center gap-y-1 rounded-xl border hairline bg-surface px-3 py-2.5 text-sm">
               <span className="text-muted">Toughest month&nbsp;·&nbsp;</span>
               <span className="text-cream">{formatMonth(worst.month)}</span>
-              <span className="tnum ml-auto text-coral">
+              <span className="tnum ml-auto shrink-0 text-coral">
                 {formatMoney(worst.net, cur, { cents: false, sign: true })}
               </span>
             </div>
@@ -150,7 +153,7 @@ export default async function AnalysisPage() {
               const pct = s.share * 100;
               return (
                 <div key={s.name}>
-                  <div className="flex items-center gap-2 text-sm">
+                  <div className="flex flex-wrap items-center gap-2 text-sm">
                     <span className="truncate text-cream-dim">{s.name}</span>
                     <span className="shrink-0 text-xs text-faint">
                       · {s.count}× · {s.cadence}
@@ -189,7 +192,7 @@ export default async function AnalysisPage() {
       {/* 4 · Behavior patterns */}
       <SectionCard title="How you spend" delay={320} className="mt-4">
         <WeekdayBars data={weekdays} currency={cur} />
-        <div className="mt-5 grid grid-cols-2 gap-4">
+        <div className="mt-5 grid grid-cols-1 gap-3 min-[420px]:grid-cols-2 sm:gap-4">
           <div className="rounded-xl border hairline bg-surface px-3 py-2.5">
             <div className="label-eyebrow">Avg transaction</div>
             <div className="tnum mt-1 text-lg text-cream">
@@ -210,7 +213,7 @@ export default async function AnalysisPage() {
                 return (
                   <li key={t.id} className="flex items-center gap-3 text-sm">
                     <span>{meta.glyph}</span>
-                    <div className="min-w-0">
+                    <div className="min-w-0 flex-1">
                       <div className="truncate text-cream">
                         {displayPayee(t.merchantName, t.name, acctName.get(t.accountId))}
                       </div>
@@ -218,7 +221,7 @@ export default async function AnalysisPage() {
                         {formatDate(t.date)} · {meta.label}
                       </div>
                     </div>
-                    <span className="tnum ml-auto text-cream">
+                    <span className="tnum ml-auto shrink-0 text-cream">
                       {formatMoney(t.amount, cur)}
                     </span>
                   </li>
@@ -273,13 +276,13 @@ export default async function AnalysisPage() {
                       <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border hairline bg-surface-2 text-sm text-slate">
                         {m.name.slice(0, 1).toUpperCase()}
                       </span>
-                      <div className="min-w-0">
+                      <div className="min-w-0 flex-1">
                         <div className="truncate text-sm text-cream">{m.name}</div>
                         <div className="text-xs text-faint">
                           {m.count}× since {formatDate(m.firstDate)}
                         </div>
                       </div>
-                      <span className="tnum ml-auto text-sm text-cream">
+                      <span className="tnum ml-auto shrink-0 text-sm text-cream">
                         {formatMoney(m.total, cur, { cents: false })}
                       </span>
                     </Link>

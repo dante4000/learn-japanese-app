@@ -59,12 +59,18 @@ export function AppShell({
   const [syncing, setSyncing] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
   const [moreOpen, setMoreOpen] = useState(false);
+  const messageTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => () => { if (messageTimer.current) clearTimeout(messageTimer.current); }, []);
 
   const moreDialog = useRef<HTMLDialogElement>(null);
   useEffect(() => {
     const dialog = moreDialog.current;
     if (moreOpen && dialog && !dialog.open) dialog.showModal();
     if (!moreOpen && dialog?.open) dialog.close();
+    if (!moreOpen) return;
+    const overflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = overflow; };
   }, [moreOpen]);
 
   const isActive = (href: string) =>
@@ -72,6 +78,8 @@ export function AppShell({
   const isMoreActive = MORE_NAV.some((item) => isActive(item.href));
 
   async function refresh() {
+    if (messageTimer.current) clearTimeout(messageTimer.current);
+    let keepMessage = true;
     setSyncing(true);
     setMsg(null);
     try {
@@ -79,18 +87,20 @@ export function AppShell({
       const data = await res.json();
       if (!res.ok) setMsg(data.error || "Sync failed");
       else {
-        setMsg(data.errors?.length ? "Some banks could not sync. Check Settings." : "Synced");
+        setMsg(`${data.errors?.length ? "Some banks could not sync. Check Settings." : "Synced."}${typeof data.warning === "string" ? ` ${data.warning}` : ""}`);
+        keepMessage = Boolean(data.errors?.length || data.warning);
         startTransition(() => router.refresh());
       }
     } catch {
       setMsg("Sync failed");
     } finally {
       setSyncing(false);
-      setTimeout(() => setMsg(null), 2500);
+      if (!keepMessage) messageTimer.current = setTimeout(() => setMsg(null), 2500);
     }
   }
 
   async function logout() {
+    if (messageTimer.current) clearTimeout(messageTimer.current);
     setMsg(null);
     try {
       const response = await fetch("/api/auth/logout", { method: "POST" });
@@ -106,7 +116,7 @@ export function AppShell({
     <div className="mx-auto flex min-h-dvh max-w-7xl">
       <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-surface focus:p-3">Skip to content</a>
       {/* Desktop sidebar */}
-      <aside className="sticky top-0 hidden h-dvh w-60 shrink-0 flex-col justify-between border-r hairline px-5 py-7 md:flex">
+      <aside className="sticky top-0 hidden h-dvh w-60 shrink-0 overflow-y-auto flex-col justify-between border-r hairline px-5 py-7 lg:flex">
         <div>
           <Link href="/" className="mb-10 flex items-center gap-2.5">
             <span className="grid h-9 w-9 place-items-center rounded-xl bg-blue text-ink">
@@ -146,9 +156,9 @@ export function AppShell({
           <button
             onClick={refresh}
             disabled={syncing}
-            className="flex items-center justify-center gap-2 rounded-xl border hairline bg-surface px-3 py-2.5 text-sm text-cream transition-colors hover:border-line-2 disabled:opacity-50"
+            className="min-h-11 lg:min-h-0 flex items-center justify-center gap-2 rounded-xl border hairline bg-surface px-3 py-2.5 text-sm text-cream transition-colors hover:border-line-2 disabled:opacity-50"
           >
-            <span className={syncing || pending ? "animate-spin" : ""}>
+            <span className={syncing || pending ? "animate-spin motion-reduce:animate-none" : ""}>
               <Glyph d="M4 8a8 8 0 0114-5M20 16a8 8 0 01-14 5M17 3v5h-5M7 21v-5h5" />
             </span>
             {syncing ? "Syncing…" : "Sync now"}
@@ -156,7 +166,7 @@ export function AppShell({
           <div className="flex items-center justify-between gap-2">
             <button
               onClick={logout}
-              className="rounded-xl px-3 py-2 text-xs text-faint transition-colors hover:text-coral"
+              className="min-h-11 lg:min-h-0 rounded-xl px-3 py-2 text-xs text-faint transition-colors hover:text-coral"
             >
               Lock & sign out
             </button>
@@ -167,9 +177,9 @@ export function AppShell({
       </aside>
 
       {/* Main */}
-      <main id="main-content" className="min-w-0 flex-1 px-4 pb-28 pt-6 md:px-8 md:pb-10 md:pt-9">
+      <main id="main-content" className="min-w-0 flex-1 px-3 pb-[calc(7rem+env(safe-area-inset-bottom))] pt-6 sm:px-4 lg:px-8 lg:pb-10 lg:pt-9">
         {/* Mobile top bar */}
-        <div className="mb-6 flex items-center justify-between md:hidden">
+        <div className="mb-6 flex items-center justify-between lg:hidden">
           <Link href="/" className="flex items-center gap-2">
             <span className="grid h-8 w-8 place-items-center rounded-lg bg-blue text-ink">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 7h18v12H3zM3 7l3-4h12l3 4"/></svg>
@@ -181,18 +191,18 @@ export function AppShell({
             <button
               onClick={refresh}
               disabled={syncing}
-              className="rounded-lg border hairline bg-surface px-3 py-2 text-xs text-cream disabled:opacity-50"
+              className="min-h-11 rounded-lg border hairline bg-surface px-3 py-2 text-xs text-cream disabled:opacity-50"
             >
               {syncing ? "Syncing…" : "Sync"}
             </button>
           </div>
         </div>
         {showPicker && (
-          <div className="mb-6 md:hidden">
+          <div className="mb-6 lg:hidden">
             <AccountPicker options={accountOptions} selected={selectedAccount} />
           </div>
         )}
-        <p role="status" aria-live="polite" className="mb-2 text-xs text-blue md:hidden">{msg}</p>
+        <p role="status" aria-live="polite" className="mb-2 text-xs text-blue lg:hidden">{msg}</p>
         {children}
       </main>
 
@@ -203,11 +213,11 @@ export function AppShell({
         onCancel={() => setMoreOpen(false)}
         onClose={() => setMoreOpen(false)}
         onClick={(event) => { if (event.target === event.currentTarget) setMoreOpen(false); }}
-        className="fixed inset-x-0 top-auto bottom-0 m-0 max-h-[85dvh] w-full max-w-none overflow-y-auto rounded-t-2xl border hairline bg-ink-2 p-4 pb-[max(1rem,env(safe-area-inset-bottom))] text-cream backdrop:bg-black/60"
+        className="fixed inset-x-0 top-auto bottom-0 m-0 max-h-[85dvh] overscroll-contain w-full max-w-none overflow-y-auto rounded-t-2xl border hairline bg-ink-2 p-4 pb-[max(1rem,env(safe-area-inset-bottom))] text-cream backdrop:bg-black/60"
       >
         <div className="mb-3 flex items-center justify-between">
           <h2 className="font-display text-lg">More</h2>
-          <button onClick={() => setMoreOpen(false)} className="rounded-lg border hairline px-3 py-2">Close</button>
+          <button onClick={() => setMoreOpen(false)} className="min-h-11 rounded-lg border hairline px-3 py-2">Close</button>
         </div>
         <nav aria-label="More navigation" className="grid grid-cols-2 gap-2">
           {MORE_NAV.map((item) => (
@@ -220,11 +230,11 @@ export function AppShell({
           ))}
         </nav>
         <p role="status" className="mt-3 text-sm text-coral">{msg}</p>
-        <button onClick={logout} className="mt-3 w-full rounded-xl border hairline px-4 py-3 text-sm">Lock &amp; sign out</button>
+        <button onClick={logout} className="min-h-11 lg:min-h-0 mt-3 w-full rounded-xl border hairline px-4 py-3 text-sm">Lock &amp; sign out</button>
       </dialog>
 
       {/* Mobile bottom nav */}
-      <nav className="fixed inset-x-0 bottom-0 z-20 flex items-center justify-around border-t hairline bg-ink-2/95 px-2 pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] backdrop-blur md:hidden">
+      <nav className="fixed inset-x-0 bottom-0 z-20 flex items-center justify-around border-t hairline bg-ink-2/95 px-2 pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] backdrop-blur lg:hidden">
         {PRIMARY_NAV.map((item) => (
           <Link
             key={item.href}
@@ -243,7 +253,7 @@ export function AppShell({
           onClick={() => setMoreOpen((v) => !v)}
           aria-expanded={moreOpen}
           aria-label="More"
-          className={`flex flex-1 flex-col items-center gap-1 rounded-lg py-1.5 text-[0.6rem] ${
+          className={`min-h-11 lg:min-h-0 flex flex-1 flex-col items-center gap-1 rounded-lg py-1.5 text-[0.6rem] ${
             isMoreActive || moreOpen ? "text-blue" : "text-muted"
           }`}
         >

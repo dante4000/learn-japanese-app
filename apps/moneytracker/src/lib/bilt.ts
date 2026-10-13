@@ -1,3 +1,4 @@
+import { activeBaselines, isHousingBaseline } from "./analytics";
 // Bilt Card 2.0 "Housing-only" rewards: the points you earn on rent/mortgage
 // scale by your Everyday Spend Ratio — everyday (non-housing) card spend divided
 // by your housing payment — measured per statement cycle. Below 25% you earn a
@@ -7,6 +8,7 @@
 
 import type { Account, AppState, Transaction } from "./types";
 import { matchAccountToCard } from "./cards";
+import { categoryMeta, resolveCategoryKey, isHousingTransaction } from "./categories";
 
 const RENT_CATEGORY = "RENT_AND_UTILITIES";
 
@@ -46,7 +48,11 @@ export function biltHousingRewards(
   everydaySpend: number,
   housingPayment: number,
 ): HousingRewards {
-  const ratio = housingPayment > 0 ? everydaySpend / housingPayment : 0;
+  if (!Number.isFinite(housingPayment) || housingPayment <= 0) {
+    return { ratio: 0, multiplier: 0, points: 0, maxed: false, nextMultiplier: null, toNext: null };
+  }
+  const spend = Number.isFinite(everydaySpend) ? Math.max(0, everydaySpend) : 0;
+  const ratio = spend / housingPayment;
 
   let multiplier = 0;
   for (const t of TIERS) if (ratio >= t.at) multiplier = t.multiplier;
@@ -60,7 +66,7 @@ export function biltHousingRewards(
     points: multiplier === 0 ? FLOOR_POINTS : Math.round(housingPayment * multiplier),
     maxed,
     nextMultiplier: next ? next.multiplier : null,
-    toNext: next ? Math.max(0, next.at * housingPayment - everydaySpend) : null,
+    toNext: next ? Math.max(0, next.at * housingPayment - spend) : null,
   };
 }
 
@@ -100,11 +106,7 @@ export function statementCycle(today: string, startDay: number): StatementCycle 
   };
 }
 
-function effectiveCategory(t: Transaction): string {
-  return t.userCategory ?? t.categoryPrimary;
-}
-
-/** Sum of everyday (non-rent) outflows posted to `accountId` within `cycle`. */
+/** Net eligible purchases in the cycle; refunds reduce qualifying spend. */
 export function biltEverydaySpend(
   transactions: Transaction[],
   accountId: string,
@@ -114,17 +116,22 @@ export function biltEverydaySpend(
   for (const t of transactions) {
     if (t.accountId !== accountId) continue;
     if (t.hidden || t.pending) continue;
-    if (t.amount <= 0) continue; // outflows only
-    if (effectiveCategory(t) === RENT_CATEGORY) continue;
+    const category = resolveCategoryKey(t);
+    if (!categoryMeta(category).isSpending || category === "BANK_FEES") continue;
+    if (isHousingTransaction(t)) continue;
+    const utilityEvidence = /electric|internet|telephone|telecom|water|sewage|cable|\bgas\b|\butility\b|\butilities\b/i.test(
+      `${t.name} ${t.merchantName ?? ""} ${(t.categoryDetailed ?? "").replaceAll("_", " ")}`,
+    );
+    if (category === RENT_CATEGORY && !utilityEvidence) continue;
     if (t.date < cycle.start || t.date > cycle.end) continue;
     sum += t.amount;
   }
-  return sum;
+  return Math.max(0, Math.round(sum * 100) / 100);
 }
 
 /** The connected account matched to the Bilt card, or null. */
 export function findBiltAccount(state: AppState): Account | null {
-  return state.accounts.find((a) => matchAccountToCard(a) === BILT_CARD_KEY) ?? null;
+  return state.accounts.find((a) => a.type === "credit" && matchAccountToCard(a) === BILT_CARD_KEY) ?? null;
 }
 
 /**
@@ -132,18 +139,11 @@ export function findBiltAccount(state: AppState): Account | null {
  * as of `month` (yyyy-mm). Re-saving a baseline supersedes the earlier entry
  * rather than replacing it in place (see injectBaselines), so the meter has to
  * read the one in force now — taking the first would quote last year's rent.
- * Falls back to the earliest entry when none has started yet.
+ * Only named housing bills apply. Future baselines do not apply yet.
  */
 export function housingBaseline(state: AppState, month?: string): number | null {
-  const rents = state.baselines.filter((x) => x.category === RENT_CATEGORY);
-  if (!rents.length) return null;
-  const ordered = [...rents].sort((a, b) => a.startMonth.localeCompare(b.startMonth));
-  let current = ordered[0];
-  for (const b of ordered) {
-    if (month && b.startMonth > month) break;
-    current = b;
-  }
-  return current.amount;
+  const active = activeBaselines(state.baselines, month ?? new Date().toISOString().slice(0, 7)).filter(isHousingBaseline);
+  return active.length === 1 ? active[0].amount : null;
 }
 
 export interface BiltMeter {
@@ -167,7 +167,10 @@ export function resolveBiltMeter(state: AppState, today: string): BiltMeter | nu
   const housingPayment =
     config?.housingOverride ?? housingBaseline(state, today.slice(0, 7)) ?? 0;
   const cycle = statementCycle(today, statementDay);
-  const everydaySpend = biltEverydaySpend(state.transactions, account.id, cycle);
+  const everydaySpend = biltEverydaySpend(state.transactions, account.id, {
+    ...cycle,
+    end: today < cycle.end ? today : cycle.end,
+  });
 
   return {
     account,

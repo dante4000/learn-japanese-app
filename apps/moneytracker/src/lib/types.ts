@@ -19,6 +19,8 @@ export interface Item {
   id: string;
   provider: DataSource;
   institutionName: string;
+  /** Provider identity used to reject duplicate bank links. */
+  institutionId?: string;
   /** AES-256-GCM encrypted Plaid access_token. Empty for csv/manual items. */
   accessTokenEnc: string;
   /** Plaid /transactions/sync cursor for incremental pulls. */
@@ -57,6 +59,9 @@ export interface Transaction {
   name: string; // raw description from the bank
   merchantName: string | null; // enriched merchant
   pending: boolean;
+  /** Plaid's prior pending id, when this posted row replaces an authorization. */
+  pendingTransactionId?: string | null;
+  authorizedDate?: string | null;
   /** Plaid Personal Finance Category primary, e.g. FOOD_AND_DRINK. */
   categoryPrimary: string;
   categoryDetailed: string | null;
@@ -128,6 +133,7 @@ export interface RecurringBaseline {
   amount: number; // positive, per month
   category: string; // PFC key, e.g. RENT_AND_UTILITIES
   startMonth: string; // yyyy-mm
+  endMonth?: string | null; // inclusive; absent means ongoing
 }
 
 /**
@@ -138,6 +144,14 @@ export interface RecurringBaseline {
 export interface BiltConfig {
   housingOverride?: number;
   statementDay: number;
+}
+
+/** Employer-paid housing support; separate from recorded bank deposits. */
+export interface EmployerHousingSupport {
+  source: string;
+  amount: number;
+  startMonth: string;
+  endMonth?: string | null;
 }
 
 /** The entire persisted state for the one user. Stored as a single JSON blob. */
@@ -151,6 +165,7 @@ export interface AppState {
   baselines: RecurringBaseline[];
   snapshots: NetWorthSnapshot[];
   biltConfig?: BiltConfig;
+  employerHousingSupport?: EmployerHousingSupport | null;
   updatedAt: string | null;
 }
 
@@ -173,6 +188,7 @@ export interface MetaDoc {
   baselines?: RecurringBaseline[];
   snapshots: NetWorthSnapshot[];
   biltConfig?: BiltConfig;
+  employerHousingSupport?: EmployerHousingSupport | null;
 }
 
 export function emptyMeta(): MetaDoc {

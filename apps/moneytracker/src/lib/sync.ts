@@ -1,8 +1,10 @@
 import { Item, ItemBundle, Transaction } from "./types";
 import { SyncResult } from "./providers/types";
 import { plaidSync } from "./providers/plaid";
+import { csvHistoryOverlap } from "./providers/csv";
 import { recordSnapshot, todayKey } from "./analytics";
 import {
+  StorageConflictError,
   loadItemBundle,
   saveItemBundle,
   loadState,
@@ -37,11 +39,26 @@ export function buildBundle(
   const byId = new Map<string, Transaction>(
     (prev?.transactions ?? []).map((t) => [t.id, t]),
   );
+  const previousById = new Map(byId);
   for (const t of [...result.added, ...result.modified]) {
-    byId.set(t.id, carryOverEdits(byId.get(t.id), t));
+    const pending = t.pendingTransactionId ? previousById.get(t.pendingTransactionId) : undefined;
+    const previous = byId.get(t.id) ?? (
+      pending?.pending && pending.accountId === t.accountId ? pending : undefined
+    );
+    byId.set(t.id, carryOverEdits(previous, t));
+    if (!t.pending && pending?.pending && pending.accountId === t.accountId)
+      byId.delete(pending.id);
   }
   for (const id of result.removed) byId.delete(id);
-  const transactions = [...byId.values()].sort((a, b) =>
+  // A provider backfill can reach previously imported CSV history. Stop before
+  // advancing the cursor; equal amounts or names cannot prove row identity.
+  const merged = [...byId.values()];
+  const csvRows = merged.filter((t) => t.source === "csv");
+  for (const accountId of new Set(csvRows.map((t) => t.accountId))) {
+    if (csvHistoryOverlap(merged, csvRows, accountId).count > 0)
+      throw new Error("Bank history overlaps CSV history in this account. Sync was stopped to prevent duplicate charges. Reconcile the overlapping imports before syncing again.");
+  }
+  const transactions = merged.sort((a, b) =>
     b.date.localeCompare(a.date),
   );
 
@@ -85,16 +102,23 @@ export async function syncOneItem(item: Item): Promise<ItemSyncOutcome> {
     const result = await plaidSync(item);
     const latest = await loadItemBundle(item.id);
     if (!latest) return { status: "error", error: "Connection was removed during sync" };
-    await saveItemBundle(buildBundle(latest.item, latest, result));
+    if (latest.item.cursor !== item.cursor)
+      return { status: "error", error: "Another sync changed this connection. Retry sync." };
+    await saveItemBundle(buildBundle(latest.item, latest, result), latest);
     return { status: "healthy", error: null };
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     const status = failureStatus(err);
+    if (err instanceof StorageConflictError) return { status, error: message };
     const latest = await loadItemBundle(item.id);
     if (latest) {
       latest.item.status = status;
       latest.item.error = message;
-      await saveItemBundle(latest);
+      try {
+        await saveItemBundle(latest);
+      } catch (saveError) {
+        if (!(saveError instanceof StorageConflictError)) throw saveError;
+      }
     }
     return { status, error: message };
   }
@@ -107,13 +131,29 @@ export async function syncOneItem(item: Item): Promise<ItemSyncOutcome> {
 /** Recompute today's net-worth snapshot from the full (merged) state. */
 export async function updateSnapshot(): Promise<void> {
   const state = await loadState();
-  recordSnapshot(state, todayKey());
+  const today = todayKey();
+  recordSnapshot(state, today);
+  const snapshot = state.snapshots.find((s) => s.date === today)!;
   const meta = await loadMeta();
-  meta.snapshots = state.snapshots;
+  meta.snapshots = [...meta.snapshots.filter((s) => s.date !== today), snapshot]
+    .sort((a, b) => a.date.localeCompare(b.date));
   await saveMeta(meta);
 }
 
+/** A derived snapshot failure must not make a committed mutation look unsaved. */
+export async function refreshSnapshotAfterMutation(
+  refresh: () => Promise<void> = updateSnapshot,
+): Promise<{ warning?: string }> {
+  try {
+    await refresh();
+    return {};
+  } catch {
+    return { warning: "Changes saved. The net-worth snapshot could not refresh. Do not submit again; use Refresh to retry the snapshot." };
+  }
+}
+
 export interface SyncAllResult {
+  warning?: string;
   items: number;
   errors: { institution: string; error: string | null }[];
 }
@@ -128,6 +168,6 @@ export async function syncAll(): Promise<SyncAllResult> {
     if (outcome.status !== "healthy")
       errors.push({ institution: item.institutionName, error: outcome.error });
   }
-  await updateSnapshot();
-  return { items: plaidItems.length, errors };
+  const snapshot = await refreshSnapshotAfterMutation();
+  return { items: plaidItems.length, errors, ...snapshot };
 }

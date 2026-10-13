@@ -73,7 +73,7 @@ export function LoginForm() {
           <button
             type="submit"
             disabled={loading || !password}
-            className="mt-5 w-full rounded-xl bg-blue py-3 font-semibold text-ink transition-opacity hover:opacity-90 disabled:opacity-40"
+            className="min-h-11 lg:min-h-0 mt-5 w-full rounded-xl bg-blue py-3 font-semibold text-ink transition-opacity hover:opacity-90 disabled:opacity-40"
           >
             {loading ? "Unlocking…" : "Unlock"}
           </button>

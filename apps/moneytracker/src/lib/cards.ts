@@ -12,7 +12,8 @@
 // each card's earn rates to categorized spend.
 
 import { AppState, Account, Transaction } from "./types";
-import { effectiveCategory, isSpend, refundMatchedIds } from "./analytics";
+import { effectiveCategory, isSpend } from "./analytics";
+import { isHousingTransaction } from "./categories";
 
 export type CreditFrequency =
   | "annual"
@@ -38,7 +39,7 @@ export interface CardEarnRate {
  *   - `merchantHints`— lowercased substrings of the merchant/description
  *   - `primary`      — Plaid primary PFC (e.g. FOOD_AND_DRINK)
  * Anything that matches no rule earns the card's `baseEarn`. `annualCap` caps
- * the *spend* that earns the bonus rate over the trailing year; spend beyond it
+ * the *spend* that earns the bonus rate in each calendar year; spend beyond it
  * falls back to `baseEarn` (e.g. Blue Cash's $6k/yr supermarket cap).
  */
 export interface EarnRule {
@@ -535,7 +536,7 @@ export const CARD_CATALOG: CardCatalogEntry[] = [
     cashValueCents: 1.0,
     transferValueCents: 2.0,
     pointValueNote:
-      "TPG values Bilt at ~2.2¢; ~2.0¢ realistic via Hyatt/airline transfers. Cash floor is ~1.0¢ (Bilt Cash) — best used via 1:1 transfer partners.",
+      "Purchase points assume dining is your selected 3x category. Housing points are excluded here; use the rent meter for that estimate. Transfer value uses 2.0¢ per point.",
     matchHints: ["bilt"],
     earnRates: [
       { category: "Dining or grocery (your choice)", multiplier: 3, note: "Pick one as your 3x category; grocery capped $25k/yr" },
@@ -546,7 +547,7 @@ export const CARD_CATALOG: CardCatalogEntry[] = [
     baseEarn: 1,
     earnModel: [
       // 3x is dining OR grocery (your pick) — assume dining, the common choice,
-      // so groceries fall to 1x. Rent earns ~1x (the base), no surcharge.
+      // so groceries fall to 1x. Housing is estimated separately by cycle.
       { label: "Groceries (no bonus)", multiplier: 1, detailed: ["FOOD_AND_DRINK_GROCERIES"] },
       { label: "Dining", multiplier: 3, primary: ["FOOD_AND_DRINK"] },
       { label: "Travel", multiplier: 2, primary: ["TRAVEL"] },
@@ -782,7 +783,7 @@ export const CARD_CATALOG: CardCatalogEntry[] = [
       // 6x U.S. supermarkets capped at $6k/yr (then 1x); restaurants are 1x
       // (NOT supermarkets), so dining stays at base. Select streaming only.
       { label: "U.S. supermarkets", multiplier: 6, detailed: ["FOOD_AND_DRINK_GROCERIES"], annualCap: 6000 },
-      { label: "Select streaming", multiplier: 6, detailed: ["ENTERTAINMENT_TV_AND_MOVIES", "ENTERTAINMENT_MUSIC_AND_AUDIO"], merchantHints: ["netflix", "disney", "hulu", "spotify", "youtube", "hbo", "max", "peacock", "paramount", "apple music", "espn", "sirius", "audible", "pandora"] },
+      { label: "Select streaming", multiplier: 6, merchantHints: ["netflix", "disney", "hulu", "spotify", "youtube", "hbo", "max", "peacock", "paramount", "apple music", "espn", "sirius", "audible", "pandora"] },
       { label: "U.S. gas & transit", multiplier: 3, detailed: ["TRANSPORTATION_GAS", "TRANSPORTATION_PUBLIC_TRANSIT"] },
     ],
     credits: [
@@ -923,6 +924,7 @@ function monthsBefore(anchor: string, months: number): string {
 }
 
 export interface CardSpend {
+  periodStart: string;
   /** Spend in the trailing 12 months, by Plaid PFC primary category. */
   byCategory: Map<string, number>;
   total12mo: number;
@@ -938,33 +940,32 @@ export function cardSpend(state: AppState, accountId: string): CardSpend {
   const cutoff = monthsBefore(anchor, 12);
   const yearStart = anchor.slice(0, 4) + "-01-01";
   const byCategory = new Map<string, number>();
-  const neutralized = refundMatchedIds(state);
   let total12mo = 0;
   let totalYtd = 0;
   let count = 0;
   for (const t of state.transactions) {
     if (t.accountId !== accountId) continue;
-    if (!isSpend(t, neutralized)) continue;
+    if (!isSpend(t)) continue;
     if (t.date >= yearStart) totalYtd += t.amount;
     if (t.date < cutoff) continue;
     const cat = effectiveCategory(t);
     byCategory.set(cat, (byCategory.get(cat) ?? 0) + t.amount);
     total12mo += t.amount;
-    count += 1;
+    if (t.amount > 0) count += 1;
   }
-  return { byCategory, total12mo, totalYtd, count };
+  return { byCategory, total12mo, totalYtd, count, periodStart: cutoff };
 }
 
 /** The trailing-12-month posted spend transactions on one account, oldest first
  *  (date-ascending so per-rule spend caps fill from the earliest spend). */
-export function cardSpendTxns(state: AppState, accountId: string): Transaction[] {
+export function cardSpendTxns(state: AppState, accountId: string, includeCapHistory = false): Transaction[] {
   const anchor = latestDate(state);
-  const cutoff = monthsBefore(anchor, 12);
-  const neutralized = refundMatchedIds(state);
+  const windowStart = monthsBefore(anchor, 12);
+  const cutoff = includeCapHistory ? `${windowStart.slice(0, 4)}-01-01` : windowStart;
   return state.transactions
     .filter(
       (t) =>
-        t.accountId === accountId && t.date >= cutoff && isSpend(t, neutralized),
+        t.accountId === accountId && t.date >= cutoff && isSpend(t),
     )
     .sort((a, b) => a.date.localeCompare(b.date));
 }
@@ -1017,8 +1018,8 @@ function ruleMatches(rule: EarnRule, t: Transaction): boolean {
   if (rule.detailed && t.categoryDetailed && rule.detailed.includes(t.categoryDetailed))
     return true;
   if (rule.merchantHints) {
-    const hay = `${t.merchantName ?? ""} ${t.name}`.toLowerCase();
-    if (rule.merchantHints.some((h) => hay.includes(h))) return true;
+    const hay = tokenize(`${t.merchantName ?? ""} ${t.name}`);
+    if (bestHintMatchLen(hay, rule.merchantHints) > 0) return true;
   }
   if (rule.primary && rule.primary.includes(effectiveCategory(t))) return true;
   return false;
@@ -1046,6 +1047,52 @@ export interface PointEstimate {
 
 const BASE_LABEL = "Everything else";
 
+function isBenefitPosting(card: CardCatalogEntry, t: Transaction): boolean {
+  const tokens = tokenize(`${t.name} ${t.merchantName ?? ""}`);
+  if (/\b(refund|return|reversal)\b/i.test(t.name)) return false;
+  const namesCredit = /\b(credit|reimbursement|benefit)\b|hotelcredit/i.test(t.name);
+  return (namesCredit && card.credits.some((c) => bestHintMatchLen(tokens, c.creditPostHints ?? []) > 0)) ||
+    /\b(statement\s+credit|cash\s?back|rewards?\s+(credit|redemption)|amex\s+offer)\b/i.test(t.name);
+}
+
+/** Net known returns against purchases; keep unmatched refunds as deductions. */
+function cardPurchaseHistory(card: CardCatalogEntry, transactions: Transaction[]) {
+  const eligible = transactions.filter((t) => isSpend(t) && effectiveCategory(t) !== "BANK_FEES" &&
+    !(card.cardKey === "bilt-mastercard" && isHousingTransaction(t)) &&
+    !/\b(interest\s+charge|annual\s+(membership\s+)?fee|late\s+(payment\s+)?fee|cash\s+advance|balance\s+transfer)\b/i.test(t.name));
+  const purchases = eligible.filter((t) => t.amount > 0).map((t) => ({ ...t }))
+    .sort((a, b) => b.date.localeCompare(a.date));
+  const merchantKey = (t: Transaction) => (t.merchantName || t.name)
+    .normalize("NFKC").toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim();
+  const refunds = new Map<string, { purchaseId: string | null; amount: number }[]>();
+  for (const refund of eligible.filter((t) => t.amount < 0 && !isBenefitPosting(card, t))
+    .sort((a, b) => a.date.localeCompare(b.date))) {
+    let remaining = Math.round(-refund.amount * 100);
+    const allocations: { purchaseId: string | null; amount: number }[] = [];
+    const merchant = merchantKey(refund);
+    for (const purchase of purchases) {
+      if (!merchant || purchase.accountId !== refund.accountId || purchase.currency !== refund.currency || purchase.date > refund.date ||
+        merchantKey(purchase) !== merchant || purchase.amount <= 0) continue;
+      const cents = Math.round(purchase.amount * 100);
+      const returned = Math.min(cents, remaining);
+      purchase.amount = (cents - returned) / 100;
+      remaining -= returned;
+      allocations.push({ purchaseId: purchase.id, amount: returned / 100 });
+      if (!remaining) break;
+    }
+    if (remaining) {
+      allocations.push({ purchaseId: null, amount: remaining / 100 });
+    }
+    refunds.set(refund.id, allocations);
+  }
+  return {
+    purchases: purchases.filter((t) => t.amount > 0),
+    entries: eligible.filter((t) => t.amount > 0 || refunds.has(t.id))
+      .sort((a, b) => a.date.localeCompare(b.date) || b.amount - a.amount),
+    refunds,
+  };
+}
+
 /**
  * Estimate points from real transactions using the card's ordered earn model.
  * For each txn the first matching rule wins; unmatched spend earns `baseEarn`.
@@ -1058,9 +1105,12 @@ const BASE_LABEL = "Everything else";
 export function estimatePointsDetailed(
   card: CardCatalogEntry,
   txns: Transaction[],
+  periodStart = "0000-01-01",
 ): PointEstimate {
   const lines = new Map<string, PointsLine>();
   const ruleSpend = new Map<string, number>(); // accumulated matched spend, for caps
+  const earned = new Map<string, { label: string; amount: number; multiplier: number; capKey: string | null }[]>();
+  const history = cardPurchaseHistory(card, txns);
 
   const add = (label: string, spend: number, points: number, mult: number, capped: boolean) => {
     const line = lines.get(label) ?? { label, spend: 0, points: 0, multiplier: mult, capped: false };
@@ -1070,25 +1120,53 @@ export function estimatePointsDetailed(
     lines.set(label, line);
   };
 
-  for (const t of txns) {
+  for (const t of history.entries) {
     const amt = t.amount;
-    if (amt <= 0) continue;
     const rule = card.earnModel.find((r) => ruleMatches(r, t));
+    if (amt < 0) {
+      for (const allocation of history.refunds.get(t.id) ?? []) {
+        let remaining = allocation.amount;
+        const portions = allocation.purchaseId ? earned.get(allocation.purchaseId) ?? [] : [];
+        for (let i = portions.length - 1; i >= 0 && remaining > 0; i--) {
+          const portion = portions[i];
+          const returned = Math.min(portion.amount, remaining);
+          portion.amount = Math.round((portion.amount - returned) * 100) / 100;
+          remaining = Math.round((remaining - returned) * 100) / 100;
+          if (t.date >= periodStart) add(portion.label, -returned, -returned * portion.multiplier, portion.multiplier, false);
+          if (portion.capKey) ruleSpend.set(portion.capKey, Math.max(0, (ruleSpend.get(portion.capKey) ?? 0) - returned));
+        }
+        if (remaining > 0 && t.date >= periodStart) {
+          const multiplier = rule?.multiplier ?? card.baseEarn;
+          add(rule?.label ?? BASE_LABEL, -remaining, -remaining * multiplier, multiplier, false);
+        }
+      }
+      continue;
+    }
+    const portions: { label: string; amount: number; multiplier: number; capKey: string | null }[] = [];
+    const earn = (label: string, amount: number, multiplier: number, capKey: string | null, capped = false) => {
+      if (amount <= 0) return;
+      portions.push({ label, amount, multiplier, capKey });
+      if (t.date >= periodStart) add(label, amount, amount * multiplier, multiplier, capped);
+    };
     if (!rule) {
-      add(BASE_LABEL, amt, amt * card.baseEarn, card.baseEarn, false);
+      earn(BASE_LABEL, amt, card.baseEarn, null);
+      earned.set(t.id, portions);
       continue;
     }
     if (rule.annualCap != null) {
-      const used = ruleSpend.get(rule.label) ?? 0;
+      // The input can span two calendar years in its trailing twelve months.
+      const capKey = `${t.date.slice(0, 4)}|${rule.label}`;
+      const used = ruleSpend.get(capKey) ?? 0;
       const remaining = Math.max(0, rule.annualCap - used);
       const atBonus = Math.min(amt, remaining);
       const atBase = amt - atBonus;
-      ruleSpend.set(rule.label, used + amt);
-      if (atBonus > 0) add(rule.label, atBonus, atBonus * rule.multiplier, rule.multiplier, atBase > 0);
-      if (atBase > 0) add(BASE_LABEL, atBase, atBase * card.baseEarn, card.baseEarn, false);
+      ruleSpend.set(capKey, used + amt);
+      earn(rule.label, atBonus, rule.multiplier, capKey, atBase > 0);
+      earn(BASE_LABEL, atBase, card.baseEarn, capKey);
     } else {
-      add(rule.label, amt, amt * rule.multiplier, rule.multiplier, false);
+      earn(rule.label, amt, rule.multiplier, null);
     }
+    earned.set(t.id, portions);
   }
 
   const points = Math.round([...lines.values()].reduce((a, l) => a + l.points, 0));
@@ -1372,19 +1450,17 @@ export function detectCreditUsage(
   card: CardCatalogEntry,
   todayISO: string = new Date().toISOString().slice(0, 10),
 ): CreditUsage[] {
-  const neutralized = refundMatchedIds(state);
   const live = state.transactions.filter(
-    (t) => t.accountId === accountId && !t.hidden && !t.pending && !neutralized.has(t.id),
+    (t) => t.accountId === accountId && !t.hidden && !t.pending && t.date <= todayISO,
   );
   const hay = (t: Transaction) =>
     tokenize(`${t.merchantName ?? ""} ${t.name} ${t.categoryPrimary} ${t.categoryDetailed ?? ""}`);
 
   // Pre-tokenize and split into spend (outflow) and posting (inflow) pools.
-  const spendPool = live
-    .filter((t) => isSpend(t, neutralized))
+  const spendPool = cardPurchaseHistory(card, live).purchases
     .map((t) => ({ t, toks: hay(t) }));
   const postPool = live
-    .filter((t) => t.amount < 0)
+    .filter((t) => t.amount < 0 && isBenefitPosting(card, t))
     .map((t) => ({ t, toks: hay(t) }));
 
   // Attribution: the LONGEST (most-specific) matched hint wins, so an Uber ride

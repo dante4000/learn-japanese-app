@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { EstimatedBillsNotice } from "@/components/EstimatedBillsNotice";
 import { loadScopedState } from "@/lib/scoped-state";
 import {
   summarize,
@@ -24,7 +25,7 @@ import { StatCard, SectionCard, EmptyState, PageHeading } from "@/components/ui"
 export const dynamic = "force-dynamic";
 
 export default async function OverviewPage() {
-  const { state, focus } = await loadScopedState();
+  const { state, fullState, focus } = await loadScopedState();
 
   if (state.accounts.length === 0) {
     return (
@@ -47,7 +48,8 @@ export default async function OverviewPage() {
     .slice(0, 6);
   const acctName = new Map(state.accounts.map((a) => [a.id, a.name]));
 
-  const bilt = resolveBiltMeter(state, todayKey());
+  const biltCandidate = resolveBiltMeter(fullState, todayKey());
+  const bilt = !focus || focus.id === biltCandidate?.account.id ? biltCandidate : null;
 
   return (
     <div>
@@ -72,7 +74,7 @@ export default async function OverviewPage() {
               {focus.subtype || focus.type}
               {focus.mask ? ` ···· ${focus.mask}` : ""}
             </div>
-            <div className="tnum mt-2 font-display text-5xl tracking-tight text-cream md:text-6xl">
+            <div className="tnum mt-2 break-words font-display text-4xl sm:text-5xl tracking-tight text-cream md:text-6xl">
               {formatMoney(focus.balances.current ?? 0, cur, { cents: false })}
             </div>
             <div className="mt-3 flex flex-wrap gap-x-6 gap-y-1 text-sm">
@@ -103,7 +105,7 @@ export default async function OverviewPage() {
             <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
               <div>
                 <div className="label-eyebrow">Net worth</div>
-                <div className="tnum mt-2 font-display text-5xl tracking-tight text-cream md:text-6xl">
+                <div className="tnum mt-2 break-words font-display text-4xl sm:text-5xl tracking-tight text-cream md:text-6xl">
                   {formatMoney(s.netWorth.netWorth, cur, { cents: false })}
                 </div>
                 <div className="mt-3 flex flex-wrap gap-x-6 gap-y-1 text-sm">
@@ -125,8 +127,10 @@ export default async function OverviewPage() {
         )}
       </section>
 
+      <EstimatedBillsNotice state={state} months={[month]} currency={cur} />
+
       {/* Stat row */}
-      <div className="mt-5 grid grid-cols-2 gap-4 lg:grid-cols-3">
+      <div className="mt-5 grid grid-cols-1 gap-3 min-[420px]:grid-cols-2 sm:gap-4 lg:grid-cols-3">
         <StatCard
           label="Spent this month"
           value={formatMoney(s.monthSpending, cur, { cents: false })}
@@ -198,7 +202,7 @@ export default async function OverviewPage() {
                     style={{ background: c.color }}
                   />
                   <span className="text-cream-dim">{c.label}</span>
-                  <span className="tnum ml-auto text-cream">
+                  <span className="tnum ml-auto shrink-0 text-cream">
                     {formatMoney(c.total, cur, { cents: false })}
                   </span>
                 </li>
@@ -234,17 +238,17 @@ export default async function OverviewPage() {
               {merchants.map((m) => (
                 <li key={m.name}>
                   <Link
-                    href={`/transactions?merchant=${encodeURIComponent(m.name)}`}
+                    href={`/transactions?merchant=${encodeURIComponent(m.name)}&month=${month}`}
                     className="-mx-2 flex items-center gap-3 rounded-lg px-2 py-1 transition-colors hover:bg-surface-2"
                   >
                     <span className="grid h-9 w-9 place-items-center rounded-lg border hairline bg-surface-2 text-sm text-slate-soft">
                       {m.name.slice(0, 1).toUpperCase()}
                     </span>
-                    <div className="min-w-0">
+                    <div className="min-w-0 flex-1">
                       <div className="truncate text-sm text-cream">{m.name}</div>
                       <div className="text-xs text-faint">{m.count}×</div>
                     </div>
-                    <span className="tnum ml-auto text-sm text-cream">
+                    <span className="tnum ml-auto shrink-0 text-sm text-cream">
                       {formatMoney(m.total, cur, { cents: false })}
                     </span>
                   </Link>
@@ -273,14 +277,14 @@ export default async function OverviewPage() {
                   <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border hairline bg-surface-2">
                     {meta.glyph}
                   </span>
-                  <div className="min-w-0">
+                  <div className="min-w-0 flex-1">
                     <div className="truncate text-sm text-cream">
                       {displayPayee(t.merchantName, t.name, acctName.get(t.accountId))}
                     </div>
                     <div className="text-xs text-faint">{formatDate(t.date)}</div>
                   </div>
                   <span
-                    className={`tnum ml-auto text-sm ${t.amount < 0 ? "text-blue" : "text-cream"}`}
+                    className={`tnum ml-auto shrink-0 text-sm ${t.amount < 0 ? "text-blue" : "text-cream"}`}
                   >
                     {formatMoney(-t.amount, cur, { sign: true })}
                   </span>

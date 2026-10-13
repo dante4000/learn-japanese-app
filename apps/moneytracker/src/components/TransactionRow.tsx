@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import { isSyntheticBaseline } from "@/lib/analytics";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Transaction } from "@/lib/types";
@@ -68,27 +70,31 @@ export function TransactionRow({
   accountName,
   currency,
   editor,
+  possibleDuplicate = false,
 }: {
   t: Transaction;
   accountName?: string;
   currency: string;
   editor: TransactionEditor;
+  possibleDuplicate?: boolean;
 }) {
   const meta = categoryMeta(resolveCategoryKey(t));
-  const open = editor.editingId === t.id;
+  const synthetic = isSyntheticBaseline(t);
+  const open = !synthetic && editor.editingId === t.id;
   const { busy, noteDraft, setNoteDraft, update, openEditor } = editor;
 
   return (
-    <li className="px-4">
-      <div className="flex items-center gap-3 py-3">
+    <li className="px-3 sm:px-4">
+      <div className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-x-3 gap-y-1 py-3 sm:flex">
         <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border hairline bg-surface-2">
           {meta.glyph}
         </span>
         <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2">
-            <span className="truncate text-sm text-cream">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="min-w-0 max-w-full truncate text-sm text-cream">
               {displayPayee(t.merchantName, t.name, accountName)}
             </span>
+            {possibleDuplicate && <span className="rounded bg-coral/10 px-1.5 py-0.5 text-xs text-coral">Possible duplicate</span>}
             {t.note && (
               <span
                 title={t.note}
@@ -108,28 +114,29 @@ export function TransactionRow({
               </span>
             )}
           </div>
-          <div className="flex items-center gap-2 text-xs text-faint">
+          <div className="flex flex-wrap items-center gap-x-2 text-xs text-faint">
             <span>{formatDate(t.date)}</span>
             <span>·</span>
-            <button
+            {synthetic ? <Link href="/recurring" className="inline-flex min-h-11 items-center text-blue">Edit estimate</Link> : <button
               disabled={busy}
               aria-expanded={open}
+              aria-label={`Edit ${displayPayee(t.merchantName, t.name, accountName)}`}
               onClick={() => openEditor(t)}
-              className="hover:text-blue"
+              className="min-h-11 lg:min-h-0 hover:text-blue"
               style={{ color: meta.color }}
             >
-              {meta.label}
-            </button>
+              {meta.label} · Edit
+            </button>}
             {accountName && (
               <>
                 <span>·</span>
-                <span className="truncate">{accountName}</span>
+                <span className="min-w-0 max-w-full truncate">{accountName}</span>
               </>
             )}
           </div>
         </div>
         <span
-          className={`tnum text-sm ${t.amount < 0 ? "text-blue" : "text-cream"}`}
+          className={`tnum col-start-2 justify-self-end shrink-0 text-sm ${t.amount < 0 ? "text-blue" : "text-cream"}`}
         >
           {formatMoney(-t.amount, currency, { sign: true })}
         </span>
@@ -147,7 +154,7 @@ export function TransactionRow({
                   aria-pressed={resolveCategoryKey(t) === c.key}
                   disabled={busy}
                   onClick={() => update(t.id, { userCategory: c.key })}
-                  className="rounded-lg border hairline px-2.5 py-1 text-xs text-cream-dim transition-colors hover:border-line-2"
+                  className="min-h-11 lg:min-h-0 rounded-lg border hairline px-2.5 py-1 text-xs text-cream-dim transition-colors hover:border-line-2"
                   style={{
                     borderColor:
                       resolveCategoryKey(t) === c.key ? c.color : undefined,
@@ -162,25 +169,25 @@ export function TransactionRow({
           <div className="flex flex-wrap gap-2">
             <input
               aria-label="Transaction note"
-          value={noteDraft}
+              value={noteDraft}
               onChange={(e) => setNoteDraft(e.target.value)}
               placeholder="Add a note — why, who, what for…"
-              className="min-w-48 flex-1 rounded-lg border hairline bg-surface px-3 py-1.5 text-xs text-cream outline-none placeholder:text-faint focus:border-blue"
+              className="min-w-0 w-full flex-auto sm:min-w-48 sm:flex-1 rounded-lg border hairline bg-surface px-3 py-1.5 text-base sm:text-xs text-cream outline-none placeholder:text-faint focus:border-blue"
             />
             <button
               disabled={busy || noteDraft === (t.note ?? "")}
               onClick={() => update(t.id, { note: noteDraft.trim() || null })}
-              className="rounded-lg bg-blue px-3 py-1.5 text-xs font-semibold text-ink transition-opacity hover:opacity-90 disabled:opacity-40"
+              className="min-h-11 lg:min-h-0 rounded-lg bg-blue px-3 py-1.5 text-xs font-semibold text-ink transition-opacity hover:opacity-90 disabled:opacity-40"
             >
               Save note
             </button>
           </div>
 
-          <div className="mt-4 flex gap-2">
+          <div className="mt-4 flex flex-wrap gap-2">
             <button
               disabled={busy}
               onClick={() => update(t.id, { hidden: !t.hidden })}
-              className="rounded-lg border hairline px-3 py-1.5 text-xs text-cream-dim hover:border-line-2"
+              className="min-h-11 lg:min-h-0 rounded-lg border hairline px-3 py-1.5 text-xs text-cream-dim hover:border-line-2"
             >
               {t.hidden ? "Unhide" : "Hide from analytics"}
             </button>
@@ -188,7 +195,7 @@ export function TransactionRow({
               <button
                 disabled={busy}
                 onClick={() => update(t.id, { userCategory: null })}
-                className="rounded-lg px-3 py-1.5 text-xs text-faint hover:text-coral"
+                className="min-h-11 lg:min-h-0 rounded-lg px-3 py-1.5 text-xs text-faint hover:text-coral"
               >
                 Reset category
               </button>

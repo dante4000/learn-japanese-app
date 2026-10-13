@@ -70,22 +70,22 @@ export function BiltRentMeter({ meter, delay = 0 }: { meter: BiltMeterView; dela
 
   return (
     <section
-      className="card rise p-5 md:p-6 mt-5"
+      className="card rise min-w-0 p-4 sm:p-5 md:p-6 mt-5"
       style={{ animationDelay: `${delay}ms` }}
     >
-      <header className="flex items-start justify-between">
+      <header className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <div className="label-eyebrow">Bilt rent rewards</div>
+          <div className="label-eyebrow">Bilt rent rewards estimate</div>
           <div className="mt-1 flex items-baseline gap-2">
-            <span className="font-display text-4xl tracking-tight text-cream">
+            <span className="break-words font-display text-3xl sm:text-4xl tracking-tight text-cream">
               {noHousing ? "—" : `${rewards.points.toLocaleString()} pts`}
             </span>
           </div>
           {!noHousing && (
             <div className="mt-1 text-sm text-blue">
               {rewards.multiplier === 0
-                ? "Below 0.5× — earning the 250 pt floor"
-                : `Earning ${mult(rewards.multiplier)} on rent`}
+                ? "Below 0.5× — estimated 250 pt minimum"
+                : `Estimated ${mult(rewards.multiplier)} on housing`}
             </div>
           )}
         </div>
@@ -93,7 +93,7 @@ export function BiltRentMeter({ meter, delay = 0 }: { meter: BiltMeterView; dela
           onClick={() => setEditing((v) => !v)}
           aria-expanded={editing}
           aria-label="Edit housing payment and statement cycle"
-          className="hairline rounded-lg bg-surface px-2.5 py-1 text-xs text-muted hover:text-cream"
+          className="hairline min-h-11 rounded-lg bg-surface px-2.5 py-1 text-xs text-muted hover:text-cream"
         >
           {editing ? "Close" : "Edit"}
         </button>
@@ -106,7 +106,7 @@ export function BiltRentMeter({ meter, delay = 0 }: { meter: BiltMeterView; dela
         </p>
       ) : (
         <>
-          <div className="mt-4 flex items-end justify-between text-sm">
+          <div className="mt-4 flex flex-wrap items-end justify-between gap-3 text-sm">
             <div>
               <div className="text-muted">Everyday spend</div>
               <div className="tnum mt-0.5 text-lg text-cream">
@@ -153,6 +153,7 @@ export function BiltRentMeter({ meter, delay = 0 }: { meter: BiltMeterView; dela
           </p>
 
           <p className="mt-1 text-xs text-muted">
+            Assumes an eligible housing payment this cycle. Confirm rewards and cycle dates in Bilt.
             Statement {meter.cycleLabel} · resets each cycle.
             {meter.housingFromOverride ? "" : " Housing from your rent baseline."}
           </p>
@@ -160,7 +161,7 @@ export function BiltRentMeter({ meter, delay = 0 }: { meter: BiltMeterView; dela
       )}
 
       {editing && (
-        <form onSubmit={save} className="mt-4 grid grid-cols-2 gap-2 border-t border-ink/30 pt-4">
+        <form onSubmit={save} className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 border-t border-ink/30 pt-4">
           <label className="text-xs text-muted">
             Housing payment
             <input
@@ -171,7 +172,7 @@ export function BiltRentMeter({ meter, delay = 0 }: { meter: BiltMeterView; dela
               value={housing}
               onChange={(e) => setHousing(e.target.value)}
               placeholder="from rent baseline"
-              className="hairline mt-1 w-full rounded-lg bg-surface px-2.5 py-1.5 text-sm text-cream"
+              className="hairline mt-1 min-h-11 min-w-0 w-full rounded-lg bg-surface px-2.5 py-1.5 text-base sm:text-sm text-cream"
             />
           </label>
           <label className="text-xs text-muted">
@@ -183,15 +184,15 @@ export function BiltRentMeter({ meter, delay = 0 }: { meter: BiltMeterView; dela
               max="28"
               value={day}
               onChange={(e) => setDay(e.target.value)}
-              className="hairline mt-1 w-full rounded-lg bg-surface px-2.5 py-1.5 text-sm text-cream"
+              className="hairline mt-1 min-h-11 min-w-0 w-full rounded-lg bg-surface px-2.5 py-1.5 text-base sm:text-sm text-cream"
             />
           </label>
-          {error && <p role="alert" className="col-span-2 text-xs text-coral">{error}</p>}
-          <div className="col-span-2 flex justify-end">
+          {error && <p role="alert" className="sm:col-span-2 text-xs text-coral">{error}</p>}
+          <div className="sm:col-span-2 flex justify-end">
             <button
               type="submit"
               disabled={busy}
-              className="rounded-lg border border-blue/40 bg-blue/15 px-3 py-1.5 text-sm text-blue disabled:opacity-50"
+              className="min-h-11 rounded-lg border border-blue/40 bg-blue/15 px-3 py-1.5 text-sm text-blue disabled:opacity-50"
             >
               {busy ? "Saving…" : "Save"}
             </button>

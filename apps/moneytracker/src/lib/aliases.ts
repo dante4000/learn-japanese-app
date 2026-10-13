@@ -67,17 +67,20 @@ export function incomeSourceLabel(
 ): string {
   const aliased = displayPayee(merchant, name);
   // An alias fired — trust it verbatim.
-  if (aliased !== (merchant || name || "Unknown")) return aliased;
+  if (aliased !== (merchant || name || "Unknown")) return aliased.toUpperCase();
 
   let s = merchant?.trim() || name?.trim() || "";
   s = s.replace(/^\s*zelle\s+(payment\s+)?from\s+/i, "");
   s = s.replace(/^\s*(ach\s+credit|deposit|direct\s+dep(osit)?|dir\s+dep)\s+/i, "");
-  // Drop everything from a reference marker onward ("… PPD ID: 9138864001").
-  s = s.replace(/\b(ppd|web|co|conf|trace|ref)\s*id\b.*/i, "");
-  // Drop a trailing "PAY"/"PAYMENT" followed by reference numbers.
-  s = s.replace(/\bpay(ment)?\b\s*\d.*/i, "");
-  // Remove any leftover token containing a digit (confirmation #s, gibberish).
-  s = s.replace(/\b\S*\d\S*\b/g, " ");
-  s = s.replace(/\s+/g, " ").trim();
-  return s || aliased || "Unknown";
+  const bankTransfer = /\btransfer\s+(?:ccd|ppd|web)\s*id\b/i.test(s);
+  // Reference markers delimit bank metadata; digits in payer names remain.
+  s = s.replace(/\b(?:ppd|ccd|web|co|conf|trace|ref)\s*id\b.*/i, "");
+  s = s.replace(/\b(?:confirmation|reference|trace)(?:\s*(?:number|no\.?|#))?\s*[:#]?\s+[a-z0-9-]+\s*$/i, "");
+  s = s.replace(/\bpay(?:ment)?\b\s*\d.*/i, "");
+  s = s.replace(/\s+(?=[a-z0-9-]*\d)[a-z0-9-]{8,}\s*$/i, "");
+  if (bankTransfer) s = s.replace(/\s+transfer\s*$/i, "");
+  s = s.replace(/\s+(?:payroll|salary)\s*$/i, "");
+  s = s.replace(/\s+/g, " ").replace(/[\s:;-]+$/, "").trim();
+  const label = (s || aliased || "Unknown").toUpperCase();
+  return /^RARELIQUID(?: LLC)?$/.test(label) ? "RARELIQUID" : label;
 }

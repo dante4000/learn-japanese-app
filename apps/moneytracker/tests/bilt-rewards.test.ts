@@ -113,18 +113,18 @@ test("cycle rolls over the year boundary (Dec -> Jan)", () => {
 
 const cycle = statementCycle("2026-06-30", 23);
 
-test("sums only non-rent outflows on the Bilt account within the cycle", () => {
+test("sums non-rent purchases net of refunds on the Bilt account within the cycle", () => {
   const txns = [
     tx({ amount: 50, date: "2026-06-24" }), // counts
     tx({ amount: 100, date: "2026-07-10" }), // counts
     tx({ amount: 4100, date: "2026-06-25", categoryPrimary: "RENT_AND_UTILITIES" }), // rent excluded
-    tx({ amount: -30, date: "2026-06-26" }), // inflow/refund excluded
+    tx({ amount: -30, date: "2026-06-26" }), // refund reduces spend
     tx({ amount: 999, date: "2026-06-22" }), // before cycle
     tx({ amount: 999, date: "2026-07-23" }), // after cycle
     tx({ amount: 70, date: "2026-06-27", accountId: "other" }), // other account
     tx({ amount: 80, date: "2026-06-28", hidden: true }), // hidden excluded
   ];
-  assert.equal(biltEverydaySpend(txns, "bilt_1", cycle), 150);
+  assert.equal(biltEverydaySpend(txns, "bilt_1", cycle), 120);
 });
 
 test("rent excluded via userCategory override too", () => {

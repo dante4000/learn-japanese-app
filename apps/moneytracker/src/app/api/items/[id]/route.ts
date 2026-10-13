@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isAuthenticated } from "@/lib/auth";
-import { loadItemBundle, deleteItemBundle } from "@/lib/store";
-import { updateSnapshot } from "@/lib/sync";
-import { plaidClient } from "@/lib/providers/plaid";
+import { loadItemBundle, deleteItemBundle, StorageConflictError } from "@/lib/store";
+import { refreshSnapshotAfterMutation } from "@/lib/sync";
+import { removePlaidItem } from "@/lib/providers/plaid";
 import { decrypt } from "@/lib/crypto";
 
-// Remove a connection: revoke the Plaid item (so the token can't be reused),
-// then delete its bundle (accounts, transactions, recurring) entirely.
+// Delete the stored revision before revoking. A stale request must not revoke
+// a connection that a concurrent edit or sync preserved.
 export async function DELETE(
   _req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
@@ -18,17 +18,22 @@ export async function DELETE(
   const bundle = await loadItemBundle(id);
   if (!bundle) return NextResponse.json({ ok: true });
 
+  let warning: string | undefined;
+  try {
+    ({ warning } = await deleteItemBundle(id, bundle));
+  } catch (error) {
+    if (error instanceof StorageConflictError) return NextResponse.json({ error: "Data changed while saving. Refresh and try again." }, { status: 409 });
+    throw error;
+  }
   if (bundle.item.provider === "plaid" && bundle.item.accessTokenEnc) {
     try {
-      await plaidClient().itemRemove({
-        access_token: decrypt(bundle.item.accessTokenEnc),
-      });
+      await removePlaidItem(decrypt(bundle.item.accessTokenEnc));
     } catch {
-      // best-effort revocation; still purge locally
+      // Local deletion succeeded. Do not retain credentials for a failed revoke.
     }
   }
 
-  await deleteItemBundle(id);
-  await updateSnapshot();
-  return NextResponse.json({ ok: true });
+  const snapshot = await refreshSnapshotAfterMutation();
+  warning = [warning, snapshot.warning].filter(Boolean).join(" ") || undefined;
+  return NextResponse.json({ ok: true, ...(warning ? { warning } : {}) });
 }

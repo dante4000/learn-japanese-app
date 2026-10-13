@@ -29,9 +29,10 @@ export function SpendingTrends({
     1,
     ...pace.points.map((p) => Math.max(p.current ?? 0, p.previous ?? 0)),
   );
+  const minY = Math.min(0, ...pace.points.map((p) => Math.min(p.current ?? 0, p.previous ?? 0)));
   const x = (day: number) =>
     pad + ((day - 1) / Math.max(1, pace.daysInMonth - 1)) * (W - pad * 2);
-  const y = (v: number) => H - pad - (v / maxY) * (H - pad * 2);
+  const y = (v: number) => H - pad - ((v - minY) / (maxY - minY)) * (H - pad * 2);
   const pathFor = (key: "current" | "previous") => {
     const pts = pace.points
       .filter((p) => p[key] != null)

@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
   }
   try {
     const result = await syncAll();
-    return NextResponse.json({ ok: true, items: result.items });
+    return NextResponse.json({ ok: true, ...result });
   } catch (err) {
     return NextResponse.json(
       { error: err instanceof Error ? err.message : "Sync failed" },

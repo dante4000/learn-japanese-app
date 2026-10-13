@@ -19,7 +19,7 @@ export function WeekdayBars({
             <div
               className="w-full max-w-8 rounded-t-sm transition-[height] motion-reduce:transition-none"
               style={{
-                height: `${(d.total / max) * 100}%`,
+                height: `${(Math.max(0, d.total) / max) * 100}%`,
                 background:
                   "linear-gradient(180deg, var(--color-coral), var(--color-coral-deep))",
               }}

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { EstimatedBillsNotice } from "@/components/EstimatedBillsNotice";
 import { loadScopedState } from "@/lib/scoped-state";
 import {
   availableMonths,
@@ -6,8 +7,8 @@ import {
   monthlyComposition,
   categoryHabits,
   topMerchants,
-  effectiveCategory,
 } from "@/lib/analytics";
+import { isHousingTransaction } from "@/lib/categories";
 import { formatMoney, formatMonth } from "@/lib/format";
 import { Donut } from "@/components/charts/Donut";
 import { CompositionBars } from "@/components/charts/CompositionBars";
@@ -50,7 +51,7 @@ export default async function SpendingPage({
   const selected =
     sp.month && months.includes(sp.month) ? sp.month : months[months.length - 1];
 
-  // Rent toggle: drop the Rent & Utilities category from every total on the tab.
+  // Exclude housing while retaining utilities.
   // Included by default; ?rent=exclude filters it out of the state the whole
   // page derives from.
   const rentExcluded = sp.rent === "exclude";
@@ -58,7 +59,7 @@ export default async function SpendingPage({
     ? {
         ...state,
         transactions: state.transactions.filter(
-          (t) => effectiveCategory(t) !== "RENT_AND_UTILITIES",
+          (t) => !isHousingTransaction(t),
         ),
       }
     : state;
@@ -82,7 +83,7 @@ export default async function SpendingPage({
 
   return (
     <div>
-      <div className="mb-6 flex items-end justify-between gap-3">
+      <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
         <PageHeading
           title="Spending"
           subtitle={
@@ -91,14 +92,16 @@ export default async function SpendingPage({
               : "Your monthly habits and where the money goes."
           }
         />
-        <div className="mb-1 flex shrink-0 items-center gap-2">
+        <div className="mb-1 flex flex-wrap items-center gap-2">
           <RentToggle excluded={rentExcluded} />
           <MonthPicker months={months} selected={selected} />
         </div>
       </div>
 
+      <EstimatedBillsNotice state={view} months={[selected]} currency={cur} />
+
       {/* Stat row */}
-      <div className="mb-5 grid grid-cols-2 gap-4 lg:grid-cols-3">
+      <div className="mb-5 grid grid-cols-1 gap-3 min-[420px]:grid-cols-2 sm:gap-4 lg:grid-cols-3">
         <StatCard
           label={`Spent · ${formatMonth(selected)}`}
           value={formatMoney(total, cur, { cents: false })}
@@ -158,11 +161,11 @@ export default async function SpendingPage({
                 const pct = total ? (c.total / total) * 100 : 0;
                 return (
                   <div key={c.category}>
-                    <div className="flex items-center gap-2 text-sm">
+                    <div className="flex flex-wrap items-center gap-2 text-sm">
                       <span>{c.glyph}</span>
                       <span className="text-cream-dim">{c.label}</span>
                       <span className="text-xs text-faint">· {c.count}×</span>
-                      <span className="tnum ml-auto text-cream">
+                      <span className="tnum ml-auto shrink-0 text-cream">
                         {formatMoney(c.total, cur, { cents: false })}
                       </span>
                       <span className="tnum w-10 text-right text-muted">
@@ -172,7 +175,7 @@ export default async function SpendingPage({
                     <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-surface-2">
                       <div
                         className="h-full rounded-full"
-                        style={{ width: `${pct}%`, background: c.color }}
+                        style={{ width: `${Math.max(0, Math.min(100, pct))}%`, background: c.color }}
                       />
                     </div>
                   </div>
@@ -250,11 +253,11 @@ export default async function SpendingPage({
                   <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border hairline bg-surface-2 text-sm text-slate">
                     {m.name.slice(0, 1).toUpperCase()}
                   </span>
-                  <div className="min-w-0">
+                  <div className="min-w-0 flex-1">
                     <div className="truncate text-sm text-cream">{m.name}</div>
                     <div className="text-xs text-faint">{m.count}×</div>
                   </div>
-                  <span className="tnum ml-auto text-sm text-cream">
+                  <span className="tnum ml-auto shrink-0 text-sm text-cream">
                     {formatMoney(m.total, cur, { cents: false })}
                   </span>
                 </Link>

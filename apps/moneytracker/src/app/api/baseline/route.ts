@@ -1,56 +1,57 @@
+import { randomUUID } from "node:crypto";
 import { NextRequest, NextResponse } from "next/server";
 import { isAuthenticated } from "@/lib/auth";
+import { storageConflictResponse } from "@/lib/api-response";
 import { loadMeta, saveMeta } from "@/lib/store";
 import { CATEGORIES } from "@/lib/categories";
 import { RecurringBaseline } from "@/lib/types";
 
-// Recurring baselines — fixed monthly expenses (e.g. rent + parking) the bank
-// feed doesn't reliably capture. Stored in the global meta document.
-export async function POST(req: NextRequest) {
+const MONTH = /^\d{4}-(0[1-9]|1[0-2])$/;
+
+async function saveBaseline(req: NextRequest, editing: boolean) {
   if (!(await isAuthenticated()))
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
   const body = await req.json().catch(() => null);
-  if (!body || typeof body !== "object" || Array.isArray(body)) return NextResponse.json({ error: "Invalid request" }, { status: 400 });
-
+  if (!body || typeof body !== "object" || Array.isArray(body))
+    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   const name = typeof body.name === "string" ? body.name.trim() : "";
-  const amount = Number(body.amount);
-  const category = (body.category as string) || "RENT_AND_UTILITIES";
-  const startMonth = (body.startMonth as string) || "";
-  if (!name || !isFinite(amount) || amount <= 0 || !/^\d{4}-(0[1-9]|1[0-2])$/.test(startMonth) || !CATEGORIES[category]?.isSpending)
-    return NextResponse.json(
-      { error: "Name, positive amount, and startMonth (yyyy-mm) required" },
-      { status: 400 },
-    );
-
-  const entry: RecurringBaseline = {
-    id: "base_" + Date.now().toString(36),
-    name,
-    amount,
-    category,
-    startMonth,
-  };
+  const amount = (typeof body.amount === "number" || typeof body.amount === "string" && body.amount.trim()) ? Number(body.amount) : NaN;
+  const category = body.category == null ? "RENT_AND_UTILITIES" : typeof body.category === "string" ? body.category : "";
+  const startMonth = typeof body.startMonth === "string" ? body.startMonth : "";
+  const endMonth = body.endMonth == null || body.endMonth === "" ? null : body.endMonth;
+  const id = typeof body.id === "string" ? body.id : "";
+  if (!name || !Number.isFinite(amount) || amount <= 0 || !MONTH.test(startMonth) || !CATEGORIES[category]?.isSpending)
+    return NextResponse.json({ error: "Name, positive amount, spending category, and start month (yyyy-mm) required" }, { status: 400 });
+  if (endMonth !== null && (typeof endMonth !== "string" || !MONTH.test(endMonth) || endMonth < startMonth))
+    return NextResponse.json({ error: "End month must be yyyy-mm and on or after start month" }, { status: 400 });
+  if (editing && !id)
+    return NextResponse.json({ error: "Missing baseline id" }, { status: 400 });
 
   const meta = await loadMeta();
-  // A double-submit used to append a second identical baseline, and each one
-  // injects its own synthetic "(estimated)" row every month — silently counting
-  // the expense twice in every total. Same name + category + start = duplicate.
-  const existing = (meta.baselines ?? []).find(
-    (b) =>
-      b.name.trim().toLowerCase() === name.toLowerCase() &&
-      b.category === category &&
-      b.startMonth === startMonth,
+  const baselines = meta.baselines ?? [];
+  const index = baselines.findIndex((entry) => entry.id === id);
+  if (editing && index < 0)
+    return NextResponse.json({ error: "Baseline not found" }, { status: 404 });
+  const duplicate = baselines.find((entry) =>
+    (!editing || entry.id !== id) && entry.name.trim().toLowerCase() === name.toLowerCase() && entry.category === category && entry.startMonth === startMonth,
   );
-  if (existing)
-    return NextResponse.json(
-      { error: `A "${existing.name}" baseline already exists from that month.` },
-      { status: 409 },
-    );
-
-  meta.baselines = [...(meta.baselines ?? []), entry];
-  await saveMeta(meta);
+  if (duplicate)
+    return NextResponse.json({ error: `A "${duplicate.name}" baseline already exists from that month.` }, { status: 409 });
+  const entry: RecurringBaseline = {
+    ...(editing ? baselines[index] : {}),
+    id: editing ? id : `base_${randomUUID()}`,
+    name, amount, category, startMonth, endMonth,
+  };
+  meta.baselines = editing ? baselines.map((previous) => previous.id === id ? entry : previous) : [...baselines, entry];
+  try { await saveMeta(meta); }
+  catch (error) {
+    return storageConflictResponse(error);
+  }
   return NextResponse.json({ ok: true, entry });
 }
+
+export async function POST(req: NextRequest) { return saveBaseline(req, false); }
+export async function PATCH(req: NextRequest) { return saveBaseline(req, true); }
 
 export async function DELETE(req: NextRequest) {
   if (!(await isAuthenticated()))
@@ -58,7 +59,10 @@ export async function DELETE(req: NextRequest) {
   const id = new URL(req.url).searchParams.get("id");
   if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
   const meta = await loadMeta();
-  meta.baselines = (meta.baselines ?? []).filter((b) => b.id !== id);
-  await saveMeta(meta);
+  meta.baselines = (meta.baselines ?? []).filter((entry) => entry.id !== id);
+  try { await saveMeta(meta); }
+  catch (error) {
+    return storageConflictResponse(error);
+  }
   return NextResponse.json({ ok: true });
 }

@@ -1,27 +1,31 @@
 import { loadScopedState } from "@/lib/scoped-state";
 import {
   incomeBreakdown,
-  incomeMonths,
   mergeIncomeMonths,
   largestDepositsForMonths,
   filterBySource,
-  withPhantomIncome,
-  PHANTOM_INCOME,
 } from "@/lib/insights";
-import { MonthComposition } from "@/lib/analytics";
+import { MonthComposition, todayKey } from "@/lib/analytics";
 import { incomeSourceLabel } from "@/lib/aliases";
 import { formatMoney, formatMonth, formatDate } from "@/lib/format";
 import { Donut } from "@/components/charts/Donut";
 import { CompositionBars } from "@/components/charts/CompositionBars";
 import { MonthPicker } from "@/components/MonthPicker";
 import { IncomeScope, Scope } from "@/components/IncomeScope";
-import { SourceToggle } from "@/components/SourceToggle";
-import { PhantomIncomeToggle } from "@/components/PhantomIncomeToggle";
+import { SourcePicker } from "@/components/SourceToggle";
+import { EmployerHousingSupportEditor } from "@/components/EmployerHousingSupport";
+import { eligibleEmployerHousingSupport, employerHousingSupportTotal } from "@/lib/income-support";
 import { SectionCard, EmptyState, StatCard, PageHeading } from "@/components/ui";
 
 export const dynamic = "force-dynamic";
 
-const RARELIQUID = "rareliquid";
+function calendarMonths(end: string, count: number): string[] {
+  const endIndex = Number(end.slice(0, 4)) * 12 + Number(end.slice(5, 7)) - 1;
+  return Array.from({ length: count }, (_, i) => {
+    const index = endIndex - count + i + 1;
+    return `${Math.floor(index / 12)}-${String(index % 12 + 1).padStart(2, "0")}`;
+  });
+}
 
 export default async function IncomePage({
   searchParams,
@@ -37,14 +41,17 @@ export default async function IncomePage({
   const cur = fullState.accounts[0]?.currency ?? "USD";
   const sp = await searchParams;
 
-  // RareLiquid-only view: scope the whole tab to that single payer. Only offered
-  // when there's actually RareLiquid income to show.
-  const rareState = filterBySource(fullState, RARELIQUID);
-  const hasRare = incomeMonths(rareState).length > 0;
-  const onlyRare = hasRare && sp.src === RARELIQUID;
-  const state = onlyRare ? rareState : fullState;
-
-  const months = incomeMonths(state);
+  const allIncome = incomeBreakdown(fullState);
+  const support = fullState.employerHousingSupport;
+  const sources = [...new Set([...allIncome.legend.map((source) => source.name), ...(support && !acct ? [support.source] : [])])];
+  const supportOnly = Boolean(support && !acct && sp.src === "__employer_housing__");
+  const requestedSource = sp.src ? incomeSourceLabel(null, sp.src) : "";
+  const selectedSource = sources.includes(requestedSource) ? requestedSource : "";
+  const state = supportOnly ? { ...fullState, transactions: [] } : selectedSource ? filterBySource(fullState, selectedSource) : fullState;
+  const months = allIncome.months.length
+    ? calendarMonths(allIncome.months[allIncome.months.length - 1], Math.max(12, allIncome.months.length))
+    : support && !acct ? calendarMonths(todayKey().slice(0, 7), 12) : [];
+  const visibleSupport = eligibleEmployerHousingSupport(support, supportOnly ? "__employer_housing__" : selectedSource, Boolean(acct));
 
   if (months.length === 0) {
     return (
@@ -70,12 +77,7 @@ export default async function IncomePage({
   const scope: Scope =
     sp.scope === "ytd" ? "ytd" : sp.scope === "year" ? "year" : "month";
 
-  // Phantom income sources (rent covered on your behalf, never in the feed),
-  // each switched on by its own ?<key>=on param. Layered onto every month so the
-  // chart, donut, stat row, and legend reflect true total compensation.
-  const activePhantom = PHANTOM_INCOME.filter((p) => sp[p.key] === "on");
-  const { byMonth: byMonthRaw } = incomeBreakdown(state);
-  const byMonth = withPhantomIncome(byMonthRaw, activePhantom);
+  const { byMonth } = incomeBreakdown(state);
   const byMonthMap = new Map(byMonth.map((m) => [m.month, m]));
   const latest = months[months.length - 1];
   const selected =
@@ -83,8 +85,8 @@ export default async function IncomePage({
       ? sp.month
       : latest;
 
-  const chartMonths = months.slice(-12);
-  const chart = chartMonths.map((m) => byMonthMap.get(m)!);
+  const chartMonths = calendarMonths(latest, 12);
+  const chart = chartMonths.map((month) => byMonthMap.get(month) ?? { month, total: 0, segments: [] });
 
   // Resolve the active scope into a set of months + the period to compare with.
   let scopeMonths: string[];
@@ -94,24 +96,18 @@ export default async function IncomePage({
   if (scope === "ytd") {
     const year = latest.slice(0, 4);
     const prevYear = String(Number(year) - 1);
-    scopeMonths = months.filter((m) => m.slice(0, 4) === year);
-    priorMonths = scopeMonths
-      .map((m) => prevYear + m.slice(4))
-      .filter((m) => byMonthMap.has(m));
+    scopeMonths = calendarMonths(latest, Number(latest.slice(5, 7)));
+    priorMonths = scopeMonths.map((m) => prevYear + m.slice(4));
     scopeLabel = `YTD ${year}`;
     priorLabel = `YTD ${prevYear}`;
   } else if (scope === "year") {
     scopeMonths = chartMonths;
-    // The 12 months immediately before the scope window — but only as many as we
-    // actually have, so the label never claims a full year of prior data we
-    // don't hold.
-    priorMonths = months.slice(-24, -12);
-    scopeLabel = `last ${chartMonths.length} mo`;
-    priorLabel = priorMonths.length ? `prior ${priorMonths.length} mo` : "prior period";
+    priorMonths = calendarMonths(chartMonths[0], 13).slice(0, 12);
+    scopeLabel = "last 12 mo";
+    priorLabel = "prior 12 mo";
   } else {
-    const idx = months.indexOf(selected);
     scopeMonths = [selected];
-    priorMonths = idx > 0 ? [months[idx - 1]] : [];
+    priorMonths = calendarMonths(selected, 2).slice(0, 1);
     scopeLabel = formatMonth(selected);
     priorLabel = priorMonths.length ? formatMonth(priorMonths[0]) : "prev";
   }
@@ -122,7 +118,7 @@ export default async function IncomePage({
   const nScope = scopeMonths.length || 1;
   const monthlyAvg = focus.total / nScope;
   const deposits = focus.segments.reduce((a, s) => a + s.count, 0);
-  const priorTotal = priorMonths.length
+  const priorTotal = priorMonths.some((month) => allIncome.months.includes(month))
     ? priorMonths.reduce((a, m) => a + (byMonthMap.get(m)?.total ?? 0), 0)
     : null;
   const delta =
@@ -133,6 +129,7 @@ export default async function IncomePage({
   const topShare =
     focus.total > 0 && topSeg ? (topSeg.total / focus.total) * 100 : null;
 
+  const supportTotal = employerHousingSupportTotal(visibleSupport, scopeMonths);
   const bigDeposits = largestDepositsForMonths(state, scopeMonths, 6);
 
   // Reuse the stacked CompositionBars by mapping income segments into its shape.
@@ -156,30 +153,17 @@ export default async function IncomePage({
         <PageHeading
           title="Income"
           subtitle={
-            onlyRare
-              ? "RareLiquid only · earnings from this source, month by month."
+            supportOnly
+              ? "Studio rent paid by your employer. Separate from bank deposits."
+              : selectedSource
+              ? `${selectedSource} · recorded deposits, month by month.`
               : acct
                 ? `${acct.name} · where your money comes from, month by month.`
                 : "Where all your money comes from, month by month."
           }
         />
-        <div className="mb-1 flex shrink-0 flex-wrap items-center gap-2">
-          {PHANTOM_INCOME.map((p) => (
-            <PhantomIncomeToggle
-              key={p.key}
-              paramKey={p.key}
-              label={p.short}
-              monthly={p.monthly}
-              active={sp[p.key] === "on"}
-            />
-          ))}
-          {hasRare && (
-            <SourceToggle
-              value={RARELIQUID}
-              label="RareLiquid only"
-              active={onlyRare}
-            />
-          )}
+        <div className="mb-1 flex max-w-full flex-wrap items-center gap-2">
+          <SourcePicker sources={sources} selected={supportOnly ? "__employer_housing__" : selectedSource} hasSupport={Boolean(support && !acct)} />
           <IncomeScope scope={scope} />
           {scope === "month" && (
             <MonthPicker months={months} selected={selected} />
@@ -187,10 +171,11 @@ export default async function IncomePage({
         </div>
       </div>
 
+      {!supportOnly && (<>
       {/* Stat row — scope-aware */}
-      <div className="mb-5 grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <div className="mb-5 grid grid-cols-1 gap-3 min-[420px]:grid-cols-2 lg:grid-cols-4">
         <StatCard
-          label={`Income · ${scopeLabel}`}
+          label={`Recorded income · ${scopeLabel}`}
           value={formatMoney(focus.total, cur, { cents: false })}
           accent="blue"
           sub={`${deposits} deposit${deposits === 1 ? "" : "s"}`}
@@ -232,9 +217,27 @@ export default async function IncomePage({
         />
       </div>
 
+      </>)}
+
+      {!acct && (visibleSupport || !support && !selectedSource) && (
+        <SectionCard title="Employer-paid support · studio rent" className="mb-5">
+          {support ? <>
+            <p className="text-sm text-muted">{support.source} pays {formatMoney(support.amount, cur, { cents: false })}/month toward studio rent. This does not enter your bank ledger.</p>
+            <div className="mt-4 grid grid-cols-1 gap-3 min-[420px]:grid-cols-2">
+              <div><div className="label-eyebrow">Support · {scopeLabel}</div><p className="tnum mt-1 text-xl text-slate">{formatMoney(supportTotal, cur, { cents: false })}</p></div>
+              {!supportOnly && <div><div className="label-eyebrow">Income + employer support</div><p className="tnum mt-1 text-xl text-blue">{formatMoney(focus.total + supportTotal, cur, { cents: false })}</p></div>}
+            </div>
+            {support.startMonth === "2021-10" && <p className="mt-2 text-xs text-muted">The October 2021 start is approximate, based on support starting five years ago.</p>}
+            <p className="mt-2 text-xs text-muted">Effective {formatMonth(support.startMonth)}{support.endMonth ? ` through ${formatMonth(support.endMonth)}` : ", ongoing"}. Support is not counted as a deposit. Charts and recorded-income totals show bank income only.</p>
+          </> : <p className="text-sm text-muted">Save employer-paid studio rent to show it separately from recorded deposits.</p>}
+          <EmployerHousingSupportEditor key={JSON.stringify(support)} support={support} sources={sources} />
+        </SectionCard>
+      )}
+
+      {!supportOnly && (<>
       {/* Income by month — the overview. Click a bar to focus that month. */}
       <SectionCard
-        title={`Income by month · last ${chart.length} month${chart.length === 1 ? "" : "s"}`}
+        title={`Recorded income by month · last ${chart.length} month${chart.length === 1 ? "" : "s"}`}
         delay={200}
       >
         <CompositionBars
@@ -261,7 +264,7 @@ export default async function IncomePage({
         )}
         <p className="mt-4 text-xs text-muted">
           Each bar is one month, split by who paid you. Click a bar — or pick a
-          month above — to see that month’s breakdown below.
+          month above — to see that month’s breakdown below. Months without recorded deposits show zero. The window ends with the latest posted bank activity.
         </p>
       </SectionCard>
 
@@ -291,7 +294,7 @@ export default async function IncomePage({
                 const pct = focus.total ? (s.total / focus.total) * 100 : 0;
                 return (
                   <div key={s.name}>
-                    <div className="flex items-center gap-2 text-sm">
+                    <div className="flex flex-wrap items-center gap-2 text-sm">
                       <span
                         className="h-2.5 w-2.5 shrink-0 rounded-full"
                         style={{ background: s.color }}
@@ -300,7 +303,7 @@ export default async function IncomePage({
                       <span className="shrink-0 text-xs text-faint">
                         · {s.count}×
                       </span>
-                      <span className="tnum ml-auto text-cream">
+                      <span className="tnum ml-auto shrink-0 text-cream">
                         {formatMoney(s.total, cur, { cents: false })}
                       </span>
                       <span className="tnum w-10 shrink-0 text-right text-muted">
@@ -331,6 +334,20 @@ export default async function IncomePage({
         )}
       </SectionCard>
 
+      <SectionCard title={`Recorded income by source · ${scopeLabel}`} className="mt-4">
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[380px] text-sm">
+            <thead><tr><th scope="col" className="py-2 text-left">Source</th><th scope="col" className="px-2 py-2 text-right">Recorded income</th><th scope="col" className="px-2 py-2 text-right">Deposits</th><th scope="col" className="py-2 text-right">Share</th></tr></thead>
+            <tbody className="divide-y divide-[var(--color-line)]">{focus.segments.map((source) => <tr key={source.name}>
+              <th scope="row" className="max-w-56 break-words py-3 text-left font-normal text-cream">{source.name}</th>
+              <td className="tnum whitespace-nowrap px-2 py-3 text-right text-blue">{formatMoney(source.total, cur)}</td>
+              <td className="tnum px-2 py-3 text-right">{source.count}</td>
+              <td className="tnum py-3 text-right">{focus.total ? Math.round(source.total / focus.total * 100) : 0}%</td>
+            </tr>)}</tbody>
+          </table>
+        </div>
+      </SectionCard>
+
       {/* Largest deposits in scope */}
       {bigDeposits.length > 0 && (
         <SectionCard
@@ -344,13 +361,13 @@ export default async function IncomePage({
                 <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border hairline bg-surface-2 text-sm text-slate">
                   {incomeSourceLabel(t.merchantName, t.name).slice(0, 1).toUpperCase()}
                 </span>
-                <div className="min-w-0">
+                <div className="min-w-0 flex-1">
                   <div className="truncate text-cream">
                     {incomeSourceLabel(t.merchantName, t.name)}
                   </div>
                   <div className="text-xs text-faint">{formatDate(t.date)}</div>
                 </div>
-                <span className="tnum ml-auto text-blue">
+                <span className="tnum ml-auto shrink-0 text-blue">
                   {formatMoney(-t.amount, cur)}
                 </span>
               </li>
@@ -358,6 +375,7 @@ export default async function IncomePage({
           </ul>
         </SectionCard>
       )}
+      </>)}
     </div>
   );
 }

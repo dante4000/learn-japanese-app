@@ -1,6 +1,8 @@
 import { cache } from "react";
-import { put, list, del } from "@vercel/blob";
+import { put, list, del, BlobPreconditionFailedError } from "@vercel/blob";
 import { promises as fs } from "node:fs";
+import { createHash, randomUUID } from "node:crypto";
+import { hostname } from "node:os";
 import path from "node:path";
 import {
   AppState,
@@ -10,13 +12,10 @@ import {
   emptyState,
 } from "./types";
 import { encrypt, decrypt } from "./crypto";
-import { injectBaselines } from "./analytics";
+import { injectBaselines, normalizeAccountTransactions } from "./analytics";
 
-// Sharded datastore. Each connection (Item) lives in its own document and the
-// global meta (manual entries, net-worth snapshots) in another. This means a
-// write for one bank never reads-or-overwrites another bank's data, which
-// eliminates the lost-update race that a single shared document suffers under
-// rapid successive connects/syncs.
+// Each connection and global metadata use separate documents. Conditional
+// writes reject stale versions, including writes from other server instances.
 //
 // Backends: Vercel Blob in production, or a local .data/ directory in dev (no
 // blob token). Every document is AES-256-GCM encrypted at rest.
@@ -26,6 +25,47 @@ import { injectBaselines } from "./analytics";
 
 const PREFIX = "moneytracker/v2/";
 const LOCAL_DIR = path.join(process.cwd(), ".data", "v2");
+const REVISION = Symbol("storageRevision");
+type Revision = { name: string; etag: string | null };
+type Versioned = { [REVISION]?: Revision };
+
+export class StorageConflictError extends Error {
+  constructor() {
+    super("Data changed during this request. Reload and try again.");
+    this.name = "StorageConflictError";
+  }
+}
+
+export class InstitutionReservationError extends StorageConflictError {
+  constructor() {
+    super();
+    this.name = "InstitutionReservationError";
+    this.message = "This institution is already connected or a connection is in progress.";
+  }
+}
+
+export interface InstitutionReservation {
+  institutionId: string;
+  itemId: string;
+}
+
+function withRevision<T extends object>(obj: T, name: string, etag: string | null): T {
+  // Spread copies this symbol; JSON serialization omits it.
+  Object.defineProperty(obj, REVISION, {
+    value: { name, etag }, enumerable: true, writable: true, configurable: true,
+  });
+  return obj;
+}
+
+function revisionOf(obj: object, name: string): string | null {
+  const revision = (obj as Versioned)[REVISION];
+  if (revision && revision.name !== name) throw new StorageConflictError();
+  return revision?.etag ?? null;
+}
+
+function localRevision(raw: string): string {
+  return createHash("sha256").update(raw).digest("hex");
+}
 
 function blobEnabled(): boolean {
   return !!process.env.BLOB_READ_WRITE_TOKEN;
@@ -49,70 +89,168 @@ function requireKeyForBlob(): void {
     );
   }
 }
-function encode(obj: unknown): string {
+function encode(obj: object): string {
   requireKeyForBlob();
-  const json = JSON.stringify(obj);
+  // A unique revision also prevents delete/recreate ABA races in plaintext dev storage.
+  // Keep domain fields at the root so an older deployment can still read them.
+  const json = JSON.stringify({ ...obj, __vaultRevision: randomUUID() });
   return canEncrypt() ? encrypt(json) : json;
 }
 function decode<T>(raw: string): T {
   requireKeyForBlob();
   const json = canEncrypt() ? decrypt(raw) : raw;
-  return JSON.parse(json) as T;
+  const parsed = JSON.parse(json);
+  if (parsed && typeof parsed.__vaultRevision === "string") {
+    if ("document" in parsed) return parsed.document as T;
+    delete parsed.__vaultRevision;
+  }
+  return parsed as T;
 }
 
 // ── low-level document IO ───────────────────────────────────────────────────
 
-async function writeDoc(name: string, obj: unknown): Promise<void> {
-  const body = encode(obj);
-  if (blobEnabled()) {
-    await put(blobPath(name), body, {
-      access: "public",
-      contentType: "application/octet-stream",
-      addRandomSuffix: false,
-      allowOverwrite: true,
-      cacheControlMaxAge: 0,
-    });
-  } else {
-    await fs.mkdir(LOCAL_DIR, { recursive: true });
-    await fs.writeFile(localPath(name), body, "utf8");
-  }
-}
-
-async function readDoc<T>(name: string): Promise<T | null> {
-  if (blobEnabled()) {
-    const { blobs } = await list({ prefix: blobPath(name), limit: 1 });
-    const match = blobs.find((b) => b.pathname === blobPath(name));
-    if (!match) return null;
-    // Cache-bust with uploadedAt so the CDN can't serve a stale copy after a write.
-    const v = match.uploadedAt ? new Date(match.uploadedAt).getTime() : Date.now();
-    const res = await fetch(`${match.url}?v=${v}`, { cache: "no-store" });
-    if (!res.ok) throw new Error(`Storage read failed (${res.status})`);
-    return decode<T>(await res.text());
-  }
+async function readLocal(name: string): Promise<string | null> {
   try {
-    return decode<T>(await fs.readFile(localPath(name), "utf8"));
+    return await fs.readFile(localPath(name), "utf8");
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code === "ENOENT") return null;
     throw error;
   }
 }
 
-async function delDoc(name: string): Promise<void> {
+async function withLocalLock<T>(name: string, action: () => Promise<T>): Promise<T> {
+  await fs.mkdir(LOCAL_DIR, { recursive: true });
+  const lockPath = `${localPath(name)}.lock`;
+  let lock;
+  try {
+    lock = await fs.open(lockPath, "wx", 0o600);
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code !== "EEXIST") throw error;
+    // One reclaimer at a time; another reclaimer must not unlink a new owner.
+    const recoveryPath = `${lockPath}.recover`;
+    let recovery;
+    try {
+      recovery = await fs.open(recoveryPath, "wx", 0o600);
+    } catch {
+      throw new StorageConflictError();
+    }
+    try {
+      const owner = JSON.parse(await fs.readFile(lockPath, "utf8")) as { pid: number; host: string };
+      if (owner.host !== hostname() || !Number.isInteger(owner.pid) || owner.pid <= 0) {
+        throw new StorageConflictError();
+      }
+      let dead = false;
+      try { process.kill(owner.pid, 0); } catch (failure) {
+        dead = (failure as NodeJS.ErrnoException).code === "ESRCH";
+      }
+      if (!dead) throw new StorageConflictError();
+      await fs.rm(lockPath);
+      lock = await fs.open(lockPath, "wx", 0o600);
+    } catch {
+      throw new StorageConflictError();
+    } finally {
+      await recovery.close();
+      await fs.rm(recoveryPath, { force: true });
+    }
+  }
+  try {
+    await lock.writeFile(JSON.stringify({ pid: process.pid, host: hostname() }));
+    return await action();
+  } finally {
+    await lock.close();
+    await fs.rm(lockPath, { force: true });
+  }
+}
+
+async function writeDoc(name: string, obj: object, previous: object = obj): Promise<void> {
+  const body = encode(obj);
+  const expected = revisionOf(previous, name);
+  let etag: string;
+  if (blobEnabled()) {
+    try {
+      const result = await put(blobPath(name), body, {
+        access: "public",
+        contentType: "application/octet-stream",
+        addRandomSuffix: false,
+        allowOverwrite: expected !== null,
+        ...(expected === null ? {} : { ifMatch: expected }),
+        cacheControlMaxAge: 60,
+      });
+      etag = result.etag;
+    } catch (error) {
+      if (error instanceof BlobPreconditionFailedError) throw new StorageConflictError();
+      // A create can race another create. Never retry it as an overwrite.
+      if (expected === null && await readDoc(name)) throw new StorageConflictError();
+      throw error;
+    }
+  } else {
+    etag = await withLocalLock(name, async () => {
+      const current = await readLocal(name);
+      if ((current === null ? null : localRevision(current)) !== expected) {
+        throw new StorageConflictError();
+      }
+      const temporary = `${localPath(name)}.${randomUUID()}.tmp`;
+      try {
+        await fs.writeFile(temporary, body, { encoding: "utf8", mode: 0o600 });
+        await fs.rename(temporary, localPath(name));
+      } finally {
+        await fs.rm(temporary, { force: true });
+      }
+      return localRevision(body);
+    });
+  }
+  withRevision(obj, name, etag);
+}
+
+async function readDoc<T extends object>(name: string): Promise<T | null> {
   if (blobEnabled()) {
     const { blobs } = await list({ prefix: blobPath(name), limit: 1 });
     const match = blobs.find((b) => b.pathname === blobPath(name));
-    if (match) await del(match.url);
+    if (!match) return null;
+    const v = randomUUID();
+    const res = await fetch(`${match.url}?v=${v}`, { cache: "no-store" });
+    if (!res.ok) throw new Error(`Storage read failed (${res.status})`);
+    // The revision must come from the same response as the document body.
+    const etag = res.headers.get("etag");
+    if (!etag) throw new Error("Storage read failed: missing document revision");
+    return withRevision(decode<T>(await res.text()), name, etag);
+  }
+  const raw = await readLocal(name);
+  return raw === null ? null : withRevision(decode<T>(raw), name, localRevision(raw));
+}
+
+async function delDoc(name: string, previous: object): Promise<void> {
+  const expected = revisionOf(previous, name);
+  if (expected === null) throw new StorageConflictError();
+  if (blobEnabled()) {
+    try {
+      await del(blobPath(name), { ifMatch: expected });
+    } catch (error) {
+      if (error instanceof BlobPreconditionFailedError) throw new StorageConflictError();
+      throw error;
+    }
   } else {
-    await fs.rm(localPath(name), { force: true });
+    await withLocalLock(name, async () => {
+      const current = await readLocal(name);
+      if (current === null || localRevision(current) !== expected) throw new StorageConflictError();
+      await fs.rm(localPath(name));
+    });
   }
 }
 
 async function listNames(keyPrefix: string): Promise<string[]> {
   if (blobEnabled()) {
-    const { blobs } = await list({ prefix: `${PREFIX}${keyPrefix}` });
-    return blobs
-      .map((b) => b.pathname.slice(PREFIX.length, -".enc".length))
-      .filter(Boolean);
+    const names: string[] = [];
+    let cursor: string | undefined;
+    do {
+      const result = await list({ prefix: `${PREFIX}${keyPrefix}`, cursor });
+      names.push(...result.blobs
+        .filter((b) => b.pathname.endsWith(".enc"))
+        .map((b) => b.pathname.slice(PREFIX.length, -".enc".length))
+        .filter(Boolean));
+      cursor = result.hasMore ? result.cursor : undefined;
+    } while (cursor);
+    return names;
   }
   try {
     const files = await fs.readdir(LOCAL_DIR);
@@ -131,8 +269,8 @@ async function listNames(keyPrefix: string): Promise<string[]> {
 // store is empty but a v1 document exists, split it into per-item bundles plus
 // meta so existing connections (and their encrypted Plaid access tokens),
 // manual entries, and the net-worth snapshot history all survive the upgrade.
-// The v1 document is left untouched as a backup. Writing meta marks the
-// migration done, and concurrent runs are harmless (same input, same writes).
+// The v1 document stays untouched. Meta marks completion. Create-only writes
+// let interrupted migrations resume without replacing newer item documents.
 
 const V1_BLOB_PATH = "moneytracker/state.enc";
 const V1_LOCAL_PATH = path.join(process.cwd(), ".data", "state.enc");
@@ -161,8 +299,7 @@ async function readLegacyState(): Promise<AppState | null> {
 
 async function ensureMigrated(): Promise<void> {
   if (migrationChecked) return;
-  const existing = await listNames("");
-  if (existing.length > 0) {
+  if (await readDoc<MetaDoc>("meta")) {
     migrationChecked = true;
     return;
   }
@@ -188,14 +325,27 @@ async function ensureMigrated(): Promise<void> {
       if (owner) byItem.get(owner)?.recurring.push(r);
     }
     for (const bundle of byItem.values()) {
-      await writeDoc(itemKey(bundle.item.id), bundle);
+      const name = itemKey(bundle.item.id);
+      if (await readDoc(name)) continue;
+      try {
+        await writeDoc(name, bundle);
+      } catch (error) {
+        if (!(error instanceof StorageConflictError) || !await readDoc(name)) throw error;
+      }
     }
     const meta: MetaDoc = {
       version: legacy.version ?? 1,
       manualEntries: legacy.manualEntries ?? [],
+      baselines: legacy.baselines ?? [],
       snapshots: legacy.snapshots ?? [],
+      biltConfig: legacy.biltConfig,
+      employerHousingSupport: legacy.employerHousingSupport,
     };
-    await writeDoc("meta", meta);
+    try {
+      await writeDoc("meta", meta);
+    } catch (error) {
+      if (!(error instanceof StorageConflictError) || !await readDoc("meta")) throw error;
+    }
   }
   migrationChecked = true;
 }
@@ -211,16 +361,56 @@ export async function loadItemBundle(itemId: string): Promise<ItemBundle | null>
   return readDoc<ItemBundle>(itemKey(itemId));
 }
 
-export async function saveItemBundle(bundle: ItemBundle): Promise<void> {
-  // Migrate before the first write too — a fresh v2 doc appearing first would
-  // otherwise make the migration check think there's nothing to do and orphan
-  // the legacy data.
+export async function saveItemBundle(
+  bundle: ItemBundle,
+  previous: ItemBundle = bundle,
+): Promise<void> {
+  // Complete migration before accepting changes to a connection.
   await ensureMigrated();
-  await writeDoc(itemKey(bundle.item.id), bundle);
+  await writeDoc(itemKey(bundle.item.id), bundle, previous);
 }
 
-export async function deleteItemBundle(itemId: string): Promise<void> {
-  await delDoc(itemKey(itemId));
+export async function deleteItemBundle(
+  itemId: string,
+  previous?: ItemBundle,
+): Promise<{ warning?: string }> {
+  const bundle = previous ?? await loadItemBundle(itemId);
+  if (!bundle) return {};
+  await delDoc(itemKey(itemId), bundle);
+  if (bundle.item.institutionId) {
+    try {
+      const claim = await readDoc<InstitutionReservation>(institutionKey(bundle.item.institutionId));
+      if (claim?.itemId === itemId) await releaseInstitution(claim);
+    } catch {
+      return { warning: "Connection removed. Its institution lock could not be released. Reconnect requires lock cleanup." };
+    }
+  }
+  return {};
+}
+
+function institutionKey(institutionId: string): string {
+  return `institution__${createHash("sha256").update(institutionId).digest("hex")}`;
+}
+
+/** Reserve a bank before creating its item. A claim has no unsafe time expiry. */
+export async function reserveInstitution(
+  institutionId: string,
+  itemId: string,
+): Promise<InstitutionReservation> {
+  await ensureMigrated();
+  const claim = { institutionId, itemId };
+  try {
+    await writeDoc(institutionKey(institutionId), claim);
+  } catch (error) {
+    if (error instanceof StorageConflictError) throw new InstitutionReservationError();
+    throw error;
+  }
+  return claim;
+}
+
+/** Release only the exact claim created by this request. */
+export async function releaseInstitution(claim: InstitutionReservation): Promise<void> {
+  await delDoc(institutionKey(claim.institutionId), claim);
 }
 
 export async function listItemIds(): Promise<string[]> {
@@ -233,7 +423,7 @@ export async function listItemIds(): Promise<string[]> {
 
 export async function loadMeta(): Promise<MetaDoc> {
   await ensureMigrated();
-  return (await readDoc<MetaDoc>("meta")) ?? emptyMeta();
+  return (await readDoc<MetaDoc>("meta")) ?? withRevision(emptyMeta(), "meta", null);
 }
 
 export async function saveMeta(meta: MetaDoc): Promise<void> {
@@ -265,7 +455,8 @@ export async function loadState(): Promise<AppState> {
   state.baselines = meta.baselines ?? [];
   state.snapshots = meta.snapshots;
   state.biltConfig = meta.biltConfig;
-  return injectBaselines(state);
+  state.employerHousingSupport = meta.employerHousingSupport ?? null;
+  return injectBaselines(normalizeAccountTransactions(state));
 }
 
 /**

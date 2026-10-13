@@ -404,7 +404,7 @@ export function CreditCardsView({
   return (
     <div>
       {/* ── Portfolio summary ─────────────────────────────────────────── */}
-      <div className="mb-5 grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <div className="mb-5 grid grid-cols-1 gap-3 min-[420px]:grid-cols-2 sm:gap-4 lg:grid-cols-4">
         <Stat
           label="Annual fees"
           value={formatMoney(totals.fees, currency, { cents: false })}
@@ -473,7 +473,7 @@ export function CreditCardsView({
                 key={s.key}
                 aria-pressed={sortKey === s.key}
                 onClick={() => setSortKey(s.key)}
-                className={`shrink-0 whitespace-nowrap rounded-md px-2.5 py-1 transition-colors ${
+                className={`min-h-11 lg:min-h-0 shrink-0 whitespace-nowrap rounded-md px-2.5 py-1 transition-colors ${
                   sortKey === s.key ? "bg-surface-2 text-cream" : "text-muted hover:text-cream"
                 }`}
               >
@@ -497,7 +497,7 @@ export function CreditCardsView({
                     return next;
                   })
                 }
-                className={`rounded-lg border px-2.5 py-1 text-xs transition-colors ${
+                className={`min-h-11 lg:min-h-0 rounded-lg border px-2.5 py-1 text-xs transition-colors ${
                   active
                     ? "border-blue/40 bg-blue/15 text-blue"
                     : "hairline bg-surface text-muted hover:text-cream"
@@ -635,12 +635,12 @@ function LeaderboardRow({
       onClick={onClick}
       aria-expanded={open}
       style={{ animationDelay: `${delay}ms` }}
-      className={`block w-full scroll-mt-28 border-b hairline px-5 py-3.5 text-left transition-colors last:border-b-0 ${
+      className={`min-h-11 lg:min-h-0 block w-full scroll-mt-28 border-b hairline px-5 py-3.5 text-left transition-colors last:border-b-0 ${
         open ? "bg-surface-2/60" : "hover:bg-surface-2/30"
       }`}
     >
       {/* desktop grid / mobile stacked */}
-      <div className="grid grid-cols-[1fr_auto] items-center gap-3 md:grid-cols-[1.6fr_0.7fr_1.3fr_0.9fr_1.1fr_auto]">
+      <div className="grid grid-cols-1 sm:grid-cols-[minmax(0,1fr)_auto] items-center gap-3 md:grid-cols-[1.6fr_0.7fr_1.3fr_0.9fr_1.1fr_auto]">
         {/* name */}
         <div className="flex min-w-0 items-center gap-3">
           <span
@@ -692,7 +692,7 @@ function LeaderboardRow({
         </div>
 
         {/* verdict */}
-        <div className="flex flex-wrap items-center justify-end gap-1.5 md:justify-start">
+        <div className="flex flex-wrap items-center justify-start gap-1.5">
           <span className={`rounded-full px-2 py-0.5 text-[0.65rem] ${v.pill} ${v.text}`}>
             {v.label}
           </span>
@@ -722,8 +722,8 @@ function LeaderboardRow({
       </div>
 
       {/* mobile second line */}
-      <div className="mt-2 flex items-center gap-3 md:hidden">
-        <div className="flex-1">
+      <div className="mt-2 flex flex-wrap items-center gap-3 md:hidden">
+        <div className="min-w-0 flex-1 basis-full sm:basis-auto">
           <WorthItBar fee={card.annualFee} credits={cap} points={pointsCash} scale={barScale} />
         </div>
         <span className="tnum shrink-0 text-xs text-faint">
@@ -852,7 +852,7 @@ function CardDetail({
 
       {/* live snapshot */}
       {live ? (
-        <div className="mb-4 grid grid-cols-2 gap-px overflow-hidden rounded-xl border hairline bg-[var(--color-line)] sm:grid-cols-4">
+        <div className="mb-4 grid grid-cols-1 gap-px min-[420px]:grid-cols-2 overflow-hidden rounded-xl border hairline bg-[var(--color-line)] sm:grid-cols-4">
           <Mini
             label="Spend (12 mo)"
             value={formatMoney(live.spend12mo, currency, { cents: false })}
@@ -941,7 +941,7 @@ function CardDetail({
             key={t.key}
             aria-pressed={tab === t.key}
             onClick={() => setTab(t.key)}
-            className={`shrink-0 whitespace-nowrap rounded-lg px-2.5 py-1 text-xs transition-colors ${
+            className={`min-h-11 lg:min-h-0 shrink-0 whitespace-nowrap rounded-lg px-2.5 py-1 text-xs transition-colors ${
               tab === t.key ? "bg-surface-2 text-cream" : "text-muted hover:text-cream"
             }`}
           >
@@ -1031,14 +1031,14 @@ function CardDetail({
           </div>
           {live && live.pointsLines.length > 0 ? (
             <>
-              <div className="overflow-hidden rounded-lg border hairline">
-                <div className="grid grid-cols-[1fr_auto_auto] gap-3 bg-surface-2/50 px-3 py-1.5 text-[0.6rem] uppercase tracking-wider text-faint">
+              <div className="overflow-x-auto rounded-lg border hairline">
+                <div className="grid min-w-[340px] grid-cols-[minmax(0,1fr)_auto_auto] gap-3 bg-surface-2/50 px-3 py-1.5 text-[0.6rem] uppercase tracking-wider text-faint">
                   <span>From your spend</span>
                   <span className="text-right">Spend</span>
                   <span className="text-right">Points</span>
                 </div>
                 {live.pointsLines.map((l, idx) => (
-                  <div key={idx} className="grid grid-cols-[1fr_auto_auto] gap-3 border-t hairline px-3 py-1.5 text-xs">
+                  <div key={idx} className="grid min-w-[340px] grid-cols-[minmax(0,1fr)_auto_auto] gap-3 border-t hairline px-3 py-1.5 text-xs">
                     <span className="text-cream-dim">
                       {l.label}{" "}
                       <span className="text-faint">
@@ -1053,7 +1053,7 @@ function CardDetail({
                     </span>
                   </div>
                 ))}
-                <div className="grid grid-cols-[1fr_auto_auto] gap-3 border-t hairline bg-surface-2/30 px-3 py-1.5 text-xs">
+                <div className="grid min-w-[340px] grid-cols-[minmax(0,1fr)_auto_auto] gap-3 border-t hairline bg-surface-2/30 px-3 py-1.5 text-xs">
                   <span className="text-cream">
                     ≈ {formatMoney(live.estPointsCashValue, currency)}
                     {card.cashValueCents !== card.transferValueCents && (
@@ -1303,7 +1303,7 @@ function SlotGrid({
             title={`${s.label}: ${s.evidence ?? (on ? "used" : s.status === "future" ? "upcoming" : "open")}${ov ? " (manual — tap to revert)" : ""}`}
             aria-pressed={on}
             aria-label={`${s.label}: ${on ? "used" : s.status === "future" ? "upcoming" : "unused"}${ov ? ", manual override; activate to restore detection" : ""}`}
-            className={`grid place-items-center rounded-md border text-[0.65rem] transition-colors ${
+            className={`min-h-11 min-w-11 lg:min-h-0 lg:min-w-0 grid place-items-center rounded-md border text-[0.65rem] transition-colors ${
               s.status === "current" ? "ring-1 ring-blue/50" : ""
             } ${tone} ${many ? "h-6 w-6" : "h-7 min-w-[2.4rem] px-2"}`}
           >
@@ -1335,7 +1335,7 @@ function ActionBanner({
   const total = items.reduce((a, i) => a + i.value, 0);
   return (
     <div className="rise mb-5 rounded-2xl border border-coral/25 bg-coral/5 p-4 md:p-5">
-      <div className="mb-2 flex items-baseline justify-between gap-2">
+      <div className="mb-2 flex flex-wrap items-baseline justify-between gap-2">
         <h2 className="font-display text-base tracking-tight text-cream">
           Use it or lose it
         </h2>
@@ -1354,7 +1354,7 @@ function ActionBanner({
             <li key={`${i.cardKey}-${i.creditName}-${idx}`}>
               <button
                 onClick={() => onJump(i.cardKey)}
-                className="flex w-full items-center justify-between gap-2 rounded-lg border hairline bg-surface px-3 py-2 text-left transition-colors hover:bg-surface-2/40"
+                className="min-h-11 lg:min-h-0 flex w-full items-center justify-between gap-2 rounded-lg border hairline bg-surface px-3 py-2 text-left transition-colors hover:bg-surface-2/40"
               >
                 <span className="min-w-0">
                   <span className="tnum text-sm text-blue">
@@ -1403,9 +1403,9 @@ function Stat({
           ? "text-slate"
           : "text-cream";
   return (
-    <div className="card card-hover rise p-5" style={{ animationDelay: `${delay}ms` }}>
+    <div className="card card-hover rise min-w-0 p-4 sm:p-5" style={{ animationDelay: `${delay}ms` }}>
       <div className="label-eyebrow">{label}</div>
-      <div className={`tnum mt-2 text-2xl ${color}`}>{value}</div>
+      <div className={`tnum mt-2 break-words text-xl sm:text-2xl ${color}`}>{value}</div>
       {sub && <div className="mt-1 text-xs text-muted">{sub}</div>}
     </div>
   );
@@ -1431,9 +1431,9 @@ function Mini({
           ? "text-slate"
           : "text-cream";
   return (
-    <div className="bg-[var(--color-ink-2)] px-4 py-3">
+    <div className="min-w-0 bg-[var(--color-ink-2)] px-4 py-3">
       <div className="text-[0.6rem] uppercase tracking-wider text-faint">{label}</div>
-      <div className={`tnum mt-1 text-base ${color}`}>{value}</div>
+      <div className={`tnum mt-1 break-words text-base ${color}`}>{value}</div>
       {hint && <div className="text-[0.65rem] text-faint">{hint}</div>}
     </div>
   );

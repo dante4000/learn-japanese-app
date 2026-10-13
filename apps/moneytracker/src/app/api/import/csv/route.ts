@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isAuthenticated } from "@/lib/auth";
 import {
+  StorageConflictError,
   loadItemBundle,
   saveItemBundle,
   bundleForAccount,
 } from "@/lib/store";
-import { updateSnapshot } from "@/lib/sync";
-import { csvToTransactions } from "@/lib/providers/csv";
+import { refreshSnapshotAfterMutation } from "@/lib/sync";
+import { csvToTransactions, csvOverlapError } from "@/lib/providers/csv";
 import { Account, AccountType, Item, ItemBundle } from "@/lib/types";
 
 // Import a bank/card CSV export. Either attach to an existing account or create
@@ -42,7 +43,7 @@ export async function POST(req: NextRequest) {
     body.outflowSign === "positive_is_outflow"
       ? "positive_is_outflow"
       : "negative_is_outflow";
-  const currency = (body.currency as string) || "USD";
+  let currency = (body.currency as string) || "USD";
 
   try {
     let bundle: ItemBundle;
@@ -55,8 +56,9 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: "Account not found" }, { status: 400 });
       bundle = found;
       accountId = body.accountId;
-      accountLabel =
-        bundle.accounts.find((a) => a.id === accountId)?.name ?? "account";
+      const account = bundle.accounts.find((a) => a.id === accountId)!;
+      accountLabel = account.name;
+      currency = account.currency;
     } else {
       const institutionName = (body.institutionName as string) || "Imported";
       const accountName = (body.accountName as string) || "Imported Account";
@@ -113,7 +115,14 @@ export async function POST(req: NextRequest) {
     }
 
     const result = csvToTransactions(csv, { accountId, currency, outflowSign });
+    if (!result.transactions.length)
+      return NextResponse.json({ error: "No valid transactions found. Check the date, amount, and description columns.", skipped: result.skipped }, { status: 400 });
     const existing = new Set(bundle.transactions.map((t) => t.id));
+    const incoming = result.transactions.filter((t) => !existing.has(t.id));
+    if (bundle.item.provider === "plaid") {
+      const overlap = csvOverlapError(bundle.transactions, incoming, accountId);
+      if (overlap) return NextResponse.json({ error: overlap }, { status: 409 });
+    }
     let imported = 0;
     for (const t of result.transactions) {
       if (!existing.has(t.id)) {
@@ -125,18 +134,19 @@ export async function POST(req: NextRequest) {
     bundle.transactions.sort((a, b) => b.date.localeCompare(a.date));
 
     await saveItemBundle(bundle);
-    await updateSnapshot();
+    const snapshot = await refreshSnapshotAfterMutation();
 
     return NextResponse.json({
       ok: true,
       imported,
       skipped: result.skipped,
       account: accountLabel,
+      ...snapshot,
     });
   } catch (err) {
     return NextResponse.json(
       { error: err instanceof Error ? err.message : "Import failed" },
-      { status: 500 },
+      { status: err instanceof StorageConflictError ? 409 : 500 },
     );
   }
 }

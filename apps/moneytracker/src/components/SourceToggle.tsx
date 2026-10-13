@@ -2,40 +2,26 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 
-/** Toggles ?src=<value> on the Income page to scope the whole tab to a single
- *  payer. Off by default (no param); flips the URL so the page re-renders the
- *  source-filtered view server-side. */
-export function SourceToggle({
-  value,
-  label,
-  active,
-}: {
-  value: string;
-  label: string;
-  active: boolean;
-}) {
+/** Exact source filter; preserve month and period URL selections. */
+export function SourcePicker({ sources, selected, hasSupport = false }: { sources: string[]; selected: string; hasSupport?: boolean }) {
   const router = useRouter();
   const params = useSearchParams();
-
-  function toggle() {
-    const next = new URLSearchParams(params.toString());
-    if (active) next.delete("src");
-    else next.set("src", value);
-    const qs = next.toString();
-    router.push(qs ? `?${qs}` : "?", { scroll: false });
-  }
-
   return (
-    <button
-      onClick={toggle}
-      aria-pressed={active}
-      className={`rounded-lg border px-2.5 py-1 text-xs transition-colors ${
-        active
-          ? "border-blue/40 bg-blue/15 text-blue"
-          : "hairline bg-surface text-muted hover:text-cream"
-      }`}
+    <select
+      aria-label="Income source"
+      value={selected}
+      onChange={(event) => {
+        const next = new URLSearchParams(params.toString());
+        if (event.target.value) next.set("src", event.target.value);
+        else next.delete("src");
+        const query = next.toString();
+        router.push(query ? `?${query}` : "?", { scroll: false });
+      }}
+      className="min-h-11 min-w-0 max-w-full rounded-xl border hairline bg-surface px-3 py-2 text-base text-cream sm:text-sm"
     >
-      {label}
-    </button>
+      <option value="">All income sources</option>
+      {hasSupport && <option value="__employer_housing__">Studio rent support</option>}
+      {sources.map((source) => <option key={source} value={source}>{source}</option>)}
+    </select>
   );
 }

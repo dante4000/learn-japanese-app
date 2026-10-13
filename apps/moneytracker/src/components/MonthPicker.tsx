@@ -25,7 +25,7 @@ export function MonthPicker({
     <select
       value={selected}
       onChange={(e) => go(e.target.value)}
-      className="tnum rounded-xl border hairline bg-surface px-3 py-2 text-sm text-cream outline-none focus:border-blue"
+      className="tnum min-h-11 max-w-full rounded-xl border hairline bg-surface px-3 py-2 text-base sm:text-sm text-cream outline-none focus:border-blue"
       aria-label="Select month"
     >
       {[...months].reverse().map((m) => (

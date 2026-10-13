@@ -5,7 +5,6 @@ import {
   isIncome,
   isSpend,
   isSyntheticBaseline,
-  refundMatchedIds,
 } from "./analytics";
 import { categoryMeta } from "./categories";
 import { displayPayee, incomeSourceLabel } from "./aliases";
@@ -39,13 +38,12 @@ export interface Overview {
 export function overview(state: AppState, monthsBack = 12): Overview {
   const months = windowMonths(state, monthsBack);
   const within = inWindow(months);
-  const neutralized = refundMatchedIds(state);
   let income = 0;
   let spending = 0;
   for (const t of state.transactions) {
     if (!within(t)) continue;
-    if (isSpend(t, neutralized)) spending += t.amount;
-    else if (isIncome(t, neutralized)) income += -t.amount;
+    if (isSpend(t)) spending += t.amount;
+    else if (isIncome(t)) income += -t.amount;
   }
   const net = income - spending;
   return {
@@ -98,10 +96,9 @@ export function incomeSources(
   const months = windowMonths(state, monthsBack);
   const within = inWindow(months);
   const nMonths = months.length || 1;
-  const neutralized = refundMatchedIds(state);
   const byName = new Map<string, { total: number; dates: string[] }>();
   for (const t of state.transactions) {
-    if (!isIncome(t, neutralized) || !within(t)) continue;
+    if (!isIncome(t) || !within(t)) continue;
     const name = incomeSourceLabel(t.merchantName, t.name);
     const row = byName.get(name) ?? { total: 0, dates: [] };
     row.total += -t.amount;
@@ -127,8 +124,8 @@ export function incomeSources(
 // lands in INCOME), so the meaningful breakdown is by *source* — the payer name
 // (paycheck, a client, interest, refunds, Venmo from a friend). A cool-toned
 // palette keeps income visually distinct from the warm spending categories. The
-// top sources get a stable color so the same payer is the same color in every
-// month's bar; everything past the palette collapses into a single "Other".
+// sources get a stable color within the view. Retain every payer; palette
+// colors repeat when there are more sources than colors.
 
 const INCOME_PALETTE = [
   "#2563eb", // blue
@@ -141,7 +138,6 @@ const INCOME_PALETTE = [
   "#0284c7", // deep sky
 ];
 const INCOME_OTHER_COLOR = "#64748b"; // slate
-const INCOME_OTHER_LABEL = "Other";
 
 export interface IncomeSegment {
   name: string;
@@ -166,59 +162,65 @@ export interface IncomeBreakdown {
 }
 
 /**
- * A shallow state clone keeping only transactions from one payer — matched by a
- * case-insensitive substring of the raw merchant, the raw name, or the
- * normalized income-source label (so noise-stripped variants still match). Lets
- * the Income tab scope itself to a single source (e.g. RareLiquid) by passing
- * the result through the same breakdown functions.
+ * Keep transactions from one exact normalized payer. Bank reference metadata
+ * and letter case do not change the source identity.
  */
 export function filterBySource(state: AppState, query: string): AppState {
-  const q = query.toLowerCase();
-  const hit = (t: Transaction) =>
-    (t.merchantName ?? "").toLowerCase().includes(q) ||
-    (t.name ?? "").toLowerCase().includes(q) ||
-    incomeSourceLabel(t.merchantName, t.name).toLowerCase().includes(q);
-  return { ...state, transactions: state.transactions.filter(hit) };
+  const source = incomeSourceLabel(null, query);
+  return {
+    ...state,
+    transactions: state.transactions.filter(
+      (t) => incomeSourceLabel(t.merchantName, t.name) === source,
+    ),
+  };
 }
 
-/** Months (yyyy-mm) that have any income, oldest → newest. */
+/** Calendar months from first income through latest posted bank activity. */
 export function incomeMonths(state: AppState): string[] {
-  const neutralized = refundMatchedIds(state);
-  const set = new Set<string>();
-  for (const t of state.transactions)
-    if (isIncome(t, neutralized)) set.add(monthKey(t.date));
-  return [...set].sort((a, b) => a.localeCompare(b));
+  const earned = state.transactions
+    .filter((t) => isIncome(t))
+    .map((t) => monthKey(t.date)).sort();
+  if (!earned.length) return [];
+  const posted = state.transactions
+    .filter((t) => !t.pending && !t.hidden && !isSyntheticBaseline(t))
+    .map((t) => monthKey(t.date)).sort();
+  const first = earned[0];
+  const last = posted[posted.length - 1] ?? earned[earned.length - 1];
+  const months: string[] = [];
+  let year = Number(first.slice(0, 4));
+  let month = Number(first.slice(5, 7));
+  while (`${year}-${String(month).padStart(2, "0")}` <= last) {
+    months.push(`${year}-${String(month).padStart(2, "0")}`);
+    if (++month > 12) { month = 1; year++; }
+  }
+  return months;
 }
 
 /**
  * Income across all history, grouped by source and split per month. Colors are
  * assigned once from all-time totals so a source keeps the same color in every
- * month's bar and in the legend; sources beyond the palette become "Other".
+ * month's bar and in the legend. Retain every source; repeat palette colors.
  */
 export function incomeBreakdown(state: AppState): IncomeBreakdown {
   const months = incomeMonths(state);
 
   // All-time total per source → ranking that drives stable color assignment.
-  const neutralized = refundMatchedIds(state);
   const totals = new Map<string, number>();
   for (const t of state.transactions) {
-    if (!isIncome(t, neutralized)) continue;
+    if (!isIncome(t)) continue;
     const name = incomeSourceLabel(t.merchantName, t.name);
     totals.set(name, (totals.get(name) ?? 0) + -t.amount);
   }
   const ranked = [...totals.entries()].sort((a, b) => b[1] - a[1]);
   const colorOf = new Map<string, string>();
-  ranked
-    .slice(0, INCOME_PALETTE.length)
-    .forEach(([name], i) => colorOf.set(name, INCOME_PALETTE[i]));
-  const labelFor = (raw: string) =>
-    colorOf.has(raw) ? raw : INCOME_OTHER_LABEL;
+  ranked.forEach(([name], i) => colorOf.set(name, INCOME_PALETTE[i % INCOME_PALETTE.length]));
+  const labelFor = (raw: string) => raw;
   const colorFor = (raw: string) => colorOf.get(raw) ?? INCOME_OTHER_COLOR;
 
   const byMonthMap = new Map<string, Map<string, IncomeSegment>>();
   for (const m of months) byMonthMap.set(m, new Map());
   for (const t of state.transactions) {
-    if (!isIncome(t, neutralized)) continue;
+    if (!isIncome(t)) continue;
     const m = monthKey(t.date);
     const segs = byMonthMap.get(m);
     if (!segs) continue;
@@ -240,18 +242,7 @@ export function incomeBreakdown(state: AppState): IncomeBreakdown {
     };
   });
 
-  const legend = ranked
-    .slice(0, INCOME_PALETTE.length)
-    .map(([name, total]) => ({ name, color: colorOf.get(name)!, total }));
-  if (ranked.length > INCOME_PALETTE.length) {
-    legend.push({
-      name: INCOME_OTHER_LABEL,
-      color: INCOME_OTHER_COLOR,
-      total: ranked
-        .slice(INCOME_PALETTE.length)
-        .reduce((a, [, v]) => a + v, 0),
-    });
-  }
+  const legend = ranked.map(([name, total]) => ({ name, color: colorOf.get(name)!, total }));
   return { months, byMonth, legend };
 }
 
@@ -271,60 +262,10 @@ export function largestDepositsForMonths(
   limit = 5,
 ): Transaction[] {
   const set = new Set(months);
-  const neutralized = refundMatchedIds(state);
   return state.transactions
-    .filter((t) => isIncome(t, neutralized) && set.has(monthKey(t.date)))
+    .filter((t) => isIncome(t) && set.has(monthKey(t.date)))
     .sort((a, b) => a.amount - b.amount) // most negative = largest inflow
     .slice(0, limit);
-}
-
-/**
- * Synthetic income sources: rent that's covered on your behalf and so never
- * lands in the bank feed. Each is independently toggled on from the Income tab
- * (via its own URL key) to sanity-check that total compensation lines up.
- */
-export interface PhantomIncome {
-  key: string; // URL param that switches it on (?<key>=on)
-  label: string; // source name shown in the chart, donut, and legend
-  short: string; // toggle-button label
-  monthly: number;
-  color: string;
-}
-
-export const PHANTOM_INCOME: PhantomIncome[] = [
-  {
-    key: "rent",
-    label: "Rent · RareLiquid",
-    short: "Rent (RareLiquid)",
-    monthly: 1600,
-    color: "#d4a574", // warm tan — set apart from the blue salary palette
-  },
-];
-
-/**
- * Add each active phantom source as its own segment to every month so it flows
- * through the chart, donut, stat row, and legend exactly like a real payer.
- * Leaves real transactions (and therefore the largest-deposits list) untouched.
- */
-export function withPhantomIncome(
-  byMonth: IncomeMonth[],
-  active: PhantomIncome[],
-): IncomeMonth[] {
-  if (active.length === 0) return byMonth;
-  const extra = active.reduce((a, p) => a + p.monthly, 0);
-  return byMonth.map((m) => ({
-    ...m,
-    total: m.total + extra,
-    segments: [
-      ...m.segments,
-      ...active.map((p) => ({
-        name: p.label,
-        total: p.monthly,
-        color: p.color,
-        count: 1,
-      })),
-    ].sort((a, b) => b.total - a.total),
-  }));
 }
 
 /** Sum a set of monthly income breakdowns into one source-segment list. */
@@ -342,10 +283,7 @@ export function mergeIncomeMonths(list: IncomeMonth[]): {
       map.set(s.name, e);
     }
   }
-  // Keep a real "Other" bucket last; everything else by size.
-  const segments = [...map.values()].sort((a, b) =>
-    a.name === "Other" ? 1 : b.name === "Other" ? -1 : b.total - a.total,
-  );
+  const segments = [...map.values()].sort((a, b) => b.total - a.total);
   return { total: segments.reduce((a, s) => a + s.total, 0), segments };
 }
 
@@ -363,13 +301,12 @@ export function spendByWeekday(
   monthsBack = 12,
 ): WeekdaySpend[] {
   const within = inWindow(windowMonths(state, monthsBack));
-  const neutralized = refundMatchedIds(state);
   const rows = WEEKDAYS.map((weekday) => ({ weekday, total: 0, count: 0 }));
   for (const t of state.transactions) {
-    if (!isSpend(t, neutralized) || !within(t)) continue;
+    if (!isSpend(t) || isSyntheticBaseline(t) || !within(t)) continue;
     const js = new Date(t.date + "T00:00:00").getDay(); // 0 = Sunday
     rows[(js + 6) % 7].total += t.amount; // re-index so 0 = Monday
-    rows[(js + 6) % 7].count += 1;
+    if (t.amount > 0 && !isSyntheticBaseline(t)) rows[(js + 6) % 7].count += 1;
   }
   return rows;
 }
@@ -381,11 +318,10 @@ export function largestPurchases(
   limit = 5,
 ): Transaction[] {
   const within = inWindow(windowMonths(state, monthsBack));
-  const neutralized = refundMatchedIds(state);
   return state.transactions
     .filter(
       (t) =>
-        !isSyntheticBaseline(t) && isSpend(t, neutralized) && within(t),
+        !isSyntheticBaseline(t) && t.amount > 0 && isSpend(t) && within(t),
     )
     .sort((a, b) => b.amount - a.amount)
     .slice(0, limit);
@@ -415,10 +351,9 @@ export function categorySpendTrends(
   if (months.length <= RECENT_MONTHS) return [];
   const recent = new Set(months.slice(-RECENT_MONTHS));
   const prior = new Set(months.slice(0, -RECENT_MONTHS));
-  const neutralized = refundMatchedIds(state);
   const acc = new Map<string, { recent: number; prior: number }>();
   for (const t of state.transactions) {
-    if (!isSpend(t, neutralized)) continue;
+    if (!isSpend(t)) continue;
     const m = monthKey(t.date);
     const bucket = recent.has(m) ? "recent" : prior.has(m) ? "prior" : null;
     if (!bucket) continue;
@@ -470,20 +405,19 @@ export function newMerchants(
   // With so little history every merchant would be "new" — meaningless.
   if (months.length <= recentMonths) return [];
   const recent = new Set(months.slice(-recentMonths));
-  const neutralized = refundMatchedIds(state);
   const acctName = new Map(state.accounts.map((a) => [a.id, a.name]));
   const byName = new Map<string, NewMerchant>();
   for (const t of state.transactions) {
     // Synthetic baseline rows aren't merchants — and a baseline added recently
     // would otherwise surface here as a brand-new one. See topMerchants.
     if (isSyntheticBaseline(t)) continue;
-    if (!isSpend(t, neutralized)) continue;
+    if (!isSpend(t)) continue;
     const name = displayPayee(t.merchantName, t.name, acctName.get(t.accountId));
     const row =
       byName.get(name) ?? { name, total: 0, count: 0, firstDate: t.date };
     if (t.date < row.firstDate) row.firstDate = t.date;
     row.total += t.amount;
-    row.count += 1;
+    if (t.amount > 0) row.count += 1;
     byName.set(name, row);
   }
   return [...byName.values()]

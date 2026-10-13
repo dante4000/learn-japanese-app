@@ -20,7 +20,7 @@ export function PeriodToggle({ period }: { period: "monthly" | "annual" }) {
           key={p}
           aria-pressed={period === p}
           onClick={() => set(p)}
-          className={`rounded-md px-2.5 py-1 capitalize transition-colors ${
+          className={`min-h-11 lg:min-h-0 rounded-md px-2.5 py-1 capitalize transition-colors ${
             period === p ? "bg-surface-2 text-cream" : "text-muted hover:text-cream"
           }`}
         >

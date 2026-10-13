@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
 import { Transaction } from "../types";
+import { CATEGORIES } from "../categories";
 
 // Flexible CSV importer for bank/card exports (Chase, Amex, and most others).
 // Auto-detects columns and normalizes the amount sign to our convention
@@ -91,30 +92,83 @@ export function detectColumns(headers: string[]): ColumnMap {
   };
 }
 
-// Keyword → Plaid PFC primary, so CSV imports aren't all "Other".
+// Match complete words. Specific merchants precede broad category terms.
 const CATEGORY_KEYWORDS: [RegExp, string][] = [
-  [/payroll|salary|direct dep|direct deposit|gusto|adp/i, "INCOME"],
-  [/uber|lyft|shell|chevron|exxon|gas|fuel|parking|toll|metro|transit|bart/i, "TRANSPORTATION"],
-  [/airlines|delta|united|airbnb|hotel|marriott|hilton|expedia|booking/i, "TRAVEL"],
-  [/netflix|spotify|hulu|disney|hbo|cinema|amc|steam|playstation|xbox/i, "ENTERTAINMENT"],
-  [/starbucks|coffee|restaurant|cafe|pizza|mcdonald|chipotle|doordash|grubhub|ubereats|grocery|safeway|whole foods|trader joe/i, "FOOD_AND_DRINK"],
-  [/amazon|walmart|target|costco|ebay|etsy|best buy|store/i, "GENERAL_MERCHANDISE"],
-  [/rent|landlord|mortgage|comcast|xfinity|at&t|verizon|t-mobile|pg&e|electric|water|gas company|utility/i, "RENT_AND_UTILITIES"],
-  [/cvs|walgreens|pharmacy|hospital|clinic|dental|doctor|medical/i, "MEDICAL"],
-  [/gym|salon|spa|barber|haircut/i, "PERSONAL_CARE"],
-  [/insurance|attorney|legal|accounting|consulting/i, "GENERAL_SERVICES"],
-  [/fee|interest charge|overdraft/i, "BANK_FEES"],
-  [/transfer|zelle|venmo|paypal|cash app/i, "TRANSFER_OUT"],
+  [/\b(payroll|salary|direct dep(?:osit)?|gusto|adp)\b/i, "INCOME"],
+  [/\b(transfer|zelle|venmo|cash app)\b/i, "TRANSFER_OUT"],
+  [/\b(cvs|walgreens|pharmacy|hospital|clinic|dental|doctor|medical)\b/i, "MEDICAL"],
+  [/\b(starbucks|coffee|restaurants?|caf[eé]|pizza|mcdonald'?s?|chipotle|doordash|grubhub|uber\s?eats|grocery|safeway|whole foods|trader joe'?s?)\b/i, "FOOD_AND_DRINK"],
+  [/\b(?:car|vehicle|truck) rental\b|\brent[ -]a[ -]car\b/i, "TRAVEL"],
+  [/\b(rent|landlord|mortgage|comcast|xfinity|at&t|verizon|t-mobile|pg&e|electric|water|gas company|utilit(?:y|ies))\b/i, "RENT_AND_UTILITIES"],
+  [/\b(uber|lyft|shell|chevron|exxon|gas|fuel|parking|toll|metro|transit|bart)\b/i, "TRANSPORTATION"],
+  [/\b(airlines?|airways|airbnb|hotels?|marriott|hilton|expedia|booking)\b/i, "TRAVEL"],
+  [/\b(netflix|spotify|hulu|disney|hbo|cinema|amc|steam|playstation|xbox)\b/i, "ENTERTAINMENT"],
+  [/\b(amazon|walmart|target|costco|ebay|etsy|best buy)\b/i, "GENERAL_MERCHANDISE"],
+  [/\b(gym|salon|spa|barber|haircut)\b/i, "PERSONAL_CARE"],
+  [/\b(insurance|attorney|legal|accounting|consulting)\b/i, "GENERAL_SERVICES"],
+  [/\b(fees?|interest charge|overdraft)\b/i, "BANK_FEES"],
 ];
 
-function guessCategory(description: string, amount: number): string {
+const CSV_CATEGORY_ALIASES: Record<string, string> = {
+  groceries: "FOOD_AND_DRINK", "food and drink": "FOOD_AND_DRINK",
+  "food and dining": "FOOD_AND_DRINK", dining: "FOOD_AND_DRINK",
+  restaurants: "FOOD_AND_DRINK", "food and beverage": "FOOD_AND_DRINK",
+  merchandise: "GENERAL_MERCHANDISE", "health and wellness": "MEDICAL",
+  "gas and fuel": "TRANSPORTATION", gas: "TRANSPORTATION", "automotive": "TRANSPORTATION",
+  bills: "RENT_AND_UTILITIES", utilities: "RENT_AND_UTILITIES", rent: "RENT_AND_UTILITIES",
+  "bills and utilities": "RENT_AND_UTILITIES", "fees and adjustments": "BANK_FEES",
+  payment: "TRANSFER_OUT", payments: "TRANSFER_OUT", transfer: "TRANSFER_OUT",
+};
+
+function categoryLabel(value: string): string {
+  return value.toLowerCase().replace(/[_&]/g, " ").replace(/\band\b/g, " ").replace(/\s+/g, " ").trim();
+}
+
+const NORMALIZED_CSV_CATEGORIES = new Map([
+  ...Object.entries(CSV_CATEGORY_ALIASES),
+  ...Object.values(CATEGORIES).flatMap((c) => [[c.key, c.key], [c.label, c.key]]),
+].map(([label, key]) => [categoryLabel(label), key]));
+
+function csvCategory(value: string): string | undefined {
+  return NORMALIZED_CSV_CATEGORIES.get(categoryLabel(value));
+}
+
+function guessCategory(description: string, amount: number, explicit: string): string {
+  const category = csvCategory(explicit);
+  if (category) return category === "TRANSFER_OUT" && amount < 0 ? "TRANSFER_IN" : category;
   for (const [re, cat] of CATEGORY_KEYWORDS) {
     if (re.test(description)) {
-      if (cat === "INCOME" && amount > 0) continue; // income should be inflow
-      return cat;
+      if (cat === "INCOME" && amount > 0) continue;
+      return cat === "TRANSFER_OUT" && amount < 0 ? "TRANSFER_IN" : cat;
     }
   }
   return amount < 0 ? "INCOME" : "OTHER";
+}
+
+/** CSV history must end before provider history begins for the same account. */
+export function csvHistoryOverlap(
+  providerHistory: readonly Transaction[],
+  csvRows: readonly Transaction[],
+  accountId: string,
+): { firstPlaidDate: string | null; count: number } {
+  let firstPlaidDate: string | null = null;
+  for (const t of providerHistory) {
+    if (t.accountId === accountId && t.source === "plaid" && (!firstPlaidDate || t.date < firstPlaidDate))
+      firstPlaidDate = t.date;
+  }
+  const count = firstPlaidDate === null ? 0 : csvRows.filter((t) =>
+    t.accountId === accountId && t.source === "csv" && t.date >= firstPlaidDate,
+  ).length;
+  return { firstPlaidDate, count };
+}
+
+export function csvOverlapError(existing: Transaction[], incoming: Transaction[], accountId: string): string | null {
+  if (!incoming.length) return null;
+  const { firstPlaidDate, count } = csvHistoryOverlap(existing, incoming, accountId);
+  if (!firstPlaidDate) return "This linked account has no bank history yet. Sync it before importing older CSV history.";
+  return count
+    ? `${count} CSV row(s) fall within or after bank history starting ${firstPlaidDate}. No rows were imported. Use a file containing only earlier history to avoid duplicate charges.`
+    : null;
 }
 
 function parseAmount(raw: string): number {
@@ -241,7 +295,7 @@ export function csvToTransactions(
       name: description,
       merchantName: null,
       pending: false,
-      categoryPrimary: guessCategory(description, amount),
+      categoryPrimary: guessCategory(description, amount, cols.category >= 0 ? r[cols.category] ?? "" : ""),
       categoryDetailed: null,
       paymentChannel: null,
       source: "csv",

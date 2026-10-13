@@ -76,7 +76,7 @@ export function CsvImport({ accounts }: { accounts: Account[] }) {
         setMsg(data?.error || "Import failed");
         return;
       }
-      setMsg(`Imported ${data.imported} transactions${data.skipped ? `, skipped ${data.skipped}` : ""}.`);
+      setMsg(`Imported ${data.imported} transactions${data.skipped ? `, skipped ${data.skipped}` : ""}.${typeof data.warning === "string" ? ` ${data.warning}` : ""}`);
       setCsv("");
       setFileName("");
       router.refresh();
@@ -88,15 +88,15 @@ export function CsvImport({ accounts }: { accounts: Account[] }) {
   }
 
   const field =
-    "w-full rounded-xl border hairline bg-surface px-3 py-2.5 text-sm text-cream outline-none placeholder:text-faint focus:border-blue";
+    "min-w-0 max-w-full w-full rounded-xl border hairline bg-surface px-3 py-2.5 text-base sm:text-sm text-cream outline-none placeholder:text-faint focus:border-blue";
 
   return (
     <form onSubmit={submit} className="space-y-3">
-      <label className="relative flex cursor-pointer items-center justify-between rounded-xl border border-dashed hairline bg-surface px-4 py-4 text-sm transition-colors hover:border-line-2 focus-within:outline-2 focus-within:outline-blue">
-        <span className="text-cream-dim">
+      <label className="relative flex cursor-pointer items-center gap-3 justify-between rounded-xl border border-dashed hairline bg-surface px-4 py-4 text-sm transition-colors hover:border-line-2 focus-within:outline-2 focus-within:outline-blue">
+        <span className="min-w-0 flex-1 break-words text-cream-dim">
           {fileName || "Choose a .csv export from your bank"}
         </span>
-        <span className="rounded-lg bg-surface-2 px-3 py-1.5 text-xs text-cream">
+        <span className="shrink-0 rounded-lg bg-surface-2 px-3 py-1.5 text-xs text-cream">
           Browse
         </span>
         <input ref={fileInput} type="file" aria-label="Choose a CSV export from your bank" accept=".csv,text/csv" onChange={onFile} disabled={busy} className="absolute inset-0 h-full w-full cursor-pointer opacity-0" />
@@ -108,7 +108,7 @@ export function CsvImport({ accounts }: { accounts: Account[] }) {
             type="button"
             aria-pressed={mode === "existing"}
             onClick={() => setMode("existing")}
-            className={`flex-1 rounded-xl border px-3 py-2 text-xs ${mode === "existing" ? "border-blue text-cream" : "hairline text-muted"}`}
+            className={`min-h-11 lg:min-h-0 flex-1 rounded-xl border px-3 py-2 text-xs ${mode === "existing" ? "border-blue text-cream" : "hairline text-muted"}`}
           >
             Add to existing account
           </button>
@@ -116,7 +116,7 @@ export function CsvImport({ accounts }: { accounts: Account[] }) {
             type="button"
             aria-pressed={mode === "new"}
             onClick={() => setMode("new")}
-            className={`flex-1 rounded-xl border px-3 py-2 text-xs ${mode === "new" ? "border-blue text-cream" : "hairline text-muted"}`}
+            className={`min-h-11 lg:min-h-0 flex-1 rounded-xl border px-3 py-2 text-xs ${mode === "new" ? "border-blue text-cream" : "hairline text-muted"}`}
           >
             Create new account
           </button>
@@ -137,7 +137,7 @@ export function CsvImport({ accounts }: { accounts: Account[] }) {
           ))}
         </select>
       ) : (
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
           <input
             aria-label="Institution name"
             value={institutionName}
@@ -196,7 +196,7 @@ export function CsvImport({ accounts }: { accounts: Account[] }) {
       <button
         type="submit"
         disabled={busy || !csv || (mode === "existing" && !selectedAccountId)}
-        className="w-full rounded-xl bg-slate py-2.5 text-sm font-semibold text-ink transition-opacity hover:opacity-90 disabled:opacity-40"
+        className="min-h-11 lg:min-h-0 w-full rounded-xl bg-slate py-2.5 text-sm font-semibold text-ink transition-opacity hover:opacity-90 disabled:opacity-40"
       >
         {busy ? "Importing…" : "Import transactions"}
       </button>

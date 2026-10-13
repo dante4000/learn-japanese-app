@@ -28,7 +28,7 @@ export function CashFlowBars({
             <div
               className="w-1/2 max-w-5 rounded-t-sm transition-[height] motion-reduce:transition-none"
               style={{
-                height: `${(d.spending / max) * 100}%`,
+                height: `${(Math.max(0, d.spending) / max) * 100}%`,
                 background:
                   "linear-gradient(180deg, var(--color-coral), var(--color-coral-deep))",
               }}

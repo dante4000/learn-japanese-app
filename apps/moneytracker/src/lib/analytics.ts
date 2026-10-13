@@ -12,8 +12,10 @@ import {
   categoryMeta,
   resolveCategoryKey,
   isInternalPayment,
+  isHousingTransaction,
 } from "./categories";
 import { monthKey } from "./format";
+import { monthlyEquivalent } from "./recurring";
 import { displayPayee } from "./aliases";
 
 // Pure functions that derive every dashboard number from the two raw inputs:
@@ -44,26 +46,41 @@ export function effectiveCategory(t: Transaction): string {
   return resolveCategoryKey(t);
 }
 
-/**
- * A transaction that should count as discretionary/spending outflow.
- * `neutralized` is the set of refund-matched ids (see `refundMatchedIds`); a
- * purchase that was later refunded is in it and no longer counts as spend.
- */
-export function isSpend(t: Transaction, neutralized?: Set<string>): boolean {
-  if (t.hidden || t.pending) return false;
-  if (neutralized?.has(t.id)) return false;
-  if (t.amount <= 0) return false; // inflow
-  return !TRANSFER_CATEGORIES.has(effectiveCategory(t));
+/** Posted spending, net of refunds in the month each entry posts. */
+export function isSpend(t: Transaction): boolean {
+  if (t.hidden || t.pending || t.amount === 0) return false;
+  return categoryMeta(effectiveCategory(t)).isSpending;
 }
 
-/**
- * A transaction that should count as income (real inflow, not a transfer).
- * A refund matched to its purchase is in `neutralized` and doesn't count —
- * otherwise a buy-then-return would register as income.
- */
-export function isIncome(t: Transaction, neutralized?: Set<string>): boolean {
+/** Classify card credits from payment or refund evidence in the read model.
+ * Unknown credits are excluded from income and spending; raw data stays intact. */
+export function normalizeAccountTransactions(state: AppState): AppState {
+  const accountTypes = new Map(state.accounts.map((a) => [a.id, a.type]));
+  const purchases = new Map<string, Transaction[]>();
+  for (const t of state.transactions) {
+    if (t.amount <= 0 || !isSpend(t)) continue;
+    const key = JSON.stringify([t.accountId, t.currency, normalizeMerchant(t.merchantName || t.name)]);
+    const list = purchases.get(key) ?? [];
+    list.push(t);
+    purchases.set(key, list);
+  }
+  for (const list of purchases.values()) list.sort((a, b) => b.date.localeCompare(a.date));
+  return { ...state, transactions: state.transactions.map((t) => {
+    const accountType = accountTypes.get(t.accountId);
+    if (t.userCategory || t.amount >= 0 || accountType !== "credit") return t;
+    if (isInternalPayment(t.name, t.merchantName, accountType, t.amount))
+      return { ...t, categoryPrimary: "TRANSFER_IN" };
+    if (effectiveCategory(t) !== "INCOME") return t;
+    const key = JSON.stringify([t.accountId, t.currency, normalizeMerchant(t.merchantName || t.name)]);
+    const purchase = purchases.get(key)?.find((p) => p.date <= t.date && p.amount >= Math.abs(t.amount));
+    // No merchant purchase evidence: do not invent earned income or a refund.
+    return { ...t, categoryPrimary: purchase ? effectiveCategory(purchase) : "TRANSFER_IN" };
+  }) };
+}
+
+/** Posted earned income. Transfers and spending credits are excluded. */
+export function isIncome(t: Transaction): boolean {
   if (t.hidden || t.pending) return false;
-  if (neutralized?.has(t.id)) return false;
   if (t.amount >= 0) return false; // outflow
   const cat = effectiveCategory(t);
   if (TRANSFER_CATEGORIES.has(cat)) return false;
@@ -76,15 +93,8 @@ export function isIncome(t: Transaction, neutralized?: Set<string>): boolean {
   return true;
 }
 
-// A refund posts as an inflow on a spending category, usually at the same
-// merchant and amount as the original charge. We pair each refund back to its
-// originating purchase — same account, normalized merchant, and amount, on or
-// before the refund's date — and neutralize BOTH: the purchase stops counting
-// as spend and the refund stops counting as income, so a buy-then-return nets
-// to zero in the purchase's month. Matching is greedy and one-to-one (the
-// oldest refund claims the most recent eligible charge); a refund with no prior
-// matching charge is left untouched. Memoized per transactions array, since
-// several aggregations ask for it.
+// Full refund pairs suppress duplicate warnings and recurring predictions.
+// Spending totals use signed entries on their posting dates.
 const refundMatchCache = new WeakMap<Transaction[], Set<string>>();
 
 export function refundMatchedIds(state: AppState): Set<string> {
@@ -175,15 +185,14 @@ export function cashFlowByMonth(
   state: AppState,
   months = 6,
 ): MonthCashFlow[] {
-  const neutralized = refundMatchedIds(state);
   const map = new Map<string, MonthCashFlow>();
   for (const t of state.transactions) {
     const key = monthKey(t.date);
     if (!map.has(key))
       map.set(key, { month: key, income: 0, spending: 0, net: 0 });
     const row = map.get(key)!;
-    if (isSpend(t, neutralized)) row.spending += t.amount;
-    else if (isIncome(t, neutralized)) row.income += -t.amount;
+    if (isSpend(t)) row.spending += t.amount;
+    else if (isIncome(t)) row.income += -t.amount;
   }
   const rows = [...map.values()].sort((a, b) => a.month.localeCompare(b.month));
   for (const r of rows) r.net = r.income - r.spending;
@@ -233,10 +242,9 @@ export function cashFlowDetail(
 
 /** All months (yyyy-mm) that have any spending or income, oldest → newest. */
 export function availableMonths(state: AppState): string[] {
-  const neutralized = refundMatchedIds(state);
   const set = new Set<string>();
   for (const t of state.transactions) {
-    if (isSpend(t, neutralized) || isIncome(t, neutralized))
+    if (isSpend(t) || isIncome(t))
       set.add(monthKey(t.date));
   }
   return [...set].sort((a, b) => a.localeCompare(b));
@@ -278,74 +286,84 @@ function baselineAt(timeline: RecurringBaseline[], m: string): RecurringBaseline
     if (b.startMonth > m) break;
     current = b;
   }
-  return current;
+  // An ended revision must not revive a superseded older amount.
+  return current?.endMonth && current.endMonth < m ? null : current;
 }
 
-/**
- * Fill in recurring baselines: for each month (within the data range, from the
- * baseline's startMonth) that lacks a real charge in the baseline's category,
- * add a synthetic "(estimated)" transaction so totals/trends are honest. Months
- * that already have a matching charge are left untouched (no double-counting),
- * and each bill contributes at most one row per month (see baselineTimelines).
- */
+/** Active revisions use the same dates in spending and the Bilt estimate. */
+export function activeBaselines(baselines: RecurringBaseline[], month: string): RecurringBaseline[] {
+  return baselineTimelines(baselines).map((timeline) => baselineAt(timeline, month))
+    .filter((bill): bill is RecurringBaseline => bill !== null);
+}
+
+export function isHousingBaseline(bill: RecurringBaseline): boolean {
+  return bill.category === "RENT_AND_UTILITIES" && /\b(rent|housing|mortgage)\b/i.test(bill.name);
+}
+
+/** Fill missing bills with estimates. A matched charge uses its actual amount,
+ * even when it is prorated or split. Estimates never top up a posted bill. */
 export function injectBaselines(state: AppState): AppState {
-  const baselines = state.baselines ?? [];
-  if (!baselines.length) return state;
-  const months = availableMonths(state);
-  if (!months.length) return state;
+  const transactions = state.transactions.filter((t) => !isSyntheticBaseline(t));
+  const raw = transactions.length === state.transactions.length ? state : { ...state, transactions };
+  const timelines = baselineTimelines(state.baselines ?? []);
+  if (!timelines.length) return raw;
+  const months = availableMonths(raw);
+  if (!months.length) return raw;
   const earliest = months[0];
   const latest = months[months.length - 1];
   const currency = state.accounts[0]?.currency ?? "USD";
+  // A posted bill blocks an estimate even if a refund also posts this month.
+  // Refund timing cannot prove which billing period needs a replacement charge.
+  const posted = transactions.filter((t) => t.amount > 0 && isSpend(t));
   const synthetic: Transaction[] = [];
 
-  for (const timeline of baselineTimelines(baselines)) {
-    const start = timeline[0].startMonth;
-    let m = start > earliest ? start : earliest;
-    let guard = 0;
-    while (m <= latest && guard < 600) {
-      const b = baselineAt(timeline, m);
-      if (!b) {
-        m = nextMonth(m);
-        guard++;
-        continue;
-      }
-      const hasReal = state.transactions.some(
-        (t) =>
-          !t.hidden &&
-          t.amount > 0 &&
-          monthKey(t.date) === m &&
-          effectiveCategory(t) === b.category &&
-          t.amount >= b.amount * 0.5,
-      );
-      if (!hasReal) {
-        synthetic.push({
-          id: `baseline_${b.id}_${m}`,
-          accountId: BASELINE_ACCOUNT_ID,
-          amount: b.amount,
-          currency,
-          date: `${m}-01`,
-          name: `${b.name} (estimated)`,
-          merchantName: b.name,
-          pending: false,
-          categoryPrimary: b.category,
-          categoryDetailed: null,
-          paymentChannel: null,
-          source: "manual",
-          userCategory: null,
-          note: "Estimated recurring baseline",
-          hidden: false,
-        });
-      }
-      m = nextMonth(m);
-      guard++;
+  let month = earliest;
+  for (let guard = 0; month <= latest && guard < 600; guard++, month = nextMonth(month)) {
+    const active = activeBaselines(state.baselines, month);
+    const housingCount = active.filter(isHousingBaseline).length;
+    const covered = new Set<string>();
+    for (const t of posted) {
+      if (monthKey(t.date) !== month) continue;
+      const description = normalizeMerchant(`${t.name} ${t.merchantName ?? ""} ${t.categoryDetailed ?? ""}`);
+      const words = new Set(description.split(" "));
+      const scores = active.map((b) => {
+        if (effectiveCategory(t) !== b.category) return 0;
+        if (isHousingBaseline(b) && !isHousingTransaction(t)) return 0;
+        const tokens = normalizeMerchant(b.name).split(" ")
+          .filter((word) => word && !["and", "monthly", "bill", "payment", "unit"].includes(word));
+        if (tokens.length && tokens.every((word) => words.has(word))) return 100 + tokens.length;
+        return isHousingBaseline(b) && housingCount === 1 && isHousingTransaction(t) ? 10 : 0;
+      });
+      const best = Math.max(0, ...scores);
+      const matches = active.filter((_, i) => best > 0 && scores[i] === best);
+      // Ambiguous matches stay estimated. Never reuse one charge for two bills.
+      if (matches.length === 1) covered.add(matches[0].id);
+    }
+    for (const b of active) {
+      if (covered.has(b.id)) continue;
+      synthetic.push({
+        id: `baseline_${b.id}_${month}`,
+        accountId: BASELINE_ACCOUNT_ID,
+        amount: b.amount,
+        currency,
+        date: `${month}-01`,
+        name: `${b.name} (estimated)`,
+        merchantName: b.name,
+        pending: false,
+        categoryPrimary: b.category,
+        categoryDetailed: null,
+        paymentChannel: null,
+        source: "manual",
+        userCategory: null,
+        note: "Estimated recurring baseline; no matching posted charge",
+        hidden: false,
+      });
     }
   }
-  if (!synthetic.length) return state;
+  if (!synthetic.length) return raw;
   return {
-    ...state,
-    transactions: [...state.transactions, ...synthetic].sort((a, b) =>
-      b.date.localeCompare(a.date),
-    ),
+    ...raw,
+    transactions: [...transactions, ...synthetic].sort((a, b) => b.date.localeCompare(a.date)),
   };
 }
 
@@ -395,10 +413,9 @@ export function spendingByCategory(
   state: AppState,
   month?: string,
 ): CategorySpend[] {
-  const neutralized = refundMatchedIds(state);
   const map = new Map<string, CategorySpend>();
   for (const t of state.transactions) {
-    if (!isSpend(t, neutralized)) continue;
+    if (!isSpend(t)) continue;
     if (month && monthKey(t.date) !== month) continue;
     const key = effectiveCategory(t);
     const meta = categoryMeta(key);
@@ -413,7 +430,7 @@ export function spendingByCategory(
       });
     const row = map.get(key)!;
     row.total += t.amount;
-    row.count += 1;
+    if (t.amount > 0) row.count += 1;
   }
   return [...map.values()].sort((a, b) => b.total - a.total);
 }
@@ -457,8 +474,8 @@ export function categoryHabits(
   monthsBack = 12,
 ): { habits: CategoryHabit[]; months: number; avgMonthlyTotal: number } {
   const comp = monthlyComposition(state, monthsBack);
-  const months = comp.length || 1;
-  const grand = comp.reduce((a, c) => a + c.total, 0) || 1;
+  const months = comp.length;
+  const grand = comp.reduce((a, c) => a + c.total, 0);
 
   const acc = new Map<string, CategoryHabit>();
   for (const m of comp) {
@@ -482,14 +499,14 @@ export function categoryHabits(
   }
   const habits = [...acc.values()].map((h) => ({
     ...h,
-    monthlyAvg: h.total / months,
-    share: h.total / grand,
+    monthlyAvg: months ? h.total / months : 0,
+    share: grand ? h.total / grand : 0,
   }));
   habits.sort((a, b) => b.total - a.total);
   return {
     habits,
     months,
-    avgMonthlyTotal: grand / months,
+    avgMonthlyTotal: months ? grand / months : 0,
   };
 }
 
@@ -510,18 +527,17 @@ export function topMerchants(
   month?: string,
   limit = 8,
 ): MerchantSpend[] {
-  const neutralized = refundMatchedIds(state);
   const acctName = new Map(state.accounts.map((a) => [a.id, a.name]));
   const map = new Map<string, MerchantSpend>();
   for (const t of state.transactions) {
     if (isSyntheticBaseline(t)) continue;
-    if (!isSpend(t, neutralized)) continue;
+    if (!isSpend(t)) continue;
     if (month && monthKey(t.date) !== month) continue;
     const name = displayPayee(t.merchantName, t.name, acctName.get(t.accountId));
     if (!map.has(name)) map.set(name, { name, total: 0, count: 0 });
     const row = map.get(name)!;
     row.total += t.amount;
-    row.count += 1;
+    if (t.amount > 0) row.count += 1;
   }
   return [...map.values()].sort((a, b) => b.total - a.total).slice(0, limit);
 }
@@ -567,7 +583,6 @@ export function categoryDetail(
   category: string,
   month: string,
 ): CategoryDetailData {
-  const neutralized = refundMatchedIds(state);
   const acctName = new Map(state.accounts.map((a) => [a.id, a.name]));
   const meta = categoryMeta(category);
 
@@ -576,7 +591,7 @@ export function categoryDetail(
   const prevMonth = idx > 0 ? months[idx - 1] : null;
 
   const inCategory = (t: Transaction) =>
-    isSpend(t, neutralized) && effectiveCategory(t) === category;
+    isSpend(t) && effectiveCategory(t) === category;
   const payee = (t: Transaction) =>
     displayPayee(t.merchantName, t.name, acctName.get(t.accountId));
 
@@ -587,7 +602,7 @@ export function categoryDetail(
   for (const t of state.transactions) {
     if (!inCategory(t) || monthKey(t.date) !== month) continue;
     total += t.amount;
-    count += 1;
+    if (t.amount > 0) count += 1;
     const name = payee(t);
     (groups.get(name) ?? groups.set(name, []).get(name)!).push(t);
   }
@@ -609,7 +624,7 @@ export function categoryDetail(
       return {
         name,
         total: mTotal,
-        count: txns.length,
+        count: txns.filter((t) => t.amount > 0).length,
         prevTotal: mPrev,
         deltaPct: mPrev > 0 ? ((mTotal - mPrev) / mPrev) * 100 : null,
         transactions: txns.sort((a, b) => b.date.localeCompare(a.date)),
@@ -619,6 +634,7 @@ export function categoryDetail(
 
   const biggest = merchants
     .flatMap((m) => m.transactions)
+    .filter((t) => t.amount > 0 && !isSyntheticBaseline(t))
     .sort((a, b) => b.amount - a.amount)
     .slice(0, 5);
 
@@ -672,22 +688,21 @@ export function spendingByAccount(
   state: AppState,
   month?: string,
 ): AccountSpend[] {
-  const neutralized = refundMatchedIds(state);
   const names = new Map(state.accounts.map((a) => [a.id, a.name]));
   const map = new Map<string, AccountSpend>();
   for (const t of state.transactions) {
-    if (!isSpend(t, neutralized)) continue;
+    if (!isSpend(t)) continue;
     if (month && monthKey(t.date) !== month) continue;
     if (!map.has(t.accountId))
       map.set(t.accountId, {
         accountId: t.accountId,
-        name: names.get(t.accountId) ?? "Account",
+        name: isSyntheticBaseline(t) ? "Estimated fixed bills" : names.get(t.accountId) ?? "Account",
         total: 0,
         count: 0,
       });
     const r = map.get(t.accountId)!;
     r.total += t.amount;
-    r.count += 1;
+    if (t.amount > 0) r.count += 1;
   }
   return [...map.values()].sort((a, b) => b.total - a.total);
 }
@@ -709,7 +724,7 @@ export interface DailySpending {
 }
 
 /** Per-day spending for a month, plus a run-rate month-end projection. */
-export function dailySpending(state: AppState, month: string): DailySpending {
+export function dailySpending(state: AppState, month: string, asOf = todayKey()): DailySpending {
   const [y, mo] = month.split("-").map(Number);
   const daysInMonth = new Date(y, mo, 0).getDate();
   const days: DaySpend[] = Array.from({ length: daysInMonth }, (_, i) => ({
@@ -717,17 +732,20 @@ export function dailySpending(state: AppState, month: string): DailySpending {
     date: `${month}-${String(i + 1).padStart(2, "0")}`,
     total: 0,
   }));
-  const neutralized = refundMatchedIds(state);
   let total = 0;
-  let throughDay = 0;
+  const currentMonth = asOf.slice(0, 7);
+  const throughDay = month < currentMonth ? daysInMonth : month === currentMonth
+    ? Math.min(daysInMonth, Number(asOf.slice(8, 10))) : 0;
+  let fixed = 0;
   for (const t of state.transactions) {
-    if (!isSpend(t, neutralized)) continue;
+    if (!isSpend(t)) continue;
     if (monthKey(t.date) !== month) continue;
+    if (t.date > asOf) continue;
     const d = Number(t.date.slice(8, 10));
     if (d >= 1 && d <= daysInMonth) {
       days[d - 1].total += t.amount;
       total += t.amount;
-      if (d > throughDay) throughDay = d;
+      if (isSyntheticBaseline(t) || isHousingTransaction(t)) fixed += t.amount;
     }
   }
   let running = 0;
@@ -738,7 +756,8 @@ export function dailySpending(state: AppState, month: string): DailySpending {
     total,
     daysInMonth,
     throughDay,
-    projected: throughDay > 0 ? (total / throughDay) * daysInMonth : null,
+    projected: month === currentMonth && throughDay > 0
+      ? fixed + ((total - fixed) / throughDay) * daysInMonth : null,
     avgPerDay: throughDay > 0 ? total / throughDay : 0,
   };
 }
@@ -829,13 +848,19 @@ function isBillStream(s: RecurringStream): boolean {
   return !isTransferStream(s);
 }
 
-function addInterval(date: string, freq: string): string {
+function addInterval(date: string, freq: string, anchorDate = date): string {
   const d = new Date(date + "T00:00:00Z");
   if (freq === "WEEKLY") d.setUTCDate(d.getUTCDate() + 7);
   else if (freq === "BIWEEKLY") d.setUTCDate(d.getUTCDate() + 14);
   else if (freq === "SEMI_MONTHLY") d.setUTCDate(d.getUTCDate() + 15);
-  else if (freq === "ANNUALLY") d.setUTCFullYear(d.getUTCFullYear() + 1);
-  else d.setUTCMonth(d.getUTCMonth() + 1); // MONTHLY / UNKNOWN
+  else {
+    const anchorDay = Number(anchorDate.slice(8, 10));
+    const month = d.getUTCMonth() + (freq === "ANNUALLY" ? 12 : 1);
+    const lastDay = new Date(Date.UTC(d.getUTCFullYear(), month + 1, 0)).getUTCDate();
+    d.setUTCDate(1);
+    d.setUTCMonth(month);
+    d.setUTCDate(Math.min(anchorDay, lastDay));
+  }
   return d.toISOString().slice(0, 10);
 }
 
@@ -863,21 +888,15 @@ function cadenceFromGap(
   return null; // bimonthly/quarterly have no enum — skip rather than mislabel
 }
 
-const recurDetectCache = new WeakMap<Transaction[], RecurringStream[]>();
-
 /**
  * Our own recurring detector — a fallback for everything Plaid's recurring
  * product misses (short history, too few occurrences, slightly inconsistent
  * naming). Groups posted, non-transfer transactions by account + normalized
  * merchant, then promotes a group to a stream when it shows a regular cadence
  * and steady amount. Streams Plaid already supplies are skipped, so this only
- * ADDS what's missing. Pure + memoized per transactions array.
+ * adds only missing streams. The supplied date controls active status.
  */
-export function detectRecurringStreams(state: AppState): RecurringStream[] {
-  const cached = recurDetectCache.get(state.transactions);
-  if (cached) return cached;
-
-  const today = todayKey();
+export function detectRecurringStreams(state: AppState, today = todayKey()): RecurringStream[] {
   const neutralized = refundMatchedIds(state);
 
   // account + normalized-merchant keys Plaid already covers with a *shown*
@@ -898,7 +917,9 @@ export function detectRecurringStreams(state: AppState): RecurringStream[] {
   const groups = new Map<string, Transaction[]>();
   for (const t of state.transactions) {
     if (t.pending || t.hidden || isSyntheticBaseline(t)) continue;
+    if (t.date > today) continue;
     if (t.amount === 0 || neutralized.has(t.id)) continue;
+    if (t.amount < 0 && !isIncome(t)) continue;
     if (TRANSFER_CATEGORIES.has(effectiveCategory(t))) continue;
     if (isInternalPayment(t.name, t.merchantName)) continue;
     const m = normalizeMerchant(t.merchantName || t.name);
@@ -974,13 +995,12 @@ export function detectRecurringStreams(state: AppState): RecurringStream[] {
     });
   }
 
-  recurDetectCache.set(state.transactions, out);
   return out;
 }
 
 /** Plaid's streams plus everything our own detector recovered that Plaid missed. */
-export function allRecurringStreams(state: AppState): RecurringStream[] {
-  return [...state.recurring, ...detectRecurringStreams(state)];
+export function allRecurringStreams(state: AppState, today = todayKey()): RecurringStream[] {
+  return [...state.recurring, ...detectRecurringStreams(state, today)];
 }
 
 /**
@@ -996,8 +1016,8 @@ export function upcomingBills(
 ): { bills: UpcomingBill[]; dueSoonTotal: number; monthlyTotal: number } {
   const bills: UpcomingBill[] = [];
   const acctName = new Map(state.accounts.map((a) => [a.id, a.name]));
-  for (const s of allRecurringStreams(state)) {
-    if (!isBillStream(s)) continue;
+  const streams = allRecurringStreams(state, today).filter(isBillStream);
+  for (const s of streams) {
     let date = s.predictedNextDate && s.predictedNextDate >= today
       ? s.predictedNextDate
       : s.lastDate;
@@ -1005,29 +1025,36 @@ export function upcomingBills(
     if (!date) continue;
     let guard = 0;
     while (date < today && guard < 60) {
-      date = addInterval(date, s.frequency);
+      date = addInterval(date, s.frequency, s.lastDate);
       predicted = true;
       guard++;
     }
-    bills.push({
-      id: s.id,
-      name: displayPayee(s.merchantName, s.description, acctName.get(s.accountId)),
-      categoryPrimary: s.categoryPrimary,
-      amount: Math.abs(s.lastAmount || s.averageAmount),
-      frequency: s.frequency,
-      nextDate: date,
-      daysUntil: dayDiff(today, date),
-      predicted,
-    });
+    // Count each occurrence in the horizon, not only the next weekly charge.
+    let occurrence = 0;
+    while (date >= today && dayDiff(today, date) <= Math.max(withinDays, 30) && occurrence < 400) {
+      bills.push({
+        id: `${s.id}:${date}`,
+        name: displayPayee(s.merchantName, s.description, acctName.get(s.accountId)),
+        categoryPrimary: s.categoryPrimary,
+        amount: Math.abs(s.lastAmount || s.averageAmount),
+        frequency: s.frequency,
+        nextDate: date,
+        daysUntil: dayDiff(today, date),
+        predicted,
+      });
+      date = addInterval(date, s.frequency, s.lastDate);
+      predicted = true;
+      occurrence++;
+    }
   }
   bills.sort((a, b) => a.nextDate.localeCompare(b.nextDate));
   const within = bills.filter((b) => b.daysUntil <= withinDays);
   return {
     bills: within,
-    dueSoonTotal: within
+    dueSoonTotal: bills
       .filter((b) => b.daysUntil <= 30)
       .reduce((a, b) => a + b.amount, 0),
-    monthlyTotal: 0,
+    monthlyTotal: streams.reduce((sum, s) => sum + monthlyEquivalent(s), 0),
   };
 }
 
@@ -1212,7 +1239,6 @@ export function netWorthHistory(state: AppState, today: string): NetWorthSnapsho
   // Net per-day flow, split by asset vs liability side. Also tally real income
   // and discretionary spending per day (same rules as the cash-flow views) so
   // the chart can show what drove each move.
-  const neutralized = refundMatchedIds(state);
   const dayAsset = new Map<string, number>();
   const dayLiab = new Map<string, number>();
   const dayIncome = new Map<string, number>();
@@ -1221,9 +1247,9 @@ export function netWorthHistory(state: AppState, today: string): NetWorthSnapsho
     if (t.pending || isSyntheticBaseline(t)) continue;
     const bucket = liabAccts.has(t.accountId) ? dayLiab : dayAsset;
     bucket.set(t.date, (bucket.get(t.date) ?? 0) + t.amount);
-    if (isIncome(t, neutralized))
+    if (isIncome(t))
       dayIncome.set(t.date, (dayIncome.get(t.date) ?? 0) + -t.amount);
-    else if (isSpend(t, neutralized))
+    else if (isSpend(t))
       daySpend.set(t.date, (daySpend.get(t.date) ?? 0) + t.amount);
   }
 
@@ -1288,103 +1314,56 @@ export interface DuplicateGroup {
   merchant: string;
   amount: number;
   accountId: string;
-  date: string; // all charges in the group share this date
-  /** 2+ identical posted charges: same account, merchant, amount, and day. */
+  date: string; // earliest posted date in the group
+  /** 2+ identical posted charges: same account, merchant, amount, and nearby posted dates. */
   transactions: Transaction[];
 }
 
-/** Normalize a merchant/description for matching: lowercase, strip punctuation
- *  and store/location numbers so "STARBUCKS #1234" ≈ "Starbucks". */
+/** Preserve merchant names; remove explicit store/reference suffixes only. */
 function normalizeMerchant(s: string): string {
-  return s
-    .toLowerCase()
-    .replace(/[^a-z0-9 ]+/g, " ")
-    .replace(/\b\d{2,}\b/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
+  return s.normalize("NFKC").toLowerCase()
+    .replace(/\s*#\s*\d+\s*$/u, "")
+    .replace(/\s+store\s+\d+\s*$/iu, "")
+    .replace(/[^\p{L}\p{N} ]+/gu, " ")
+    .replace(/\s+/g, " ").trim();
 }
 
-/** A merchant+amount that recurs on more than this many distinct days is a
- *  pattern (constant-price ad billing, an undetected subscription, a daily
- *  same-price habit) — not an accidental double-charge. */
-const DUP_MAX_DISTINCT_DAYS = 2;
-
-/**
- * True double-charges: posted (non-pending), visible outflows charged 2+ times
- * on the SAME day for the EXACT same account, merchant, and amount. Two guards
- * keep legitimate repeats out, so what's left is genuinely suspect:
- *
- *  1. The merchant+amount combo must be near a one-off — it appears on ≤2
- *     distinct days ever. Kills constant-price habits and undetected
- *     subscriptions (a daily $5 coffee, a monthly newsletter at one price).
- *  2. The merchant must not double-charge on more than one distinct day. A
- *     merchant that posts multiple same-day charges repeatedly is a usage/ad
- *     biller (Meta/Facebook charge varying amounts many times a day), not a
- *     mistake — drop it even when each amount looks like a one-off.
- *
- * Detected recurring streams are excluded outright. Two genuine same-day
- * same-price buys can still match, hence "possible" — candidates, not verdicts.
- */
+/** Same-account, same-amount purchases posted within one day are review candidates. */
 export function findPossibleDuplicates(state: AppState): DuplicateGroup[] {
-  // Merchants we know recur — never flag these.
-  const recurring = new Set<string>();
-  for (const r of state.recurring) {
-    if (r.merchantName) recurring.add(normalizeMerchant(r.merchantName));
-    if (r.description) recurring.add(normalizeMerchant(r.description));
-  }
-
-  // Bucket eligible spends by account|merchant|amount (date-independent).
-  const acctName = new Map(state.accounts.map((a) => [a.id, a.name]));
+  const neutralized = refundMatchedIds(state);
+  const accountNames = new Map(state.accounts.map((a) => [a.id, a.name]));
   const buckets = new Map<string, Transaction[]>();
   for (const t of state.transactions) {
-    if (t.pending || t.hidden || t.amount <= 0) continue;
-    const norm = normalizeMerchant(t.merchantName || t.name);
-    if (!norm || recurring.has(norm)) continue;
-    const key = `${t.accountId}|${norm}|${t.amount.toFixed(2)}`;
-    const list = buckets.get(key);
-    if (list) list.push(t);
-    else buckets.set(key, [t]);
+    if (t.amount <= 0 || neutralized.has(t.id) || !isSpend(t) || isSyntheticBaseline(t)) continue;
+    if (isInternalPayment(t.name, t.merchantName)) continue;
+    const merchant = normalizeMerchant(t.merchantName || t.name);
+    if (!merchant) continue;
+    const key = JSON.stringify([t.accountId, t.currency, merchant, t.amount.toFixed(2)]);
+    const bucket = buckets.get(key) ?? [];
+    bucket.push(t);
+    buckets.set(key, bucket);
   }
-
-  // Candidate same-day clusters, tagged with their merchant (account|merchant).
-  const candidates: { merchantKey: string; group: DuplicateGroup }[] = [];
-  for (const [key, list] of buckets) {
-    if (list.length < 2) continue;
-    if (new Set(list.map((t) => t.date)).size > DUP_MAX_DISTINCT_DAYS) continue; // guard 1
-    const merchantKey = key.slice(0, key.lastIndexOf("|")); // drop the amount
-    const byDay = new Map<string, Transaction[]>();
-    for (const t of list) {
-      const d = byDay.get(t.date);
-      if (d) d.push(t);
-      else byDay.set(t.date, [t]);
-    }
-    for (const [date, day] of byDay) {
-      if (day.length < 2) continue;
-      candidates.push({
-        merchantKey,
-        group: {
-          merchant: displayPayee(day[0].merchantName, day[0].name, acctName.get(day[0].accountId)),
-          amount: day[0].amount,
-          accountId: day[0].accountId,
-          date,
-          transactions: day,
-        },
-      });
+  const groups: DuplicateGroup[] = [];
+  for (const bucket of buckets.values()) {
+    bucket.sort((a, b) => a.date.localeCompare(b.date) || a.id.localeCompare(b.id));
+    let start = 0;
+    while (start < bucket.length) {
+      let end = start + 1;
+      const firstDate = Date.parse(`${bucket[start].date}T00:00:00Z`);
+      while (end < bucket.length && Date.parse(`${bucket[end].date}T00:00:00Z`) - firstDate <= 86_400_000) end++;
+      const transactions = bucket.slice(start, end);
+      if (transactions.length >= 2) {
+        const first = transactions[0];
+        groups.push({
+          merchant: displayPayee(first.merchantName, first.name, accountNames.get(first.accountId)),
+          amount: first.amount,
+          accountId: first.accountId,
+          date: first.date,
+          transactions,
+        });
+      }
+      start = end;
     }
   }
-
-  // Guard 2: a merchant that double-charges on >1 distinct day is a serial
-  // multi-charger (ad/usage billing), not a one-time slip — drop all its groups.
-  const multiChargeDays = new Map<string, Set<string>>();
-  for (const c of candidates) {
-    const s = multiChargeDays.get(c.merchantKey) ?? new Set<string>();
-    s.add(c.group.date);
-    multiChargeDays.set(c.merchantKey, s);
-  }
-
-  const groups = candidates
-    .filter((c) => (multiChargeDays.get(c.merchantKey)?.size ?? 0) <= 1)
-    .map((c) => c.group)
-    .sort((a, b) => b.date.localeCompare(a.date));
-  return groups;
+  return groups.sort((a, b) => b.date.localeCompare(a.date));
 }

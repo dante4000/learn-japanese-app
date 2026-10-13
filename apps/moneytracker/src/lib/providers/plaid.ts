@@ -70,8 +70,7 @@ export async function createLinkToken(): Promise<string> {
     client_name: "Money Tracker",
     products: [Products.Transactions],
     // Plaid defaults to 90 days of history; ask for the max (24 months).
-    // Fixed per Item at link time — already-linked banks must be re-linked
-    // to backfill older transactions.
+    // Fixed at initial linking. Replacement links require explicit reconciliation.
     transactions: { days_requested: 730 },
     country_codes: [CountryCode.Us],
     language: "en",
@@ -91,20 +90,39 @@ export async function exchangePublicToken(
   return { accessToken: res.data.access_token, itemId: res.data.item_id };
 }
 
-export async function getInstitutionName(accessToken: string): Promise<string> {
+export async function getInstitutionIdentity(accessToken: string): Promise<{ id: string; name: string }> {
   const client = plaidClient();
+  const itemRes = await client.itemGet({ access_token: accessToken });
+  const id = itemRes.data.item.institution_id;
+  if (!id) throw new Error("Could not verify this bank's identity. Try connecting again.");
   try {
-    const itemRes = await client.itemGet({ access_token: accessToken });
-    const instId = itemRes.data.item.institution_id;
-    if (!instId) return "Bank";
     const inst = await client.institutionsGetById({
-      institution_id: instId,
+      institution_id: id,
       country_codes: [CountryCode.Us],
     });
-    return inst.data.institution.name;
+    return { id, name: inst.data.institution.name };
   } catch {
-    return "Bank";
+    return { id, name: id };
   }
+}
+
+/** Legacy connections resolve identity before a new link can be accepted. */
+export async function connectedInstitution(
+  items: Item[],
+  institutionId: string,
+  resolveId: (item: Item) => Promise<string> = async (item) =>
+    (await getInstitutionIdentity(decrypt(item.accessTokenEnc))).id,
+): Promise<Item | undefined> {
+  for (const item of items) {
+    if (item.provider !== "plaid") continue;
+    const id = item.institutionId ?? await resolveId(item);
+    if (id === institutionId) return item;
+  }
+  return undefined;
+}
+
+export async function removePlaidItem(accessToken: string): Promise<void> {
+  await plaidClient().itemRemove({ access_token: accessToken });
 }
 
 function mapAccountType(t: string): AccountType {
@@ -132,7 +150,7 @@ function mapAccount(a: AccountBase, itemId: string): Account {
   };
 }
 
-function mapTransaction(t: PlaidTransaction): Transaction {
+export function mapTransaction(t: PlaidTransaction): Transaction {
   return {
     id: t.transaction_id,
     accountId: t.account_id,
@@ -142,6 +160,8 @@ function mapTransaction(t: PlaidTransaction): Transaction {
     name: t.name,
     merchantName: t.merchant_name ?? null,
     pending: t.pending,
+    pendingTransactionId: t.pending_transaction_id ?? null,
+    authorizedDate: t.authorized_date ?? null,
     categoryPrimary: t.personal_finance_category?.primary ?? "OTHER",
     categoryDetailed: t.personal_finance_category?.detailed ?? null,
     paymentChannel: t.payment_channel ?? null,

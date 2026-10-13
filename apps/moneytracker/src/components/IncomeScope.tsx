@@ -31,7 +31,7 @@ export function IncomeScope({ scope }: { scope: Scope }) {
           key={v}
           aria-pressed={scope === v}
           onClick={() => set(v)}
-          className={`rounded-md px-2.5 py-1 transition-colors ${
+          className={`min-h-11 lg:min-h-0 rounded-md px-2.5 py-1 transition-colors ${
             scope === v ? "bg-surface-2 text-cream" : "text-muted hover:text-cream"
           }`}
         >

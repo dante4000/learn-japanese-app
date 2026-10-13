@@ -49,7 +49,7 @@ export function UpcomingBills({
           return (
             <li
               key={b.id}
-              className="flex items-center gap-3 rounded-xl border hairline bg-surface px-3 py-2.5"
+              className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3 sm:flex rounded-xl border hairline bg-surface px-3 py-2.5"
             >
               <div className="flex w-11 shrink-0 flex-col items-center">
                 <span className="text-[0.55rem] font-semibold uppercase tracking-wider text-faint">
@@ -59,7 +59,7 @@ export function UpcomingBills({
                   {badge.day}
                 </span>
               </div>
-              <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border hairline bg-surface-2">
+              <span className="hidden h-9 w-9 shrink-0 sm:grid place-items-center rounded-lg border hairline bg-surface-2">
                 {meta.glyph}
               </span>
               <div className="min-w-0">
@@ -75,7 +75,7 @@ export function UpcomingBills({
                   {b.predicted ? " · est." : ""}
                 </div>
               </div>
-              <span className="tnum ml-auto text-sm text-cream">
+              <span className="tnum col-start-2 justify-self-end ml-auto shrink-0 text-sm text-cream">
                 {formatMoney(b.amount, currency)}
               </span>
             </li>

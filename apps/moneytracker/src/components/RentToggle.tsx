@@ -21,7 +21,7 @@ export function RentToggle({ excluded }: { excluded: boolean }) {
     <button
       onClick={toggle}
       aria-pressed={!excluded}
-      className={`rounded-lg border px-2.5 py-1 text-xs transition-colors ${
+      className={`min-h-11 lg:min-h-0 rounded-lg border px-2.5 py-1 text-xs transition-colors ${
         excluded
           ? "hairline bg-surface text-muted hover:text-cream"
           : "border-blue/40 bg-blue/15 text-blue"

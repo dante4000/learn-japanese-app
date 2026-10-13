@@ -39,6 +39,21 @@ export function categoryMeta(key: string | null | undefined): CategoryMeta {
   return CATEGORIES[key] ?? CATEGORIES.OTHER;
 }
 
+/** Housing evidence for baseline reconciliation and Bilt purchase eligibility. */
+export function isHousingTransaction(t: {
+  name: string;
+  merchantName: string | null;
+  categoryPrimary: string;
+  categoryDetailed?: string | null;
+  userCategory: string | null;
+}): boolean {
+  if (t.userCategory && t.userCategory !== "RENT_AND_UTILITIES") return false;
+  const description = `${t.name} ${t.merchantName ?? ""}`.replace(/[^a-z0-9 ]/gi, " ");
+  if (/\b(car|vehicle|truck|equipment|party|tool|camera|vacation|holiday)\s+rent(?:al)?\b|\brent(?:al)?\s+(?:a\s+)?(?:car|vehicle|truck|equipment|party|tool|camera)\b/i.test(description)) return false;
+  if (/\b(rent|mortgage|landlord)\b|\bbilt\s+housing\b|\bhousing\s+(payment|company)\b/i.test(description)) return true;
+  return /^(?:RENT_AND_UTILITIES_RENT|LOAN_PAYMENTS_MORTGAGE_PAYMENT)$/.test(t.categoryDetailed ?? "");
+}
+
 // Credit-card payments / autopay ACH transfers are money moving between your own
 // accounts (checking → card), NOT spending or income — but aggregators often
 // mislabel them (e.g. a Bilt rent autopay tagged "Rent", or a card payment
@@ -49,13 +64,16 @@ export function categoryMeta(key: string | null | undefined): CategoryMeta {
 export function isInternalPayment(
   name: string,
   merchant?: string | null,
+  accountType?: string,
+  amount?: number,
 ): boolean {
   const n = name || "";
-  if (/^\s*payment\s*[-–]\s/i.test(n)) return true;
+  // Generic settlement text is evidence only on the credit side of a payment.
+  if (accountType === "credit" && (amount === undefined || amount < 0) && /^\s*(?:(?:online|automatic|mobile)\s+payment\b|autopay(?:\s+payment)?\b|epayment\b|(?:payment|pmt|pymt)\s+received\b|payment\s*[-–]\s*|payment\s*$)/i.test(n)) return true;
+  if (/^\s*(?:payment\s*[-–]?\s*thank\b|(?:automatic|online)\s+payment\s*[-–]?\s*thank\b)/i.test(n)) return true;
+  if (/\bpayment\s+to\s+(?:chase|citi|amex|american\s+express|capital\s+one|discover|bilt|barclays?|bank\s+of\s+america|wells\s+fargo|u\s*\.?s\s*\.?\s+bank)\s+(?:credit\s+)?card\b/i.test(n)) return true;
   const hay = `${n} ${merchant ?? ""}`;
-  return /\bcard\b.{0,25}\bppd\b|\bcard\s*(pmt|payment|pymt)\b|\bcardmember\s+(pmt|payment)\b|\bautopay\b|payment\s+thank\s*you|\b(american\s+express|amex|chase|citi|discover|capital\s+one|bilt|barclay)\b.{0,15}\bach\s*(pmt|pymt|payment)\b/i.test(
-    hay,
-  );
+  return /\bcard\b.{0,25}\bppd\b|\bcard\s*(pmt|payment|pymt)\b|\bcardmember\s+(pmt|payment)\b|\b(?:credit\s*card|card|american\s+express|amex|chase|citi|discover|capital\s+one|bilt|barclay)\b.{0,25}\bautopay\b|\bautopay\b.{0,25}\b(?:credit\s*card|card|american\s+express|amex|chase|citi|discover|capital\s+one|bilt|barclay)\b|payment\s+thank\s*you|\b(american\s+express|amex|chase|citi|discover|capital\s+one|bilt|barclay)\b.{0,15}\bach\s*(pmt|pymt|payment)\b/i.test(hay);
 }
 
 /** The effective category, accounting for user overrides and card-payment detection. */

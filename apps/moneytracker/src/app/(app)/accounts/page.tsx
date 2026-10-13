@@ -20,11 +20,11 @@ function AccountRow({
   const bal = a.balances.current ?? 0;
   const isLiability = LIABILITY_TYPES.has(a.type);
   return (
-    <li className="flex items-center gap-3 py-3">
+    <li className="flex flex-wrap items-center gap-3 py-3">
       <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border hairline bg-surface-2 text-xs uppercase text-slate-soft">
         {a.subtype?.slice(0, 2) ?? a.type.slice(0, 2)}
       </span>
-      <div className="min-w-0">
+      <div className="min-w-0 flex-1 basis-[calc(100%-4rem)] sm:basis-auto">
         <div className="truncate text-sm text-cream">{a.name}</div>
         <div className="text-xs text-faint">
           {a.subtype || a.type}
@@ -32,14 +32,14 @@ function AccountRow({
         </div>
       </div>
       <span
-        className={`tnum ml-auto text-sm ${isLiability ? "text-coral" : "text-cream"}`}
+        className={`tnum ml-auto shrink-0 text-sm ${isLiability ? "text-coral" : "text-cream"}`}
       >
         {/* For a liability the headline is what you owe (−balance): a positive
             balance shows as −$X (debt), a negative balance as +$X (a credit in
             your favor) rather than misreading as more debt. */}
         {isLiability
-          ? formatMoney(-bal, currency, { cents: false, sign: true })
-          : formatMoney(bal, currency, { cents: false })}
+          ? formatMoney(-bal, currency, { sign: true })
+          : formatMoney(bal, currency)}
       </span>
       {canFocus && <ViewAccountButton id={a.id} />}
     </li>
@@ -95,19 +95,19 @@ export default async function AccountsPage() {
         <div className="card rise p-5">
           <div className="label-eyebrow">Assets</div>
           <div className="tnum mt-2 text-xl text-blue">
-            {formatMoney(nw.totalAssets, cur, { cents: false })}
+            {formatMoney(nw.totalAssets, cur)}
           </div>
         </div>
         <div className="card rise p-5" style={{ animationDelay: "60ms" }}>
           <div className="label-eyebrow">Liabilities</div>
           <div className="tnum mt-2 text-xl text-coral">
-            {formatMoney(nw.totalLiabilities, cur, { cents: false })}
+            {formatMoney(nw.totalLiabilities, cur)}
           </div>
         </div>
         <div className="card rise p-5" style={{ animationDelay: "120ms" }}>
           <div className="label-eyebrow">Net worth</div>
           <div className="tnum mt-2 text-xl text-cream">
-            {formatMoney(nw.netWorth, cur, { cents: false })}
+            {formatMoney(nw.netWorth, cur)}
           </div>
         </div>
       </div>
@@ -122,7 +122,7 @@ export default async function AccountsPage() {
               <span
                 className={`tnum text-sm ${g.net < 0 ? "text-coral" : "text-muted"}`}
               >
-                {formatMoney(g.net, cur, { cents: false })}
+                {formatMoney(g.net, cur)}
               </span>
             }
           >

@@ -3,53 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-declare global {
-  interface Window {
-    Plaid?: {
-      create: (opts: {
-        token: string;
-        onSuccess: (publicToken: string) => void;
-        onExit: () => void;
-      }) => { open: () => void };
-    };
-  }
-}
-
-const SCRIPT_SRC = "https://cdn.plaid.com/link/v2/stable/link-initialize.js";
-
-function loadScript(): Promise<void> {
-  return new Promise((resolve, reject) => {
-    if (window.Plaid) return resolve();
-    const existing = document.querySelector(`script[src="${SCRIPT_SRC}"]`);
-    if (existing) {
-      // The tag is in the DOM but window.Plaid isn't ready yet. If its load
-      // event already fired we'd never hear it, so poll for the global as a
-      // fallback alongside the load/error listeners (with a timeout so connect()
-      // can't hang forever).
-      let settled = false;
-      const done = () => {
-        if (settled) return;
-        settled = true;
-        clearInterval(poll);
-        clearTimeout(timeout);
-        if (window.Plaid) resolve();
-        else reject(new Error("Failed to load Plaid"));
-      };
-      existing.addEventListener("load", done);
-      existing.addEventListener("error", done);
-      const poll = setInterval(() => {
-        if (window.Plaid) done();
-      }, 100);
-      const timeout = setTimeout(done, 10_000);
-      return;
-    }
-    const s = document.createElement("script");
-    s.src = SCRIPT_SRC;
-    s.onload = () => resolve();
-    s.onerror = () => reject(new Error("Failed to load Plaid"));
-    document.body.appendChild(s);
-  });
-}
+import { exchangePlaidToken, loadPlaidScript, PLAID_LINK_TOKEN_KEY } from "@/lib/plaid-link";
 
 export function PlaidLinkButton({ disabled }: { disabled?: boolean }) {
   const router = useRouter();
@@ -67,10 +21,10 @@ export function PlaidLinkButton({ disabled }: { disabled?: boolean }) {
         setBusy(false);
         return;
       }
-      await loadScript();
+      await loadPlaidScript();
       // Persist the token so an OAuth redirect (e.g. Chase) can resume on /oauth.
       try {
-        localStorage.setItem("plaid_link_token", data.link_token);
+        localStorage.setItem(PLAID_LINK_TOKEN_KEY, data.link_token);
       } catch {}
       const handler = window.Plaid!.create({
         token: data.link_token,
@@ -80,20 +34,11 @@ export function PlaidLinkButton({ disabled }: { disabled?: boolean }) {
           // button stuck on "Working…".
           setMsg("Linking…");
           try {
-            const ex = await fetch("/api/plaid/exchange", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ public_token: publicToken }),
-            });
-            const exData = await ex.json().catch(() => null);
-            setMsg(
-              ex.ok
-                ? `Connected ${exData?.institutionName ?? "bank"}`
-                : exData?.error || "Could not link your bank.",
-            );
+            const linked = await exchangePlaidToken(publicToken);
+            setMsg(`Connected ${linked.institutionName}.${linked.warning ? ` ${linked.warning}` : ""}`);
             router.refresh();
-          } catch {
-            setMsg("Could not link your bank.");
+          } catch (error) {
+            setMsg(error instanceof Error ? error.message : "Could not link your bank.");
           } finally {
             setBusy(false);
           }
@@ -112,12 +57,12 @@ export function PlaidLinkButton({ disabled }: { disabled?: boolean }) {
       <button
         onClick={connect}
         disabled={busy || disabled}
-        className="flex items-center gap-2 rounded-xl bg-blue px-5 py-3 font-semibold text-ink transition-opacity hover:opacity-90 disabled:opacity-40"
+        className="min-h-11 lg:min-h-0 flex items-center gap-2 rounded-xl bg-blue px-5 py-3 font-semibold text-ink transition-opacity hover:opacity-90 disabled:opacity-40"
       >
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20M2 12h20"/></svg>
         {busy ? "Working…" : "Connect a bank with Plaid"}
       </button>
-      {msg && <p className="mt-2 text-xs text-cream-dim">{msg}</p>}
+      {msg && <p role="status" className="mt-2 text-xs text-cream-dim">{msg}</p>}
     </div>
   );
 }

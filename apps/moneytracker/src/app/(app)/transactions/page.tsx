@@ -2,7 +2,6 @@ import { loadScopedState } from "@/lib/scoped-state";
 import { findPossibleDuplicates, isSyntheticBaseline } from "@/lib/analytics";
 import { TransactionsView } from "@/components/TransactionsView";
 import { EmptyState, SectionCard, PageHeading } from "@/components/ui";
-import { formatMoney, formatDate } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
 
@@ -39,34 +38,7 @@ export default async function TransactionsPage({
     month: /^\d{4}-\d{2}$/.test(sp.month ?? "") ? sp.month! : "ALL",
   };
 
-  // The duplicate-charges banner is an inbox for the whole ledger, so it only
-  // belongs on the unfiltered Activity view. When you arrive via a drill-through
-  // (category / merchant / account filter active), it's just noise — hide it.
-  const isFiltered = Boolean(sp.category || sp.merchant || sp.account);
-  const dupes = isFiltered ? [] : findPossibleDuplicates(state);
-  const acctName = new Map(state.accounts.map((a) => [a.id, a.name]));
-
-  const renderDupe = (d: (typeof dupes)[number], i: number) => (
-    <li
-      key={i}
-      className="flex items-center gap-3 rounded-xl border hairline bg-surface px-3 py-2.5 text-sm"
-    >
-      <span className="rounded bg-coral/15 px-1.5 py-0.5 text-[0.6rem] font-semibold text-coral">
-        {d.transactions.length}×
-      </span>
-      <div className="min-w-0">
-        <div className="truncate text-cream">{d.merchant}</div>
-        <div className="text-xs text-faint">
-          {formatDate(d.date)}
-          {acctName.get(d.accountId) ? ` · ${acctName.get(d.accountId)}` : ""}
-        </div>
-      </div>
-      <span className="tnum ml-auto text-cream">
-        {d.transactions.length} × {formatMoney(d.amount, currency)} ={" "}
-        {formatMoney(d.amount * d.transactions.length, currency)}
-      </span>
-    </li>
-  );
+  const dupes = findPossibleDuplicates(state);
 
   return (
     <div>
@@ -76,49 +48,6 @@ export default async function TransactionsPage({
           focus ? `in ${focus.name}` : "across your accounts"
         }.`}
       />
-
-      {dupes.length > 0 && (
-        <details className="card rise group/dupes mb-4 p-5 md:p-6">
-          <summary className="flex cursor-pointer list-none items-center justify-between">
-            <h2 className="font-display text-lg tracking-tight text-cream">
-              Possible duplicate charges · {dupes.length}
-            </h2>
-            <svg
-              className="text-faint transition-transform group-open/dupes:rotate-180"
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M6 9l6 6 6-6" />
-            </svg>
-          </summary>
-          <p className="mb-3 mt-4 text-xs text-muted">
-            The same merchant and amount charged more than once on the same day,
-            excluding known recurring bills — likely a true double-charge. Search
-            the merchant below to review, then hide any extra.
-          </p>
-          <ul className="space-y-2">
-            {dupes.slice(0, 12).map((d, i) => renderDupe(d, i))}
-          </ul>
-          {dupes.length > 12 && (
-            <details className="group mt-2">
-              <summary className="cursor-pointer list-none text-xs text-faint transition-colors hover:text-cream">
-                + {dupes.length - 12} more
-                <span className="group-open:hidden"> — show all</span>
-                <span className="hidden group-open:inline"> — show less</span>
-              </summary>
-              <ul className="mt-2 space-y-2">
-                {dupes.slice(12).map((d, i) => renderDupe(d, i + 12))}
-              </ul>
-            </details>
-          )}
-        </details>
-      )}
 
       {ledger.length === 0 ? (
         state.accounts.length === 0 ? (
@@ -134,6 +63,7 @@ export default async function TransactionsPage({
         <TransactionsView
           key={JSON.stringify([focus?.id, initial])}
           transactions={ledger}
+          duplicateGroups={dupes}
           accounts={state.accounts}
           currency={currency}
           initial={initial}

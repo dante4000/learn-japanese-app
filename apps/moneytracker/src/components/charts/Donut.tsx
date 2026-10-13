@@ -38,10 +38,11 @@ export function Donut({
   const stroke = 22;
   const r = (size - stroke - 6) / 2;
   const c = 2 * Math.PI * r;
-  const sum = slices.reduce((a, s) => a + s.value, 0) || 1;
+  const positive = slices.filter((s) => s.value > 0);
+  const sum = positive.reduce((a, s) => a + s.value, 0) || 1;
 
-  const lens = slices.map((s) => (s.value / sum) * c);
-  const segments = slices.map((s, i) => ({
+  const lens = positive.map((s) => (s.value / sum) * c);
+  const segments = positive.map((s, i) => ({
     ...s,
     frac: s.value / sum,
     len: lens[i],
@@ -58,7 +59,7 @@ export function Donut({
   };
 
   return (
-    <div className="relative" style={{ width: size, height: size }}>
+    <div className="relative max-w-full" title={slices.some((s) => s.value < 0) ? "Ring: positive category totals. Center: net total including refunds." : undefined} style={{ width: size, height: size }}>
       <svg width={size} height={size} className="-rotate-90">
         <circle
           cx={size / 2}

@@ -10,10 +10,11 @@ import { Account, AppState } from "./types";
  */
 export async function loadScopedState(): Promise<{
   state: AppState;
+  fullState: AppState;
   focus: Account | null;
 }> {
   const full = await loadStateCached();
   const id = (await cookies()).get(ACCOUNT_COOKIE)?.value;
   const focus = id ? (full.accounts.find((a) => a.id === id) ?? null) : null;
-  return { state: focus ? filterStateByAccount(full, focus.id) : full, focus };
+  return { state: focus ? filterStateByAccount(full, focus.id) : full, fullState: full, focus };
 }

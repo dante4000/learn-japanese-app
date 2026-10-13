@@ -12,6 +12,7 @@ export async function POST() {
       ok: true,
       synced: result.items,
       errors: result.errors,
+      ...(result.warning ? { warning: result.warning } : {}),
     });
   } catch (err) {
     return NextResponse.json(

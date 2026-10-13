@@ -1,9 +1,11 @@
 import { loadScopedState } from "@/lib/scoped-state";
+import { monthlyEquivalent } from "@/lib/recurring";
 import { RecurringStream } from "@/lib/types";
 import { categoryMeta } from "@/lib/categories";
 import { displayPayee } from "@/lib/aliases";
 import {
   upcomingBills,
+  todayKey,
   reimbursedStreams,
   isTransferStream,
   allRecurringStreams,
@@ -15,19 +17,6 @@ import { BaselineManager } from "@/components/BaselineManager";
 import { SectionCard, StatCard, PageHeading } from "@/components/ui";
 
 export const dynamic = "force-dynamic";
-
-const PER_MONTH: Record<string, number> = {
-  WEEKLY: 4.33,
-  BIWEEKLY: 2.17,
-  SEMI_MONTHLY: 2,
-  MONTHLY: 1,
-  ANNUALLY: 1 / 12,
-  UNKNOWN: 1,
-};
-
-function monthlyEquivalent(s: RecurringStream): number {
-  return Math.abs(s.averageAmount) * (PER_MONTH[s.frequency] ?? 1);
-}
 
 function StreamRow({
   s,
@@ -51,7 +40,7 @@ function StreamRow({
         {meta.glyph}
       </span>
       <div className="min-w-0 flex-1">
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <span className="truncate text-sm text-cream">
             {displayPayee(s.merchantName, s.description, card)}
           </span>
@@ -95,7 +84,7 @@ function StreamRow({
           )}
         </div>
       </div>
-      <div className="text-right">
+      <div className="shrink-0 text-right">
         <div className="tnum text-sm text-cream">
           {formatMoney(Math.abs(s.lastAmount), currency)}
         </div>
@@ -143,13 +132,13 @@ export default async function RecurringPage({
     .filter((s) => s.isActive)
     .reduce((a, s) => a + monthlyEquivalent(s), 0);
 
-  const today = new Date().toISOString().slice(0, 10);
+  const today = todayKey();
   const upcoming = upcomingBills(state, today, 45);
 
 
   return (
     <div>
-      <div className="mb-6 flex items-start justify-between gap-3">
+      <div className="mb-6 flex flex-wrap items-start justify-between gap-3">
         <PageHeading
           title="Recurring"
           subtitle="Subscriptions, bills, and income that repeat. Internal transfers are ignored."
@@ -168,7 +157,7 @@ export default async function RecurringPage({
         </SectionCard>
       ) : (
         <>
-          <div className="mb-5 grid grid-cols-2 gap-4">
+          <div className="mb-5 grid grid-cols-1 gap-3 min-[420px]:grid-cols-2 sm:gap-4">
             <StatCard
               label="Subscriptions & bills"
               value={`${formatMoney(monthlySubs * mult, cur, { cents: false })}${suffix}`}

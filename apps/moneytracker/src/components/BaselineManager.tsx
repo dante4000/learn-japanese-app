@@ -20,26 +20,32 @@ export function BaselineManager({
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("RENT_AND_UTILITIES");
   const [startMonth, setStartMonth] = useState("");
+  const [endMonth, setEndMonth] = useState("");
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   async function add(e: React.FormEvent) {
     e.preventDefault();
-    if (!name || !Number.isFinite(Number(amount)) || Number(amount) <= 0) {
+    if (!name.trim() || !Number.isFinite(Number(amount)) || Number(amount) <= 0) {
       setError("Enter a name and a positive amount.");
       return;
     }
-    if (!/^\d{4}-\d{2}$/.test(startMonth)) {
+    if (!/^\d{4}-(0[1-9]|1[0-2])$/.test(startMonth)) {
       setError("Start month must be yyyy-mm.");
+      return;
+    }
+    if (endMonth && (!/^\d{4}-(0[1-9]|1[0-2])$/.test(endMonth) || endMonth < startMonth)) {
+      setError("End month must be on or after start month.");
       return;
     }
     setBusy(true);
     setError(null);
     try {
       const res = await fetch("/api/baseline", {
-        method: "POST",
+        method: editingId ? "PATCH" : "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, amount: Number(amount), category, startMonth }),
+        body: JSON.stringify({ id: editingId, name, amount: Number(amount), category, startMonth, endMonth: endMonth || null }),
       });
       if (!res.ok) {
         const data = await res.json().catch(() => null);
@@ -50,6 +56,8 @@ export function BaselineManager({
       setName("");
       setAmount("");
       setStartMonth("");
+      setEndMonth("");
+      setEditingId(null);
       router.refresh();
     } catch {
       setError("Could not save baseline.");
@@ -68,6 +76,7 @@ export function BaselineManager({
         setError(data?.error || "Could not remove baseline.");
         return;
       }
+      if (editingId === id) { setOpen(false); setEditingId(null); }
       router.refresh();
     } catch {
       setError("Could not remove baseline.");
@@ -76,8 +85,24 @@ export function BaselineManager({
     }
   }
 
+  function edit(entry: RecurringBaseline) {
+    setEditingId(entry.id);
+    setName(entry.name);
+    setAmount(String(entry.amount));
+    setCategory(entry.category);
+    setStartMonth(entry.startMonth);
+    setEndMonth(entry.endMonth ?? "");
+    setError(null);
+    setOpen(true);
+  }
+  function startNew() {
+    setEditingId(null);
+    setName(""); setAmount(""); setCategory("RENT_AND_UTILITIES");
+    setStartMonth(""); setEndMonth(""); setError(null); setOpen(true);
+  }
+
   const field =
-    "rounded-xl border hairline bg-surface px-3 py-2.5 text-sm text-cream outline-none placeholder:text-faint focus:border-blue";
+    "mt-1 min-h-11 w-full min-w-0 max-w-full rounded-xl border hairline bg-surface px-3 py-2.5 text-base sm:text-sm text-cream outline-none placeholder:text-faint focus:border-blue";
 
   return (
     <div>
@@ -86,19 +111,20 @@ export function BaselineManager({
           {baselines.map((b) => (
             <li
               key={b.id}
-              className="flex items-center gap-3 rounded-xl border hairline bg-surface px-4 py-2.5 text-sm"
+              className="flex flex-wrap items-center gap-3 rounded-xl border hairline bg-surface px-4 py-2.5 text-sm"
             >
-              <span className="text-cream">{b.name}</span>
+              <span className="min-w-0 break-words text-cream">{b.name}</span>
               <span className="text-xs text-faint">
-                since {formatMonth(b.startMonth)}
+                {formatMonth(b.startMonth)} – {b.endMonth ? formatMonth(b.endMonth) : "ongoing"}
               </span>
-              <span className="tnum ml-auto text-cream">
+              <span className="tnum ml-auto shrink-0 text-cream">
                 {formatMoney(b.amount, currency, { cents: false })}/mo
               </span>
+              <button type="button" onClick={() => edit(b)} disabled={busy} className="min-h-11 rounded-lg px-3 py-2 text-xs text-blue" aria-label={`Edit ${b.name}`}>Edit</button>
               <button
                 onClick={() => remove(b.id)}
                 disabled={busy}
-                className="text-faint hover:text-coral"
+                className="min-h-11 min-w-11 lg:min-h-0 lg:min-w-0 text-faint hover:text-coral"
                 aria-label={`Remove ${b.name}`}
               >
                 ✕
@@ -109,65 +135,37 @@ export function BaselineManager({
       )}
 
       {open ? (
-        <form onSubmit={add} className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-          <input
-            aria-label="Bill name"
-          value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Rent & Parking"
-            className={`${field} col-span-2 sm:col-span-1`}
-          />
-          <input
-            aria-label="Monthly amount"
-          value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            inputMode="decimal"
-            placeholder="Amount/mo"
-            className={`${field} tnum`}
-          />
-          <select
-            aria-label="Bill category"
-          value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            className={field}
-          >
-            {Object.values(CATEGORIES)
-              .filter((c) => c.isSpending && c.key !== "OTHER")
-              .map((c) => (
-                <option key={c.key} value={c.key}>
-                  {c.label}
-                </option>
-              ))}
-          </select>
-          <input
-            aria-label="Start month"
-          value={startMonth}
-            onChange={(e) => setStartMonth(e.target.value)}
-            placeholder="2024-06"
-            pattern="\d{4}-\d{2}"
-            className={`${field} tnum`}
-          />
-          <div className="col-span-2 flex gap-2 sm:col-span-4">
-            <button
-              type="submit"
-              disabled={busy || !name || !amount || !/^\d{4}-\d{2}$/.test(startMonth)}
-              className="rounded-xl bg-blue px-4 py-2 text-sm font-semibold text-ink transition-opacity hover:opacity-90 disabled:opacity-40"
-            >
-              Add baseline
-            </button>
-            <button
-              type="button"
-              onClick={() => setOpen(false)}
-              className="rounded-xl px-3 py-2 text-sm text-faint hover:text-cream"
-            >
-              Cancel
-            </button>
-          </div>
+        <form onSubmit={add}>
+          <fieldset disabled={busy} className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <legend className="mb-2 text-sm text-cream">{editingId ? "Edit fixed monthly bill" : "Add fixed monthly bill"}</legend>
+            <label className="text-xs text-muted">Bill name
+              <input required value={name} onChange={(event) => setName(event.target.value)} placeholder="Rent & Parking" className={field} />
+            </label>
+            <label className="text-xs text-muted">Monthly amount
+              <input required value={amount} onChange={(event) => setAmount(event.target.value)} inputMode="decimal" placeholder="Amount/mo" className={`${field} tnum`} />
+            </label>
+            <label className="text-xs text-muted">Category
+              <select value={category} onChange={(event) => setCategory(event.target.value)} className={field}>
+                {Object.values(CATEGORIES).filter((entry) => entry.isSpending).map((entry) => <option key={entry.key} value={entry.key}>{entry.label}</option>)}
+              </select>
+            </label>
+            <label className="text-xs text-muted">Start month
+              <input required type="month" value={startMonth} onChange={(event) => setStartMonth(event.target.value)} className={`${field} tnum`} />
+            </label>
+            <label className="text-xs text-muted">End month (optional, inclusive)
+              <input type="month" min={startMonth || undefined} value={endMonth} onChange={(event) => setEndMonth(event.target.value)} className={`${field} tnum`} />
+            </label>
+            <p className="self-end pb-2 text-xs text-muted">Leave the end month blank for an ongoing bill. Estimates stop after the end month.</p>
+            <div className="flex flex-wrap gap-2 sm:col-span-2 lg:col-span-3">
+              <button type="submit" disabled={busy || !name.trim() || !amount || !startMonth} className="min-h-11 rounded-xl bg-blue px-4 py-2 text-sm font-semibold text-ink disabled:opacity-40">{busy ? "Saving…" : editingId ? "Save changes" : "Add baseline"}</button>
+              <button type="button" onClick={() => { setOpen(false); setError(null); }} className="min-h-11 rounded-xl px-3 py-2 text-sm text-faint">Cancel</button>
+            </div>
+          </fieldset>
         </form>
       ) : (
         <button
-          onClick={() => setOpen(true)}
-          className="rounded-xl border border-dashed hairline px-4 py-2.5 text-sm text-cream-dim transition-colors hover:border-line-2"
+          onClick={startNew}
+          className="min-h-11 lg:min-h-0 rounded-xl border border-dashed hairline px-4 py-2.5 text-sm text-cream-dim transition-colors hover:border-line-2"
         >
           + Add a fixed monthly bill (fills months the bank feed misses)
         </button>

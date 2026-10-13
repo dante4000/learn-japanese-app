@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isAuthenticated } from "@/lib/auth";
+import { storageConflictResponse } from "@/lib/api-response";
 import { loadMeta, saveMeta } from "@/lib/store";
-import { updateSnapshot } from "@/lib/sync";
+import { refreshSnapshotAfterMutation } from "@/lib/sync";
 import { ManualEntry } from "@/lib/types";
 
 // Manual assets/liabilities (home value, car, cash, etc.) so net worth is
@@ -29,9 +30,13 @@ export async function POST(req: NextRequest) {
 
   const meta = await loadMeta();
   meta.manualEntries.push(entry);
-  await saveMeta(meta);
-  await updateSnapshot();
-  return NextResponse.json({ ok: true, entry });
+  try {
+    await saveMeta(meta);
+  } catch (error) {
+    return storageConflictResponse(error);
+  }
+  const snapshot = await refreshSnapshotAfterMutation();
+  return NextResponse.json({ ok: true, entry, ...snapshot });
 }
 
 export async function DELETE(req: NextRequest) {
@@ -42,7 +47,11 @@ export async function DELETE(req: NextRequest) {
   if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
   const meta = await loadMeta();
   meta.manualEntries = meta.manualEntries.filter((m) => m.id !== id);
-  await saveMeta(meta);
-  await updateSnapshot();
-  return NextResponse.json({ ok: true });
+  try {
+    await saveMeta(meta);
+  } catch (error) {
+    return storageConflictResponse(error);
+  }
+  const snapshot = await refreshSnapshotAfterMutation();
+  return NextResponse.json({ ok: true, ...snapshot });
 }

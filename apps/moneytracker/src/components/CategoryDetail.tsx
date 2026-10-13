@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { CategoryDetailData } from "@/lib/analytics";
-import { RecurringFrequency } from "@/lib/types";
+import { monthlyEquivalent } from "@/lib/recurring";
 import { formatMoney, formatMonth, formatDate } from "@/lib/format";
 import { displayPayee } from "@/lib/aliases";
 import { MonthPicker } from "@/components/MonthPicker";
@@ -11,16 +11,6 @@ import {
   TransactionRow,
   useTransactionEditor,
 } from "@/components/TransactionRow";
-
-// Rough occurrences-per-month, to normalize a recurring charge to a monthly cost.
-const PER_MONTH: Record<RecurringFrequency, number> = {
-  WEEKLY: 52 / 12,
-  BIWEEKLY: 26 / 12,
-  SEMI_MONTHLY: 2,
-  MONTHLY: 1,
-  ANNUALLY: 1 / 12,
-  UNKNOWN: 1,
-};
 
 /** Up = more spending = coral (bad); down = blue (good). Mirrors Spending tab. */
 function Delta({ pct }: { pct: number | null }) {
@@ -58,7 +48,7 @@ export function CategoryDetail({
   const acctName = (id: string) => accountNames[id];
 
   const header = (
-    <div className="mb-5 flex items-end justify-between gap-3">
+    <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
       <Link
         href={`/spending?month=${data.month}`}
         className="text-sm text-muted transition-colors hover:text-cream"
@@ -69,7 +59,7 @@ export function CategoryDetail({
     </div>
   );
 
-  if (data.count === 0) {
+  if (data.merchants.length === 0) {
     return (
       <div>
         {header}
@@ -92,7 +82,7 @@ export function CategoryDetail({
 
       {/* Summary hero */}
       <section
-        className="card rise relative overflow-hidden p-6 md:p-7"
+        className="card rise relative overflow-hidden p-4 sm:p-6 md:p-7"
         style={{ borderTop: `3px solid ${data.color}` }}
       >
         <div className="flex items-center gap-3">
@@ -107,7 +97,7 @@ export function CategoryDetail({
           </div>
         </div>
 
-        <div className="tnum mt-4 font-display text-5xl tracking-tight text-cream">
+        <div className="tnum mt-4 break-words font-display text-4xl sm:text-5xl tracking-tight text-cream">
           {formatMoney(data.total, currency, { cents: false })}
         </div>
 
@@ -140,10 +130,10 @@ export function CategoryDetail({
       {/* Recurring — the easy cuts */}
       {data.recurring.length > 0 && (
         <section
-          className="card rise mt-4 p-5 md:p-6"
+          className="card rise min-w-0 mt-4 p-4 sm:p-5 md:p-6"
           style={{ animationDelay: "60ms" }}
         >
-          <header className="mb-1 flex items-baseline justify-between">
+          <header className="mb-1 flex flex-wrap items-baseline justify-between gap-2">
             <h2 className="font-display text-lg tracking-tight text-cream">
               Recurring here
             </h2>
@@ -151,7 +141,7 @@ export function CategoryDetail({
           </header>
           <ul className="mt-3 space-y-2">
             {data.recurring.map((s) => {
-              const monthly = s.averageAmount * PER_MONTH[s.frequency];
+              const monthly = monthlyEquivalent(s);
               return (
                 <li
                   key={s.id}
@@ -160,7 +150,7 @@ export function CategoryDetail({
                   <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border hairline bg-surface-2 text-sm">
                     🔁
                   </span>
-                  <div className="min-w-0">
+                  <div className="min-w-0 flex-1">
                     <div className="truncate text-sm text-cream">
                       {s.merchantName || s.description}
                     </div>
@@ -173,7 +163,7 @@ export function CategoryDetail({
                         : ""}
                     </div>
                   </div>
-                  <span className="ml-auto text-right">
+                  <span className="ml-auto shrink-0 text-right">
                     <span className="tnum block text-sm text-cream">
                       {formatMoney(s.averageAmount, currency)}
                     </span>
@@ -190,10 +180,10 @@ export function CategoryDetail({
 
       {/* By merchant — the primary, organized list */}
       <section
-        className="card rise mt-4 p-5 md:p-6"
+        className="card rise min-w-0 mt-4 p-4 sm:p-5 md:p-6"
         style={{ animationDelay: "120ms" }}
       >
-        <header className="mb-4 flex items-baseline justify-between">
+        <header className="mb-4 flex flex-wrap items-baseline justify-between gap-2">
           <h2 className="font-display text-lg tracking-tight text-cream">
             By merchant
           </h2>
@@ -212,7 +202,7 @@ export function CategoryDetail({
                 <button
                   onClick={() => toggle(mch.name)}
                   aria-expanded={isOpen}
-                  className="flex w-full items-center gap-3 px-3 py-2.5 text-left transition-colors hover:bg-surface-2"
+                  className="min-h-11 lg:min-h-0 flex w-full items-center gap-3 px-3 py-2.5 text-left transition-colors hover:bg-surface-2"
                 >
                   <svg
                     className={`shrink-0 text-faint transition-transform ${isOpen ? "rotate-90" : ""}`}
@@ -238,7 +228,7 @@ export function CategoryDetail({
                     <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-surface-2">
                       <div
                         className="h-full rounded-full"
-                        style={{ width: `${share}%`, background: data.color }}
+                        style={{ width: `${Math.max(0, Math.min(100, share))}%`, background: data.color }}
                       />
                     </div>
                   </div>
@@ -275,7 +265,7 @@ export function CategoryDetail({
       {/* Biggest single charges */}
       {data.biggest.length > 0 && (
         <section
-          className="card rise mt-4 p-5 md:p-6"
+          className="card rise min-w-0 mt-4 p-4 sm:p-5 md:p-6"
           style={{ animationDelay: "180ms" }}
         >
           <header className="mb-4">

@@ -3,7 +3,7 @@ import { createHash } from "node:crypto";
 import { importJWK, jwtVerify, decodeProtectedHeader, type JWK } from "jose";
 import { plaidClient, plaidConfigured } from "@/lib/providers/plaid";
 import { loadState } from "@/lib/store";
-import { syncOneItem, updateSnapshot } from "@/lib/sync";
+import { syncOneItem, refreshSnapshotAfterMutation } from "@/lib/sync";
 
 // Plaid webhook receiver. The webhook is just a SIGNAL — when it fires we run
 // /transactions/sync ourselves. We verify Plaid's JWT signature (and that the
@@ -55,15 +55,16 @@ export async function POST(req: NextRequest) {
     item_id?: string;
   };
 
+  let snapshot: { warning?: string } = {};
   // We only need to act on transaction updates; ignore the rest (ack 200).
   if (body.webhook_type === "TRANSACTIONS" && body.item_id) {
     const state = await loadState();
     const item = state.items.find((i) => i.id === body.item_id);
     if (item) {
       await syncOneItem(item);
-      await updateSnapshot();
+      snapshot = await refreshSnapshotAfterMutation();
     }
   }
 
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({ ok: true, ...snapshot });
 }

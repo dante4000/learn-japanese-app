@@ -30,11 +30,11 @@ export function CashFlowDetail({
 
   return (
     <div>
-      <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+      <div className="mb-6 grid grid-cols-1 gap-3 min-[420px]:grid-cols-2 lg:grid-cols-4">
         {tiles.map((t) => (
           <div key={t.l} className="rounded-xl border hairline bg-surface px-3 py-2.5">
             <div className="label-eyebrow">{t.l}</div>
-            <div className={`tnum mt-1 text-lg ${t.c}`}>{t.v}</div>
+            <div className={`tnum mt-1 break-words text-lg ${t.c}`}>{t.v}</div>
           </div>
         ))}
       </div>
@@ -60,7 +60,7 @@ export function CashFlowDetail({
               <div
                 className="w-3/5 max-w-6 rounded-b"
                 style={{
-                  height: `${(r.spending / max) * 100}%`,
+                  height: `${(Math.max(0, r.spending) / max) * 100}%`,
                   minHeight: r.spending > 0 ? 3 : 0,
                   background:
                     "linear-gradient(180deg, var(--color-coral), var(--color-coral-deep))",

@@ -36,7 +36,7 @@ export default async function CardsPage() {
     const acct = matchByCard.get(card.cardKey) ?? null;
     if (!acct) return { card, live: null, renewal: null };
     const spend = cardSpend(state, acct.id);
-    const est = estimatePointsDetailed(card, cardSpendTxns(state, acct.id));
+    const est = estimatePointsDetailed(card, cardSpendTxns(state, acct.id, true), spend.periodStart);
     return {
       card,
       renewal: detectRenewal(state, acct.id, card),

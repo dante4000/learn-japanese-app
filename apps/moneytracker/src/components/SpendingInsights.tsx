@@ -15,7 +15,6 @@ export function SpendingInsights({
   month,
   prevMonth,
   currency = "USD",
-  isLatestMonth = false,
   delay = 0,
 }: {
   state: AppState;
@@ -63,7 +62,7 @@ export function SpendingInsights({
                     <div
                       className="h-full rounded-full"
                       style={{
-                        width: `${pct}%`,
+                        width: `${Math.max(0, Math.min(100, pct))}%`,
                         background: ACCT_COLORS[i % ACCT_COLORS.length],
                       }}
                     />
@@ -83,7 +82,7 @@ export function SpendingInsights({
         delay={delay + 40}
         className="mt-4"
         action={
-          isLatestMonth && daily.projected != null ? (
+          daily.projected != null ? (
             <span className="text-xs text-muted">
               on pace for{" "}
               <span className="tnum text-cream">
@@ -108,10 +107,10 @@ export function SpendingInsights({
           </div>
           <div>
             <div className="label-eyebrow">
-              {isLatestMonth ? "Projected" : "Days"}
+              {daily.projected != null ? "Projected" : "Days"}
             </div>
             <div className="tnum mt-1 text-lg text-cream">
-              {isLatestMonth && daily.projected != null
+              {daily.projected != null
                 ? formatMoney(daily.projected, currency, { cents: false })
                 : `${daily.throughDay}/${daily.daysInMonth}`}
             </div>
@@ -123,7 +122,7 @@ export function SpendingInsights({
               key={d.day}
               className="flex-1 rounded-t-sm transition-[height] motion-reduce:transition-none"
               style={{
-                height: `${(d.total / maxDay) * 100}%`,
+                height: `${(Math.max(0, d.total) / maxDay) * 100}%`,
                 minHeight: d.total > 0 ? 2 : 0,
                 background:
                   d.total > 0 ? "var(--color-coral)" : "var(--color-line)",
