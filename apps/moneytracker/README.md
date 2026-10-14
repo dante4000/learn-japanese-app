@@ -56,8 +56,9 @@ documents can reuse a process cache after their ETags match that listing. The
 cache holds at most 16 documents and 16 MiB. Each read decodes fresh objects.
 API and sync reads still fetch document bodies. This adds no cache time window.
 
-Navigation and server filters show immediate status. A dismissible loading
-dialog appears after 450 ms. Fast actions avoid the modal. Query and account
+Page loads show shimmering skeleton shapes. Other slow actions show one
+dismissible skeleton dialog after 450 ms. A visible page skeleton suppresses
+the dialog. Fast actions avoid the modal. Query and account
 filters share a pending transition to prevent overlapping choices from losing
 URL parameters. Scheduled background refreshes do not open the dialog.
 

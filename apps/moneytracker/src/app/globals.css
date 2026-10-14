@@ -14,6 +14,7 @@
   --color-ink-2: #0e1320;
   --color-surface: #121a2b;
   --color-surface-2: #172132;
+  --color-skeleton-glow: rgba(190, 213, 255, 0.18);
   --color-line: #1f2c45;
   --color-line-2: #2c3c5c;
 
@@ -113,9 +114,28 @@
   animation-delay: 0s !important;
 }
 
+.loading-skeleton {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  background: color-mix(in srgb, var(--color-line-2) 55%, var(--color-surface));
+}
+.loading-skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, var(--color-skeleton-glow), transparent);
+  transform: translateX(-100%);
+  animation: skeleton-shimmer 1.8s ease-in-out infinite;
+}
+@keyframes skeleton-shimmer {
+  to { transform: translateX(100%); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .rise { animation: none; }
   .card-hover { transition: none; }
+  .loading-skeleton::after { animation: none; display: none; }
 }
 
 /* scrollbar */
@@ -136,6 +156,7 @@ html[data-theme="light"] {
   --color-ink-2: #f5f8fd; /* nav / sticky translucent base */
   --color-surface: #ffffff; /* card top */
   --color-surface-2: #eef3fb; /* chips, icon tiles */
+  --color-skeleton-glow: rgba(255, 255, 255, 0.8);
   --color-line: #dce5f1;
   --color-line-2: #c4d2e6;
 
