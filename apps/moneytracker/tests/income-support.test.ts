@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { eligibleEmployerHousingSupport, employerHousingSupportTotal, parseEmployerHousingSupport } from "../src/lib/income-support";
+import { EMPLOYER_HOUSING_SEGMENT, eligibleEmployerHousingSupport, employerHousingSupportTotal, parseEmployerHousingSupport, withEmployerHousingSupport } from "../src/lib/income-support";
 import { incomeBreakdown, mergeIncomeMonths } from "../src/lib/insights";
 import { emptyState, Transaction } from "../src/lib/types";
 
@@ -53,4 +53,18 @@ test("a dedicated support-only view has support and no deposit records", () => {
   assert.deepEqual(recorded.segments, []);
   assert.equal(employerHousingSupportTotal(visible, ["2026-03"]), 1600);
   assert.equal(state.transactions.length, 0);
+});
+
+test("chart toggle stacks support only onto eligible months without adding deposits", () => {
+  const bounded = { ...support, startMonth: "2026-02", endMonth: "2026-03" };
+  const months = ["2026-01", "2026-02", "2026-03", "2026-04"].map((month) => ({ month, total: 2000, segments: [{ name: "RARELIQUID", total: 2000, color: "#2563eb", count: 1 }] }));
+  const chart = withEmployerHousingSupport(months, bounded);
+  assert.deepEqual(chart.map((m) => m.total), [2000, 3600, 3600, 2000]);
+  assert.deepEqual(chart[1].segments.map((s) => s.name), ["RARELIQUID", EMPLOYER_HOUSING_SEGMENT]);
+  assert.equal(chart[0], months[0]);
+  const merged = mergeIncomeMonths(chart);
+  assert.equal(merged.total, 11200);
+  assert.equal(merged.segments.reduce((sum, s) => sum + s.count, 0), 4);
+  assert.equal(months[1].total, 2000);
+  assert.deepEqual(withEmployerHousingSupport(months, null), months);
 });

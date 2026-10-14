@@ -1,5 +1,11 @@
 import { EmployerHousingSupport } from "./types";
 import { incomeSourceLabel } from "./aliases";
+import type { IncomeMonth } from "./insights";
+
+export const EMPLOYER_HOUSING_SEGMENT = "Studio rent support";
+// A pale indigo keeps the non-cash contribution cool-toned like income while
+// reading as distinct from every bank-deposit source color.
+const EMPLOYER_HOUSING_COLOR = "#a5b4fc";
 
 const MONTH = /^\d{4}-(0[1-9]|1[0-2])$/;
 
@@ -27,4 +33,17 @@ export function eligibleEmployerHousingSupport(support: EmployerHousingSupport |
   if (!support || focusedAccount) return null;
   if (!selectedSource || selectedSource === "__employer_housing__") return support;
   return incomeSourceLabel(null, selectedSource) === incomeSourceLabel(null, support.source) ? support : null;
+}
+
+/** Stack support onto eligible chart months as its own segment; deposit counts stay bank-only. */
+export function withEmployerHousingSupport(months: IncomeMonth[], support: EmployerHousingSupport | null | undefined): IncomeMonth[] {
+  return months.map((month) => {
+    const amount = employerHousingSupportTotal(support, [month.month]);
+    if (!amount) return month;
+    return {
+      ...month,
+      total: month.total + amount,
+      segments: [...month.segments, { name: EMPLOYER_HOUSING_SEGMENT, total: amount, color: EMPLOYER_HOUSING_COLOR, count: 0 }],
+    };
+  });
 }

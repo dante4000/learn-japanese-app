@@ -14,7 +14,8 @@ import { MonthPicker } from "@/components/MonthPicker";
 import { IncomeScope, Scope } from "@/components/IncomeScope";
 import { SourcePicker } from "@/components/SourceToggle";
 import { EmployerHousingSupportEditor } from "@/components/EmployerHousingSupport";
-import { eligibleEmployerHousingSupport, employerHousingSupportTotal } from "@/lib/income-support";
+import { SupportToggle } from "@/components/SupportToggle";
+import { eligibleEmployerHousingSupport, employerHousingSupportTotal, withEmployerHousingSupport } from "@/lib/income-support";
 import { SectionCard, EmptyState, StatCard, PageHeading } from "@/components/ui";
 
 export const dynamic = "force-dynamic";
@@ -34,6 +35,7 @@ export default async function IncomePage({
     month?: string;
     scope?: string;
     src?: string;
+    support?: string;
     [key: string]: string | undefined;
   }>;
 }) {
@@ -86,7 +88,9 @@ export default async function IncomePage({
       : latest;
 
   const chartMonths = calendarMonths(latest, 12);
-  const chart = chartMonths.map((month) => byMonthMap.get(month) ?? { month, total: 0, segments: [] });
+  const recordedChart = chartMonths.map((month) => byMonthMap.get(month) ?? { month, total: 0, segments: [] });
+  const supportInChart = Boolean(visibleSupport && sp.support === "include");
+  const chart = supportInChart ? withEmployerHousingSupport(recordedChart, visibleSupport) : recordedChart;
 
   // Resolve the active scope into a set of months + the period to compare with.
   let scopeMonths: string[];
@@ -237,7 +241,8 @@ export default async function IncomePage({
       {!supportOnly && (<>
       {/* Income by month — the overview. Click a bar to focus that month. */}
       <SectionCard
-        title={`Recorded income by month · last ${chart.length} month${chart.length === 1 ? "" : "s"}`}
+        title={`${supportInChart ? "Income + studio rent" : "Recorded income"} by month · last ${chart.length} month${chart.length === 1 ? "" : "s"}`}
+        action={visibleSupport ? <SupportToggle included={supportInChart} /> : undefined}
         delay={200}
       >
         <CompositionBars
@@ -264,7 +269,7 @@ export default async function IncomePage({
         )}
         <p className="mt-4 text-xs text-muted">
           Each bar is one month, split by who paid you. Click a bar — or pick a
-          month above — to see that month’s breakdown below. Months without recorded deposits show zero. The window ends with the latest posted bank activity.
+          month above — to see that month’s breakdown below. Months without recorded deposits show zero.{supportInChart && " Studio rent support is stacked on top; it is not a deposit, so the breakdown below stays bank-only."} The window ends with the latest posted bank activity.
         </p>
       </SectionCard>
 
