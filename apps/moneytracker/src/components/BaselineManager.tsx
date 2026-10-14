@@ -1,5 +1,7 @@
 "use client";
 
+import { useLoadingStatus } from "./LoadingFeedback";
+
 import { useState } from "react";
 import { useSavedRefresh } from "@/components/useSavedRefresh";
 import { RecurringBaseline } from "@/lib/types";
@@ -23,6 +25,7 @@ export function BaselineManager({
   const [endMonth, setEndMonth] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  useLoadingStatus(busy, "Saving baseline…");
   const [error, setError] = useState<string | null>(null);
 
   async function add(e: React.FormEvent) {

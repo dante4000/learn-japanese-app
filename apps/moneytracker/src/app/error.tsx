@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/AppLink";
 
 export default function AppError({ retry }: { retry: () => void }) {
   return (

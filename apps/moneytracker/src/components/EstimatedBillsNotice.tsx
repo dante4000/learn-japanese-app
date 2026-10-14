@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/AppLink";
 import { isSpend, isSyntheticBaseline } from "@/lib/analytics";
 import { formatMoney } from "@/lib/format";
 import { AppState } from "@/lib/types";

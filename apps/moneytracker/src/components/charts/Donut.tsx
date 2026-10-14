@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { formatMoney } from "@/lib/format";
+import { useLoadingTransition } from "../LoadingFeedback";
 
 interface Slice {
   label: string;
@@ -34,6 +35,7 @@ export function Donut({
   centerLabel?: string; // center caption under the total (e.g. "Earned")
 }) {
   const router = useRouter();
+  const [, startTransition] = useLoadingTransition();
   const [hover, setHover] = useState<number | null>(null);
   const stroke = 22;
   const r = (size - stroke - 6) / 2;
@@ -54,7 +56,8 @@ export function Donut({
   const go = (s: Slice) => {
     if (hrefBase && s.key) {
       const monthParam = month ? `&month=${encodeURIComponent(month)}` : "";
-      router.push(`${hrefBase}?category=${encodeURIComponent(s.key)}${monthParam}`);
+      const href = `${hrefBase}?category=${encodeURIComponent(s.key)}${monthParam}`;
+      startTransition(() => router.push(href));
     }
   };
 

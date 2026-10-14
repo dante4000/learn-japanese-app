@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/AppLink";
 import { useSearchParams } from "next/navigation";
 import { MonthComposition } from "@/lib/analytics";
 import { formatMonth, formatMoney } from "@/lib/format";

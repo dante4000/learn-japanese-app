@@ -1,5 +1,7 @@
 "use client";
 
+import { useLoadingStatus } from "./LoadingFeedback";
+
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -9,6 +11,7 @@ export function LoginForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  useLoadingStatus(loading, "Unlocking dashboard…");
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();

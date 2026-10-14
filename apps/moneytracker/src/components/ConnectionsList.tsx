@@ -1,5 +1,7 @@
 "use client";
 
+import { useLoadingStatus, useLoadingTransition } from "./LoadingFeedback";
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Item } from "@/lib/types";
@@ -7,7 +9,9 @@ import { formatDate } from "@/lib/format";
 
 export function ConnectionsList({ items }: { items: Item[] }) {
   const router = useRouter();
+  const [, startRefresh] = useLoadingTransition("Updating view…");
   const [busy, setBusy] = useState<string | null>(null);
+  useLoadingStatus(Boolean(busy), "Removing connection…");
   const [error, setError] = useState<string | null>(null);
   const [warning, setWarning] = useState<string | null>(null);
 
@@ -25,7 +29,7 @@ export function ConnectionsList({ items }: { items: Item[] }) {
         return;
       }
       if (typeof data?.warning === "string") setWarning(data.warning);
-      router.refresh();
+      startRefresh(() => router.refresh());
     } catch {
       setError(`Could not remove ${name}`);
     } finally {

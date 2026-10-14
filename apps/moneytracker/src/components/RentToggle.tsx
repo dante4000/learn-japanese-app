@@ -1,33 +1,27 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useQuerySelection } from "./useQuerySelection";
 
 /** Toggles ?rent=exclude on the Spending page to drop the Rent & Utilities
  *  category from every total on the tab. Included by default (no param); flips
  *  the URL so the page re-renders the rent-filtered view server-side. */
 export function RentToggle({ excluded }: { excluded: boolean }) {
-  const router = useRouter();
-  const params = useSearchParams();
-
-  function toggle() {
-    const next = new URLSearchParams(params.toString());
-    if (excluded) next.delete("rent");
-    else next.set("rent", "exclude");
-    const qs = next.toString();
-    router.push(qs ? `?${qs}` : "?", { scroll: false });
-  }
+  const { value, pending, select } = useQuerySelection("rent", excluded ? "exclude" : "", "");
+  const isExcluded = value === "exclude";
 
   return (
     <button
-      onClick={toggle}
-      aria-pressed={!excluded}
+      onClick={() => select(isExcluded ? "" : "exclude")}
+      disabled={pending}
+      aria-busy={pending}
+      aria-pressed={!isExcluded}
       className={`min-h-11 lg:min-h-0 rounded-lg border px-2.5 py-1 text-xs transition-colors ${
-        excluded
+        isExcluded
           ? "hairline bg-surface text-muted hover:text-cream"
           : "border-blue/40 bg-blue/15 text-blue"
       }`}
     >
-      {excluded ? "Rent excluded" : "Rent included"}
+      {isExcluded ? "Rent excluded" : "Rent included"}
     </button>
   );
 }

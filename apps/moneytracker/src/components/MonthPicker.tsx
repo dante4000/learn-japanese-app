@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useQuerySelection } from "./useQuerySelection";
 import { formatMonth } from "@/lib/format";
 
 // Navigates to ?month=yyyy-mm so the page can re-render server-side for the
@@ -12,19 +12,14 @@ export function MonthPicker({
   months: string[];
   selected: string;
 }) {
-  const router = useRouter();
-  const params = useSearchParams();
-
-  function go(month: string) {
-    const next = new URLSearchParams(params.toString());
-    next.set("month", month);
-    router.push(`?${next.toString()}`);
-  }
+  const { value, pending, select } = useQuerySelection("month", selected);
 
   return (
     <select
-      value={selected}
-      onChange={(e) => go(e.target.value)}
+      value={value}
+      disabled={pending}
+      aria-busy={pending}
+      onChange={(e) => select(e.target.value)}
       className="tnum min-h-11 max-w-full rounded-xl border hairline bg-surface px-3 py-2 text-base sm:text-sm text-cream outline-none focus:border-blue"
       aria-label="Select month"
     >

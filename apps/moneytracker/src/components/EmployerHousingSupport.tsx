@@ -1,5 +1,7 @@
 "use client";
 
+import { useLoadingStatus } from "./LoadingFeedback";
+
 import { useState } from "react";
 import { useSavedRefresh } from "@/components/useSavedRefresh";
 import { EmployerHousingSupport } from "@/lib/types";
@@ -13,6 +15,7 @@ export function EmployerHousingSupportEditor({ support, sources }: { support?: E
   const [startMonth, setStartMonth] = useState(support?.startMonth ?? "");
   const [endMonth, setEndMonth] = useState(support?.endMonth ?? "");
   const [busy, setBusy] = useState(false);
+  useLoadingStatus(busy, "Saving studio support…");
   const [error, setError] = useState("");
   const options = [...new Set([...sources, source])];
   const field = "mt-1 min-h-11 min-w-0 w-full rounded-xl border hairline bg-surface px-3 py-2 text-base text-cream sm:text-sm";

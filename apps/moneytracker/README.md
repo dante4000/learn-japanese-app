@@ -51,6 +51,20 @@ refresh before submitting the same change again. Conditional writes still reject
 stale updates because each read retains the ETag from its own document response.
 See [Vercel Blob caching](https://vercel.com/docs/vercel-blob#caching).
 
+Dashboard pages share one fresh Blob listing per request. Unchanged encrypted
+documents can reuse a process cache after their ETags match that listing. The
+cache holds at most 16 documents and 16 MiB. Each read decodes fresh objects.
+API and sync reads still fetch document bodies. This adds no cache time window.
+
+Navigation and server filters show immediate status. A dismissible loading
+dialog appears after 450 ms. Fast actions avoid the modal. Query and account
+filters share a pending transition to prevent overlapping choices from losing
+URL parameters. Scheduled background refreshes do not open the dialog.
+
+The storage regression test uses three connections and metadata. With simulated
+25 ms network latency, reads fell from 9 requests to 5 cold or 1 warm. These are
+controlled test counts, not a production latency guarantee.
+
 Institution claims prevent concurrent connections to the same bank. A request
 that stops before saving its connection can leave a claim. Claims do not expire:
 an expired claim could let a delayed request create a duplicate connection.

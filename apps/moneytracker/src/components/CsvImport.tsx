@@ -1,11 +1,14 @@
 "use client";
 
+import { useLoadingStatus, useLoadingTransition } from "./LoadingFeedback";
+
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Account } from "@/lib/types";
 
 export function CsvImport({ accounts }: { accounts: Account[] }) {
   const router = useRouter();
+  const [, startRefresh] = useLoadingTransition("Updating view…");
   const [csv, setCsv] = useState("");
   const [fileName, setFileName] = useState("");
   const [mode, setMode] = useState<"new" | "existing">(
@@ -20,6 +23,7 @@ export function CsvImport({ accounts }: { accounts: Account[] }) {
     "negative_is_outflow" | "positive_is_outflow"
   >("negative_is_outflow");
   const [busy, setBusy] = useState(false);
+  useLoadingStatus(busy, "Processing CSV…");
   const [msg, setMsg] = useState<string | null>(null);
   const fileInput = useRef<HTMLInputElement>(null);
   const selectedAccountId = accounts.some((a) => a.id === accountId)
@@ -79,7 +83,7 @@ export function CsvImport({ accounts }: { accounts: Account[] }) {
       setMsg(`Imported ${data.imported} transactions${data.skipped ? `, skipped ${data.skipped}` : ""}.${typeof data.warning === "string" ? ` ${data.warning}` : ""}`);
       setCsv("");
       setFileName("");
-      router.refresh();
+      startRefresh(() => router.refresh());
     } catch {
       setMsg("Import failed — please try again.");
     } finally {

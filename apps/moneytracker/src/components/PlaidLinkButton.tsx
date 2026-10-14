@@ -2,16 +2,21 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useLoadingStatus, useLoadingTransition } from "./LoadingFeedback";
 
 import { exchangePlaidToken, loadPlaidScript, PLAID_LINK_TOKEN_KEY } from "@/lib/plaid-link";
 
 export function PlaidLinkButton({ disabled }: { disabled?: boolean }) {
   const router = useRouter();
+  const [, startRefresh] = useLoadingTransition("Updating view…");
   const [busy, setBusy] = useState(false);
+  const [waiting, setWaiting] = useState(false);
+  useLoadingStatus(waiting, "Connecting bank…");
   const [msg, setMsg] = useState<string | null>(null);
 
   async function connect() {
     setBusy(true);
+    setWaiting(true);
     setMsg(null);
     try {
       const res = await fetch("/api/plaid/link-token", { method: "POST" });
@@ -29,6 +34,7 @@ export function PlaidLinkButton({ disabled }: { disabled?: boolean }) {
       const handler = window.Plaid!.create({
         token: data.link_token,
         onSuccess: async (publicToken: string) => {
+          setWaiting(true);
           // Plaid invokes this later, outside connect()'s try/catch — guard it
           // on its own so a failed exchange or non-JSON response can't leave the
           // button stuck on "Working…".
@@ -36,19 +42,23 @@ export function PlaidLinkButton({ disabled }: { disabled?: boolean }) {
           try {
             const linked = await exchangePlaidToken(publicToken);
             setMsg(`Connected ${linked.institutionName}.${linked.warning ? ` ${linked.warning}` : ""}`);
-            router.refresh();
+            startRefresh(() => router.refresh());
           } catch (error) {
             setMsg(error instanceof Error ? error.message : "Could not link your bank.");
           } finally {
             setBusy(false);
+            setWaiting(false);
           }
         },
-        onExit: () => setBusy(false),
+        onExit: () => { setBusy(false); setWaiting(false); },
       });
       handler.open();
     } catch (err) {
       setMsg(err instanceof Error ? err.message : "Plaid error");
       setBusy(false);
+    } finally {
+      // Plaid owns its interactive dialog once open.
+      setWaiting(false);
     }
   }
 

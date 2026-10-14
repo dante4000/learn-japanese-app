@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/AppLink";
 import { AppState } from "@/lib/types";
 import { spendingPace, categoryTrends } from "@/lib/analytics";
 import { formatMoney, formatMonth } from "@/lib/format";

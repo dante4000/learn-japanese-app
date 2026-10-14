@@ -1,6 +1,8 @@
 "use client";
 
-import Link from "next/link";
+import { useLoadingStatus } from "./LoadingFeedback";
+
+import Link from "@/components/AppLink";
 import { isSyntheticBaseline } from "@/lib/analytics";
 import { useState } from "react";
 import { useSavedRefresh } from "@/components/useSavedRefresh";
@@ -20,6 +22,7 @@ export function useTransactionEditor() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [noteDraft, setNoteDraft] = useState("");
   const [busy, setBusy] = useState(false);
+  useLoadingStatus(busy, "Saving transaction…");
   const [error, setError] = useState<string | null>(null);
 
   function openEditor(t: Transaction) {

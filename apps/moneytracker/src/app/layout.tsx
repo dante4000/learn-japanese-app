@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Hanken_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import { LoadingProvider } from "@/components/LoadingFeedback";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -53,7 +54,7 @@ export default function RootLayout({
       <body
         className={`${fraunces.variable} ${hanken.variable} ${jetbrains.variable}`}
       >
-        <div className="relative z-10">{children}</div>
+        <LoadingProvider><div className="relative z-10">{children}</div></LoadingProvider>
       </body>
     </html>
   );

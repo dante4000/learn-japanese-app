@@ -1,10 +1,11 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/AppLink";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { ThemeToggle } from "./ThemeToggle";
 import { AccountPicker, AccountOption } from "./AccountPicker";
+import { useLoadingStatus } from "./LoadingFeedback";
 
 const NAV = [
   { href: "/", label: "Overview", icon: "M3 12l9-8 9 8M5 10v10h14V10" },
@@ -57,6 +58,9 @@ export function AppShell({
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [syncing, setSyncing] = useState(false);
+  const [loggingOut, setLoggingOut] = useState(false);
+  useLoadingStatus(syncing || pending, "Syncing accounts…");
+  useLoadingStatus(loggingOut, "Signing out…");
   const [msg, setMsg] = useState<string | null>(null);
   const [moreOpen, setMoreOpen] = useState(false);
   const messageTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -102,6 +106,7 @@ export function AppShell({
   async function logout() {
     if (messageTimer.current) clearTimeout(messageTimer.current);
     setMsg(null);
+    setLoggingOut(true);
     try {
       const response = await fetch("/api/auth/logout", { method: "POST" });
       if (!response.ok) throw new Error("Sign out failed");
@@ -109,6 +114,7 @@ export function AppShell({
       router.refresh();
     } catch {
       setMsg("Could not sign out. Try again.");
+      setLoggingOut(false);
     }
   }
 
@@ -155,7 +161,7 @@ export function AppShell({
         <div className="flex flex-col gap-2">
           <button
             onClick={refresh}
-            disabled={syncing}
+            disabled={syncing || pending}
             className="min-h-11 lg:min-h-0 flex items-center justify-center gap-2 rounded-xl border hairline bg-surface px-3 py-2.5 text-sm text-cream transition-colors hover:border-line-2 disabled:opacity-50"
           >
             <span className={syncing || pending ? "animate-spin motion-reduce:animate-none" : ""}>
@@ -166,6 +172,7 @@ export function AppShell({
           <div className="flex items-center justify-between gap-2">
             <button
               onClick={logout}
+              disabled={loggingOut}
               className="min-h-11 lg:min-h-0 rounded-xl px-3 py-2 text-xs text-faint transition-colors hover:text-coral"
             >
               Lock & sign out
@@ -190,7 +197,7 @@ export function AppShell({
             <ThemeToggle />
             <button
               onClick={refresh}
-              disabled={syncing}
+              disabled={syncing || pending}
               className="min-h-11 rounded-lg border hairline bg-surface px-3 py-2 text-xs text-cream disabled:opacity-50"
             >
               {syncing ? "Syncing…" : "Sync"}
@@ -230,7 +237,7 @@ export function AppShell({
           ))}
         </nav>
         <p role="status" className="mt-3 text-sm text-coral">{msg}</p>
-        <button onClick={logout} className="min-h-11 lg:min-h-0 mt-3 w-full rounded-xl border hairline px-4 py-3 text-sm">Lock &amp; sign out</button>
+        <button onClick={logout} disabled={loggingOut} className="min-h-11 lg:min-h-0 mt-3 w-full rounded-xl border hairline px-4 py-3 text-sm">Lock &amp; sign out</button>
       </dialog>
 
       {/* Mobile bottom nav */}

@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useLoadingTransition } from "./LoadingFeedback";
 
 /** Bound refreshes to the storage propagation window; cancellation prevents stale refreshes. */
 export function scheduleSavedRefresh(refresh: () => void): () => void {
@@ -13,6 +14,7 @@ export function scheduleSavedRefresh(refresh: () => void): () => void {
 /** Saved feedback belongs to the mutation owner. Financial values remain server-derived. */
 export function useSavedRefresh() {
   const router = useRouter();
+  const [, startTransition] = useLoadingTransition("Updating view…");
   const [savedMessage, setSavedMessage] = useState<string | null>(null);
   const cancel = useRef<() => void>(() => {});
   const mounted = useRef(false);
@@ -32,7 +34,13 @@ export function useSavedRefresh() {
     if (!mounted.current) return;
     cancel.current();
     setSavedMessage("Saved. Updates can take up to a minute to appear.");
-    cancel.current = scheduleSavedRefresh(() => { if (mounted.current) router.refresh(); });
-  }, [router]);
+    let first = true;
+    cancel.current = scheduleSavedRefresh(() => {
+      if (!mounted.current) return;
+      if (first) startTransition(() => router.refresh());
+      else router.refresh();
+      first = false;
+    });
+  }, [router, startTransition]);
   return { savedMessage, clearSavedFeedback, refreshAfterSave };
 }

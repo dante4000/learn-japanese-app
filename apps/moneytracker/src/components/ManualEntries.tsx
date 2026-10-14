@@ -1,5 +1,7 @@
 "use client";
 
+import { useLoadingStatus, useLoadingTransition } from "./LoadingFeedback";
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ManualEntry } from "@/lib/types";
@@ -13,10 +15,12 @@ export function ManualEntries({
   currency: string;
 }) {
   const router = useRouter();
+  const [, startRefresh] = useLoadingTransition("Updating view…");
   const [name, setName] = useState("");
   const [value, setValue] = useState("");
   const [kind, setKind] = useState<"asset" | "liability">("asset");
   const [busy, setBusy] = useState(false);
+  useLoadingStatus(busy, "Saving entry…");
   const [error, setError] = useState<string | null>(null);
   const [warning, setWarning] = useState<string | null>(null);
 
@@ -44,7 +48,7 @@ export function ManualEntries({
       setName("");
       setValue("");
       if (typeof data?.warning === "string") setWarning(data.warning);
-      router.refresh();
+      startRefresh(() => router.refresh());
     } catch {
       setError("Could not add entry");
     } finally {
@@ -64,7 +68,7 @@ export function ManualEntries({
         return;
       }
       if (typeof data?.warning === "string") setWarning(data.warning);
-      router.refresh();
+      startRefresh(() => router.refresh());
     } catch {
       setError("Could not remove entry");
     } finally {

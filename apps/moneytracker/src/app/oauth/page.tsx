@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
+import Link from "@/components/AppLink";
 
 import { exchangePlaidToken, loadPlaidScript, PLAID_LINK_TOKEN_KEY, type PlaidLinkHandler } from "@/lib/plaid-link";
 

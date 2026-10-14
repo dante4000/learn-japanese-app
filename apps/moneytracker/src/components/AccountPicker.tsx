@@ -1,8 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useId, useTransition } from "react";
+import { useId, useOptimistic } from "react";
 import { ACCOUNT_COOKIE } from "@/lib/account-filter";
+import { useSelectionTransition } from "./LoadingFeedback";
 
 // Global account filter control. Writing the cookie + router.refresh() makes
 // every server page re-render scoped to the chosen account.
@@ -29,7 +30,8 @@ export function AccountPicker({
 }) {
   const pickerId = useId();
   const router = useRouter();
-  const [pending, startTransition] = useTransition();
+  const [pending, startTransition] = useSelectionTransition();
+  const [value, setValue] = useOptimistic(selected ?? "");
 
   // group by institution for <optgroup>
   const groups = new Map<string, AccountOption[]>();
@@ -45,13 +47,19 @@ export function AccountPicker({
       </label>
       <select
         id={pickerId}
-        value={selected ?? ""}
+        value={value}
+        disabled={pending}
+        aria-busy={pending}
         onChange={(e) => {
-          setAccountCookie(e.target.value);
-          startTransition(() => router.refresh());
+          const id = e.target.value;
+          startTransition(() => {
+            setValue(id);
+            setAccountCookie(id);
+            router.refresh();
+          });
         }}
         className={`min-w-0 min-h-11 w-full rounded-xl border hairline bg-surface px-3 py-2.5 text-base sm:text-sm outline-none transition-opacity focus:border-blue ${
-          selected ? "border-blue text-blue" : "text-cream"
+          value ? "border-blue text-blue" : "text-cream"
         } ${pending ? "opacity-60" : ""}`}
       >
         <option value="">All accounts</option>
@@ -73,13 +81,18 @@ export function AccountPicker({
 /** "View" action on the Accounts page: focus one account and jump to Overview. */
 export function ViewAccountButton({ id }: { id: string }) {
   const router = useRouter();
+  const [pending, startTransition] = useSelectionTransition();
   return (
     <button
       onClick={() => {
-        setAccountCookie(id);
-        router.push("/");
-        router.refresh();
+        startTransition(() => {
+          setAccountCookie(id);
+          router.push("/");
+          router.refresh();
+        });
       }}
+      disabled={pending}
+      aria-busy={pending}
       className="min-h-11 lg:min-h-0 shrink-0 rounded-lg border hairline px-2.5 py-1 text-xs text-cream-dim transition-colors hover:border-blue hover:text-blue"
     >
       View →

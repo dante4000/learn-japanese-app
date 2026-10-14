@@ -103,13 +103,14 @@
   }
 }
 
-/* staggered entrance for dashboard cards */
+/* Keep server-rendered values visible without the former card stagger. */
 @keyframes rise {
   from { opacity: 0; transform: translateY(14px); }
   to { opacity: 1; transform: translateY(0); }
 }
 .rise {
-  animation: rise 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation: rise 0.18s ease-out both;
+  animation-delay: 0s !important;
 }
 
 @media (prefers-reduced-motion: reduce) {

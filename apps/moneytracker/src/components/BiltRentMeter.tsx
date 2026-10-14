@@ -1,5 +1,7 @@
 "use client";
 
+import { useLoadingStatus, useLoadingTransition } from "./LoadingFeedback";
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { formatMoney } from "@/lib/format";
@@ -30,12 +32,14 @@ function mult(m: number): string {
 
 export function BiltRentMeter({ meter, delay = 0 }: { meter: BiltMeterView; delay?: number }) {
   const router = useRouter();
+  const [, startRefresh] = useLoadingTransition("Updating view…");
   const [editing, setEditing] = useState(false);
   const [housing, setHousing] = useState(
     meter.housingPayment ? String(meter.housingPayment) : "",
   );
   const [day, setDay] = useState(String(meter.statementDay));
   const [busy, setBusy] = useState(false);
+  useLoadingStatus(busy, "Saving rent amount…");
   const [error, setError] = useState<string | null>(null);
 
   const { rewards, currency } = meter;
@@ -60,7 +64,7 @@ export function BiltRentMeter({ meter, delay = 0 }: { meter: BiltMeterView; dela
         return;
       }
       setEditing(false);
-      router.refresh();
+      startRefresh(() => router.refresh());
     } catch {
       setError("Could not save. Check your connection and try again.");
     } finally {

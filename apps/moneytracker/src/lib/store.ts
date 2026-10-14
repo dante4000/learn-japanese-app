@@ -1,5 +1,5 @@
 import { cache } from "react";
-import { put, list, del, BlobPreconditionFailedError } from "@vercel/blob";
+import { put, list, del, BlobPreconditionFailedError, type ListBlobResultBlob } from "@vercel/blob";
 import { promises as fs } from "node:fs";
 import { createHash, randomUUID } from "node:crypto";
 import { hostname } from "node:os";
@@ -28,6 +28,38 @@ const LOCAL_DIR = path.join(process.cwd(), ".data", "v2");
 const REVISION = Symbol("storageRevision");
 type Revision = { name: string; etag: string | null };
 type Versioned = { [REVISION]?: Revision };
+type CachedDocument = { pathname: string; etag: string; raw: string; bytes: number };
+const DASHBOARD_CACHE_ENTRIES = 16;
+const DASHBOARD_CACHE_BYTES = 16 * 1024 * 1024;
+const dashboardDocuments = new Map<string, CachedDocument>();
+let dashboardCacheBytes = 0;
+let dashboardCacheGeneration = 0;
+
+function forgetDashboardDocument(url: string): void {
+  const previous = dashboardDocuments.get(url);
+  if (previous) dashboardCacheBytes -= previous.bytes;
+  dashboardDocuments.delete(url);
+}
+
+function invalidateDashboardDocument(name: string): void {
+  // An earlier body read must not refill the cache after a mutation.
+  dashboardCacheGeneration++;
+  for (const [url, document] of dashboardDocuments) {
+    if (document.pathname === blobPath(name)) forgetDashboardDocument(url);
+  }
+}
+
+function rememberDashboardDocument(blob: ListBlobResultBlob, etag: string, raw: string): void {
+  forgetDashboardDocument(blob.url);
+  // Never store a stale CDN body under a newer listing revision.
+  const bytes = raw.length * 2;
+  if (etag !== blob.etag || bytes > DASHBOARD_CACHE_BYTES) return;
+  while (dashboardDocuments.size >= DASHBOARD_CACHE_ENTRIES || dashboardCacheBytes + bytes > DASHBOARD_CACHE_BYTES) {
+    forgetDashboardDocument(dashboardDocuments.keys().next().value!);
+  }
+  dashboardDocuments.set(blob.url, { pathname: blob.pathname, etag, raw, bytes });
+  dashboardCacheBytes += bytes;
+}
 
 export class StorageConflictError extends Error {
   constructor() {
@@ -167,6 +199,7 @@ async function writeDoc(name: string, obj: object, previous: object = obj): Prom
   const expected = revisionOf(previous, name);
   let etag: string;
   if (blobEnabled()) {
+    invalidateDashboardDocument(name);
     try {
       const result = await put(blobPath(name), body, {
         access: "public",
@@ -182,6 +215,8 @@ async function writeDoc(name: string, obj: object, previous: object = obj): Prom
       // A create can race another create. Never retry it as an overwrite.
       if (expected === null && await readDoc(name)) throw new StorageConflictError();
       throw error;
+    } finally {
+      invalidateDashboardDocument(name);
     }
   } else {
     etag = await withLocalLock(name, async () => {
@@ -202,22 +237,42 @@ async function writeDoc(name: string, obj: object, previous: object = obj): Prom
   withRevision(obj, name, etag);
 }
 
+async function readBlobDocument<T extends object>(
+  name: string,
+  blob: ListBlobResultBlob,
+  useDashboardCache = false,
+): Promise<T> {
+  const generation = dashboardCacheGeneration;
+  if (useDashboardCache) {
+    const cached = dashboardDocuments.get(blob.url);
+    if (cached && blob.etag && cached.etag === blob.etag) {
+      dashboardDocuments.delete(blob.url);
+      dashboardDocuments.set(blob.url, cached);
+      // Keep decoded objects private to each request.
+      return withRevision(decode<T>(cached.raw), name, cached.etag);
+    }
+    forgetDashboardDocument(blob.url);
+  }
+  const res = await fetch(`${blob.url}?v=${randomUUID()}`, {
+    cache: "no-store",
+    // Compressed responses use weak ETags, which conditional writes reject.
+    headers: { "Accept-Encoding": "identity" },
+  });
+  if (!res.ok) throw new Error(`Storage read failed (${res.status})`);
+  // The revision must come from the same response as the document body.
+  const etag = res.headers.get("etag");
+  if (!etag) throw new Error("Storage read failed: missing document revision");
+  const raw = await res.text();
+  const document = withRevision(decode<T>(raw), name, etag);
+  if (useDashboardCache && generation === dashboardCacheGeneration) rememberDashboardDocument(blob, etag, raw);
+  return document;
+}
+
 async function readDoc<T extends object>(name: string): Promise<T | null> {
   if (blobEnabled()) {
     const { blobs } = await list({ prefix: blobPath(name), limit: 1 });
     const match = blobs.find((b) => b.pathname === blobPath(name));
-    if (!match) return null;
-    const v = randomUUID();
-    const res = await fetch(`${match.url}?v=${v}`, {
-      cache: "no-store",
-      // Compressed responses use weak ETags, which conditional writes reject.
-      headers: { "Accept-Encoding": "identity" },
-    });
-    if (!res.ok) throw new Error(`Storage read failed (${res.status})`);
-    // The revision must come from the same response as the document body.
-    const etag = res.headers.get("etag");
-    if (!etag) throw new Error("Storage read failed: missing document revision");
-    return withRevision(decode<T>(await res.text()), name, etag);
+    return match ? readBlobDocument<T>(name, match) : null;
   }
   const raw = await readLocal(name);
   return raw === null ? null : withRevision(decode<T>(raw), name, localRevision(raw));
@@ -227,11 +282,14 @@ async function delDoc(name: string, previous: object): Promise<void> {
   const expected = revisionOf(previous, name);
   if (expected === null) throw new StorageConflictError();
   if (blobEnabled()) {
+    invalidateDashboardDocument(name);
     try {
       await del(blobPath(name), { ifMatch: expected });
     } catch (error) {
       if (error instanceof BlobPreconditionFailedError) throw new StorageConflictError();
       throw error;
+    } finally {
+      invalidateDashboardDocument(name);
     }
   } else {
     await withLocalLock(name, async () => {
@@ -242,19 +300,27 @@ async function delDoc(name: string, previous: object): Promise<void> {
   }
 }
 
+async function listBlobs(keyPrefix: string): Promise<ListBlobResultBlob[]> {
+  const blobs: ListBlobResultBlob[] = [];
+  const cursors = new Set<string>();
+  let cursor: string | undefined;
+  do {
+    const result = await list({ prefix: `${PREFIX}${keyPrefix}`, cursor });
+    blobs.push(...result.blobs);
+    if (!result.hasMore) break;
+    if (!result.cursor || cursors.has(result.cursor)) throw new Error("Storage listing failed: invalid pagination");
+    cursor = result.cursor;
+    cursors.add(cursor);
+  } while (cursor);
+  return blobs;
+}
+
 async function listNames(keyPrefix: string): Promise<string[]> {
   if (blobEnabled()) {
-    const names: string[] = [];
-    let cursor: string | undefined;
-    do {
-      const result = await list({ prefix: `${PREFIX}${keyPrefix}`, cursor });
-      names.push(...result.blobs
-        .filter((b) => b.pathname.endsWith(".enc"))
-        .map((b) => b.pathname.slice(PREFIX.length, -".enc".length))
-        .filter(Boolean));
-      cursor = result.hasMore ? result.cursor : undefined;
-    } while (cursor);
-    return names;
+    return (await listBlobs(keyPrefix))
+      .filter((b) => b.pathname.endsWith(".enc"))
+      .map((b) => b.pathname.slice(PREFIX.length, -".enc".length))
+      .filter(Boolean);
   }
   try {
     const files = await fs.readdir(LOCAL_DIR);
@@ -443,7 +509,10 @@ export async function loadState(): Promise<AppState> {
   const bundles = (
     await Promise.all(ids.map((id) => loadItemBundle(id)))
   ).filter(Boolean) as ItemBundle[];
+  return assembleState(bundles, await loadMeta());
+}
 
+function assembleState(bundles: ItemBundle[], meta: MetaDoc): AppState {
   const state = emptyState();
   for (const b of bundles) {
     state.items.push(b.item);
@@ -453,7 +522,6 @@ export async function loadState(): Promise<AppState> {
   }
   state.transactions.sort((a, b) => b.date.localeCompare(a.date));
 
-  const meta = await loadMeta();
   state.version = meta.version;
   state.manualEntries = meta.manualEntries;
   state.baselines = meta.baselines ?? [];
@@ -463,13 +531,32 @@ export async function loadState(): Promise<AppState> {
   return injectBaselines(normalizeAccountTransactions(state));
 }
 
+async function loadDashboardState(): Promise<AppState> {
+  if (!blobEnabled()) return loadState();
+  const blobs = await listBlobs("");
+  const metaBlob = blobs.find((blob) => blob.pathname === blobPath("meta"));
+  if (!migrationChecked && !metaBlob) {
+    await ensureMigrated();
+    // Migration can create documents absent from the first listing.
+    return loadDashboardState();
+  }
+  const itemBlobs = blobs.filter((blob) => blob.pathname.startsWith(`${PREFIX}item__`) && blob.pathname.endsWith(".enc"));
+  const [meta, bundles] = await Promise.all([
+    metaBlob ? readBlobDocument<MetaDoc>("meta", metaBlob, true) : emptyMeta(),
+    Promise.all(itemBlobs.map((blob) => readBlobDocument<ItemBundle>(
+      blob.pathname.slice(PREFIX.length, -4), blob, true,
+    ))),
+  ]);
+  migrationChecked = true;
+  return assembleState(bundles, meta);
+}
+
 /**
- * Request-deduped `loadState` for server components — the (app) layout and the
- * page it wraps share a single blob read per request. Sync paths must keep
- * using the uncached `loadState`: they read again after writing within one
- * request, and a cached read would hand back the pre-write state.
+ * Server components share one fresh listing per request. Unchanged encrypted
+ * documents reuse bounded process memory only after matching the listing ETag.
+ * API and sync paths use loadState and always fetch document bodies again.
  */
-export const loadStateCached = cache(loadState);
+export const loadStateCached = cache(loadDashboardState);
 
 /** Find which item owns a given account id. */
 export async function bundleForAccount(

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import Link from "@/components/AppLink";
 import { CategoryDetailData } from "@/lib/analytics";
 import { monthlyEquivalent } from "@/lib/recurring";
 import { formatMoney, formatMonth, formatDate } from "@/lib/format";
