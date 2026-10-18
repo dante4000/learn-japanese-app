@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>finacetracker audit — 13 October 2026</title>
+<style>
+body{max-width:960px;margin:40px auto;padding:0 20px;font:16px/1.55 system-ui;color:#11203a;background:#f5f8fd}h1{font-size:32px}h2{font-size:22px;margin-top:24px}table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;border-bottom:1px solid #c4d2e6;padding:10px;overflow-wrap:anywhere}th{background:#eef3fb}section{background:white;border:1px solid #dce5f1;padding:24px;margin:20px 0;border-radius:12px}li{margin:8px 0}@media(max-width:420px){body{padding:0 12px;margin:24px auto}section{padding:16px}td{padding:8px}}
+</style>
+<h1>finacetracker audit</h1>
+<p>13 October 2026 · Second audit · Main branch · Astra and Claude Opus reviews</p>
+<section><h2>Scope and outcome</h2>
+<p>Reviewed all 33 component files, app pages, API routes, storage, sync, CSV ingestion, and financial calculations. Fixed defects and checked the changes with tests, private transaction reconciliation, and authenticated browser checks. This report does not certify bank-feed completeness or every browser and provider flow.</p>
+<ul>
+<li>Refunds reduce spending when posted. Card payments and transfer legs do not inflate income or spending.</li>
+<li>Rent estimates follow dated revisions and inclusive end months. A real posted bill suppresses its estimate, including partial bills and bills followed by refunds. Hidden and pending rows do not suppress estimates.</li>
+<li>Estimated bills have separate labels and totals. Housing filters preserve utilities. Bilt and card rewards remain explicitly identified as estimates.</li>
+<li>Income can be split by exact normalized source. Employer-paid studio support is separate from bank deposits. Removed the old phantom-income implementation.</li>
+<li>Possible duplicate charges have exact-row review, dismissal, and restore actions. Dismissal does not alter spending.</li>
+<li>Storage uses conditional Blob writes and deletes, atomic local writes, and local process locks. Migration preserves existing metadata. Institution claims prevent concurrent duplicate bank connections.</li>
+<li>Live verification found that compressed Blob responses supplied weak ETags and caused false write conflicts. Reads now request identity encoding. A Brotli regression fixture and a large disposable live probe verify the strong-ETag path.</li>
+<li>CSV overlap checks prevent double imports. Pending-to-posted transaction updates retain user edits. A failed secondary refresh returns a visible warning after a successful save.</li>
+<li>Shared owners now handle rent timelines, recurring monthly amounts, CSV overlap checks, API conflict responses, and Plaid Link loading.</li>
+<li>Rent, studio-support, and transaction editors share saved feedback and bounded refreshes at 10, 30, and 65 seconds. Saves are never repeated by the refresh logic.</li>
+<li>Phone layouts use larger targets and inputs, wrapping controls, scrollable tables, and safer chart dimensions. Accounts display exact cents.</li>
+</ul></section>
+<section><h2>Confirmed accounting settings</h2>
+<p>The user confirmed a home-rent end month, an ongoing employer-paid studio contribution, and two fee classifications. Keep actual garage charges separate. The studio start month is approximate. These values are saved as private production settings. Both rent revisions, employer support, and both fee categories and notes were verified in the live app.</p>
+</section>
+<section><h2>Validation</h2><ul>
+<li>163 tests passed on Node.js 22.23.3. Regression cases cover rent, refund timing, income sources, rewards, duplicates, ingestion, storage conflicts, migration, and bank-link failure handling.</li>
+<li>Lint, TypeScript, production build, and diff checks passed.</li>
+<li>Thirteen authenticated local page routes returned HTTP 200.</li>
+<li>Reviewed responsive layouts at phone widths of 320 and 390 pixels. Checked duplicate review/dismiss/restore, the rent editor, and income-source and employer-support controls. Checked tablet navigation at 768 pixels.</li>
+<li>Reconciled 4,784 exported transactions across 8 transaction-bearing accounts and 29 months. Per-account, category, and monthly cash-flow totals matched the classified transactions. Production has 11 linked accounts; 3 have no exported transactions.</li>
+<li>A fresh production export retained all 4,784 transaction IDs and amounts. The two confirmed fee categories and notes persisted. All effective categories matched the audited classification rules.</li>
+<li>All 11 live account balances sum exactly, to the cent, to the displayed assets, liabilities, and net worth.</li>
+<li>Verified conditional write, stale-write rejection, and conditional deletion against a disposable Blob probe. Removed the probe.</li>
+<li>Astra reviewed rent rules again after the last refund fix. Three independent Claude Opus passes used model claude-opus-5-5. The final reported rent/refund defect was fixed and covered by tests.</li>
+<li>Production dependency audit reported zero advisories.</li>
+</ul></section>
+<section><h2>Remaining limits</h2><ul>
+<li>The export contains app records. It cannot prove that banks delivered every transaction or that balances match independent bank statements. User-confirmed studio support is not a bank deposit.</li>
+<li>Reward projections depend on merchant coding, eligibility, and original transaction history. Confirm actual awards with the issuer.</li>
+<li>Real bank linking, OAuth, and a new live provider sync were not exercised during this audit.</li>
+<li>Conditional writes protect each document. Updates across separate documents are not one atomic transaction. Orphan institution claims fail closed and need verified operator cleanup.</li>
+<li>Public Blob changes can take up to 60 seconds to appear after a successful save. A production edit showed this delay and appeared after a later refresh. Conditional writes still reject stale updates. Wait one minute, then refresh before submitting the same change again. See <a href="https://vercel.com/docs/vercel-blob#caching">Vercel Blob caching</a>.</li>
+<li>Five development-only dependency advisories remain in the ESLint glob chain. No compatible fix was available during the audit. npm proposed a breaking downgrade, which was not applied.</li>
+<li>Mobile source fixes cover all components. Browser checks covered key flows, not every state on every device.</li>
+</ul></section>
+<section><h2>Component coverage</h2>
+<p>Source review includes interaction and integration paths. It does not mean that each component received a live browser test in every state.</p>
+<table><thead><tr><th>Component</th><th>Coverage</th></tr></thead><tbody>
+<tr><td>src/components/AccountPicker.tsx</td><td>Source reviewed</td></tr>
+<tr><td>src/components/AppShell.tsx</td><td>Source reviewed</td></tr>
+<tr><td>src/components/BaselineManager.tsx</td><td>Source reviewed</td></tr>
+<tr><td>src/components/BiltRentMeter.tsx</td><td>Source reviewed</td></tr>
+<tr><td>src/components/CashFlowDetail.tsx</td><td>Source reviewed</td></tr>
+<tr><td>src/components/CategoryDetail.tsx</td><td>Source reviewed</td></tr>
+<tr><td>src/components/ConnectionsList.tsx</td><td>Source reviewed</td></tr>
+<tr><td>src/components/CreditCardsView.tsx</td><td>Source reviewed</td></tr>
+<tr><td>src/components/CsvImport.tsx</td><td>Source reviewed</td></tr>
+<tr><td>src/components/DuplicateCharges.tsx</td><td>Source reviewed</td></tr>
+<tr><td>src/components/EmployerHousingSupport.tsx</td><td>Source reviewed</td></tr>
+<tr><td>src/components/EstimatedBillsNotice.tsx</td><td>Source reviewed</td></tr>
+<tr><td>src/components/IncomeScope.tsx</td><td>Source reviewed</td></tr>
+<tr><td>src/components/LoginForm.tsx</td><td>Source reviewed</td></tr>
+<tr><td>src/components/ManualEntries.tsx</td><td>Source reviewed</td></tr>
+<tr><td>src/components/MonthPicker.tsx</td><td>Source reviewed</td></tr>
+<tr><td>src/components/PeriodToggle.tsx</td><td>Source reviewed</td></tr>
+<tr><td>src/components/PlaidLinkButton.tsx</td><td>Source reviewed</td></tr>
+<tr><td>src/components/RentToggle.tsx</td><td>Source reviewed</td></tr>
+<tr><td>src/components/SourceToggle.tsx</td><td>Source reviewed</td></tr>
+<tr><td>src/components/SpendingInsights.tsx</td><td>Source reviewed</td></tr>
+<tr><td>src/components/SpendingTrends.tsx</td><td>Source reviewed</td></tr>
+<tr><td>src/components/ThemeToggle.tsx</td><td>Source reviewed</td></tr>
+<tr><td>src/components/TransactionRow.tsx</td><td>Source reviewed</td></tr>
+<tr><td>src/components/TransactionsView.tsx</td><td>Source reviewed</td></tr>
+<tr><td>src/components/UpcomingBills.tsx</td><td>Source reviewed</td></tr>
+<tr><td>src/components/charts/CashFlowBars.tsx</td><td>Source reviewed</td></tr>
+<tr><td>src/components/charts/CompositionBars.tsx</td><td>Source reviewed</td></tr>
+<tr><td>src/components/charts/Donut.tsx</td><td>Source reviewed</td></tr>
+<tr><td>src/components/charts/NetWorthArea.tsx</td><td>Source reviewed</td></tr>
+<tr><td>src/components/charts/Sparkline.tsx</td><td>Source reviewed</td></tr>
+<tr><td>src/components/charts/WeekdayBars.tsx</td><td>Source reviewed</td></tr>
+<tr><td>src/components/ui.tsx</td><td>Source reviewed</td></tr>
+</tbody></table></section></html>

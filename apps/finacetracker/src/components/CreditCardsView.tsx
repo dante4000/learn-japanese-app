@@ -1,0 +1,1515 @@
+"use client";
+
+import { DataTable } from "./DataTable";
+import { DetailLink } from "./DetailPanel";
+import type { CardOverrides } from "@/lib/card-overrides";
+import { useSavedRefresh } from "./useSavedRefresh";
+import { useLoadingStatus } from "./LoadingFeedback";
+import { Fragment, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import {
+  CardCatalogEntry,
+  CardCredit,
+  CardRoi,
+  CardVerdict,
+  CreditSlot,
+  CreditUsage,
+  PointsLine,
+  RenewalInfo,
+  CardStatus,
+  computeCardRoi,
+  maxCreditsValue,
+} from "@/lib/cards";
+import { formatMoney } from "@/lib/format";
+
+/** Hostname of a source URL for display, tolerant of a malformed entry. */
+function hostLabel(url: string): string {
+  try {
+    return new URL(url).hostname.replace("www.", "");
+  } catch {
+    return url;
+  }
+}
+
+// Live per-card data computed server-side from the user's real transactions.
+export interface CardLive {
+  accountId?: string;
+  periodStart?: string;
+  accountName: string;
+  mask: string | null;
+  balance: number | null;
+  limit: number | null;
+  spend12mo: number;
+  spendYtd: number;
+  txnCount: number;
+  estPoints: number;
+  /** Conservative (cash-out) value of the estimated points, in dollars. */
+  estPointsCashValue: number;
+  /** Aspirational (transfer-partner) value of the estimated points. */
+  estPointsTransferValue: number;
+  /** Where the points come from — spend → points by earn rule. */
+  pointsLines: PointsLine[];
+  /** Auto-detected statement-credit usage, one entry per credit (catalog order). */
+  creditUsage: CreditUsage[];
+}
+
+export interface CardViewData {
+  card: CardCatalogEntry;
+  status: CardStatus;
+  reported: boolean;
+  historyAccountId?: string;
+  live: CardLive | null;
+  /** Auto-detected renewal date + countdown, or null when undetectable. */
+  renewal: RenewalInfo | null;
+}
+
+interface UnmatchedAccount {
+  name: string;
+  mask: string | null;
+  balance: number | null;
+}
+
+// Read-only migration key from the earlier browser-only credit tracker.
+const LEGACY_STORAGE_KEY = "mt.cardperks.v4";
+
+// card → credit → slotKey → explicit user override (true = used, false = not).
+// Absent slot → follows detection. Old v3 (credit-level booleans) is not migrated.
+type OverrideMap = CardOverrides;
+
+type SortKey = "worth" | "attention" | "fee" | "credits" | "points";
+type FilterKey = "fee" | "linked" | "attention" | "unused";
+
+const accentText: Record<string, string> = {
+  blue: "text-blue",
+  coral: "text-coral",
+  slate: "text-slate",
+};
+const accentBg: Record<string, string> = {
+  blue: "bg-blue",
+  coral: "bg-coral",
+  slate: "bg-slate",
+};
+
+// Verdict → label + pill colors. Drives the leaderboard badge and detail header.
+const VERDICT: Record<CardVerdict, { label: string; pill: string; text: string }> = {
+  free: { label: "Free — keep it", pill: "bg-blue/15", text: "text-blue" },
+  pays: { label: "Pays for itself", pill: "bg-blue/15", text: "text-blue" },
+  earns: { label: "Earns its keep", pill: "bg-slate/20", text: "text-slate" },
+  reconsider: { label: "Reconsider", pill: "bg-coral/15", text: "text-coral" },
+};
+
+const SORTS: { key: SortKey; label: string }[] = [
+  { key: "worth", label: "Worth it" },
+  { key: "attention", label: "Needs attention" },
+  { key: "fee", label: "Fee" },
+  { key: "credits", label: "Unused credits" },
+  { key: "points", label: "Points" },
+];
+
+const FILTERS: { key: FilterKey; label: string }[] = [
+  { key: "fee", label: "Fee cards" },
+  { key: "linked", label: "Linked" },
+  { key: "attention", label: "Needs attention" },
+  { key: "unused", label: "Forgotten credits" },
+];
+
+function freqLabel(f: CardCredit["frequency"]): string {
+  switch (f) {
+    case "monthly":
+      return "monthly";
+    case "quarterly":
+      return "quarterly";
+    case "semiannual":
+      return "twice a year";
+    case "every-4-years":
+      return "every 4 yrs";
+    case "one-time":
+      return "one-time";
+    default:
+      return "annual";
+  }
+}
+
+/** Monthly/quarterly/semiannual credits are the ones people forget — flag them. */
+function isForgettable(f: CardCredit["frequency"]): boolean {
+  return f === "monthly" || f === "quarterly" || f === "semiannual";
+}
+
+/** Net value formatted with an explicit + / − sign (higher = better). */
+function signedMoney(v: number, currency: string): string {
+  const m = formatMoney(Math.abs(v), currency, { cents: false });
+  return v >= 0 ? `+${m}` : `−${m}`;
+}
+
+const RENEW_MONTHS = [
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+];
+
+/** "2027-04-12" → "Apr 12, 2027". */
+function formatRenewalDate(iso: string): string {
+  const y = iso.slice(0, 4);
+  const m = Number(iso.slice(5, 7));
+  const d = Number(iso.slice(8, 10));
+  return `${RENEW_MONTHS[m - 1]} ${d}, ${y}`;
+}
+
+/**
+ * Renewal urgency → tone classes. ≤30 days is pressing (coral); ≤60 days is the
+ * product-change window (amber); beyond that it's just informational. `window`
+ * marks the ≤60-day span where the downgrade prompt should appear.
+ */
+function renewalTone(daysUntil: number): {
+  text: string;
+  chip: string;
+  window: boolean;
+} {
+  if (daysUntil <= 30)
+    return { text: "text-coral", chip: "bg-coral/15 text-coral", window: true };
+  if (daysUntil <= 60)
+    return {
+      text: "text-amber-400",
+      chip: "bg-amber-400/15 text-amber-400",
+      window: true,
+    };
+  return { text: "text-muted", chip: "bg-surface-2 text-faint", window: false };
+}
+
+/** Short countdown for the leaderboard row, e.g. "Renews 47d" / "Renews today". */
+function renewalShort(daysUntil: number): string {
+  if (daysUntil <= 0) return "Renews today";
+  return `Renews ${daysUntil}d`;
+}
+
+export function CreditCardsView({
+  cards: allCards,
+  unmatched,
+  currency,
+  initialOverrides = {},
+}: {
+  initialOverrides?: CardOverrides;
+  cards: CardViewData[];
+  unmatched: UnmatchedAccount[];
+  currency: string;
+}) {
+  const { savedMessage, refreshAfterSave, clearSavedFeedback } = useSavedRefresh();
+  const [savingOverride, setSavingOverride] = useState(false);
+  const overrideBusy = useRef(false);
+  const [migrationRetry, setMigrationRetry] = useState(0);
+  const [migrationError, setMigrationError] = useState<string | null>(null);
+  useLoadingStatus(savingOverride, "Saving credit correction…");
+  const [statusOverrides, setStatusOverrides] = useState<Record<string, "active" | "closed">>({});
+  const [savingStatus, setSavingStatus] = useState<string | null>(null);
+  const [statusError, setStatusError] = useState<string | null>(null);
+  const classified = useMemo(() => allCards.map((entry): CardViewData => {
+    const saved = statusOverrides[entry.card.cardKey];
+    const status = saved === "closed" ? "closed" : saved === "active"
+      ? entry.reported ? "active" : entry.historyAccountId ? "unavailable" : "unlinked"
+      : entry.status;
+    return { ...entry, status };
+  }), [allCards, statusOverrides]);
+  const cards = useMemo(() => classified.filter((card) => card.status === "active"), [classified]);
+  const inactiveCards = classified.filter((card) => card.status !== "active");
+
+  async function saveStatus(data: CardViewData, status: "active" | "closed") {
+    clearSavedFeedback();
+    setSavingStatus(data.card.cardKey);
+    setStatusError(null);
+    try {
+      const response = await fetch("/api/cards/status", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ cardKey: data.card.cardKey, status }),
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "Could not save card status.");
+      setStatusOverrides((previous) => ({ ...previous, [data.card.cardKey]: status }));
+      refreshAfterSave();
+    } catch (error) {
+      setStatusError(error instanceof Error ? error.message : "Could not save card status. Try again.");
+    } finally { setSavingStatus(null); }
+  }
+  // Manual overrides layered on top of auto-detection. Starts empty (everything
+  // follows detection); the user only ever adds an entry by correcting a box.
+  const [overrides, setOverrides] = useState<OverrideMap>(initialOverrides);
+  const [hydrated, setHydrated] = useState(false);
+  const [sortKey, setSortKey] = useState<SortKey>("worth");
+  const [filters, setFilters] = useState<Set<FilterKey>>(new Set());
+  const [expanded, setExpanded] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    async function migrate() {
+      try {
+        const raw = localStorage.getItem(LEGACY_STORAGE_KEY);
+        if (raw) {
+          const response = await fetch("/api/cards/overrides", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ overrides: JSON.parse(raw) }) });
+          const data = await response.json();
+          if (!response.ok) throw new Error(data.error || "Could not save browser corrections.");
+          if (cancelled) return;
+          setOverrides(data.overrides);
+          localStorage.removeItem(LEGACY_STORAGE_KEY);
+          setMigrationError(null);
+        }
+      } catch (error) {
+        if (!cancelled) setMigrationError(`Browser corrections are still on this device. ${error instanceof Error ? error.message : "Retry migration."}`);
+      } finally { if (!cancelled) setHydrated(true); }
+    }
+    void migrate();
+    return () => { cancelled = true; };
+  }, [migrationRetry]);
+
+  async function saveOverride(cardKey: string, creditName: string, slotKey: string, value: boolean | null) {
+    if (overrideBusy.current) return;
+    overrideBusy.current = true;
+    setSavingOverride(true);
+    clearSavedFeedback();
+    setStatusError(null);
+    try {
+      const response = await fetch("/api/cards/overrides", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ cardKey, creditName, slotKey, value }) });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Correction was not saved.");
+      setOverrides(data.overrides);
+      refreshAfterSave();
+    } catch (error) { setStatusError(error instanceof Error ? error.message : "Correction was not saved. Try again."); }
+    finally { overrideBusy.current = false; setSavingOverride(false); }
+  }
+
+  // The full usage record for one credit on a card, if linked.
+  function usageFor(cardKey: string, creditName: string): CreditUsage | undefined {
+    const live = cards.find((c) => c.card.cardKey === cardKey)?.live;
+    return live?.creditUsage.find((u) => u.creditName === creditName);
+  }
+
+  // A slot's shown state: explicit per-slot override wins; else detection.
+  function slotUsed(cardKey: string, creditName: string, slot: CreditSlot): boolean {
+    const ov = overrides[cardKey]?.[creditName]?.[slot.key];
+    if (ov !== undefined) return ov;
+    return slot.used;
+  }
+
+  function slotOverridden(cardKey: string, creditName: string, slotKey: string): boolean {
+    return overrides[cardKey]?.[creditName]?.[slotKey] !== undefined;
+  }
+
+  function toggleSlot(cardKey: string, creditName: string, slot: CreditSlot) {
+    void saveOverride(cardKey, creditName, slot.key, !(overrides[cardKey]?.[creditName]?.[slot.key] ?? slot.used));
+  }
+
+  function clearSlotOverride(cardKey: string, creditName: string, slotKey: string) {
+    void saveOverride(cardKey, creditName, slotKey, null);
+  }
+
+  // Count captured credits only when a linked account supplies usage.
+  function capturedForCard(card: CardCatalogEntry): number {
+    return card.credits.reduce((sum, c) => {
+      const u = usageFor(card.cardKey, c.name);
+      if (!u) return sum;
+      const started = u.slots.filter((s) => s.status !== "future");
+      const got = started.reduce((a, s) => {
+        const used = slotUsed(card.cardKey, c.name, s);
+        // A manual tick captures the full slot value; detection already capped.
+        if (slotOverridden(card.cardKey, c.name, s.key)) return a + (used ? s.value : 0);
+        return a + s.captured;
+      }, 0);
+      return sum + got;
+    }, 0);
+  }
+
+  // Full-year projection for the stable ROI verdict: captured-so-far plus a
+  // realistic estimate of slots that haven't started yet.
+  function projectedCapturedForCard(card: CardCatalogEntry): number {
+    return card.credits.reduce((sum, c) => {
+      const u = usageFor(card.cardKey, c.name);
+      if (!u) return sum + c.value * c.realisticCaptureRate;
+      const future = u.slots.filter((s) => s.status === "future");
+      const remaining = future.reduce((a, s) => a + s.value * c.realisticCaptureRate, 0);
+      return sum + remaining;
+    }, capturedForCard(card));
+  }
+
+  // Each card scored against the worth-it model, then filtered + sorted. Depends
+  // on `overrides` (captured credits move with the user's corrections), so this
+  // lives client-side rather than in the server page.
+  const rows = useMemo(() => {
+    const scored = cards.map(({ card, live, renewal }) => {
+      const cap = capturedForCard(card);
+      const roi = computeCardRoi(card, {
+        capturedCredits: projectedCapturedForCard(card),
+        estPoints: live?.estPoints ?? 0,
+        hasLiveSpend: !!live,
+      });
+      // Forgettable credits whose CURRENT slot is still open (open or flagged).
+      const unusedForgettable = card.credits.filter((c) => {
+        if (!isForgettable(c.frequency)) return false;
+        const u = usageFor(card.cardKey, c.name);
+        const cur = u?.currentSlot;
+        if (!cur) return false;
+        return !slotUsed(card.cardKey, c.name, cur);
+      });
+      return { card, live, renewal, roi, cap, unusedForgettable };
+    });
+
+    let out = scored;
+    if (filters.has("fee")) out = out.filter((r) => r.card.annualFee > 0);
+    if (filters.has("linked")) out = out.filter((r) => r.live);
+    if (filters.has("attention"))
+      out = out.filter((r) => r.card.annualFee > 0 && r.roi.netValue < 0);
+    if (filters.has("unused"))
+      out = out.filter((r) => r.unusedForgettable.length > 0);
+
+    const sorters: Record<
+      SortKey,
+      (a: (typeof scored)[number], b: (typeof scored)[number]) => number
+    > = {
+      worth: (a, b) => b.roi.netValue - a.roi.netValue,
+      attention: (a, b) => a.roi.netValue - b.roi.netValue,
+      fee: (a, b) => b.card.annualFee - a.card.annualFee,
+      credits: (a, b) => a.roi.capturePct - b.roi.capturePct,
+      points: (a, b) =>
+        (b.live?.estPointsCashValue ?? 0) - (a.live?.estPointsCashValue ?? 0),
+    };
+    return [...out].sort(sorters[sortKey]);
+  }, [cards, overrides, sortKey, filters]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const totals = useMemo(() => {
+    let fees = 0;
+    let creditsAvailable = 0;
+    let creditsCaptured = 0;
+    let creditsProjected = 0;
+    let pointsCash = 0;
+    let pointsTransfer = 0;
+    let points = 0;
+    for (const { card, live } of cards) {
+      fees += card.annualFee;
+      creditsAvailable += maxCreditsValue(card);
+      creditsCaptured += capturedForCard(card);
+      creditsProjected += projectedCapturedForCard(card);
+      if (live) {
+        points += live.estPoints;
+        pointsCash += live.estPointsCashValue;
+        pointsTransfer += live.estPointsTransferValue;
+      }
+    }
+    return {
+      fees,
+      creditsAvailable,
+      creditsCaptured,
+      points,
+      pointsCash,
+      pointsTransfer,
+      netValue: creditsProjected + pointsCash - fees,
+    };
+  }, [cards, overrides]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Open current-period slots across linked cards, soonest deadline first.
+  const actionItems = useMemo(() => {
+    type Item = {
+      cardKey: string;
+      cardName: string;
+      creditName: string;
+      value: number;
+      label: string;
+      daysLeft: number | null;
+    };
+    const items: Item[] = [];
+    for (const { card, live } of cards) {
+      if (!live) continue;
+      for (const c of card.credits) {
+        const u = usageFor(card.cardKey, c.name);
+        const cur = u?.currentSlot;
+        if (!u || !cur) continue;
+        if (slotUsed(card.cardKey, c.name, cur)) continue;
+        items.push({
+          cardKey: card.cardKey,
+          cardName: card.displayName,
+          creditName: c.name,
+          value: cur.value,
+          label: cur.label,
+          daysLeft: cur.daysLeft,
+        });
+      }
+    }
+    return items.sort(
+      (a, b) => (a.daysLeft ?? 9999) - (b.daysLeft ?? 9999) || b.value - a.value,
+    );
+  }, [cards, overrides]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const [portfolioDetail, setPortfolioDetail] = useState<string | null>(null);
+  const anyLive = cards.some((c) => c.live);
+  const maxBarScale = Math.max(
+    1,
+    ...rows.map((r) =>
+      Math.max(r.card.annualFee, r.cap + (r.live?.estPointsCashValue ?? 0)),
+    ),
+  );
+
+  return (
+    <div>
+      {savedMessage && <p role="status" className="mb-4 text-sm text-muted">{savedMessage}</p>}
+      {savingOverride && <p role="status" className="mb-4 text-sm text-muted">Saving credit correction…</p>}
+      {migrationError && <p role="alert" className="mb-4 text-sm text-coral">{migrationError} <button className="detail-link min-h-11" onClick={() => setMigrationRetry((v) => v + 1)}>Retry migration</button></p>}
+      {statusError && <p role="alert" className="mb-4 text-sm text-coral">{statusError}</p>}
+      {/* ── Portfolio summary ─────────────────────────────────────────── */}
+      <div className="mb-5 grid grid-cols-1 gap-3 min-[420px]:grid-cols-2 sm:gap-4 lg:grid-cols-4">
+        <Stat
+          label="Annual fees"
+          onInspect={() => setPortfolioDetail("Annual fees")}
+          value={formatMoney(totals.fees, currency, { cents: false })}
+          accent="coral"
+          sub={`${cards.length} active linked cards`}
+        />
+        <Stat
+          label="Credits you capture"
+          onInspect={() => setPortfolioDetail("Credits you capture")}
+          value={formatMoney(totals.creditsCaptured, currency, { cents: false })}
+          accent="blue"
+          sub={`of ${formatMoney(totals.creditsAvailable, currency, { cents: false })} available`}
+          delay={60}
+        />
+        <Stat
+          label="Est. net value / yr"
+          onInspect={() => setPortfolioDetail("Est. net value / yr")}
+          value={signedMoney(totals.netValue, currency)}
+          accent={totals.netValue >= 0 ? "blue" : "coral"}
+          sub="projected credits + points − fees"
+          delay={120}
+        />
+        <Stat
+          label="Points value / yr"
+          onInspect={() => setPortfolioDetail("Points value / yr")}
+          value={anyLive ? formatMoney(totals.pointsCash, currency, { cents: false }) : "—"}
+          accent="slate"
+          sub={
+            anyLive
+              ? `up to ${formatMoney(totals.pointsTransfer, currency, { cents: false })} via transfers`
+              : "no linked spend"
+          }
+          delay={180}
+        />
+      </div>
+
+      {portfolioDetail && <section className="mb-5 rounded-xl border hairline bg-surface p-4"><div className="mb-3 flex justify-between gap-3"><h2 className="text-lg text-cream">{portfolioDetail} · by card</h2><button type="button" onClick={() => setPortfolioDetail(null)} className="detail-link">Close breakdown</button></div><p className="mb-4 text-sm text-muted">Net value = projected annual credits + estimated points at cash value − annual fee. Captured credits use your current overrides. Future credit periods are estimates. Only active linked cards contribute.</p><DataTable title="Card value calculation" currency={currency} columns={[
+        { key: "card", label: "Card" }, { key: "fee", label: "Annual fee", format: "money", total: true }, { key: "captured", label: "Captured credits", format: "money", total: true }, { key: "projected", label: "Projected credits", format: "money", total: true }, { key: "points", label: "Points cash value", format: "money", total: true }, { key: "net", label: "Net value", format: "money", total: true }, { key: "basis", label: "Basis" }
+      ]} rows={cards.map(({ card, live }) => ({ id: card.cardKey, values: { card: card.displayName, fee: card.annualFee, captured: capturedForCard(card), projected: projectedCapturedForCard(card), points: live?.estPointsCashValue ?? 0, net: projectedCapturedForCard(card) + (live?.estPointsCashValue ?? 0) - card.annualFee, basis: live ? "Linked spend + current overrides" : "Typical capture estimate" } }))} /></section>}
+
+      <p className="mb-5 text-xs text-faint">
+        Net value combines what&rsquo;s real or grounded in your spend:{" "}
+        <span className="text-blue">projected annual credits</span> +{" "}
+        <span className="text-slate">points (at cash value)</span> − the annual
+        fee. The projection includes captured credits and estimated future periods.
+        Closed, unlinked, and unavailable cards are excluded. Credits tick themselves from your transactions;
+        points are <em>estimated</em> by applying each card&rsquo;s earn rates to
+        your categorized spend, shown as a range — conservative cash-out first,
+        transfer-partner upside second. Perks aren&rsquo;t in the number
+        (they&rsquo;re upside, listed per card). Tap any card for the breakdown.
+        {!hydrated && " Loading your overrides…"}
+      </p>
+
+      {actionItems.length > 0 && (
+        <ActionBanner items={actionItems} currency={currency} onJump={(key) => {
+          setFilters(new Set());
+          setExpanded(key);
+          requestAnimationFrame(() => {
+            const row = document.getElementById(`card-${key}`);
+            row?.scrollIntoView({ block: "start" });
+            row?.focus({ preventScroll: true });
+          });
+        }} />
+      )}
+
+      {/* ── Toolbar: sort + filter ─────────────────────────────────────── */}
+      <div className="sticky top-0 z-10 -mx-1 mb-4 flex flex-wrap items-center gap-x-4 gap-y-2 bg-ink/80 px-1 py-2 backdrop-blur">
+        <div className="flex min-w-0 max-w-full items-center gap-2">
+          <span className="label-eyebrow shrink-0">Sort</span>
+          <div className="inline-flex max-w-full overflow-x-auto rounded-lg border hairline bg-surface p-0.5 text-xs">
+            {SORTS.map((s) => (
+              <button
+                key={s.key}
+                aria-pressed={sortKey === s.key}
+                onClick={() => setSortKey(s.key)}
+                className={`min-h-11 lg:min-h-0 shrink-0 whitespace-nowrap rounded-md px-2.5 py-1 transition-colors ${
+                  sortKey === s.key ? "bg-surface-2 text-cream" : "text-muted hover:text-cream"
+                }`}
+              >
+                {s.label}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="flex flex-wrap items-center gap-1.5">
+          {FILTERS.map((f) => {
+            const active = filters.has(f.key);
+            return (
+              <button
+                key={f.key}
+                aria-pressed={active}
+                onClick={() =>
+                  setFilters((prev) => {
+                    const next = new Set(prev);
+                    if (next.has(f.key)) next.delete(f.key);
+                    else next.add(f.key);
+                    return next;
+                  })
+                }
+                className={`min-h-11 lg:min-h-0 rounded-lg border px-2.5 py-1 text-xs transition-colors ${
+                  active
+                    ? "border-blue/40 bg-blue/15 text-blue"
+                    : "hairline bg-surface text-muted hover:text-cream"
+                }`}
+              >
+                {f.label}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ── Leaderboard + single-expand detail ─────────────────────────── */}
+      {rows.length === 0 ? (
+        <p className="card rise p-6 text-sm text-muted">
+          No cards match the current filters.
+        </p>
+      ) : (
+        <div className="card rise overflow-hidden p-0">
+          {/* desktop column header */}
+          <div className="hidden grid-cols-[1.6fr_0.7fr_1.3fr_0.9fr_1.1fr_auto] gap-3 border-b hairline px-5 py-2.5 text-[0.6rem] uppercase tracking-wider text-faint md:grid">
+            <span>Card</span>
+            <span className="text-right">Fee</span>
+            <span>Credits captured</span>
+            <span className="text-right">Net value</span>
+            <span>Verdict</span>
+            <span className="w-4" />
+          </div>
+          {rows.map(({ card, live, renewal, roi, cap, unusedForgettable }, i) => {
+            const open = expanded === card.cardKey;
+            return (
+              <Fragment key={card.cardKey}>
+                <LeaderboardRow
+                  card={card}
+                  live={live}
+                  renewal={renewal}
+                  roi={roi}
+                  cap={cap}
+                  currency={currency}
+                  barScale={maxBarScale}
+                  unusedCount={unusedForgettable.length}
+                  open={open}
+                  delay={i * 40}
+                  onClick={() => setExpanded(open ? null : card.cardKey)}
+                />
+                {open && (
+                  <div className="border-t hairline">
+                  <div className="flex flex-wrap items-center justify-between gap-3 px-5 pt-4 text-xs text-muted"><span>Active linked card. Closing tracking keeps its transaction history.</span><button type="button" disabled={savingStatus !== null} className="detail-link min-h-11" onClick={() => saveStatus(cards.find((entry) => entry.card.cardKey === card.cardKey)!, "closed")}>{savingStatus === card.cardKey ? "Saving…" : "Mark closed"}</button></div>
+                  <fieldset disabled={savingOverride} className="min-w-0 border-0 p-0">
+                  <CardDetail
+                    card={card}
+                    live={live}
+                    renewal={renewal}
+                    roi={roi}
+                    cap={cap}
+                    currency={currency}
+                    unusedForgettable={unusedForgettable}
+                    usage={(name) => usageFor(card.cardKey, name)}
+                    slotUsed={(name, slot) => slotUsed(card.cardKey, name, slot)}
+                    slotOverridden={(name, key) => slotOverridden(card.cardKey, name, key)}
+                    onToggleSlot={(name, slot) => toggleSlot(card.cardKey, name, slot)}
+                    onClearSlot={(name, key) => clearSlotOverride(card.cardKey, name, key)}
+                  />
+                  </fieldset>
+                  </div>
+                )}
+              </Fragment>
+            );
+          })}
+        </div>
+      )}
+
+      {inactiveCards.length > 0 && <section className="card mt-5 p-5">
+        <h2 className="text-lg text-cream">Closed and unlinked cards</h2>
+        <p className="mt-1 mb-3 text-sm text-muted">Excluded from current fees, benefits, points projections, and renewal reminders. Saved transactions remain in Activity. Card status does not change bank balances or close an account at the bank.</p>
+        <ul className="divide-y divide-[var(--color-line)]">{inactiveCards.map((entry) => <li key={entry.card.cardKey} className="flex flex-wrap items-center gap-3 py-4">
+          <div className="min-w-0 flex-1"><p className="text-sm text-cream">{entry.card.displayName}</p><p className="text-xs text-muted">{entry.status === "closed" ? "Closed · confirmed by you" : entry.status === "unavailable" ? "Not reported by Plaid · may be closed or no longer shared" : "No linked account · catalog only"}</p></div>
+          {entry.historyAccountId && <DetailLink query={{ metric: "ledger", account: entry.historyAccountId }}>View history</DetailLink>}
+          {entry.status === "closed" && <button type="button" disabled={savingStatus !== null} className="detail-link min-h-11 text-sm" onClick={() => saveStatus(entry, "active")}>{savingStatus === entry.card.cardKey ? "Saving…" : "Undo closed status"}</button>}
+          {entry.status === "unavailable" && <button type="button" disabled={savingStatus !== null} className="detail-link min-h-11 text-sm" onClick={() => saveStatus(entry, "closed")}>{savingStatus === entry.card.cardKey ? "Saving…" : "Mark closed"}</button>}
+        </li>)}</ul>
+      </section>}
+
+      {/* Unmatched credit accounts */}
+      {unmatched.length > 0 && (
+        <section className="card rise mt-5 p-5 md:p-6">
+          <h2 className="font-display text-lg tracking-tight text-cream">
+            Other connected credit accounts
+          </h2>
+          <p className="mb-3 mt-1 text-xs text-muted">
+            These credit accounts didn&rsquo;t match a card in the catalog above
+            (the names from your bank feed don&rsquo;t contain a recognizable card
+            product). Their fees/perks aren&rsquo;t tracked here.
+          </p>
+          <ul className="divide-y divide-[var(--color-line)]">
+            {unmatched.map((a, idx) => (
+              <li key={idx} className="flex items-center justify-between py-2.5 text-sm">
+                <span className="text-cream">
+                  {a.name}
+                  {a.mask ? <span className="text-faint"> ···· {a.mask}</span> : null}
+                </span>
+                {a.balance != null && (
+                  <span className="tnum text-coral">
+                    {formatMoney(a.balance, currency, { cents: false })}
+                  </span>
+                )}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+    </div>
+  );
+}
+
+// ── leaderboard row ───────────────────────────────────────────────────────────
+
+function LeaderboardRow({
+  card,
+  live,
+  renewal,
+  roi,
+  cap,
+  currency,
+  barScale,
+  unusedCount,
+  open,
+  delay,
+  onClick,
+}: {
+  card: CardCatalogEntry;
+  live: CardLive | null;
+  renewal: RenewalInfo | null;
+  roi: CardRoi;
+  cap: number;
+  currency: string;
+  barScale: number;
+  unusedCount: number;
+  open: boolean;
+  delay: number;
+  onClick: () => void;
+}) {
+  const v = VERDICT[roi.verdict];
+  const pointsCash = live?.estPointsCashValue ?? 0;
+  // Renewal chip only for fee cards with a detected anniversary.
+  const showRenewal =
+    card.annualFee > 0 && renewal?.detected && renewal.daysUntil != null;
+  return (
+    <button
+      id={`card-${card.cardKey}`}
+      onClick={onClick}
+      aria-expanded={open}
+      style={{ animationDelay: `${delay}ms` }}
+      className={`min-h-11 lg:min-h-0 block w-full scroll-mt-28 border-b hairline px-5 py-3.5 text-left transition-colors last:border-b-0 ${
+        open ? "bg-surface-2/60" : "hover:bg-surface-2/30"
+      }`}
+    >
+      {/* desktop grid / mobile stacked */}
+      <div className="grid grid-cols-1 sm:grid-cols-[minmax(0,1fr)_auto] items-center gap-3 md:grid-cols-[1.6fr_0.7fr_1.3fr_0.9fr_1.1fr_auto]">
+        {/* name */}
+        <div className="flex min-w-0 items-center gap-3">
+          <span
+            className={`h-9 w-6 shrink-0 rounded-md ${accentBg[card.accent]} opacity-90`}
+            aria-hidden
+          />
+          <div className="min-w-0">
+            <div className="truncate font-display text-base tracking-tight text-cream">
+              {card.displayName}
+            </div>
+            <div className="truncate text-[0.7rem] text-faint">
+              {card.issuer} · {card.pointProgram}
+              {!live && " · not linked"}
+            </div>
+          </div>
+        </div>
+
+        {/* fee (desktop) */}
+        <div className="hidden text-right md:block">
+          <div className="tnum text-sm text-cream">
+            {card.annualFee === 0
+              ? "$0"
+              : formatMoney(card.annualFee, currency, { cents: false })}
+          </div>
+        </div>
+
+        {/* captured bar (desktop) */}
+        <div className="hidden md:block">
+          <WorthItBar fee={card.annualFee} credits={cap} points={pointsCash} scale={barScale} />
+          <div className="mt-1 text-[0.65rem] text-faint">
+            {formatMoney(cap, currency, { cents: false })}
+            {card.credits.length > 0 && (
+              <> of {formatMoney(roi.maxCredits, currency, { cents: false })}</>
+            )}
+            {live && pointsCash > 0 && (
+              <> · +{formatMoney(pointsCash, currency, { cents: false })} pts</>
+            )}
+          </div>
+        </div>
+
+        {/* net value (desktop) */}
+        <div className="hidden text-right md:block">
+          <div className={`tnum text-sm ${roi.netValue >= 0 ? "text-blue" : "text-coral"}`}>
+            {signedMoney(roi.netValue, currency)}
+          </div>
+          {unusedCount > 0 && (
+            <div className="text-[0.6rem] text-coral">{unusedCount} unused</div>
+          )}
+        </div>
+
+        {/* verdict */}
+        <div className="flex flex-wrap items-center justify-start gap-1.5">
+          <span className={`rounded-full px-2 py-0.5 text-[0.65rem] ${v.pill} ${v.text}`}>
+            {v.label}
+          </span>
+          {showRenewal && (
+            <span
+              className={`rounded-full px-2 py-0.5 text-[0.6rem] ${renewalTone(renewal!.daysUntil!).chip}`}
+              title={`Annual fee renews ${formatRenewalDate(renewal!.nextRenewal!)}${renewal!.estimated ? " (estimated from account history)" : ""}`}
+            >
+              {renewal!.estimated ? "~" : ""}{renewalShort(renewal!.daysUntil!)}
+            </span>
+          )}
+          {showRenewal && renewal!.expiry && (
+            <span
+              className="rounded-full bg-surface-2 px-2 py-0.5 text-[0.6rem] text-faint"
+              title={`Card term runs through ${formatRenewalDate(renewal!.nextRenewal!)}`}
+            >
+              Exp {renewal!.expiry}
+            </span>
+          )}
+        </div>
+        <span
+          className={`hidden justify-self-end text-faint transition-transform md:block ${open ? "rotate-90" : ""}`}
+          aria-hidden
+        >
+          ›
+        </span>
+      </div>
+
+      {/* mobile second line */}
+      <div className="mt-2 flex flex-wrap items-center gap-3 md:hidden">
+        <div className="min-w-0 flex-1 basis-full sm:basis-auto">
+          <WorthItBar fee={card.annualFee} credits={cap} points={pointsCash} scale={barScale} />
+        </div>
+        <span className="tnum shrink-0 text-xs text-faint">
+          {card.annualFee === 0 ? "$0 fee" : formatMoney(card.annualFee, currency, { cents: false })}
+        </span>
+        <span className={`tnum shrink-0 text-sm ${roi.netValue >= 0 ? "text-blue" : "text-coral"}`}>
+          {signedMoney(roi.netValue, currency)}
+        </span>
+      </div>
+    </button>
+  );
+}
+
+/** Stacked worth-it bar: credits (blue) + points (slate) filled against a shared
+ *  scale, with a coral tick at the annual fee. Fill past the tick = net positive. */
+function WorthItBar({
+  fee,
+  credits,
+  points,
+  scale,
+}: {
+  fee: number;
+  credits: number;
+  points: number;
+  scale: number;
+}) {
+  const pct = (v: number) => `${Math.min(100, (v / scale) * 100)}%`;
+  return (
+    <div
+      className="relative h-2 w-full overflow-hidden rounded-full bg-surface-2"
+      title="Value returned vs. annual fee"
+    >
+      <div className="absolute inset-0 flex">
+        <div className="shrink-0 bg-blue" style={{ width: pct(credits) }} />
+        <div className="shrink-0 bg-slate" style={{ width: pct(points) }} />
+      </div>
+      {fee > 0 && (
+        <div
+          className="absolute inset-y-0 w-0.5 bg-coral"
+          style={{ left: `min(${pct(fee)}, calc(100% - 2px))` }}
+          title="break-even (annual fee)"
+        />
+      )}
+    </div>
+  );
+}
+
+// ── card detail (expanded) ────────────────────────────────────────────────────
+
+type DetailTab = "credits" | "earn" | "perks" | "protections" | "partners";
+
+function CardDetail({
+  card,
+  live,
+  renewal,
+  roi,
+  cap,
+  currency,
+  unusedForgettable,
+  usage,
+  slotUsed,
+  slotOverridden,
+  onToggleSlot,
+  onClearSlot,
+}: {
+  card: CardCatalogEntry;
+  live: CardLive | null;
+  renewal: RenewalInfo | null;
+  roi: CardRoi;
+  cap: number;
+  currency: string;
+  unusedForgettable: CardCredit[];
+  usage: (creditName: string) => CreditUsage | undefined;
+  slotUsed: (creditName: string, slot: CreditSlot) => boolean;
+  slotOverridden: (creditName: string, slotKey: string) => boolean;
+  onToggleSlot: (creditName: string, slot: CreditSlot) => void;
+  onClearSlot: (creditName: string, slotKey: string) => void;
+}) {
+  const allTabs: { key: DetailTab; label: string; show: boolean }[] = [
+    { key: "credits", label: `Credits (${card.credits.length})`, show: card.credits.length > 0 },
+    { key: "earn", label: "Earn rates", show: true },
+    { key: "perks", label: `Perks (${card.perks.length})`, show: card.perks.length > 0 },
+    { key: "protections", label: "Protections", show: card.protections.length > 0 },
+    { key: "partners", label: "Transfer partners", show: card.transferPartners.length > 0 },
+  ];
+  const tabs = allTabs.filter((t) => t.show);
+  const [tab, setTab] = useState<DetailTab>(tabs[0]?.key ?? "earn");
+  const v = VERDICT[roi.verdict];
+
+  return (
+    <div className="border-b hairline bg-ink/40 px-5 py-5 md:px-6">
+      {/* verdict line */}
+      <div className="mb-4 flex flex-wrap items-center gap-2 rounded-xl border hairline bg-surface-2/40 px-4 py-3 text-sm">
+        <span className={`rounded-full px-2 py-0.5 text-[0.7rem] ${v.pill} ${v.text}`}>{v.label}</span>
+        <span className="text-cream-dim">
+          {card.annualFee === 0 ? (
+            <>
+              No annual fee — pure upside.
+              {live && roi.pointsCashValue > 0
+                ? ` You've earned an estimated ${formatMoney(roi.pointsCashValue, currency)} in points (12 mo).`
+                : " Nothing to justify — keep it open."}
+            </>
+          ) : roi.netValue >= 0 ? (
+            <>
+              Projected credits{live && roi.pointsCashValue > 0 ? " + points" : ""} cover the{" "}
+              {formatMoney(card.annualFee, currency, { cents: false })} fee — you&rsquo;re ahead{" "}
+              <span className="text-blue">{signedMoney(roi.netValue, currency)}</span> a year.
+            </>
+          ) : roi.verdict === "earns" ? (
+            <>
+              On cash value it&rsquo;s {signedMoney(roi.netValue, currency)}/yr, but transfer your
+              points and it swings to{" "}
+              <span className="text-slate">{signedMoney(roi.netValueAspirational, currency)}</span>.
+              Worth it only if you actually transfer.
+            </>
+          ) : (
+            <>
+              After credits and points this card costs{" "}
+              <span className="text-coral">{signedMoney(roi.netValue, currency)}</span>/yr — even at
+              full transfer value it&rsquo;s {signedMoney(roi.netValueAspirational, currency)}. Use more
+              credits below or reconsider it.
+            </>
+          )}
+        </span>
+      </div>
+
+      {/* live snapshot */}
+      {live ? (
+        <div className="mb-4 grid grid-cols-1 gap-px min-[420px]:grid-cols-2 overflow-hidden rounded-xl border hairline bg-[var(--color-line)] sm:grid-cols-4">
+          <Mini
+            label="Spend (12 mo)"
+            detail={live.accountId && <DetailLink query={{ metric: "spending", account: live.accountId, from: live.periodStart }}>Inspect the contributing purchases and refunds →</DetailLink>}
+            value={formatMoney(live.spend12mo, currency, { cents: false })}
+            hint={`${live.txnCount} purchases`}
+          />
+          <Mini
+            label="Credits captured"
+            detail={<><p className="mb-3">Captured amounts use detected credits and your manual overrides. Future periods are excluded. Open a credit period below for evidence.</p><DataTable title="Captured credits" currency={currency} columns={[{ key: "name", label: "Credit" }, { key: "captured", label: "Captured", format: "money", total: true }, { key: "maximum", label: "Annual maximum", format: "money" }]} rows={card.credits.map((c) => { const usage = live.creditUsage.find((u) => u.creditName === c.name); return { id: c.name, values: { name: c.name, captured: usage ? capturedThisYear(usage, c, slotUsed, slotOverridden) : c.value * c.realisticCaptureRate, maximum: c.value } }; })} /></>}
+            value={formatMoney(cap, currency, { cents: false })}
+            hint={card.credits.length ? `of ${formatMoney(roi.maxCredits, currency, { cents: false })}` : "no credits"}
+            accent="blue"
+          />
+          <Mini
+            label="Est. points / yr"
+            detail={<><p className="mb-3">Estimated from eligible spending, earn rules, and annual caps. Cash value uses {card.cashValueCents} cents per point; transfer value uses {card.transferValueCents} cents per point.</p><DataTable title="Points by earn rule" currency={currency} columns={[{ key: "rule", label: "Rule" }, { key: "spend", label: "Spend", format: "money", total: true }, { key: "multiplier", label: "Multiplier", format: "number" }, { key: "points", label: "Points", format: "number", total: true }, { key: "cap", label: "Cap applied" }]} rows={live.pointsLines.map((line, i) => ({ id: String(i), values: { rule: line.label, spend: line.spend, multiplier: line.multiplier, points: line.points, cap: line.capped ? "Yes" : "No" } }))} /></>}
+            value={live.estPoints.toLocaleString()}
+            hint={
+              card.cashValueCents === card.transferValueCents
+                ? `≈ ${formatMoney(live.estPointsCashValue, currency, { cents: false })}`
+                : `${formatMoney(live.estPointsCashValue, currency, { cents: false })}–${formatMoney(live.estPointsTransferValue, currency, { cents: false })}`
+            }
+            accent="slate"
+          />
+          <Mini
+            label="Est. net value / yr"
+            detail={<p>Projected credits {formatMoney(roi.capturedCredits, currency)} + estimated points cash value {formatMoney(roi.pointsCashValue, currency)} − annual fee {formatMoney(card.annualFee, currency)}. Future credits are estimates. Your current overrides are included.</p>}
+            value={signedMoney(roi.netValue, currency)}
+            hint={`balance ${live.balance != null ? formatMoney(live.balance, currency, { cents: false }) : "—"}`}
+            accent={roi.netValue >= 0 ? "blue" : "coral"}
+          />
+        </div>
+      ) : (
+        <p className="mb-4 rounded-xl border hairline bg-surface px-4 py-3 text-xs text-faint">
+          Not matched to a connected account — reference details only. Net value
+          assumes typical credit capture and no points.
+        </p>
+      )}
+
+      {/* renewal countdown + product-change window */}
+      {card.annualFee > 0 && (
+        <RenewalBlock
+          card={card}
+          renewal={renewal}
+          roi={roi}
+          currency={currency}
+        />
+      )}
+
+      {/* forgotten-money callout */}
+      {unusedForgettable.length > 0 && (
+        <div className="mb-4 rounded-xl border border-coral/30 bg-coral/5 px-4 py-3">
+          <div className="mb-1 text-xs text-coral">
+            ↻ {unusedForgettable.length} easy-to-forget{" "}
+            {unusedForgettable.length === 1 ? "credit" : "credits"} you haven&rsquo;t tapped this
+            period — worth up to{" "}
+            {formatMoney(
+              unusedForgettable.reduce((a, c) => a + c.value, 0),
+              currency,
+              { cents: false },
+            )}
+            /yr
+          </div>
+          <div className="flex flex-wrap gap-1.5">
+            {unusedForgettable.map((c) => (
+              <span key={c.name} className="rounded bg-surface-2 px-1.5 py-0.5 text-[0.65rem] text-cream-dim">
+                {c.name} · {formatMoney(c.value, currency, { cents: false })}/yr · {freqLabel(c.frequency)}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* highlights */}
+      {card.highlights.length > 0 && (
+        <ul className="mb-4 space-y-1.5">
+          {card.highlights.map((h, idx) => (
+            <li key={idx} className="flex gap-2 text-sm text-cream-dim">
+              <span className={`${accentText[card.accent]} shrink-0`}>›</span>
+              <span>{h}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {/* tab strip */}
+      <div className="mb-3 flex gap-1 overflow-x-auto" role="group" aria-label="Card details">
+        {tabs.map((t) => (
+          <button
+            key={t.key}
+            aria-pressed={tab === t.key}
+            onClick={() => setTab(t.key)}
+            className={`min-h-11 lg:min-h-0 shrink-0 whitespace-nowrap rounded-lg px-2.5 py-1 text-xs transition-colors ${
+              tab === t.key ? "bg-surface-2 text-cream" : "text-muted hover:text-cream"
+            }`}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      {/* tab body */}
+      {tab === "credits" && card.credits.length > 0 && (
+        <ul className="space-y-2">
+          {card.credits.map((c) => {
+            const u = usage(c.name);
+            const cur = u?.currentSlot ?? null;
+            const curUsed = u && cur ? slotUsed(c.name, cur) : false;
+            return (
+              <li key={c.name} className="rounded-lg border hairline bg-surface px-3 py-2.5">
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                  <span className="text-sm text-cream">{c.name}</span>
+                  <span className="tnum text-xs text-blue">
+                    {formatMoney(c.value, currency, { cents: false })}/yr
+                  </span>
+                  <span className="rounded bg-surface-2 px-1.5 py-0.5 text-[0.6rem] text-faint">
+                    {freqLabel(c.frequency)}
+                  </span>
+                  {isForgettable(c.frequency) && (
+                    <span className="rounded bg-coral/15 px-1.5 py-0.5 text-[0.6rem] text-coral">
+                      ↻ easy to forget
+                    </span>
+                  )}
+                  {c.enrollmentRequired && (
+                    <span className="rounded bg-surface-2 px-1.5 py-0.5 text-[0.6rem] text-slate">
+                      enroll
+                    </span>
+                  )}
+                </div>
+
+                {u ? (
+                  <>
+                    <SlotGrid
+                      slots={u.slots}
+                      used={(s) => slotUsed(c.name, s)}
+                      overridden={(s) => slotOverridden(c.name, s.key)}
+                      onToggle={(s) => onToggleSlot(c.name, s)}
+                      onClear={(s) => onClearSlot(c.name, s.key)}
+                    />
+                    <div className="mt-1.5 text-[0.7rem] text-faint">
+                      <span className="text-cream-dim">
+                        {formatMoney(capturedThisYear(u, c, slotUsed, slotOverridden), currency, { cents: false })}
+                      </span>{" "}
+                      captured of {formatMoney(u.availableToDate, currency, { cents: false })} so far
+                      {cur && (
+                        <>
+                          {" · "}
+                          {curUsed
+                            ? cur.evidence ?? `${cur.label} used`
+                            : `${cur.label} unused — ${formatMoney(cur.value, currency, { cents: false })} waiting${cur.daysLeft != null ? ` · ${cur.daysLeft}d left` : ""}`}
+                        </>
+                      )}
+                    </div>
+                    <p className="mt-1 text-xs text-faint">{c.howToUse}</p>
+                  </>
+                ) : (
+                  <p className="mt-1 text-xs text-faint">
+                    Not linked — reference only. {c.howToUse}
+                  </p>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      )}
+
+      {tab === "earn" && (
+        <div>
+          <div className="mb-3 flex flex-wrap gap-2">
+            {card.earnRates.map((r, idx) => (
+              <span
+                key={idx}
+                className="rounded-lg border hairline bg-surface px-2.5 py-1.5 text-xs"
+                title={r.note}
+              >
+                <span className={`tnum font-semibold ${accentText[card.accent]}`}>{r.multiplier}×</span>{" "}
+                <span className="text-muted">{r.category}</span>
+              </span>
+            ))}
+          </div>
+          {live && live.pointsLines.length > 0 ? (
+            <>
+              <div className="overflow-x-auto rounded-lg border hairline">
+                <div className="grid min-w-[340px] grid-cols-[minmax(0,1fr)_auto_auto] gap-3 bg-surface-2/50 px-3 py-1.5 text-[0.6rem] uppercase tracking-wider text-faint">
+                  <span>From your spend</span>
+                  <span className="text-right">Spend</span>
+                  <span className="text-right">Points</span>
+                </div>
+                {live.pointsLines.map((l, idx) => (
+                  <div key={idx} className="grid min-w-[340px] grid-cols-[minmax(0,1fr)_auto_auto] gap-3 border-t hairline px-3 py-1.5 text-xs">
+                    <span className="text-cream-dim">
+                      {l.label}{" "}
+                      <span className="text-faint">
+                        {l.multiplier}×{l.capped ? " (capped)" : ""}
+                      </span>
+                    </span>
+                    <span className="tnum text-right text-muted">
+                      {formatMoney(l.spend, currency, { cents: false })}
+                    </span>
+                    <span className="tnum text-right text-slate">
+                      {Math.round(l.points).toLocaleString()}
+                    </span>
+                  </div>
+                ))}
+                <div className="grid min-w-[340px] grid-cols-[minmax(0,1fr)_auto_auto] gap-3 border-t hairline bg-surface-2/30 px-3 py-1.5 text-xs">
+                  <span className="text-cream">
+                    ≈ {formatMoney(live.estPointsCashValue, currency)}
+                    {card.cashValueCents !== card.transferValueCents && (
+                      <> → {formatMoney(live.estPointsTransferValue, currency)} via transfers</>
+                    )}
+                  </span>
+                  <span />
+                  <span className="tnum text-right text-slate">{live.estPoints.toLocaleString()}</span>
+                </div>
+              </div>
+              <p className="mt-2 text-xs text-faint">
+                Valued at {card.cashValueCents}¢ (cash)
+                {card.cashValueCents !== card.transferValueCents && (
+                  <> – {card.transferValueCents}¢ (transfer)</>
+                )}{" "}
+                per point. {card.pointValueNote}
+              </p>
+            </>
+          ) : (
+            <p className="text-xs text-faint">{card.pointValueNote}</p>
+          )}
+        </div>
+      )}
+
+      {tab === "perks" && card.perks.length > 0 && (
+        <ul className="grid gap-2 sm:grid-cols-2">
+          {card.perks.map((p, idx) => (
+            <li key={idx} className="rounded-lg border hairline bg-surface px-3 py-2">
+              <div className="flex items-baseline justify-between gap-2">
+                <span className="text-sm text-cream">{p.name}</span>
+                {p.value > 0 && (
+                  <span className="tnum shrink-0 text-xs text-slate">
+                    ≈{formatMoney(p.value, currency, { cents: false })}
+                  </span>
+                )}
+              </div>
+              {p.note && <p className="mt-0.5 text-xs text-faint">{p.note}</p>}
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {tab === "protections" && card.protections.length > 0 && (
+        <ul className="space-y-1 text-xs text-cream-dim">
+          {card.protections.map((p, idx) => (
+            <li key={idx} className="flex gap-2">
+              <span className="text-faint">•</span>
+              <span>{p}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {tab === "partners" && card.transferPartners.length > 0 && (
+        <div>
+          <div className="flex flex-wrap gap-1.5">
+            {card.transferPartners.map((t, idx) => (
+              <span key={idx} className="rounded border hairline bg-surface px-2 py-1 text-[0.7rem] text-muted">
+                {t}
+              </span>
+            ))}
+          </div>
+          <p className="mt-2 text-xs text-faint">Point value: {card.pointValueNote}</p>
+        </div>
+      )}
+
+      {/* fine print */}
+      <details className="mt-4 text-xs text-faint">
+        <summary className="cursor-pointer text-muted hover:text-cream">
+          Fee notes, recent changes &amp; sources
+        </summary>
+        <div className="mt-2 space-y-2">
+          {card.feeNote && (
+            <p>
+              <span className="text-slate">Fee: </span>
+              {card.feeNote}
+            </p>
+          )}
+          <p>
+            <span className="text-slate">Recent changes: </span>
+            {card.recentChanges}
+          </p>
+          <p className="flex flex-wrap gap-x-3 gap-y-1">
+            <span className="text-slate">Sources:</span>
+            {card.sources.map((s, idx) => (
+              <a key={idx} href={s} target="_blank" rel="noreferrer" className="text-blue underline-offset-2 hover:underline">
+                {hostLabel(s)}
+              </a>
+            ))}
+          </p>
+        </div>
+      </details>
+    </div>
+  );
+}
+
+/**
+ * Renewal countdown for a fee card, plus — inside the ≤60-day product-change
+ * window — a prompt to downgrade to a no-fee card before the fee posts. Rendered
+ * only for fee cards (the caller guards `annualFee > 0`).
+ */
+function RenewalBlock({
+  card,
+  renewal,
+  roi,
+  currency,
+}: {
+  card: CardCatalogEntry;
+  renewal: RenewalInfo | null;
+  roi: CardRoi;
+  currency: string;
+}) {
+  if (!renewal?.detected || renewal.daysUntil == null || !renewal.nextRenewal) {
+    return (
+      <p className="mb-4 rounded-xl border hairline bg-surface px-4 py-2.5 text-xs text-faint">
+        Renewal date not detected yet — once an annual-fee charge posts on the
+        linked account, the countdown to your next renewal shows here.
+      </p>
+    );
+  }
+
+  const days = renewal.daysUntil;
+  const tone = renewalTone(days);
+  const fee = renewal.feeAmount ?? card.annualFee;
+  const feeStr = formatMoney(fee, currency, { cents: false });
+  const reconsider = roi.verdict === "reconsider";
+  const boxTone = tone.window
+    ? days <= 30
+      ? "border-coral/30 bg-coral/5"
+      : "border-amber-400/30 bg-amber-400/5"
+    : "hairline bg-surface";
+
+  return (
+    <div className={`mb-4 rounded-xl border px-4 py-3 ${boxTone}`}>
+      <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+        <span className={`text-sm ${tone.text}`}>
+          {renewal.estimated ? "Est. renews ~" : days <= 0 ? "Renews today" : `Renews in ${days} ${days === 1 ? "day" : "days"}`}
+          {renewal.estimated && `${days} ${days === 1 ? "day" : "days"}`}
+          <span className="text-faint"> · {formatRenewalDate(renewal.nextRenewal)}</span>
+        </span>
+        <span className="text-[0.65rem] text-faint">{feeStr} annual fee</span>
+      </div>
+      {renewal.estimated && (
+        <p className="mt-1 text-[0.65rem] text-faint">
+          Estimated from your earliest transaction on this card — no annual-fee
+          charge has posted yet (first year free, or it predates your synced
+          history). It&rsquo;ll lock to the real date once the fee posts.
+        </p>
+      )}
+      {renewal.expiry && (
+        <div className="mt-1.5 flex items-center gap-2 border-t hairline pt-1.5 text-xs">
+          <span className="tnum rounded-md bg-surface-2 px-2 py-0.5 font-medium text-cream-dim">
+            Expires {renewal.expiry}
+          </span>
+          <span className="text-[0.65rem] text-faint">
+            card term, from the annual-fee anniversary
+          </span>
+        </div>
+      )}
+      {tone.window && (
+        <p
+          className={`mt-1.5 text-xs ${reconsider ? `${tone.text} font-medium` : "text-cream-dim"}`}
+        >
+          {card.downgradeTo ? (
+            <>
+              Window to act: product-change/downgrade to{" "}
+              <span className="text-cream">{card.downgradeTo.displayName}</span> before
+              then to avoid the {feeStr} fee
+              {reconsider ? " — this card isn't paying for itself." : "."}
+            </>
+          ) : (
+            <>
+              Window to act: cancel or product-change before the {feeStr} fee posts
+              {reconsider ? " — this card isn't paying for itself." : "."}
+            </>
+          )}
+        </p>
+      )}
+    </div>
+  );
+}
+
+// ── small presentational helpers ──────────────────────────────────────────────
+
+/** Per-slot value captured this year, override-aware (mirrors capturedForCard). */
+function capturedThisYear(
+  u: CreditUsage,
+  c: CardCredit,
+  used: (name: string, slot: CreditSlot) => boolean,
+  overridden: (name: string, key: string) => boolean,
+): number {
+  return u.slots
+    .filter((s) => s.status !== "future")
+    .reduce((a, s) => {
+      if (overridden(c.name, s.key)) return a + (used(c.name, s) ? s.value : 0);
+      return a + s.captured;
+    }, 0);
+}
+
+const SLOT_TONE: Record<string, string> = {
+  confirmed: "border-blue bg-blue text-ink",
+  inferred: "border-blue/60 bg-blue/15 text-blue",
+  open: "border-line-2 text-faint",
+  future: "border-transparent bg-surface-2 text-faint/50",
+};
+
+/**
+ * A tappable strip of period slots for one credit. Each slot is a button that
+ * toggles a manual override (tap again, then "auto" to revert). Confirmed = solid
+ * check, inferred = hollow check, flagged = "?", open current = ring, past open =
+ * coral (missed), future = dim.
+ */
+function SlotGrid({
+  slots,
+  used,
+  overridden,
+  onToggle,
+  onClear,
+}: {
+  slots: CreditSlot[];
+  used: (slot: CreditSlot) => boolean;
+  overridden: (slot: CreditSlot) => boolean;
+  onToggle: (slot: CreditSlot) => void;
+  onClear: (slot: CreditSlot) => void;
+}) {
+  const many = slots.length > 6; // monthly → compact cells
+  return (
+    <div className="mt-2 flex flex-wrap items-center gap-1">
+      {slots.map((s) => {
+        const on = used(s);
+        const ov = overridden(s);
+        const isPastOpen = !on && s.status === "past";
+        const tone = on
+          ? ov
+            ? "border-blue bg-blue/80 text-ink"
+            : SLOT_TONE[s.confidence] ?? SLOT_TONE.open
+          : isPastOpen
+            ? "border-coral/40 text-coral"
+            : SLOT_TONE[s.confidence] ?? SLOT_TONE.open;
+        const mark = on ? (s.confidence === "inferred" && !ov ? "◔" : "✓") : "○";
+        const glyph = on ? (s.confidence === "inferred" && !ov ? "◔" : "✓") : s.label[0];
+        return (
+          <details key={s.key} className="relative">
+            <summary className={`min-h-11 min-w-11 cursor-pointer list-none rounded-md border px-2 py-3 text-xs ${tone}`} aria-label={`Inspect ${s.label}: ${on ? "used" : "unused"}`}>{many ? glyph : `${s.label} ${mark}`} ↗</summary>
+            <div className="mt-2 w-64 max-w-full rounded-xl border hairline bg-surface p-3 text-sm text-cream">
+              <p className="font-medium">{s.label} · {s.start} – {s.end}</p>
+              <p className="mt-2">{s.evidence ?? "No matching evidence recorded."}</p>
+              <p className="mt-2">Captured: {s.captured.toFixed(2)} · limit: {s.value.toFixed(2)}</p>
+              <p>{s.matchedMerchant ?? "No merchant recorded"}{s.lastDate ? ` · ${s.lastDate}` : ""}</p>
+              <p className="mt-2 text-muted">{ov ? "Manual override is active." : `Detection: ${s.confidence}.`}</p>
+              <button type="button" disabled={s.status === "future"} onClick={() => ov ? onClear(s) : onToggle(s)} className="detail-link mt-2">{ov ? "Restore automatic detection" : on ? "Mark unused" : "Mark used"}</button>
+            </div>
+          </details>
+        );
+      })}
+    </div>
+  );
+}
+
+/** Top-of-page "use it or lose it" list of open current-period credits. */
+function ActionBanner({
+  items,
+  currency,
+  onJump,
+}: {
+  items: {
+    cardKey: string;
+    cardName: string;
+    creditName: string;
+    value: number;
+    label: string;
+    daysLeft: number | null;
+  }[];
+  currency: string;
+  onJump: (cardKey: string) => void;
+}) {
+  const total = items.reduce((a, i) => a + i.value, 0);
+  return (
+    <div className="rise mb-5 rounded-2xl border border-coral/25 bg-coral/5 p-4 md:p-5">
+      <div className="mb-2 flex flex-wrap items-baseline justify-between gap-2">
+        <h2 className="font-display text-base tracking-tight text-cream">
+          Use it or lose it
+        </h2>
+        <span className="text-xs text-faint">
+          {items.length} open · up to{" "}
+          <span className="text-coral">{formatMoney(total, currency, { cents: false })}</span>{" "}
+          this period
+        </span>
+      </div>
+      <ul className="grid gap-1.5 sm:grid-cols-2">
+        {items.map((i, idx) => {
+          const urgent = i.daysLeft != null && i.daysLeft <= 3;
+          const soon = i.daysLeft != null && i.daysLeft <= 7;
+          const tone = urgent ? "text-coral" : soon ? "text-amber-400" : "text-faint";
+          return (
+            <li key={`${i.cardKey}-${i.creditName}-${idx}`}>
+              <button
+                onClick={() => onJump(i.cardKey)}
+                className="min-h-11 lg:min-h-0 flex w-full items-center justify-between gap-2 rounded-lg border hairline bg-surface px-3 py-2 text-left transition-colors hover:bg-surface-2/40"
+              >
+                <span className="min-w-0">
+                  <span className="tnum text-sm text-blue">
+                    {formatMoney(i.value, currency, { cents: false })}
+                  </span>{" "}
+                  <span className="text-sm text-cream">{i.creditName}</span>
+                  <span className="block truncate text-[0.65rem] text-faint">
+                    {i.cardName} · {i.label}
+                  </span>
+                </span>
+                <span className={`shrink-0 text-[0.7rem] ${tone}`}>
+                  {i.daysLeft == null
+                    ? "open"
+                    : i.daysLeft <= 0
+                      ? "ends today!"
+                      : `${i.daysLeft}d left${urgent ? " !" : ""}`}
+                </span>
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+}
+
+function Stat({
+  label,
+  value,
+  sub,
+  accent,
+  delay = 0,
+  onInspect,
+}: {
+  onInspect?: () => void;
+  label: string;
+  value: string;
+  sub?: string;
+  accent?: "blue" | "coral" | "slate" | "cream";
+  delay?: number;
+}) {
+  const color =
+    accent === "blue"
+      ? "text-blue"
+      : accent === "coral"
+        ? "text-coral"
+        : accent === "slate"
+          ? "text-slate"
+          : "text-cream";
+  return (
+    <div className="card card-hover rise min-w-0 p-4 sm:p-5" style={{ animationDelay: `${delay}ms` }}>
+      <div className="label-eyebrow">{label}</div>
+      <div className={`tnum mt-2 break-words text-xl sm:text-2xl ${color}`}>{onInspect ? <button type="button" onClick={onInspect} className="detail-link text-left">{value} ↗</button> : value}</div>
+      {sub && <div className="mt-1 text-xs text-muted">{sub}</div>}
+    </div>
+  );
+}
+
+function Mini({
+  label,
+  value,
+  hint,
+  accent = "cream",
+  detail,
+}: {
+  detail?: ReactNode;
+  label: string;
+  value: string;
+  hint?: string;
+  accent?: "blue" | "coral" | "slate" | "cream";
+}) {
+  const color =
+    accent === "blue"
+      ? "text-blue"
+      : accent === "coral"
+        ? "text-coral"
+        : accent === "slate"
+          ? "text-slate"
+          : "text-cream";
+  return (
+    <div className="min-w-0 bg-[var(--color-ink-2)] px-4 py-3">
+      <div className="text-[0.6rem] uppercase tracking-wider text-faint">{label}</div>
+      {detail ? <details className="group"><summary className={`detail-link tnum mt-1 cursor-pointer text-base ${color}`}>{value} ↗</summary><div className="relative z-10 mt-3 min-w-0 rounded-lg border hairline bg-surface p-3 text-sm text-muted">{detail}</div></details> : <div className={`tnum mt-1 break-words text-base ${color}`}>{value}</div>}
+      {hint && <div className="text-[0.65rem] text-faint">{hint}</div>}
+    </div>
+  );
+}
