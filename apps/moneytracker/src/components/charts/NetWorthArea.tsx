@@ -144,6 +144,7 @@ export function NetWorthArea({
   const [rangeKey, setRangeKey] = useState<RangeKey>("ALL");
   const [hover, setHover] = useState<number | null>(null);
   const [vw, setVw] = useState(640); // measured scroll-viewport width
+  const [scrollLeft, setScrollLeft] = useState(0);
 
   // Which range tabs actually trim something (always offer "All").
   const ranges = useMemo(() => {
@@ -314,8 +315,14 @@ export function NetWorthArea({
   }
 
   const tip = data[active];
-  const tipWidth = Math.min(280, vw);
-  const tipLeft = Math.min(plotW - tipWidth / 2, Math.max(tipWidth / 2, x(active)));
+  const tipInset = Math.min(8, vw / 2);
+  const tipWidth = Math.min(280, Math.max(0, vw - tipInset * 2));
+  // Clamp to the visible viewport, not the full scrollable timeline.
+  const visibleLeft = Math.min(scrollLeft, Math.max(0, plotW - vw));
+  const tipLeft = Math.min(
+    visibleLeft + vw - tipInset - tipWidth / 2,
+    Math.max(visibleLeft + tipInset + tipWidth / 2, x(active)),
+  );
 
   return (
     <div>
@@ -405,6 +412,7 @@ export function NetWorthArea({
         {/* Scrollable plot */}
         <div
           ref={scrollRef}
+          onScroll={(event) => setScrollLeft(event.currentTarget.scrollLeft)}
           className="relative min-w-0 flex-1 overflow-x-auto overflow-y-hidden"
           style={{ scrollbarWidth: "thin" }}
         >
@@ -609,9 +617,10 @@ export function NetWorthArea({
               />
             </svg>
 
-            {/* Tooltip rides with the plot (scrolls together) */}
+            {/* The tooltip stays inside the visible part of the plot. */}
             {hi != null && (
               <div
+                role="tooltip"
                 className="pointer-events-none absolute top-0 z-10 -translate-x-1/2"
                 style={{ left: tipLeft, width: tipWidth }}
               >
@@ -619,7 +628,7 @@ export function NetWorthArea({
                   <div className="text-[11px] font-medium text-muted">
                     {formatDate(tip.date)}
                   </div>
-                  <div className="tnum mt-0.5 flex items-baseline gap-2">
+                  <div className="tnum mt-0.5 flex flex-wrap items-baseline gap-x-2 gap-y-1">
                     <span className="text-base font-medium text-cream">
                       {formatMoney(tip.netWorth, currency, { cents: false })}
                     </span>
