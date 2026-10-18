@@ -111,7 +111,7 @@ export function resolveDetail(full: AppState, query: DetailQuery): DetailData {
     date: t.date, payee: displayPayee(t.merchantName, t.name, names.get(t.accountId)), contribution,
     kind: isSyntheticBaseline(t) ? 'Estimate' : isIncome(t) ? 'Income' : isSpend(t) ? t.amount < 0 ? 'Refund / credit' : 'Purchase' : 'Other activity',
     account: names.get(t.accountId) ?? 'Manual estimate', category: categoryMeta(resolveCategoryKey(t)).label,
-    description: t.name, currency: t.currency, status: [t.pending ? 'Pending' : 'Posted', t.hidden ? 'Hidden' : ''].filter(Boolean).join(' · '), source: t.source, note: t.note,
+    description: t.name, currency: t.currency, status: [isSyntheticBaseline(t) ? 'Estimated · no posted charge' : t.pending ? 'Pending' : 'Posted', t.hidden ? 'Hidden' : ''].filter(Boolean).join(' · '), source: t.source, note: t.note,
   } });
   if (query.metric === 'transaction') {
     const t = state.transactions.find((t) => t.id === query.record);
@@ -123,6 +123,7 @@ export function resolveDetail(full: AppState, query: DetailQuery): DetailData {
     add('Money in / out', -t.amount);
     result.notes.push(`Bank description: ${t.name}`, `Effective category: ${categoryMeta(resolveCategoryKey(t)).label}. Original category: ${t.categoryPrimary}${t.categoryDetailed ? ` / ${t.categoryDetailed}` : ''}.`, isSyntheticBaseline(t) ? 'This is an estimated bill, not a bank transaction.' : isIncome(t) ? 'Included in income.' : isSpend(t) ? 'Included in spending; credits reduce spending.' : 'Excluded from income and spending.');
     const reason = nonIncomeDepositReason(t); if (reason) result.notes.push(reason);
+    if (isSyntheticBaseline(t) && t.note) result.notes.push(t.note);
     if (t.hidden || t.pending) result.notes.push('Hidden and pending entries are excluded from income and spending summaries.');
     return result;
   }
@@ -141,8 +142,8 @@ export function resolveDetail(full: AppState, query: DetailQuery): DetailData {
       result.columns = [{ key: 'date', label: 'Date', format: 'date' }, { key: 'assets', label: 'Assets', format: 'money' }, { key: 'liabilities', label: 'Liabilities', format: 'money' }, { key: 'net', label: 'Net worth', format: 'money' }];
       result.rows = [{ id: date, values: { date, assets: snapshot!.totalAssets, liabilities: snapshot!.totalLiabilities, net: snapshot!.netWorth } }];
     } else {
-      result.columns = [{ key: 'name', label: 'Account / asset' }, { key: 'kind', label: 'Type' }, { key: 'balance', label: 'Reported balance', format: 'money' }, { key: 'available', label: 'Available', format: 'money' }, { key: 'limit', label: 'Limit', format: 'money' }, { key: 'currency', label: 'Currency' }, { key: 'source', label: 'Source' }];
-      result.rows = state.accounts.map((a) => ({ id: a.id, href: detailHref({ metric: 'ledger', account: a.id }), linkLabel: 'Account activity', values: { name: `${a.name}${a.mask ? ` ···· ${a.mask}` : ''}`, kind: LIABILITY_TYPES.has(a.type) ? 'Liability' : 'Asset', balance: a.balances.current, available: a.balances.available, limit: a.balances.limit, currency: a.currency, source: a.source } }));
+      result.columns = [{ key: 'name', label: 'Account / asset' }, { key: 'kind', label: 'Type' }, { key: 'balance', label: 'Reported balance', format: 'money' }, { key: 'available', label: 'Available', format: 'money' }, { key: 'limit', label: 'Limit', format: 'money' }, { key: 'currency', label: 'Currency' }, { key: 'source', label: 'Source' }, { key: 'availability', label: 'Availability' }];
+      result.rows = state.accounts.map((a) => ({ id: a.id, href: detailHref({ metric: 'ledger', account: a.id }), linkLabel: 'Account activity', values: { name: `${a.name}${a.mask ? ` ···· ${a.mask}` : ''}`, kind: LIABILITY_TYPES.has(a.type) ? 'Liability' : 'Asset', balance: a.balances.current, available: a.balances.available, limit: a.balances.limit, currency: a.currency, source: a.source, availability: a.availability === 'unavailable' ? 'Not reported by Plaid; history retained' : 'Reported' } }));
       result.rows.push(...state.manualEntries.map((m) => ({ id: m.id, href: '/accounts', linkLabel: 'Edit manual entry', values: { name: m.name, kind: m.kind, balance: m.value, available: null, limit: null, currency, source: `Manual · ${m.asOf}` } })));
     }
     if (new Set(state.accounts.map((a) => a.currency)).size > 1) { result.summary = []; result.notes.push('Multiple currencies. No converted total is available. Read each account in its reported currency.'); }
@@ -223,6 +224,9 @@ export function resolveDetail(full: AppState, query: DetailQuery): DetailData {
     result.notes.push('Net spending = posted purchases − refunds + estimates. A negative total means credits exceeded charges.');
   }
   add('Contributing entries', result.rows.length, 'number');
+  const estimateNotes = [...new Set(transactions.filter(isSyntheticBaseline).map((t) => t.note).filter((note): note is string => !!note))];
+  result.notes.push(...estimateNotes);
+  if (estimateNotes.length) result.actions.push({ label: 'Manage estimates and import history', href: '/settings' });
   if (query.statistic === 'monthly') { const count = query.months?.length ?? new Set(transactions.map((t) => t.date.slice(0, 7))).size; add('Months in average', count, 'number'); add('Monthly average', count ? total / count : null); }
   if (query.statistic === 'average') { const count = transactions.filter((t) => metric === 'income' ? isIncome(t) : t.amount > 0 && !isSyntheticBaseline(t)).length; add('Count used for average', count, 'number'); add('Average', count ? total / count : null); }
   if (metric === 'income') { add('Months paid', new Set(transactions.map((t) => t.date.slice(0, 7))).size, 'number'); }

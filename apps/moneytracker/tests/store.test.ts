@@ -30,6 +30,7 @@ test("local storage preserves data through migration and conflicting writes", as
     legacy.baselines = [{ id: "rent", name: "Rent", amount: 2000,
       category: "RENT_AND_UTILITIES", startMonth: "2026-01" }];
     legacy.biltConfig = { statementDay: 17, housingOverride: 2000 };
+    legacy.cardStatuses = { "sapphire-reserve": "closed" };
     await writeFile(path.join(directory, ".data/state.enc"), JSON.stringify(legacy));
     const current = bundle("existing");
     current.item.institutionName = "Newer saved name";
@@ -43,6 +44,7 @@ test("local storage preserves data through migration and conflicting writes", as
       const meta = await loadMeta();
       assert.deepEqual(meta.baselines, legacy.baselines);
       assert.deepEqual(meta.biltConfig, legacy.biltConfig);
+      assert.deepEqual(meta.cardStatuses, legacy.cardStatuses);
       assert.equal((await loadItemBundle("existing"))?.item.institutionName, "Newer saved name");
       assert.equal((await loadItemBundle("missing"))?.item.id, "missing");
     });
@@ -59,6 +61,7 @@ test("local storage preserves data through migration and conflicting writes", as
       const stored = await loadMeta();
       assert.equal(stored.biltConfig?.statementDay, 21);
       assert.deepEqual(stored.baselines, legacy.baselines);
+      assert.deepEqual(stored.cardStatuses, legacy.cardStatuses);
       assert.equal((await readFile(path.join(storageDirectory, "meta.enc"), "utf8")).includes("storageRevision"), false);
     });
 

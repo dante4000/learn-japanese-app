@@ -48,6 +48,9 @@ export interface Account {
   currency: string; // ISO 4217, e.g. USD
   balances: AccountBalances;
   source: DataSource;
+  /** Missing from a successful full account refresh; history stays available. */
+  availability?: "reported" | "unavailable";
+  lastReportedBalances?: AccountBalances;
 }
 
 export interface Transaction {
@@ -166,6 +169,7 @@ export interface AppState {
   snapshots: NetWorthSnapshot[];
   biltConfig?: BiltConfig;
   employerHousingSupport?: EmployerHousingSupport | null;
+  cardStatuses?: Record<string, "active" | "closed">;
   updatedAt: string | null;
 }
 
@@ -189,6 +193,7 @@ export interface MetaDoc {
   snapshots: NetWorthSnapshot[];
   biltConfig?: BiltConfig;
   employerHousingSupport?: EmployerHousingSupport | null;
+  cardStatuses?: Record<string, "active" | "closed">;
 }
 
 export function emptyMeta(): MetaDoc {

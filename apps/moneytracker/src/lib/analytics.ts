@@ -310,6 +310,9 @@ export function injectBaselines(state: AppState): AppState {
   // A posted bill blocks an estimate even if a refund also posts this month.
   // Refund timing cannot prove which billing period needs a replacement charge.
   const posted = transactions.filter((t) => t.amount > 0 && isSpend(t));
+  const biltIds = new Set(state.accounts.filter((a) => /bilt.*obsidian/i.test(`${a.name} ${a.officialName ?? ""}`)).map((a) => a.id));
+  const biltFirstRecord = transactions.filter((t) => t.source === "plaid" && biltIds.has(t.accountId)).map((t) => t.date).sort()[0];
+  const biltFirstRent = posted.filter((t) => t.source === "plaid" && biltIds.has(t.accountId) && isHousingTransaction(t)).map((t) => t.date).sort()[0];
   const synthetic: Transaction[] = [];
 
   let month = earliest;
@@ -350,7 +353,9 @@ export function injectBaselines(state: AppState): AppState {
         paymentChannel: null,
         source: "manual",
         userCategory: null,
-        note: "Estimated recurring baseline; no matching posted charge",
+        note: isHousingBaseline(b) && biltFirstRecord && biltFirstRent && month < monthKey(biltFirstRent)
+          ? `Previous Bilt card history is missing. The Bilt Obsidian feed starts ${biltFirstRecord}; its first posted housing charge is ${biltFirstRent}. This month uses your saved rent amount, not a confirmed payment. Old-card autopayments do not identify the rent portion. Import the old card's itemized charges to replace this estimate.`
+          : "Uses your saved recurring amount because no matching posted charge is available. This is an estimate, not a confirmed payment.",
         hidden: false,
       });
     }
@@ -995,7 +1000,8 @@ export function detectRecurringStreams(state: AppState, today = todayKey()): Rec
 
 /** Plaid's streams plus everything our own detector recovered that Plaid missed. */
 export function allRecurringStreams(state: AppState, today = todayKey()): RecurringStream[] {
-  return [...state.recurring, ...detectRecurringStreams(state, today)];
+  const unavailable = new Set(state.accounts.filter((a) => a.availability === "unavailable").map((a) => a.id));
+  return [...state.recurring, ...detectRecurringStreams(state, today)].map((r) => unavailable.has(r.accountId) ? { ...r, isActive: false } : r);
 }
 
 /**

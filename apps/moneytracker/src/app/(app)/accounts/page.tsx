@@ -30,6 +30,7 @@ function AccountRow({
         <div className="text-xs text-faint">
           {a.subtype || a.type}
           {a.mask ? ` ···· ${a.mask}` : ""}
+          {a.availability === "unavailable" ? " · Not reported by Plaid · history retained" : ""}
         </div>
       </div>
       <span
@@ -38,7 +39,7 @@ function AccountRow({
         {/* For a liability the headline is what you owe (−balance): a positive
             balance shows as −$X (debt), a negative balance as +$X (a credit in
             your favor) rather than misreading as more debt. */}
-        {isLiability
+        {a.availability === "unavailable" ? "Not reported" : isLiability
           ? formatMoney(-bal, currency, { sign: true })
           : formatMoney(bal, currency)}
       </span>

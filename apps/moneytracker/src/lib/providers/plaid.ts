@@ -204,6 +204,7 @@ export async function plaidSync(item: Item): Promise<SyncResult> {
   let cursor = item.cursor ?? undefined;
   let hasMore = true;
   let accounts: Account[] = [];
+  let accountsComplete = false;
 
   // /transactions/sync pages through changes since the stored cursor.
   while (hasMore) {
@@ -228,6 +229,7 @@ export async function plaidSync(item: Item): Promise<SyncResult> {
   try {
     const acctRes = await client.accountsGet({ access_token: accessToken });
     accounts = acctRes.data.accounts.map((a) => mapAccount(a, item.id));
+    accountsComplete = true;
   } catch {
     // keep whatever the sync pages reported
   }
@@ -249,6 +251,7 @@ export async function plaidSync(item: Item): Promise<SyncResult> {
 
   return {
     accounts,
+    accountsComplete,
     added,
     modified,
     removed,

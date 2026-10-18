@@ -7,6 +7,7 @@ import {
 } from "../src/lib/analytics";
 import { biltEverydaySpend, biltHousingRewards, housingBaseline, statementCycle } from "../src/lib/bilt";
 import { isHousingTransaction } from "../src/lib/categories";
+import { resolveDetail } from "../src/lib/details";
 
 let sequence = 0;
 function transaction(amount: number, fields: Partial<Transaction> = {}): Transaction {
@@ -22,6 +23,28 @@ const rent: RecurringBaseline = {
   id: "rent", name: "Rent & Parking", amount: 4100,
   category: "RENT_AND_UTILITIES", startMonth: "2026-01",
 };
+
+test("old Bilt history gap explains estimates and imported rent replaces them", () => {
+  const history = state([
+    transaction(-1000, { date: "2025-11-15", accountId: "checking", categoryPrimary: "INCOME" }),
+    transaction(20, { date: "2026-02-07", categoryPrimary: "FOOD_AND_DRINK", categoryDetailed: null, name: "Cafe", merchantName: "Cafe" }),
+    transaction(4107.54, { date: "2026-03-02" }),
+  ], [{ ...rent, startMonth: "2025-11" }]);
+  history.accounts = [{ id: "bilt", itemId: "bilt-item", name: "Bilt Obsidian Card", officialName: null, mask: null, type: "credit", subtype: "credit card", currency: "USD", source: "plaid", balances: { current: 0, available: null, limit: null } }];
+  const reconciled = injectBaselines(history);
+  const detail = resolveDetail(reconciled, { metric: "spending", part: "estimates", months: ["2025-11", "2025-12", "2026-01", "2026-02"] });
+  assert.equal(detail.rows.length, 4);
+  assert.equal(detail.summary.find((s) => s.label === "Estimates")?.value, 16400);
+  assert.match(detail.notes.join(" "), /Previous Bilt card history is missing/);
+  assert.match(detail.notes.join(" "), /2026-02-07.*2026-03-02/);
+  assert.equal(detail.rows[0].values.status, "Estimated · no posted charge");
+  const record = resolveDetail(reconciled, { metric: "transaction", record: reconciled.transactions.find((t) => isSyntheticBaseline(t) && t.date === "2026-02-01")!.id });
+  assert.match(record.notes.join(" "), /not a confirmed payment/);
+  const later = estimates(reconciled).find((t) => t.date === "2026-06-01")!;
+  assert.doesNotMatch(later.note!, /Previous Bilt/);
+  const imported = injectBaselines({ ...history, transactions: [...history.transactions, transaction(4095, { date: "2026-01-02", accountId: "old-bilt", source: "csv" })] });
+  assert.equal(estimates(imported).some((t) => t.date === "2026-01-01"), false);
+});
 function state(transactions: Transaction[], baselines = [rent]): AppState {
   return { ...emptyState(), baselines, transactions: [
     transaction(-1000, { name: "Salary", merchantName: "Employer", categoryPrimary: "INCOME", categoryDetailed: null }),

@@ -12,6 +12,7 @@ import {
   CreditUsage,
   PointsLine,
   RenewalInfo,
+  CardStatus,
   computeCardRoi,
   maxCreditsValue,
 } from "@/lib/cards";
@@ -50,6 +51,9 @@ export interface CardLive {
 
 export interface CardViewData {
   card: CardCatalogEntry;
+  status: CardStatus;
+  reported: boolean;
+  historyAccountId?: string;
   live: CardLive | null;
   /** Auto-detected renewal date + countdown, or null when undetectable. */
   renewal: RenewalInfo | null;
@@ -173,7 +177,7 @@ function renewalShort(daysUntil: number): string {
 }
 
 export function CreditCardsView({
-  cards,
+  cards: allCards,
   unmatched,
   currency,
 }: {
@@ -181,6 +185,34 @@ export function CreditCardsView({
   unmatched: UnmatchedAccount[];
   currency: string;
 }) {
+  const [statusOverrides, setStatusOverrides] = useState<Record<string, "active" | "closed">>({});
+  const [savingStatus, setSavingStatus] = useState<string | null>(null);
+  const [statusError, setStatusError] = useState<string | null>(null);
+  const classified = useMemo(() => allCards.map((entry): CardViewData => {
+    const saved = statusOverrides[entry.card.cardKey];
+    const status = saved === "closed" ? "closed" : saved === "active"
+      ? entry.reported ? "active" : entry.historyAccountId ? "unavailable" : "unlinked"
+      : entry.status;
+    return { ...entry, status };
+  }), [allCards, statusOverrides]);
+  const cards = useMemo(() => classified.filter((card) => card.status === "active"), [classified]);
+  const inactiveCards = classified.filter((card) => card.status !== "active");
+
+  async function saveStatus(data: CardViewData, status: "active" | "closed") {
+    setSavingStatus(data.card.cardKey);
+    setStatusError(null);
+    try {
+      const response = await fetch("/api/cards/status", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ cardKey: data.card.cardKey, status }),
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "Could not save card status.");
+      setStatusOverrides((previous) => ({ ...previous, [data.card.cardKey]: status }));
+    } catch (error) {
+      setStatusError(error instanceof Error ? error.message : "Could not save card status. Try again.");
+    } finally { setSavingStatus(null); }
+  }
   // Manual overrides layered on top of auto-detection. Starts empty (everything
   // follows detection); the user only ever adds an entry by correcting a box.
   const [overrides, setOverrides] = useState<OverrideMap>({});
@@ -408,6 +440,7 @@ export function CreditCardsView({
 
   return (
     <div>
+      {statusError && <p role="alert" className="mb-4 text-sm text-coral">{statusError}</p>}
       {/* ── Portfolio summary ─────────────────────────────────────────── */}
       <div className="mb-5 grid grid-cols-1 gap-3 min-[420px]:grid-cols-2 sm:gap-4 lg:grid-cols-4">
         <Stat
@@ -415,7 +448,7 @@ export function CreditCardsView({
           onInspect={() => setPortfolioDetail("Annual fees")}
           value={formatMoney(totals.fees, currency, { cents: false })}
           accent="coral"
-          sub={`${cards.length} cards`}
+          sub={`${cards.length} active linked cards`}
         />
         <Stat
           label="Credits you capture"
@@ -447,7 +480,7 @@ export function CreditCardsView({
         />
       </div>
 
-      {portfolioDetail && <section className="mb-5 rounded-xl border hairline bg-surface p-4"><div className="mb-3 flex justify-between gap-3"><h2 className="text-lg text-cream">{portfolioDetail} · by card</h2><button type="button" onClick={() => setPortfolioDetail(null)} className="detail-link">Close breakdown</button></div><p className="mb-4 text-sm text-muted">Net value = projected annual credits + estimated points at cash value − annual fee. Captured credits use your current overrides. Future credit periods are estimates. Unlinked cards use typical capture estimates.</p><DataTable title="Card value calculation" currency={currency} columns={[
+      {portfolioDetail && <section className="mb-5 rounded-xl border hairline bg-surface p-4"><div className="mb-3 flex justify-between gap-3"><h2 className="text-lg text-cream">{portfolioDetail} · by card</h2><button type="button" onClick={() => setPortfolioDetail(null)} className="detail-link">Close breakdown</button></div><p className="mb-4 text-sm text-muted">Net value = projected annual credits + estimated points at cash value − annual fee. Captured credits use your current overrides. Future credit periods are estimates. Only active linked cards contribute.</p><DataTable title="Card value calculation" currency={currency} columns={[
         { key: "card", label: "Card" }, { key: "fee", label: "Annual fee", format: "money", total: true }, { key: "captured", label: "Captured credits", format: "money", total: true }, { key: "projected", label: "Projected credits", format: "money", total: true }, { key: "points", label: "Points cash value", format: "money", total: true }, { key: "net", label: "Net value", format: "money", total: true }, { key: "basis", label: "Basis" }
       ]} rows={cards.map(({ card, live }) => ({ id: card.cardKey, values: { card: card.displayName, fee: card.annualFee, captured: capturedForCard(card), projected: projectedCapturedForCard(card), points: live?.estPointsCashValue ?? 0, net: projectedCapturedForCard(card) + (live?.estPointsCashValue ?? 0) - card.annualFee, basis: live ? "Linked spend + current overrides" : "Typical capture estimate" } }))} /></section>}
 
@@ -456,7 +489,7 @@ export function CreditCardsView({
         <span className="text-blue">projected annual credits</span> +{" "}
         <span className="text-slate">points (at cash value)</span> − the annual
         fee. The projection includes captured credits and estimated future periods.
-        Unlinked cards use typical capture estimates. Credits tick themselves from your transactions;
+        Closed, unlinked, and unavailable cards are excluded. Credits tick themselves from your transactions;
         points are <em>estimated</em> by applying each card&rsquo;s earn rates to
         your categorized spend, shown as a range — conservative cash-out first,
         transfer-partner upside second. Perks aren&rsquo;t in the number
@@ -557,6 +590,8 @@ export function CreditCardsView({
                   onClick={() => setExpanded(open ? null : card.cardKey)}
                 />
                 {open && (
+                  <div className="border-t hairline">
+                  <div className="flex flex-wrap items-center justify-between gap-3 px-5 pt-4 text-xs text-muted"><span>Active linked card. Closing tracking keeps its transaction history.</span><button type="button" disabled={savingStatus !== null} className="detail-link min-h-11" onClick={() => saveStatus(cards.find((entry) => entry.card.cardKey === card.cardKey)!, "closed")}>{savingStatus === card.cardKey ? "Saving…" : "Mark closed"}</button></div>
                   <CardDetail
                     card={card}
                     live={live}
@@ -571,12 +606,24 @@ export function CreditCardsView({
                     onToggleSlot={(name, slot) => toggleSlot(card.cardKey, name, slot)}
                     onClearSlot={(name, key) => clearSlotOverride(card.cardKey, name, key)}
                   />
+                  </div>
                 )}
               </Fragment>
             );
           })}
         </div>
       )}
+
+      {inactiveCards.length > 0 && <section className="card mt-5 p-5">
+        <h2 className="text-lg text-cream">Closed and unlinked cards</h2>
+        <p className="mt-1 mb-3 text-sm text-muted">Excluded from current fees, benefits, points projections, and renewal reminders. Saved transactions remain in Activity. Card status does not change bank balances or close an account at the bank.</p>
+        <ul className="divide-y divide-[var(--color-line)]">{inactiveCards.map((entry) => <li key={entry.card.cardKey} className="flex flex-wrap items-center gap-3 py-4">
+          <div className="min-w-0 flex-1"><p className="text-sm text-cream">{entry.card.displayName}</p><p className="text-xs text-muted">{entry.status === "closed" ? "Closed · confirmed by you" : entry.status === "unavailable" ? "Not reported by Plaid · may be closed or no longer shared" : "No linked account · catalog only"}</p></div>
+          {entry.historyAccountId && <DetailLink query={{ metric: "ledger", account: entry.historyAccountId }}>View history</DetailLink>}
+          {entry.status === "closed" && <button type="button" disabled={savingStatus !== null} className="detail-link min-h-11 text-sm" onClick={() => saveStatus(entry, "active")}>{savingStatus === entry.card.cardKey ? "Saving…" : "Undo closed status"}</button>}
+          {entry.status === "unavailable" && <button type="button" disabled={savingStatus !== null} className="detail-link min-h-11 text-sm" onClick={() => saveStatus(entry, "closed")}>{savingStatus === entry.card.cardKey ? "Saving…" : "Mark closed"}</button>}
+        </li>)}</ul>
+      </section>}
 
       {/* Unmatched credit accounts */}
       {unmatched.length > 0 && (

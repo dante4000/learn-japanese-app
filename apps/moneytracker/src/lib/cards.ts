@@ -15,6 +15,17 @@ import { AppState, Account, Transaction } from "./types";
 import { effectiveCategory, isSpend } from "./analytics";
 import { isHousingTransaction } from "./categories";
 
+export type CardStatus = "active" | "closed" | "unlinked" | "unavailable";
+
+export function cardStatus(state: AppState, cardKey: string, account?: Account | null): CardStatus {
+  // The owner confirmed Reserve is closed. No closure date was supplied.
+  const saved = state.cardStatuses?.[cardKey] ?? (cardKey === "sapphire-reserve" ? "closed" : undefined);
+  if (saved === "closed") return "closed";
+  if (!account) return "unlinked";
+  if (account.availability === "unavailable") return "unavailable";
+  return "active";
+}
+
 export type CreditFrequency =
   | "annual"
   | "semiannual"

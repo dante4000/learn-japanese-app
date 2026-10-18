@@ -7,6 +7,7 @@ import {
   estimatePointsDetailed,
   detectCreditUsage,
   detectRenewal,
+  cardStatus,
 } from "@/lib/cards";
 import { Account } from "@/lib/types";
 import { PageHeading } from "@/components/ui";
@@ -26,7 +27,7 @@ export default async function CardsPage() {
   const matchedAccountIds = new Set<string>();
   for (const a of creditAccounts) {
     const key = matchAccountToCard(a);
-    if (key && !matchByCard.has(key)) {
+    if (key && (!matchByCard.has(key) || matchByCard.get(key)?.availability === "unavailable")) {
       matchByCard.set(key, a);
       matchedAccountIds.add(a.id);
     }
@@ -34,11 +35,15 @@ export default async function CardsPage() {
 
   const cards: CardViewData[] = CARD_CATALOG.map((card) => {
     const acct = matchByCard.get(card.cardKey) ?? null;
-    if (!acct) return { card, live: null, renewal: null };
+    const status = cardStatus(state, card.cardKey, acct);
+    if (!acct) return { card, status, reported: false, live: null, renewal: null };
     const spend = cardSpend(state, acct.id);
     const est = estimatePointsDetailed(card, cardSpendTxns(state, acct.id, true), spend.periodStart);
     return {
       card,
+      status,
+      reported: acct.availability !== "unavailable",
+      historyAccountId: acct.id,
       renewal: detectRenewal(state, acct.id, card),
       live: {
         accountId: acct.id,
@@ -60,7 +65,7 @@ export default async function CardsPage() {
   });
 
   const unmatched = creditAccounts
-    .filter((a) => !matchedAccountIds.has(a.id))
+    .filter((a) => !matchedAccountIds.has(a.id) && a.availability !== "unavailable")
     .map((a) => ({
       name: a.name,
       mask: a.mask,

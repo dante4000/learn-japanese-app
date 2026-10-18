@@ -4,6 +4,8 @@ import { Account, RecurringStream, Transaction } from "../types";
 export interface SyncResult {
   institutionName?: string;
   accounts: Account[];
+  /** True only after a successful /accounts/get, including an empty result. */
+  accountsComplete?: boolean;
   added: Transaction[];
   modified: Transaction[];
   removed: string[]; // transaction ids that no longer exist

@@ -410,6 +410,7 @@ async function ensureMigrated(): Promise<void> {
       snapshots: legacy.snapshots ?? [],
       biltConfig: legacy.biltConfig,
       employerHousingSupport: legacy.employerHousingSupport,
+      cardStatuses: legacy.cardStatuses,
     };
     try {
       await writeDoc("meta", meta);
@@ -528,6 +529,7 @@ function assembleState(bundles: ItemBundle[], meta: MetaDoc): AppState {
   state.snapshots = meta.snapshots;
   state.biltConfig = meta.biltConfig;
   state.employerHousingSupport = meta.employerHousingSupport ?? null;
+  state.cardStatuses = meta.cardStatuses;
   return injectBaselines(normalizeAccountTransactions(state));
 }
 

@@ -61,6 +61,21 @@ export function buildBundle(
   const transactions = merged.sort((a, b) =>
     b.date.localeCompare(a.date),
   );
+  const reportedIds = new Set(result.accounts.map((a) => a.id));
+  const accounts = [
+    ...result.accounts.map((a) => {
+      const previous = prev?.accounts.find((saved) => saved.id === a.id);
+      if (!result.accountsComplete && previous?.availability === "unavailable") return previous;
+      return { ...a, availability: "reported" as const };
+    }),
+    ...(prev?.accounts ?? []).filter((a) => !reportedIds.has(a.id)).map((a) =>
+      result.accountsComplete ? {
+        ...a,
+        availability: "unavailable" as const,
+        lastReportedBalances: a.lastReportedBalances ?? a.balances,
+        balances: { current: null, available: null, limit: null },
+      } : a),
+  ];
 
   return {
     item: {
@@ -71,11 +86,7 @@ export function buildBundle(
       error: null,
       institutionName: result.institutionName || item.institutionName,
     },
-    // A sync reporting zero accounts is a provider hiccup, not every account
-    // closing at once — keep the previous accounts rather than orphaning all
-    // of the item's transactions (no name, no balance, unreachable by the
-    // account filter).
-    accounts: result.accounts.length ? result.accounts : (prev?.accounts ?? []),
+    accounts,
     transactions,
     recurring: result.recurring ?? prev?.recurring ?? [],
   };

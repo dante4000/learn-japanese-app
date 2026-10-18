@@ -237,3 +237,21 @@ The specification is in
 
 Click the backdrop left of a detail panel to close it. Panel, content, and
 control transitions respect the reduced-motion preference.
+
+Current card totals and reminders include only active linked cards. Closed,
+unlinked, and unavailable cards have a separate section. Closing card tracking
+keeps transactions and bank balances. Status changes persist in encrypted
+metadata and can be reversed. Reserve defaults to closed because the owner
+confirmed its closure; no closure date is assumed.
+
+A successful Plaid account refresh can mark a missing account as unavailable.
+Its name and transaction history remain available. Current balances become
+unknown; the last reported balances remain stored. Failed or partial account
+refreshes do not archive accounts. An account that returns in a full refresh
+becomes reported again. A user-confirmed card closure still takes priority.
+
+Rent estimates before the first Bilt Obsidian housing charge explain the old
+Bilt card history gap and show the new feed's first record and first rent date.
+They use the saved rent amount, not the old card's autopayment total. Imported
+itemized rent charges replace matching monthly estimates. Estimate details
+never label synthetic rows as posted transactions.
