@@ -1,3 +1,4 @@
+import { nonIncomeDepositReason } from "@/lib/categories";
 import { loadScopedState } from "@/lib/scoped-state";
 import { monthlyEquivalent } from "@/lib/recurring";
 import { RecurringStream } from "@/lib/types";
@@ -122,7 +123,7 @@ export default async function RecurringPage({
     .filter((s) => s.type === "outflow" && !isTransferStream(s))
     .sort((a, b) => monthlyEquivalent(b) - monthlyEquivalent(a));
   const income = streams
-    .filter((s) => s.type === "inflow" && !isTransferStream(s))
+    .filter((s) => s.type === "inflow" && !isTransferStream(s) && !nonIncomeDepositReason({ name: s.description, merchantName: s.merchantName }))
     .sort((a, b) => monthlyEquivalent(b) - monthlyEquivalent(a));
 
   const monthlySubs = subs

@@ -142,7 +142,7 @@ function guessCategory(description: string, amount: number, explicit: string): s
       return cat === "TRANSFER_OUT" && amount < 0 ? "TRANSFER_IN" : cat;
     }
   }
-  return amount < 0 ? "INCOME" : "OTHER";
+  return amount < 0 ? "OTHER_INFLOW" : "OTHER";
 }
 
 /** CSV history must end before provider history begins for the same account. */

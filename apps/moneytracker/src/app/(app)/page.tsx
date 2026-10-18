@@ -1,3 +1,4 @@
+import { CashFlowTrends } from "@/components/CashFlowTrends";
 import Link from "@/components/AppLink";
 import { EstimatedBillsNotice } from "@/components/EstimatedBillsNotice";
 import { loadScopedState } from "@/lib/scoped-state";
@@ -122,6 +123,7 @@ export default async function OverviewPage() {
             </div>
             <div className="mt-6">
               <NetWorthArea snapshots={history} currency={cur} />
+              <p className="mt-3 text-xs text-muted">Historical balances are reconstructed from transactions. Saved balance snapshots take priority where available.</p>
             </div>
           </>
         )}
@@ -229,6 +231,8 @@ export default async function OverviewPage() {
       >
         <CashFlowDetail summary={cashflow} currency={cur} />
       </SectionCard>
+
+      <CashFlowTrends rows={cashflow.rows} currency={cur} />
 
       {/* Merchants + recent */}
       <div className="mt-5 grid gap-4 lg:grid-cols-2">

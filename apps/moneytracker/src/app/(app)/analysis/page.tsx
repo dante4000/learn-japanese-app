@@ -1,3 +1,4 @@
+import { CashFlowTrends } from "@/components/CashFlowTrends";
 import Link from "@/components/AppLink";
 import { EstimatedBillsNotice } from "@/components/EstimatedBillsNotice";
 import { loadScopedState } from "@/lib/scoped-state";
@@ -108,23 +109,12 @@ export default async function AnalysisPage() {
         />
       </div>
 
+      <CashFlowTrends rows={flows} currency={cur} />
+
       {/* 2 · Cash flow */}
-      <SectionCard title="Cash flow, month by month" delay={200}>
+      <SectionCard title="Cash flow, month by month" delay={200} className="mt-5">
         <CashFlowBars data={flows} currency={cur} />
-        <div className="mt-2 flex justify-between gap-3">
-          {flows.map((f) => (
-            <span
-              key={f.month}
-              className="tnum flex-1 text-center text-[0.62rem] text-muted"
-              title={`${formatMonth(f.month)}: saved ${formatMoney(f.net, cur)}`}
-            >
-              {f.income > 0 ? `${Math.round((f.net / f.income) * 100)}%` : "—"}
-            </span>
-          ))}
-        </div>
-        <p className="mt-1 text-center text-[0.62rem] uppercase tracking-wider text-faint">
-          saved per month
-        </p>
+
         {flows.length > 0 && (
           <div className="mt-5 grid gap-2 sm:grid-cols-2">
             <div className="flex flex-wrap items-center gap-y-1 rounded-xl border hairline bg-surface px-3 py-2.5 text-sm">

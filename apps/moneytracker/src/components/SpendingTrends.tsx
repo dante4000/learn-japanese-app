@@ -1,3 +1,4 @@
+import { TimeSeriesChart } from "./charts/TimeSeriesChart";
 import Link from "@/components/AppLink";
 import { AppState } from "@/lib/types";
 import { spendingPace, categoryTrends } from "@/lib/analytics";
@@ -21,25 +22,6 @@ export function SpendingTrends({
   const pace = spendingPace(state, month, prevMonth);
   const { months, trends } = categoryTrends(state, 6, 6);
 
-  // Build the two cumulative pace lines.
-  const W = 720;
-  const H = 170;
-  const pad = 10;
-  const maxY = Math.max(
-    1,
-    ...pace.points.map((p) => Math.max(p.current ?? 0, p.previous ?? 0)),
-  );
-  const minY = Math.min(0, ...pace.points.map((p) => Math.min(p.current ?? 0, p.previous ?? 0)));
-  const x = (day: number) =>
-    pad + ((day - 1) / Math.max(1, pace.daysInMonth - 1)) * (W - pad * 2);
-  const y = (v: number) => H - pad - ((v - minY) / (maxY - minY)) * (H - pad * 2);
-  const pathFor = (key: "current" | "previous") => {
-    const pts = pace.points
-      .filter((p) => p[key] != null)
-      .map((p) => [x(p.day), y(p[key] as number)] as const);
-    return pts.map((p, i) => `${i ? "L" : "M"}${p[0]},${p[1]}`).join(" ");
-  };
-
   const paceDelta =
     pace.previousToDate != null ? pace.currentToDate - pace.previousToDate : null;
 
@@ -60,33 +42,25 @@ export function SpendingTrends({
           ) : null
         }
       >
-        <svg aria-hidden="true" viewBox={`0 0 ${W} ${H}`} className="w-full" style={{ height: H }}>
-          {prevMonth && (
-            <path
-              d={pathFor("previous")}
-              fill="none"
-              stroke="var(--color-muted)"
-              strokeWidth={1.5}
-              strokeDasharray="4 4"
-              opacity={0.7}
-            />
-          )}
-          <path
-            d={pathFor("current")}
-            fill="none"
-            stroke="var(--color-coral)"
-            strokeWidth={2.5}
-            strokeLinejoin="round"
-            strokeLinecap="round"
-          />
-        </svg>
-        <details className="mt-3 text-xs text-muted">
-          <summary className="cursor-pointer">View spending pace data</summary>
-          <div className="mt-2 overflow-x-auto"><table className="w-full text-left">
-            <thead><tr><th scope="col" className="px-2 py-1">Day</th><th scope="col" className="px-2 py-1">{formatMonth(month)}</th>{prevMonth && <th scope="col" className="px-2 py-1">{formatMonth(prevMonth)}</th>}</tr></thead>
-            <tbody>{pace.points.map((p) => <tr key={p.day}><th scope="row" className="px-2 py-1 font-normal">{p.day}</th><td className="tnum px-2 py-1">{p.current == null ? "—" : formatMoney(p.current, currency)}</td>{prevMonth && <td className="tnum px-2 py-1">{p.previous == null ? "—" : formatMoney(p.previous, currency)}</td>}</tr>)}</tbody>
-          </table></div>
-        </details>
+        <TimeSeriesChart title="Cumulative spending by day" currency={currency} kind="line"
+          data={pace.points.map((p) => ({ label: String(p.day), values: { current: p.current, previous: p.previous } }))}
+          series={[
+            { key: "current", label: formatMonth(month), color: "var(--color-coral)" },
+            ...(prevMonth ? [{ key: "previous", label: formatMonth(prevMonth), color: "var(--color-muted)", dashed: true }] : []),
+          ]}
+          table={{ columns: [
+            { key: "day", label: "Day of month", format: "number" },
+            { key: "current", label: `${formatMonth(month)} cumulative`, format: "money" },
+            { key: "previous", label: prevMonth ? `${formatMonth(prevMonth)} cumulative` : "Prior month", format: "money" },
+            { key: "difference", label: "Difference", format: "money" },
+            { key: "differencePct", label: "Difference (%)", format: "percent" },
+          ], rows: pace.points.map((point, i) => {
+            const difference = point.current != null && point.previous != null ? point.current - point.previous : null;
+            return { id: String(i), values: {
+              day: point.day, current: point.current, previous: point.previous,
+              difference, differencePct: difference != null && point.previous ? difference / Math.abs(point.previous) * 100 : null,
+            } };
+          }) }} />
         <div className="mt-2 flex flex-wrap items-center justify-center gap-x-5 gap-y-1 text-xs text-muted">
           <span className="flex items-center gap-1.5">
             <span className="h-0.5 w-4 rounded bg-coral" /> {formatMonth(month)} (

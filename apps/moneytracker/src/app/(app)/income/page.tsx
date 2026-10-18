@@ -1,3 +1,6 @@
+import { DataTable } from "@/components/DataTable";
+import { categoryMeta, nonIncomeDepositReason } from "@/lib/categories";
+import { isIncome, isSpend, effectiveCategory } from "@/lib/analytics";
 import { loadScopedState } from "@/lib/scoped-state";
 import {
   incomeBreakdown,
@@ -50,8 +53,10 @@ export default async function IncomePage({
   const requestedSource = sp.src ? incomeSourceLabel(null, sp.src) : "";
   const selectedSource = sources.includes(requestedSource) ? requestedSource : "";
   const state = supportOnly ? { ...fullState, transactions: [] } : selectedSource ? filterBySource(fullState, selectedSource) : fullState;
+  const postedMonths = [...new Set(fullState.transactions.filter((t) => !t.hidden && !t.pending).map((t) => t.date.slice(0, 7)))].sort();
   const months = allIncome.months.length
     ? calendarMonths(allIncome.months[allIncome.months.length - 1], Math.max(12, allIncome.months.length))
+    : postedMonths.length ? calendarMonths(postedMonths[postedMonths.length - 1], 12)
     : support && !acct ? calendarMonths(todayKey().slice(0, 7), 12) : [];
   const visibleSupport = eligibleEmployerHousingSupport(support, supportOnly ? "__employer_housing__" : selectedSource, Boolean(acct));
 
@@ -60,7 +65,7 @@ export default async function IncomePage({
       <div>
         <PageHeading
           title="Income"
-          subtitle="Where all your money comes from, month by month."
+          subtitle="Income from your bank records. Transfers, refunds, and other payouts stay separate."
         />
         {state.accounts.length === 0 ? (
           <EmptyState />
@@ -135,6 +140,8 @@ export default async function IncomePage({
 
   const supportTotal = employerHousingSupportTotal(visibleSupport, scopeMonths);
   const bigDeposits = largestDepositsForMonths(state, scopeMonths, 6);
+  const excluded = state.transactions.filter((t) => !t.hidden && !t.pending && t.amount < 0 && !isIncome(t) && !isSpend(t) && scopeMonths.includes(t.date.slice(0, 7))).sort((a, b) => b.date.localeCompare(a.date));
+  const excludedTotal = excluded.reduce((sum, t) => sum - t.amount, 0);
 
   // Reuse the stacked CompositionBars by mapping income segments into its shape.
   const comp: MonthComposition[] = chart.map((m) => ({
@@ -163,7 +170,7 @@ export default async function IncomePage({
               ? `${selectedSource} · recorded deposits, month by month.`
               : acct
                 ? `${acct.name} · where your money comes from, month by month.`
-                : "Where all your money comes from, month by month."
+                : "Income from your bank records. Transfers, refunds, and other payouts stay separate."
           }
         />
         <div className="mb-1 flex max-w-full flex-wrap items-center gap-2">
@@ -198,7 +205,7 @@ export default async function IncomePage({
           delay={120}
           sub={
             topSeg ? (
-              <span className="block max-w-[12rem] truncate">{topSeg.name}</span>
+              <span className="block break-words">{topSeg.name}</span>
             ) : (
               "—"
             )
@@ -222,6 +229,8 @@ export default async function IncomePage({
       </div>
 
       </>)}
+
+      {!supportOnly && <p className="mb-5 max-w-3xl text-sm leading-relaxed text-muted">Income excludes tax refunds, Shopify transfers, ticket and sports payouts, and refunds or reimbursements. New CSV deposits with no income evidence appear under Other deposits. You can change a category in Activity.</p>}
 
       {!acct && (visibleSupport || !support && !selectedSource) && (
         <SectionCard title="Employer-paid support · studio rent" className="mb-5">
@@ -252,20 +261,20 @@ export default async function IncomePage({
           showTotals
         />
         {legend.length > 0 && (
-          <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2">
+          <details className="mt-5 text-sm text-muted"><summary className="cursor-pointer">View all sources in this chart</summary><div className="mt-3 grid gap-3 sm:grid-cols-2">
             {legend.map((l) => (
-              <span key={l.name} className="flex items-center gap-2 text-xs">
+              <span key={l.name} className="flex min-w-0 items-start gap-2 text-sm">
                 <span
                   className="h-2.5 w-2.5 shrink-0 rounded-full"
                   style={{ background: l.color }}
                 />
-                <span className="text-cream-dim">{l.name}</span>
+                <span className="min-w-0 flex-1 break-words text-cream-dim">{l.name}</span>
                 <span className="tnum text-faint">
                   {formatMoney(l.total, cur, { cents: false })}
                 </span>
               </span>
             ))}
-          </div>
+          </div></details>
         )}
         <p className="mt-4 text-xs text-muted">
           Each bar is one month, split by who paid you. Click a bar — or pick a
@@ -304,7 +313,7 @@ export default async function IncomePage({
                         className="h-2.5 w-2.5 shrink-0 rounded-full"
                         style={{ background: s.color }}
                       />
-                      <span className="truncate text-cream-dim">{s.name}</span>
+                      <span className="min-w-0 flex-1 break-words text-cream-dim">{s.name}</span>
                       <span className="shrink-0 text-xs text-faint">
                         · {s.count}×
                       </span>
@@ -340,18 +349,54 @@ export default async function IncomePage({
       </SectionCard>
 
       <SectionCard title={`Recorded income by source · ${scopeLabel}`} className="mt-4">
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[380px] text-sm">
-            <thead><tr><th scope="col" className="py-2 text-left">Source</th><th scope="col" className="px-2 py-2 text-right">Recorded income</th><th scope="col" className="px-2 py-2 text-right">Deposits</th><th scope="col" className="py-2 text-right">Share</th></tr></thead>
-            <tbody className="divide-y divide-[var(--color-line)]">{focus.segments.map((source) => <tr key={source.name}>
-              <th scope="row" className="max-w-56 break-words py-3 text-left font-normal text-cream">{source.name}</th>
-              <td className="tnum whitespace-nowrap px-2 py-3 text-right text-blue">{formatMoney(source.total, cur)}</td>
-              <td className="tnum px-2 py-3 text-right">{source.count}</td>
-              <td className="tnum py-3 text-right">{focus.total ? Math.round(source.total / focus.total * 100) : 0}%</td>
-            </tr>)}</tbody>
-          </table>
-        </div>
+        <DataTable title={`Recorded income by source · ${scopeLabel}`} currency={cur} defaultSort={{ key: "income", direction: "desc" }}
+          columns={[
+            { key: "source", label: "Source" },
+            { key: "income", label: "Recorded income", format: "money", total: true },
+            { key: "count", label: "Deposits", format: "number", total: true },
+            { key: "share", label: "Income share", format: "percent" },
+            { key: "averageDeposit", label: "Average deposit", format: "money" },
+            { key: "monthlyAverage", label: "Monthly average", format: "money" },
+            { key: "activeMonths", label: "Months paid", format: "number" },
+            { key: "first", label: "First deposit", format: "date" },
+            { key: "last", label: "Latest deposit", format: "date" },
+          ]}
+          rows={focus.segments.map((source) => {
+            const deposits = state.transactions.filter((t) => isIncome(t) && scopeMonths.includes(t.date.slice(0, 7)) && incomeSourceLabel(t.merchantName, t.name) === source.name);
+            const dates = deposits.map((t) => t.date).sort();
+            return { id: source.name, href: `/transactions?category=INCOME&q=${encodeURIComponent(source.name)}${scope === "month" ? `&month=${selected}` : ""}`, values: {
+              source: source.name, income: source.total, count: source.count,
+              share: focus.total ? source.total / focus.total * 100 : null,
+              averageDeposit: source.count ? source.total / source.count : null,
+              monthlyAverage: source.total / nScope,
+              activeMonths: new Set(dates.map((date) => date.slice(0, 7))).size,
+              first: dates[0] ?? null, last: dates[dates.length - 1] ?? null,
+            } };
+          })} />
       </SectionCard>
+
+      {excluded.length > 0 && <SectionCard title={`Other money in · ${scopeLabel}`} className="mt-4">
+        <div className="flex flex-wrap items-baseline justify-between gap-3">
+          <p className="text-sm text-muted">{excluded.length} deposits excluded from income. Transfers can include money moved between your own accounts.</p>
+          <p className="tnum text-xl text-cream">{formatMoney(excludedTotal, cur)}</p>
+        </div>
+        <details className="mt-4" open>
+          <summary className="cursor-pointer text-sm text-muted">Review excluded deposits</summary>
+          <div className="mt-3"><DataTable title={`Excluded deposits · ${scopeLabel}`} currency={cur} defaultSort={{ key: "date", direction: "desc" }}
+            columns={[
+              { key: "date", label: "Date", format: "date" },
+              { key: "name", label: "Bank description" },
+              { key: "reason", label: "Exclusion reason" },
+              { key: "amount", label: "Deposit", format: "money", total: true },
+              { key: "account", label: "Account" },
+              { key: "source", label: "Data source" },
+            ]}
+            rows={excluded.map((t) => ({ id: t.id, href: `/transactions?q=${encodeURIComponent(t.name)}&month=${t.date.slice(0, 7)}`, values: {
+              date: t.date, name: t.name, reason: nonIncomeDepositReason(t) ?? categoryMeta(effectiveCategory(t)).label,
+              amount: -t.amount, account: state.accounts.find((a) => a.id === t.accountId)?.name ?? "Unknown account", source: t.source,
+            } }))} /></div>
+        </details>
+      </SectionCard>}
 
       {/* Largest deposits in scope */}
       {bigDeposits.length > 0 && (

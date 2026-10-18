@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { DataTable } from "../DataTable";
 import { NetWorthSnapshot } from "@/lib/types";
 import { formatMoney, formatCompact, formatDate } from "@/lib/format";
 
@@ -154,7 +155,7 @@ export function NetWorthArea({
   const range = RANGES.find((r) => r.key === rangeKey) ?? RANGES[RANGES.length - 1];
 
   // Snapshots inside the window, then downsampled by span so the line stays clean.
-  const data = useMemo(() => {
+  const scopedSnapshots = useMemo(() => {
     if (snapshots.length < 2) return snapshots;
     const last = parseTime(snapshots[snapshots.length - 1].date);
     const win =
@@ -163,14 +164,14 @@ export function NetWorthArea({
         : snapshots.filter(
             (s) => parseTime(s.date) >= last - range.days * 86_400_000,
           );
-    const scoped = win.length >= 2 ? win : snapshots;
-    const spanDays =
-      (parseTime(scoped[scoped.length - 1].date) - parseTime(scoped[0].date)) /
-      86_400_000;
-    const cadence: "day" | "week" | "month" =
-      spanDays <= 95 ? "day" : spanDays <= 740 ? "week" : "month";
-    return downsample(scoped, cadence);
+    return win.length >= 2 ? win : snapshots;
   }, [snapshots, range.days]);
+
+  const data = useMemo(() => {
+    if (scopedSnapshots.length < 2) return scopedSnapshots;
+    const spanDays = (parseTime(scopedSnapshots[scopedSnapshots.length - 1].date) - parseTime(scopedSnapshots[0].date)) / 86_400_000;
+    return downsample(scopedSnapshots, spanDays <= 95 ? "day" : spanDays <= 740 ? "week" : "month");
+  }, [scopedSnapshots]);
 
   const cadence: "day" | "week" | "month" = useMemo(() => {
     if (data.length < 2) return "day";
@@ -662,19 +663,37 @@ export function NetWorthArea({
           </div>
         </div>
       </div>
-      <details className="mt-3 text-xs text-muted">
-        <summary className="cursor-pointer">View net worth data</summary>
-        <div className="mt-2 overflow-x-auto">
-          <table className="w-full text-left">
-            <caption className="sr-only">Net worth and cash flow for {range.phrase}</caption>
-            <thead><tr>{["Date", "Net worth", "Assets", "Owed", "Income", "Spending"].map((label) => <th key={label} scope="col" className="whitespace-nowrap px-2 py-1">{label}</th>)}</tr></thead>
-            <tbody>{data.map((s) => <tr key={s.date}>
-              <th scope="row" className="whitespace-nowrap px-2 py-1 font-normal">{formatDate(s.date)}</th>
-              {[s.netWorth, s.totalAssets, s.totalLiabilities, s.income ?? 0, s.spending ?? 0].map((value, i) => <td key={i} className="tnum whitespace-nowrap px-2 py-1">{formatMoney(value, currency)}</td>)}
-            </tr>)}</tbody>
-          </table>
-        </div>
+      <details className="mt-4 text-sm text-muted">
+        <summary className="cursor-pointer py-2">Explore net worth data · {scopedSnapshots.length} records</summary>
+        <p className="my-3 text-xs text-muted">Every available daily record in this range. The chart may group records by week or month. Changes compare consecutive available records.</p>
+        <DataTable title={`Net worth · ${range.phrase}`} currency={currency} defaultSort={{ key: "date", direction: "desc" }}
+          columns={[
+            { key: "date", label: "Date", format: "date" },
+            { key: "netWorth", label: "Net worth", format: "money" },
+            { key: "assets", label: "Assets", format: "money" },
+            { key: "liabilities", label: "Liabilities", format: "money" },
+            { key: "change", label: "Net worth change", format: "money" },
+            { key: "changePct", label: "Change (%)", format: "percent" },
+            { key: "income", label: "Income", format: "money", total: true },
+            { key: "spending", label: "Net spending", format: "money", total: true },
+            { key: "net", label: "Net cash flow", format: "money", total: true },
+          ]}
+          rows={scopedSnapshots.map((s, i) => {
+            const prior = scopedSnapshots[i - 1];
+            const change = prior ? s.netWorth - prior.netWorth : null;
+            return { id: s.date, href: `/transactions?month=${s.date.slice(0, 7)}`, linkLabel: "Month activity", values: {
+              date: s.date, netWorth: s.netWorth, assets: s.totalAssets, liabilities: s.totalLiabilities,
+              change, changePct: prior?.netWorth && change != null ? change / Math.abs(prior.netWorth) * 100 : null,
+              income: s.income ?? null, spending: s.spending ?? null,
+              net: s.income != null && s.spending != null ? s.income - s.spending : null,
+            } };
+          })}
+          onSelectRow={(date) => {
+            const index = data.findIndex((s) => s.date >= date);
+            if (index >= 0) { setHover(index); if (scrollRef.current) scrollRef.current.scrollLeft = x(index) - scrollRef.current.clientWidth / 2; }
+          }} />
       </details>
+
     </div>
   );
 }

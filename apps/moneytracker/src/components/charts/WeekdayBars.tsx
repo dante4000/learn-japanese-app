@@ -1,44 +1,20 @@
 import { WeekdaySpend } from "@/lib/insights";
-import { formatMoney } from "@/lib/format";
+import { TimeSeriesChart } from "./TimeSeriesChart";
 
-/** Total spending per day of week — 7 bars in the house chart style. */
-export function WeekdayBars({
-  data,
-  currency = "USD",
-}: {
-  data: WeekdaySpend[];
-  currency?: string;
-}) {
-  const max = Math.max(1, ...data.map((d) => d.total));
-  return (
-    <div>
-    <div aria-hidden="true" className="flex h-40 items-end justify-between gap-1 sm:gap-3">
-      {data.map((d) => (
-        <div key={d.weekday} className="flex flex-1 flex-col items-center gap-2">
-          <div className="flex h-32 w-full items-end justify-center">
-            <div
-              className="w-full max-w-8 rounded-t-sm transition-[height] motion-reduce:transition-none"
-              style={{
-                height: `${(Math.max(0, d.total) / max) * 100}%`,
-                background:
-                  "linear-gradient(180deg, var(--color-coral), var(--color-coral-deep))",
-              }}
-              title={`${d.weekday}: ${formatMoney(d.total, currency)} · ${d.count}×`}
-            />
-          </div>
-          <span className="text-[0.62rem] uppercase tracking-wider text-faint">
-            {d.weekday}
-          </span>
-        </div>
-      ))}
-    </div>
-      <details className="mt-3 text-xs text-muted">
-        <summary className="cursor-pointer">View weekday spending data</summary>
-        <div className="mt-2 overflow-x-auto"><table className="w-full text-left">
-          <thead><tr><th scope="col" className="px-2 py-1">Weekday</th><th scope="col" className="px-2 py-1">Spending</th><th scope="col" className="px-2 py-1">Transactions</th></tr></thead>
-          <tbody>{data.map((d) => <tr key={d.weekday}><th scope="row" className="px-2 py-1 font-normal">{d.weekday}</th><td className="tnum whitespace-nowrap px-2 py-1">{formatMoney(d.total, currency)}</td><td className="tnum px-2 py-1">{d.count}</td></tr>)}</tbody>
-        </table></div>
-      </details>
-    </div>
-  );
+export function WeekdayBars({ data, currency = "USD" }: { data: WeekdaySpend[]; currency?: string }) {
+  const total = data.reduce((sum, d) => sum + d.total, 0);
+  return <TimeSeriesChart title="Spending by weekday" currency={currency}
+    data={data.map((d) => ({ id: d.weekday, label: d.weekday, values: { spending: d.total } }))}
+    series={[{ key: "spending", label: "Net spending", color: "var(--color-coral)" }]}
+    table={{ columns: [
+      { key: "weekday", label: "Weekday" },
+      { key: "total", label: "Net spending", format: "money", total: true },
+      { key: "count", label: "Purchases", format: "number", total: true },
+      { key: "share", label: "Net spending share", format: "percent" },
+      { key: "average", label: "Net / purchase", format: "money", description: "Net spending after refunds divided by purchase count." },
+    ], rows: data.map((d, i) => ({ id: d.weekday, sortValues: { weekday: i }, values: {
+      weekday: d.weekday, total: d.total, count: d.count,
+      share: total > 0 ? d.total / total * 100 : null,
+      average: d.count > 0 ? d.total / d.count : null,
+    } })) }} />;
 }

@@ -1,6 +1,9 @@
+import { TimeSeriesChart } from "./charts/TimeSeriesChart";
 import Link from "@/components/AppLink";
 import { AppState } from "@/lib/types";
 import {
+  isSpend,
+  isSyntheticBaseline,
   spendingByAccount,
   dailySpending,
   categoryMovers,
@@ -28,7 +31,21 @@ export function SpendingInsights({
   const acctTotal = byAccount.reduce((a, c) => a + c.total, 0);
   const daily = dailySpending(state, month);
   const movers = categoryMovers(state, month, prevMonth, 6);
-  const maxDay = Math.max(1, ...daily.days.map((d) => d.total));
+  const dailyRows = daily.days.map((day, i) => {
+    const recorded = day.day <= daily.throughDay;
+    const transactions = recorded ? state.transactions.filter((t) => t.date === day.date && isSpend(t)) : [];
+    const posted = transactions.filter((t) => !isSyntheticBaseline(t));
+    return { id: day.date, href: `/transactions?month=${month}`, linkLabel: "Month activity", values: {
+      date: day.date,
+      purchases: recorded ? posted.reduce((sum, t) => sum + Math.max(0, t.amount), 0) : null,
+      refunds: recorded ? posted.reduce((sum, t) => sum + Math.max(0, -t.amount), 0) : null,
+      estimates: recorded ? transactions.filter(isSyntheticBaseline).reduce((sum, t) => sum + t.amount, 0) : null,
+      net: recorded ? day.total : null,
+      cumulative: recorded ? daily.cumulative[i] : null,
+      count: recorded ? posted.filter((t) => t.amount > 0).length : null,
+      change: recorded && i > 0 ? day.total - daily.days[i - 1].total : null,
+    } };
+  });
 
   return (
     <>
@@ -116,33 +133,20 @@ export function SpendingInsights({
             </div>
           </div>
         </div>
-        <div className="flex h-28 items-end gap-px" aria-hidden="true">
-          {daily.days.map((d) => (
-            <div
-              key={d.day}
-              className="flex-1 rounded-t-sm transition-[height] motion-reduce:transition-none"
-              style={{
-                height: `${(Math.max(0, d.total) / maxDay) * 100}%`,
-                minHeight: d.total > 0 ? 2 : 0,
-                background:
-                  d.total > 0 ? "var(--color-coral)" : "var(--color-line)",
-              }}
-              title={`${formatMonth(month)} ${d.day}: ${formatMoney(d.total, currency)}`}
-            />
-          ))}
-        </div>
-        <details className="mt-3 text-xs text-muted">
-          <summary className="cursor-pointer">View daily spending data</summary>
-          <div className="mt-2 overflow-x-auto"><table className="w-full text-left">
-            <thead><tr><th scope="col" className="px-2 py-1">Day</th><th scope="col" className="px-2 py-1">Spending</th></tr></thead>
-            <tbody>{daily.days.map((d) => <tr key={d.day}><th scope="row" className="px-2 py-1 font-normal">{formatMonth(month)} {d.day}</th><td className="tnum px-2 py-1">{formatMoney(d.total, currency)}</td></tr>)}</tbody>
-          </table></div>
-        </details>
-        <div className="mt-1.5 flex justify-between text-[0.6rem] text-faint">
-          <span>1</span>
-          <span>{Math.ceil(daily.daysInMonth / 2)}</span>
-          <span>{daily.daysInMonth}</span>
-        </div>
+        <TimeSeriesChart title={`Daily spending · ${formatMonth(month)}`} currency={currency}
+          data={daily.days.map((d) => ({ id: d.date, label: String(d.day), values: { spending: d.day <= daily.throughDay ? d.total : null } }))}
+          series={[{ key: "spending", label: "Net spending", color: "var(--color-coral)" }]}
+          table={{ rows: dailyRows, columns: [
+            { key: "date", label: "Date", format: "date" },
+            { key: "purchases", label: "Posted purchases", format: "money", total: true },
+            { key: "refunds", label: "Refunds", format: "money", total: true },
+            { key: "estimates", label: "Estimated bills", format: "money", total: true },
+            { key: "net", label: "Net spending", format: "money", total: true },
+            { key: "cumulative", label: "Month to date", format: "money" },
+            { key: "count", label: "Purchases", format: "number", total: true },
+            { key: "change", label: "Change vs prior day", format: "money" },
+          ] }} />
+        <p className="mt-3 text-xs text-muted">Day of month. Refunds can put net spending below zero. Future days have no value.</p>
       </SectionCard>
 
       {/* Biggest movers vs last month */}

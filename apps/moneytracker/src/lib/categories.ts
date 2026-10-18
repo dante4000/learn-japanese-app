@@ -16,6 +16,7 @@ export interface CategoryMeta {
 // legible while keeping the overall blue identity.
 export const CATEGORIES: Record<string, CategoryMeta> = {
   INCOME: { key: "INCOME", label: "Income", glyph: "💰", color: "#2563eb", isSpending: false },
+  OTHER_INFLOW: { key: "OTHER_INFLOW", label: "Other deposits", glyph: "↘", color: "#64748b", isSpending: false },
   TRANSFER_IN: { key: "TRANSFER_IN", label: "Transfer In", glyph: "↘️", color: "#64748b", isSpending: false },
   TRANSFER_OUT: { key: "TRANSFER_OUT", label: "Transfer Out", glyph: "↗️", color: "#94a3b8", isSpending: false },
   LOAN_PAYMENTS: { key: "LOAN_PAYMENTS", label: "Loan Payments", glyph: "🏦", color: "#7c3aed", isSpending: false },
@@ -83,11 +84,26 @@ export function resolveCategoryKey(t: {
   name: string;
   merchantName: string | null;
   amount: number;
+  categoryDetailed?: string | null;
 }): string {
   if (t.userCategory) return t.userCategory;
   if (isInternalPayment(t.name, t.merchantName))
     return t.amount >= 0 ? "TRANSFER_OUT" : "TRANSFER_IN";
+  if (t.amount < 0 && t.categoryPrimary === "INCOME" && nonIncomeDepositReason(t))
+    return "OTHER_INFLOW";
   return t.categoryPrimary || "OTHER";
+}
+
+/** Deposit evidence takes precedence over the bank's broad income label. */
+export function nonIncomeDepositReason(t: {
+  name: string; merchantName: string | null; categoryDetailed?: string | null;
+}): string | null {
+  const text = `${t.name} ${t.merchantName ?? ""}`;
+  if (/\b(?:tax\s*(?:ref(?:und)?|rfd)|irs\s+treas|franchise\s+tax\s+bd|casttaxrfd)\b/i.test(text) || t.categoryDetailed === "INCOME_TAX_REFUND") return "Tax refund";
+  if (/\bshopify\b.*\btransfer\b/i.test(text)) return "Shopify transfer";
+  if (/\b(?:underdog\s+sports|flash\s+seats)\b/i.test(text)) return "Payout, not earned income";
+  if (/\b(?:refund|reimbursement|reimburs\w*|cash\s*back|statement\s+credit)\b/i.test(text)) return "Refund or reimbursement";
+  return null;
 }
 
 /** Categories that represent moving money between your own accounts, not spend. */

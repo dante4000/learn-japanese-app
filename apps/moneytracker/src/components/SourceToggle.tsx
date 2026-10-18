@@ -12,11 +12,11 @@ export function SourcePicker({ sources, selected, hasSupport = false }: { source
       disabled={pending}
       aria-busy={pending}
       onChange={(event) => select(event.target.value)}
-      className="min-h-11 min-w-0 max-w-full rounded-xl border hairline bg-surface px-3 py-2 text-base text-cream sm:text-sm"
+      className="min-h-11 min-w-0 w-full sm:w-60 max-w-full truncate rounded-xl border hairline bg-surface px-3 py-2 text-base text-cream sm:text-sm"
     >
       <option value="">All income sources</option>
       {hasSupport && <option value="__employer_housing__">Studio rent support</option>}
-      {sources.map((source) => <option key={source} value={source}>{source}</option>)}
+      {sources.map((source) => <option key={source} value={source} title={source}>{source.length > 52 ? `${source.slice(0, 49)}…` : source}</option>)}
     </select>
   );
 }

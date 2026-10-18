@@ -84,13 +84,8 @@ export function isIncome(t: Transaction): boolean {
   if (t.amount >= 0) return false; // outflow
   const cat = effectiveCategory(t);
   if (TRANSFER_CATEGORIES.has(cat)) return false;
-  // An inflow on a *spending* category is a refund/return/statement credit, not
-  // earned income — you don't earn money in "Travel" or "Shopping". This catches
-  // refunds that `refundMatchedIds` can't pair (original charge on another card,
-  // partial refunds, charges older than our history). Real income lands on the
-  // INCOME category (the only non-spending, non-transfer bucket).
-  if (categoryMeta(cat).isSpending) return false;
-  return true;
+  // Other deposits and spending refunds never become earned income.
+  return cat === "INCOME";
 }
 
 // Full refund pairs suppress duplicate warnings and recurring predictions.

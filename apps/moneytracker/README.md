@@ -56,11 +56,34 @@ documents can reuse a process cache after their ETags match that listing. The
 cache holds at most 16 documents and 16 MiB. Each read decodes fresh objects.
 API and sync reads still fetch document bodies. This adds no cache time window.
 
-Page loads show shimmering skeleton shapes. Other slow actions show one
-dismissible skeleton dialog after 450 ms. A visible page skeleton suppresses
-the dialog. Fast actions avoid the modal. Query and account
-filters share a pending transition to prevent overlapping choices from losing
-URL parameters. Scheduled background refreshes do not open the dialog.
+Page loads show a labeled skeleton. Slow actions show one nonblocking status
+panel after 450 ms. It names each active action and closes when work finishes.
+Hiding the panel does not cancel the action. A page skeleton suppresses the
+panel. Query and account filters share a pending transition. Scheduled
+background refreshes do not open the panel.
+
+Cash-flow, daily spending, weekday, pace, and monthly breakdown charts use
+labeled scales, signed values, keyboard-selectable periods, and exact-value
+readouts. Each has a data table. Overview and Analysis also show monthly net
+surplus/shortfall and savings-rate trends. A month with no income has no savings
+rate. Charts fit the full period range by default. Monthly charts label every
+month, including September. Expand chart enables horizontal scrolling with
+explicit scroll controls; Fit all periods restores the full view.
+
+All data tables support search, numeric/date sorting, column selection, paging,
+and CSV export. Headers and the first column stay fixed while the table scrolls
+in either direction. Exports include all filtered rows and visible columns.
+Cash-flow tables show prior-month changes. Spending tables separate posted
+purchases, refunds, and estimates. Net-worth tables retain every available daily
+record in the selected range, even when the chart groups points by week.
+Missing values remain blank and rates are never added together. Happy DOM is a
+test-only dependency for table controls and chart selection.
+
+Income excludes identified tax refunds, Shopify transfers, Flash Seats and
+Underdog Sports payouts, and reimbursements. These deposits stay in Activity;
+the Income page lists other money received separately. User category overrides
+still win. CSV deposits without a recognized income category or payroll evidence
+now import as Other deposits. Existing bank records are not rewritten.
 
 The storage regression test uses three connections and metadata. With simulated
 25 ms network latency, reads fell from 9 requests to 5 cold or 1 warm. These are
