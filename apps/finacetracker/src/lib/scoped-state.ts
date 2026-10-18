@@ -1,8 +1,17 @@
+import { cache } from "react";
+import { redirect } from "next/navigation";
+import { isAuthenticated } from "./auth";
 import { CURRENCY_COOKIE, filterStateByCurrency, selectedCurrency } from "./currency";
 import { cookies } from "next/headers";
 import { loadStateCached } from "./store";
 import { LEGACY_ACCOUNT_COOKIE, ACCOUNT_COOKIE, filterStateByAccount } from "./account-filter";
 import { Account, AppState } from "./types";
+
+// Layouts and pages render concurrently. Authorize before loading page data.
+export const loadAuthenticatedState = cache(async (): Promise<AppState> => {
+  if (!(await isAuthenticated())) redirect("/login");
+  return loadStateCached();
+});
 
 /**
  * App state scoped to the account selected in the global picker. `focus` is
@@ -14,7 +23,7 @@ export async function loadScopedState(): Promise<{
   fullState: AppState;
   focus: Account | null;
 }> {
-  const full = await loadStateCached();
+  const full = await loadAuthenticatedState();
   const id = ((await cookies()).get(ACCOUNT_COOKIE)?.value ?? (await cookies()).get(LEGACY_ACCOUNT_COOKIE)?.value);
   const focus = id ? (full.accounts.find((a) => a.id === id) ?? null) : null;
   const currency = focus?.currency ?? selectedCurrency(full, (await cookies()).get(CURRENCY_COOKIE)?.value);

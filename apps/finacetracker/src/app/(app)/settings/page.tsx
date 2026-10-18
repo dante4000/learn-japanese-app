@@ -1,5 +1,5 @@
 import { BackupManager } from "@/components/BackupManager";
-import { loadStateCached } from "@/lib/store";
+import { loadAuthenticatedState } from "@/lib/scoped-state";
 import { plaidConfigured } from "@/lib/providers/plaid";
 import { SectionCard, PageHeading } from "@/components/ui";
 import { ConnectionsList } from "@/components/ConnectionsList";
@@ -9,7 +9,7 @@ import { CsvImport } from "@/components/CsvImport";
 export const dynamic = "force-dynamic";
 
 export default async function SettingsPage() {
-  const state = await loadStateCached();
+  const state = await loadAuthenticatedState();
   const plaidReady = plaidConfigured();
 
   return (

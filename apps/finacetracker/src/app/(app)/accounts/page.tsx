@@ -1,7 +1,7 @@
 import { availableCurrencies, filterStateByCurrency } from "@/lib/currency";
 import { BalanceCoverage } from "@/components/BalanceCoverage";
 import { DetailLink } from "@/components/DetailPanel";
-import { loadStateCached } from "@/lib/store";
+import { loadAuthenticatedState } from "@/lib/scoped-state";
 import { computeNetWorth, LIABILITY_TYPES } from "@/lib/analytics";
 import { formatMoney } from "@/lib/format";
 import { Account } from "@/lib/types";
@@ -76,7 +76,7 @@ function groupByInstitution(
 
 export default async function AccountsPage() {
   // Intentionally unscoped: this is the management view of every account.
-  const state = await loadStateCached();
+  const state = await loadAuthenticatedState();
   const currencies = availableCurrencies(state).length ? availableCurrencies(state) : ["USD"];
   const canFocus = state.accounts.length > 1;
   const institutions = groupByInstitution(state.items, state.accounts);

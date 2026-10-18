@@ -262,13 +262,14 @@ never label synthetic rows as posted transactions.
 ## Audit release — 17 October 2026
 
 The [remediation spec](docs/superpowers/specs/2026-10-17-finacetracker-audit-remediation-design.md)
-tracks all 14 audit findings. Analytics use one selected currency. Accounts retain
+tracks the 14 initial audit findings and the streamed authorization defect found during release checks. Analytics use one selected currency. Accounts retain
 native currencies. Unknown balances produce partial totals and cannot anchor
 reconstructed history. Empty calendar months remain visible as coverage gaps.
 
 Reconnect uses the existing Plaid connection. Balance refresh failures report
 partial success. Card corrections persist in encrypted shared metadata. Settings
 provides an encrypted full backup with a restore preview and conflict checks.
+Every protected page verifies the session before loading financial data.
 CSV remains an analysis export. Restore requires the original encryption key.
 Independent document writes are not atomic; partial restores report their state.
 

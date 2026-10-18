@@ -1,5 +1,5 @@
 import { DetailCurrencyScope } from "@/components/DetailPanel";
-import { loadStateCached } from "@/lib/store";
+import { loadAuthenticatedState } from "@/lib/scoped-state";
 import {
   CARD_CATALOG,
   matchAccountToCard,
@@ -18,7 +18,7 @@ export const dynamic = "force-dynamic";
 
 export default async function CardsPage() {
   // Unscoped management view — every card, regardless of the account picker.
-  const state = await loadStateCached();
+  const state = await loadAuthenticatedState();
   const currency = "USD";
   const creditAccounts = state.accounts.filter((a) => a.type === "credit" && a.currency === "USD");
   const otherCurrencies = state.accounts.filter((a) => a.type === "credit" && a.currency !== "USD");

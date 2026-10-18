@@ -1,4 +1,4 @@
-import { loadStateCached } from '@/lib/store';
+import { loadAuthenticatedState } from '@/lib/scoped-state';
 import { parseDetail, resolveDetail } from '@/lib/details';
 import { DetailContent } from '@/components/DetailPanel';
 import { PageHeading } from '@/components/ui';
@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic';
 export default async function DetailsPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const params = new URLSearchParams();
   for (const [key, value] of Object.entries(await searchParams)) if (typeof value === 'string') params.set(key, value);
-  const state = await loadStateCached();
+  const state = await loadAuthenticatedState();
   let data;
   try { data = resolveDetail(state, parseDetail(params)); }
   catch (error) { return <div><PageHeading title="Details unavailable" /><p role="alert" className="text-muted">{(error as Error).message}</p><Link href="/">Back to overview</Link></div>; }

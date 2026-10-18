@@ -114,3 +114,28 @@ Release checks: Node 22.23.3; 224 tests passed; lint and typecheck passed;
 Next.js production build passed; isolated HTTP smoke passed for nine pages,
 authentication, currency scopes, missing balances, export, restore conflicts,
 idempotent writes, and corrections across sessions.
+
+
+## F15 — Streamed page authorization
+
+Release verification reproduced an additional defect with invented fixture data:
+an invalid session cookie passed the optimistic proxy, and child page data
+entered the streamed response before the layout redirect. Protect every page's
+data load, not only its layout. Extend `src/lib/scoped-state.ts` with the shared
+authenticated loader. Accounts, Cards, Settings, Details, and scoped analytics
+must use it. Keep API authentication and background storage access unchanged.
+Acceptance: invalid-session responses for all protected pages contain no fixture
+account, merchant, institution, or note. Check both HTML and RSC requests.
+
+
+F15 validation: all 11 protected page routes reject invalid sessions without
+fixture data in HTML and RSC responses. All 224 tests, lint, typecheck, and the
+production build pass. The full isolated HTTP smoke also passes after this fix.
+
+Deployment record: release `639575c544754223cb1696e7da11eb683e94f830` reached
+READY as `dpl_99ynxZKBZckoJshWEzmHA5VF37fy` on the preserved production domain.
+The project is now `finacetracker`, root `apps/finacetracker`, Node 22.x.
+The old Vercel domain redirects to `finance.dante4000.com`. Public login branding
+and unauthenticated API denial passed. Local session credentials did not match
+production, so authenticated production checks were not counted as passed.
+The F15 follow-up is deployed through the same Git integration.

@@ -46,13 +46,21 @@ async function main() {
       await new Promise((resolve) => setTimeout(resolve, 100));
     }
     for (const route of ["/api/backup", "/api/details?metric=networth", "/api/export/csv"]) assert.equal((await request(route)).status, 401);
+    for (const route of ["/", "/accounts", "/spending", "/income", "/analysis", "/transactions", "/recurring", "/cards", "/settings", "/details?metric=networth", "/spending/category?category=FOOD_AND_DRINK"]) {
+      for (const rsc of [false, true]) {
+        const deniedPage = await fetch(base + route + (rsc ? `${route.includes("?") ? "&" : "?"}_rsc=` : ""), { redirect: "manual", headers: { Cookie: "finacetracker_session=invalid", ...(rsc ? { RSC: "1" } : {}) } });
+        const body = await deniedPage.text();
+        assert.doesNotMatch(body, /Fixture Bank|Fixture merchant|USD fixture|EUR fixture|Fixture note/, `Invalid session exposed data: ${route}, RSC=${rsc}`);
+        assert(deniedPage.headers.get("location")?.includes("/login") || deniedPage.headers.get("x-nextjs-redirect")?.includes("/login") || body.includes("/login"), `Missing login redirect: ${route}, RSC=${rsc}, status=${deniedPage.status}, headers=${JSON.stringify([...deniedPage.headers])}`);
+      }
+    }
     assert.equal((await request("/api/auth/login", { password: "wrong" })).status, 401);
     const login = await request("/api/auth/login", { password }); assert.equal(login.status, 200);
     cookie = login.headers.getSetCookie().map((v) => v.split(";")[0]).join("; ");
     assert.match(cookie, /^finacetracker_session=/);
     for (const route of ["/", "/accounts", "/spending", "/income", "/analysis", "/transactions", "/recurring", "/cards", "/settings"]) {
       const response = await request(route); assert.equal(response.status, 200, route);
-      const html = await response.text(); assert.match(html, /finacetracker/); assert.doesNotMatch(html, /Vault — Money Tracker/);
+      const html = await response.text(); assert.match(html, /finacetracker/); assert.doesNotMatch(html, /Vault — Money Tracker|NEXT_REDIRECT/);
     }
     const focused = await (await request("/", undefined, "finacetracker_account=missing")).text();
     assert.match(focused, /Balance unavailable/);
@@ -80,7 +88,7 @@ async function main() {
     assert.equal(after.meta.manualEntries.length, 1); assert.equal(after.meta.manualEntries[0].currency, "EUR");
     assert.equal(after.meta.cardOverrides?.[card.cardKey][credit]["2026-10"], false);
     assert.equal((await request("/api/backup", { action: "preview", backup: "bad" })).status, 400);
-    console.log("Release smoke passed: 9 pages; auth; native currencies; unknown balances; formula-safe CSV; encrypted backup; additive restore; stale-preview rejection; idempotent manual entry; cross-session credit corrections.");
+    console.log("Release smoke passed: 9 signed-in pages; 11 protected routes in HTML and RSC; auth; native currencies; unknown balances; formula-safe CSV; encrypted backup; additive restore; stale-preview rejection; idempotent manual entry; cross-session credit corrections.");
   } catch (error) {
     console.error(output); throw error;
   } finally {
