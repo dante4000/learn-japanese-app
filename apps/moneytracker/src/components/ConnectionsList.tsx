@@ -1,5 +1,7 @@
 "use client";
 
+import { DetailLink } from "@/components/DetailPanel";
+
 import { useLoadingStatus, useLoadingTransition } from "./LoadingFeedback";
 
 import { useState } from "react";
@@ -62,7 +64,7 @@ export function ConnectionsList({ items }: { items: Item[] }) {
             }`}
           />
           <div className="min-w-0 flex-1 break-words">
-            <div className="text-sm text-cream">{it.institutionName}</div>
+            <div className="text-sm text-cream"><DetailLink query={{ metric: "connection", record: it.id, account: "all" }}>{it.institutionName}</DetailLink></div>
             <div className="text-xs text-faint">
               {it.provider === "plaid" ? "Plaid" : "CSV import"}
               {it.lastSyncedAt ? ` · synced ${formatDate(it.lastSyncedAt.slice(0, 10))}` : ""}

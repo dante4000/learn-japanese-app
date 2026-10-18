@@ -1,3 +1,4 @@
+import { DetailLink } from "./DetailPanel";
 import Link from "@/components/AppLink";
 import { ReactNode } from "react";
 
@@ -24,7 +25,9 @@ export function StatCard({
   sub,
   accent,
   delay = 0,
+  href,
 }: {
+  href?: string;
   label: string;
   value: string;
   sub?: ReactNode;
@@ -45,7 +48,7 @@ export function StatCard({
       style={{ animationDelay: `${delay}ms` }}
     >
       <div className="label-eyebrow">{label}</div>
-      <div className={`tnum mt-2 break-words text-xl sm:text-2xl ${color}`}>{value}</div>
+      <div className={`tnum mt-2 break-words text-xl sm:text-2xl ${color}`}>{href ? <DetailLink href={href}>{value}</DetailLink> : value}</div>
       {sub && <div className="mt-1 text-xs text-muted">{sub}</div>}
     </div>
   );

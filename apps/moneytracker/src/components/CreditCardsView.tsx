@@ -1,6 +1,8 @@
 "use client";
 
-import { Fragment, useEffect, useMemo, useState } from "react";
+import { DataTable } from "./DataTable";
+import { DetailLink } from "./DetailPanel";
+import { Fragment, useEffect, useMemo, useState, type ReactNode } from "react";
 import {
   CardCatalogEntry,
   CardCredit,
@@ -26,6 +28,8 @@ function hostLabel(url: string): string {
 
 // Live per-card data computed server-side from the user's real transactions.
 export interface CardLive {
+  accountId?: string;
+  periodStart?: string;
   accountName: string;
   mask: string | null;
   balance: number | null;
@@ -393,6 +397,7 @@ export function CreditCardsView({
     );
   }, [cards, overrides]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  const [portfolioDetail, setPortfolioDetail] = useState<string | null>(null);
   const anyLive = cards.some((c) => c.live);
   const maxBarScale = Math.max(
     1,
@@ -407,12 +412,14 @@ export function CreditCardsView({
       <div className="mb-5 grid grid-cols-1 gap-3 min-[420px]:grid-cols-2 sm:gap-4 lg:grid-cols-4">
         <Stat
           label="Annual fees"
+          onInspect={() => setPortfolioDetail("Annual fees")}
           value={formatMoney(totals.fees, currency, { cents: false })}
           accent="coral"
           sub={`${cards.length} cards`}
         />
         <Stat
           label="Credits you capture"
+          onInspect={() => setPortfolioDetail("Credits you capture")}
           value={formatMoney(totals.creditsCaptured, currency, { cents: false })}
           accent="blue"
           sub={`of ${formatMoney(totals.creditsAvailable, currency, { cents: false })} available`}
@@ -420,6 +427,7 @@ export function CreditCardsView({
         />
         <Stat
           label="Est. net value / yr"
+          onInspect={() => setPortfolioDetail("Est. net value / yr")}
           value={signedMoney(totals.netValue, currency)}
           accent={totals.netValue >= 0 ? "blue" : "coral"}
           sub="projected credits + points − fees"
@@ -427,6 +435,7 @@ export function CreditCardsView({
         />
         <Stat
           label="Points value / yr"
+          onInspect={() => setPortfolioDetail("Points value / yr")}
           value={anyLive ? formatMoney(totals.pointsCash, currency, { cents: false }) : "—"}
           accent="slate"
           sub={
@@ -437,6 +446,10 @@ export function CreditCardsView({
           delay={180}
         />
       </div>
+
+      {portfolioDetail && <section className="mb-5 rounded-xl border hairline bg-surface p-4"><div className="mb-3 flex justify-between gap-3"><h2 className="text-lg text-cream">{portfolioDetail} · by card</h2><button type="button" onClick={() => setPortfolioDetail(null)} className="detail-link">Close breakdown</button></div><p className="mb-4 text-sm text-muted">Net value = projected annual credits + estimated points at cash value − annual fee. Captured credits use your current overrides. Future credit periods are estimates. Unlinked cards use typical capture estimates.</p><DataTable title="Card value calculation" currency={currency} columns={[
+        { key: "card", label: "Card" }, { key: "fee", label: "Annual fee", format: "money", total: true }, { key: "captured", label: "Captured credits", format: "money", total: true }, { key: "projected", label: "Projected credits", format: "money", total: true }, { key: "points", label: "Points cash value", format: "money", total: true }, { key: "net", label: "Net value", format: "money", total: true }, { key: "basis", label: "Basis" }
+      ]} rows={cards.map(({ card, live }) => ({ id: card.cardKey, values: { card: card.displayName, fee: card.annualFee, captured: capturedForCard(card), projected: projectedCapturedForCard(card), points: live?.estPointsCashValue ?? 0, net: projectedCapturedForCard(card) + (live?.estPointsCashValue ?? 0) - card.annualFee, basis: live ? "Linked spend + current overrides" : "Typical capture estimate" } }))} /></section>}
 
       <p className="mb-5 text-xs text-faint">
         Net value combines what&rsquo;s real or grounded in your spend:{" "}
@@ -855,17 +868,20 @@ function CardDetail({
         <div className="mb-4 grid grid-cols-1 gap-px min-[420px]:grid-cols-2 overflow-hidden rounded-xl border hairline bg-[var(--color-line)] sm:grid-cols-4">
           <Mini
             label="Spend (12 mo)"
+            detail={live.accountId && <DetailLink query={{ metric: "spending", account: live.accountId, from: live.periodStart }}>Inspect the contributing purchases and refunds →</DetailLink>}
             value={formatMoney(live.spend12mo, currency, { cents: false })}
             hint={`${live.txnCount} purchases`}
           />
           <Mini
             label="Credits captured"
+            detail={<><p className="mb-3">Captured amounts use detected credits and your manual overrides. Future periods are excluded. Open a credit period below for evidence.</p><DataTable title="Captured credits" currency={currency} columns={[{ key: "name", label: "Credit" }, { key: "captured", label: "Captured", format: "money", total: true }, { key: "maximum", label: "Annual maximum", format: "money" }]} rows={card.credits.map((c) => { const usage = live.creditUsage.find((u) => u.creditName === c.name); return { id: c.name, values: { name: c.name, captured: usage ? capturedThisYear(usage, c, slotUsed, slotOverridden) : c.value * c.realisticCaptureRate, maximum: c.value } }; })} /></>}
             value={formatMoney(cap, currency, { cents: false })}
             hint={card.credits.length ? `of ${formatMoney(roi.maxCredits, currency, { cents: false })}` : "no credits"}
             accent="blue"
           />
           <Mini
             label="Est. points / yr"
+            detail={<><p className="mb-3">Estimated from eligible spending, earn rules, and annual caps. Cash value uses {card.cashValueCents} cents per point; transfer value uses {card.transferValueCents} cents per point.</p><DataTable title="Points by earn rule" currency={currency} columns={[{ key: "rule", label: "Rule" }, { key: "spend", label: "Spend", format: "money", total: true }, { key: "multiplier", label: "Multiplier", format: "number" }, { key: "points", label: "Points", format: "number", total: true }, { key: "cap", label: "Cap applied" }]} rows={live.pointsLines.map((line, i) => ({ id: String(i), values: { rule: line.label, spend: line.spend, multiplier: line.multiplier, points: line.points, cap: line.capped ? "Yes" : "No" } }))} /></>}
             value={live.estPoints.toLocaleString()}
             hint={
               card.cashValueCents === card.transferValueCents
@@ -876,6 +892,7 @@ function CardDetail({
           />
           <Mini
             label="Est. net value / yr"
+            detail={<p>Projected credits {formatMoney(roi.capturedCredits, currency)} + estimated points cash value {formatMoney(roi.pointsCashValue, currency)} − annual fee {formatMoney(card.annualFee, currency)}. Future credits are estimates. Your current overrides are included.</p>}
             value={signedMoney(roi.netValue, currency)}
             hint={`balance ${live.balance != null ? formatMoney(live.balance, currency, { cents: false }) : "—"}`}
             accent={roi.netValue >= 0 ? "blue" : "coral"}
@@ -1296,19 +1313,17 @@ function SlotGrid({
         const mark = on ? (s.confidence === "inferred" && !ov ? "◔" : "✓") : "○";
         const glyph = on ? (s.confidence === "inferred" && !ov ? "◔" : "✓") : s.label[0];
         return (
-          <button
-            key={s.key}
-            disabled={s.status === "future"}
-            onClick={() => (ov ? onClear(s) : onToggle(s))}
-            title={`${s.label}: ${s.evidence ?? (on ? "used" : s.status === "future" ? "upcoming" : "open")}${ov ? " (manual — tap to revert)" : ""}`}
-            aria-pressed={on}
-            aria-label={`${s.label}: ${on ? "used" : s.status === "future" ? "upcoming" : "unused"}${ov ? ", manual override; activate to restore detection" : ""}`}
-            className={`min-h-11 min-w-11 lg:min-h-0 lg:min-w-0 grid place-items-center rounded-md border text-[0.65rem] transition-colors ${
-              s.status === "current" ? "ring-1 ring-blue/50" : ""
-            } ${tone} ${many ? "h-6 w-6" : "h-7 min-w-[2.4rem] px-2"}`}
-          >
-            {many ? glyph : `${s.label} ${mark}`}
-          </button>
+          <details key={s.key} className="relative">
+            <summary className={`min-h-11 min-w-11 cursor-pointer list-none rounded-md border px-2 py-3 text-xs ${tone}`} aria-label={`Inspect ${s.label}: ${on ? "used" : "unused"}`}>{many ? glyph : `${s.label} ${mark}`} ↗</summary>
+            <div className="mt-2 w-64 max-w-full rounded-xl border hairline bg-surface p-3 text-sm text-cream">
+              <p className="font-medium">{s.label} · {s.start} – {s.end}</p>
+              <p className="mt-2">{s.evidence ?? "No matching evidence recorded."}</p>
+              <p className="mt-2">Captured: {s.captured.toFixed(2)} · limit: {s.value.toFixed(2)}</p>
+              <p>{s.matchedMerchant ?? "No merchant recorded"}{s.lastDate ? ` · ${s.lastDate}` : ""}</p>
+              <p className="mt-2 text-muted">{ov ? "Manual override is active." : `Detection: ${s.confidence}.`}</p>
+              <button type="button" disabled={s.status === "future"} onClick={() => ov ? onClear(s) : onToggle(s)} className="detail-link mt-2">{ov ? "Restore automatic detection" : on ? "Mark unused" : "Mark used"}</button>
+            </div>
+          </details>
         );
       })}
     </div>
@@ -1387,7 +1402,9 @@ function Stat({
   sub,
   accent,
   delay = 0,
+  onInspect,
 }: {
+  onInspect?: () => void;
   label: string;
   value: string;
   sub?: string;
@@ -1405,7 +1422,7 @@ function Stat({
   return (
     <div className="card card-hover rise min-w-0 p-4 sm:p-5" style={{ animationDelay: `${delay}ms` }}>
       <div className="label-eyebrow">{label}</div>
-      <div className={`tnum mt-2 break-words text-xl sm:text-2xl ${color}`}>{value}</div>
+      <div className={`tnum mt-2 break-words text-xl sm:text-2xl ${color}`}>{onInspect ? <button type="button" onClick={onInspect} className="detail-link text-left">{value} ↗</button> : value}</div>
       {sub && <div className="mt-1 text-xs text-muted">{sub}</div>}
     </div>
   );
@@ -1416,7 +1433,9 @@ function Mini({
   value,
   hint,
   accent = "cream",
+  detail,
 }: {
+  detail?: ReactNode;
   label: string;
   value: string;
   hint?: string;
@@ -1433,7 +1452,7 @@ function Mini({
   return (
     <div className="min-w-0 bg-[var(--color-ink-2)] px-4 py-3">
       <div className="text-[0.6rem] uppercase tracking-wider text-faint">{label}</div>
-      <div className={`tnum mt-1 break-words text-base ${color}`}>{value}</div>
+      {detail ? <details className="group"><summary className={`detail-link tnum mt-1 cursor-pointer text-base ${color}`}>{value} ↗</summary><div className="relative z-10 mt-3 min-w-0 rounded-lg border hairline bg-surface p-3 text-sm text-muted">{detail}</div></details> : <div className={`tnum mt-1 break-words text-base ${color}`}>{value}</div>}
       {hint && <div className="text-[0.65rem] text-faint">{hint}</div>}
     </div>
   );

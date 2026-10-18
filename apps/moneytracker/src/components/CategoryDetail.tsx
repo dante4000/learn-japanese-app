@@ -1,8 +1,10 @@
 "use client";
 
+import { DetailLink } from "@/components/DetailPanel";
+
 import { useState } from "react";
 import Link from "@/components/AppLink";
-import { CategoryDetailData } from "@/lib/analytics";
+import { CategoryDetailData, isSyntheticBaseline } from "@/lib/analytics";
 import { monthlyEquivalent } from "@/lib/recurring";
 import { formatMoney, formatMonth, formatDate } from "@/lib/format";
 import { displayPayee } from "@/lib/aliases";
@@ -98,7 +100,7 @@ export function CategoryDetail({
         </div>
 
         <div className="tnum mt-4 break-words font-display text-4xl sm:text-5xl tracking-tight text-cream">
-          {formatMoney(data.total, currency, { cents: false })}
+          <DetailLink query={{ metric: "spending", category: data.category, months: [data.month], priorMonths: data.prevMonth ? [data.prevMonth] : undefined }}>{formatMoney(data.total, currency, { cents: false })}</DetailLink>
         </div>
 
         <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-1.5 text-sm">
@@ -281,7 +283,7 @@ export function CategoryDetail({
                 className="flex items-center gap-3 rounded-xl border hairline bg-surface px-3 py-2.5"
               >
                 <span className="tnum w-20 shrink-0 text-sm text-cream">
-                  {formatMoney(t.amount, currency, { cents: false })}
+                  <DetailLink query={{ metric: "transaction", record: t.id, account: isSyntheticBaseline(t) ? "all" : t.accountId }}>{formatMoney(t.amount, currency, { cents: false })}</DetailLink>
                 </span>
                 <span className="min-w-0 flex-1 truncate text-sm text-cream-dim">
                   {displayPayee(t.merchantName, t.name, acctName(t.accountId))}

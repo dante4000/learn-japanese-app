@@ -1,3 +1,4 @@
+import { detailHref } from "@/lib/details";
 import { MonthCashFlow } from "@/lib/analytics";
 import { DataTable, type DataColumn, type DataRow } from "./DataTable";
 
@@ -19,7 +20,8 @@ export function cashFlowTableRows(rows: MonthCashFlow[]): DataRow[] {
     previousDate.setUTCMonth(previousDate.getUTCMonth() - 1);
     const previousNet = previous?.month === previousDate.toISOString().slice(0, 7) ? previous.net : null;
     const change = previousNet == null ? null : row.net - previousNet;
-    return { id: row.month, href: `/transactions?month=${row.month}`, values: {
+    const links = Object.fromEntries((["income", "spending", "net", "rate"] as const).map((metric) => [metric, detailHref({ metric, months: [row.month] })]));
+    return { id: row.month, href: links.net, linkLabel: "Inspect cash flow", cellHrefs: { ...links, previousNet: detailHref({ metric: "net", months: [previousDate.toISOString().slice(0, 7)] }), change: detailHref({ metric: "net", months: [row.month], priorMonths: [previousDate.toISOString().slice(0, 7)] }), changePct: detailHref({ metric: "net", months: [row.month], priorMonths: [previousDate.toISOString().slice(0, 7)] }) }, values: {
       month: row.month, income: row.income, spending: row.spending, net: row.net,
       rate: row.income > 0 ? row.net / row.income * 100 : null,
       previousNet, change, changePct: previousNet && change != null ? change / Math.abs(previousNet) * 100 : null,

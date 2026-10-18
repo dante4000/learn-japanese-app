@@ -1,3 +1,4 @@
+import { DetailLink } from "./DetailPanel";
 import Link from "@/components/AppLink";
 import { isSpend, isSyntheticBaseline } from "@/lib/analytics";
 import { formatMoney } from "@/lib/format";
@@ -19,8 +20,8 @@ export function EstimatedBillsNotice({ state, months, currency }: {
   }
   if (!estimated) return null;
   return <p className="mb-5 rounded-xl border hairline bg-surface p-3 text-sm text-muted">
-    Spending includes <span className="tnum text-cream">{formatMoney(estimated, currency)}</span> in estimated bills.
-    Recorded spending is <span className="tnum text-cream">{formatMoney(recorded, currency)}</span>.{" "}
+    Spending includes <span className="tnum text-cream"><DetailLink query={{ metric: "spending", months, part: "estimates" }}>{formatMoney(estimated, currency)}</DetailLink></span> in estimated bills.
+    Recorded spending is <span className="tnum text-cream"><DetailLink query={{ metric: "spending", months, part: "recorded" }}>{formatMoney(recorded, currency)}</DetailLink></span>.{" "}
     <Link className="inline-flex min-h-11 items-center text-blue underline" href="/recurring">Review bill dates and amounts</Link>.
   </p>;
 }

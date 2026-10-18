@@ -1,3 +1,4 @@
+import { DetailProvider } from "@/components/DetailPanel";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { isAuthenticated } from "@/lib/auth";
@@ -31,7 +32,7 @@ export default async function AppLayout({
 
   return (
     <AppShell accountOptions={accountOptions} selectedAccount={selectedAccount}>
-      {children}
+      <DetailProvider account={selectedAccount}>{children}</DetailProvider>
     </AppShell>
   );
 }

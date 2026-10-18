@@ -1,5 +1,6 @@
 "use client";
 
+import { DetailLink } from "./DetailPanel";
 import { useId, useMemo, useRef, useState } from "react";
 import { type DataColumn, type DataRow, type TableSort, formatTableValue, queryTableRows, tableCsv } from "@/lib/table-data";
 
@@ -76,16 +77,17 @@ export function DataTable({ title, columns, rows, currency = "USD", defaultSort,
             <button type="button" title={column.description} onClick={() => { setSort({ key: column.key, direction: sort?.key === column.key && sort.direction === "asc" ? "desc" : "asc" }); resetPage(); }} className={`flex min-h-12 w-full items-center gap-2 whitespace-nowrap px-4 py-3 text-cream hover:bg-[var(--color-line)] ${numeric(column) ? "justify-end" : "text-left"}`}>
               {column.label}<span aria-hidden="true" className={sort?.key === column.key ? "text-blue" : "text-muted"}>{sort?.key === column.key ? sort.direction === "asc" ? "↑" : "↓" : "↕"}</span>
             </button>
-          </th>)}{hasLinks && <th scope="col" className="sticky top-0 z-20 border-b hairline bg-surface-2 px-4 py-3 text-left text-cream">Activity</th>}</tr>
+          </th>)}{hasLinks && <th scope="col" className="sticky top-0 z-20 border-b hairline bg-surface-2 px-4 py-3 text-left text-cream">Details</th>}</tr>
         </thead>
         <tbody>
           {displayed.map((row) => <tr key={row.id} className={`group ${selectedId === row.id ? "bg-surface-2" : "bg-surface"}`}>
             {visibleColumns.map((column, i) => {
-              const value = formatTableValue(row.values[column.key], column, currency);
+              const formatted = formatTableValue(row.values[column.key], column, typeof row.values.currency === "string" && /^[A-Z]{3}$/.test(row.values.currency) ? row.values.currency : currency);
+              const value = row.cellHrefs?.[column.key] ? <DetailLink href={row.cellHrefs[column.key]} aria-label={`Inspect ${column.label}: ${formatted}`}>{formatted}</DetailLink> : formatted;
               const className = `border-b hairline px-4 py-3 text-cream group-hover:bg-surface-2 ${numeric(column) ? "tnum whitespace-nowrap text-right" : "max-w-80 break-words text-left"} ${i === 0 ? "sticky left-0 z-10 bg-inherit font-medium" : ""}`;
               return i === 0 ? <th key={column.key} scope="row" className={className}>{onSelectRow ? <button type="button" aria-pressed={selectedId === row.id} onClick={() => onSelectRow(row.id)} className="min-h-9 text-left text-blue underline decoration-[var(--color-line-2)] underline-offset-4">{value}</button> : value}</th> : <td key={column.key} className={className}>{value}</td>;
             })}
-            {hasLinks && <td className="border-b hairline px-4 py-3">{row.href ? <a href={row.href} className="inline-flex min-h-9 items-center text-blue underline underline-offset-4">{row.linkLabel ?? "View transactions"}</a> : "—"}</td>}
+            {hasLinks && <td className="border-b hairline px-4 py-3">{row.href ? <DetailLink href={row.href} className="inline-flex min-h-9 items-center text-blue underline underline-offset-4">{row.linkLabel ?? "View transactions"}</DetailLink> : "—"}</td>}
           </tr>)}
           {!displayed.length && <tr><td colSpan={visibleColumns.length + Number(hasLinks)} className="p-8 text-center text-muted">{query ? "No rows match this search. Clear the search to see all data." : "No records for this period."}</td></tr>}
         </tbody>

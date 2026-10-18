@@ -1,5 +1,7 @@
 "use client";
 
+import { DetailLink } from "@/components/DetailPanel";
+
 import { useLoadingStatus, useLoadingTransition } from "./LoadingFeedback";
 
 import { useState } from "react";
@@ -82,7 +84,7 @@ export function BiltRentMeter({ meter, delay = 0 }: { meter: BiltMeterView; dela
           <div className="label-eyebrow">Bilt rent rewards estimate</div>
           <div className="mt-1 flex items-baseline gap-2">
             <span className="break-words font-display text-3xl sm:text-4xl tracking-tight text-cream">
-              {noHousing ? "—" : `${rewards.points.toLocaleString()} pts`}
+              <DetailLink query={{ metric: "bilt", account: "all" }}>{noHousing ? "—" : `${rewards.points.toLocaleString()} pts`}</DetailLink>
             </span>
           </div>
           {!noHousing && (
@@ -114,13 +116,13 @@ export function BiltRentMeter({ meter, delay = 0 }: { meter: BiltMeterView; dela
             <div>
               <div className="text-muted">Everyday spend</div>
               <div className="tnum mt-0.5 text-lg text-cream">
-                {formatMoney(meter.everydaySpend, currency)}
+                <DetailLink query={{ metric: "bilt", account: "all" }}>{formatMoney(meter.everydaySpend, currency)}</DetailLink>
               </div>
             </div>
             <div className="text-right">
               <div className="text-muted">Housing payment</div>
               <div className="tnum mt-0.5 text-lg text-cream">
-                {formatMoney(meter.housingPayment, currency, { cents: false })}
+                <DetailLink query={{ metric: "bilt", account: "all" }}>{formatMoney(meter.housingPayment, currency, { cents: false })}</DetailLink>
               </div>
             </div>
           </div>
@@ -149,7 +151,7 @@ export function BiltRentMeter({ meter, delay = 0 }: { meter: BiltMeterView; dela
               <>
                 You’re{" "}
                 <span className="tnum text-cream">
-                  {formatMoney(rewards.toNext ?? 0, currency)}
+                  <DetailLink query={{ metric: "bilt", account: "all" }}>{formatMoney(rewards.toNext ?? 0, currency)}</DetailLink>
                 </span>{" "}
                 away from {mult(rewards.nextMultiplier ?? 0.5)} on housing.
               </>

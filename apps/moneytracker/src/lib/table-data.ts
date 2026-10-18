@@ -13,6 +13,7 @@ export interface DataRow {
   values: Record<string, TableValue>;
   sortValues?: Record<string, TableValue>;
   href?: string;
+  cellHrefs?: Record<string, string>;
   linkLabel?: string;
 }
 export interface TableSort { key: string; direction: "asc" | "desc" }

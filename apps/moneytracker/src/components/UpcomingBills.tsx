@@ -1,3 +1,4 @@
+import { DetailLink } from "@/components/DetailPanel";
 import { UpcomingBill } from "@/lib/analytics";
 import { categoryMeta } from "@/lib/categories";
 import { formatMoney } from "@/lib/format";
@@ -37,7 +38,7 @@ export function UpcomingBills({
       <div className="mb-4 rounded-xl border hairline bg-surface px-4 py-3">
         <div className="label-eyebrow">Due in the next 30 days</div>
         <div className="tnum mt-1 text-2xl text-coral">
-          {formatMoney(dueSoonTotal, currency, { cents: false })}
+          <DetailLink query={{ metric: "upcoming" }}>{formatMoney(dueSoonTotal, currency, { cents: false })}</DetailLink>
         </div>
       </div>
 
@@ -63,7 +64,7 @@ export function UpcomingBills({
                 {meta.glyph}
               </span>
               <div className="min-w-0">
-                <div className="truncate text-sm text-cream">{b.name}</div>
+                <div className="truncate text-sm text-cream"><DetailLink query={{ metric: "upcoming", record: b.id }}>{b.name}</DetailLink></div>
                 <div className="text-xs text-faint">
                   <span className={urgent ? "text-coral" : "text-muted"}>
                     {dayLabel(b.daysUntil)}
@@ -76,7 +77,7 @@ export function UpcomingBills({
                 </div>
               </div>
               <span className="tnum col-start-2 justify-self-end ml-auto shrink-0 text-sm text-cream">
-                {formatMoney(b.amount, currency)}
+                <DetailLink query={{ metric: "upcoming", record: b.id }}>{formatMoney(b.amount, currency)}</DetailLink>
               </span>
             </li>
           );

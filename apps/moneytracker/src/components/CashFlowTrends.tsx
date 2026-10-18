@@ -1,3 +1,4 @@
+import { detailHref } from "@/lib/details";
 import { cashFlowColumns, cashFlowTableRows } from "./CashFlowTable";
 import { MonthCashFlow } from "@/lib/analytics";
 import { formatMonth } from "@/lib/format";
@@ -6,7 +7,7 @@ import { TimeSeriesChart } from "./charts/TimeSeriesChart";
 
 export function CashFlowTrends({ rows, currency }: { rows: MonthCashFlow[]; currency: string }) {
   if (!rows.length) return null;
-  const data = rows.map((r) => ({ id: r.month, label: formatMonth(r.month), values: { net: r.net, rate: r.income > 0 ? r.net / r.income * 100 : null } }));
+  const data = rows.map((r) => ({ id: r.month, label: formatMonth(r.month), detailHref: detailHref({ metric: "net", months: [r.month] }), valueHrefs: Object.fromEntries((["income", "spending", "net", "rate"] as const).map((metric) => [metric, detailHref({ metric, months: [r.month] })])), values: { net: r.net, rate: r.income > 0 ? r.net / r.income * 100 : null } }));
   const table = { columns: cashFlowColumns, rows: cashFlowTableRows(rows) };
   return <div className="mt-5 grid min-w-0 gap-5 xl:grid-cols-2">
     <SectionCard title="Monthly surplus or shortfall">

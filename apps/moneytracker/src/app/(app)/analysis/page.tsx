@@ -1,3 +1,5 @@
+import { detailHref } from "@/lib/details";
+import { DetailLink } from "@/components/DetailPanel";
 import { CashFlowTrends } from "@/components/CashFlowTrends";
 import Link from "@/components/AppLink";
 import { EstimatedBillsNotice } from "@/components/EstimatedBillsNotice";
@@ -81,23 +83,27 @@ export default async function AnalysisPage() {
       <div className="mb-5 grid grid-cols-1 gap-3 min-[420px]:grid-cols-2 sm:gap-4 lg:grid-cols-4">
         <StatCard
           label={`Income · ${monthsLabel}`}
+          href={detailHref({ metric: "income", months: [...windowSet] })}
           value={formatMoney(ov.income, cur, { cents: false })}
           accent="blue"
         />
         <StatCard
           label={`Spending · ${monthsLabel}`}
+          href={detailHref({ metric: "spending", months: [...windowSet] })}
           value={formatMoney(ov.spending, cur, { cents: false })}
           accent="coral"
           delay={60}
         />
         <StatCard
           label="Net saved"
+          href={detailHref({ metric: "net", months: [...windowSet] })}
           value={formatMoney(ov.net, cur, { cents: false })}
           accent={ov.net >= 0 ? "blue" : "coral"}
           delay={120}
         />
         <StatCard
           label="Savings rate"
+          href={detailHref({ metric: "rate", months: [...windowSet] })}
           value={
             ov.savingsRate == null
               ? "—"
@@ -121,14 +127,14 @@ export default async function AnalysisPage() {
               <span className="text-muted">Best month&nbsp;·&nbsp;</span>
               <span className="text-cream">{formatMonth(best.month)}</span>
               <span className="tnum ml-auto shrink-0 text-blue">
-                {formatMoney(best.net, cur, { cents: false, sign: true })}
+                <DetailLink query={{ metric: "net", months: [best.month] }}>{formatMoney(best.net, cur, { cents: false, sign: true })}</DetailLink>
               </span>
             </div>
             <div className="flex flex-wrap items-center gap-y-1 rounded-xl border hairline bg-surface px-3 py-2.5 text-sm">
               <span className="text-muted">Toughest month&nbsp;·&nbsp;</span>
               <span className="text-cream">{formatMonth(worst.month)}</span>
               <span className="tnum ml-auto shrink-0 text-coral">
-                {formatMoney(worst.net, cur, { cents: false, sign: true })}
+                <DetailLink query={{ metric: "net", months: [worst.month] }}>{formatMoney(worst.net, cur, { cents: false, sign: true })}</DetailLink>
               </span>
             </div>
           </div>
@@ -149,7 +155,7 @@ export default async function AnalysisPage() {
                       · {s.count}× · {s.cadence}
                     </span>
                     <span className="tnum ml-auto shrink-0 text-cream">
-                      {formatMoney(s.total, cur, { cents: false })}
+                      <DetailLink query={{ metric: "income", months: [...windowSet], source: s.name, statistic: "share" }}>{formatMoney(s.total, cur, { cents: false })}</DetailLink>
                     </span>
                     <span className="tnum w-10 shrink-0 text-right text-muted">
                       {Math.round(pct)}%
@@ -181,17 +187,17 @@ export default async function AnalysisPage() {
 
       {/* 4 · Behavior patterns */}
       <SectionCard title="How you spend" delay={320} className="mt-4">
-        <WeekdayBars data={weekdays} currency={cur} />
+        <WeekdayBars months={[...windowSet]} data={weekdays} currency={cur} />
         <div className="mt-5 grid grid-cols-1 gap-3 min-[420px]:grid-cols-2 sm:gap-4">
           <div className="rounded-xl border hairline bg-surface px-3 py-2.5">
             <div className="label-eyebrow">Avg transaction</div>
             <div className="tnum mt-1 text-lg text-cream">
-              {formatMoney(avgSize, cur)}
+              <DetailLink query={{ metric: "spending", months: [...windowSet], statistic: "average" }}>{formatMoney(avgSize, cur)}</DetailLink>
             </div>
           </div>
           <div className="rounded-xl border hairline bg-surface px-3 py-2.5">
             <div className="label-eyebrow">Purchases</div>
-            <div className="tnum mt-1 text-lg text-cream">{spendCount}</div>
+            <div className="tnum mt-1 text-lg text-cream"><DetailLink query={{ metric: "spending", months: [...windowSet], part: "purchases" }}>{spendCount}</DetailLink></div>
           </div>
         </div>
         {biggest.length > 0 && (
@@ -212,7 +218,7 @@ export default async function AnalysisPage() {
                       </div>
                     </div>
                     <span className="tnum ml-auto shrink-0 text-cream">
-                      {formatMoney(t.amount, cur)}
+                      <DetailLink query={{ metric: "transaction", record: t.id, account: t.accountId }}>{formatMoney(t.amount, cur)}</DetailLink>
                     </span>
                   </li>
                 );
@@ -234,7 +240,7 @@ export default async function AnalysisPage() {
               return (
                 <div key={tr.category} className="flex items-center gap-2.5 text-sm">
                   <span>{tr.glyph}</span>
-                  <span className="min-w-0 truncate text-cream-dim">{tr.label}</span>
+                  <span className="min-w-0 truncate text-cream-dim"><DetailLink query={{ metric: "spending", category: tr.category, months: [...windowSet].slice(-3), statistic: "monthly", priorMonths: [...windowSet].slice(0, -3), priorAverage: true }}>{tr.label}</DetailLink></span>
                   <span
                     className={`shrink-0 text-xs ${up ? "text-coral" : "text-blue"}`}
                   >
@@ -260,7 +266,7 @@ export default async function AnalysisPage() {
                 {fresh.slice(0, 8).map((m) => (
                   <li key={m.name}>
                     <Link
-                      href={`/transactions?merchant=${encodeURIComponent(m.name)}`}
+                      href={detailHref({ metric: "spending", merchant: m.name, months: [...windowSet].slice(-3) })}
                       className="-mx-2 flex items-center gap-3 rounded-lg px-2 py-1 transition-colors hover:bg-surface-2"
                     >
                       <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border hairline bg-surface-2 text-sm text-slate">

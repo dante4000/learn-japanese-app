@@ -1,5 +1,8 @@
 "use client";
 
+import { detailHref } from "@/lib/details";
+import { DetailLink } from "@/components/DetailPanel";
+
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { DataTable } from "../DataTable";
 import { NetWorthSnapshot } from "@/lib/types";
@@ -663,6 +666,7 @@ export function NetWorthArea({
           </div>
         </div>
       </div>
+      <DetailLink query={{ metric: "networth", account: "all", to: data[hover ?? data.length - 1]?.date }}>Inspect selected balance →</DetailLink>
       <details className="mt-4 text-sm text-muted">
         <summary className="cursor-pointer py-2">Explore net worth data · {scopedSnapshots.length} records</summary>
         <p className="my-3 text-xs text-muted">Every available daily record in this range. The chart may group records by week or month. Changes compare consecutive available records.</p>
@@ -681,7 +685,7 @@ export function NetWorthArea({
           rows={scopedSnapshots.map((s, i) => {
             const prior = scopedSnapshots[i - 1];
             const change = prior ? s.netWorth - prior.netWorth : null;
-            return { id: s.date, href: `/transactions?month=${s.date.slice(0, 7)}`, linkLabel: "Month activity", values: {
+            return { id: s.date, href: detailHref({ metric: "networth", to: s.date, account: "all" }), linkLabel: "Inspect balance", cellHrefs: { ...Object.fromEntries(["netWorth", "assets", "liabilities", "change", "changePct"].map((key) => [key, detailHref({ metric: "networth", to: s.date, account: "all", priorTo: prior?.date })])), ...Object.fromEntries((["income", "spending", "net"] as const).map((metric) => [metric, detailHref({ metric, from: s.date, to: s.date })])) }, values: {
               date: s.date, netWorth: s.netWorth, assets: s.totalAssets, liabilities: s.totalLiabilities,
               change, changePct: prior?.netWorth && change != null ? change / Math.abs(prior.netWorth) * 100 : null,
               income: s.income ?? null, spending: s.spending ?? null,

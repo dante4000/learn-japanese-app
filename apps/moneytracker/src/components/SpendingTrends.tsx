@@ -1,3 +1,4 @@
+import { detailHref } from "@/lib/details";
 import { TimeSeriesChart } from "./charts/TimeSeriesChart";
 import Link from "@/components/AppLink";
 import { AppState } from "@/lib/types";
@@ -22,6 +23,9 @@ export function SpendingTrends({
   const pace = spendingPace(state, month, prevMonth);
   const { months, trends } = categoryTrends(state, 6, 6);
 
+  const through = (m: string, day: number) => `${m}-${String(Math.min(day, new Date(Number(m.slice(0, 4)), Number(m.slice(5, 7)), 0).getDate())).padStart(2, "0")}`;
+  const links = (day: number) => ({ current: detailHref({ metric: "spending", from: `${month}-01`, to: through(month, day) }), ...(prevMonth ? { previous: detailHref({ metric: "spending", from: `${prevMonth}-01`, to: through(prevMonth, day) }) } : {}) });
+  const comparison = (day: number) => detailHref({ metric: "spending", from: `${month}-01`, to: through(month, day), priorFrom: prevMonth ? `${prevMonth}-01` : undefined, priorTo: prevMonth ? through(prevMonth, day) : undefined });
   const paceDelta =
     pace.previousToDate != null ? pace.currentToDate - pace.previousToDate : null;
 
@@ -43,7 +47,7 @@ export function SpendingTrends({
         }
       >
         <TimeSeriesChart title="Cumulative spending by day" currency={currency} kind="line"
-          data={pace.points.map((p) => ({ label: String(p.day), values: { current: p.current, previous: p.previous } }))}
+          data={pace.points.map((p) => ({ label: String(p.day), detailHref: comparison(p.day), valueHrefs: links(p.day), values: { current: p.current, previous: p.previous } }))}
           series={[
             { key: "current", label: formatMonth(month), color: "var(--color-coral)" },
             ...(prevMonth ? [{ key: "previous", label: formatMonth(prevMonth), color: "var(--color-muted)", dashed: true }] : []),
@@ -56,7 +60,7 @@ export function SpendingTrends({
             { key: "differencePct", label: "Difference (%)", format: "percent" },
           ], rows: pace.points.map((point, i) => {
             const difference = point.current != null && point.previous != null ? point.current - point.previous : null;
-            return { id: String(i), values: {
+            return { id: String(i), href: comparison(point.day), linkLabel: "Inspect comparison", cellHrefs: { ...links(point.day), difference: comparison(point.day), differencePct: comparison(point.day) }, values: {
               day: point.day, current: point.current, previous: point.previous,
               difference, differencePct: difference != null && point.previous ? difference / Math.abs(point.previous) * 100 : null,
             } };
@@ -88,7 +92,7 @@ export function SpendingTrends({
             {trends.map((t) => (
               <li key={t.category}>
                 <Link
-                  href={`/transactions?category=${encodeURIComponent(t.category)}`}
+                  href={detailHref({ metric: "spending", category: t.category, months: [months[months.length - 1]], priorMonths: months.length > 1 ? [months[months.length - 2]] : undefined })}
                   className="-mx-2 flex items-center gap-3 rounded-lg px-2 py-2.5 transition-colors hover:bg-surface-2"
                 >
                   <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg border hairline bg-surface-2 text-sm">

@@ -46,7 +46,7 @@ test("cash-flow comparisons do not mistake a missing month for the prior month",
   assert.equal(data[1].values.changePct, 200);
   assert.equal(data[2].values.previousNet, null);
   assert.equal(data[2].values.rate, null);
-  assert.equal(data[1].href, "/transactions?month=2026-09");
+  assert.equal(data[1].href, "/details?metric=net&months=2026-09");
 });
 
 test("detailed tables expose accessible sorting, search, pagination, and scroll controls", () => {

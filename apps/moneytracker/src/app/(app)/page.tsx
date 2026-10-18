@@ -1,3 +1,5 @@
+import { detailHref } from "@/lib/details";
+import { DetailLink } from "@/components/DetailPanel";
 import { CashFlowTrends } from "@/components/CashFlowTrends";
 import Link from "@/components/AppLink";
 import { EstimatedBillsNotice } from "@/components/EstimatedBillsNotice";
@@ -76,7 +78,7 @@ export default async function OverviewPage() {
               {focus.mask ? ` ···· ${focus.mask}` : ""}
             </div>
             <div className="tnum mt-2 break-words font-display text-4xl sm:text-5xl tracking-tight text-cream md:text-6xl">
-              {formatMoney(focus.balances.current ?? 0, cur, { cents: false })}
+              <DetailLink query={{ metric: "account", account: focus.id }}>{formatMoney(focus.balances.current ?? 0, cur, { cents: false })}</DetailLink>
             </div>
             <div className="mt-3 flex flex-wrap gap-x-6 gap-y-1 text-sm">
               {LIABILITY_TYPES.has(focus.type) && (
@@ -86,13 +88,13 @@ export default async function OverviewPage() {
               )}
               {focus.balances.available != null && (
                 <span className="text-blue">
-                  {formatMoney(focus.balances.available, cur, { cents: false })}{" "}
+                  <DetailLink query={{ metric: "account", account: focus.id }}>{formatMoney(focus.balances.available, cur, { cents: false })}</DetailLink>{" "}
                   <span className="text-muted">available</span>
                 </span>
               )}
               {focus.balances.limit != null && (
                 <span className="text-cream-dim">
-                  {formatMoney(focus.balances.limit, cur, { cents: false })}{" "}
+                  <DetailLink query={{ metric: "account", account: focus.id }}>{formatMoney(focus.balances.limit, cur, { cents: false })}</DetailLink>{" "}
                   <span className="text-muted">limit</span>
                 </span>
               )}
@@ -107,15 +109,15 @@ export default async function OverviewPage() {
               <div>
                 <div className="label-eyebrow">Net worth</div>
                 <div className="tnum mt-2 break-words font-display text-4xl sm:text-5xl tracking-tight text-cream md:text-6xl">
-                  {formatMoney(s.netWorth.netWorth, cur, { cents: false })}
+                  <DetailLink query={{ metric: "networth", account: "all" }}>{formatMoney(s.netWorth.netWorth, cur, { cents: false })}</DetailLink>
                 </div>
                 <div className="mt-3 flex flex-wrap gap-x-6 gap-y-1 text-sm">
                   <span className="text-blue">
-                    {formatMoney(s.netWorth.totalAssets, cur, { cents: false })}{" "}
+                    <DetailLink query={{ metric: "networth", account: "all" }}>{formatMoney(s.netWorth.totalAssets, cur, { cents: false })}</DetailLink>{" "}
                     <span className="text-muted">assets</span>
                   </span>
                   <span className="text-coral">
-                    {formatMoney(s.netWorth.totalLiabilities, cur, { cents: false })}{" "}
+                    <DetailLink query={{ metric: "networth", account: "all" }}>{formatMoney(s.netWorth.totalLiabilities, cur, { cents: false })}</DetailLink>{" "}
                     <span className="text-muted">owed</span>
                   </span>
                 </div>
@@ -135,6 +137,7 @@ export default async function OverviewPage() {
       <div className="mt-5 grid grid-cols-1 gap-3 min-[420px]:grid-cols-2 sm:gap-4 lg:grid-cols-3">
         <StatCard
           label="Spent this month"
+          href={detailHref({ metric: "spending", months: [month] })}
           value={formatMoney(s.monthSpending, cur, { cents: false })}
           accent="coral"
           delay={60}
@@ -151,12 +154,14 @@ export default async function OverviewPage() {
         />
         <StatCard
           label="Income this month"
+          href={detailHref({ metric: "income", months: [month] })}
           value={formatMoney(s.monthIncome, cur, { cents: false })}
           accent="blue"
           delay={120}
         />
         <StatCard
           label="Net cash flow"
+          href={detailHref({ metric: "net", months: [month] })}
           value={formatMoney(s.monthNet, cur, { sign: true, cents: false })}
           accent={s.monthNet >= 0 ? "blue" : "coral"}
           delay={180}
@@ -203,9 +208,9 @@ export default async function OverviewPage() {
                     className="h-2.5 w-2.5 shrink-0 rounded-full"
                     style={{ background: c.color }}
                   />
-                  <span className="text-cream-dim">{c.label}</span>
+                  <span className="text-cream-dim"><DetailLink query={{ metric: "spending", category: c.category, months: [month] }}>{c.label}</DetailLink></span>
                   <span className="tnum ml-auto shrink-0 text-cream">
-                    {formatMoney(c.total, cur, { cents: false })}
+                    <DetailLink query={{ metric: "spending", category: c.category, months: [month], statistic: "share" }}>{formatMoney(c.total, cur, { cents: false })}</DetailLink>
                   </span>
                 </li>
               ))}
@@ -242,7 +247,7 @@ export default async function OverviewPage() {
               {merchants.map((m) => (
                 <li key={m.name}>
                   <Link
-                    href={`/transactions?merchant=${encodeURIComponent(m.name)}&month=${month}`}
+                    href={detailHref({ metric: "spending", merchant: m.name, months: [month] })}
                     className="-mx-2 flex items-center gap-3 rounded-lg px-2 py-1 transition-colors hover:bg-surface-2"
                   >
                     <span className="grid h-9 w-9 place-items-center rounded-lg border hairline bg-surface-2 text-sm text-slate-soft">
@@ -290,7 +295,7 @@ export default async function OverviewPage() {
                   <span
                     className={`tnum ml-auto shrink-0 text-sm ${t.amount < 0 ? "text-blue" : "text-cream"}`}
                   >
-                    {formatMoney(-t.amount, cur, { sign: true })}
+                    <DetailLink query={{ metric: "transaction", record: t.id, account: t.accountId }}>{formatMoney(-t.amount, cur, { sign: true })}</DetailLink>
                   </span>
                 </li>
               );

@@ -1,145 +1,31 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { formatMoney } from "@/lib/format";
-import { useLoadingTransition } from "../LoadingFeedback";
-
-interface Slice {
-  label: string;
-  value: number;
-  color: string;
-  key?: string; // category key, enables click-through when hrefBase is set
-}
-
-/**
- * Interactive donut. Hover a slice to highlight it and see its share in the
- * center; click (when hrefBase is set) to drill into that category's
- * transactions.
- */
-export function Donut({
-  slices,
-  total,
-  currency = "USD",
-  size = 200,
-  hrefBase,
-  month,
-  centerLabel = "Spent",
-}: {
-  slices: Slice[];
-  total: number;
-  currency?: string;
-  size?: number;
-  hrefBase?: string; // e.g. "/transactions" → /transactions?category=KEY
-  month?: string; // yyyy-mm — appended so the drill-through keeps month context
-  centerLabel?: string; // center caption under the total (e.g. "Earned")
+import { useState } from 'react';
+import { DetailLink } from '../DetailPanel';
+import { detailHref } from '@/lib/details';
+import { formatMoney } from '@/lib/format';
+interface Slice { label: string; value: number; color: string; key?: string; href?: string }
+export function Donut({ slices, total, currency = 'USD', size = 200, month, centerLabel = 'Spent', totalHref }: {
+  slices: Slice[]; total: number; currency?: string; size?: number; hrefBase?: string; month?: string; centerLabel?: string; totalHref?: string;
 }) {
-  const router = useRouter();
-  const [, startTransition] = useLoadingTransition();
   const [hover, setHover] = useState<number | null>(null);
-  const stroke = 22;
-  const r = (size - stroke - 6) / 2;
-  const c = 2 * Math.PI * r;
+  const stroke = 22, r = (size - stroke - 6) / 2, circumference = 2 * Math.PI * r;
   const positive = slices.filter((s) => s.value > 0);
   const sum = positive.reduce((a, s) => a + s.value, 0) || 1;
-
-  const lens = positive.map((s) => (s.value / sum) * c);
-  const segments = positive.map((s, i) => ({
-    ...s,
-    frac: s.value / sum,
-    len: lens[i],
-    offset: lens.slice(0, i).reduce((a, b) => a + b, 0),
-  }));
-
-  const active = hover != null ? segments[hover] : null;
-  const clickable = (s: Slice) => Boolean(hrefBase && s.key);
-  const go = (s: Slice) => {
-    if (hrefBase && s.key) {
-      const monthParam = month ? `&month=${encodeURIComponent(month)}` : "";
-      const href = `${hrefBase}?category=${encodeURIComponent(s.key)}${monthParam}`;
-      startTransition(() => router.push(href));
-    }
-  };
-
-  return (
-    <div className="relative max-w-full" title={slices.some((s) => s.value < 0) ? "Ring: positive category totals. Center: net total including refunds." : undefined} style={{ width: size, height: size }}>
-      <svg width={size} height={size} className="-rotate-90">
-        <circle
-          cx={size / 2}
-          cy={size / 2}
-          r={r}
-          fill="none"
-          stroke="var(--color-line)"
-          strokeWidth={stroke}
-        />
-        {segments.map((s, i) => {
-          const isHover = hover === i;
-          const canClick = clickable(s);
-          return (
-            <circle
-              key={i}
-              cx={size / 2}
-              cy={size / 2}
-              r={r}
-              fill="none"
-              stroke={s.color}
-              strokeWidth={isHover ? stroke + 6 : stroke}
-              strokeDasharray={`${s.len} ${c - s.len}`}
-              strokeDashoffset={-s.offset}
-              strokeLinecap="butt"
-              opacity={hover == null || isHover ? 1 : 0.35}
-              style={{
-                cursor: canClick ? "pointer" : "default",
-                transition: "opacity .15s ease, stroke-width .15s ease",
-              }}
-              // Keyboard-accessible drill-through: focusable slices behave like
-              // buttons (Enter/Space navigate), and focus mirrors hover so the
-              // center readout updates for keyboard users too.
-              tabIndex={canClick ? 0 : undefined}
-              role={canClick ? "button" : undefined}
-              aria-label={
-                canClick
-                  ? `${s.label}: ${formatMoney(s.value, currency, { cents: false })}, ${Math.round(s.frac * 100)}% — view transactions`
-                  : undefined
-              }
-              onMouseEnter={() => setHover(i)}
-              onMouseLeave={() => setHover(null)}
-              onFocus={() => setHover(i)}
-              onBlur={() => setHover(null)}
-              onClick={() => go(s)}
-              onKeyDown={(e) => {
-                if (canClick && (e.key === "Enter" || e.key === " ")) {
-                  e.preventDefault();
-                  go(s);
-                }
-              }}
-            />
-          );
-        })}
-      </svg>
-      <div className="pointer-events-none absolute inset-0 grid place-items-center text-center">
-        {active ? (
-          <div className="px-6">
-            <div className="truncate text-xs font-semibold" style={{ color: active.color }}>
-              {active.label}
-            </div>
-            <div className="tnum text-xl text-cream">
-              {formatMoney(active.value, currency, { cents: false })}
-            </div>
-            <div className="tnum text-[0.65rem] text-muted">
-              {Math.round(active.frac * 100)}%
-              {clickable(active) ? " · tap to view" : ""}
-            </div>
-          </div>
-        ) : (
-          <div>
-            <div className="label-eyebrow">{centerLabel}</div>
-            <div className="tnum text-2xl text-cream">
-              {formatMoney(total, currency, { cents: false })}
-            </div>
-          </div>
-        )}
-      </div>
+  const segments = positive.map((s, i) => ({ ...s, fraction: s.value / sum, offset: positive.slice(0, i).reduce((a, p) => a + p.value / sum * circumference, 0) }));
+  const active = hover == null ? null : segments[hover];
+  const href = (s: Slice) => s.href ?? (s.key ? detailHref({ metric: 'spending', category: s.key, months: month ? [month] : undefined }) : undefined);
+  const selectedHref = active ? href(active) : totalHref ?? (month ? detailHref({ metric: 'spending', months: [month] }) : undefined);
+  return <div className="relative max-w-full" title={slices.some((s) => s.value < 0) ? 'Ring: positive category totals. Center: net total including refunds.' : undefined} style={{ width: size, height: size }}>
+    <svg width={size} height={size} className="-rotate-90" aria-label={`${centerLabel} by category`}>
+      <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="var(--color-line)" strokeWidth={stroke} />
+      {segments.map((s, i) => {
+        const circle = <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={s.color} strokeWidth={hover === i ? stroke + 6 : stroke} strokeDasharray={`${s.fraction * circumference} ${(1 - s.fraction) * circumference}`} strokeDashoffset={-s.offset} opacity={hover == null || hover === i ? 1 : .35} onPointerEnter={() => setHover(i)} onPointerLeave={() => setHover(null)} />;
+        return href(s) ? <DetailLink key={i} href={href(s)} onFocus={() => setHover(i)} onBlur={() => setHover(null)} aria-label={`${s.label}: ${formatMoney(s.value, currency)}. Inspect records.`}>{circle}</DetailLink> : <g key={i}>{circle}</g>;
+      })}
+    </svg>
+    <div className="pointer-events-none absolute inset-8 grid place-items-center text-center">
+      <div className="min-w-0"><p className="text-xs text-muted">{active?.label ?? centerLabel}</p><p className="tnum text-xl text-cream">{selectedHref ? <DetailLink className="pointer-events-auto" href={selectedHref}>{formatMoney(active?.value ?? total, currency, { cents: false })}</DetailLink> : formatMoney(active?.value ?? total, currency, { cents: false })}</p>{active && <p className="text-xs text-muted">{Math.round(active.fraction * 100)}% of positive totals</p>}</div>
     </div>
-  );
+  </div>;
 }

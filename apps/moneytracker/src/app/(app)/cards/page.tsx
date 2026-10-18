@@ -41,6 +41,8 @@ export default async function CardsPage() {
       card,
       renewal: detectRenewal(state, acct.id, card),
       live: {
+        accountId: acct.id,
+        periodStart: spend.periodStart,
         accountName: acct.name,
         mask: acct.mask,
         balance: acct.balances.current,

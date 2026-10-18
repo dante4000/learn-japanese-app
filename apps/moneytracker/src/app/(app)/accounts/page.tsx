@@ -1,3 +1,4 @@
+import { DetailLink } from "@/components/DetailPanel";
 import { loadStateCached } from "@/lib/store";
 import { computeNetWorth, LIABILITY_TYPES } from "@/lib/analytics";
 import { formatMoney } from "@/lib/format";
@@ -25,7 +26,7 @@ function AccountRow({
         {a.subtype?.slice(0, 2) ?? a.type.slice(0, 2)}
       </span>
       <div className="min-w-0 flex-1 basis-[calc(100%-4rem)] sm:basis-auto">
-        <div className="truncate text-sm text-cream">{a.name}</div>
+        <div className="truncate text-sm text-cream"><DetailLink query={{ metric: "account", account: a.id }}>{a.name}</DetailLink></div>
         <div className="text-xs text-faint">
           {a.subtype || a.type}
           {a.mask ? ` ···· ${a.mask}` : ""}
@@ -95,19 +96,19 @@ export default async function AccountsPage() {
         <div className="card rise p-5">
           <div className="label-eyebrow">Assets</div>
           <div className="tnum mt-2 text-xl text-blue">
-            {formatMoney(nw.totalAssets, cur)}
+            <DetailLink query={{ metric: "networth", account: "all" }}>{formatMoney(nw.totalAssets, cur)}</DetailLink>
           </div>
         </div>
         <div className="card rise p-5" style={{ animationDelay: "60ms" }}>
           <div className="label-eyebrow">Liabilities</div>
           <div className="tnum mt-2 text-xl text-coral">
-            {formatMoney(nw.totalLiabilities, cur)}
+            <DetailLink query={{ metric: "networth", account: "all" }}>{formatMoney(nw.totalLiabilities, cur)}</DetailLink>
           </div>
         </div>
         <div className="card rise p-5" style={{ animationDelay: "120ms" }}>
           <div className="label-eyebrow">Net worth</div>
           <div className="tnum mt-2 text-xl text-cream">
-            {formatMoney(nw.netWorth, cur)}
+            <DetailLink query={{ metric: "networth", account: "all" }}>{formatMoney(nw.netWorth, cur)}</DetailLink>
           </div>
         </div>
       </div>

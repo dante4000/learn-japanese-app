@@ -1,3 +1,5 @@
+import { detailHref } from "@/lib/details";
+import { DetailLink } from "@/components/DetailPanel";
 import { nonIncomeDepositReason } from "@/lib/categories";
 import { loadScopedState } from "@/lib/scoped-state";
 import { monthlyEquivalent } from "@/lib/recurring";
@@ -43,7 +45,7 @@ function StreamRow({
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-2">
           <span className="truncate text-sm text-cream">
-            {displayPayee(s.merchantName, s.description, card)}
+            <DetailLink query={{ metric: "recurring", record: s.id, account: s.accountId }}>{displayPayee(s.merchantName, s.description, card)}</DetailLink>
           </span>
           {reimbursed != null && (
             <span
@@ -87,7 +89,7 @@ function StreamRow({
       </div>
       <div className="shrink-0 text-right">
         <div className="tnum text-sm text-cream">
-          {formatMoney(Math.abs(s.lastAmount), currency)}
+          <DetailLink query={{ metric: "recurring", record: s.id, account: s.accountId }}>{formatMoney(Math.abs(s.lastAmount), currency)}</DetailLink>
         </div>
         <div className="tnum text-[0.65rem] text-faint">
           ≈{formatMoney(monthlyEquivalent(s) * mult, currency, { cents: false })}
@@ -161,12 +163,14 @@ export default async function RecurringPage({
           <div className="mb-5 grid grid-cols-1 gap-3 min-[420px]:grid-cols-2 sm:gap-4">
             <StatCard
               label="Subscriptions & bills"
+              href={detailHref({ metric: "recurring", streamType: "outflow" })}
               value={`${formatMoney(monthlySubs * mult, cur, { cents: false })}${suffix}`}
               accent="coral"
               sub={`${formatMoney(monthlySubs * (mult === 1 ? 12 : 1), cur, { cents: false })} ${mult === 1 ? "/ year" : "/ month"}`}
             />
             <StatCard
               label="Recurring income"
+              href={detailHref({ metric: "recurring", streamType: "inflow" })}
               value={`${formatMoney(monthlyIncome * mult, cur, { cents: false })}${suffix}`}
               accent="blue"
               delay={60}

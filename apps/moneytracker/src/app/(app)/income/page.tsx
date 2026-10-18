@@ -1,3 +1,5 @@
+import { detailHref } from "@/lib/details";
+import { DetailLink } from "@/components/DetailPanel";
 import { DataTable } from "@/components/DataTable";
 import { categoryMeta, nonIncomeDepositReason } from "@/lib/categories";
 import { isIncome, isSpend, effectiveCategory } from "@/lib/analytics";
@@ -187,12 +189,14 @@ export default async function IncomePage({
       <div className="mb-5 grid grid-cols-1 gap-3 min-[420px]:grid-cols-2 lg:grid-cols-4">
         <StatCard
           label={`Recorded income · ${scopeLabel}`}
+          href={detailHref({ metric: "income", months: scopeMonths, source: selectedSource || undefined })}
           value={formatMoney(focus.total, cur, { cents: false })}
           accent="blue"
           sub={`${deposits} deposit${deposits === 1 ? "" : "s"}`}
         />
         <StatCard
           label="Average / month"
+          href={detailHref({ metric: "income", months: scopeMonths, source: selectedSource || undefined, statistic: "monthly" })}
           value={formatMoney(monthlyAvg, cur, { cents: false })}
           accent="cream"
           delay={60}
@@ -200,6 +204,7 @@ export default async function IncomePage({
         />
         <StatCard
           label="Top source"
+          href={detailHref({ metric: "income", months: scopeMonths, source: topSeg?.name, denominatorSource: selectedSource || undefined, statistic: "share" })}
           value={topShare == null ? "—" : `${Math.round(topShare)}%`}
           accent="cream"
           delay={120}
@@ -213,6 +218,7 @@ export default async function IncomePage({
         />
         <StatCard
           label={`vs ${priorLabel}`}
+          href={detailHref({ metric: "income", months: scopeMonths, source: selectedSource || undefined, priorMonths })}
           value={
             delta == null
               ? "—"
@@ -237,8 +243,8 @@ export default async function IncomePage({
           {support ? <>
             <p className="text-sm text-muted">{support.source} pays {formatMoney(support.amount, cur, { cents: false })}/month toward studio rent. This does not enter your bank ledger.</p>
             <div className="mt-4 grid grid-cols-1 gap-3 min-[420px]:grid-cols-2">
-              <div><div className="label-eyebrow">Support · {scopeLabel}</div><p className="tnum mt-1 text-xl text-slate">{formatMoney(supportTotal, cur, { cents: false })}</p></div>
-              {!supportOnly && <div><div className="label-eyebrow">Income + employer support</div><p className="tnum mt-1 text-xl text-blue">{formatMoney(focus.total + supportTotal, cur, { cents: false })}</p></div>}
+              <div><div className="label-eyebrow">Support · {scopeLabel}</div><p className="tnum mt-1 text-xl text-slate"><DetailLink query={{ metric: "support", months: scopeMonths }}>{formatMoney(supportTotal, cur, { cents: false })}</DetailLink></p></div>
+              {!supportOnly && <div><div className="label-eyebrow">Income + employer support</div><p className="tnum mt-1 text-xl text-blue"><DetailLink query={{ metric: "income", months: scopeMonths, source: selectedSource || undefined, support: "include" }}>{formatMoney(focus.total + supportTotal, cur, { cents: false })}</DetailLink></p></div>}
             </div>
             {support.startMonth === "2021-10" && <p className="mt-2 text-xs text-muted">The October 2021 start is approximate, based on support starting five years ago.</p>}
             <p className="mt-2 text-xs text-muted">Effective {formatMonth(support.startMonth)}{support.endMonth ? ` through ${formatMonth(support.endMonth)}` : ", ongoing"}. Support is not counted as a deposit. Charts and recorded-income totals show bank income only.</p>
@@ -254,7 +260,7 @@ export default async function IncomePage({
         action={visibleSupport ? <SupportToggle included={supportInChart} /> : undefined}
         delay={200}
       >
-        <CompositionBars
+        <CompositionBars metric="income"
           data={comp}
           currency={cur}
           highlight={scope === "month" ? selected : undefined}
@@ -294,6 +300,7 @@ export default async function IncomePage({
               <Donut
                 slices={focus.segments.map((s) => ({
                   label: s.name,
+                  href: detailHref({ metric: "income", months: scopeMonths, source: s.name }),
                   value: s.total,
                   color: s.color,
                 }))}
@@ -301,6 +308,7 @@ export default async function IncomePage({
                 currency={cur}
                 size={210}
                 centerLabel="Earned"
+                totalHref={detailHref({ metric: "income", months: scopeMonths, source: selectedSource || undefined })}
               />
             </div>
             <div className="w-full flex-1 space-y-3.5">
@@ -318,7 +326,7 @@ export default async function IncomePage({
                         · {s.count}×
                       </span>
                       <span className="tnum ml-auto shrink-0 text-cream">
-                        {formatMoney(s.total, cur, { cents: false })}
+                        <DetailLink query={{ metric: "income", months: scopeMonths, source: s.name, denominatorSource: selectedSource || undefined, statistic: "share" }}>{formatMoney(s.total, cur, { cents: false })}</DetailLink>
                       </span>
                       <span className="tnum w-10 shrink-0 text-right text-muted">
                         {Math.round(pct)}%
@@ -364,7 +372,7 @@ export default async function IncomePage({
           rows={focus.segments.map((source) => {
             const deposits = state.transactions.filter((t) => isIncome(t) && scopeMonths.includes(t.date.slice(0, 7)) && incomeSourceLabel(t.merchantName, t.name) === source.name);
             const dates = deposits.map((t) => t.date).sort();
-            return { id: source.name, href: `/transactions?category=INCOME&q=${encodeURIComponent(source.name)}${scope === "month" ? `&month=${selected}` : ""}`, values: {
+            return { id: source.name, href: detailHref({ metric: "income", source: source.name, months: scopeMonths }), linkLabel: "Inspect deposits", cellHrefs: Object.fromEntries(["income", "count", "share", "averageDeposit", "monthlyAverage", "activeMonths", "first", "last"].map((key) => [key, detailHref({ metric: "income", source: source.name, months: scopeMonths, denominatorSource: selectedSource || undefined, statistic: key === "averageDeposit" ? "average" : key === "monthlyAverage" ? "monthly" : key === "share" ? "share" : undefined })])), values: {
               source: source.name, income: source.total, count: source.count,
               share: focus.total ? source.total / focus.total * 100 : null,
               averageDeposit: source.count ? source.total / source.count : null,
@@ -378,7 +386,7 @@ export default async function IncomePage({
       {excluded.length > 0 && <SectionCard title={`Other money in · ${scopeLabel}`} className="mt-4">
         <div className="flex flex-wrap items-baseline justify-between gap-3">
           <p className="text-sm text-muted">{excluded.length} deposits excluded from income. Transfers can include money moved between your own accounts.</p>
-          <p className="tnum text-xl text-cream">{formatMoney(excludedTotal, cur)}</p>
+          <p className="tnum text-xl text-cream"><DetailLink query={{ metric: "deposits", months: scopeMonths, source: selectedSource || undefined }}>{formatMoney(excludedTotal, cur)}</DetailLink></p>
         </div>
         <details className="mt-4" open>
           <summary className="cursor-pointer text-sm text-muted">Review excluded deposits</summary>
@@ -391,7 +399,7 @@ export default async function IncomePage({
               { key: "account", label: "Account" },
               { key: "source", label: "Data source" },
             ]}
-            rows={excluded.map((t) => ({ id: t.id, href: `/transactions?q=${encodeURIComponent(t.name)}&month=${t.date.slice(0, 7)}`, values: {
+            rows={excluded.map((t) => ({ id: t.id, href: detailHref({ metric: "transaction", record: t.id, account: t.accountId }), linkLabel: "Inspect deposit", cellHrefs: { amount: detailHref({ metric: "transaction", record: t.id, account: t.accountId }) }, values: {
               date: t.date, name: t.name, reason: nonIncomeDepositReason(t) ?? categoryMeta(effectiveCategory(t)).label,
               amount: -t.amount, account: state.accounts.find((a) => a.id === t.accountId)?.name ?? "Unknown account", source: t.source,
             } }))} /></div>
@@ -418,7 +426,7 @@ export default async function IncomePage({
                   <div className="text-xs text-faint">{formatDate(t.date)}</div>
                 </div>
                 <span className="tnum ml-auto shrink-0 text-blue">
-                  {formatMoney(-t.amount, cur)}
+                  <DetailLink query={{ metric: "transaction", record: t.id, account: t.accountId }}>{formatMoney(-t.amount, cur)}</DetailLink>
                 </span>
               </li>
             ))}

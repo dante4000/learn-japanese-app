@@ -1,5 +1,7 @@
 "use client";
 
+import { DetailLink } from "@/components/DetailPanel";
+
 import { useLoadingStatus } from "./LoadingFeedback";
 
 import Link from "@/components/AppLink";
@@ -76,12 +78,14 @@ export function TransactionRow({
   currency,
   editor,
   possibleDuplicate = false,
+  inspectable = true,
 }: {
   t: Transaction;
   accountName?: string;
   currency: string;
   editor: TransactionEditor;
   possibleDuplicate?: boolean;
+  inspectable?: boolean;
 }) {
   const meta = categoryMeta(resolveCategoryKey(t));
   const synthetic = isSyntheticBaseline(t);
@@ -97,7 +101,7 @@ export function TransactionRow({
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
             <span className="min-w-0 max-w-full truncate text-sm text-cream">
-              {displayPayee(t.merchantName, t.name, accountName)}
+              {inspectable ? <DetailLink query={{ metric: "transaction", record: t.id, account: synthetic ? "all" : t.accountId }}>{displayPayee(t.merchantName, t.name, accountName)}</DetailLink> : displayPayee(t.merchantName, t.name, accountName)}
             </span>
             {possibleDuplicate && <span className="rounded bg-coral/10 px-1.5 py-0.5 text-xs text-coral">Possible duplicate</span>}
             {t.note && (
@@ -143,7 +147,7 @@ export function TransactionRow({
         <span
           className={`tnum col-start-2 justify-self-end shrink-0 text-sm ${t.amount < 0 ? "text-blue" : "text-cream"}`}
         >
-          {formatMoney(-t.amount, currency, { sign: true })}
+          {inspectable ? <DetailLink query={{ metric: "transaction", record: t.id, account: synthetic ? "all" : t.accountId }}>{formatMoney(-t.amount, currency, { sign: true })}</DetailLink> : formatMoney(-t.amount, currency, { sign: true })}
         </span>
       </div>
 

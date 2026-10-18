@@ -1,5 +1,6 @@
 "use client";
 
+import { DetailLink } from "../DetailPanel";
 import { useRouter } from "next/navigation";
 import { useLoadingTransition } from "../LoadingFeedback";
 import { useEffect, useId, useRef, useState } from "react";
@@ -16,6 +17,8 @@ export interface ChartPoint {
   id?: string;
   label: string;
   href?: string;
+  detailHref?: string;
+  valueHrefs?: Record<string, string>;
   values: Record<string, number | null>;
 }
 
@@ -88,7 +91,7 @@ export function TimeSeriesChart({ data, series, title, currency = "USD", kind = 
     const value = point.values[series[0]?.key];
     const previous = i > 0 ? data[i - 1].values[series[0]?.key] : null;
     const change = value != null && previous != null ? value - previous : null;
-    return { id: point.id ?? String(i), href: point.href, linkLabel: "Open breakdown", sortValues: { period: i }, values: {
+    return { id: point.id ?? String(i), href: point.detailHref ?? point.href, cellHrefs: point.valueHrefs, linkLabel: "Open breakdown", sortValues: { period: i }, values: {
       ...point.values, period: point.label,
       total: series.reduce((sum, s) => sum + (point.values[s.key] ?? 0), 0),
       previous: previous ?? null, change,
@@ -103,8 +106,8 @@ export function TimeSeriesChart({ data, series, title, currency = "USD", kind = 
         </span>)}
       </div>
       <div aria-live="polite" aria-atomic="true" className={`mb-2 flex flex-wrap items-center gap-x-6 gap-y-2 overflow-y-auto rounded-xl bg-surface-2 px-4 py-3 text-sm ${series.length > 3 ? "h-40" : "min-h-16"}`}>
-        <span className="font-semibold text-cream">{data[active].label}{kind === "stacked" && <span className="tnum ml-3">{format(series.reduce((sum, s) => sum + (data[active].values[s.key] ?? 0), 0))} total</span>}</span>
-        {series.map((s) => <span key={s.key} className="min-w-0 break-words text-muted">{s.label} <strong className="tnum ml-1 font-medium text-cream">{data[active].values[s.key] == null ? "—" : format(data[active].values[s.key]!)}</strong></span>)}
+        <span className="font-semibold text-cream">{data[active].detailHref ? <DetailLink href={data[active].detailHref}>{data[active].label}{kind === "stacked" && <span className="tnum ml-3">{format(series.reduce((sum, s) => sum + (data[active].values[s.key] ?? 0), 0))} total</span>} ↗</DetailLink> : <>{data[active].label}{kind === "stacked" && <span className="tnum ml-3">{format(series.reduce((sum, s) => sum + (data[active].values[s.key] ?? 0), 0))} total</span>}</>}</span>
+        {series.map((s) => { const content = <>{s.label} <strong className="tnum ml-1 font-medium text-cream">{data[active].values[s.key] == null ? "—" : format(data[active].values[s.key]!)}</strong></>; return <span key={s.key} className="min-w-0 break-words text-muted">{data[active].valueHrefs?.[s.key] ? <DetailLink href={data[active].valueHrefs[s.key]}>{content} <span aria-hidden="true">↗</span></DetailLink> : content}</span>; })}
       </div>
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2 text-xs text-muted">
         <span>{expanded ? "Expanded view" : `All ${data.length} periods visible`} · {data[0].label} – {data[data.length - 1].label}</span>
@@ -132,30 +135,31 @@ export function TimeSeriesChart({ data, series, title, currency = "USD", kind = 
             }).join(" ");
             return <path key={s.key} d={path} fill="none" stroke={s.color} strokeWidth={2.5} strokeDasharray={s.dashed ? "6 4" : undefined} strokeLinejoin="round" aria-hidden="true" />;
           })}
-          {data.map((d, i) => <g key={`${d.label}-${i}`} role={d.href ? "link" : "button"} tabIndex={0}
+          {data.map((d, i) => <g key={`${d.label}-${i}`} role={d.detailHref ? "group" : d.href ? "link" : "button"} tabIndex={d.detailHref ? undefined : 0}
             aria-label={`${d.label}. ${series.map((s) => `${s.label}: ${d.values[s.key] == null ? "No data" : format(d.values[s.key]!)}`).join(". ")}`}
-            aria-pressed={d.href ? undefined : active === i} onFocus={() => setSelected(i)} onPointerEnter={() => setSelected(i)} onClick={() => choose(i)}
-            onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); choose(i); } }} className="cursor-pointer">
+            aria-pressed={d.href || d.detailHref ? undefined : active === i} onFocus={() => setSelected(i)} onPointerEnter={() => setSelected(i)} onClick={() => choose(i)}
+            onKeyDown={(event) => { if (d.detailHref) return; if (event.key === "Enter" || event.key === " ") { event.preventDefault(); choose(i); } }} className="cursor-pointer">
             <rect x={x(i) - band / 2} y={top} width={band} height={height - top - bottom} fill={active === i ? "var(--color-line)" : "transparent"} opacity={0.35} />
             {series.map((s, j) => {
               const v = d.values[s.key];
               if (v == null) return null;
-              if (kind === "line") return <circle key={s.key} cx={x(i)} cy={y(v)} r={active === i ? 4.5 : data.length < 3 ? 3 : 0} fill={s.color} stroke="var(--color-surface)" strokeWidth={2} />;
+              const wrap = (shape: React.ReactNode) => d.valueHrefs?.[s.key] ? <DetailLink key={s.key} href={d.valueHrefs[s.key]} onKeyDown={(event) => { if (event.key === " ") { event.preventDefault(); event.stopPropagation(); event.currentTarget.dispatchEvent(new MouseEvent("click", { bubbles: true, cancelable: true })); } }} aria-label={`${d.label}, ${s.label}: ${format(v)}. Open supporting records.`}>{shape}</DetailLink> : shape;
+              if (kind === "line") return wrap(<circle key={s.key} cx={x(i)} cy={y(v)} r={active === i ? 5 : 3} fill={s.color} stroke="var(--color-surface)" strokeWidth={2} />);
               if (kind === "stacked") {
                 const start = series.slice(0, j).reduce((sum, previous) => {
                   const value = d.values[previous.key] ?? 0;
                   return sum + (v >= 0 ? Math.max(0, value) : Math.min(0, value));
                 }, 0);
-                return <rect key={s.key} x={x(i) - Math.min(36, band * 0.65) / 2} y={Math.min(y(start), y(start + v))} width={Math.min(36, band * 0.65)} height={Math.abs(y(start) - y(start + v))} fill={s.color} />;
+                return wrap(<rect key={s.key} x={x(i) - Math.min(36, band * 0.65) / 2} y={Math.min(y(start), y(start + v))} width={Math.min(36, band * 0.65)} height={Math.abs(y(start) - y(start + v))} fill={s.color} />);
               }
               const barWidth = Math.min(24, band * 0.7 / series.length);
-              return <rect key={s.key} x={x(i) - barWidth * series.length / 2 + j * barWidth + 1} y={Math.min(y(0), y(v))} width={barWidth - 2} height={Math.abs(y(v) - y(0))} rx={2} fill={s.color} />;
+              return wrap(<rect key={s.key} x={x(i) - barWidth * series.length / 2 + j * barWidth + 1} y={Math.min(y(0), y(v))} width={barWidth - 2} height={Math.abs(y(v) - y(0))} rx={2} fill={s.color} />);
             })}
             {(i % labelEvery === 0 || i === data.length - 1) && <text x={x(i)} y={height - (angledLabels ? 48 : 13)} transform={angledLabels ? `rotate(-45 ${x(i)} ${height - 48})` : undefined} textAnchor={angledLabels ? "end" : "middle"} fill="var(--color-muted)" fontSize={12}>{d.label}</text>}
           </g>)}
         </svg>
       </div>
-      <p className="mt-1 text-xs text-muted">{data.some((d) => d.href) ? "Select a month to open its breakdown." : "Select a point or a table row for exact values."}</p>
+      <p className="mt-1 text-xs text-muted">{data.some((d) => d.href) ? "Select a month to open its breakdown." : "Select a point or a table row for exact values. Open an underlined value to inspect its records."}</p>
       {showTable && <details className="mt-4 text-sm text-muted">
         <summary className="w-fit cursor-pointer py-2 hover:text-cream">Explore detailed data · {tableRows.length} rows</summary>
         <div className="mt-3"><DataTable title={title} columns={columns} rows={tableRows} currency={currency} selectedId={data[active].id ?? String(active)} onSelectRow={(rowId) => {

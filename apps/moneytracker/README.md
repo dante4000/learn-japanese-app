@@ -217,3 +217,20 @@ src/
 ## Validation
 
 Use Node.js 22. Run `npm test`, `npm run lint`, `npm run typecheck`, and `npm run build` before release. Tests use fixed dates for credit-period checks.
+
+## Inspecting a value
+
+Underlined amounts open a detail panel. Chart category readouts, chart marks,
+summary cards, and table cells retain their month, account, and housing filters.
+Details show the calculation and supporting records, including refunds and
+estimates. Source and merchant filters use exact identities. The panel supports
+nested record inspection, Back, Close, and a full-page URL. Closing restores the
+original controls and focus. Slow requests load inside the panel; failed requests
+can be retried. The details API checks authentication and returns no-store data.
+
+Balances explain recorded versus reconstructed history. Recurring and Bilt views
+show their inputs and predictions. Card summaries expose per-card calculations.
+Credit periods open their evidence; separate buttons change usage overrides.
+
+The specification is in
+[Interactive financial details](docs/superpowers/specs/2026-10-17-interactive-details-design.md).

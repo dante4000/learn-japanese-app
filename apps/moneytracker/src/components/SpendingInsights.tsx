@@ -1,7 +1,10 @@
+import { detailHref } from "@/lib/details";
+import { DetailLink } from "@/components/DetailPanel";
 import { TimeSeriesChart } from "./charts/TimeSeriesChart";
 import Link from "@/components/AppLink";
 import { AppState } from "@/lib/types";
 import {
+  BASELINE_ACCOUNT_ID,
   isSpend,
   isSyntheticBaseline,
   spendingByAccount,
@@ -35,7 +38,8 @@ export function SpendingInsights({
     const recorded = day.day <= daily.throughDay;
     const transactions = recorded ? state.transactions.filter((t) => t.date === day.date && isSpend(t)) : [];
     const posted = transactions.filter((t) => !isSyntheticBaseline(t));
-    return { id: day.date, href: `/transactions?month=${month}`, linkLabel: "Month activity", values: {
+    const query = { metric: "spending" as const, from: day.date, to: day.date };
+    return { id: day.date, href: detailHref(query), linkLabel: "Inspect day", cellHrefs: Object.fromEntries(["purchases", "refunds", "estimates", "net", "cumulative", "count", "change"].map((key) => [key, detailHref({ ...query, from: key === "cumulative" ? `${month}-01` : day.date, part: key === "purchases" || key === "refunds" || key === "estimates" ? key : undefined, priorFrom: key === "change" && i > 0 ? daily.days[i - 1].date : undefined, priorTo: key === "change" && i > 0 ? daily.days[i - 1].date : undefined })])), values: {
       date: day.date,
       purchases: recorded ? posted.reduce((sum, t) => sum + Math.max(0, t.amount), 0) : null,
       refunds: recorded ? posted.reduce((sum, t) => sum + Math.max(0, -t.amount), 0) : null,
@@ -69,7 +73,7 @@ export function SpendingInsights({
                     <span className="min-w-0 break-words text-cream-dim">{a.name}</span>
                     <span className="text-xs text-faint">· {a.count}×</span>
                     <span className="tnum ml-auto text-cream">
-                      {formatMoney(a.total, currency, { cents: false })}
+                      <DetailLink query={{ metric: "spending", account: a.accountId === BASELINE_ACCOUNT_ID ? "all" : a.accountId, part: a.accountId === BASELINE_ACCOUNT_ID ? "estimates" : undefined, months: [month] }}>{formatMoney(a.total, currency, { cents: false })}</DetailLink>
                     </span>
                     <span className="tnum w-10 text-right text-muted">
                       {Math.round(pct)}%
@@ -103,7 +107,7 @@ export function SpendingInsights({
             <span className="text-xs text-muted">
               on pace for{" "}
               <span className="tnum text-cream">
-                {formatMoney(daily.projected, currency, { cents: false })}
+                <DetailLink query={{ metric: "spending", months: [month], statistic: "daily" }}>{formatMoney(daily.projected, currency, { cents: false })}</DetailLink>
               </span>
             </span>
           ) : null
@@ -113,13 +117,13 @@ export function SpendingInsights({
           <div>
             <div className="label-eyebrow">Spent so far</div>
             <div className="tnum mt-1 text-lg text-coral">
-              {formatMoney(daily.total, currency, { cents: false })}
+              <DetailLink query={{ metric: "spending", months: [month], statistic: "daily" }}>{formatMoney(daily.total, currency, { cents: false })}</DetailLink>
             </div>
           </div>
           <div>
             <div className="label-eyebrow">Avg / day</div>
             <div className="tnum mt-1 text-lg text-cream">
-              {formatMoney(daily.avgPerDay, currency, { cents: false })}
+              <DetailLink query={{ metric: "spending", months: [month], statistic: "daily" }}>{formatMoney(daily.avgPerDay, currency, { cents: false })}</DetailLink>
             </div>
           </div>
           <div>
@@ -134,7 +138,7 @@ export function SpendingInsights({
           </div>
         </div>
         <TimeSeriesChart title={`Daily spending · ${formatMonth(month)}`} currency={currency}
-          data={daily.days.map((d) => ({ id: d.date, label: String(d.day), values: { spending: d.day <= daily.throughDay ? d.total : null } }))}
+          data={daily.days.map((d) => ({ id: d.date, label: String(d.day), detailHref: detailHref({ metric: "spending", from: d.date, to: d.date }), valueHrefs: { spending: detailHref({ metric: "spending", from: d.date, to: d.date }) }, values: { spending: d.day <= daily.throughDay ? d.total : null } }))}
           series={[{ key: "spending", label: "Net spending", color: "var(--color-coral)" }]}
           table={{ rows: dailyRows, columns: [
             { key: "date", label: "Date", format: "date" },
@@ -167,7 +171,7 @@ export function SpendingInsights({
               return (
                 <li key={m.category}>
                   <Link
-                    href={`/transactions?category=${encodeURIComponent(m.category)}`}
+                    href={detailHref({ metric: "spending", category: m.category, months: [month], priorMonths: prevMonth ? [prevMonth] : undefined })}
                     className="-mx-2 flex items-center gap-3 rounded-lg px-2 py-1.5 transition-colors hover:bg-surface-2"
                   >
                     <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border hairline bg-surface-2">

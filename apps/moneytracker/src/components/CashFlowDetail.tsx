@@ -1,3 +1,4 @@
+import { DetailLink } from "@/components/DetailPanel";
 import { CashFlowTable } from "./CashFlowTable";
 import { CashFlowBars } from "./charts/CashFlowBars";
 import { CashFlowDetailSummary } from "@/lib/analytics";
@@ -28,10 +29,10 @@ export function CashFlowDetail({
   return (
     <div>
       <div className="mb-6 grid grid-cols-1 gap-3 min-[420px]:grid-cols-2 lg:grid-cols-4">
-        {tiles.map((t) => (
+        {tiles.map((t, i) => (
           <div key={t.l} className="rounded-xl border hairline bg-surface px-3 py-2.5">
             <div className="label-eyebrow">{t.l}</div>
-            <div className={`tnum mt-1 break-words text-lg ${t.c}`}>{t.v}</div>
+            <div className={`tnum mt-1 break-words text-lg ${t.c}`}><DetailLink query={{ metric: (["income", "spending", "net", "rate"] as const)[i], months: rows.map((r) => r.month), statistic: i < 3 ? "monthly" : undefined }}>{t.v}</DetailLink></div>
           </div>
         ))}
       </div>

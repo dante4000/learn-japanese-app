@@ -1,3 +1,5 @@
+import { DetailLink } from "@/components/DetailPanel";
+import { detailHref } from "@/lib/details";
 import Link from "@/components/AppLink";
 import { EstimatedBillsNotice } from "@/components/EstimatedBillsNotice";
 import { loadScopedState } from "@/lib/scoped-state";
@@ -104,6 +106,7 @@ export default async function SpendingPage({
       <div className="mb-5 grid grid-cols-1 gap-3 min-[420px]:grid-cols-2 sm:gap-4 lg:grid-cols-3">
         <StatCard
           label={`Spent · ${formatMonth(selected)}`}
+          href={detailHref({ metric: "spending", months: [selected], priorMonths: prevMonth ? [prevMonth] : undefined })}
           value={formatMoney(total, cur, { cents: false })}
           accent="coral"
           sub={
@@ -119,6 +122,7 @@ export default async function SpendingPage({
         />
         <StatCard
           label={`Average / month`}
+          href={detailHref({ metric: "spending", months: comp.map((m) => m.month), statistic: "monthly" })}
           value={formatMoney(avgMonthlyTotal, cur, { cents: false })}
           accent="cream"
           delay={60}
@@ -126,6 +130,7 @@ export default async function SpendingPage({
         />
         <StatCard
           label="This month vs average"
+          href={detailHref({ metric: "spending", months: [selected], priorMonths: comp.map((m) => m.month), priorAverage: true })}
           value={
             vsAvg == null
               ? "—"
@@ -163,10 +168,10 @@ export default async function SpendingPage({
                   <div key={c.category}>
                     <div className="flex flex-wrap items-center gap-2 text-sm">
                       <span>{c.glyph}</span>
-                      <span className="text-cream-dim">{c.label}</span>
+                      <span className="text-cream-dim"><DetailLink query={{ metric: "spending", category: c.category, months: [selected] }}>{c.label}</DetailLink></span>
                       <span className="text-xs text-faint">· {c.count}×</span>
                       <span className="tnum ml-auto shrink-0 text-cream">
-                        {formatMoney(c.total, cur, { cents: false })}
+                        <DetailLink query={{ metric: "spending", category: c.category, months: [selected], statistic: "share" }}>{formatMoney(c.total, cur, { cents: false })}</DetailLink>
                       </span>
                       <span className="tnum w-10 text-right text-muted">
                         {Math.round(pct)}%
@@ -229,7 +234,7 @@ export default async function SpendingPage({
               <span className="text-sm text-cream-dim">{h.label}</span>
               <span className="ml-auto text-right">
                 <span className="tnum block text-sm text-cream">
-                  {formatMoney(h.monthlyAvg, cur, { cents: false })}/mo
+                  <DetailLink query={{ metric: "spending", category: h.category, months: comp.map((m) => m.month), statistic: "monthly" }}>{formatMoney(h.monthlyAvg, cur, { cents: false })}</DetailLink>/mo
                 </span>
                 <span className="text-[0.65rem] text-faint">
                   {Math.round(h.share * 100)}% · seen {h.monthsSeen}/{nMonths}
@@ -247,7 +252,7 @@ export default async function SpendingPage({
             {merchants.map((m) => (
               <li key={m.name}>
                 <Link
-                  href={`/transactions?merchant=${encodeURIComponent(m.name)}&month=${selected}`}
+                  href={detailHref({ metric: "spending", merchant: m.name, months: [selected] })}
                   className="-mx-2 flex items-center gap-3 rounded-lg px-2 py-1 transition-colors hover:bg-surface-2"
                 >
                   <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border hairline bg-surface-2 text-sm text-slate">
