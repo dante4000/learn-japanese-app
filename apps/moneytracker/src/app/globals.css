@@ -211,3 +211,35 @@ html[data-theme="light"] .bg-blue .text-ink { color: #ffffff; }
 .detail-dialog { position: fixed; inset: 0 0 0 auto; margin: 0; padding: 0; width: min(1040px, 94vw); max-width: 100vw; height: 100dvh; max-height: 100dvh; overflow: auto; border: 1px solid var(--color-line); background: var(--color-surface); color: var(--color-cream); }
 .detail-dialog::backdrop { background: rgb(0 0 0 / .5); }
 @media (max-width: 640px) { .detail-dialog { width: 100vw; } }
+
+/* Native dialog transitions keep focus and dismissal under browser control. */
+.detail-dialog {
+  opacity: 0;
+  transform: translateX(100%);
+  transition: transform 260ms cubic-bezier(.22, 1, .36, 1), opacity 180ms ease-out, display 260ms allow-discrete, overlay 260ms allow-discrete;
+}
+.detail-dialog[open] { opacity: 1; transform: translateX(0); }
+.detail-dialog::backdrop {
+  opacity: 0;
+  transition: opacity 220ms ease-out, display 260ms allow-discrete, overlay 260ms allow-discrete;
+}
+.detail-dialog[open]::backdrop { opacity: 1; }
+@starting-style {
+  .detail-dialog[open] { opacity: 0; transform: translateX(100%); }
+  .detail-dialog[open]::backdrop { opacity: 0; }
+}
+@keyframes detail-reveal {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.detail-content { animation: detail-reveal 180ms ease-out; }
+.chart-scroll { scroll-behavior: smooth; }
+button, summary, .detail-link {
+  transition: background-color 140ms ease-out, border-color 140ms ease-out, color 140ms ease-out;
+}
+details[open] > :not(summary) { animation: detail-reveal 160ms ease-out; }
+@media (prefers-reduced-motion: reduce) {
+  .detail-dialog, .detail-dialog::backdrop, button, summary, .detail-link { transition: none; }
+  .detail-content, details[open] > :not(summary) { animation: none; }
+  .chart-scroll { scroll-behavior: auto; }
+}

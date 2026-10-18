@@ -21,7 +21,7 @@ export default async function SettingsPage() {
 
       <div className="grid gap-4 lg:grid-cols-2">
         <SectionCard title="Connect a bank" delay={60}>
-          <p className="mb-4 -mt-2 text-xs text-muted">
+          <p id="import-history" className="mb-4 -mt-2 scroll-mt-24 text-xs text-muted">
             Securely link Chase, Amex, and more through Plaid. Your bank login
             happens inside Plaid — this app only receives a read-only token.
           </p>

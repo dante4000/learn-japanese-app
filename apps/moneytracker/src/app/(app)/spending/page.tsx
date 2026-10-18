@@ -68,8 +68,8 @@ export default async function SpendingPage({
 
   const cats = spendingByCategory(view, selected);
   const total = cats.reduce((a, c) => a + c.total, 0);
-  const comp = monthlyComposition(view, 12);
-  const { habits, months: nMonths, avgMonthlyTotal } = categoryHabits(view, 12);
+  const comp = monthlyComposition(view, Infinity);
+  const { habits, months: nMonths, avgMonthlyTotal } = categoryHabits(view, Infinity);
   const merchants = topMerchants(view, selected, 20);
 
   // delta vs previous available month
@@ -216,7 +216,7 @@ export default async function SpendingPage({
 
       {/* Habits over time */}
       <SectionCard
-        title={`Habits over the last ${nMonths} month${nMonths === 1 ? "" : "s"}`}
+        title={`Habits across all ${nMonths} month${nMonths === 1 ? "" : "s"}`}
         delay={220}
         className="mt-4"
       >

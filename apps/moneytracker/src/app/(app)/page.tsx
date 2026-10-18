@@ -44,7 +44,7 @@ export default async function OverviewPage() {
   const history = netWorthHistory(state, todayKey());
   const cur = s.netWorth.currency;
   const categories = spendingByCategory(state, month);
-  const cashflow = cashFlowDetail(state, 6);
+  const cashflow = cashFlowDetail(state, Infinity);
   const merchants = topMerchants(state, month, 20);
   const recent = state.transactions
     .filter((t) => !t.pending && !isSyntheticBaseline(t))
@@ -230,7 +230,7 @@ export default async function OverviewPage() {
         className="mt-5"
         action={
           <span className="text-xs text-muted">
-            income vs spending · last {cashflow.rows.length} months
+            income vs spending · all {cashflow.rows.length} available months
           </span>
         }
       >

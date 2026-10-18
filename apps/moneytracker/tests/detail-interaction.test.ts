@@ -53,6 +53,19 @@ test('detail links preserve filters, handle races and retry, retain origin contr
     await click(find('Retry')); await respond(3, 'Entry detail');
     assert.match(container.querySelector('#detail-title')!.textContent, /Entry detail/);
     assert.equal((originSearch as unknown as HTMLInputElement).value, 'October');
+    const panel = container.querySelector('dialog')!;
+    panel.getBoundingClientRect = () => new window.DOMRect(240, 0, 1040, 900);
+    const traversals: number[] = [];
+    window.history.go = (delta = 0) => { traversals.push(delta); };
+    const press = async (downX: number, upX: number) => act(async () => {
+      panel.dispatchEvent(new window.PointerEvent('pointerdown', { bubbles: true, clientX: downX, clientY: 100 }));
+      panel.dispatchEvent(new window.MouseEvent('click', { bubbles: true, clientX: upX, clientY: 100 }));
+    });
+    await press(300, 300);
+    await press(300, 100);
+    assert.deepEqual(traversals, [], 'Inside clicks and drags onto the backdrop must not close details');
+    await press(100, 100);
+    assert.deepEqual(traversals, [-3], 'Backdrop returns to the original page through nested detail history');
     // Happy DOM does not emit popstate for history traversal. Dispatch the browser event.
     await act(async () => { window.history.replaceState({}, '', '/spending?month=2026-10&rent=exclude'); window.dispatchEvent(new window.PopStateEvent('popstate')); });
     assert.equal(container.querySelector('dialog')?.open, false);

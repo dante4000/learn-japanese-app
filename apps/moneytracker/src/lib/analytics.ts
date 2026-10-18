@@ -638,7 +638,7 @@ export function categoryDetail(
     (a, c) => a + c.total,
     0,
   );
-  const habit = categoryHabits(state, 12).habits.find(
+  const habit = categoryHabits(state, Infinity).habits.find(
     (h) => h.category === category,
   );
   const avgMonthly = habit?.monthlyAvg ?? 0;

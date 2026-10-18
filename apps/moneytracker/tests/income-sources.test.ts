@@ -59,3 +59,13 @@ test("hidden and pending inflows do not create sources or income months", () => 
   assert.deepEqual(incomeMonths(state), []);
   assert.deepEqual(incomeBreakdown(state).legend, []);
 });
+
+test("income retains sparse deposits more than twelve months apart", () => {
+  const state = emptyState();
+  state.transactions = [deposit("Payroll", "2021-01-01", -150), deposit("Payroll", "2026-10-01", -250)];
+  const breakdown = incomeBreakdown(state);
+  assert.equal(breakdown.months.length, 70);
+  assert.equal(breakdown.months[0], "2021-01");
+  assert.equal(breakdown.months.at(-1), "2026-10");
+  assert.equal(mergeIncomeMonths(breakdown.byMonth).total, 400);
+});

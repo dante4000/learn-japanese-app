@@ -100,7 +100,8 @@ export function resolveDetail(full: AppState, query: DetailQuery): DetailData {
   const state = filterStateByAccount(full, query.account === 'all' ? null : query.account);
   const currency = state.accounts[0]?.currency ?? 'USD';
   const names = new Map(full.accounts.map((a) => [a.id, a.name]));
-  const periods = query.months?.map((month) => new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${month}-01T00:00:00Z`))).join(', ') ?? (query.from || query.to ? `${query.from ?? 'First record'} – ${query.to ?? 'Latest record'}` : 'All available dates');
+  const monthLabels = query.months?.map((month) => new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${month}-01T00:00:00Z`)));
+  const periods = monthLabels && monthLabels.length > 12 ? `${monthLabels[0]} – ${monthLabels[monthLabels.length - 1]} · ${monthLabels.length} selected months` : monthLabels?.join(', ') ?? (query.from || query.to ? `${query.from ?? 'First record'} – ${query.to ?? 'Latest record'}` : 'All available dates');
   const result: DetailData = { title: 'Details', scope: [periods, query.account && query.account !== 'all' ? names.get(query.account)! : 'All accounts'], currency, summary: [], notes: ['Values use the current saved records. A recent sync or edit can change the result.'], columns: recordColumns, rows: [], actions: [] };
   if (query.rent) result.scope.push('Housing excluded; utilities included');
   if (query.source) result.scope.push(`Source: ${query.source}`);

@@ -36,6 +36,7 @@ export function DetailContent({ data }: { data: DetailData }) {
 export function DetailProvider({ account, children }: { account: string | null; children?: ReactNode }) {
   const searchParams = useSearchParams();
   const dialog = useRef<HTMLDialogElement>(null);
+  const backdropPress = useRef(false);
   const trigger = useRef<HTMLElement | null>(null);
   const origin = useRef<string | null>(null);
   const depth = useRef(0);
@@ -45,7 +46,7 @@ export function DetailProvider({ account, children }: { account: string | null; 
   const [historyDepth, setHistoryDepth] = useState(0);
   const [retry, setRetry] = useState(0);
   const requestKey = `${url}:${retry}`;
-  const data = remote?.key === requestKey ? remote.data : undefined;
+  const data = remote?.key === requestKey || !url ? remote?.data : undefined;
   const error = remote?.key === requestKey ? remote.error : undefined;
   const slow = slowKey === requestKey;
   const open = Boolean(url);
@@ -91,13 +92,18 @@ export function DetailProvider({ account, children }: { account: string | null; 
     if (origin.current && depth.current) history.go(-depth.current);
     else { const page = new URL(location.href); page.searchParams.delete('detail'); history.replaceState(history.state, '', page); setUrl(null); }
   }
-  return <AccountContext value={{ account: account ?? 'all', rent: searchParams?.get('rent') === 'exclude' }}>{children}<dialog ref={dialog} className="detail-dialog" aria-labelledby="detail-title" onCancel={(event) => { event.preventDefault(); close(); }}>
+  function outsidePanel(event: React.MouseEvent<HTMLDialogElement> | React.PointerEvent<HTMLDialogElement>) {
+    if (event.target !== event.currentTarget) return false;
+    const bounds = event.currentTarget.getBoundingClientRect();
+    return event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom;
+  }
+  return <AccountContext value={{ account: account ?? 'all', rent: searchParams?.get('rent') === 'exclude' }}>{children}<dialog ref={dialog} className="detail-dialog" aria-labelledby="detail-title" onCancel={(event) => { event.preventDefault(); close(); }} onPointerDown={(event) => { backdropPress.current = outsidePanel(event); }} onClick={(event) => { if (backdropPress.current && outsidePanel(event)) close(); backdropPress.current = false; }}>
     <header className="sticky top-0 z-50 flex flex-wrap items-center justify-between gap-3 border-b hairline bg-surface px-4 py-4 sm:px-6">
       <h2 id="detail-title" className="max-h-24 min-w-0 overflow-y-auto break-words text-xl text-cream">{data?.title ?? 'Financial details'}</h2>
       <div className="flex items-center gap-3">{historyDepth > 1 && <button type="button" onClick={() => history.back()} className="min-h-11 px-2 text-blue">Back</button>}{url && <a className="detail-link" href={`/details?${url}`} target="_blank" rel="noreferrer">Open full page ↗</a>}<button autoFocus type="button" aria-label="Close details" onClick={close} className="min-h-11 rounded-lg border hairline px-4 text-cream">Close</button></div>
     </header>
     <div className="min-w-0 p-4 sm:p-6" aria-busy={Boolean(url && !data && !error)}>
-      {data ? <DetailContent key={url} data={data} /> : error ? <div role="alert"><p className="text-coral">{error}</p><button type="button" onClick={() => setRetry((v) => v + 1)} className="detail-link mt-4">Retry</button></div> : <div role="status" className="min-h-40 text-muted">{slow ? <><p>Loading supporting records…</p><div className="mt-4 h-24 rounded-xl bg-surface-2" /></> : 'Opening details…'}</div>}
+      {data ? <div key={remote?.key} className="detail-content"><DetailContent data={data} /></div> : error ? <div role="alert"><p className="text-coral">{error}</p><button type="button" onClick={() => setRetry((v) => v + 1)} className="detail-link mt-4">Retry</button></div> : <div role="status" className="min-h-40 text-muted">{slow ? <><p>Loading supporting records…</p><div className="loading-skeleton mt-4 h-24 rounded-xl bg-surface-2" /></> : 'Opening details…'}</div>}
     </div>
   </dialog></AccountContext>;
 }

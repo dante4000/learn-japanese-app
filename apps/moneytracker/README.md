@@ -66,9 +66,10 @@ Cash-flow, daily spending, weekday, pace, and monthly breakdown charts use
 labeled scales, signed values, keyboard-selectable periods, and exact-value
 readouts. Each has a data table. Overview and Analysis also show monthly net
 surplus/shortfall and savings-rate trends. A month with no income has no savings
-rate. Charts fit the full period range by default. Monthly charts label every
-month, including September. Expand chart enables horizontal scrolling with
-explicit scroll controls; Fit all periods restores the full view.
+rate. Charts use all available history. Up to 12 periods fit by default; longer
+series open in a scrollable view. Oldest, Earlier, Later, and Latest controls
+reach the full range. Fit all periods shows an overview. Expand chart restores
+horizontal scrolling.
 
 All data tables support search, numeric/date sorting, column selection, paging,
 and CSV export. Headers and the first column stay fixed while the table scrolls
@@ -234,3 +235,8 @@ Credit periods open their evidence; separate buttons change usage overrides.
 
 The specification is in
 [Interactive financial details](docs/superpowers/specs/2026-10-17-interactive-details-design.md).
+
+History views use every stored month. Income also offers an All scope. Net worth
+shows the earliest stored date and links to CSV import for older bank records.
+Click the backdrop left of a detail panel to close it. Panel, content, and
+control transitions respect the reduced-motion preference.

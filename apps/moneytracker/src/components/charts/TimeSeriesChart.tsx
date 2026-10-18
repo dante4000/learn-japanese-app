@@ -39,7 +39,7 @@ export function TimeSeriesChart({ data, series, title, currency = "USD", kind = 
   const [, startTransition] = useLoadingTransition("Loading selected month…");
   const containerRef = useRef<HTMLDivElement>(null);
   const [availableWidth, setAvailableWidth] = useState(600);
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(data.length > 12);
   const chartScroll = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const element = containerRef.current;
@@ -49,8 +49,15 @@ export function TimeSeriesChart({ data, series, title, currency = "USD", kind = 
     return () => observer.disconnect();
   }, []);
   const [selected, setSelected] = useState<number | null>(null);
-  if (!data.length) return <div ref={containerRef}><p className="py-10 text-center text-sm text-muted">No data for this period.</p></div>;
   const highlighted = data.findIndex((d) => d.label === highlight);
+  useEffect(() => {
+    const element = chartScroll.current;
+    if (!element || !expanded) return;
+    const index = highlighted >= 0 ? highlighted : data.length - 1;
+    const width = Math.max(availableWidth, 100 + data.length * 64);
+    element.scrollLeft = 64 + (index + 0.5) * (width - 80) / Math.max(1, data.length) - element.clientWidth / 2;
+  }, [expanded, availableWidth, data.length, highlighted]);
+  if (!data.length) return <div ref={containerRef}><p className="py-10 text-center text-sm text-muted">No data for this period.</p></div>;
   const active = Math.min(selected ?? (highlighted >= 0 ? highlighted : data.length - 1), data.length - 1);
   const values = data.flatMap((d) => series.flatMap((s) => d.values[s.key] == null ? [] : [d.values[s.key]!]));
   const low = Math.min(0, ...(kind === "stacked" ? data.map((d) => series.reduce((sum, s) => sum + Math.min(0, d.values[s.key] ?? 0), 0)) : values));
@@ -113,11 +120,13 @@ export function TimeSeriesChart({ data, series, title, currency = "USD", kind = 
         <span>{expanded ? "Expanded view" : `All ${data.length} periods visible`} · {data[0].label} – {data[data.length - 1].label}</span>
         <button type="button" aria-pressed={expanded} onClick={() => setExpanded((value) => !value)} className="min-h-11 rounded-lg border hairline px-3 text-sm text-cream hover:bg-surface-2">{expanded ? "Fit all periods" : "Expand chart"}</button>
       </div>
-      {expanded && <div className="mb-2 flex justify-between gap-2">
-        <button type="button" onClick={() => chartScroll.current?.scrollBy({ left: -availableWidth * 0.75 })} className="min-h-11 rounded-lg border hairline px-3 text-sm text-cream">← Scroll left</button>
-        <button type="button" onClick={() => chartScroll.current?.scrollBy({ left: availableWidth * 0.75 })} className="min-h-11 rounded-lg border hairline px-3 text-sm text-cream">Scroll right →</button>
+      {expanded && <div className="mb-2 flex flex-wrap justify-between gap-2">
+        <button type="button" onClick={() => { setSelected(0); chartScroll.current?.scrollTo({ left: 0 }); }} className="min-h-11 rounded-lg border hairline px-3 text-sm text-cream">Oldest</button>
+        <button type="button" onClick={() => chartScroll.current?.scrollBy({ left: -availableWidth * 0.75 })} className="min-h-11 rounded-lg border hairline px-3 text-sm text-cream">← Earlier</button>
+        <button type="button" onClick={() => chartScroll.current?.scrollBy({ left: availableWidth * 0.75 })} className="min-h-11 rounded-lg border hairline px-3 text-sm text-cream">Later →</button>
+        <button type="button" onClick={() => { setSelected(data.length - 1); chartScroll.current?.scrollTo({ left: chartScroll.current.scrollWidth }); }} className="min-h-11 rounded-lg border hairline px-3 text-sm text-cream">Latest</button>
       </div>}
-      <div ref={chartScroll} className="overflow-x-auto pb-1" role="region" aria-label={`${title} chart. ${expanded ? "Expanded. Scroll horizontally for all periods." : "All periods fit in the chart."}`} tabIndex={0} style={{ scrollbarWidth: "auto" }}>
+      <div ref={chartScroll} className="chart-scroll overflow-x-auto pb-1" role="region" aria-label={`${title} chart. ${expanded ? "Expanded. Scroll horizontally for all periods." : "All periods fit in the chart."}`} tabIndex={0} style={{ scrollbarWidth: "auto" }}>
         <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} className="block w-full" style={{ minWidth: expanded ? width : undefined, height }} role="group" aria-labelledby={id}>
           <title id={id}>{`${title}. Select a period for exact values.`}</title>
           {ticks.map((v) => <g key={v} aria-hidden="true">
