@@ -46,13 +46,3 @@ test("six-month charts fit by default and include September and October labels",
   assert.match(html, /Expand chart/);
   assert.match(html, /Explore detailed data/);
 });
-
-test("multi-year charts expose the full range and open with scroll controls", () => {
-  const html = render({ title: "Full history", series, data: Array.from({ length: 60 }, (_, i) => ({ label: `${2021 + Math.floor(i / 12)}-${String(i % 12 + 1).padStart(2, "0")}`, values: { amount: i + 1 } })) });
-  assert.match(html, /2021-01/);
-  assert.match(html, /2025-12/);
-  assert.match(html, /Explore detailed data · 60 rows/);
-  assert.match(html, /min-width:3940px/);
-  for (const control of ["Oldest", "Earlier", "Later", "Latest", "Fit all periods"]) assert.ok(html.includes(control));
-  assert.doesNotMatch(html, /(?:NaN|Infinity|height="-)/);
-});

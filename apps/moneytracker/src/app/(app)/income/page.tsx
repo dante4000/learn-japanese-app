@@ -56,12 +56,9 @@ export default async function IncomePage({
   const selectedSource = sources.includes(requestedSource) ? requestedSource : "";
   const state = supportOnly ? { ...fullState, transactions: [] } : selectedSource ? filterBySource(fullState, selectedSource) : fullState;
   const postedMonths = [...new Set(fullState.transactions.filter((t) => !t.hidden && !t.pending).map((t) => t.date.slice(0, 7)))].sort();
-  const latestPosted = postedMonths[postedMonths.length - 1];
-  const earliestPosted = postedMonths[0];
-  const monthCount = latestPosted && earliestPosted
-    ? (Number(latestPosted.slice(0, 4)) - Number(earliestPosted.slice(0, 4))) * 12 + Number(latestPosted.slice(5, 7)) - Number(earliestPosted.slice(5, 7)) + 1
-    : 0;
-  const months = latestPosted ? calendarMonths(latestPosted, monthCount)
+  const months = allIncome.months.length
+    ? calendarMonths(allIncome.months[allIncome.months.length - 1], Math.max(12, allIncome.months.length))
+    : postedMonths.length ? calendarMonths(postedMonths[postedMonths.length - 1], 12)
     : support && !acct ? calendarMonths(todayKey().slice(0, 7), 12) : [];
   const visibleSupport = eligibleEmployerHousingSupport(support, supportOnly ? "__employer_housing__" : selectedSource, Boolean(acct));
 
@@ -87,7 +84,7 @@ export default async function IncomePage({
   }
 
   const scope: Scope =
-    sp.scope === "all" ? "all" : sp.scope === "ytd" ? "ytd" : sp.scope === "year" ? "year" : "month";
+    sp.scope === "ytd" ? "ytd" : sp.scope === "year" ? "year" : "month";
 
   const { byMonth } = incomeBreakdown(state);
   const byMonthMap = new Map(byMonth.map((m) => [m.month, m]));
@@ -97,7 +94,7 @@ export default async function IncomePage({
       ? sp.month
       : latest;
 
-  const chartMonths = months;
+  const chartMonths = calendarMonths(latest, 12);
   const recordedChart = chartMonths.map((month) => byMonthMap.get(month) ?? { month, total: 0, segments: [] });
   const supportInChart = Boolean(visibleSupport && sp.support === "include");
   const chart = supportInChart ? withEmployerHousingSupport(recordedChart, visibleSupport) : recordedChart;
@@ -107,12 +104,7 @@ export default async function IncomePage({
   let priorMonths: string[];
   let scopeLabel: string;
   let priorLabel: string;
-  if (scope === "all") {
-    scopeMonths = months;
-    priorMonths = [];
-    scopeLabel = "all available history";
-    priorLabel = "prior period (unavailable)";
-  } else if (scope === "ytd") {
+  if (scope === "ytd") {
     const year = latest.slice(0, 4);
     const prevYear = String(Number(year) - 1);
     scopeMonths = calendarMonths(latest, Number(latest.slice(5, 7)));
@@ -120,8 +112,8 @@ export default async function IncomePage({
     scopeLabel = `YTD ${year}`;
     priorLabel = `YTD ${prevYear}`;
   } else if (scope === "year") {
-    scopeMonths = calendarMonths(latest, 12);
-    priorMonths = calendarMonths(scopeMonths[0], 13).slice(0, 12);
+    scopeMonths = chartMonths;
+    priorMonths = calendarMonths(chartMonths[0], 13).slice(0, 12);
     scopeLabel = "last 12 mo";
     priorLabel = "prior 12 mo";
   } else {
@@ -225,10 +217,10 @@ export default async function IncomePage({
           }
         />
         <StatCard
-          label={scope === "all" ? "History coverage" : `vs ${priorLabel}`}
+          label={`vs ${priorLabel}`}
           href={detailHref({ metric: "income", months: scopeMonths, source: selectedSource || undefined, priorMonths })}
           value={
-            scope === "all" ? `${formatMonth(months[0])} – ${formatMonth(latest)}` : delta == null
+            delta == null
               ? "—"
               : `${delta >= 0 ? "+" : "−"}${Math.abs(Math.round(delta))}%`
           }
@@ -264,7 +256,7 @@ export default async function IncomePage({
       {!supportOnly && (<>
       {/* Income by month — the overview. Click a bar to focus that month. */}
       <SectionCard
-        title={`${supportInChart ? "Income + studio rent" : "Recorded income"} by month · all ${chart.length} month${chart.length === 1 ? "" : "s"}`}
+        title={`${supportInChart ? "Income + studio rent" : "Recorded income"} by month · last ${chart.length} month${chart.length === 1 ? "" : "s"}`}
         action={visibleSupport ? <SupportToggle included={supportInChart} /> : undefined}
         delay={200}
       >

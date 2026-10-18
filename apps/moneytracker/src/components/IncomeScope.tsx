@@ -2,17 +2,16 @@
 
 import { useQuerySelection } from "./useQuerySelection";
 
-export type Scope = "month" | "ytd" | "year" | "all";
+export type Scope = "month" | "ytd" | "year";
 
 const OPTIONS: [Scope, string][] = [
   ["month", "Monthly"],
   ["ytd", "YTD"],
   ["year", "12 mo"],
-  ["all", "All"],
 ];
 
 /** Switches the Income page between a single month, year-to-date, and the
- *  rolling 12-month window or all history via a URL param. "month" is the default (no param). */
+ *  rolling 12-month window via a URL param. "month" is the default (no param). */
 export function IncomeScope({ scope }: { scope: Scope }) {
   const { value, pending, select } = useQuerySelection("scope", scope, "month");
 

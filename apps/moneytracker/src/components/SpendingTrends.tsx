@@ -21,7 +21,7 @@ export function SpendingTrends({
   delay?: number;
 }) {
   const pace = spendingPace(state, month, prevMonth);
-  const { months, trends } = categoryTrends(state, Infinity, 6);
+  const { months, trends } = categoryTrends(state, 6, 6);
 
   const through = (m: string, day: number) => `${m}-${String(Math.min(day, new Date(Number(m.slice(0, 4)), Number(m.slice(5, 7)), 0).getDate())).padStart(2, "0")}`;
   const links = (day: number) => ({ current: detailHref({ metric: "spending", from: `${month}-01`, to: through(month, day) }), ...(prevMonth ? { previous: detailHref({ metric: "spending", from: `${prevMonth}-01`, to: through(prevMonth, day) }) } : {}) });
@@ -85,7 +85,7 @@ export function SpendingTrends({
           delay={delay + 40}
           className="mt-4"
           action={
-            <span className="text-xs text-muted">all {months.length} available months</span>
+            <span className="text-xs text-muted">last {months.length} months</span>
           }
         >
           <ul className="divide-y divide-[var(--color-line)]">

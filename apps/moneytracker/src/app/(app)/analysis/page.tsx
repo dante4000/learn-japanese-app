@@ -39,7 +39,7 @@ export default async function AnalysisPage() {
     );
   }
 
-  const ov = overview(state, Infinity);
+  const ov = overview(state, 12);
   if (ov.months === 0) {
     return (
       <div>
@@ -57,21 +57,21 @@ export default async function AnalysisPage() {
   // Same available-months window as every other section, so the bar count and
   // totals agree with the hero stats (cashFlowByMonth otherwise emits $0 rows
   // for months that have only transfers/pending activity).
-  const windowSet = new Set(windowMonths(state, Infinity));
-  const flows = cashFlowByMonth(state, Infinity).filter((f) =>
+  const windowSet = new Set(windowMonths(state, 12));
+  const flows = cashFlowByMonth(state, 1_000_000).filter((f) =>
     windowSet.has(f.month),
   );
   const best = flows.reduce((a, b) => (b.net > a.net ? b : a), flows[0]);
   const worst = flows.reduce((a, b) => (b.net < a.net ? b : a), flows[0]);
-  const sources = incomeSources(state, Infinity);
-  const weekdays = spendByWeekday(state, Infinity);
+  const sources = incomeSources(state, 12);
+  const weekdays = spendByWeekday(state, 12);
   const spendCount = weekdays.reduce((a, d) => a + d.count, 0);
   const avgSize = spendCount ? ov.spending / spendCount : 0;
-  const biggest = largestPurchases(state, Infinity, 5);
+  const biggest = largestPurchases(state, 12, 5);
   const acctName = new Map(state.accounts.map((a) => [a.id, a.name]));
-  const trends = categorySpendTrends(state, Infinity);
-  const fresh = newMerchants(state, Infinity, 3);
-  const monthsLabel = `all ${ov.months} available month${ov.months === 1 ? "" : "s"}`;
+  const trends = categorySpendTrends(state, 12);
+  const fresh = newMerchants(state, 12, 3);
+  const monthsLabel = `last ${ov.months} month${ov.months === 1 ? "" : "s"}`;
 
   return (
     <div>

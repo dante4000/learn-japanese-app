@@ -2,7 +2,6 @@
 
 import { detailHref } from "@/lib/details";
 import { DetailLink } from "@/components/DetailPanel";
-import Link from "@/components/AppLink";
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { DataTable } from "../DataTable";
@@ -109,8 +108,6 @@ const RANGES = [
   { key: "3M", days: 90, label: "3M", phrase: "past 3 months" },
   { key: "6M", days: 180, label: "6M", phrase: "past 6 months" },
   { key: "1Y", days: 365, label: "1Y", phrase: "past year" },
-  { key: "2Y", days: 730, label: "2Y", phrase: "past 2 years" },
-  { key: "5Y", days: 1826, label: "5Y", phrase: "past 5 years" },
   { key: "ALL", days: Infinity, label: "All", phrase: "all time" },
 ] as const;
 
@@ -349,7 +346,7 @@ export function NetWorthArea({
         </div>
 
         {ranges.length > 1 && (
-          <div className="flex flex-wrap items-center gap-0.5 rounded-lg border hairline bg-surface-2 p-0.5">
+          <div className="flex items-center gap-0.5 rounded-lg border hairline bg-surface-2 p-0.5">
             {ranges.map((r) => {
               const on = r.key === rangeKey;
               return (
@@ -373,17 +370,6 @@ export function NetWorthArea({
             })}
           </div>
         )}
-      </div>
-
-      <div className="mb-3 space-y-2 text-xs text-muted">
-        <p>{formatDate(scopedSnapshots[0].date)} – {formatDate(scopedSnapshots[scopedSnapshots.length - 1].date)} · {scopedSnapshots.length} records</p>
-        <div className="flex flex-wrap gap-2">
-          <button type="button" onClick={() => scrollRef.current?.scrollTo({ left: 0 })} className="min-h-11 rounded-lg border hairline px-3 text-sm text-cream">Oldest</button>
-          <button type="button" onClick={() => scrollRef.current?.scrollBy({ left: -vw * 0.75 })} className="min-h-11 rounded-lg border hairline px-3 text-sm text-cream">← Earlier</button>
-          <button type="button" onClick={() => scrollRef.current?.scrollBy({ left: vw * 0.75 })} className="min-h-11 rounded-lg border hairline px-3 text-sm text-cream">Later →</button>
-          <button type="button" onClick={() => scrollRef.current?.scrollTo({ left: scrollRef.current.scrollWidth })} className="min-h-11 rounded-lg border hairline px-3 text-sm text-cream">Latest</button>
-        </div>
-        {rangeKey === "ALL" && <p>Stored history starts {formatDate(snapshots[0].date)}. <Link href="/settings#import-history" className="text-blue underline underline-offset-4">Import older bank records</Link> to extend it.</p>}
       </div>
 
       {/* Legend for the cash-flow strip */}
@@ -428,9 +414,6 @@ export function NetWorthArea({
           ref={scrollRef}
           onScroll={(event) => setScrollLeft(event.currentTarget.scrollLeft)}
           className="chart-scroll relative min-w-0 flex-1 overflow-x-auto overflow-y-hidden"
-          role="region"
-          aria-label="Net worth history. Scroll horizontally to earlier dates."
-          tabIndex={0}
           style={{ scrollbarWidth: "thin" }}
         >
           <div className="relative" style={{ width: plotW, height: H }}>
