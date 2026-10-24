@@ -7,6 +7,8 @@ export function availableCurrencies(state: AppState): string[] {
   return [...new Set([
     ...state.accounts.map(entryCurrency), ...state.transactions.map(entryCurrency),
     ...state.manualEntries.map(entryCurrency), ...state.baselines.map(entryCurrency),
+    ...(state.goals ?? []).map(entryCurrency), ...(state.budgets ?? []).map(entryCurrency),
+    ...(state.billReminders ?? []).map(entryCurrency),
   ])].sort();
 }
 
@@ -22,6 +24,9 @@ export function filterStateByCurrency(state: AppState, currency: string): AppSta
   const ids = new Set(accounts.map((a) => a.id));
   return {
     ...state, currency, accounts,
+    goals: (state.goals ?? []).filter((g) => g.currency === currency),
+    budgets: (state.budgets ?? []).filter((b) => b.currency === currency),
+    billReminders: (state.billReminders ?? []).filter((b) => b.currency === currency),
     transactions: state.transactions.filter((t) => t.currency === currency),
     recurring: state.recurring.filter((r) => ids.has(r.accountId)),
     manualEntries: state.manualEntries.filter((m) => entryCurrency(m) === currency),

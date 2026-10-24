@@ -542,6 +542,9 @@ function assembleState(bundles: ItemBundle[], meta: MetaDoc): AppState {
   state.employerHousingSupport = meta.employerHousingSupport ?? null;
   state.cardStatuses = meta.cardStatuses;
   state.cardOverrides = meta.cardOverrides;
+  state.goals = meta.goals ?? [];
+  state.budgets = meta.budgets ?? [];
+  state.billReminders = meta.billReminders ?? [];
   return injectBaselines(normalizeAccountTransactions(state));
 }
 

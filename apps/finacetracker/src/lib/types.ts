@@ -165,6 +165,38 @@ export interface EmployerHousingSupport {
   endMonth?: string | null;
 }
 
+/** User plans are records, not bank balances or money transfers. */
+export interface SavingsGoal {
+  id: string;
+  revision: number;
+  name: string;
+  currency: string;
+  target: number;
+  saved: number;
+  targetDate: string | null;
+  monthlyContribution: number;
+}
+
+export interface CategoryBudget {
+  id: string;
+  revision: number;
+  currency: string;
+  category: string;
+  limit: number;
+}
+
+export interface BillReminder {
+  id: string;
+  revision: number;
+  name: string;
+  currency: string;
+  amount: number;
+  frequency: "WEEKLY" | "BIWEEKLY" | "MONTHLY" | "ANNUALLY";
+  dueDate: string;
+  status: "active" | "cancelled";
+  note: string;
+}
+
 /** The entire persisted state for the one user. Stored as a single JSON blob. */
 export interface AppState {
   /** View currency; never persisted as a conversion. */
@@ -181,6 +213,9 @@ export interface AppState {
   employerHousingSupport?: EmployerHousingSupport | null;
   cardStatuses?: Record<string, "active" | "closed">;
   cardOverrides?: CardOverrides;
+  goals?: SavingsGoal[];
+  budgets?: CategoryBudget[];
+  billReminders?: BillReminder[];
   updatedAt: string | null;
 }
 
@@ -206,6 +241,9 @@ export interface MetaDoc {
   employerHousingSupport?: EmployerHousingSupport | null;
   cardStatuses?: Record<string, "active" | "closed">;
   cardOverrides?: CardOverrides;
+  goals?: SavingsGoal[];
+  budgets?: CategoryBudget[];
+  billReminders?: BillReminder[];
 }
 
 export function emptyMeta(): MetaDoc {

@@ -1,3 +1,4 @@
+import { BillReminders } from "@/components/BillReminders";
 import { detailHref } from "@/lib/details";
 import { DetailLink } from "@/components/DetailPanel";
 import { nonIncomeDepositReason } from "@/lib/categories";
@@ -154,8 +155,7 @@ export default async function RecurringPage({
       {streams.length === 0 && state.baselines.length === 0 ? (
         <SectionCard>
           <p className="py-10 text-center text-sm text-muted">
-            Recurring detection needs ~180 days of Plaid history. It populates as
-            more syncs in.
+            No recurring payments detected yet. Connect a bank, import more history, or add a manual bill reminder below.
           </p>
         </SectionCard>
       ) : (
@@ -235,6 +235,9 @@ export default async function RecurringPage({
 
         </>
       )}
+          <SectionCard title="Manual bill reminders" className="mt-5">
+            <BillReminders key={cur} reminders={state.billReminders ?? []} currency={cur} today={today} />
+          </SectionCard>
           {/* Fixed monthly baselines (rent + parking, etc.) */}
           <SectionCard
             title="Fixed monthly baselines"

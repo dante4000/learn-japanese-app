@@ -1,3 +1,4 @@
+import { PLAN_KINDS, validatePlan, type PlanRecord } from "./planning";
 import { createHash } from "node:crypto";
 import { gzipSync, gunzipSync } from "node:zlib";
 import { encrypt, decrypt } from "./crypto";
@@ -88,6 +89,14 @@ export function validateBackup(value: unknown): BackupArchive {
   if (support && (!object(support) || !text(support.source) || !number(support.amount) || support.amount < 0 || !month(support.startMonth) || support.endMonth != null && (!month(support.endMonth) || support.endMonth < support.startMonth))) fail();
   if (meta.cardStatuses && (!object(meta.cardStatuses) || Object.values(meta.cardStatuses).some((v) => !["active", "closed"].includes(v)))) fail();
   if (meta.cardOverrides) validateCardOverrides(meta.cardOverrides);
+  for (const kind of PLAN_KINDS) {
+    if (meta[kind] == null) continue;
+    const records = list(meta[kind]);
+    if (records.length > 500) fail();
+    for (const record of records) { try { validatePlan(kind, record); } catch { fail(); } }
+    unique(records, (r) => (r as { id: string }).id);
+  }
+  unique(meta.budgets ?? [], (b) => `${(b as { currency: string }).currency}:${(b as { category: string }).category}`);
   return archive;
 }
 
@@ -152,6 +161,12 @@ export function planRestore(current: BackupData, incoming: BackupData): RestoreP
     if (to != null && canonical(from) !== canonical(to)) conflicts.push(`Changed settings: ${field}`);
     else Object.assign(meta, { [field]: from });
   }
+  for (const kind of PLAN_KINDS) {
+    if (!current.meta[kind] && !incoming.meta[kind]) continue;
+    Object.assign(meta, { [kind]: merge<PlanRecord>(current.meta[kind] ?? [], incoming.meta[kind] ?? [], (r) => r.id, `Changed ${kind}`) });
+  }
+  const budgetKeys = (meta.budgets ?? []).map((b) => `${b.currency}:${b.category}`);
+  if (new Set(budgetKeys).size !== budgetKeys.length) conflicts.push("Duplicate category budgets");
   // Global account/transaction identities must stay unique after merging.
   for (const field of ["accounts", "transactions"] as const) {
     const ids = bundles.flatMap((b) => b[field].map((r) => r.id));

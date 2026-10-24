@@ -46,7 +46,7 @@ async function main() {
       await new Promise((resolve) => setTimeout(resolve, 100));
     }
     for (const route of ["/api/backup", "/api/details?metric=networth", "/api/export/csv"]) assert.equal((await request(route)).status, 401);
-    for (const route of ["/", "/accounts", "/spending", "/income", "/analysis", "/transactions", "/recurring", "/cards", "/settings", "/details?metric=networth", "/spending/category?category=FOOD_AND_DRINK"]) {
+    for (const route of ["/", "/accounts", "/spending", "/income", "/analysis", "/transactions", "/recurring", "/cards", "/settings", "/goals", "/budgets", "/details?metric=networth", "/spending/category?category=FOOD_AND_DRINK"]) {
       for (const rsc of [false, true]) {
         const deniedPage = await fetch(base + route + (rsc ? `${route.includes("?") ? "&" : "?"}_rsc=` : ""), { redirect: "manual", headers: { Cookie: "finacetracker_session=invalid", ...(rsc ? { RSC: "1" } : {}) } });
         const body = await deniedPage.text();
@@ -54,14 +54,32 @@ async function main() {
         assert(deniedPage.headers.get("location")?.includes("/login") || deniedPage.headers.get("x-nextjs-redirect")?.includes("/login") || body.includes("/login"), `Missing login redirect: ${route}, RSC=${rsc}, status=${deniedPage.status}, headers=${JSON.stringify([...deniedPage.headers])}`);
       }
     }
+    assert.equal((await request("/api/planning", { kind: "goals", action: "save", record: {} })).status, 401);
     assert.equal((await request("/api/auth/login", { password: "wrong" })).status, 401);
     const login = await request("/api/auth/login", { password }); assert.equal(login.status, 200);
     cookie = login.headers.getSetCookie().map((v) => v.split(";")[0]).join("; ");
     assert.match(cookie, /^finacetracker_session=/);
-    for (const route of ["/", "/accounts", "/spending", "/income", "/analysis", "/transactions", "/recurring", "/cards", "/settings"]) {
+    for (const route of ["/", "/accounts", "/spending", "/income", "/analysis", "/transactions", "/recurring", "/cards", "/settings", "/goals", "/budgets"]) {
       const response = await request(route); assert.equal(response.status, 200, route);
       const html = await response.text(); assert.match(html, /finacetracker/); assert.doesNotMatch(html, /Vault — Money Tracker|NEXT_REDIRECT/);
     }
+    const goal = { id: "smoke-goal", revision: 0, currency: "USD", name: "Fixture savings goal", target: 1000, saved: 250, monthlyContribution: 100, targetDate: "2027-10-01" };
+    const saveGoal = () => request("/api/planning", { kind: "goals", action: "save", record: goal });
+    assert.equal((await saveGoal()).status, 200);
+    assert.equal((await saveGoal()).status, 200);
+    const savedGoal = (await (await saveGoal()).json()).record;
+    assert.equal(savedGoal.revision, 1);
+    assert.equal((await request("/api/planning", { kind: "goals", action: "save", record: { ...goal, saved: 400 } })).status, 409);
+    assert.equal((await request("/api/planning", { kind: "goals", action: "save", record: { ...savedGoal, saved: 400 } })).status, 200);
+    const budget = { id: "smoke-budget", revision: 0, currency: "USD", category: "FOOD_AND_DRINK", limit: 50 };
+    assert.equal((await request("/api/planning", { kind: "budgets", action: "save", record: budget })).status, 200);
+    assert.equal((await request("/api/planning", { kind: "budgets", action: "save", record: { ...budget, id: "duplicate" } })).status, 409);
+    assert.equal((await request("/api/planning", { kind: "budgets", action: "save", record: { ...budget, limit: -1 } })).status, 400);
+    const bill = { id: "smoke-bill", revision: 0, name: "Fixture internet", currency: "USD", amount: 45, frequency: "MONTHLY", dueDate: "2026-10-31", status: "active", note: "Cancel with provider" };
+    assert.equal((await request("/api/planning", { kind: "billReminders", action: "save", record: bill })).status, 200);
+    assert.match(await (await request("/goals")).text(), /Fixture savings goal/);
+    assert.match(await (await request("/budgets?month=2026-10")).text(), /Food &amp; Drink/);
+    assert.match(await (await request("/recurring")).text(), /Fixture internet/);
     const focused = await (await request("/", undefined, "finacetracker_account=missing")).text();
     assert.match(focused, /Balance unavailable/);
     const eur = await (await request("/api/details?metric=networth&currency=EUR")).json();
@@ -71,6 +89,9 @@ async function main() {
     const csv = await (await request("/api/export/csv")).text(); assert.match(csv, /'\=1\+1/);
     const backup = await (await request("/api/backup")).text(); const decoded = decodeBackup(backup);
     assert.equal(decoded.bundles[0].transactions.length, 2);
+    assert.equal(decoded.meta.goals?.[0].saved, 400);
+    assert.equal(decoded.meta.budgets?.[0].limit, 50);
+    assert.equal(decoded.meta.billReminders?.[0].amount, 45);
     const preview = await (await request("/api/backup", { action: "preview", backup })).json();
     assert.equal(preview.conflictCount, 0);
     assert.equal((await request("/api/backup", { action: "restore", backup, fingerprint: preview.fingerprint })).status, 200);
@@ -88,7 +109,11 @@ async function main() {
     assert.equal(after.meta.manualEntries.length, 1); assert.equal(after.meta.manualEntries[0].currency, "EUR");
     assert.equal(after.meta.cardOverrides?.[card.cardKey][credit]["2026-10"], false);
     assert.equal((await request("/api/backup", { action: "preview", backup: "bad" })).status, 400);
-    console.log("Release smoke passed: 9 signed-in pages; 11 protected routes in HTML and RSC; auth; native currencies; unknown balances; formula-safe CSV; encrypted backup; additive restore; stale-preview rejection; idempotent manual entry; cross-session credit corrections.");
+    assert.equal(after.meta.goals?.[0].saved, 400);
+    assert.equal((await request("/api/planning", { kind: "goals", action: "delete", id: goal.id, revision: 1 })).status, 409);
+    assert.equal((await request("/api/planning", { kind: "goals", action: "delete", id: goal.id, revision: 2 })).status, 200);
+    assert.doesNotMatch(await (await request("/goals")).text(), /Fixture savings goal/);
+    console.log("Release smoke passed: planning CRUD, retries, conflicts, backup and cross-session persistence; 11 signed-in pages; 13 protected routes in HTML and RSC; auth; native currencies; unknown balances; formula-safe CSV; encrypted backup; additive restore; stale-preview rejection; idempotent manual entry; cross-session credit corrections.");
   } catch (error) {
     console.error(output); throw error;
   } finally {

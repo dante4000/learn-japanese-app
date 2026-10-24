@@ -1,3 +1,4 @@
+import { PlanSummary } from "@/components/PlanSummary";
 import { BalanceCoverage } from "@/components/BalanceCoverage";
 import { detailHref } from "@/lib/details";
 import { DetailLink } from "@/components/DetailPanel";
@@ -35,6 +36,7 @@ export default async function OverviewPage() {
     return (
       <div>
         <PageHeading title="Overview" subtitle="Everything you own and owe, at a glance." />
+        <PlanSummary state={fullState} currency={state.currency ?? "USD"} />
         <EmptyState />
       </div>
     );
@@ -66,6 +68,7 @@ export default async function OverviewPage() {
         }
       />
 
+      <PlanSummary state={fullState} currency={cur} />
       <BalanceCoverage state={state} />
       {/* Hero: net worth (all accounts) or account balance (focused) */}
       <section

@@ -10,6 +10,8 @@ import { useLoadingStatus } from "./LoadingFeedback";
 
 const NAV = [
   { href: "/", label: "Overview", icon: "M3 12l9-8 9 8M5 10v10h14V10" },
+  { href: "/goals", label: "Goals", icon: "M12 3a9 9 0 100 18 9 9 0 000-18M12 7a5 5 0 100 10 5 5 0 000-10M12 11v2" },
+  { href: "/budgets", label: "Budgets", icon: "M4 4h16v16H4zM8 8h8M8 12h3M8 16h6" },
   { href: "/spending", label: "Spending", icon: "M21 12a9 9 0 11-9-9v9z M12 3a9 9 0 019 9" },
   { href: "/income", label: "Income", icon: "M12 19V5M5 12l7-7 7 7" },
   { href: "/analysis", label: "Analysis", icon: "M3 21h18M7 21V9m5 12V3m5 18v-7" },
@@ -20,11 +22,9 @@ const NAV = [
   { href: "/settings", label: "Settings", icon: "M12 9a3 3 0 100 6 3 3 0 000-6zM3 12h2m14 0h2M12 3v2m0 14v2" },
 ];
 
-// On phones the bottom bar shows the five everyday tabs; the rest live behind a
-// "More" sheet so each target keeps a comfortable tap size instead of cramming
-// nine into one row.
-const PRIMARY_NAV = NAV.slice(0, 5);
-const MORE_NAV = NAV.slice(5);
+// Keep four destinations plus More within reach on small screens.
+const PRIMARY_NAV = ["/", "/transactions", "/budgets", "/goals"].map((href) => NAV.find((item) => item.href === href)!);
+const MORE_NAV = NAV.filter((item) => !PRIMARY_NAV.includes(item));
 const MORE_ICON = "M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z";
 
 function Glyph({ d }: { d: string }) {
@@ -243,14 +243,14 @@ export function AppShell({
       </dialog>
 
       {/* Mobile bottom nav */}
-      <nav className="fixed inset-x-0 bottom-0 z-20 flex items-center justify-around border-t hairline bg-ink-2/95 px-2 pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] backdrop-blur lg:hidden">
+      <nav aria-label="Primary navigation" className="fixed inset-x-0 bottom-0 z-20 flex items-center justify-around border-t hairline bg-ink-2/95 px-2 pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] backdrop-blur lg:hidden">
         {PRIMARY_NAV.map((item) => (
           <Link
             key={item.href}
             href={item.href}
             aria-current={isActive(item.href) ? "page" : undefined}
             onClick={() => setMoreOpen(false)}
-            className={`flex flex-1 flex-col items-center gap-1 rounded-lg py-1.5 text-[0.6rem] ${
+            className={`flex flex-1 flex-col items-center gap-1 min-h-12 rounded-lg py-1.5 text-xs ${
               isActive(item.href) ? "text-blue" : "text-muted"
             }`}
           >
@@ -262,7 +262,7 @@ export function AppShell({
           onClick={() => setMoreOpen((v) => !v)}
           aria-expanded={moreOpen}
           aria-label="More"
-          className={`min-h-11 lg:min-h-0 flex flex-1 flex-col items-center gap-1 rounded-lg py-1.5 text-[0.6rem] ${
+          className={`min-h-11 lg:min-h-0 flex flex-1 flex-col items-center gap-1 min-h-12 rounded-lg py-1.5 text-xs ${
             isMoreActive || moreOpen ? "text-blue" : "text-muted"
           }`}
         >

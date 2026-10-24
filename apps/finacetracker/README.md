@@ -283,6 +283,33 @@ digest, N=32768, r=8, p=1. Existing SHA-256 hashes still work. Changing the pass
 hash or `AUTH_SESSION_VERSION` invalidates existing sessions. Login throttling is
 per server instance; it is not a shared global limit.
 
-The production dependency audit reports no vulnerabilities. Five development
-advisories share an unpatched `braces` dependency in ESLint tooling. See
-[GHSA-vfj7-8cjw-p6xm](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm).
+The 23 October dependency audit reports no vulnerabilities. Next.js and its
+ESLint config use 16.4.3; the redirect dependency uses 1.16.1.
+
+## Goals, budgets, and mobile planning
+
+- **Goals** — create and edit savings targets, set a target date and monthly
+  contribution, record savings, and delete goals. Progress and required monthly
+  savings use the recorded amount. Goals do not move money or change net worth.
+- **Budgets** — set one monthly limit per spending category and currency. Select
+  a month to compare the limit with recorded spending, refunds, and fixed bill
+  estimates. Budgets cover all accounts in the selected currency. Limits repeat;
+  edits apply to all viewed months. There is no rollover or historical limit log.
+- **Manual bill reminders** — add recurring bills on Recurring, with weekly,
+  fortnightly, monthly, or yearly dates. Month-end dates retain their anchor.
+  Mark services cancelled after cancelling with the provider. Manual reminders
+  stay separate from detected bills and spending to prevent double counting.
+- **Mobile** — five bottom navigation targets, Goals and Budgets within reach,
+  safe-area spacing, 44 px form controls, and 16 px mobile input text.
+
+Plans use encrypted metadata, record revisions, conditional storage writes, and
+full backup/restore. Repeated saves do not duplicate a record. The overview shows
+planning shortcuts, the next goal, current-month budget alerts, and the next
+manual reminder. No external service is needed for these planning features.
+
+This release does not provide credit-bureau reports, bill negotiation, provider
+cancellation services, automatic savings transfers, or shared household access.
+Those require separate integrations and authorization flows. Bank connections
+continue to use the existing Plaid integration and configured credentials.
+
+Feature reference: [Rocket Money features](https://www.rocketmoney.com/faq).
