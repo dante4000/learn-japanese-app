@@ -96,7 +96,7 @@ export default async function IncomePage({
 
   const chartMonths = calendarMonths(latest, 12);
   const recordedChart = chartMonths.map((month) => byMonthMap.get(month) ?? { month, total: 0, segments: [] });
-  const supportInChart = Boolean(visibleSupport && sp.support === "include");
+  const supportInChart = Boolean(visibleSupport && sp.support !== "exclude");
   const chart = supportInChart ? withEmployerHousingSupport(recordedChart, visibleSupport) : recordedChart;
 
   // Resolve the active scope into a set of months + the period to compare with.
@@ -248,7 +248,7 @@ export default async function IncomePage({
               {!supportOnly && <div><div className="label-eyebrow">Income + employer support</div><p className="tnum mt-1 text-xl text-blue"><DetailLink query={{ metric: "income", months: scopeMonths, source: selectedSource || undefined, support: "include" }}>{formatMoney(focus.total + supportTotal, cur, { cents: false })}</DetailLink></p></div>}
             </div>
             {support.startMonth === "2021-10" && <p className="mt-2 text-xs text-muted">The October 2021 start is approximate, based on support starting five years ago.</p>}
-            <p className="mt-2 text-xs text-muted">Effective {formatMonth(support.startMonth)}{support.endMonth ? ` through ${formatMonth(support.endMonth)}` : ", ongoing"}. Support is not counted as a deposit. Charts and recorded-income totals show bank income only.</p>
+            <p className="mt-2 text-xs text-muted">Effective {formatMonth(support.startMonth)}{support.endMonth ? ` through ${formatMonth(support.endMonth)}` : ", ongoing"}. Support is not counted as a deposit. The chart includes studio rent by default. Recorded-income totals show bank deposits.</p>
           </> : <p className="text-sm text-muted">Save employer-paid studio rent to show it separately from recorded deposits.</p>}
           {cur === "USD" ? <EmployerHousingSupportEditor key={JSON.stringify(support)} support={support} sources={sources} /> : <p className="text-sm text-muted">Employer housing support is configured in USD. Select USD to manage it.</p>}
         </SectionCard>
@@ -263,6 +263,7 @@ export default async function IncomePage({
       >
         <CompositionBars metric="income"
           data={comp}
+          includeSupport={supportInChart}
           currency={cur}
           highlight={scope === "month" ? selected : undefined}
           showTotals
@@ -285,7 +286,7 @@ export default async function IncomePage({
         )}
         <p className="mt-4 text-xs text-muted">
           Each bar is one month, split by who paid you. Click a bar — or pick a
-          month above — to see that month’s breakdown below. Months without recorded deposits show zero.{supportInChart && " Studio rent support is stacked on top; it is not a deposit, so the breakdown below stays bank-only."} The window ends with the latest posted bank activity.
+          month above — to see that month’s breakdown below. Months without recorded deposits have no bank income.{supportInChart && " Studio rent support is stacked on top; it is not a deposit, so the breakdown below stays bank-only."} The window ends with the latest posted bank activity.
         </p>
       </SectionCard>
 

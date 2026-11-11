@@ -25,7 +25,7 @@ async function main() {
     transactions: ["2026-08-01", "2026-10-01"].map((date, index) => ({ id: `entry${index}`, accountId: "usd", amount: 20, currency: "USD", date, name: "=1+1", merchantName: "Fixture merchant", pending: false, categoryPrimary: "FOOD_AND_DRINK", categoryDetailed: null, paymentChannel: null, source: "csv", userCategory: null, note: "Fixture note", hidden: false })),
     recurring: [],
   };
-  await writeFile(path.join(directory, "meta.enc"), encrypt(JSON.stringify(emptyMeta())));
+  await writeFile(path.join(directory, "meta.enc"), encrypt(JSON.stringify({ ...emptyMeta(), employerHousingSupport: { source: "RARELIQUID", amount: 1600, startMonth: "2026-01", endMonth: null } })));
   await writeFile(path.join(directory, "item__fixture.enc"), encrypt(JSON.stringify(bundle)));
   const listener = createServer(); listener.listen(0, "127.0.0.1"); await once(listener, "listening");
   const port = (listener.address() as { port: number }).port; await new Promise<void>((resolve) => listener.close(() => resolve()));
@@ -62,6 +62,14 @@ async function main() {
     for (const route of ["/", "/accounts", "/spending", "/income", "/analysis", "/transactions", "/recurring", "/cards", "/settings", "/goals", "/budgets"]) {
       const response = await request(route); assert.equal(response.status, 200, route);
       const html = await response.text(); assert.match(html, /FINTE/); assert.doesNotMatch(html, /Vault — Money Tracker|NEXT_REDIRECT/);
+    }
+    for (const source of ["", "RARELIQUID"]) {
+      const income = await (await request(`/income?src=${source}`)).text();
+      assert.match(income, /Income \+ studio rent by month/);
+      assert.match(income, /aria-pressed="true"[^>]*>Studio rent added/);
+      const excluded = await (await request(`/income?src=${source}&support=exclude`)).text();
+      assert.match(excluded, /Recorded income by month/);
+      assert.match(excluded, /aria-pressed="false"[^>]*>Add studio rent/);
     }
     const legacyCookie = cookie.replace("finte_session=", "finacetracker_session=");
     assert.equal((await fetch(base + "/api/details?metric=networth", { headers: { Cookie: legacyCookie } })).status, 200);

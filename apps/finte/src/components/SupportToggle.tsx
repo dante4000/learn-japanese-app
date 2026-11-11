@@ -2,15 +2,14 @@
 
 import { useQuerySelection } from "./useQuerySelection";
 
-/** Toggles ?support=include so the Income chart stacks employer-paid studio
- *  rent on top of recorded deposits. Off by default (bank income only). */
+/** An explicit exclusion keeps rent off when the page reloads. */
 export function SupportToggle({ included }: { included: boolean }) {
-  const { value, pending, select } = useQuerySelection("support", included ? "include" : "", "");
+  const { value, pending, select } = useQuerySelection("support", included ? "include" : "exclude", "include");
   const isIncluded = value === "include";
 
   return (
     <button
-      onClick={() => select(isIncluded ? "" : "include")}
+      onClick={() => select(isIncluded ? "exclude" : "include")}
       disabled={pending}
       aria-busy={pending}
       aria-pressed={isIncluded}
