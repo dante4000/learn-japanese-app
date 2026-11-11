@@ -6,15 +6,16 @@ import { MonthComposition } from "@/lib/analytics";
 import { formatMonth } from "@/lib/format";
 import { TimeSeriesChart } from "./TimeSeriesChart";
 
-export function CompositionBars({ data, currency = "USD", highlight, metric = "spending" }: {
+export function CompositionBars({ data, currency = "USD", highlight, metric = "spending", includeSupport = false }: {
   metric?: "spending" | "income";
   data: MonthComposition[];
   currency?: string;
   highlight?: string;
   showTotals?: boolean;
+  includeSupport?: boolean;
 }) {
   const params = useSearchParams();
-  const queryFor = (month: string, key?: string): DetailQuery => ({ metric: key === "Studio rent support" && metric === "income" ? "support" : metric, months: [month], ...(metric === "spending" ? { category: key, rent: params.get("rent") === "exclude" ? "exclude" as const : undefined } : { source: key === "Studio rent support" ? undefined : key ?? params.get("src") ?? undefined, support: !key && params.get("support") === "include" ? "include" as const : undefined }) });
+  const queryFor = (month: string, key?: string): DetailQuery => ({ metric: key === "Studio rent support" && metric === "income" ? "support" : metric, months: [month], ...(metric === "spending" ? { category: key, rent: params.get("rent") === "exclude" ? "exclude" as const : undefined } : { source: key === "Studio rent support" ? undefined : key ?? params.get("src") ?? undefined, support: !key && includeSupport ? "include" as const : undefined }) });
   const segments = [...new Map(data.flatMap((d) => d.segments.map((s) => [s.category, s] as const))).values()];
   return <TimeSeriesChart title="Monthly breakdown" currency={currency} kind="stacked" highlight={highlight ? formatMonth(highlight) : undefined}
     series={segments.map((s) => ({ key: s.category, label: s.label, color: s.color }))}

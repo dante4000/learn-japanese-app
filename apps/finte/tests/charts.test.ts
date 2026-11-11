@@ -3,6 +3,8 @@ import assert from "node:assert/strict";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { AppRouterContext, type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { SearchParamsContext } from "next/dist/shared/lib/hooks-client-context.shared-runtime";
+import { CompositionBars } from "../src/components/charts/CompositionBars";
 import { TimeSeriesChart } from "../src/components/charts/TimeSeriesChart";
 
 const router: AppRouterInstance = { bfcacheId: "chart-test", back() {}, forward() {}, refresh() {}, push() {}, replace() {}, prefetch() {} };
@@ -45,4 +47,24 @@ test("six-month charts fit by default and include September and October labels",
   assert.match(html, /<text[^>]*>Oct 26<\/text>/);
   assert.match(html, /Expand chart/);
   assert.match(html, /Explore detailed data/);
+});
+
+
+test("income chart totals retain studio support without an explicit URL option", () => {
+  const data = [{ month: "2026-10", total: 3600, segments: [
+    { category: "RARELIQUID", label: "RARELIQUID", color: "#2563eb", glyph: "", total: 2000, count: 1 },
+    { category: "Studio rent support", label: "Studio rent support", color: "#a5b4fc", glyph: "", total: 1600, count: 0 },
+  ] }];
+  for (const includeSupport of [true, false]) {
+    const html = renderToStaticMarkup(createElement(AppRouterContext.Provider, { value: router },
+      createElement(SearchParamsContext.Provider, { value: new URLSearchParams("src=RARELIQUID") },
+        createElement(CompositionBars, { metric: "income", data, includeSupport }))));
+    const links = [...html.matchAll(/href="([^"]+)"/g)].map((match) => new URL(match[1].replaceAll("&amp;", "&"), "http://localhost"));
+    const total = links.find((url) => url.searchParams.get("metric") === "income");
+    assert.ok(total);
+    assert.equal(total.searchParams.get("support"), includeSupport ? "include" : null);
+    assert.equal(total.searchParams.get("source"), "RARELIQUID");
+    assert.equal(total.searchParams.get("months"), "2026-10");
+    assert.ok(links.some((url) => url.searchParams.get("metric") === "support"));
+  }
 });
